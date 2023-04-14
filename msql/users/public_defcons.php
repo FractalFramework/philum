@@ -1,6 +1,6 @@
 <?php //msql/public_defcons
 $r=["_menus_"=>['text start','text end','title start','title end','footer','utf8','post-treat','last-update','option start','option end','jump div'],
-"11septembre2001.blogspot.com"=>['<div class=\'post-body entry-content\'>','</div>','<h3 class=\'post-title entry-title\'>','</h3>','','','','','','',''],
+"11septembre2001.blogspot.com"=>['&lt;div class=\'post-body entry-content\'&gt;','</div>','<h3 class=\'post-title entry-title\'>','</h3>','','','','','','',''],
 "20minutes-blogs.fr"=>['','','','','','','','','','',''],
 "20minutes.fr"=>['lt-endor-body content::div','','nodeheader-title::h1','','','','','1806250620','media-wrap::div|hat::p','','tags mt1 pt1 mb1::ul|sharebar::div'],
 "24heures.ch"=>['<span class=\"date\">','<a name=\"comment\"></a>','<div class=\"content-single\" id=\"body_detail\">','</h1>','','','','1012140609','','',''],
@@ -1970,4 +1970,9 @@ id=attachment_10929 style=\"width: 1034px\" class=\"wp-caption aligncenter\">','
 "partielles.com"=>['entry-content::','','::h1','','','','','','','',''],
 "fr1.warbletoncouncil.org"=>['::article','','::h1','','','','','2303091001','','',''],
 "contre-pouvoir.info"=>['entry-content::','','::h1','','','','','','','',''],
+<<<<<<< HEAD
 "cultinfo.hypotheses.org"=>['entry-content::','','::h1','','','','','2304041129','','','']]; ?>
+=======
+"cultinfo.hypotheses.org"=>['entry-content::','','::h1','','','','','2304041129','','',''],
+"bilan.ch"=>['::article','','::h1','','','','','2304140542','','','Breadcrumbs::|ContentHead::|::aside|DynamicInfobox::aside|Feedback::p']]; ?>
+>>>>>>> f9944c7ea72fa2701f1c5861573e53d415060ec7

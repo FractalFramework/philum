@@ -1,2 +1,5 @@
-<?php //msql/public_modules
-$r=[];
+<?php
+//philum_microsql_public_modules
+$r["_menus_"]=array();
+
+?>

@@ -1,6 +1,7 @@
 <?php //msql/program_core
 $r=["_menus_"=>['function','variables','usage','return','context'],
-"1"=>['spl_autoload_register','function(a','','',''],
+"1"=>['<?php 
+spl_autoload_register','function(a','','',''],
 "2"=>['p','r','','',''],
 "3"=>['n','','','',''],
 "4"=>['br','','','',''],
@@ -292,7 +293,7 @@ $r=["_menus_"=>['function','variables','usage','return','context'],
 "290"=>['sesmk2','a,m,p=\'\',b=\'\'','','',''],
 "291"=>['setses','d,o=\'\'','','',''],
 "292"=>['csv2array','d','','',''],
-"293"=>['array2csv','r,s=\',\',e=\'\"\',es=\'\'','','',''],
+"293"=>['array2csv','r,s=\',\',e=\'\"\',es=\'\\\'','','',''],
 "294"=>['https','f','','',''],
 "295"=>['nohttps','f','','',''],
 "296"=>['http','f','','',''],
