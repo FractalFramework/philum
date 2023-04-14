@@ -26,4 +26,4 @@ $r=["_menus_"=>['button','type','process','param','option','condition','root','i
 "30"=>['publish','ajax','popup','pubdate,call','','','dev','export','1','6'],
 "31"=>['cache','ajax','popup','rebuild__3xx','','','dev','reload','1','6'],
 "23"=>['philum','ajax','popup','md,about','','','','phi2','',''],
-"24"=>['Rss','linkt','blank','/rss/newsnet ','','','modes','rss','','7']];
+"24"=>['Rss','linkt','blank','/rss/newsnet ','','','modes','rss','','7']]; ?>

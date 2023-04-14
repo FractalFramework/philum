@@ -1,0 +1,3 @@
+<?php //msql/public_citation_8
+$r=["_menus_"=>['Citations'],
+"1"=>['Â« Le vrai journalisme, c\'est une information minutieuse qui se battra pour le progrÃ¨s et la rÃ©forme, ne tolÃ©rera jamais l\'injustice ou la corruption et combattra toujours les dÃ©magogues Â». Celui qui donna son nom au cÃ©lÃ¨bre prix journalistique ajoutait : ce journalisme doit Â« rester toujours dÃ©vouÃ© au bien public et Ãªtre toujours radicalement indÃ©pendant Â». Joseph Pulitzer']]; ?>

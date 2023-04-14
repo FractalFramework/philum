@@ -128,4 +128,4 @@ $r=["_menus_"=>['val0'],
 "MENU"=>['category'],
 "LOAD"=>['root'],
 "ARTMOD"=>['submenu'],
-"TABMOD"=>['category']];
+"TABMOD"=>['category']]; ?>

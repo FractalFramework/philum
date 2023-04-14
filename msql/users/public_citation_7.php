@@ -1,0 +1,18 @@
+<?php //msql/public_citation_7
+$r=["_menus_"=>['SantÃ© publique'],
+"1"=>['Â« Je ne remettrai Ã  personne du poison, si on m\'en demande, ni ne prendrai l\'initiative d\'une telle suggestion. Â»
+Serment d\'Hippocrate (-460//377)'],
+"2"=>['Article R4127-36 du Code de santÃ© publique: Â« Le consentement de la personne examinÃ©e ou soignÃ©e doit Ãªtre recherchÃ© dans tous les cas. Lorsque le malade, en Ã©tat d\'exprimer sa volontÃ©, refuse les investigations ou le traitement proposÃ©, le mÃ©decin doit respecter ce refus aprÃ¨s avoir informÃ© le malade de ses consÃ©quences Â»'],
+"3"=>['Code de Nuremberg (1947) : Â« le consentement du sujet humain est absolument essentiel. Le pacte international relatif aux droits civils et politiques a repris cette interdiction contre toute expÃ©rimentation involontaire, dans son texte de 1966 qui stipule : nul ne peut Ãªtre soumis sans son consentement Ã  une expÃ©rience mÃ©dicale ou scientifique Â»'],
+"4"=>['DÃ©claration de GenÃ¨ve pour les mÃ©decins (1948) : Â« Je respecterai l\'autonomie et la dignitÃ© de mon patient. Je n\'utiliserai pas mes connaissances mÃ©dicales pour enfreindre les droits humains et les libertÃ©s civiques, mÃªme sous la contrainte. Je garderai le respect absolu de la vie humaine, dÃ¨s la conception. Je considÃ©rerai la santÃ© de mon patient comme mon premier souci Â»'],
+"5"=>['DÃ©claration d\'Helsinki (1996) signÃ©e par 45 pays dont la France :
+Article 25 : Â« La participation de personnes capables de donner un consentement Ã©clairÃ© Ã  une recherche mÃ©dicale doit Ãªtre un acte volontaire. Aucune personne capable de donner son consentement Ã©clairÃ© ne peut Ãªtre impliquÃ©e dans une recherche sans avoir donnÃ© son consentement libre et Ã©clairÃ© Â»'],
+"6"=>['Convention d\'Oviedo (1997) signÃ©e par 29 pays dont la France) :
+Article 5 : Â« Une intervention dans le domaine de la santÃ© ne peut Ãªtre effectuÃ©e qu\'aprÃ¨s que la personne concernÃ©e y a donnÃ© son consentement libre et Ã©clairÃ©. Cette personne reÃ§oit prÃ©alablement une information adÃ©quate quant au but et Ã  la nature de l\'intervention ainsi que quant Ã  ses consÃ©quences et ses risques. La personne concernÃ©e peut, Ã  tout moment, librement retirer son consentement Â»'],
+"7"=>['ArrÃªt Salvetti (2002) : Aucun traitement mÃ©dical n\'est obligatoire au sein de l\'Union europÃ©enne : Â« En tant que traitement mÃ©dical non volontaire, la vaccination obligatoire constitue une ingÃ©rence dans le droit au respect de la vie privÃ©e, garanti par l\'article 8 de la Convention europÃ©enne des droits de l\'homme et des libertÃ©s fondamentales Â» (ArrÃªt Salvetti c/Italie-CEDH dÃ©cision du 9 juillet 2002 ; nÂ°42197/98)'],
+"8"=>['Code civil franÃ§ais :
+Article 16-1 : Â« Chacun a le droit au respect de son corps. Le corps est inviolable Â»'],
+"9"=>['RÃ©solution 2361 du Conseil de l\'Europe (28 janvier 2021) : Avis consultatif : l\'AssemblÃ©e demande instamment aux Ãtats membres et Ã  l\'Union europÃ©enne :
+Article 731 : Â« De s\'assurer que les citoyennes et les citoyens sont informÃ©s que la vaccination n\'est pas obligatoire et que personne ne subit de pressions politiques, sociales ou autres pour se faire vacciner, s\'il ou elle ne souhaite pas le faire personnellement Â»'],
+"10"=>['RÃ©solution 2361 du Conseil de l\'Europe (28 janvier 2021) : Avis consultatif : l\'AssemblÃ©e demande instamment aux Ãtats membres et Ã  l\'Union europÃ©enne :
+Article 732 : Â« De veiller Ã  ce que personne ne soit victime de discrimination pour ne pas avoir Ã©tÃ© vaccinÃ©, en raison de risque potentiel pour la santÃ© ou pour ne pas vouloir se faire vacciner Â»']]; ?>

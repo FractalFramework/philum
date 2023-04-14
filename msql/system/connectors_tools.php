@@ -37,4 +37,4 @@ $r=["_menus_"=>['type','param','category'],
 "del_tables"=>['SaveJ','txarea_filters_txtarea__deltables','del'],
 "mktable"=>['embedslct','\',\'\',\'\',\'mktable','filters'],
 ":color"=>['conn','_delconn_color','del'],
-":bkgclr"=>['conn','_delconn_bkgclr','del']];
+":bkgclr"=>['conn','_delconn_bkgclr','del']]; ?>

@@ -169,4 +169,4 @@ $r=["_menus_"=>['type','param','category'],
 "vid"=>['embed','','media'],
 "private"=>['embed','','media'],
 "cita_italics"=>['SaveJ','txarea_mc,filters_txtarea__citai','tools'],
-"cita_quotes"=>['SaveJ','txarea_mc,filters_txtarea__citaq','tools']];
+"cita_quotes"=>['SaveJ','txarea_mc,filters_txtarea__citaq','tools']]; ?>

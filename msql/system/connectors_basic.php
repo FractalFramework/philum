@@ -32,4 +32,4 @@ $r=["_menus_"=>['type','param'],
 "delconn"=>['conn','_delconn'],
 "findconn"=>['autoslct','txtarea'],
 "del"=>['conn','_del'],
-"nl"=>['insert','n']];
+"nl"=>['insert','n']]; ?>

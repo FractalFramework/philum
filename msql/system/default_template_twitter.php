@@ -1,4 +1,4 @@
 <?php //msql/default_template_twitter
 $r=["_menus_"=>['function'],
-"1"=>['[[_AUTHOR§txtsmall:css][:br]
-_SUJ[:br][_DATE§txtsmall2:css]§[twitter:class][_ID:id]:div]']];
+"1"=>['[[_AUTHORÂ§txtsmall:css][:br]
+_SUJ[:br][_DATEÂ§txtsmall2:css]Â§[twitter:class][_ID:id]:div]']]; ?>
