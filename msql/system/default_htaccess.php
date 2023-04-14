@@ -1,3 +1,6 @@
+<?php //msql/default_htaccess
+$r=["_menus_"=>['title_1'],
+"1"=>['AddDefaultCharset ISO-8859-1
 RewriteEngine on
 RewriteRule ^([0-9]+)$ /?read=$1 [L]
 RewriteRule ^art/([^/])$ /?art=$1 [L]
@@ -43,4 +46,4 @@ RewriteRule ^reboot /?log=reboot [L]
 RewriteRule ^shutdown /?log=down [L]
 RewriteRule ^dev /?dev=b [L]
 RewriteRule ^#([^/]+)$ /?hash=$1 [L,R,NE]
-RewriteRule ^([^.]+)$ /?id=$1 [L]
+RewriteRule ^([^.]+)$ /?id=$1 [L]']];
