@@ -4,7 +4,7 @@
 
 #store
 class ses{static $r=[]; static $adm=[]; static $st=[]; static $er=[];
-static $urlsrc=''; static $loader=''; static $enc=''; static $n=0; static $nb=0;
+static $urlsrc=''; static $loader=''; static $enc=''; static $local=0; static $n=0; static $nb=0;
 static function adm($k){return self::$adm[$k]??'';}
 static function r($k){return self::$r[$k]??'';}
 static function er($v){return self::$er[]=$v;}}

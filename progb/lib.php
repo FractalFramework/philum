@@ -256,7 +256,7 @@ function get_file($f){return curl_get_contents($f);}
 function read_file($f){$fp=false; if($f)$fp=fopen($f,'r') or die('er'); $ret='';//fgets
 if($fp){while(!feof($fp))$ret.=fread($fp,8192); fclose($fp);} return $ret;}
 function write_file($f,$t){$h=fopen($f,'w') or die('er'); $w=false;
-if($h){$w=fwrite($h,$t); fclose($h); if(!ses('localsrv'))opcache_invalidate($f);}
+if($h){$w=fwrite($h,$t); fclose($h); if(!ses::$local)opcache_invalidate($f);}
 if($w===false)return 'error';}
 
 function read_file2($f){if(fex1($f))return read_file($f);}

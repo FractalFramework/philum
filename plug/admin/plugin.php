@@ -6,8 +6,7 @@ return array_combine($r,$r);}
 
 static function call($p,$o,$prm=[]){
 [$d,$p,$o]=prmp($prm,$p,$o);
-if(method_exists($d,'home'))$ret=$d::home($p,$o);
-return $ret;}
+if(method_exists($d,'home'))return $d::home($p,$o);}
 
 static function menu($plg,$p='',$o=''){
 $ret=select_j('plugn','pclass','','plugin/r','','2');
