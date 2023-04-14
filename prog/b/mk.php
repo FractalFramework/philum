@@ -256,18 +256,18 @@ return $r;}
 static function msqcall($com,$id,$o){
 if(strpos($com,'§'))[$d,$p]=split_one('§',$com,1); else $d=$com; if(isset($p))$o=$p;
 if(strpos($o,'|'))[$oa,$ob]=opt($o,'|'); else{$oa=$o; $ob='';}
-switch($oa){
-	case('pop'):return self::microread_pop($d); break;
-	case('tmp'):return self::microread($d); break;
-	case('conn'):return self::msqconn($d,$id,$ob); break;
-	case('last'):return self::msqlasts($d,$ob); break;
-	case('count'):return self::msqcount($d); break;
-	case('bin'):return self::msqbin($d); break;
-	case('graph'):return self::msqgraph($d); break;
-	case('data'):return self::msqdata($d,$id); break;
-	case('form'):return microform::home($d,$id); break;
-	case('twit'):return self::msqtwit($d,$id); break;
-	case('twusr'):return self::msqusrs($d,$id); break;}
+return match($oa){
+'pop'=>self::microread_pop($d),
+'tmp'=>self::microread($d),
+'conn'=>self::msqconn($d,$id,$ob),
+'last'=>self::msqlasts($d,$ob),
+'count'=>self::msqcount($d),
+'bin'=>self::msqbin($d),
+'graph'=>self::msqgraph($d),
+'data'=>self::msqdata($d,$id),
+'form'=>microform::home($d,$id),
+'twit'=>self::msqtwit($d,$id),
+'twusr'=>self::msqusrs($d,$id)};
 [$b,$nd]=split_right('/',$d);
 $r=msql::goodtable_b($com); $bt=msqbt($b,$nd).csvfile($com,$r);
 if(is_array($r))return self::msqplay($r,$o).$bt; else return $r;}

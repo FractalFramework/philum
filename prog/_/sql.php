@@ -8,8 +8,8 @@ function __construct($r){if(!self::$qr)self::dbq($r);}
 
 static function dbq($r){
 self::$qr=new mysqli($r[0],$r[1],$r[2],$r[3]); self::$db=$r[3];
-$enc=isset($r[4]) && $r[4]==1?'utf8':'latin1'; self::$enc=$enc;
-ses::$enc=$enc=='utf8'?'utf-8':'iso-8859-1';
+$enc=isset($r[4]) && $r[4]==1?'utf8mb4':'latin1';
+ses::$enc=$enc=='utf8mb4'?'utf-8':'iso-8859-1';
 self::$qr->query('set names '.$enc);
 self::$qr->query('set character set '.$enc);}
 

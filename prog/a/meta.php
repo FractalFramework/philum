@@ -484,12 +484,17 @@ if($rb)foreach($rb as $k=>$v){$vb=strtolower(eradic_acc($k));
 $rdb=array_flip($rd);
 if($re){arsort($re); foreach($re as $k=>$v)$rf[$rd[$k]]=$k; 
 	foreach($rdb as $k=>$v)if(!isset($rf[$v]))$rf[$k]=$v; $rdb=$rf;}
-if($o)return [$rd,$re]; if(!$rd)return ' ';
+if($o)return [$rd,$re,$rx]; if(!$rd)return ' ';
 return self::add_tag_btn($rdb,$idart,$cat,'',$re);}
 
 static function matchall($id,$va=''){$cats=self::catag(); $rt=[];
 $msg=self::prep_msg($id); $ra=self::each_words($msg); arsort($ra);
 foreach($cats as $k=>$v)$rt['slct'.normalize($v).$id]=self::matchtags($id,$v,'',$msg,$ra);
+return $rt;}
+
+/**/static function matchall_r($id,$va=''){$cats=self::catag(); $rt=[];
+$msg=self::prep_msg($id); $ra=self::each_words($msg); arsort($ra);
+foreach($cats as $k=>$v)$rt[normalize($v)]=self::matchtags($id,$v,1,$msg,$ra);
 return $rt;}
 
 static function filltags($id,$cat,$n=''){

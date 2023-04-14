@@ -165,6 +165,7 @@ return '<form id="upl'.$id.'" action="" style="display:inline-block" method="POS
 function select($ra,$r,$kv='',$h='',$j=''){$ret=''; $pr=[];
 if(is_string($ra))$ra=['id'=>$ra];
 if($j)$ra['onchange']=sj($j.'\'+this.value+\'');
+$ret.=tag('option',$pr+['value'=>''],'Select...');
 if($r)foreach($r as $k=>$v){
 	if($kv=='vv')$k=$v; elseif($kv=='kk')$v=$k;
 	if($k==$h)$pr['selected']='selected'; else $pr=[];
@@ -190,19 +191,13 @@ static function get(){$r=self::$add; return self::tags($r);}
 static function html($lg='fr'){return '<!DOCTYPE html><html lang="'.$lg.'" xml:lang="'.$lg.'">';}
 static function generate($lg='fr'){return self::html($lg).tagb('head',self::get());}
 static function page($d,$lg){return self::generate($lg).tagb('body',$d).'</html>';}
-static function tags($r){$ret='';
-if($r)foreach($r as $k=>$v){if(is_array($v))$va=current($v); switch(key($v)){
-case('code'):$ret.=$va."\n"; break;
-case('csslink'):$ret.=csslink($va); break;
-case('jslink'):$ret.=jslink($va); break;
-case('csscode'):$ret.=csscode($va); break;
-case('jscode'):$ret.=jscode($va); break;
-case('rel'):$ret.='<link rel="'.$v['rel'][0].'" href="'.$v['rel'][1].'">'."\n"; break;
-case('meta'):$ret.=meta($va[0],$va[1],$va[2]); break;
-case('name'):$ret.=meta('name',$va[0],$va[1]); break;
-case('tag'):$ret.=tagb($va[0],$va[1]); break;
-default:$ret.=meta(key($v),$va[0],$va[1]); break;}}
-return $ret;}}
+static function tags($r){$rt=[];
+if($r)foreach($r as $k=>$v){if(is_array($v))$va=current($v); $rt[]=match(key($v)){
+'code'=>$va."\n",'csslink'=>csslink($va),'jslink'=>jslink($va),'csscode'=>csscode($va),
+'jscode'=>jscode($va),'rel'=>'<link rel="'.$v['rel'][0].'" href="'.$v['rel'][1].'">'."\n",
+'meta'=>meta($va[0],$va[1],$va[2]),'name'=>meta('name',$va[0],$va[1]),'tag'=>tagb($va[0],$va[1]),
+default=>meta(key($v),$va[0],$va[1])};}
+return implode('',$rt);}}
 
 function wpg($d,$t='',$lg='fr'){
 return Head::html($lg).tagb('head',meta('charset',ses::$enc).tagb('title',$t)).tagb('body',$d).'</html>';}
@@ -344,14 +339,14 @@ include_once($p.'error.lib.php'); include_once($p.'trace.lib.php'); PclTarExtrac
 
 //json
 function json_error(){
-switch(json_last_error()){
-case JSON_ERROR_NONE:return 0; break;
-case JSON_ERROR_DEPTH:return 1; break;//'Profondeur maximale atteinte'
-case JSON_ERROR_STATE_MISMATCH:return 2; break;//'Inadéquation des modes ou underflow'
-case JSON_ERROR_CTRL_CHAR:return 3; break;//'Erreur lors du contrôle des caractères'
-case JSON_ERROR_SYNTAX:return 4; break;//'Erreur de syntaxe ; JSON malformé'
-case JSON_ERROR_UTF8:return 5; break;//'Caractères UTF-8 malformés, erreur encodage'
-default:return 6; break;}}//'Erreur inconnue'
+return match(json_last_error()){
+JSON_ERROR_NONE=>0,
+JSON_ERROR_DEPTH=>1,//'Profondeur maximale atteinte'
+JSON_ERROR_STATE_MISMATCH=>2,//'Inadéquation des modes ou underflow'
+JSON_ERROR_CTRL_CHAR=>3,//'Erreur lors du contrôle des caractères'
+JSON_ERROR_SYNTAX=>4,//'Erreur de syntaxe ; JSON malformé'
+JSON_ERROR_UTF8=>5,//'Caractères UTF-8 malformés, erreur encodage'
+default=>6};}//'Erreur inconnue'
 
 function mkjson($r,$o=''){
 $rb=utf_r($r);//,sql::$enc=='utf8'?1:0
@@ -360,9 +355,9 @@ $e=json_error(); if($e)$rt=json_encode(array_combine(array_keys($r),array_fill(0
 return $rt;}
 
 function utf_r($r,$o=''){$rt=[];
-if($o==1 && ses::$enc=='utf-8')return $r;//devutf
+//if($o==1 && ses::$enc=='utf-8')return $r;//devutf
 if(is_array($r))foreach($r as $k=>$v){
-	$k=$o?utf8dec_b($k):utf8enc($k);
+	$kb=$o?utf8dec_b($k):utf8enc($k); $k=$kb?$kb:$k;
 	if(is_array($v))$rt[$k]=utf_r($v,$o);
 	else $rt[$k]=$o?utf8dec_b($v):utf8enc($v);}
 return $rt;}
@@ -424,11 +419,9 @@ function noutf8($d){$enc=detect_enc($d); return $enc!='UTF-8'?$d:mb_convert_enco
 function ascii2iso($d){htmlentities($d??''); $d=iconv('ASCII','ISO-8859-1',$d);
 return html_entity_decode($d);}//mysql2utf8
 function utf2ascii($d){$d=$d??''; $d=htmlentities($d,ENT_QUOTES,'UTF-8'); $d=utf8dec2($d);
-$d=html_entity_decode($d);//htmlspecialchars_decode
-//$d=ascii2iso($d);
-return $d;}
+return htmlspecialchars_decode($d);}////$d=ascii2iso($d);//html_entity_decode
 function utf8enc_b($d){$d=$d??''; $d=he2utf($d); return html_entity_decode($d);}
-function utf8dec_b($d){$d=utf2ascii($d); return $d; str::html_entity_decode_b($d);}//most used
+function utf8dec_b($d){$d=utf2ascii($d); return str::html_entity_decode_b($d);}//most used//normalize quotes
 function detect_enc($d){return mb_detect_encoding($d,'UTF-8,ISO-8859-1',true);}
 function is_utf($d){return strpos($d,'Ã')||strpos($d,'â€')||strpos($d,'Ð')||strpos($d,'ã');}
 function urlutf($u){return urlencode(utf8enc($u));}//str::urlenc()

@@ -60,7 +60,7 @@ if($dom)foreach($dom->getElementsByTagName('div') as $k=>$div)
 	//$ret=$div->ownerDocument->saveHTML($div);
 	}
 //eco($ret);
-$ret=utf2ascii($ret);
+$ret=utf8dec_b($ret);
 $ret=str_replace('<h2>Sommaire</h2>','',$ret);
 $ret=preg_replace('/\[.*\][,]|\[.*\]/','',$ret);
 return $ret;}

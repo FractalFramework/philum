@@ -255,7 +255,7 @@ if($tima>$timb){$clr=getclrs(); $klr=sty::invertclrs($clr);
 	sty::build_css($f,$r,$klr);}}
 
 static function night(){
-$r=ses::$r['night']??[]; if($r)return $r;//from meteo
+$r=ses::$r['night']??[]; //if($r)return $r;//from meteo
 $r=date_sun_info(ses('dayx'),48.839,2.237);
 return [$r['sunrise'],$r['sunset']];}
 
@@ -267,7 +267,7 @@ if($sw=ses('switch'))$nod.='_'.$sw; else $nod.='_'.ses('prmd');
 if(prmb(5) && !isset($_SESSION['desgn']))$nod=nod('auto');
 if(ses('tablet'))Head::add('csscode',tablet::home());
 if(ses('negcss')){$nod.='_neg'; self::negcss();}
-elseif(rstr(122)){[$h1,$h2]=sesmk2('boot','night',''); $dt=ses('dayx');
+elseif(rstr(122)){[$h1,$h2]=self::night(); $dt=ses('dayx');//sesmk2('boot','night','')
 	if($dt>$h2 or $dt<$h1){$nod.='_neg'; if(!ses('night'))self::negcss();}}
 return $nod;}
 

@@ -136,15 +136,22 @@ $ret.=lkt('txtsmall2',$f,picto('rss'));
 $ret.=chrono('time');
 return $ret;}
 
+static function usedcat($f){$fd=domain($f);
+$r=sql('frm','qda','k',['%mail'=>$fd,'_order'=>'id desc','_limit'=>'100']); if(!$r)return;
+arsort($r); $rt=array_keys($r);
+return $rt;}
+
 static function call($kn,$u){//rssin
 [$kn,$mth]=expl('-',$kn,2); chrono();
 [$f,$o]=prepdlink($u); $f=http($f); $i=0; $ret=''; //$mth=2;
 $r=self::load($f,$mth); $nb=count($r); //$ret=hidden('addop',1);
+$ru=self::usedcat($f);
 foreach($r as $k=>$v){$btc=''; [$va,$lnk,$dat,$id,$txt]=$v; $i++;
 	if($id)$btc.=ma::popart($id).' '; $lnj=ajx($lnk);
 	$btc.=lj('','popup_sav,batchpreview__3_'.$lnj,picto('view'));//,att(htmlentities($txt))
 	if(auth(4) && !$id){$mem=vacses($lnk,'b')?'ok':picto('add');
-		$btc.=ljp(atd('ars'.$i),'ars'.$i.'_sav,batch___'.$lnj.'_p',$mem);}
+		$btc.=ljp(atd('ars'.$i),'ars'.$i.'_sav,batch___'.$lnj.'_p',$mem);
+		$btc.=select(['id'=>$kn.$k],$ru,'vv','','socket_sav,addfromlist_'.$kn.$k.'_7_'.$lnj.'_');}
 	if(!$id)$btc.=lj('','popup_search,home__3_'.ajx($va).'_',picto('search'));
 $btc.=lkt('',$lnk,picto('url')); $btc.=btn('txtsmall',$dat);
 if($va)$ret.=divc('',$btc.' '.$va);}//$id?'hide':
@@ -163,12 +170,12 @@ $bt.=lj('txtsmall','rssj_rssin,twss___'.$p.'','twss').' ';
 return $bt;}
 
 static function home($p,$o=''){$ret=[];//rssj
-$r=msql::read('',nod($p),'',1); $bt='';
+$r=msql::read('',nod($p),'',1); $bt=''; $ro=[];
 if($r)foreach($r as $k=>$v){$v3=isset($v[3])?$v[3]:''; $ro[]=$v3;
 	if($o && $o==$v3)$d=self::call($k,$v[0]); else $d='';
 	if($d)$c=' active'; else $c='';
 	if(isset($v[0]))$ret[$v[2]][]=toggle($c,'rsj'.$k.'_rssin,call___'.$k.'_'.ajx($v[0]),$v[1]??preplink($v[0])).' '.btd('rsj'.$k,$d).br();}
-if(auth(6))$bt=self::menu($p,max($ro));
+if(auth(6) && $ro)$bt=self::menu($p,max($ro));
 $ret=tabs($ret,'rss','nbp');
 if($o)return $ret;
 return $bt.divd('rssj',$ret);}

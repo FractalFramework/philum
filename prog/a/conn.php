@@ -122,8 +122,9 @@ if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($da),0,6).$xt;//soon, del qb
 	if(get('randim'))$nmw=$qb.'_'.$id.'_'.substr(md5(rand(0,100000)),0,6).$xt;//
 	if($m=='trk' && is_file('img/'.$nmw))return $nmw;//keep original name
 	else{$dc=$da;
-		if(strpos($dc,'Capture-'))$dc=str_replace('d?','d%E2%80%99',$dc);
-		//$dc=str_replace('e%CC%81','%E9',$dc);//false accent é
+		if(strpos($dc,'&#x')){
+			$dc=mb_decode_numericentity($dc,[0x0,0x2FFFF,0,0xFFFF],'UTF-8');
+			$dc=utf8dec_b($dc); $dc=str::html_entity_decode_b($dc);}
 		$dcb=preg_replace('/-[0-9]+x[0-9]+/','',$dc);
 		if($dcb!=$dc)if(is_file($dcb))$dc=$dcb;
 		if(strpos($dc,' '))$dc=urlencode($dc);
@@ -178,204 +179,207 @@ $xt=strtolower(strrchr($da,'.')); $cp=strrpos($da,':');
 $c=substr($da,$cp); $d=substr($da,0,$cp);
 if(rstr(70))$c=self::retape_conn($c,$id);
 //[$d,$p]=cprm($d);
+$ret=match($c){
+':br'=>br(),
+':p'=>'<p>'.$d.'</p>',
+':u'=>'<u>'.$d.'</u>',
+':i'=>'<i>'.$d.'</i>',
+':b'=>'<b>'.$d.'</b>',
+':h'=>'<big>'.$d.'</big>',
+':h1'=>'<h1>'.$d.'</h1>',
+':h2'=>'<h2>'.$d.'</h2>',
+':h3'=>'<h3>'.$d.'</h3>',
+':h4'=>'<h4>'.$d.'</h4>',
+':h5'=>'<h5>'.$d.'</h5>',
+':e'=>'<sup>'.$d.'</sup>',
+':n'=>'<sub>'.$d.'</sub>',
+':s'=>'<small>'.$d.'</small>',
+':k'=>'<del>'.$d.'</del>',
+':q'=>'<blockquote>'.$d.'</blockquote>',
+':section'=>'<section>'.$d.'</section>',
+':center'=>'<center>'.$d.'</center>',
+':quote'=>'<quote>'.$d.'</quote>',
+':aside'=>'<aside>'.$d.'</aside>',
+':time'=>'<time>'.$d.'</time>',
+':fact'=>'<fact>'.$d.'</fact>',
+//':sup'=>'<sup>'.$d.'</sup>',
+//':sub'=>'<sub>'.$d.'</sub>',
+':qu'=>'<q>'.$d.'</q>',
+':t'=>btn('txtit',$d),
+':c'=>btn('txtclr',$d),
+':list'=>mk::make_li($d,'ul'),
+':font'=>mk::pub_font($d),
+':size'=>mk::pub_size($d),
+':color'=>mk::pub_clr($d),
+':bkg'=>mk::bkg($d,$id),
+':stabilo'=>mk::stabilo($d),
+':bkgclr'=>mk::pub_bkgclr($d),
+':red'=>mk::pub_clr($d,'#bd0000'),
+':blue'=>mk::pub_clr($d,'#333399'),
+':parma'=>mk::pub_clr($d,'#993399'),
+':green'=>mk::pub_clr($d,'#339933'),
+':numlist'=>mk::make_li($d,'ol'),
+':right'=>divs('text-align:right;',$d),
+':float'=>mk::pub_float($d),
+':clear'=>divc('clear',$d),
+':footlist'=>mk::footlist($d,$id),//
+':link'=>md::special_link($d),
+':w'=>mk::wlink($d),
+':css'=>mk::pub_css($d),
+':div'=>mk::pub_div($d),
+':html'=>mk::pub_html($d),
+':pub'=>pop::pubart($d),
+':art'=>pop::pubart($d),
+':url'=>mk::pub_url($d,$id),
+':read'=>pop::openart($d,$m),
+':content'=>pop::openart($d,3),
+':import'=>ma::import_art($d,$m),
+':quote2'=>mk::quote2($d,$id),
+':callquote'=>mk::callquote($d,'',$id),//unused
+':articles'=>pop::arts_mod($d,$id),
+':table'=>mk::table($d),
+':divtable'=>mk::dtable($d),
+':frame'=>mk::frame($d,$m),
+':underline'=>mk::underline($d,$m),
+':nh'=>mk::nh($d,$id,$nl),
+':nb'=>mk::nb($d,$id,$nl),
+':pre'=>tagb('pre',str::htmlentities_a($d)),
+':code'=>tagb('code',delbr($d)),
+':php'=>few::progcode($d),
+':console'=>divc("console",$d),
+':figure'=>pop::figure($d,$pw,$nl,$id),
+':lang'=>mk::translate($d,$m),
+':iframe'=>mk::iframe_bt($d,$m,$nl),
+':msql'=>mk::msqcall($d,$id,''),
+':module'=>mod::callmod($d),
+':modpop'=>mk::modpop($d),
+':twitter'=>pop::twitart($d,$id,'',$nl),
+':twapi'=>pop::twitapi($d),
+':twits'=>pop::twits($d,$id),
+':twusr'=>twit::play_usrs($d),
+':twimg'=>twit::img($d,1),
+':img'=>image($d),
+':jpg'=>image($d.'.jpg'),//old
+':webm'=>pop::getmp4($d.'.webm',$id,rstr(145)?0:1),
+':mp4'=>pop::getmp4($d.'.mp4',$id,rstr(145)?0:1),
+':mp3'=>pop::getmp3($d.'.mp3',$id,rstr(145)?0:1),
+':gim'=>pop::getimg($d,$id,$m,$nl,$pw),//onetime
+':vid'=>pop::getmp4($d,$id,1),
+':video'=>video::any($d,$id,$m,$nl),
+':videourl'=>video::lk($d),
+':play'=>video::call($d,$id,$pw,$m,$nl),
+':audio'=>pop::getmp3(goodroot($d),$id,0),
+':pdf'=>mk::pdfreader($d,$m),
+':photos'=>mk::photos($d,$id),
+':gallery'=>mk::gallery($d,$id),
+':slider'=>mk::slider($d,$id,$nl),
+//':sliderJ'=>mk::sliderj($d,$id,$nl),
+':jukebox'=>mk::jukebox($d,$m,$id),
+':radio'=>radio::call($d,'',$id),
+':script'=>'<script src="'.$d.'"></script>'."\n",
+':search'=>lj('popw','popup_search,home___'.ajx($d),pictxt('search',$d)),
+':formail'=>mk::form($d,'mailform'.$id.'_tracks,formail',''),
+':chat'=>chat::home($d?$d:$id,5),
+':chatxml'=>chatxml::home($d?$d:$id),
+':room'=>lj('','popup_chatxml,home___'.$d,pictxt('chat',$d)),
+':shop'=>cart::home('shop',$d,$id),//unused
+':prod'=>cart::home('prod',$d,$id),//unused
+':forum'=>forum::home($d?$d:$id),//unused
+':draw'=>draw::home(),
+':scan'=>mk::scan_txt($d,$m),
+':object'=>obj($d,''),
+':imgtxt'=>mk::imgtxt($d),
+':imgdata'=>pop::imgdata($d),
+':download'=>mk::download($d),
+':ajxget'=>ajx($d),//old
+':ajax'=>pop::ajlk($d),//old
+':rss_input'=>rss::build('',$d),
+':facebook'=>mk::fb_bt($d),
+':exif'=>pop::getxif($d),
+//':b64'=>img64($d),
+':b64'=>img('img/'.self::b64img($d,$id,$m)),
+':mini'=>mk::mini_b($d,$id),
+':thumb'=>mk::mini_d($d,$id,$nl),
+':fluid'=>mk::img_fluid($d),
+':poptxt'=>pop::call_j($d,'usg,poptxt'),
+':popfile'=>pop::call_j($d,'usg,popfile'),
+':popread'=>pop::call_j($d,'usg,popread'),
+':popmsql'=>pop::call_j($d,'usg,popmsql'),
+':popmsqt'=>pop::call_j($d,'usg,popmsqt'),
+':popart'=>pop::btart($d),
+':popurl'=>mk::popurl($d),
+':pop'=>pop::call_pop($d),
+':bubble_note'=>pop::bubble_note($d,'',$nl),
+':toggle_note'=>pop::toggle_note($d,'',$nl),
+':toggle_text'=>pop::toggle_div($d,0,$nl),
+//':toggle_quote'=>pop::toggle_div($d,1,$nl),
+':toggle'=>pop::toggle_div($d,1,$nl),
+':toggle_conn'=>pop::toggle_conn($d,$nl),
+':api_read'=>mc::api_read($d),
+':webpage'=>mk::webpage($d),
+':webview'=>mk::webview($d,$id),
+':readhtml'=>get_file(goodroot($d)),
+'instagram'=>mk::instagram($d,$id),
+':last-update'=>mk::lastup($d,$id),
+':web'=>web::call($d,0,$id),
+':wiki'=>mk::wiki($d,0),
+':dico'=>mk::wiktionary($d,0),
+':idart'=>ma::id_of_suj($d),
+':book'=>book::home($d,$id),
+':popbook'=>book::home($d,'x'),
+':petition'=>petition::home($id,10),
+':track'=>art::trkone($d),
+':to'=>art::tracks_to($d),
+':cols'=>mk::cols($d,$m),
+':block'=>mk::block($d,$m),
+':help'=>divc('twit',helps($d)),
+':plan'=>mk::plan($id,$m,$d),
+':artwork'=>mk::artwork($d,$m),
+':look'=>mk::artlook($d),
+':icon'=>icon($d),
+':math'=>tagb('math',codeline::parse($d,'','math')),
+':dskbt'=>mod::read_apps_link($d),
+':appbt'=>pop::btapp($d,$nl),
+':connbt'=>pop::connbt($d,$nl),
+':bt'=>pop::btapp($d,$nl),//obs
+':api'=>delbr(api::call($d)),
+':contact'=>contact($d,''),
+':bubble'=>md::bubble_menus($d,'inline'),//old
+':submenus'=>md::bubble_menus($d,'inline'),
+':template'=>codeline::parse('['.$da.']','','template'),
+':version'=>$_SESSION['philum'],
+':flag'=>flag($d),
+':nms'=>nms($d),
+':sigle'=>'&'.$d.';',
+':caviar'=>mk::caviar($d),
+':exec'=>codeline::exec_run($d,$id),
+':on'=>'['.tagb('code',delbr($d)).']',
+':no'=>'',
+':ko'=>$d,
+default=>''};
+if($ret)return $ret;
 switch($c){
-case(':br'):return br();break;
-case(':p'):return '<p>'.$d.'</p>';break;
-case(':u'):return '<u>'.$d.'</u>';break;
-case(':i'):return '<i>'.$d.'</i>';break;
-case(':b'):return '<b>'.$d.'</b>';break;
-case(':h'):return '<big>'.$d.'</big>';break;
-case(':h1'):return '<h1>'.$d.'</h1>';break;
-case(':h2'):return '<h2>'.$d.'</h2>';break;
-case(':h3'):return '<h3>'.$d.'</h3>';break;
-case(':h4'):return '<h4>'.$d.'</h4>';break;
-case(':h5'):return '<h5>'.$d.'</h5>';break;
-case(':e'):return '<sup>'.$d.'</sup>';break;
-case(':n'):return '<sub>'.$d.'</sub>';break;
-case(':s'):return '<small>'.$d.'</small>';break;
-case(':k'):return '<del>'.$d.'</del>';break;
-case(':q'):return '<blockquote>'.$d.'</blockquote>';break;
-case(':section'):return '<section>'.$d.'</section>';break;
-case(':center'):return '<center>'.$d.'</center>';break;
-case(':quote'):return '<quote>'.$d.'</quote>';break;
-case(':aside'):return '<aside>'.$d.'</aside>';break;
-case(':time'):return '<time>'.$d.'</time>';break;
-case(':fact'):return '<fact>'.$d.'</fact>';break;
-//case(':sup'):return '<sup>'.$d.'</sup>';break;
-//case(':sub'):return '<sub>'.$d.'</sub>';break;
-case(':qu'):return '<q>'.$d.'</q>';break;
-case(':t'):return btn('txtit',$d);break;
-case(':c'):return btn('txtclr',$d);break;
-case(':list'):return mk::make_li($d,'ul');break;
-case(':font'):return mk::pub_font($d);break;
-case(':size'):return mk::pub_size($d);break;
-case(':color'):return mk::pub_clr($d);break;
-case(':bkg'):return mk::bkg($d,$id);break;
-case(':stabilo'):return mk::stabilo($d);break;
-case(':bkgclr'):return mk::pub_bkgclr($d);break;
-case(':red'):return mk::pub_clr($d,'#bd0000');break;
-case(':blue'):return mk::pub_clr($d,'#333399');break;
-case(':parma'):return mk::pub_clr($d,'#993399');break;
-case(':green'):return mk::pub_clr($d,'#339933');break;
-case(':numlist'):return mk::make_li($d,'ol');break;
-case(':right'):return divs('text-align:right;',$d);break;
-case(':float'):return mk::pub_float($d);break;
-case(':clear'):return divc('clear',$d);break;
-case(':footlist'):return mk::footlist($d,$id);break;//
-case(':link'):return md::special_link($d);break;
-case(':w'):return mk::wlink($d);break;
-case(':css'):return mk::pub_css($d);break;
-case(':div'):return mk::pub_div($d);break;
-case(':html'):return mk::pub_html($d);break;
-case(':pub'):return pop::pubart($d);break;
-case(':art'):return pop::pubart($d);break;
-case(':url'):return mk::pub_url($d,$id);break;
-case(':read'):return pop::openart($d,$m);break;
-case(':content'):return pop::openart($d,3);break;
-case(':import'):return ma::import_art($d,$m);break;
-case(':quote2'):return mk::quote2($d,$id);break;
-case(':callquote'):return mk::callquote($d,'',$id);break;//unused
-case(':articles'):return pop::arts_mod($d,$id);break;
-case(':search'):return lj('popw','popup_search,home___'.ajx($d),pictxt('search',$d));break;
-case(':table'):return mk::table($d);break;
-case(':divtable'):return mk::dtable($d);break;
-case(':frame'):return mk::frame($d,$m); break;
-case(':underline'):return mk::underline($d,$m); break;
-case(':nh'):return mk::nh($d,$id,$nl); break;
-case(':nb'):return mk::nb($d,$id,$nl); break;
-case(':pre'):return tagb('pre',str::htmlentities_a($d));break;
-case(':code'):return tagb('code',delbr($d));break;
-case(':php'):return few::progcode($d); break;
-case(':console'):return divc("console",$d);break;
-case(':figure'):return pop::figure($d,$pw,$nl,$id);break;
-case(':lang'):return mk::translate($d,$m);break;
-case(':iframe'):return mk::iframe_bt($d,$m,$nl);break;
-case(':msql'):return mk::msqcall($d,$id,'');break;
-case(':module'):return mod::callmod($d); break;
-case(':modpop'):return mk::modpop($d); break;
-case(':twitter'):return pop::twitart($d,$id,'',$nl);break;
-case(':twapi'):return pop::twitapi($d);break;
-case(':twits'):return pop::twits($d,$id);break;
-case(':twusr'):return twit::play_usrs($d);break;
-case(':twimg'):return twit::img($d,1); break;
-case(':img'):return image($d); break;
-case(':jpg'):return image($d.'.jpg'); break;//old
-case(':webm'):return pop::getmp4($d.'.webm',$id,rstr(145)?0:1); break;
-case(':mp4'):return pop::getmp4($d.'.mp4',$id,rstr(145)?0:1); break;
-case(':mp3'):return pop::getmp3($d.'.mp3',$id,rstr(145)?0:1); break;
-case(':gim'):return pop::getimg($d,$id,$m,$nl,$pw); break;//onetime
-case(':vid'):return pop::getmp4($d,$id,1); break;
-case(':video'):return video::any($d,$id,$m,$nl);break;
-case(':videourl'):return video::lk($d);break;
-case(':play'):return video::call($d,$id,$pw,$m,$nl);break;
-case(':audio'):return pop::getmp3(goodroot($d),$id,0);break;
-case(':pdf'):return mk::pdfreader($d,$m); break;
-case(':photos'):return mk::photos($d,$id);break;
-case(':gallery'):return mk::gallery($d,$id);break;
-case(':slider'):return mk::slider($d,$id,$nl);break;
-//case(':sliderJ'):return mk::sliderj($d,$id,$nl);break;
-case(':jukebox'):return mk::jukebox($d,$m,$id);break;
-case(':radio'):return radio::call($d,'',$id);break;
-case(':script'):return '<script src="'.$d.'"></script>'."\n"; break;
-case(':formail'):return mk::form($d,'mailform'.$id.'_tracks,formail','');break;
-case(':chat'):return chat::home($d?$d:$id,5);break;
-case(':chatxml'):return chatxml::home($d?$d:$id);break;
-case(':room'):return lj('','popup_chatxml,home___'.$d,pictxt('chat',$d));break;
-case(':shop'):return cart::home('shop',$d,$id);break;//unused
-case(':prod'):return cart::home('prod',$d,$id);break;//unused
-case(':forum'):return forum::home($d?$d:$id);break;//unused
-case(':draw'):return draw::home();break;
-case(':scan'):return mk::scan_txt($d,$m);break;
-case(':object'):return obj($d,'');break;
-case(':imgtxt'):return mk::imgtxt($d);break;
-case(':imgdata'):return pop::imgdata($d);break;
-case(':download'):return mk::download($d);break;
-case(':ajxget'):return ajx($d); break;//old
-case(':ajax'):return pop::ajlk($d);break;//old
-case(':rss_input'):return rss::build('',$d);break;
-case(':facebook'):return mk::fb_bt($d);break;
-case(':exif'):return pop::getxif($d); break;
-//case(':b64'):return img64($d); break;
-case(':b64'):return img('img/'.self::b64img($d,$id,$m)); break;
-case(':mini'):return mk::mini_b($d,$id);break;
-case(':thumb'):return mk::mini_d($d,$id,$nl); break;
-case(':fluid'):return mk::img_fluid($d); break;
-case(':poptxt'):return pop::call_j($d,'usg,poptxt');break;
-case(':popfile'):return pop::call_j($d,'usg,popfile');break;
-case(':popread'):return pop::call_j($d,'usg,popread');break;
-case(':popmsql'):return pop::call_j($d,'usg,popmsql');break;
-case(':popmsqt'):return pop::call_j($d,'usg,popmsqt');break;
-case(':popart'):return pop::btart($d);break;
-case(':popurl'):return mk::popurl($d); break;
-case(':pop'):return pop::call_pop($d);break;
-case(':bubble_note'):return pop::bubble_note($d,'',$nl);break;
-case(':toggle_note'):return pop::toggle_note($d,'',$nl);break;
-case(':toggle_text'):return pop::toggle_div($d,0,$nl);break;
-//case(':toggle_quote'):return pop::toggle_div($d,1,$nl);break;
-case(':toggle'):return pop::toggle_div($d,1,$nl);break;
-case(':toggle_conn'):return pop::toggle_conn($d,$nl);break;
-case(':api_read'):return mc::api_read($d);break;
-case(':webpage'):return mk::webpage($d);break;
-case(':webview'):return mk::webview($d,$id);break;
-case(':readhtml'):return get_file(goodroot($d));break;
-case('instagram'):return mk::instagram($d,$id);break;
-case(':last-update'):return mk::lastup($d,$id);break;
-case(':web'):return web::call($d,0,$id);break;
-case(':wiki'):return mk::wiki($d,0); break;
-case(':dico'):return mk::wiktionary($d,0); break;
-case(':idart'):return ma::id_of_suj($d);break;
-case(':book'):return book::home($d,$id); break;
-case(':popbook'):return book::home($d,'x'); break;
-case(':petition'):return petition::home($id,10); break;
-case(':track'):return art::trkone($d); break;
-case(':to'):return art::tracks_to($d); break;
-case(':cols'):return mk::cols($d,$m); break;
-case(':block'):return mk::block($d,$m); break;
-case(':help'):return divc('twit',helps($d)); break;
-case(':plan'):return mk::plan($id,$m,$d); break;
-case(':artwork'):return mk::artwork($d,$m); break;
-case(':look'):return mk::artlook($d); break;
-case(':icon'):return icon($d);break;
 case(':svg'):[$p,$o]=cprm($d); return svg::call($p,$o); break;
-case(':math'):return tagb('math',codeline::parse($d,'','math')); break;
 case(':app'):[$p,$o,$fc]=unpack_conn($d); return appin($fc,'home',$p,$o); break;
-case(':dskbt'):return mod::read_apps_link($d); break;
-case(':appbt'):return pop::btapp($d,$nl); break;
-case(':connbt'):return pop::connbt($d,$nl); break;
-case(':bt'):return pop::btapp($d,$nl); break;//obs
 case(':search'):[$d,$o]=cprm($d);
 	return lj('','popup_search,home__3_'.ajx($d).'_',picto('search').($o?$o:$d)); break;
 case(':tag'):[$p,$o]=cprm($d); if(!$o)$o='tag';
 	return lj('txtx','popup_api__3_'.$o.':'.ajx($p),pictxt('tag',$p)); break;
 case(':papi'):[$p,$o]=cprm($d);//relegated
 	return lj('','popup_api__3_'.ajx($p),pictxt('atom',$o?$o:strend($p,':'))); break;
-case(':api'): return delbr(api::call($d)); break;
-case(':contact'):return contact($d,''); break;
-case(':bubble'):return md::bubble_menus($d,'inline');//old
-case(':submenus'):return md::bubble_menus($d,'inline');
-case(':header'):[$t,$p]=cprm($d);
-	Head::add($p?$p:'code',delbr($t,"\n")); return; break;
+case(':header'):[$t,$p]=cprm($d); Head::add($p?$p:'code',delbr($t,"\n")); return; break;
 case(':jscode'):Head::add('jscode',delbr($d,"\n")); return; break;
 case(':jslink'):Head::add('jslink',delbr($d,"\n")); return; break;
 case(':basic'):[$func,$var]=cprm($d); return codeline::cbasic($func,$var); break;
-case(':template'):return codeline::parse('['.$da.']','','template'); break;
-case(':version'):return $_SESSION['philum']; break;
-case(':ver'):$phi=$_SESSION['philum']; return substr($phi,0,2).'.'.substr($phi,2,2); break;
+case(':ver'):$phi=ses('philum'); return substr($phi,0,2).'.'.substr($phi,2,2); break;
 case(':picto'):[$p,$o]=cprm($d); return picto($p,$o); break;
 case(':ascii'):[$p,$o]=cprm($d); return ascii($p,$o); break;
 case(':glyph'):[$p,$o]=cprm($d); return glyph($p,$o); break;
 case(':oomo'):[$p,$o]=cprm($d); return oomo($p,$o); break;
 case(':typo'):[$p,$o]=cprm($d); return mk::typo($p,$o); break;
-case(':flag'):return flag($d); break;
-case(':nms'):return nms($d); break;
-case(':sigle'):return '&'.$d.';'; break;
-case(':caviar'):return mk::caviar($d); break;
-case(':private'): if(auth(6))return $d.' '.picto('secret'); break;
-case(':dev'):if(auth(4))return $d; break;
-case(':exec'):return codeline::exec_run($d,$id); break;
-case(':on'):return '['.tagb('code',delbr($d)).']'; break;
-case(':no'):return; break;
-case(':ko'):return $d; break;}
+case(':private'):if(auth(6))return $d.' '.picto('secret'); break;
+case(':dev'):if(auth(4))return $d; break;}
+
 if($da=='--')return hr();
 elseif($xt=='.m3u8')return twit::upvideo_m3u8($da);
 elseif($xt=='.pdf')return mk::pdfdoc($da,$nl,$pw);

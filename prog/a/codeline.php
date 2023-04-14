@@ -16,25 +16,26 @@ if($in!==false){
 			$mid=substr($msg,$in+1,$out);
 			$mid=self::parse($mid,$op,$g);}
 		else $mid=substr($msg,$in+1,$out);
-		if($g=='template')$mid=self::template($mid,$op);
-		elseif($g=='sconn')$mid=self::sconn($mid,$op);
-		elseif($g=='sconn2')$mid=self::sconn2($mid,$op);
-		elseif($g=='sconn3')$mid=self::sconn3($mid);
-		elseif($g=='savimg')$mid=self::savimg($mid,$op);
-		elseif($g=='corrfast')$mid=self::corrfast($mid,$op);
-		elseif($g=='corrfastb')$mid=self::corrfastb($mid,$op);
-		elseif($g=='stripconn')$mid=self::stripconn($mid,$op);
-		elseif($g=='striptw')$mid=self::striptw($mid,$op);
-		elseif($g=='correct')$mid=self::correct($mid,$op);
-		elseif($g=='clpreview')$mid=clpreview($mid);
-		elseif($g=='delconn')$mid=self::delconn($mid);
-		elseif($g=='extractimg')$mid=self::extractimg($mid,$op);
-		elseif($g=='conn2xhtml')$mid=xhtml::conn2xhtml($mid,$op);
-		elseif($g=='extract')$mid=self::conn_extract($mid,$op);
-		elseif($g=='num2nb')$mid=self::num2nb($mid,$op);
-		elseif($g=='math')$mid=self::math($mid,$op);
-		elseif($g=='svg')$mid=svg::conn($mid);
-		elseif($g=='md')$mid=self::md($mid);
+		$mid=match($g){
+		'template'=>self::template($mid,$op),
+		'sconn'=>self::sconn($mid,$op),
+		'sconn2'=>self::sconn2($mid,$op),
+		'sconn3'=>self::sconn3($mid),
+		'savimg'=>self::savimg($mid,$op),
+		'corrfast'=>self::corrfast($mid,$op),
+		'corrfastb'=>self::corrfastb($mid,$op),
+		'stripconn'=>self::stripconn($mid,$op),
+		'striptw'=>self::striptw($mid,$op),
+		'correct'=>self::correct($mid,$op),
+		'clpreview'=>clpreview($mid),
+		'delconn'=>self::delconn($mid),
+		'extractimg'=>self::extractimg($mid,$op),
+		'conn2xhtml'=>xhtml::conn2xhtml($mid,$op),
+		'extract'=>self::conn_extract($mid,$op),
+		'num2nb'=>self::num2nb($mid,$op),
+		'math'=>self::math($mid,$op),
+		'svg'=>svg::conn($mid),
+		'md'=>self::md($mid)};
 		$end=substr($msg,$in+1+$out+1);
 		$end=self::parse($end,$op,$g);}
 	else $end=substr($msg,$in+1);}
@@ -111,32 +112,33 @@ else return '['.$da.']';}
 
 #conndefs
 static function sconn_html($d,$p,$c){
-switch($c){
-case(':br'):return br(); break;
-case(':hr'):return hr(); break;
-case(':p'):return '<p>'.$d.'</p>';break;
-case(':u'):return '<u>'.$d.'</u>';break;
-case(':i'):return '<i>'.$d.'</i>';break;
-case(':b'):return '<b>'.$d.'</b>';break;
-case(':h'):return '<big>'.$d.'</big>';break;
-case(':h1'):return '<h1>'.$d.'</h1>';break;
-case(':h2'):return '<h2>'.$d.'</h2>';break;
-case(':h3'):return '<h3>'.$d.'</h3>';break;
-case(':h4'):return '<h4>'.$d.'</h4>';break;
-case(':h5'):return '<h5>'.$d.'</h5>';break;
-case(':e'):return '<sup>'.$d.'</sup>';break;
-case(':n'):return '<sub>'.$d.'</sub>';break;
-case(':s'):return '<small>'.$d.'</small>';break;
-case(':k'):return '<strike>'.$d.'</strike>';break;
-case(':q'):return '<blockquote>'.$d.'</blockquote>';break;
-case(':center'):return '<center>'.$d.'</center>';break;
-case(':header'):return '<header'.$p.'>'.$d.'</header>';break;
-case(':section'):return '<section'.$p.'>'.$d.'</section>';break;
-case(':article'):return '<article'.$p.'>'.$d.'</article>';break;
-//case(':stabilo'):return '<stabilo>'.$d.'</stabilo>';break;
-case(':quote'):return '<quote>'.$d.'</quote>';break;
-case(':fact'):return '<fact>'.$d.'</fact>';break;
-case(':qu'):return '<q>'.$d.'</q>';break;}}
+return match($c){
+':br'=>br(),
+':hr'=>hr(),
+':p'=>'<p>'.$d.'</p>',
+':u'=>'<u>'.$d.'</u>',
+':i'=>'<i>'.$d.'</i>',
+':b'=>'<b>'.$d.'</b>',
+':h'=>'<big>'.$d.'</big>',
+':h1'=>'<h1>'.$d.'</h1>',
+':h2'=>'<h2>'.$d.'</h2>',
+':h3'=>'<h3>'.$d.'</h3>',
+':h4'=>'<h4>'.$d.'</h4>',
+':h5'=>'<h5>'.$d.'</h5>',
+':e'=>'<sup>'.$d.'</sup>',
+':n'=>'<sub>'.$d.'</sub>',
+':s'=>'<small>'.$d.'</small>',
+':k'=>'<strike>'.$d.'</strike>',
+':q'=>'<blockquote>'.$d.'</blockquote>',
+':center'=>'<center>'.$d.'</center>',
+':header'=>'<header'.$p.'>'.$d.'</header>',
+':section'=>'<section'.$p.'>'.$d.'</section>',
+':article'=>'<article'.$p.'>'.$d.'</article>',
+//':stabilo'=>'<stabilo>'.$d.'</stabilo>',
+':quote'=>'<quote>'.$d.'</quote>',
+':fact'=>'<fact>'.$d.'</fact>',
+':qu'=>'<q>'.$d.'</q>',
+default=>''};}
 
 static function sconn_links($d,$xt,$b){
 if(is_img($d) && strpos($d,'§')===false)return conn::place_image($d,3,$b);
@@ -162,7 +164,8 @@ elseif(strpos($p,'twitter.com')!==false && strpos($p,'status/')!==false)return p
 elseif(strpos($p,'wikipedia.org')!==false)return mk::wiki($d,0);
 elseif(is_numeric($p))return ma::jread('',$p,$o);}
 
-static function sconn_app($d,$c,$xt,$o,$b){switch($c){
+static function sconn_app($d,$c,$xt,$o,$b){
+switch($c){
 case(':pub'):return pop::pubart($d);break;
 case(':art'):return pop::pubart($d);break;
 case(':to'):return art::tracks_to($d); break;
@@ -204,32 +207,33 @@ static function sconn($da,$b,$a=''){if(!$da)return;
 [$d,$c,$xt]=getconn($da); [$p,$o]=cprm($d);
 $ret=self::sconn_html($p,$o,$c); if($ret)return $ret;
 if($a==1){$ret=self::sconn_app($d,$c,$xt,$o,$b); if($ret)return $ret;}
-switch($c){
-case(':c'):return '<txtclr>'.$p.'</txtclr>';break;
-case(':stabilo'):return '<stabilo>'.$p.'</stabilo>';break;
-case(':color'):return mk::pub_clr($d);break;
-case(':red'):return mk::pub_clr($p.'§#bd0000');break;
-case(':blue'):return mk::pub_clr($p.'§#333399');break;
-case(':parma'):return mk::pub_clr($p.'§#993399');break;
-case(':green'):return mk::pub_clr($p.'§#339933');break;
-case(':bkgclr'):return mk::pub_bkgclr($d);break;
-case(':video'):return video::titlk($p,'');break;
-case(':videourl'):return video::titlk($p,'');break;
-case(':figure'):return pop::figure($d,'','1');break;
-case(':list'):return mk::make_li($p,'ul');break;
-case(':numlist'):return mk::make_li($p,'ol');break;
-case(':table'):return mk::table($d);break;
-case(':pre'):return tagb('pre',str::htmlentities_a($p));break;
-case(':code'):return tagb('code',delbr($d));break;
-case(':web'):return lka($p);break;
-case(':twitter'):if($b=='epub')return pop::twitxt($p,''); else return lka($p,'twitter.com');break;
-case(':div'):if($b=='epub')return strto($p,'§');break;
-case(':mini'):if($b=='epub')$da=$p;break;
-case(':download'):return lka($p);break;
-case(':pdf'):return lka($p);break;
-case(':img'):return image($p); break;
-case(':w'):return lka($p); break;
-case(':no'):return;break;}
+$ret=match($c){
+':c'=>'<txtclr>'.$p.'</txtclr>',
+':stabilo'=>'<stabilo>'.$p.'</stabilo>',
+':color'=>mk::pub_clr($d),
+':red'=>mk::pub_clr($p.'§#bd0000'),
+':blue'=>mk::pub_clr($p.'§#333399'),
+':parma'=>mk::pub_clr($p.'§#993399'),
+':green'=>mk::pub_clr($p.'§#339933'),
+':bkgclr'=>mk::pub_bkgclr($d),
+':video'=>video::titlk($p,''),
+':videourl'=>video::titlk($p,''),
+':figure'=>pop::figure($d,'','1'),
+':list'=>mk::make_li($p,'ul'),
+':numlist'=>mk::make_li($p,'ol'),
+':table'=>mk::table($d),
+':pre'=>tagb('pre',str::htmlentities_a($p)),
+':code'=>tagb('code',delbr($d)),
+':web'=>lka($p),
+':twitter'=>$b=='epub'?pop::twitxt($p,''):lka($p,'twitter.com'),
+':div'=>$b=='epub'?strto($p,'§'):'',
+':mini'=>$b=='epub'?$da=$p:'',
+':download'=>lka($p),
+':pdf'=>lka($p),
+':img'=>image($p),
+':w'=>lka($p),
+':no'=>'',
+default=>''};
 //if(is_img($p))return image(goodroot($p,1));
 if(is_img($da) && strpos($da,'§')===false){$im=goodroot($da,'');
 	if($b=='epub'){$fb='_datas/epub/OEBPS/images/';

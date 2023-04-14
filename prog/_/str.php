@@ -22,14 +22,14 @@ $ra=['&nbsp;','&ndash;','&mdash;',"%27",'&#8216;','&#8217;','&#174;','&#175;','&
 '&#39;','&#8239;','&#8206;','&#8201;','&hellip;','&bdquo;','&ldquo;','&lsquo;','&rsquo;','&#8203;',
 '&#039;','&thinsp;','&ensp;','&emsp;','&#160;','&#8194;','&#8195;','&#8201;','&#8208;','&#750;',
 '&acute;','&rdquo;','&#xFFFD;','&#8200;','&#137;','&#128;','&#153;','&#156;','&#159;','&#135;',
-'&#152;','&pound;','&#2013265929;','&#13;'];
+'&#152;','&pound;','&#2013265929;','&#13;','&#x2019;'];
 $rb=[' ','-','-',"'","'","'",'«','»','«','»',
 '-','"','"','"','','-','é','à','g','i',
 'I','','"','"','è','à','é','ê','°',"'",
 "'",' ',' ',' ','...','"','"',"'","'",'',
 "'",' ',' ',' ',' ',' ',' ',' ','-','"',
 "'",'"',"'",' ','%','€','™','œ','Ÿ','‡',
-'~','£','é',''];
+'~','£','é','',"'"];
 return str_replace($ra,$rb,$v);}
 
 static function specialspace($d){if(!$d)return;
@@ -130,8 +130,8 @@ static function clean_title($d){
 if(!$d)return; $nb="&nbsp;";
 //$d=htmlentities($d);//provoque erreur qui bloque save, sous utf8
 $d=self::html_entity_decode_b($d);
-$d=self::clean_acc($d);
-$d=self::clean_punct_b($d);
+$d=self::clean_punct($d,1);
+//$d=self::clean_punct_b($d);
 if(rstr(104))$d=self::lowercase($d);
 if(substr($d,-1)=='"')$d=substr($d,0,-1).$nb.'»';
 if(substr($d,0,1)=='"')$d='«'.$nb.substr($d,1);
@@ -215,8 +215,9 @@ static function clean_html($d,$o=''){
 $d=self::clean_spaces($d);
 $d=self::clean_acc($d);
 $d=self::stupid_acc($d);
+$d=htmlspecialchars_decode($d);
 $d=self::html_entity_decode_b($d);//create pb
-//$d=html_entity_decode($d);
+$d=html_entity_decode($d);
 $r=['b','i','em','strong','p'];
 for($i=0;$i<4;$i++){
 	$d=str_replace('<'.$r[$i].'> </'.$r[$i].'>',' ',$d);

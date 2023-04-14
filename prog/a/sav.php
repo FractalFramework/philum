@@ -22,7 +22,7 @@ if(empty($suj))$suj='forbidden title';
 if(empty($d)){self::$er='miss::msg;';}//alert('msg forbidden'); 
 if(!self::$er){
 	$sz=mb_strlen($d); $img=''; $thm=str::hardurl($suj);//if(rstr(38))
-	if(rstr(129))$lg=trans::detect('','',$suj); if($lg==ses('lng'))$lg='';
+	if(rstr(129))$lg=trans::detect($suj); if($lg==ses('lng'))$lg='';
 	$rw=[$ib,$name,$mail,$pdt,$qb,$frm,$suj,$re,0,$img,$thm,$sz,$lg];
 	$nid=sqlsav('qda',$rw,0); if($nid)sql::savi('qdm',[$nid,$d],0);}
 //if($nid && $USE!=$qb && $_SESSION['auth']<6){mail($_SESSION['qbin']['adminmail'],'new article: '.stripslashes($suj),host().'/'.$nid.',auth_level: '.$_SESSION['auth']."\n",'From: '.$USE);}
@@ -240,6 +240,9 @@ self::$r['ib']=$ib; self::$r['pub']=$pub; $nid=self::save_art(); $ret=$nid;
 if(!$nid)$ret=popup(edit::artform($f,self::$er),'Article'); else geta('read',$nid);
 if(rstr(147))codeline::png2jpg($nid);
 return $ret;}
+
+static function addfromlist($p,$o,$prm=[]){
+if($prm[0])return self::addurlsav($p,$prm[0],1,'');}
 
 static function createart($id,$o,$prm){
 [$d,$suj,$frm,$urlsrc,$date,$name,$mail,$ib,$pub]=arr($prm,9);//,$sub

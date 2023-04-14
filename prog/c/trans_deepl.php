@@ -13,18 +13,13 @@ $u='https://api-free.deepl.com/v2/translate?'.$prm;
 $ret=trans::post($u,$txt);
 $r=json_decode($ret,true); //pr($r);
 if(isset($r['message'])){echo $r['message']; $r=['text'=>$txt];}
-else $r=$r['translations'][0]??'';
+else $r=$r['translations'][0]??[];
 return $r;}
 
 static function getlangs(){
 $rb=['EN','FR','ES','IT','DE','NL','PL','JA','PT','RU','SV','TR','ZH'];
 //,'BG','CS','DA','EL','ET','HU','ID','LT','LV','PL','RO','SK','SL','UK'
 return implode(',',$rb);}
-
-static function detect($p,$o,$prm=[]){return prmb(25);
-$var='detected_source_language'; $p=$prm[0]??$p;
-if($p){$r=self::api('',$var,$prm[0]); return $r[$var]??'';}
-else return ses('lang');}
 
 static function build($from,$format,$txt,$to){$prm='';
 if(!$to)$to=ses('lng');//$to=setlng($to);
@@ -41,7 +36,11 @@ $prm.='&preserve_formatting=1';//
 $prm.='&tag_handling=off';//html//xml
 $r=self::api($prm,'translate',$txt);
 $from=$r['detected_source_language']; $txt=$r['text'];
-return ['text'=>$txt,'from'=>$from];}
+return ['text'=>$txt,'from'=>strtolower($from)];}
+
+static function detect($p,$o='',$prm=[]){$p=$prm[0]??$p; $lg=prmb(25);
+if($p){$r=self::build('','',$p,$lg); return $r['from']??'';}
+}//else return ses('lang');
 
 }
 ?>

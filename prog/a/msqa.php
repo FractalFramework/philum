@@ -238,7 +238,7 @@ $ret=input('k'.$rid,$key,strlen($key));
 $ret.=on2cols($rc,540,5);//render
 $bt=divc('txtx',$nod);
 if(auth(4)){
-	$bt.=lj('popsav',$tg.'_msqa,msqlsav_'.$keys.'_x_'.$nodb.'_'.$kyb.'_'.$ob,nms(27)).' ';//sav
+	$bt.=lj('popsav',$tg.'_msqa,msqlsav_'.$keys.'_x_'.$nodb.'_'.$kyb.'_'.$ob,nms(57)).' ';//sav
 	$bt.=lj('popbt',$tg.'_msqa,msqlsav_'.$keys.'__'.$nodb.'_'.$kyb.'_'.$ob,nms(66)).' ';//apply
 	$bt.=lj('popbt',$tg.'_msqa,msqlsav_'.$keys.'_x_'.$nodb.'_@'.$kyb,nms(98)).' ';//duplicate
 	$bt.=$pn.' ';//prevnext
@@ -330,8 +330,10 @@ case('permut'):$r=self::permut($r,$d); break;
 case('reset_menus'):$r=self::reset_menus($r); break;
 case('add_col'):$r=self::addcol($r); break;
 case('del_col'):$r=self::delcol($r,$d); break;
+case('repair'):$r=self::repair_table($r,$dr,$nod); $ok=1; break;
 case('repair_cols'):$r=self::repair_cols($r); break;
 case('repair_enc'):$r=utf_r($r); break;
+case('resav'):$r=self::resav($r); break;
 case('renove'):$r=self::import_defs($r,'msql/'.$dr.'/'.$nod); break;
 case('sort'):$r=self::sort_table($r,$d,1); $ok=1; break;
 case('sort_table'):$r=self::sort_table($r,$d); break;
@@ -355,8 +357,7 @@ case('import_jsonlk'):$r=self::import_json($d); break;
 case('rename_table'):[$dr,$nod]=self::optable($dr,$nod,$d,0); $ok=1; $rl=1; break;
 case('duplicate_table'):[$dr,$nod]=self::optable($dr,$nod,$d,1); $ok=1; $rl=1; break;
 case('del_backup'):self::deltable($dr,$nod,1); break;
-case('update'):$r=self::update_table($nod,$r); break;
-case('repair'):$r=self::repair_table($r,$dr,$nod); $ok=1; break;}
+case('update'):$r=self::update_table($nod,$r); break;}
 if(!$ok && $r)$r=msql::save($dr,$nod,$r);
 if(isset($rl))return 'msql/'.$dr.'/'.$nod;
 return $r;}
@@ -389,7 +390,7 @@ return $ret;}
 
 static function import_defs($r,$d){$rh=$r['_menus_']??'';
 if(strpos($d,'msql/')!==false){$r=explode('/',$d); $n=count($r)-1; $nod=$r[$n]; $dr=$r[$n-1];
-	$u=srvmir().'/call/msqj/'.$dr.'|'.$nod; $r=self::import_json($u);
+	$u=upsrv().'/call/msqj/'.$dr.'|'.$nod; $r=self::import_json($u);
 	return msql::save($dr,$nod,$r);}
 else{[$a,$b]=split_one('/',$d,1); return msql::read($a,$b,'','',$rh);}}
 
@@ -457,7 +458,11 @@ return $ret;}
 static function repair_table($r,$dr,$nod){$rb=[];
 if($r)foreach($r as $k=>$v){if(!is_array($v))$v=[$v]; if($k && $v[0])$rb[$k]=$v;}
 if(isset($rb[0]) && array_sum(array_keys($rb))>0)$rb=msql::reorder($rb);
-if(isset($rb))return $rb;}
+return $rb;}
+
+static function resav($r){$rb=[];//patches
+if($r)foreach($r as $k=>$v)$rb[$k]=$v;
+return $rb;}
 
 static function compare($ra,$d){
 $rh=$ra['_menus_']; $n=1;
@@ -702,8 +707,9 @@ if(!$def && auth(6)){
 		$ret['fls'].=self::opbt('del_file',$jurl,$lh[11]).' ';
 		if(!$defs or isset($defs[0]))
 			$ret['fls'].=self::opbt('repair',$jurl,$lh[12]).' ';}
-		if(auth(6))//($base=='system' or $hub=='public') && 
+		if(auth(6)){//($base=='system' or $hub=='public') && 
 			$ret['fls'].=self::opbt('renove',$jurl,['renove','import from '.prms('srvmirror')]);
+			$ret['fls'].=self::opbt('resav',$jurl,['resav','resav']);}
 	if($ret['fls'])$ret['fls'].=br();
 	#-util
 	$ret['utl']='';

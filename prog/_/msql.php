@@ -20,7 +20,7 @@ if(is_array($r))foreach($r as $k=>$v){$rb=[];
 		if($rb)$rc[]=('"'.$k.'"').'=>['.implode(',',$rb).']';}
 	else $rc[$k]=('"'.$k.'"').'=>[\''.($v?addslashes(stripslashes($v)):'').'\']';}
 if($rc)$ret=implode(','.n(),$rc);
-return '<?php //msql/'.$p."\n".'$r=['.$ret.'];';}
+return '<?php //msql/'.$p."\n".'$r=['.$ret.']; ?>';}
 
 static function del($dr,$nod){$f=self::url($dr,$nod); if(is_file($f) && auth(6))unlink($f);}
 

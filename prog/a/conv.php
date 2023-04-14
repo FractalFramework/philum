@@ -77,6 +77,7 @@ static function call($d,$h=''){
 $h=$h?$h:rstr(137);
 $d=str::clean_html($d);
 $d=str::br_rules($d);
+$d=str::clean_html($d);//
 $d=self::interpret_html($d,'',$h);
 $d=str::post_treat_repair($d);
 $d=str::clean_br($d);
@@ -100,6 +101,7 @@ if(substr($reb,0,1)=='{')return self::vacuum_json($reb);
 $auv=video::detect($f);//,'pop'
 if(!$defs && !$auv)$defs=self::add_defcon($f,$reb);
 if((strtolower($enc)=='utf-8' or $defs[5]==1) && $defs[5]!=2)$reb=utf8dec_b($reb);//trouble dom::detect//trouble urldecode//trouble elliptics
+//else $reb=str::html_entity_decode_b($reb);
 if(!empty($defs[2])){//suj
 	if(strpos($defs[2],':')!==false)$suj=dom::detect($reb,$defs[2]);
 	elseif(empty($defs[3]))$suj=self::html_detect($reb,$defs[2]);

@@ -29,7 +29,7 @@ static function getlangs(){
 $a='trans_'.self::$motor;
 return $a::getlangs();}
 
-static function detect($p,$o,$prm=[]){
+static function detect($p,$o='',$prm=[]){
 //return prmb(25);
 $a='trans_'.self::$motor;
 return $a::detect($p,$o,$prm);}
