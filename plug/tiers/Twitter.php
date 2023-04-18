@@ -39,7 +39,7 @@ return ['oauth_consumer_key'=>$this->oauth_consumer_key,
 
 private function mkprm($qr='',$sec=''){$ret='';
 $r=$this->urlParams(); unset($r['oauth_signature']);
-foreach($r as $k=>$v)$rt[]=$k.'='.rawurlencode($v);
+foreach($r as $k=>$v)$rt[]=$k.'='.rawurlencode($v??'');
 $ret=implode('&',$rt);
 if($qr)$ret=$qr.'&'.$ret;
 if($sec)$ret.='&'.$sec;
@@ -316,3 +316,4 @@ $signing_key=rawurlencode($this->oauth_consumer_secret).'&'.rawurlencode($this->
 $this->oauth_signature=base64_encode(hash_hmac('SHA1',$signature,$signing_key,TRUE));
 $this->_DST=array('Authorization: OAuth '.$this->mkprm2());}
 }
+?>

@@ -1,4 +1,4 @@
-<?php //msql/helps_msql
+<?php //msql/helps_msql_sav
 $r=["_menus_"=>['t&iacute;tulo','descripci&oacute;n'],
 "1"=>['editar cabecera','edita la cabecera que nombra las columnas'],
 "2"=>['backup','hace una copia de seguridad de la tabla'],
