@@ -11,7 +11,7 @@ function construct(){self::$r=self::defs();}
 static function defs(){$u=0;
 $r['art']=['id'=>'ai','ib'=>'int','name'=>'mvar','mail'=>'var','day'=>'int10','nod'=>'svar','frm'=>'var','suj'=>'var','re'=>'int','lu'=>'int','img'=>'text','thm'=>'bvar','host'=>'var','lg'=>'var2','key'=>'KEY `nod_frm` (`day`,`frm`), KEY `suj` (`suj`), KEY `nod_day` (`day`,`nod`)'];
 $r['txt']=['id'=>'ai','msg'=>'text'];
-$r['cat']=['id'=>'ai','qb'=>'mvar','cat'=>'mvar','active'=>'enum(01)'];
+$r['cat']=['id'=>'ai','cat'=>'mvar','pic'=>'svar','active'=>'enum(01)'];
 $r['hub']=['id'=>'ai','hub'=>'svar'];
 $r['trk']=['id'=>'ai','ib'=>'int','name'=>'var','mail'=>'var','day'=>'int10','nod'=>'var','frm'=>'svar','suj'=>'var','msg'=>'text','re'=>'int','host'=>'var','lg'=>'var2','key'=>'KEY `nod` (`nod`), KEY `suj_nod` (`suj`,`nod`), KEY `day_nod` (`day`,`nod`)'];
 $r['user']=['id'=>'ai','name'=>'var','pass'=>'psw','mail'=>'var','day'=>'int10','clr'=>'var','ip'=>'var','rstr'=>'var','mbrs'=>'bvar','hub'=>'var','nbarts'=>'int','config'=>'bvar','struct'=>'var','dscrp'=>'var','menus'=>'var','active'=>'int','key'=>'UNIQUE KEY `one` (`name`)'];
@@ -26,6 +26,7 @@ $r['live2']=['id'=>'aib','iq'=>'int','qb'=>'int3','page'=>'var','time'=>'time','
 $r['stat']=['id'=>'ai','qb'=>'var','day'=>'int10','nbu'=>'int','nbv'=>'int','key'=>'KEY `qb` (`qb`,`day`)'];
 $r['meta']=['id'=>'ai','cat'=>'var','tag'=>'var'];
 $r['meta_art']=['id'=>'ai','idart'=>'int','idtag'=>'int'];
+$r['meta_cat']=['id'=>'ai','cat'=>'mvar','pic'=>'svar'];
 $r['meta_clust']=['id'=>'ai','idtag'=>'int','word'=>'var'];
 //$r['clust']=['id'=>'ai','cat'=>'var','tag'=>'var'];
 //$r['clust_art']=['id'=>'ai','idtag'=>'int','word'=>'var'];
@@ -37,7 +38,7 @@ $r['mbr']=['id'=>'ai','name'=>'svar','hub'=>'svar','auth'=>'int'];
 $r['img']=['id'=>'ai','ib'=>'int','im'=>'var','dc'=>'var','no'=>'int1'];
 $r['yandex']=['id'=>'ai','ref'=>'var11','txt'=>'text','lang'=>'var2'];
 $r['web']=['id'=>'ai','ib'=>'int','url'=>'var','tit'=>'var','txt'=>'text','img'=>'var'];
-$r['twit']=['id'=>'ai','ib'=>'bint','twid'=>'bint','name'=>'var','screen_name'=>'var','user_id'=>'bint','date'=>'int10','text'=>'text','media'=>'lvar','mentions'=>'var','reply_id'=>'bint','reply_name'=>'var','favs'=>'int','retweet'=>'int','followers'=>'int','friends'=>'int','quote_id'=>'bint','quote_name'=>'var','rewteeted'=>'bint','lang'=>'var3'];
+$r['twit']=['id'=>'ai','ib'=>'bint','twid'=>'bint','name'=>'var','screen_name'=>'var','user_id'=>'bint','date'=>'int10','text'=>'text','media'=>'lvar','mentions'=>'var','reply_id'=>'bint','reply_name'=>'var','favs'=>'int','retweets'=>'int','followers'=>'int','friends'=>'int','quote_id'=>'bint','quote_name'=>'var','rewteeted'=>'bint','lang'=>'var3'];
 $r['sys']=['id'=>'ai','name'=>'var','page'=>'var','maj'=>'int10','func'=>'var'];
 //umm
 if($u){}
@@ -70,7 +71,7 @@ case('int10'):$ret=is_numeric($d)&&strlen($d)<11?$d:0;break;//10
 case('int1'):$ret=is_numeric($d)&&strlen($d)<2?$d:0;break;//1
 case('int3'):$ret=is_numeric($d)&&strlen($d)<4?$d:0;break;//3
 case('int7'):$ret=is_numeric($d)&&strlen($d)<8?$d:0;break;//7
-case('bint'):$ret=is_numeric($d)&&strlen($d)<27?$d:0;break;//26 <372036854775807
+case('bint'):$ret=is_numeric($d)&&strlen($d)<37?$d:0;break;//26 <372036854775807
 case('sint'):$ret=is_numeric($d)&&$d<32767?$d:0;break;//smallint <65535
 case('var'):$ret=is_string($d)&&strlen($d)<256?$d:substr($d,0,255);break;//255
 case('varu'):$ret=is_string($d)&&mb_strlen($d)<256?$d:mb_substr($d,0,255);break;//255

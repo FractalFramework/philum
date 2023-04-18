@@ -238,7 +238,7 @@ $ret=input('k'.$rid,$key,strlen($key));
 $ret.=on2cols($rc,540,5);//render
 $bt=divc('txtx',$nod);
 if(auth(4)){
-	$bt.=lj('popsav',$tg.'_msqa,msqlsav_'.$keys.'_x_'.$nodb.'_'.$kyb.'_'.$ob,nms(57)).' ';//sav
+	$bt.=lj('popsav',$tg.'_msqa,msqlsav_'.$keys.'_x_'.$nodb.'_'.$kyb.'_'.$ob,nms(27)).' ';//sav
 	$bt.=lj('popbt',$tg.'_msqa,msqlsav_'.$keys.'__'.$nodb.'_'.$kyb.'_'.$ob,nms(66)).' ';//apply
 	$bt.=lj('popbt',$tg.'_msqa,msqlsav_'.$keys.'_x_'.$nodb.'_@'.$kyb,nms(98)).' ';//duplicate
 	$bt.=$pn.' ';//prevnext
@@ -345,7 +345,6 @@ case('del_keys'):$r=self::del_keys($r); break;
 case('import_conn'):$r=self::import_conn($r,$d,$aid=''); break;
 case('inject_defs'):$r=self::inject_defs($r,$d); break;
 case('inject_defs2'):$r=self::inject_defs($r,$d); break;
-case('import_csv'):$r=self::import_csv($r,$d); break;
 case('compare'):$r=self::compare($r,$d); $ok=1; break;
 case('intersect'):$r=self::intersect($dr.'/'.$nod,$d); $ok=1; break;
 case('addition'):$r=self::addition($r,$d); $ok=1; break;
@@ -353,7 +352,8 @@ case('average'):$r=self::average($r,$d); $ok=1; break;
 case('connexions'):$r=self::connexions($dr.'/'.$nod,$d); $ok=1; break;
 case('friends'):$r=self::friends($r,$d); $ok=1; break;
 case('import_json'):$r=self::import_json($d); break;
-case('import_jsonlk'):$r=self::import_json($d); break;
+case('import_jsonlk'):$r=self::import_json_lk($d); break;
+case('import_csv'):$r=self::import_csv($r,$d); break;
 case('rename_table'):[$dr,$nod]=self::optable($dr,$nod,$d,0); $ok=1; $rl=1; break;
 case('duplicate_table'):[$dr,$nod]=self::optable($dr,$nod,$d,1); $ok=1; $rl=1; break;
 case('del_backup'):self::deltable($dr,$nod,1); break;
@@ -363,13 +363,6 @@ if(isset($rl))return 'msql/'.$dr.'/'.$nod;
 return $r;}
 
 //import
-static function edtjson($r){$ret=''; if($r)foreach($r as $k=>$v)if($v)$ret.='"'.$k.'":'.(is_array($v)?'["'.implode('","',$v).'"]':'"'.htmlentities($v[0])).'",'; return '{'.$ret.'}';}
-static function mkcsv($r){$rc=[]; //return array2csv($r);//import_csv
-if($r)foreach($r as $k=>$v){$rb=[$k];
-	if(is_array($v))foreach($v as $ka=>$va)$rb[]=str_replace([';',"\n"],[',','<br/>'],$va);
-	else $rb[]=$v;
-	$rc[]=implode(';',$rb);}
-return implode("\n",$rc);}
 static function edtconn($r){$ret=''; if($r)foreach($r as $k=>$v)$ret.=$k.'|'.implode('|',str_replace(['|','¬'],[':BAR:',':LINE:'],$v)).'¬'."\n"; return $ret;}
 
 #modif apps
@@ -390,17 +383,39 @@ return $ret;}
 
 static function import_defs($r,$d){$rh=$r['_menus_']??'';
 if(strpos($d,'msql/')!==false){$r=explode('/',$d); $n=count($r)-1; $nod=$r[$n]; $dr=$r[$n-1];
-	$u=upsrv().'/call/msqj/'.$dr.'|'.$nod; $r=self::import_json($u);
+	$u=upsrv().'/call/msqj/'.$dr.'|'.$nod; $r=self::import_json_lk($u);
 	return msql::save($dr,$nod,$r);}
 else{[$a,$b]=split_one('/',$d,1); return msql::read($a,$b,'','',$rh);}}
 
-static function import_json($d){
-if(substr($d,0,4)=='http')$d=get_file($d);
-$r=json_decode($d,true);
+//json
+static function edtjson($r){$ret=''; $r=utf_r($r); if($r)return json_encode($r);
+if($r)foreach($r as $k=>$v)if($v)$ret.='"'.$k.'":'.(is_array($v)?'["'.implode('","',$v).'"]':'"'.htmlentities($v[0])).'",'; return '{'.$ret.'}';}
+
+static function import_json($d){$r=json_decode($d,true); echo json_error();
 if(isset($r[0])){$rh['_menus_']=$r[0]; unset($r[0]); $r=$rh+$r;}
-if(isset($r['_'])){$rh['_menus_']=$r['_']; unset($r['_']); $r=$rh+$r;}
+if(isset($r['_'])){$rh['_menus_']=$r['_']; unset($r['_']); $r=$rh+$r;}//frct
 return utf_r($r,1);}
 
+static function import_json_lk($f){
+if(substr($f,0,4)=='http')$d=get_file($f);
+if($f)return self::import_json($d);}
+
+//csv
+static function mkcsv($r){$rc=[]; //return array2csv($r);//import_csv
+if($r)foreach($r as $k=>$v){$rb=[$k];
+	if(is_array($v))foreach($v as $ka=>$va)$rb[]=str_replace(['#',"\n"],['(diez)','(n)'],($va));
+	else $rb[]=$v;
+	$rc[]=implode('#',$rb);}
+return implode("\n",$rc);}
+
+static function import_csv($r,$d){
+$ra=explode("\n",$d); $rc=[];
+foreach($ra as $k=>$v){$rb=explode('#',$v);
+	foreach($rb as $kb=>$vb)$rc[$k][$kb]=trim(delbr(str_replace(['(diez)','(n)'],['#',"\n"],$vb)));}
+$rc=self::del_keys($rc);
+return $rc?$rc:$r;}
+
+//ops
 static function optable($dr,$nd,$d,$o=0){
 $u=msql::url($dr,$nd); [$dr,$nd]=split_right('/',$d,1); $ub=msql::url($dr,$nd);
 if($o)copy($u,$ub); else rename($u,$ub);
@@ -574,13 +589,6 @@ return $ret;}
 static function inject_defs($ra,$d){if(!$d)return $ra;
 $f='_datas/defs/r.php'; mkdir_r($f); write_file($f,'<?php '.$d); require($f);
 return $r;}
-
-static function import_csv($r,$d){
-$ra=explode("\n",$d); $rc=[];
-foreach($ra as $k=>$v){$rb=explode(';',$v);
-	foreach($rb as $kb=>$vb)$rc[$k][$kb]=trim(delbr($vb));}
-$rc=self::del_keys($rc);
-return $rc?$rc:$r;}
 
 static function backup_msql(){if(!auth(7))return;
 $f='_backup/msql/'.date('ymd',time()).'.tar.gz'; //unlink($f);

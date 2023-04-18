@@ -3,7 +3,7 @@ class meteo{
 static $a=__CLASS__;
 
 static function umenu(){
-$r=['92012'=>'Boulogne-Billancourt','75101'=>'Paris','69381'=>'Lyon','67482'=>'Strasbourg','66136'=>'Perpignan','64102'=>'Bayonne','59350'=>'Lille','38185'=>'Grenoble','35238'=>'Rennes','34172'=>'Montpellier','33063'=>'Bordeaux','31555'=>'Toulouse','13210'=>'Marseille','06088'=>'Nice'];//,'63113'=>'Clermont-Ferrand''44109'=>'Nantes','29019'=>'Brest',,'2B033'=>'Bastia'
+$r=['75101'=>'Paris','69381'=>'Lyon','13210'=>'Marseille','31555'=>'Toulouse','06088'=>'Nice','44109'=>'Nantes','34172'=>'Montpellier','67482'=>'Strasbourg','33063'=>'Bordeaux','59350'=>'Lille','35238'=>'Rennes','51454'=>'Reims','83137'=>'Toulon','38185'=>'Grenoble','63113'=>'Clermont-Ferrand','13090'=>'Aix-en-Provence','29019'=>'Brest','74010'=>'Annecy','92012'=>'Boulogne-Billancourt','66136'=>'Perpignan','26362'=>'Valence','64102'=>'Bayonne'];//,'2B033'=>'Bastia'
 $j='mto_meteo,call___'; $ret='';
 foreach($r as $k=>$v)$ret.=lj('',$j.$k.'_1',$v);
 return divc('list',$ret);}
@@ -16,21 +16,34 @@ $cy=29.53; $it=$cy/8; $e=round($n/$it);
 $ra=[127761,127762,127763,127764,127765,127766,127767,127768,127761];
 return '&#'.$ra[$e].';';}
 
+static function weather0($r){$n=$r['weather']; //$rw=[0,0,0,0];
+$rw=msql::find('','public_weather_4',$n?$n:1); [$n,$nm,$pc,$as]=arr($rw,4);
+return $as?$as:picto($pc);}
+
+static function weather($r){$ret='';
+$rp=['smallclouds','localclouds','localfog','localwind','locallittlerain','localhail','localrain','localwindyrain','localstorms','localstormyrain'];
+$d1=strtotime($r['sunrise']); $d2=strtotime($r['sunset']); $dt=time(); $night=$dt>$d2||$dt<$d1?1:0;
+if($night){if($pc=='sunshine')$pc='moon'; elseif(in_array($pc,$rp))$pc.='2'; $ret=picto($pc);}
+ses::$r['night']=[$d1,$d2];//for boot::night()
+return $ret;}
+
+static function weather2($ic){
+$ic=image('imgb/meteo/'.$ic.'.svg',32,32);//9729//b/w
+$ri=[127785=>'orage',127784=>'neige',127783=>'bruine',127783=>'pluie',127781=>'nuage',127780=>'soleil'];
+$ri=[9889=>'orage',10052=>'neige',128166=>'bruine',9748=>'pluie',9925=>'nuage',127774=>'soleil'];//color
+foreach($ri as $k=>$v)if(stripos($nm,$v)!==false)$ic='&#'.$k.';';
+return $ic;}
+
 static function render($r,$f){$ret=''; //pr($r);
 $ra=['temperature','wind_speed','windgust_speed','rainfall','solar_radiation','barometer','outside_humidity','windchill'];
 foreach($ra as $k=>$v)$ra[$v]=$r[$v][0]??'';
 $tmp=$ra['temperature']; if(!$tmp)$tmp=$r['temp2m']??'';
 $n=$r['weather']; //$rw=[0,0,0,0];
 $rw=msql::find('','public_weather_4',$n?$n:1); [$n,$nm,$pc,$as]=arr($rw,4);
-$ic=$as?$as:picto($pc);
-/**/$rp=['smallclouds','localclouds','localfog','localwind','locallittlerain','localhail','localrain','localwindyrain','localstorms','localstormyrain'];
-$d1=strtotime($r['sunrise']); $d2=strtotime($r['sunset']); $dt=time(); $night=$dt>$d2||$dt<$d1?1:0;
-if($night){if($pc=='sunshine')$pc='moon'; elseif(in_array($pc,$rp))$pc.='2'; $ic=picto($pc);}
-ses::$r['night']=[$d1,$d2];//for boot::night()
-//$ic=image('imgb/meteo/'.$ic.'.svg',32,32);
-//$ri=[127785=>'orage',127784=>'neige',127783=>'bruine',127783=>'pluie',127781=>'nuage',127780=>'soleil'];//9729//b/w
-//$ri=[9889=>'orage',10052=>'neige',128166=>'bruine',9748=>'pluie',9925=>'nuage',127774=>'soleil'];//color
-//foreach($ri as $k=>$v)if(stripos($nm,$v)!==false)$ic='&#'.$k.';';
+$weather=$as?$as:picto($pc);
+//$weather=self::weather($r);
+//$weather=self::weather2($weather,$nm);
+$moon=self::goodmoon($r['moon_age']);
 $nfo=$nm.' | ';
 if(($v=$r['probarain'])>30)$nfo.='Probabilité de pluie : '.$v.'% | ';
 if(($v=$r['probafog'])>30)$nfo.='Probabilité de brouillard : '.$v.'% | ';
@@ -43,11 +56,11 @@ $baro=$ra['barometer'];
 $diffday=$r['diffday']; $sign=$r['diffday']>0?'+':'';
 $nfo.=$sign.$diffday.' min de soleil | ';
 if(!$r['moon_age'])$r['moon_age']=1;
-$nfo.=self::goodmoon($r['moon_age']).' '.$r['moon_phase'];
-$ret.=lk(auth(6)?$f:'',$ic,att($nfo)).' ';//render
+$nfo.=$moon.' '.$r['moon_phase'];
+$ret.=lk(auth(6)?$f:'',$weather,att($nfo)).' ';//render
 $ret.=togbub('meteo,umenu','',$r['town'],'txtx').' ';//$r['station']
 if($tmp<0)$ic='degree0'; else $ic='degree'.(substr($tmp,0,1)+1); $ret.=picto($ic).$tmp.'&#8451; ';//°C
-$ret.=picto('barometer').round($baro).btn('small','hPa').' ';
+$ret.=picto('barometer').round((int)$baro).btn('small','hPa').' ';
 $ret.=picto('humidity').$ra['outside_humidity'].btn('small','%').' ';//'&#128167; '.
 $ret.='&uarr;'.$r['sunrise'].' '.'&darr;'.$r['sunset'];//10548//10549//.' ('.$diffday.' min)'//
 $ma=($r['moon_age'])/6; $mx=60; $mi=$mx/8;//&#127761;->&#127768;

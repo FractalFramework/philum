@@ -253,10 +253,10 @@ if(is_array($r)){
 	return scroll($r,$ret,20,'',640);}
 return $r;}
 
-static function msqcall($com,$id,$o){
+static function msqcall($com,$id,$o){$ret='';
 if(strpos($com,'§'))[$d,$p]=split_one('§',$com,1); else $d=$com; if(isset($p))$o=$p;
 if(strpos($o,'|'))[$oa,$ob]=opt($o,'|'); else{$oa=$o; $ob='';}
-return match($oa){
+$ret=match($oa){
 'pop'=>self::microread_pop($d),
 'tmp'=>self::microread($d),
 'conn'=>self::msqconn($d,$id,$ob),
@@ -267,7 +267,8 @@ return match($oa){
 'data'=>self::msqdata($d,$id),
 'form'=>microform::home($d,$id),
 'twit'=>self::msqtwit($d,$id),
-'twusr'=>self::msqusrs($d,$id)};
+'twusr'=>self::msqusrs($d,$id),
+default=>''}; if($ret)return $ret;
 [$b,$nd]=split_right('/',$d);
 $r=msql::goodtable_b($com); $bt=msqbt($b,$nd).csvfile($com,$r);
 if(is_array($r))return self::msqplay($r,$o).$bt; else return $r;}
