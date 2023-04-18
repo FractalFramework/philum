@@ -138,4 +138,4 @@ $r=["_menus_"=>['category','param','title','command','option','cache','template'
 "playconn"=>['articles','','','articles','cols','','','','','',''],
 "video_viewer"=>['articles','','','cols','','','','','','',''],
 "microarts"=>['app','','','','','','','','','',''],
-"vacuum"=>['com','','','','','','','','','','']];
+"vacuum"=>['com','','','','','','','','','','']]; ?>

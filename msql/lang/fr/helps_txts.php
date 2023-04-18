@@ -1,69 +1,69 @@
 <?php //msql/helps_txts
 $r=["_menus_"=>['description'],
-"philum_pub_txt"=>['[http://philum.fr/2§[phi1§32::picto]:popart] [v[:ver]§txtsmall2:css] [http://philum.fr§[philum:picto]]'],
+"philum_pub_txt"=>['[http://philum.fr/2Ã‚Â§[phi1Ã‚Â§32::picto]:popart] [v[:ver]Ã‚Â§txtsmall2:css] [http://philum.frÃ‚Â§[philum:picto]]'],
 "update_ok_alert"=>[''],
-"conn_help_txt"=>['Principe général
+"conn_help_txt"=>['Principe gÃƒÂ©nÃƒÂ©ral
 
-Les connecteurs sont rédigés entre des crochets contenant un \":\".
-Ils sont situés à droite et non à gauche pour des raisons d\'optimisation.
-[param§option:conn]
+Les connecteurs sont rÃƒÂ©digÃƒÂ©s entre des crochets contenant un \":\".
+Ils sont situÃƒÂ©s ÃƒÂ  droite et non ÃƒÂ  gauche pour des raisons d\'optimisation.
+[paramÃ‚Â§option:conn]
 
 Connecteurs de mise en forme :
-- [http://url.com§mot] : \'mot\' attaché à une url
+- [http://url.comÃ‚Â§mot] : \'mot\' attachÃƒÂ© ÃƒÂ  une url
 - [mot:b] : \'mot\' en \'bold\'
-- [[http://lien.com§exemple]:b] ou [http://lien.com§[exemple:b]] : les connecteurs sont ont des connecteurs associés : .jpg, .mp3, .mp4, .pdf, .webm etc.
+- [[http://lien.comÃ‚Â§exemple]:b] ou [http://lien.comÃ‚Â§[exemple:b]] : les connecteurs sont ont des connecteurs associÃƒÂ©s : .jpg, .mp3, .mp4, .pdf, .webm etc.
 
 Certains connecteurs acceptent des options multiples (largeur/hauteur) :
-[img.jpg§140/140:thumb]
+[img.jpgÃ‚Â§140/140:thumb]
 
-Pour afficher un connecteur en deuxième instance d\'un bouton, il suffit de faire :
-[param§option:conn§button]
+Pour afficher un connecteur en deuxiÃƒÂ¨me instance d\'un bouton, il suffit de faire :
+[paramÃ‚Â§option:connÃ‚Â§button]
 
-Pour ouvrir un connecteur sur place, dans un menu ouvrable, il y a un connecteur spécial pour cela :
-- [ID:read§open:jconn]
+Pour ouvrir un connecteur sur place, dans un menu ouvrable, il y a un connecteur spÃƒÂ©cial pour cela :
+- [ID:readÃ‚Â§open:jconn]
 
 Le connecteur pour appeler un module (objets de pagination) :
-Les 4 premiers paramètres d\'un module sont : \"param/title/mode/option\"
-Module \"recents\" pour une catégorie \"public\", un titre \"hello\", un mode d\'affichage \"panel\" et une limite à 10 entrées :
+Les 4 premiers paramÃƒÂ¨tres d\'un module sont : \"param/title/mode/option\"
+Module \"recents\" pour une catÃƒÂ©gorie \"public\", un titre \"hello\", un mode d\'affichage \"panel\" et une limite ÃƒÂ  10 entrÃƒÂ©es :
 - [public/hello/panel/10:recents:module]
 
 Connecteurs pour appeler un plugin :
-Les plugins ne reçoivent qu\'un paramètre et une option :
+Les plugins ne reÃƒÂ§oivent qu\'un paramÃƒÂ¨tre et une option :
 - [microarts:plug]
-- [hello§1:connectors:plug] //ici l\'option rajoute des crochets
-Pour créer un bouton :
-- [hello§1:connectors:plug§bt] //mais ça ne marche pas si \"hello\" est remplacé par \"hello:b\" parce qu\'il sera interprété en première instance, et renverra son code html
+- [helloÃ‚Â§1:connectors:plug] //ici l\'option rajoute des crochets
+Pour crÃƒÂ©er un bouton :
+- [helloÃ‚Â§1:connectors:plugÃ‚Â§bt] //mais ÃƒÂ§a ne marche pas si \"hello\" est remplacÃƒÂ© par \"hello:b\" parce qu\'il sera interprÃƒÂ©tÃƒÂ© en premiÃƒÂ¨re instance, et renverra son code html
 
-On peut appeler un plugin à travers un module : 
+On peut appeler un plugin ÃƒÂ  travers un module : 
 - [microarts:plug:module]
 
 Connecteur de l\'Api :
 [minday:14,order:id DESC,lang:all:api]
 
-Le principe des connecteurs est décliné en quatre autres dispositifs :
-- Les Templates, qui reçoivent des variables pré-nommées (pour les opérations lourdes qui nécessite une grande vitesse d\'exécution) ;
-- Le micro-template Vue, qui peut recevoir un connecteur [varable_name:var] et renvoyer des résultats récurrents (une liste d\'objets) ;
-- Le Codeline : permet de concevoir des connecteurs simples, en utilisant _VAR et _OPT qui proviennent de la commande du connecteur personnalisé ;
-- Le Basic, un langage de connecteur concaténés (et sans crochets), qui peut également servir pour fabriquer des connecteurs et des modules, en utilisant les ressources de la librairie du Framework.'],
-"shop_class"=>['Cette section est laissée à l\'abandon
+Le principe des connecteurs est dÃƒÂ©clinÃƒÂ© en quatre autres dispositifs :
+- Les Templates, qui reÃƒÂ§oivent des variables prÃƒÂ©-nommÃƒÂ©es (pour les opÃƒÂ©rations lourdes qui nÃƒÂ©cessite une grande vitesse d\'exÃƒÂ©cution) ;
+- Le micro-template Vue, qui peut recevoir un connecteur [varable_name:var] et renvoyer des rÃƒÂ©sultats rÃƒÂ©currents (une liste d\'objets) ;
+- Le Codeline : permet de concevoir des connecteurs simples, en utilisant _VAR et _OPT qui proviennent de la commande du connecteur personnalisÃƒÂ© ;
+- Le Basic, un langage de connecteur concatÃƒÂ©nÃƒÂ©s (et sans crochets), qui peut ÃƒÂ©galement servir pour fabriquer des connecteurs et des modules, en utilisant les ressources de la librairie du Framework.'],
+"shop_class"=>['Cette section est laissÃƒÂ©e ÃƒÂ  l\'abandon
 
-- créer un article par produit
-- le module \'cart\' affiche les éléments ajoutés au panier
-- tous les articles affiliés entre eux peuvent être appelés en forme de tableau de produits si on appelle l\'article parent : [ID:shop]
-- appeler un ou une série d\'ID de fiches séparés par une virgule : [123,124,125:prod]
-- Le connecteur [:form] renvoie un formulaire éditable'],
-"console"=>['La console administre les données d\'une table dont le préfixe est \'mod\'. Les \"mods\" contiennent la structure des modules du site entier. On peut sélectionner ou interchanger les mods (voir Params 1).
+- crÃƒÂ©er un article par produit
+- le module \'cart\' affiche les ÃƒÂ©lÃƒÂ©ments ajoutÃƒÂ©s au panier
+- tous les articles affiliÃƒÂ©s entre eux peuvent ÃƒÂªtre appelÃƒÂ©s en forme de tableau de produits si on appelle l\'article parent : [ID:shop]
+- appeler un ou une sÃƒÂ©rie d\'ID de fiches sÃƒÂ©parÃƒÂ©s par une virgule : [123,124,125:prod]
+- Le connecteur [:form] renvoie un formulaire ÃƒÂ©ditable'],
+"console"=>['La console administre les donnÃƒÂ©es d\'une table dont le prÃƒÂ©fixe est \'mod\'. Les \"mods\" contiennent la structure des modules du site entier. On peut sÃƒÂ©lectionner ou interchanger les mods (voir Params 1).
 
-Les modules sont chargés en cascade (comme css) : le dernier efface le précédent. Les conditions sont des itérations : home/cat/art.
-Si rien n\'est spécifié le module en All reste affiché en cat et en art (en lecture de catégorie ou d\'article).
+Les modules sont chargÃƒÂ©s en cascade (comme css) : le dernier efface le prÃƒÂ©cÃƒÂ©dent. Les conditions sont des itÃƒÂ©rations : home/cat/art.
+Si rien n\'est spÃƒÂ©cifiÃƒÂ© le module en All reste affichÃƒÂ© en cat et en art (en lecture de catÃƒÂ©gorie ou d\'article).
 
-[backup / restaurer:b] : sauvegarde et restauration du jeu de modules (à faire avant de travailler dessus)
-[défaut:b] : table par défaut
-[réactualiser:b] : utile après une modification externe (dans l\'admin Msql, ou pendant la phase de tests avec le constructeur css ouvert dans une autre fenêtre)
+[backup / restaurer:b] : sauvegarde et restauration du jeu de modules (ÃƒÂ  faire avant de travailler dessus)
+[dÃƒÂ©faut:b] : table par dÃƒÂ©faut
+[rÃƒÂ©actualiser:b] : utile aprÃƒÂ¨s une modification externe (dans l\'admin Msql, ou pendant la phase de tests avec le constructeur css ouvert dans une autre fenÃƒÂªtre)
 [test:b] : pour faire des tests ou obtenir le script d\'un module'],
-"trackbacks"=>['En attente de modération'],
-"microxml"=>['envoie/reçoit une table microsql via Xml'],
-"newhub_mail"=>['Votre inscription a été enregistrée avec succès !
+"trackbacks"=>['En attente de modÃƒÂ©ration'],
+"microxml"=>['envoie/reÃƒÂ§oit une table microsql via Xml'],
+"newhub_mail"=>['Votre inscription a ÃƒÂ©tÃƒÂ© enregistrÃƒÂ©e avec succÃƒÂ¨s !
 
 Rappel de vos identifiants :
 login : _USER
@@ -71,88 +71,88 @@ passe : _PASS
 
 Conservez ce message afin de ne pas perdre vos identifiants
 (en cas de 3 Login infructueux vous recevez un email de rappel)'],
-"anchor_select"=>['Sélectionner la deuxième partie de l\'Ancre :'],
-"anchor_dbclic"=>['utiliser un double-clic si la référence existe déjà'],
-"anchor_manual"=>['Ajouter des ancres au texte sélectionné (haut et bas)'],
+"anchor_select"=>['SÃƒÂ©lectionner la deuxiÃƒÂ¨me partie de l\'Ancre :'],
+"anchor_dbclic"=>['utiliser un double-clic si la rÃƒÂ©fÃƒÂ©rence existe dÃƒÂ©jÃƒÂ '],
+"anchor_manual"=>['Ajouter des ancres au texte sÃƒÂ©lectionnÃƒÂ© (haut et bas)'],
 "anchor_auto"=>['le texte doit contenir deux fois (1) ou [1]'],
-"published_art"=>['Votre article a été publié'],
-"trackmail"=>['Un nouveau commentaire a été publié'],
-"restrictions"=>['Accès|Contenu|Articles|art_info|user_menu'],
-"design"=>['En mode d\'édition les changements ne sont pas visibles par le visiteur, jusqu\'à ce qu\'ils soient \'appliqués\' (Apply).
+"published_art"=>['Votre article a ÃƒÂ©tÃƒÂ© publiÃƒÂ©'],
+"trackmail"=>['Un nouveau commentaire a ÃƒÂ©tÃƒÂ© publiÃƒÂ©'],
+"restrictions"=>['AccÃƒÂ¨s|Contenu|Articles|art_info|user_menu'],
+"design"=>['En mode d\'ÃƒÂ©dition les changements ne sont pas visibles par le visiteur, jusqu\'ÃƒÂ  ce qu\'ils soient \'appliquÃƒÂ©s\' (Apply).
 
-Le design utilisateur est une déclinaison du design par défaut (nommé \'basic\') et hérite de \'_global.css\'.
+Le design utilisateur est une dÃƒÂ©clinaison du design par dÃƒÂ©faut (nommÃƒÂ© \'basic\') et hÃƒÂ©rite de \'_global.css\'.
 
 :: Save
 - [use_design_15:b] :: applique le design sans enregistrer (session)
-:: le module \'design\' affiche celui de la session, mais le design réellement enregistré apparaît dans la fenêtre d\'édition du module.
-- [save:b] :: enregistre la table des définitions et crée la css, sans affecter les modules courants (contrairement à \'Apply\')
-- [backup:b] :: fait une sauvegarde de la table (qui peut être restaurée ensuite)
+:: le module \'design\' affiche celui de la session, mais le design rÃƒÂ©ellement enregistrÃƒÂ© apparaÃƒÂ®t dans la fenÃƒÂªtre d\'ÃƒÂ©dition du module.
+- [save:b] :: enregistre la table des dÃƒÂ©finitions et crÃƒÂ©e la css, sans affecter les modules courants (contrairement ÃƒÂ  \'Apply\')
+- [backup:b] :: fait une sauvegarde de la table (qui peut ÃƒÂªtre restaurÃƒÂ©e ensuite)
 - [Apply / mods_1:b] :: rend le design visible par les visiteurs
-- [exit:b] :: éteint la session d\'édition
+- [exit:b] :: ÃƒÂ©teint la session d\'ÃƒÂ©dition
 
 :: Select
-- [design:15/clrset:15:b] :: sélecteur de tables
-- [herit:b] :: enregistre les données d\'une autre table dans la table courante (design ou couleurs)
-- [new_from:b] :: crée un design d\'après celui en cours
+- [design:15/clrset:15:b] :: sÃƒÂ©lecteur de tables
+- [herit:b] :: enregistre les donnÃƒÂ©es d\'une autre table dans la table courante (design ou couleurs)
+- [new_from:b] :: crÃƒÂ©e un design d\'aprÃƒÂ¨s celui en cours
 - [make_public:b] :: publie le design sur le hub public
-- [inform_public:b] :: met à jour la table publique du même nom
-- [rebuild:b] :: crée un nouveau design d\'après celui en cours
+- [inform_public:b] :: met ÃƒÂ  jour la table publique du mÃƒÂªme nom
+- [rebuild:b] :: crÃƒÂ©e un nouveau design d\'aprÃƒÂ¨s celui en cours
 
 :: Restore / Refresh / Defaults
-- [design, clrset:b] :: rétablit la sauvegarde
-- [reset: design, clrset:b] :: utilise les définitions par défaut
-- [append_defaults:b] :: ajoute les nouvelles définitions du design par défaut (non invasif)
-- [inject_globals:b] :: injecte les définitions du design global,  y compris dans les classes existantes (invasif, permet de contrôler le design des éléments du système)
-- [refresh: saved_css, dev_css, clrset:b] :: permet de consulter les fichiers fabriqués
+- [design, clrset:b] :: rÃƒÂ©tablit la sauvegarde
+- [reset: design, clrset:b] :: utilise les dÃƒÂ©finitions par dÃƒÂ©faut
+- [append_defaults:b] :: ajoute les nouvelles dÃƒÂ©finitions du design par dÃƒÂ©faut (non invasif)
+- [inject_globals:b] :: injecte les dÃƒÂ©finitions du design global,  y compris dans les classes existantes (invasif, permet de contrÃƒÂ´ler le design des ÃƒÂ©lÃƒÂ©ments du systÃƒÂ¨me)
+- [refresh: saved_css, dev_css, clrset:b] :: permet de consulter les fichiers fabriquÃƒÂ©s
 - [92 objects:b] : nombre d\'objets dans la table'],
-"designwidths"=>['La gestion des largeurs permet affecter toutes les classes css concernées.
-Certaines largeurs artificielles sont estimées et enregistrées dans des modules système.
-Elles déterminent les limites pour les images et vidéos.
-Elles peuvent etre affinée en faisant des tests.
+"designwidths"=>['La gestion des largeurs permet affecter toutes les classes css concernÃƒÂ©es.
+Certaines largeurs artificielles sont estimÃƒÂ©es et enregistrÃƒÂ©es dans des modules systÃƒÂ¨me.
+Elles dÃƒÂ©terminent les limites pour les images et vidÃƒÂ©os.
+Elles peuvent etre affinÃƒÂ©e en faisant des tests.
 
-Une largeur de zéro signifie qu\'on va ignorer cette colonne et la retirer de la liste des blocs de modules, qui sont spécifiés dans le module \'system\' \'blocks\'.
-Si par exemple on permute la colonne de gauche à droite, il faut veiller à ce qu\'il y ait des modules dans \'rightbar\'.
+Une largeur de zÃƒÂ©ro signifie qu\'on va ignorer cette colonne et la retirer de la liste des blocs de modules, qui sont spÃƒÂ©cifiÃƒÂ©s dans le module \'system\' \'blocks\'.
+Si par exemple on permute la colonne de gauche ÃƒÂ  droite, il faut veiller ÃƒÂ  ce qu\'il y ait des modules dans \'rightbar\'.
 
-La case \'inform_blocks\' signifie que le résultat va être enregistré dans la table de modules, et donc que les visiteurs du site verront les changements, si on travaille sur les mods publié.
+La case \'inform_blocks\' signifie que le rÃƒÂ©sultat va ÃƒÂªtre enregistrÃƒÂ© dans la table de modules, et donc que les visiteurs du site verront les changements, si on travaille sur les mods publiÃƒÂ©.
 
-Certains modules sont en cache, si bien que parfois les effets ne sont visibles qu\'en relançant le logiciel (appel de /hub, /?id== ou /reload)'],
-"designcond"=>['Le démarrage d\'une session d\'édition de css utilise une feuilles de style spécifique.
+Certains modules sont en cache, si bien que parfois les effets ne sont visibles qu\'en relanÃƒÂ§ant le logiciel (appel de /hub, /?id== ou /reload)'],
+"designcond"=>['Le dÃƒÂ©marrage d\'une session d\'ÃƒÂ©dition de css utilise une feuilles de style spÃƒÂ©cifique.
 L\'enregistrement va affecter les css vus par les visiteurs.
 
-Le bouton Quitter désactive la mise à jour automatique des résultats sur la page du site.
+Le bouton Quitter dÃƒÂ©sactive la mise ÃƒÂ  jour automatique des rÃƒÂ©sultats sur la page du site.
 
-Il est possible d\'affecter un design à un contexte de lecture (cat, home, etc.) en ajoutant un module système dédié à cela, et après avoir dupliqué le design et noté son id.'],
+Il est possible d\'affecter un design ÃƒÂ  un contexte de lecture (cat, home, etc.) en ajoutant un module systÃƒÂ¨me dÃƒÂ©diÃƒÂ© ÃƒÂ  cela, et aprÃƒÂ¨s avoir dupliquÃƒÂ© le design et notÃƒÂ© son id.'],
 "formail"=>['Merci pour votre message'],
-"userforms"=>['Vos données ont bien été enregistrées'],
-"fontserver"=>['Cette disposition permet d\'injecter les nouvelles définitions de typos à la table \'server/edition_typos\', 
-car elle n\'est pas concernée par les mises à jour.
+"userforms"=>['Vos donnÃƒÂ©es ont bien ÃƒÂ©tÃƒÂ© enregistrÃƒÂ©es'],
+"fontserver"=>['Cette disposition permet d\'injecter les nouvelles dÃƒÂ©finitions de typos ÃƒÂ  la table \'server/edition_typos\', 
+car elle n\'est pas concernÃƒÂ©e par les mises ÃƒÂ  jour.
 
-Les nouvelles définitions peuvent provenir :
-- des mises à jour (de \'system/edition_typos\') ;
-- de la présence d\'une archive .tar dans le dossier \'/fonts\' de l\'espace disque utilisateur, contenant les versions .woff, .eot, et .svg d\'une même typo ;
-- du plugin \'addfonts\' qui permet d\'importer des fonts depuis le web, en se référant à une classe css \'@font-face\'.'],
-"clbasic"=>['- Les templates utilisent le \'codeline\' qui sont des connecteurs dédiés à l\'écriture de balises html ;
-- Les connecteurs et modules personnalisés peuvent être rédigés en \'codeline_basic\', qui permet d\'appeler des fonctions du noyau.
-- Si un connecteur ou un module est écrit en codeline (avec des crochets) le code basic ne sera pas interprété.
-- _PARAM est le nom de la variable qui arrive du connecteur. On peut la traiter s\'il y a plusieurs sous-paramètres.
-- On peut affecter des variables nommées _1, _2, etc... Elles correspondent aux colonnes d\'un tableau.
+Les nouvelles dÃƒÂ©finitions peuvent provenir :
+- des mises ÃƒÂ  jour (de \'system/edition_typos\') ;
+- de la prÃƒÂ©sence d\'une archive .tar dans le dossier \'/fonts\' de l\'espace disque utilisateur, contenant les versions .woff, .eot, et .svg d\'une mÃƒÂªme typo ;
+- du plugin \'addfonts\' qui permet d\'importer des fonts depuis le web, en se rÃƒÂ©fÃƒÂ©rant ÃƒÂ  une classe css \'@font-face\'.'],
+"clbasic"=>['- Les templates utilisent le \'codeline\' qui sont des connecteurs dÃƒÂ©diÃƒÂ©s ÃƒÂ  l\'ÃƒÂ©criture de balises html ;
+- Les connecteurs et modules personnalisÃƒÂ©s peuvent ÃƒÂªtre rÃƒÂ©digÃƒÂ©s en \'codeline_basic\', qui permet d\'appeler des fonctions du noyau.
+- Si un connecteur ou un module est ÃƒÂ©crit en codeline (avec des crochets) le code basic ne sera pas interprÃƒÂ©tÃƒÂ©.
+- _PARAM est le nom de la variable qui arrive du connecteur. On peut la traiter s\'il y a plusieurs sous-paramÃƒÂ¨tres.
+- On peut affecter des variables nommÃƒÂ©es _1, _2, etc... Elles correspondent aux colonnes d\'un tableau.
 
 [syntaxe du Basic ::b]
 
-Il s\'écrit de droite à gauche sur une ligne. A la différence des connecteurs, le paramètre le plus important est situé après le \'§\'. Son absence signifie toujours \"pas d\'option\").
+Il s\'ÃƒÂ©crit de droite ÃƒÂ  gauche sur une ligne. A la diffÃƒÂ©rence des connecteurs, le paramÃƒÂ¨tre le plus important est situÃƒÂ© aprÃƒÂ¨s le \'Ã‚Â§\'. Son absence signifie toujours \"pas d\'option\").
 
-Un indicatif (premier caractère d\'un ligne) permet certains traitements du résultat :
+Un indicatif (premier caractÃƒÂ¨re d\'un ligne) permet certains traitements du rÃƒÂ©sultat :
 
 [/slash : ignore la ligne
-/affecte 81 à la var1 si elle n\'existe pas
+/affecte 81 ÃƒÂ  la var1 si elle n\'existe pas
 ?_1=81
 /stocke <b>81</b>
-+_1§b:balise
++_1Ã‚Â§b:balise
 /see: print_r
 /restitue la valeur
 /-_1
-/§_1:text
-/affecte et écrase
+/Ã‚Â§_1:text
+/affecte et ÃƒÂ©crase
 !_2=_1
 /affiche variable
 -_2:code]
@@ -162,121 +162,121 @@ Un indicatif (premier caractère d\'un ligne) permet certains traitements du résu
 [/delare variable si vide
 ?_PARAM=hello
 
-/Applique css au paramètre reçu du connecteur :
-_PARAM§txtit:css ou directement §txtit:css
+/Applique css au paramÃƒÂ¨tre reÃƒÂ§u du connecteur :
+_PARAMÃ‚Â§txtit:css ou directement Ã‚Â§txtit:css
 
-/itération (premier = value du second)
-txtit:css§u:html
+/itÃƒÂ©ration (premier = value du second)
+txtit:cssÃ‚Â§u:html
 
 /lit la table
-+system/edition_typosbrowsers/§msql_read:core
++system/edition_typosbrowsers/Ã‚Â§msql_read:core
 /affiche un tableau 
 -make_table:core
 /lecture des variables 0 et 1 d\'un tableau :
 -_1 _2:text:code]
 
 Quelques exemples sont fournis parmi les connecteurs, templates et modules publics.'],
-"templates"=>['Les templates d\'articles peuvent être assignés :
-- de façon globale dans la console (module system/template), 
-- de façon locale dans l\'article lui-même, 
-- ou de façon ponctuelle comme option de commande du module \'articles\'.
+"templates"=>['Les templates d\'articles peuvent ÃƒÂªtre assignÃƒÂ©s :
+- de faÃƒÂ§on globale dans la console (module system/template), 
+- de faÃƒÂ§on locale dans l\'article lui-mÃƒÂªme, 
+- ou de faÃƒÂ§on ponctuelle comme option de commande du module \'articles\'.
 
-Pour les autres templates que celui de l\'article, il faut activer la restriction 55 \'user templates\', et enregistrer une version modifiée du template par défaut, du même nom. 
-En l\'absence de template utilisateur, le logiciel cherche un template public avant de se réfèrer à celui par défaut.
+Pour les autres templates que celui de l\'article, il faut activer la restriction 55 \'user templates\', et enregistrer une version modifiÃƒÂ©e du template par dÃƒÂ©faut, du mÃƒÂªme nom. 
+En l\'absence de template utilisateur, le logiciel cherche un template public avant de se rÃƒÂ©fÃƒÂ¨rer ÃƒÂ  celui par dÃƒÂ©faut.
 
-Si la restriction \'user templates\' (55) est activée, la machine ira chercher le template utilisateur puis le public, avant d\'utiliser celui par défaut. Pour éviter qu\'un template public ne supplante celui par défaut, il suffit de sauver ce dernier pour en faire un template utilisateur.'],
+Si la restriction \'user templates\' (55) est activÃƒÂ©e, la machine ira chercher le template utilisateur puis le public, avant d\'utiliser celui par dÃƒÂ©faut. Pour ÃƒÂ©viter qu\'un template public ne supplante celui par dÃƒÂ©faut, il suffit de sauver ce dernier pour en faire un template utilisateur.'],
 "template"=>['structure de la mise en page
-suffixe \'j\' : si rstr(8) activé (mode ajax)'],
+suffixe \'j\' : si rstr(8) activÃƒÂ© (mode ajax)'],
 "track_follow"=>['Indiquer un mail pour recevoir les autres commentaires'],
 "track_captcha"=>['copier le code ici'],
-"update_ok"=>['Le logiciel est à jour'],
-"update_help"=>['Si une erreur survient, télécharger l\'image complète depuis l\'installateur'],
-"upload_folder"=>['sélectionner le répertoire où envoyer le document ;
-pour envoyer un répertoire d\'images il suffit de les contenir dans une archive .tar'],
-"bool"=>['Méthode booléenne : résultats communs aux recherches faites sur chaque mot'],
-"dev"=>['Le répertoire /progb contient une copie du programme. Il faut passer en mode Dev (/?dev=dev) pour que les modifs prennent effet.
+"update_ok"=>['Le logiciel est ÃƒÂ  jour'],
+"update_help"=>['Si une erreur survient, tÃƒÂ©lÃƒÂ©charger l\'image complÃƒÂ¨te depuis l\'installateur'],
+"upload_folder"=>['sÃƒÂ©lectionner le rÃƒÂ©pertoire oÃƒÂ¹ envoyer le document ;
+pour envoyer un rÃƒÂ©pertoire d\'images il suffit de les contenir dans une archive .tar'],
+"bool"=>['MÃƒÂ©thode boolÃƒÂ©enne : rÃƒÂ©sultats communs aux recherches faites sur chaque mot'],
+"dev"=>['Le rÃƒÂ©pertoire /progb contient une copie du programme. Il faut passer en mode Dev (/?dev=dev) pour que les modifs prennent effet.
 \'2prod\' copie les fichiers de /progb dans /prog. (les fichiers doivent avoir une permission suffisante)'],
-"blocsystem"=>['Le bloc \'system\' n\'est pas considéré comme une Div (un élément de la mise en page).
-Il définit les paramètres globaux. Certains modules sont critiques.'],
+"blocsystem"=>['Le bloc \'system\' n\'est pas considÃƒÂ©rÃƒÂ© comme une Div (un ÃƒÂ©lÃƒÂ©ment de la mise en page).
+Il dÃƒÂ©finit les paramÃƒÂ¨tres globaux. Certains modules sont critiques.'],
 "block"=>['Bloc de modules (div) auquel appartient le module'],
-"import_art"=>['URL de l\'article à importer'],
+"import_art"=>['URL de l\'article ÃƒÂ  importer'],
 "public_design"=>['Ceci affectera le design visible par le public'],
-"modules"=>['- content : prévu pour la div du contenu principale ;
-- multi : peut être affiché partout plusieurs fois ;
-- once : ne peut être affiché qu\'une seule fois (les modules déjà utilisés ne s\'affichent plus) ; 
+"modules"=>['- content : prÃƒÂ©vu pour la div du contenu principale ;
+- multi : peut ÃƒÂªtre affichÃƒÂ© partout plusieurs fois ;
+- once : ne peut ÃƒÂªtre affichÃƒÂ© qu\'une seule fois (les modules dÃƒÂ©jÃƒÂ  utilisÃƒÂ©s ne s\'affichent plus) ; 
 - connectors : raccourcis vers des connecteurs ;
-- articles : affilié à l\'article en cours ;
+- articles : affiliÃƒÂ© ÃƒÂ  l\'article en cours ;
 - user  : modules utilisateur'],
-"rssurl_1"=>['Renvoie les articles récents des flux rss dont on est sûr de vouloir aspirer tous les articles. Seuls sont concernés les flux marqué 1 à la colonne \'bot\' de la table \'rssurl\'.
-L\'opération arrête la recherche au premier article reconnu de chaque flux.
+"rssurl_1"=>['Renvoie les articles rÃƒÂ©cents des flux rss dont on est sÃƒÂ»r de vouloir aspirer tous les articles. Seuls sont concernÃƒÂ©s les flux marquÃƒÂ© 1 ÃƒÂ  la colonne \'bot\' de la table \'rssurl\'.
+L\'opÃƒÂ©ration arrÃƒÂªte la recherche au premier article reconnu de chaque flux.
 '],
-"words"=>['Mots connus classés par pertinence'],
-"book"=>['paramètre multiple [,] : 
+"words"=>['Mots connus classÃƒÂ©s par pertinence'],
+"book"=>['paramÃƒÂ¨tre multiple [,] : 
 - script d\'appel d\'articles ; 
 - liste d\'ID [ ] ;
 4 options [/] :
 - le titre du livre ;
 - 1=ID croissant, 2= ordre inverse ;
-- un template de mise en forme (\'book\' par défaut) ;
+- un template de mise en forme (\'book\' par dÃƒÂ©faut) ;
 - un template de couverture (\'book_cover\') :
 
-ex: [cat=public~nbdays=30,412 413 414§hello/2/book:book]
+ex: [cat=public~nbdays=30,412 413 414Ã‚Â§hello/2/book:book]
 
-Pour créer une liste d\'ID il est possible d\'utiliser le plugin \'favs\' placé dans un module, qui propose d\'exporter la liste ;'],
-"call_arts"=>['Paramètres du script d\'appel d\'articles :
-- cat : catégorie 
-- nocat : catégorie à exclure
-- tag : (spécifier)
-- notag : tag à exclure
-- nbdays : \'30-60\' de 30 à 60 jours
+Pour crÃƒÂ©er une liste d\'ID il est possible d\'utiliser le plugin \'favs\' placÃƒÂ© dans un module, qui propose d\'exporter la liste ;'],
+"call_arts"=>['ParamÃƒÂ¨tres du script d\'appel d\'articles :
+- cat : catÃƒÂ©gorie 
+- nocat : catÃƒÂ©gorie ÃƒÂ  exclure
+- tag : (spÃƒÂ©cifier)
+- notag : tag ÃƒÂ  exclure
+- nbdays : \'30-60\' de 30 ÃƒÂ  60 jours
 - lasts : \'0-10\' les 10 derniers articles
 - preview : \'true/false/full\' mode d\'affichage
-- priority : niveau de priorité (1 à 4)
-- nopriority : niveau de priorité à exclure (1 à 4)
-- lenght : \'<4000\' inférieur à 4000 caractères'],
-"htaccess"=>['Si le code lancé est le même que celui par défaut, alors il n\'y a pas de mise à jour à faire.
+- priority : niveau de prioritÃƒÂ© (1 ÃƒÂ  4)
+- nopriority : niveau de prioritÃƒÂ© ÃƒÂ  exclure (1 ÃƒÂ  4)
+- lenght : \'<4000\' infÃƒÂ©rieur ÃƒÂ  4000 caractÃƒÂ¨res'],
+"htaccess"=>['Si le code lancÃƒÂ© est le mÃƒÂªme que celui par dÃƒÂ©faut, alors il n\'y a pas de mise ÃƒÂ  jour ÃƒÂ  faire.
 
-Vérifier que le fichier \'.htaccess\' à la racine a les autorisations suffisantes.
-Le fichier .htaccess est étudié pour faire de la barre d\'adresse une console de commande d\'activités.
-Vérifier les définitions htaccess propres à chaque serveur.
+VÃƒÂ©rifier que le fichier \'.htaccess\' ÃƒÂ  la racine a les autorisations suffisantes.
+Le fichier .htaccess est ÃƒÂ©tudiÃƒÂ© pour faire de la barre d\'adresse une console de commande d\'activitÃƒÂ©s.
+VÃƒÂ©rifier les dÃƒÂ©finitions htaccess propres ÃƒÂ  chaque serveur.
 - infomaniak : php_flag \"allow_url_fopen\" \"On\"
 php_flag \"allow_url_include\" \"On\"'],
-"favs"=>['L\'icône Like dans les menus d\'articles permet de les ajouter aux Favoris.
-Les collections peuvent être assemblées dans un Book.'],
-"pictos"=>['Liste des pictogrammes du système, dû à la typo \'philum\'.
+"favs"=>['L\'icÃƒÂ´ne Like dans les menus d\'articles permet de les ajouter aux Favoris.
+Les collections peuvent ÃƒÂªtre assemblÃƒÂ©es dans un Book.'],
+"pictos"=>['Liste des pictogrammes du systÃƒÂ¨me, dÃƒÂ» ÃƒÂ  la typo \'philum\'.
 
-Les affectations reçoivent un connecteur, qui spécifie la nature de l\'icône, une typo, une image ou un objet vectoriel svg. 
-(les icônes existants sont visiblesdans l\'éditeur)'],
-"finder"=>['Finder permet de naviguer dans les dossiers, de partager des fichiers, et de leur affecter un répertoire virtuel.
-Le répertoire virtuel permet de générer des classements publiques ; \'server/shared_files\' est appelé par d\'autres sites Philum ;
+Les affectations reÃƒÂ§oivent un connecteur, qui spÃƒÂ©cifie la nature de l\'icÃƒÂ´ne, une typo, une image ou un objet vectoriel svg. 
+(les icÃƒÂ´nes existants sont visiblesdans l\'ÃƒÂ©diteur)'],
+"finder"=>['Finder permet de naviguer dans les dossiers, de partager des fichiers, et de leur affecter un rÃƒÂ©pertoire virtuel.
+Le rÃƒÂ©pertoire virtuel permet de gÃƒÂ©nÃƒÂ©rer des classements publiques ; \'server/shared_files\' est appelÃƒÂ© par d\'autres sites Philum ;
 
-- disk : répertoires utilisateur
-- shared : fichiers partagés :
+- disk : rÃƒÂ©pertoires utilisateur
+- shared : fichiers partagÃƒÂ©s :
 -- local : par l\'utilisateur
 -- global : par les hubs du serveur
--- distant : par le réseau de sites Philum
+-- distant : par le rÃƒÂ©seau de sites Philum
 
-- list : liste déroulante
-- panel : liste par répertoires
+- list : liste dÃƒÂ©roulante
+- panel : liste par rÃƒÂ©pertoires
 - icons : mode Desktop
-- flap : répertoires à gauche, fichiers à droite
+- flap : rÃƒÂ©pertoires ÃƒÂ  gauche, fichiers ÃƒÂ  droite
 
-- virtual/real : répertoires réels ou virtuels
+- virtual/real : rÃƒÂ©pertoires rÃƒÂ©els ou virtuels
 - picto/mini : usage de pictogramme ou des miniatures
 - update : informe la table \'server/shared_files\''],
 "comline"=>['Ligne de commande de module
-- connecteur [SCRIPT§bouton:module:ok]
-- ou [SCRIPT§bouton:MODULENAME:module:ok]
+- connecteur [SCRIPTÃ‚Â§bouton:module:ok]
+- ou [SCRIPTÃ‚Â§bouton:MODULENAME:module:ok]
 - ou [:MODULENAME:module:ok].
 - url : /module/SCRIPT'],
-"mod_cond"=>['contexte par défaut : (rien), home, cat, art
-[0-9] : contexte d\'un article précis (ID)
-[a-z] : contexte d\'une catégorie existante
-[a-z] : contexte déclenché par l\'url /context/nom'],
-"updfonts"=>['Après avoir téléchargé une typo il faut aller dans admin/fonts et faire un \'inject\' ; ça consiste à décompresser le fichier, l\'installer, et signaler son existence à la table des typos du serveur, qui n\'est pas concerné par les mises à jour, contrairement à celle du système.'],
-"updpictos"=>['Le système a besoin de pictogrammes, il faut télécharger la police \'philum\' dans l\'onglet \'pictos\''],
-"breadcrumb"=>['Le Breadcrumb reçoit le nom de la catégorie, le nombre d\'articles et si besoin, la topologie à laquelle appartient l\'article. 
-La restriction Access/user_template (55) permet d\'utiliser le template nommé \'titles\' afin de contrôler l\'ordre et l\'apparence.'],
+"mod_cond"=>['contexte par dÃƒÂ©faut : (rien), home, cat, art
+[0-9] : contexte d\'un article prÃƒÂ©cis (ID)
+[a-z] : contexte d\'une catÃƒÂ©gorie existante
+[a-z] : contexte dÃƒÂ©clenchÃƒÂ© par l\'url /context/nom'],
+"updfonts"=>['AprÃƒÂ¨s avoir tÃƒÂ©lÃƒÂ©chargÃƒÂ© une typo il faut aller dans admin/fonts et faire un \'inject\' ; ÃƒÂ§a consiste ÃƒÂ  dÃƒÂ©compresser le fichier, l\'installer, et signaler son existence ÃƒÂ  la table des typos du serveur, qui n\'est pas concernÃƒÂ© par les mises ÃƒÂ  jour, contrairement ÃƒÂ  celle du systÃƒÂ¨me.'],
+"updpictos"=>['Le systÃƒÂ¨me a besoin de pictogrammes, il faut tÃƒÂ©lÃƒÂ©charger la police \'philum\' dans l\'onglet \'pictos\''],
+"breadcrumb"=>['Le Breadcrumb reÃƒÂ§oit le nom de la catÃƒÂ©gorie, le nombre d\'articles et si besoin, la topologie ÃƒÂ  laquelle appartient l\'article. 
+La restriction Access/user_template (55) permet d\'utiliser le template nommÃƒÂ© \'titles\' afin de contrÃƒÂ´ler l\'ordre et l\'apparence.'],
 "login"=>['log-in / nouvel utilisateur'],
 "mail_article"=>['Envoyer l\'article par mail'],
 "log_no"=>['nom d\'utilisateur requis'],
@@ -284,68 +284,68 @@ La restriction Access/user_template (55) permet d\'utiliser le template nommé \'
 "log_nohub"=>['pas d\'inscription possible'],
 "log_newser"=>['S\'enregistrer comme nouvel utilisateur, de niveau :'],
 "empty_msg"=>['Message vide'],
-"meta_related"=>['ID d\'articles séparés par un espace'],
-"newsletter_ok"=>['Newsletter envoyée avec succès'],
-"newsletter_ko"=>['pas de résultat'],
-"newsletter_uns"=>['se désinscrire'],
-"conn_pub"=>['Les connecteurs remplacent le html pour gagner de l\'espace et permettent de rédiger des commandes pour des applications'],
+"meta_related"=>['ID d\'articles sÃƒÂ©parÃƒÂ©s par un espace'],
+"newsletter_ok"=>['Newsletter envoyÃƒÂ©e avec succÃƒÂ¨s'],
+"newsletter_ko"=>['pas de rÃƒÂ©sultat'],
+"newsletter_uns"=>['se dÃƒÂ©sinscrire'],
+"conn_pub"=>['Les connecteurs remplacent le html pour gagner de l\'espace et permettent de rÃƒÂ©diger des commandes pour des applications'],
 "search"=>['Boutons :
-- score : classement par quantité de résultats
+- score : classement par quantitÃƒÂ© de rÃƒÂ©sultats
 - segment : mot entier
-- booléen : plusieurs mots (séparés par un espace)
-- lang, cat, tag : inclure ou exclure des mots-liés (métas)
-- limit : nombre minimum d\'occurrences (attention à la casse)
+- boolÃƒÂ©en : plusieurs mots (sÃƒÂ©parÃƒÂ©s par un espace)
+- lang, cat, tag : inclure ou exclure des mots-liÃƒÂ©s (mÃƒÂ©tas)
+- limit : nombre minimum d\'occurrences (attention ÃƒÂ  la casse)
 - length : longueur de l\'article minimale (en minutes de lecture)
 
 Astuces :
-- recherche vide : porte seulement sur des paramètres
-- id : l\'id d\'un article permet de l\'ouvrir immédiatement
+- recherche vide : porte seulement sur des paramÃƒÂ¨tres
+- id : l\'id d\'un article permet de l\'ouvrir immÃƒÂ©diatement
 - date : articles avant le Y-m ou Y-m-d : \"2000-01\"
 - bouton \'del\' : efface le cache
-- \'1\' renvoie le dernier article publié
-- bouton \'avance-rapide\' : recherche continue sur d\'autres champs temporels jusqu\'à trouver une réponse (si cette option est active)
+- \'1\' renvoie le dernier article publiÃƒÂ©
+- bouton \'avance-rapide\' : recherche continue sur d\'autres champs temporels jusqu\'ÃƒÂ  trouver une rÃƒÂ©ponse (si cette option est active)
 - commande de l\'API, (utiliser un \':\' et une \',\') ex : \"search:mot1|mot2,avoid:mot3,cat:Justice,tag:justice|injustice,title:mot3\"
-- date précise (API) : \"date:1967,\" ou \"date:-08-15\" (tous les 15 août)
-- périodes : from:2012-01-01,until:2014-01-01'],
-"defcons"=>['Les définitions d\'importation de sites sont des points d\'ancrage où commence et se termine la copie des parties qui nous intéressent dans la page.
+- date prÃƒÂ©cise (API) : \"date:1967,\" ou \"date:-08-15\" (tous les 15 aoÃƒÂ»t)
+- pÃƒÂ©riodes : from:2012-01-01,until:2014-01-01'],
+"defcons"=>['Les dÃƒÂ©finitions d\'importation de sites sont des points d\'ancrage oÃƒÂ¹ commence et se termine la copie des parties qui nous intÃƒÂ©ressent dans la page.
 
 Ce sont le titre et le corps du texte, et en option un chapeau.
-Si le point de sortie n\'est pas spécifié c\'est la fin normale de la balise qui sera choisie (ça peut ne pas marcher).
+Si le point de sortie n\'est pas spÃƒÂ©cifiÃƒÂ© c\'est la fin normale de la balise qui sera choisie (ÃƒÂ§a peut ne pas marcher).
 
-En spécifiant les connecteurs de ciblage du Dom on peut se passer des balises d\'entrée et sortie. Leur formulation consiste en : \"prop:attr:tag:n\"
-où tag est la balise, attribut (classe par défaut), propriété. \"n\" spécifie une itération parmi toutes celles qui correspondent (1 par défaut).
-ex: \"content:::2\" var chercher (le deuxième rencontré) div class=\"content\".
+En spÃƒÂ©cifiant les connecteurs de ciblage du Dom on peut se passer des balises d\'entrÃƒÂ©e et sortie. Leur formulation consiste en : \"prop:attr:tag:n\"
+oÃƒÂ¹ tag est la balise, attribut (classe par dÃƒÂ©faut), propriÃƒÂ©tÃƒÂ©. \"n\" spÃƒÂ©cifie une itÃƒÂ©ration parmi toutes celles qui correspondent (1 par dÃƒÂ©faut).
+ex: \"content:::2\" var chercher (le deuxiÃƒÂ¨me rencontrÃƒÂ©) div class=\"content\".
 
-L\'option \"utf=1\" permet de forcer le décodage utf-8 s\'il n\'est pas détecté, et \"utf=2\" permet de l\'interdire, ce qui peut servir si le Dom ne renvoie rien.
+L\'option \"utf=1\" permet de forcer le dÃƒÂ©codage utf-8 s\'il n\'est pas dÃƒÂ©tectÃƒÂ©, et \"utf=2\" permet de l\'interdire, ce qui peut servir si le Dom ne renvoie rien.
 
-L\'option \"post-treat\" agit en sortie de découpage, et permet de supprimer la première ligne, le titre, un lien ou une ligne ou lien contenant un mot-clef, détruire des balises, ou délimiter un since->to.'],
-"apps"=>['la restriction 61 est activée : le menu Apps par défaut est loadé (system/default_apps), vos définitions s\'y ajoutent, et peuvent supplanter celles qui existent.'],
-"apps_add"=>['Apps prédéfinies : tous les paramètres peuvent en être modifiés (icône, nom, cible, fonction).
+L\'option \"post-treat\" agit en sortie de dÃƒÂ©coupage, et permet de supprimer la premiÃƒÂ¨re ligne, le titre, un lien ou une ligne ou lien contenant un mot-clef, dÃƒÂ©truire des balises, ou dÃƒÂ©limiter un since->to.'],
+"apps"=>['la restriction 61 est activÃƒÂ©e : le menu Apps par dÃƒÂ©faut est loadÃƒÂ© (system/default_apps), vos dÃƒÂ©finitions s\'y ajoutent, et peuvent supplanter celles qui existent.'],
+"apps_add"=>['Apps prÃƒÂ©dÃƒÂ©finies : tous les paramÃƒÂ¨tres peuvent en ÃƒÂªtre modifiÃƒÂ©s (icÃƒÂ´ne, nom, cible, fonction).
 Le bouton \"update\" remplacera toutes vos apps ! (faites des backups)
-le menu permet de choisir d\'autres tables plus spécialisées'],
-"trackhelp"=>['- urls, images et vidéos (youtube etc...) sont interprétés automatiquement
-- lien vers un article : 1234:pub (renvoie le titre) ou 1234§mot
+le menu permet de choisir d\'autres tables plus spÃƒÂ©cialisÃƒÂ©es'],
+"trackhelp"=>['- urls, images et vidÃƒÂ©os (youtube etc...) sont interprÃƒÂ©tÃƒÂ©s automatiquement
+- lien vers un article : 1234:pub (renvoie le titre) ou 1234Ã‚Â§mot
 - 123:track permet un rappel du commentaire 123
 - :web affiche un lien + titre + image du lien
 - #public : appelle le canal \'public\' du chat'],
-"suggest"=>['Vous pouvez importer un contenu web à partir de l\'url de l\'article, une prévisualisation tentera de s\'afficher. Ne vous inquiétez pas si la page ne s\'affiche pas correctement.
+"suggest"=>['Vous pouvez importer un contenu web ÃƒÂ  partir de l\'url de l\'article, une prÃƒÂ©visualisation tentera de s\'afficher. Ne vous inquiÃƒÂ©tez pas si la page ne s\'affiche pas correctement.
 
-Le champ mail permet d\'ajouter une mention \"Proposé par [préfixe du mail]\". Vous serez averti lors de la publication.
+Le champ mail permet d\'ajouter une mention \"ProposÃƒÂ© par [prÃƒÂ©fixe du mail]\". Vous serez averti lors de la publication.
 
 Merci pour votre contribution !'],
-"suggest_ok"=>['Votre article a été publié'],
-"console_cond"=>['Les modules (les éléments de la page) appartiennent à un [contexte:b]. Par défaut, ils sont : \"home\", \"cat\" (pour une catégorie d\'articles) et \"art\" (lecture d\'un article). On peut créer des contextes personnalisés, déclinés de cat et art.
+"suggest_ok"=>['Votre article a ÃƒÂ©tÃƒÂ© publiÃƒÂ©'],
+"console_cond"=>['Les modules (les ÃƒÂ©lÃƒÂ©ments de la page) appartiennent ÃƒÂ  un [contexte:b]. Par dÃƒÂ©faut, ils sont : \"home\", \"cat\" (pour une catÃƒÂ©gorie d\'articles) et \"art\" (lecture d\'un article). On peut crÃƒÂ©er des contextes personnalisÃƒÂ©s, dÃƒÂ©clinÃƒÂ©s de cat et art.
 
-Ainsi quand on appelle la page /context/name tous les modules appartenant à contexte \"name\" s\'affichent.
+Ainsi quand on appelle la page /context/name tous les modules appartenant ÃƒÂ  contexte \"name\" s\'affichent.
 
-Le contexte d\'un module se définit dans l\'édition de chaque module. Si un module doit apparaître sous plusieurs contextes, il faut créer autant de modules identiques que nécessaire, à l\'aide du bouton \"nouveau\".'],
-"console_mods"=>['Le [menu de mods:b] n\'affecte que la session en cours. Pour que les effets prennent effet pour le visiteur, il faut l\'appliquer, pour que le numéro de version de la table de module figure dans le param 1 de la config générale.'],
-"scripts"=>['p:param,t:titre,d:commande,o:option,ch:cache,hd:hide,tp:template,bt:button,dv:div,pv:private,pp:popup§bouton:module[/n]'],
+Le contexte d\'un module se dÃƒÂ©finit dans l\'ÃƒÂ©dition de chaque module. Si un module doit apparaÃƒÂ®tre sous plusieurs contextes, il faut crÃƒÂ©er autant de modules identiques que nÃƒÂ©cessaire, ÃƒÂ  l\'aide du bouton \"nouveau\".'],
+"console_mods"=>['Le [menu de mods:b] n\'affecte que la session en cours. Pour que les effets prennent effet pour le visiteur, il faut l\'appliquer, pour que le numÃƒÂ©ro de version de la table de module figure dans le param 1 de la config gÃƒÂ©nÃƒÂ©rale.'],
+"scripts"=>['p:param,t:titre,d:commande,o:option,ch:cache,hd:hide,tp:template,bt:button,dv:div,pv:private,pp:popupÃ‚Â§bouton:module[/n]'],
 "video"=>['Youtube, Dailymotion, Vimeo, Rutube'],
-"popvideo"=>['- option §1 : lance la vidéo sur place 
-- option §440/320 : largeur/hauteur'],
-"pdf"=>['Le lecteur PDF de Google nécessite d\'y être logué'],
-"art_render"=>['Le mode de rendu d\'articles est défini par les restrictions 5 et 41 (config arts), et peut être supplanté par un de ces paramètres : false, preview, full, read, auto'],
+"popvideo"=>['- option Ã‚Â§1 : lance la vidÃƒÂ©o sur place 
+- option Ã‚Â§440/320 : largeur/hauteur'],
+"pdf"=>['Le lecteur PDF de Google nÃƒÂ©cessite d\'y ÃƒÂªtre loguÃƒÂ©'],
+"art_render"=>['Le mode de rendu d\'articles est dÃƒÂ©fini par les restrictions 5 et 41 (config arts), et peut ÃƒÂªtre supplantÃƒÂ© par un de ces paramÃƒÂ¨tres : false, preview, full, read, auto'],
 "desklr"=>['attributs du Desktop :
 top,#_4,#_2
 to bottom,#002594,#06999e,#878787,#bf1755,#4f004f
@@ -353,151 +353,151 @@ philum/photo/space/crabhubble.jpg
 philum/photo/space (random img du dossier)'],
 "submod_types"=>['types de sous-modules: mod plug art msql link finder ajax admin'],
 "chatxml"=>['- ChatXml fonctionne entre serveurs Philum (serveur d\'appel :  \'admin/params\')
-- le bouton \'live\' rafraîchit le chat toutes les 4 secondes
-- le premier message reste le premier affiché
-- un chat nommé comme un hub permet à l\'admin de ce hub d\'effacer tous les messages
-- seuls les 20 dernières entrées sont chargées '],
+- le bouton \'live\' rafraÃƒÂ®chit le chat toutes les 4 secondes
+- le premier message reste le premier affichÃƒÂ©
+- un chat nommÃƒÂ© comme un hub permet ÃƒÂ  l\'admin de ce hub d\'effacer tous les messages
+- seuls les 20 derniÃƒÂ¨res entrÃƒÂ©es sont chargÃƒÂ©es '],
 "chatcall"=>['_NAME vous invite chater !'],
 "miniconn"=>['Syntaxe Miniconn :
-- liens, images, vidéos, audios et pdf sont rendus cross-server
-- http://site.com§mot = lien vers une page (affiche le mot)
+- liens, images, vidÃƒÂ©os, audios et pdf sont rendus cross-server
+- http://site.comÃ‚Â§mot = lien vers une page (affiche le mot)
 - 1234:pub = appelle l\'article 1234 dans une popup (via Mxml)
-- 1234§mot = appelle l\'article 1234 dans une popup (affiche \'mot\')
+- 1234Ã‚Â§mot = appelle l\'article 1234 dans une popup (affiche \'mot\')
 - canal:room = lien vers un canal
 - name:twitter = ouvre un flux Rss Twitter
-- mots en gras:b italique:i souligné:u, (q, h, l, k)
-- supporte les connecteurs (restreints) : [param§option:connector]'],
-"artstats"=>['Les stats d\'articles ne sont visibles qu\'après avoir été flushées (toutes les 24 heures)'],
+- mots en gras:b italique:i soulignÃƒÂ©:u, (q, h, l, k)
+- supporte les connecteurs (restreints) : [paramÃ‚Â§option:connector]'],
+"artstats"=>['Les stats d\'articles ne sont visibles qu\'aprÃƒÂ¨s avoir ÃƒÂ©tÃƒÂ© flushÃƒÂ©es (toutes les 24 heures)'],
 "track_orth"=>['Orthographe : 
-- infinitif \'er\' au lieu de \'é\' quand on peut remplacer le verbe par un autre du troisième groupe comme \'prendre\'
-- conjugaison : le verbe s\'accorde avec le sujet (attention aux é, és ées)
+- infinitif \'er\' au lieu de \'ÃƒÂ©\' quand on peut remplacer le verbe par un autre du troisiÃƒÂ¨me groupe comme \'prendre\'
+- conjugaison : le verbe s\'accorde avec le sujet (attention aux ÃƒÂ©, ÃƒÂ©s ÃƒÂ©es)
 
-Règles typographiques : 
-- espaces après une virgule, pas avant ; sauf pour le point-virgule : et les deux-points, mais pas dans les (parenthèses) ni dans les \"guillemets\".'],
-"tracks_error1"=>['Captcha mal renseigné'],
+RÃƒÂ¨gles typographiques : 
+- espaces aprÃƒÂ¨s une virgule, pas avant ; sauf pour le point-virgule : et les deux-points, mais pas dans les (parenthÃƒÂ¨ses) ni dans les \"guillemets\".'],
+"tracks_error1"=>['Captcha mal renseignÃƒÂ©'],
 "tracks_error2"=>['Merci d\'indiquer un nom'],
 "tracks_error3"=>['Message vide'],
-"retape"=>['Des connecteurs obsolètes ont été remplacés'],
+"retape"=>['Des connecteurs obsolÃƒÂ¨tes ont ÃƒÂ©tÃƒÂ© remplacÃƒÂ©s'],
 "prmb5"=>['Le param \'auto_design\' (5) est actif : il supplante le design utilisateur'],
-"flog"=>['Retenez votre numéro de jeton pour retrouver vos données'],
-"memstorage"=>['les contenus sont stockés dans les variables locales de votre navigateur et ne sont accessibles que par vous'],
-"blocmenu"=>['Le bloc \'menu\' a de particulier ses css qui lui permettent de gérer correctement les menus présentés dans des ul<li'],
+"flog"=>['Retenez votre numÃƒÂ©ro de jeton pour retrouver vos donnÃƒÂ©es'],
+"memstorage"=>['les contenus sont stockÃƒÂ©s dans les variables locales de votre navigateur et ne sont accessibles que par vous'],
+"blocmenu"=>['Le bloc \'menu\' a de particulier ses css qui lui permettent de gÃƒÂ©rer correctement les menus prÃƒÂ©sentÃƒÂ©s dans des ul<li'],
 "bloctest"=>['ne s\'affiche pas, permet de tester des modules'],
-"ftext"=>['le contenu et l\'édition sont publics'],
-"first_user"=>['Créer le compte Admin'],
-"new_user"=>['Création de compte'],
+"ftext"=>['le contenu et l\'ÃƒÂ©dition sont publics'],
+"first_user"=>['CrÃƒÂ©er le compte Admin'],
+"new_user"=>['CrÃƒÂ©ation de compte'],
 "meta_lang"=>['ID des versions dans une autre langue.'],
-"tracks_moderation"=>['les commentaires sont modérés'],
-"twitter_oAuth"=>['Paramètres d\'authentification de l\'API twitter 1.1 (https://developer.twitter.com/)'],
-"tag_rename"=>['Renommer un tag va, s\'il existe déjà, le détruire et associer les articles au tag existant'],
-"usertags"=>['Ajouter des tags à cet article et retrouvez-les dans vos favoris.
+"tracks_moderation"=>['les commentaires sont modÃƒÂ©rÃƒÂ©s'],
+"twitter_oAuth"=>['ParamÃƒÂ¨tres d\'authentification de l\'API twitter 1.1 (https://developer.twitter.com/)'],
+"tag_rename"=>['Renommer un tag va, s\'il existe dÃƒÂ©jÃƒÂ , le dÃƒÂ©truire et associer les articles au tag existant'],
+"usertags"=>['Ajouter des tags ÃƒÂ  cet article et retrouvez-les dans vos favoris.
 Les tags utilisateurs sont publics.'],
-"api"=>['L\'API permet de réaliser des tris complexes via une commande. La variable json:1 renvoie un flux json.
+"api"=>['L\'API permet de rÃƒÂ©aliser des tris complexes via une commande. La variable json:1 renvoie un flux json.
 dans la barre d\'url : /api/{command}'],
 "like"=>['Les Likes sont publics'],
-"overcats"=>['Une sur-catégorie peut exister avec un champ vide, dans ce cas la catégorie est répertoriée à la racine.'],
-"overcats_menu"=>['Overcats peut être utilisé comme module, comme menu admin, ou comme objet de bureau, en utilisant une App avec les params type=desktop et process=overcats'],
+"overcats"=>['Une sur-catÃƒÂ©gorie peut exister avec un champ vide, dans ce cas la catÃƒÂ©gorie est rÃƒÂ©pertoriÃƒÂ©e ÃƒÂ  la racine.'],
+"overcats_menu"=>['Overcats peut ÃƒÂªtre utilisÃƒÂ© comme module, comme menu admin, ou comme objet de bureau, en utilisant une App avec les params type=desktop et process=overcats'],
 "menubub_edit"=>['types de menububs : 
-- (aucun type) : interprète (a-z) = catégorie, (0-9) = article, /module/... = link
+- (aucun type) : interprÃƒÂ¨te (a-z) = catÃƒÂ©gorie, (0-9) = article, /module/... = link
 - module : ouvre le contenu d\'un module (ex: ///lines/4///1:categories )
 - app : (ouvre une app)
 - ajax : (ex: popup_track___admin)'],
-"spitable"=>['On ne pourra jamais dessiner réellement un atome. Une représentation graphique de la réalité ne fait que tenir compte d\'un certain nombre de paramètres.
+"spitable"=>['On ne pourra jamais dessiner rÃƒÂ©ellement un atome. Une reprÃƒÂ©sentation graphique de la rÃƒÂ©alitÃƒÂ© ne fait que tenir compte d\'un certain nombre de paramÃƒÂ¨tres.
 
 Sur cette table on peut voir les couronnes et les sous-couronnes.
 Chaque sous-couronne exprime une famille chimique.
-Chaque couronne contient un nombre de sous-couronnes égal au rang de la couronne (1:1, 2:2, ...).
+Chaque couronne contient un nombre de sous-couronnes ÃƒÂ©gal au rang de la couronne (1:1, 2:2, ...).
 
-Chaque atome est représenté par sa configuration électronique. Le plus souvent le nombre atomique correspond à la position du dernier électron de cet atome.
+Chaque atome est reprÃƒÂ©sentÃƒÂ© par sa configuration ÃƒÂ©lectronique. Le plus souvent le nombre atomique correspond ÃƒÂ  la position du dernier ÃƒÂ©lectron de cet atome.
 
-Le nombre d\'emplacement de chaque sous-couronne augment de 4 à chaque sous-couronne.
+Le nombre d\'emplacement de chaque sous-couronne augment de 4 ÃƒÂ  chaque sous-couronne.
 
-L\'intérêt de cette représentation est de mettre en évidence le fait que les sous-couronnes sont parlantes des familles chimiques auxquelles appartiennent les atomes qui y sont représentés.
+L\'intÃƒÂ©rÃƒÂªt de cette reprÃƒÂ©sentation est de mettre en ÃƒÂ©vidence le fait que les sous-couronnes sont parlantes des familles chimiques auxquelles appartiennent les atomes qui y sont reprÃƒÂ©sentÃƒÂ©s.
 
-La périodicité (spirale) des éléments est ainsi définie par un algorithme très simple (utilisé pour dessiner les cases).
+La pÃƒÂ©riodicitÃƒÂ© (spirale) des ÃƒÂ©lÃƒÂ©ments est ainsi dÃƒÂ©finie par un algorithme trÃƒÂ¨s simple (utilisÃƒÂ© pour dessiner les cases).
 On peut voir que la construction que produit cet algorithme permet une croissance infinie.
 
-Les anomalies par rapport à l\'algorithme de remplissage électronique sont signalées graphiquement, de sorte à visualiser la configuration électronique réelle de chaque atome.'],
+Les anomalies par rapport ÃƒÂ  l\'algorithme de remplissage ÃƒÂ©lectronique sont signalÃƒÂ©es graphiquement, de sorte ÃƒÂ  visualiser la configuration ÃƒÂ©lectronique rÃƒÂ©elle de chaque atome.'],
 "fav_fav"=>['Articles favoris'],
-"fav_tags"=>['Articles référencés par un tag'],
-"fav_com"=>['Paramètres de génération de flux'],
-"fav_poll"=>['Articles votés'],
-"fav_visit"=>['Articles visités'],
-"fav_shar"=>['Articles partagés'],
+"fav_tags"=>['Articles rÃƒÂ©fÃƒÂ©rencÃƒÂ©s par un tag'],
+"fav_com"=>['ParamÃƒÂ¨tres de gÃƒÂ©nÃƒÂ©ration de flux'],
+"fav_poll"=>['Articles votÃƒÂ©s'],
+"fav_visit"=>['Articles visitÃƒÂ©s'],
+"fav_shar"=>['Articles partagÃƒÂ©s'],
 "fav_edit"=>['Script de l\'Api'],
-"fav_like"=>['Articles Likés'],
+"fav_like"=>['Articles LikÃƒÂ©s'],
 "levenshtein"=>['utilise l\'algorithme de distance de Levenshtein'],
-"study"=>['Permet de créer une étude de texte, phrase par phrase.'],
+"study"=>['Permet de crÃƒÂ©er une ÃƒÂ©tude de texte, phrase par phrase.'],
 "tlex"=>['Publier sur Tlex : ajouter le oAuth de l\'Api Tlex dans la table users/(hub)_tlex
 Il peut y avoir plusieurs comptes'],
-"twit"=>['Conditions générales d\'utilisation : les informations obtenues ne doivent pas servir à des fins commerciales ou de nuisance physique ou morale.
-Politique de confidentialité : les informations obtenues ne peuvent être relayées sans l\'autorisation des personnes concernées.
+"twit"=>['Conditions gÃƒÂ©nÃƒÂ©rales d\'utilisation : les informations obtenues ne doivent pas servir ÃƒÂ  des fins commerciales ou de nuisance physique ou morale.
+Politique de confidentialitÃƒÂ© : les informations obtenues ne peuvent ÃƒÂªtre relayÃƒÂ©es sans l\'autorisation des personnes concernÃƒÂ©es.
 '],
-"meta_abilities"=>['Abilités déléguées aux utilisateurs'],
-"umrennum"=>['Renumérote les articles par date et en classant les favoris, retweets et status'],
-"search_cases"=>['Cliquer plusieurs fois dans le menu des métas (lang,cat,tag) pour :
+"meta_abilities"=>['AbilitÃƒÂ©s dÃƒÂ©lÃƒÂ©guÃƒÂ©es aux utilisateurs'],
+"umrennum"=>['RenumÃƒÂ©rote les articles par date et en classant les favoris, retweets et status'],
+"search_cases"=>['Cliquer plusieurs fois dans le menu des mÃƒÂ©tas (lang,cat,tag) pour :
 - inclure exclusivement 
 - exclure 
-- ne pas tenir compte (par défaut)
-du ou des mots-liés.'],
-"star"=>['- ra (ascension droite en heures), dc (déclinaison en degrés), et dist (distance en AL)
+- ne pas tenir compte (par dÃƒÂ©faut)
+du ou des mots-liÃƒÂ©s.'],
+"star"=>['- ra (ascension droite en heures), dc (dÃƒÂ©clinaison en degrÃƒÂ©s), et dist (distance en AL)
 ex: ra>15,ra<21,dc>-1,dc<5,dist>13,dist<19
 
-- paramètre radius (degrés par défaut, h, m, rad, mas)
+- paramÃƒÂ¨tre radius (degrÃƒÂ©s par dÃƒÂ©faut, h, m, rad, mas)
 ex: ra=18,dc=2,dist=16,radius=3
 
-- autour d\'une étoile
+- autour d\'une ÃƒÂ©toile
 ex: 88601,dist<30,radius=1h
 
-- une liste d\'étoiles nommées (HIP par défaut) :
+- une liste d\'ÃƒÂ©toiles nommÃƒÂ©es (HIP par dÃƒÂ©faut) :
 HD 150680, hd150680, hip99461, 88601, 2021'],
-"gaia"=>['exemple 1, avec dc (déclinaison), ra (ascension droite) et dist (degrés et AL) : 
+"gaia"=>['exemple 1, avec dc (dÃƒÂ©clinaison), ra (ascension droite) et dist (degrÃƒÂ©s et AL) : 
 dc > -23.432, dc < -21.82, ra > 255.25, ra < 270.83, dist < 100
 
-- une liste d\'étoiles nommées par leur id Gaia (nombre à 19 chiffres) séparés par un espace'],
-"umrec"=>['- Pour appeler un message précis : 
+- une liste d\'ÃƒÂ©toiles nommÃƒÂ©es par leur id Gaia (nombre ÃƒÂ  19 chiffres) sÃƒÂ©parÃƒÂ©s par un espace'],
+"umrec"=>['- Pour appeler un message prÃƒÂ©cis : 
 http://oumo.fr/context/compile/O6-144
-- Pour l\'intégrer dans une page web via une iframe (utiliser l\'id) :
+- Pour l\'intÃƒÂ©grer dans une page web via une iframe (utiliser l\'id) :
 http://oumo.fr/plug/umrec/1464
-- Depuis l\'éditeur (article ou commentaires) :
+- Depuis l\'ÃƒÂ©diteur (article ou commentaires) :
 [1464:umcom:on] affiche le bloc
-[1464§1:umcom:on] affiche un lien vers le bloc'],
+[1464Ã‚Â§1:umcom:on] affiche un lien vers le bloc'],
 "mercury"=>['Lecteur web universel :
 permet de lire le contenu brut d\'une page web.
-Utilise l\'API Mercury. Si votre site n\'y répond pas, il est préférable de s\'y conformer.'],
+Utilise l\'API Mercury. Si votre site n\'y rÃƒÂ©pond pas, il est prÃƒÂ©fÃƒÂ©rable de s\'y conformer.'],
 "mercurykey"=>['Admin : ajouter l\'api_key (mercury.com) dans la table mercury, ligne 1 colonne 0'],
 "searchlang"=>['recherche multilingue'],
 "umsearchlang"=>['recherche multilingue'],
 "not_published"=>['Article indisponible'],
-"tables"=>['Séparateurs : 
+"tables"=>['SÃƒÂ©parateurs : 
 - colonnes :\"|\" ou virgules
-- lignes : \"¬\" ou saut de ligne'],
-"menubub"=>['N° de table des menus'],
+- lignes : \"Ã‚Â¬\" ou saut de ligne'],
+"menubub"=>['NÃ‚Â° de table des menus'],
 "tweetfeed"=>['Diffusion Twitter'],
 "tweetfeed_help"=>['Utiliser uniquement un ou plusieurs modules \'api_arts\' ;
-la clef twitter utilisée est la N°4'],
-"purpose"=>['Ajoutez et votez des propositions ; vous ne pouvez effacer votre entrée que le jour courant.'],
-"nodes"=>['Ceci permettra de créer une nouvelle couche de Hubs (un Node).
+la clef twitter utilisÃƒÂ©e est la NÃ‚Â°4'],
+"purpose"=>['Ajoutez et votez des propositions ; vous ne pouvez effacer votre entrÃƒÂ©e que le jour courant.'],
+"nodes"=>['Ceci permettra de crÃƒÂ©er une nouvelle couche de Hubs (un Node).
 Lancer un node : /?qd=nodename
-Modifiez la connection mysql pour y associer une autre base de données, sinon une nouvelle série de tables avec le nouveau préfix sera créée.'],
-"updatenotes"=>['notes de mise à jour'],
-"lastupdate"=>['Dernière synchronisation en date du'],
-"softwareupdated"=>['Le logiciel a été mis à jour'],
+Modifiez la connection mysql pour y associer une autre base de donnÃƒÂ©es, sinon une nouvelle sÃƒÂ©rie de tables avec le nouveau prÃƒÂ©fix sera crÃƒÂ©ÃƒÂ©e.'],
+"updatenotes"=>['notes de mise ÃƒÂ  jour'],
+"lastupdate"=>['DerniÃƒÂ¨re synchronisation en date du'],
+"softwareupdated"=>['Le logiciel a ÃƒÂ©tÃƒÂ© mis ÃƒÂ  jour'],
 "softwarever"=>['version locale'],
 "softwaredist"=>['version distante'],
-"updatedetails"=>['détails de la dernière mise à jour'],
-"updateno"=>['Ce serveur n\'est pas configuré pour recevoir des mises à jour'],
-"cookie"=>['Le cookie nommé \"iq\" contient l\'id de votre IP, ce qui permet de ne considérer qu\'un seul visiteur même si votre IP change. Voir [privacy:help§politique de confidentialité des données].'],
-"privacy"=>['Le site ne procède à aucune utilisation ni revente des données liées aux visiteurs, hormis pour les statistiques de fréquentation du site.
-Toutes les activités sur le site sont supprimées tous les ans en moyenne.'],
+"updatedetails"=>['dÃƒÂ©tails de la derniÃƒÂ¨re mise ÃƒÂ  jour'],
+"updateno"=>['Ce serveur n\'est pas configurÃƒÂ© pour recevoir des mises ÃƒÂ  jour'],
+"cookie"=>['Le cookie nommÃƒÂ© \"iq\" contient l\'id de votre IP, ce qui permet de ne considÃƒÂ©rer qu\'un seul visiteur mÃƒÂªme si votre IP change. Voir [privacy:helpÃ‚Â§politique de confidentialitÃƒÂ© des donnÃƒÂ©es].'],
+"privacy"=>['Le site ne procÃƒÂ¨de ÃƒÂ  aucune utilisation ni revente des donnÃƒÂ©es liÃƒÂ©es aux visiteurs, hormis pour les statistiques de frÃƒÂ©quentation du site.
+Toutes les activitÃƒÂ©s sur le site sont supprimÃƒÂ©es tous les ans en moyenne.'],
 "umrsrch"=>['Rechercher :
 - un id (1873)
 - un titre (Oay-126)
 - une date ymd (150706)
 - un terme dans n\'importe quelle langue
 - une liste d\'id ou de titres (ot-100,1873,312-14) (aussi en mode tableur)'],
-"starmap"=>['étoiles HD ou HIP (HIP par défaut)
+"starmap"=>['ÃƒÂ©toiles HD ou HIP (HIP par dÃƒÂ©faut)
 ex : HD 150680, hd150680, hip99461, 88601, 2021
-commandes pré-établies : knownstars, allstars
-Accepte les requêtes de Star (ra, dc, dist, radius)'],
-"clusters"=>['Clusters de tags : catégories génériques obtenues par émergence']];
+commandes prÃƒÂ©-ÃƒÂ©tablies : knownstars, allstars
+Accepte les requÃƒÂªtes de Star (ra, dc, dist, radius)'],
+"clusters"=>['Clusters de tags : catÃƒÂ©gories gÃƒÂ©nÃƒÂ©riques obtenues par ÃƒÂ©mergence']]; ?>

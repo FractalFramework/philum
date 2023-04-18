@@ -51,14 +51,14 @@ Definitions :
 :last : the N last articles ;
 
 Channel can be used in a connector \':ajax\' (splitted with comas) like here :
-[site.com:site blog:hub :channel�Titre, 
-close�x:ajax]','autorefresh (seconds)',''],
+[site.com:site blog:hub :channelÂ§Titre, 
+closeÂ§x:ajax]','autorefresh (seconds)',''],
 "chat"=>['Chat between members','room name','autorefresh (seconds) ',''],
 "chatxml"=>['chat between servers','name of room','autorefresh (seconds)',''],
 "chrono"=>['time of generation of page','','',''],
 "classtag_arts"=>['Display articles from a class of tags ','','',''],
 "clear"=>['clear:left disable float:left','','',''],
-"codeline"=>['return html from Codeline','ex: [[_URL�_SUJ:link]�h2:html] [[_OPT�txtsmall2:css]','',''],
+"codeline"=>['return html from Codeline','ex: [[_URLÂ§_SUJ:link]Â§h2:html] [[_OPTÂ§txtsmall2:css]','',''],
 "conn"=>['result of a simple connector','','',''],
 "connector"=>['write code using connectors','the editor is copied in the field of param','article balise',''],
 "contact"=>['mail to admin','title','css',''],
@@ -158,7 +158,7 @@ option (mode) :
 "sources"=>['url source of article','number of occurences','',''],
 "stats"=>['graphic of visitors','number of days (current by default)','display text',''],
 "submenus"=>['drop menus','syntax :
-each object is a connector \':link\' (ID, ID�titre, category)
+each object is a connector \':link\' (ID, IDÂ§titre, category)
 each line generate a button
 the number of tilds give the depth
 buttons a top of hierarchy can not be a link
@@ -191,4 +191,4 @@ three
 - cat-public : articles in \'public\' ;
 - cat-1 : current category','',''],
 "microarts"=>['short articles','specify a thread','',''],
-"vacuum"=>['open art from web via Vacuum','','','']];
+"vacuum"=>['open art from web via Vacuum','','','']]; ?>

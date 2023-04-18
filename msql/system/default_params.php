@@ -17,4 +17,4 @@ $r=["_menus_"=>['default','name'],
 "23"=>['.7z.psd.rar.pps.webp','upload_extensions'],
 "25"=>['LANG','lang'],
 "26"=>['fr en es','articles_lang'],
-"27"=>['440/320','thumbnails_size']];
+"27"=>['440/320','thumbnails_size']]; ?>

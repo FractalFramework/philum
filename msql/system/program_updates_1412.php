@@ -1,46 +1,46 @@
 <?php //msql/program_updates_1412
 $r=["_menus_"=>['date','text'],
 "1"=>['1201','publication'],
-"2"=>['1203','révision rédaction composants msql'],
-"3"=>['1204','réfection de timetravel : (remarche), accessible depuis le menu admin'],
-"4"=>['1205','amélioration du gestionnaire utags : différenciation entre le terme présenté et le terme connu (pas de caractères spéciaux dans l\'url)'],
-"5"=>['1206','amélioration du système de titres (souvent affichés avant d\'être connus) le module page_titles est surtout interne aux actions'],
-"6"=>['1210','rénovation de artmod : templates, css, rstr'],
-"7"=>['1211','- abandon du module système popadmin (rendu interne avec tout un jeu de rstr)
-- abandon de l\'éditeur de largeurs du design
-- rénovation du desktop, qui se load avec une rstr'],
-"8"=>['1212','rénovation de artmod : templates, css, rstr'],
-"9"=>['1213','ajout d\'une classe mysql (très pratique) et rénovation de la classe msql'],
-"10"=>['1215','réfection du modèle de plugin et de la classe msq'],
+"2"=>['1203','rÃ©vision rÃ©daction composants msql'],
+"3"=>['1204','rÃ©fection de timetravel : (remarche), accessible depuis le menu admin'],
+"4"=>['1205','amÃ©lioration du gestionnaire utags : diffÃ©renciation entre le terme prÃ©sentÃ© et le terme connu (pas de caractÃ¨res spÃ©ciaux dans l\'url)'],
+"5"=>['1206','amÃ©lioration du systÃ¨me de titres (souvent affichÃ©s avant d\'Ãªtre connus) le module page_titles est surtout interne aux actions'],
+"6"=>['1210','rÃ©novation de artmod : templates, css, rstr'],
+"7"=>['1211','- abandon du module systÃ¨me popadmin (rendu interne avec tout un jeu de rstr)
+- abandon de l\'Ã©diteur de largeurs du design
+- rÃ©novation du desktop, qui se load avec une rstr'],
+"8"=>['1212','rÃ©novation de artmod : templates, css, rstr'],
+"9"=>['1213','ajout d\'une classe mysql (trÃ¨s pratique) et rÃ©novation de la classe msql'],
+"10"=>['1215','rÃ©fection du modÃ¨le de plugin et de la classe msq'],
 "11"=>['1216','- les subarticles trop nombreux sont mis en flow
-- réfection du connecteur :pop : les données sont stockées plutôt qu\'envoyées
+- rÃ©fection du connecteur :pop : les donnÃ©es sont stockÃ©es plutÃ´t qu\'envoyÃ©es
 - nouveau menu msql
-- échec de l\'implantion des classes msql'],
-"12"=>['1217','- les catégories préfixées d\'un underscore sont écartées du Load (sauf appel spécifique)
-- amélioration du comportement d\'héritage des modules (pour que le module pointé prédomine sur le précédent qui était d\'une condition moindre)
-- révision de verif_defcons (pas d\'approximation)
-- ajout du support des bases msql dans le sélecteur ajax hidslct_j()
+- Ã©chec de l\'implantion des classes msql'],
+"12"=>['1217','- les catÃ©gories prÃ©fixÃ©es d\'un underscore sont Ã©cartÃ©es du Load (sauf appel spÃ©cifique)
+- amÃ©lioration du comportement d\'hÃ©ritage des modules (pour que le module pointÃ© prÃ©domine sur le prÃ©cÃ©dent qui Ã©tait d\'une condition moindre)
+- rÃ©vision de verif_defcons (pas d\'approximation)
+- ajout du support des bases msql dans le sÃ©lecteur ajax hidslct_j()
 - ajout d\'un moteur de recherche msql'],
-"13"=>['1218','- aménagement du système des titres
+"13"=>['1218','- amÃ©nagement du systÃ¨me des titres
 - ajout du plugin reader, pour offrir la home dans une iframe
-- delfile sécurisé dans msql'],
-"14"=>['1219','- ajout (et réfection) des plugs arts, read, reader (lecture externe), imtx et imgtxt
+- delfile sÃ©curisÃ© dans msql'],
+"14"=>['1219','- ajout (et rÃ©fection) des plugs arts, read, reader (lecture externe), imtx et imgtxt
 - ajout du bunton track dans les options d\'articles
-- intégration dans _admin.css d\'éléments de msql
-- réforme interne du pointage de lignes du dispositif msql (erreurs possibles)
-- rénovation du sélecteur de ligne libre après un clonage de ligne'],
-"15"=>['1222','- petite révision des templates'],
-"16"=>['1223','- petite révision du moteur de recherche
-- les tags ouvrent plutôt des popups
+- intÃ©gration dans _admin.css d\'Ã©lÃ©ments de msql
+- rÃ©forme interne du pointage de lignes du dispositif msql (erreurs possibles)
+- rÃ©novation du sÃ©lecteur de ligne libre aprÃ¨s un clonage de ligne'],
+"15"=>['1222','- petite rÃ©vision des templates'],
+"16"=>['1223','- petite rÃ©vision du moteur de recherche
+- les tags ouvrent plutÃ´t des popups
 - renommages '],
-"17"=>['1224','- réparation du title des tags
+"17"=>['1224','- rÃ©paration du title des tags
 - bub peut appeler des modules
 - ajout du tri par colonnes dans msql
 - fusion de 2 fonctions similaires as msq_copy
-- msql_read relifté
-- ajout de plug à la lib des listes déroulantes'],
-"18"=>['1225','- nombreux correctifs pour quand on n\'est pas logué...
+- msql_read reliftÃ©
+- ajout de plug Ã  la lib des listes dÃ©roulantes'],
+"18"=>['1225','- nombreux correctifs pour quand on n\'est pas loguÃ©...
 (admin sql, login, comportement des connecteurs et plugins, etc..., fix issue changement de contexte)
-- bug générés par les récentes rénovations
-- réparation comportement des connecteurs au noeud où il faut choisir entre conn public, privé, plugin ou codeline (ou basic)
-- réparation du rstr48 (login), dissocié du rstr51(apps publiques)']]; ?>
+- bug gÃ©nÃ©rÃ©s par les rÃ©centes rÃ©novations
+- rÃ©paration comportement des connecteurs au noeud oÃ¹ il faut choisir entre conn public, privÃ©, plugin ou codeline (ou basic)
+- rÃ©paration du rstr48 (login), dissociÃ© du rstr51(apps publiques)']]; ?>

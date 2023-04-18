@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php //philum/msql/newsnet_citation_9
 $r=["_menus_"=>['Code de Nuremberg'],
 1=>['Article 1 : � Le consentement volontaire du sujet humain est absolument essentiel. Cela veut dire que la personne int�ress�e doit jouir de capacit� l�gale totale pour consentir ; qu\'elle doit �tre laiss�e libre de d�cider, sans intervention de quelque �l�ment de force de fraude, de contrainte, de supercherie, de duperie ou d\'autres formes de contraintes ou de coercition. �'],
@@ -11,3 +12,18 @@ $r=["_menus_"=>['Code de Nuremberg'],
 9=>['Article 8 : � L\'exp�rience ne devrait �tre men�e que par des personnes scientifiquement qualifi�es. Le plus haut degr� de comp�tence et de soin devrait �tre exig� � toutes les �tapes de l\'exp�rience de ceux qui m�nent ou s\'engagent dans l\'exp�rience. �'],
 10=>['Article 9 : � L\'exp�rience ne devrait �tre men�e que par des personnes scientifiquement qualifi�es. Le plus haut degr� de comp�tence et de soin devrait �tre exig� � toutes les �tapes de l\'exp�rience de ceux qui m�nent ou s\'engagent dans l\'exp�rience. �'],
 11=>['Article 10 : � Le scientifique charg� de l\'exp�rience doit �tre pr�t � l\'interrompre � tout moment, s\'il a une raison de croire que sa continuation pourrait entra�ner des blessures, l\'invalidit� ou la mort pour le sujet exp�rimental. �']];
+=======
+<?php //msql/public_citation_9
+$r=["_menus_"=>['Code de Nuremberg'],
+"1"=>['Article 1 : Â« Le consentement volontaire du sujet humain est absolument essentiel. Cela veut dire que la personne intÃ©ressÃ©e doit jouir de capacitÃ© lÃ©gale totale pour consentir ; qu\'elle doit Ãªtre laissÃ©e libre de dÃ©cider, sans intervention de quelque Ã©lÃ©ment de force de fraude, de contrainte, de supercherie, de duperie ou d\'autres formes de contraintes ou de coercition. Â»'],
+"2"=>['Article 1 (suite) : Â« L\'obligation et la responsabilitÃ© d\'apprÃ©cier les conditions dans lesquelles le sujet donne son consentement incombent Ã  la personne qui prend l\'initiative et la direction de ces expÃ©riences ou qui y travaille. Cette obligation et cette responsabilitÃ© s\'attachent Ã  cette personne, qui ne peut les transmettre Ã  nulle autre sans Ãªtre poursuivie. Â»'],
+"3"=>['Article 2 : Â« L\'expÃ©rience doit avoir des rÃ©sultats pratiques pour le bien de la sociÃ©tÃ© impossibles Ã  obtenir par d\'autres moyens ; elle ne doit pas Ãªtre pratiquÃ©e au hasard et sans nÃ©cessitÃ©. Â»'],
+"4"=>['Article 3 : Â« Les fondements de l\'expÃ©rience doivent rÃ©sider dans les rÃ©sultats d\'expÃ©riences antÃ©rieures faites sur des animaux, et dans la connaissance de la genÃ¨se de la maladie ou des questions de l\'Ã©tude, de faÃ§on Ã  justifier par les rÃ©sultats attendus l\'exÃ©cution de l\'expÃ©rience. Â»'],
+"5"=>['Article 4 : Â« L\'expÃ©rience devrait Ãªtre menÃ©e de maniÃ¨re Ã  Ã©viter toutes les souffrances et blessures physiques et mentales inutiles. Â»'],
+"6"=>['Article 5 : Â« L\'expÃ©rience ne doit pas Ãªtre tentÃ©e lorsqu\'il y a une raison a priori de croire qu\'elle entraÃ®nera la mort ou l\'invaliditÃ© du sujet, Ã  l\'exception des cas oÃ¹ les mÃ©decins qui font les recherches servent eux-mÃªmes de sujets Ã  l\'expÃ©rience. Â»'],
+"7"=>['Article 6 : Â« Le degrÃ© de risque Ã  prendre ne doit jamais dÃ©passer celui dÃ©terminÃ© par l\'importance humanitaire du problÃ¨me Ã  rÃ©soudre par l\'expÃ©rience. Â»'],
+"8"=>['Article 7 : Â« On doit faire en sorte d\'Ã©carter du sujet expÃ©rimental toute Ã©ventualitÃ©, si mince soit-elle, susceptible de provoquer des blessures, l\'invaliditÃ© ou la mort. Â»'],
+"9"=>['Article 8 : Â« L\'expÃ©rience ne devrait Ãªtre menÃ©e que par des personnes scientifiquement qualifiÃ©es. Le plus haut degrÃ© de compÃ©tence et de soin devrait Ãªtre exigÃ© Ã  toutes les Ã©tapes de l\'expÃ©rience de ceux qui mÃ¨nent ou s\'engagent dans l\'expÃ©rience. Â»'],
+"10"=>['Article 9 : Â« L\'expÃ©rience ne devrait Ãªtre menÃ©e que par des personnes scientifiquement qualifiÃ©es. Le plus haut degrÃ© de compÃ©tence et de soin devrait Ãªtre exigÃ© Ã  toutes les Ã©tapes de l\'expÃ©rience de ceux qui mÃ¨nent ou s\'engagent dans l\'expÃ©rience. Â»'],
+"11"=>['Article 10 : Â« Le scientifique chargÃ© de l\'expÃ©rience doit Ãªtre prÃªt Ã  l\'interrompre Ã  tout moment, s\'il a une raison de croire que sa continuation pourrait entraÃ®ner des blessures, l\'invaliditÃ© ou la mort pour le sujet expÃ©rimental. Â»']]; ?>
+>>>>>>> c3133bed7b5cef8cf040b043d741a1c96370c55d
