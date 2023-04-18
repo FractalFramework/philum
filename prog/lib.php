@@ -362,7 +362,7 @@ function utf_r($r,$o=''){$rt=[];
 if(is_array($r))foreach($r as $k=>$v){
 	$kb=$o?utf8dec_b($k):utf8enc($k); $k=$kb?$kb:$k;
 	if(is_array($v))$rt[$k]=utf_r($v,$o);
-	else $rt[$k]=$o?utf8dec_b($v,1):utf8enc($v);}
+	else $rt[$k]=$o?utf8dec_b($v):utf8enc($v);}
 return $rt;}
 
 #tables

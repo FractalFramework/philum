@@ -385,10 +385,12 @@ elseif($xt=='.svg'){[$p,$w,$h]=subparams($da); return image(goodroot($p),$w,$h);
 elseif($xt=='.txt'){$dt=goodroot($da); return lkt('',$dt,strrchr($dt,'/'));}
 elseif($xt=='.gz')return mk::download($da);
 elseif($xt=='.mp3'||$xt=='.m4a')return pop::getmp3(goodroot($da),$id,rstr(145));
-elseif($xt=='.mp4'||$xt=='.ogg'||$xt=='.webm'){//.h264
-	if($m!=3)return lj('txtx','pagup_usg,video___'.ajx($da),pictxt('video',strend($da,'/')));
-	else{[$d,$t]=cprm($da); $d=goodroot($d);
-		if($t)return lkt('',$d,$t); else return pop::getmp4($da,$id,rstr(145));}}
+elseif($xt=='.mp4'||$xt=='.ogg'||$xt=='.webm'){[$p,$o]=cprm($da); $vid=$o?$o:$p;//.h264
+	if($m!=3)return lj('txtx','pagup_usg,video___'.ajx($vid),pictxt('video',strend($vid,'/')));
+	else{//strpos($da,'§');
+		if(is_img($p))return lkt('',goodroot($o),img('img/'.$p));
+		elseif($o)return lkt('',goodroot($p),$o);
+		else return pop::getmp4($da,$id,rstr(145));}}
 //links
 $res=self::connlk($da,$id,$m,$nl,$pw); if($res=='-')return; if($res)return $res;
 $cn=substr($c,1); //echo $cn.'-';
