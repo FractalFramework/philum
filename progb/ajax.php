@@ -9,7 +9,7 @@ $r=ajxr($callj,5);
 $ret=''; $p1=''; $t=$app; $s='';
 $sz=get('sz'); $tg=get('tg'); //$dn2=get('dn2');
 $prm=$_POST??[];
-if($prm){$prm=utf_r($prm,1);
+if($prm){$prm0=$prm; $prm=utf_r($prm,1);
 $prm=delr_r($prm);
 [$p1,$p2]=arb($prm,2);}
 

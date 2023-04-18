@@ -3,7 +3,7 @@
 class conn{
 #syntax_system
 static function parser($msg,$m='',$id='',$nl=''){
-$deb='';$mid='';$end='';
+$deb='';$mid='';$end=''; if(!$msg)return'';//
 $op='['; $cl=']'; $in=strpos($msg,$op);
 if($in!==false){$deb=substr($msg,0,$in);
 	$out=strpos(substr($msg,$in+1),$cl);
@@ -126,12 +126,10 @@ if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($da),0,6).$xt;//soon, del qb
 			$dc=mb_decode_numericentity($dc,[0x0,0x2FFFF,0,0xFFFF],'UTF-8');
 			$dc=utf8dec_b($dc); $dc=str::html_entity_decode_b($dc);}
 		$dcb=preg_replace('/-[0-9]+x[0-9]+/','',$dc);
-		if($dcb!=$dc)if(is_file($dcb))$dc=$dcb;
-		if(strpos($dc,' '))$dc=urlencode($dc);
-		if(strpos($da,'cadtm.org')){$nmw=$da.':jpg'; if($id)self::add_im_msg($id,$da,$nmw); return $nmw;}
-		$dc=str::urlenc($dc);//$dc=htmlentities($dc);
+		if($dcb!=$dc && is_file($dcb))$dc=$dcb;
+		if(strpos($dc,' '))$dc=urlencode($dc); $dc=str::urlenc($dc);//
 		if(!$ok){$d=curl_get_contents($dc);
-			if($d && strlen($d)>1000 && strpos($d,'Forbidden')===false && strpos($d,'<')===false){
+			if($d && strlen($d)>1000 && strpos($d,'Forbidden')===false){// && strpos($d,'<')===false
 				$er=write_file('img/'.$nmw,$d); $ok=1;
 				if(is_zip('img/'.$nmw))gz2im('img/'.$nmw);}//ziped img
 			if(!$ok)$ok=@copy($dc,'img/'.$nmw);}}
@@ -398,16 +396,18 @@ if(method_exists($cn,'call') && isset($cn::$conn)){[$p,$o]=cprm($d); return $cn:
 //if($cn){$ret=codeline::mod_basic($cn,$d); if($ret)return $ret;}
 return '['.$da.']';}
 
-static function connlk($da,$id,$m,$nl,$pw){//!
-if(is_img($da) && strpos($da,'§')===false && strpos($da,'<')===false){
+static function connlk($da,$id,$m,$nl,$pw){
+$par=strpos($da,'§'); $http=strpos($da,'http'); $html=strpos($da,'<');
+if(is_img($da) && $par===false){// && $html===false
 	if(substr($da,0,4)=='http' && $id)$da=conn::get_image($da,$id,$m);
 	return conn::place_image($da,$m,$nl,$pw,$id);}
-if((strpos($da,'§')!==false or strpos($da,'http')!==false) && strpos($da,'<a')===false){//secure double hooks
-	[$p,$o]=cprm($da); //echo $p.'§'.$o.br();
+if(($par or $http!==false) && $html===false){//secure double hooks
+	[$p,$o]=cprm($da);
 	if(is_img($p)){//image§text
 		//if(substr($p,0,4)=='http')$p=conn::get_image($p,$id,$m);
 		if(is_img($o))return mk::popim($p,image(goodroot($o)),$id);//mini
 		//return pop::figure($p.'§'.$o,$pw,$nl,$id);
+		if(is_http($o))return lkt('',$o,img($p));
 		return mk::popim($p,pictxt('img',$o),$id);}
 	elseif(is_img($o)){//link§image
 		if(substr($o,0,4)=='http')$o=conn::get_image($o,$id,$m);

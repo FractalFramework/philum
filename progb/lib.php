@@ -152,8 +152,8 @@ if($j)$ja=$o?atb('onblur',$j):atb('onkeydown',$j).atk($j);
 return div(atb('contenteditable','true').atd($id).atc($c).ats($s).$ja,$d?$d:' ');}
 function divedit($id,$c,$s,$j,$d){return diveditbt($id).divarea($id,$d,$c,$s,$j);}
 function form($go,$d){return '<form method="post" action="'.$go.'">'.$d.'</form>';}
-function goodarea($id,$v,$n=44,$o=''){$nb=round(strlen($v)/$n); $nb=$nb>10?10:$nb;
-$h=ceil(strlen($v)/$n); $hb=substr_count($v,"\n")*16; if($hb>$h)$h=$hb;
+function goodarea($id,$v,$n=44,$o=''){$nb=round(mb_strlen($v)/$n); $h=$nb>10?10:$nb;
+$hb=substr_count($v,"\n"); if($hb>$h)$h=$hb>10?10:$h;
 return textarea($id,$v,$n,$h,['wrap'=>'false','onkeyup'=>atjr('areasize',['this'])]);}
 
 //upload
@@ -340,13 +340,16 @@ include_once($p.'error.lib.php'); include_once($p.'trace.lib.php'); PclTarExtrac
 //json
 function json_error(){
 return match(json_last_error()){
-JSON_ERROR_NONE=>0,
+JSON_ERROR_NONE=>'',
 JSON_ERROR_DEPTH=>1,//'Profondeur maximale atteinte'
 JSON_ERROR_STATE_MISMATCH=>2,//'Inadéquation des modes ou underflow'
 JSON_ERROR_CTRL_CHAR=>3,//'Erreur lors du contrôle des caractères'
 JSON_ERROR_SYNTAX=>4,//'Erreur de syntaxe ; JSON malformé'
 JSON_ERROR_UTF8=>5,//'Caractères UTF-8 malformés, erreur encodage'
 default=>6};}//'Erreur inconnue'
+
+function json_enc($r){$r=utf_r($r);
+return json_encode($r);}//JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_UNESCAPED_UNICODE
 
 function mkjson($r,$o=''){
 $rb=utf_r($r);//,sql::$enc=='utf8'?1:0
@@ -359,7 +362,7 @@ function utf_r($r,$o=''){$rt=[];
 if(is_array($r))foreach($r as $k=>$v){
 	$kb=$o?utf8dec_b($k):utf8enc($k); $k=$kb?$kb:$k;
 	if(is_array($v))$rt[$k]=utf_r($v,$o);
-	else $rt[$k]=$o?utf8dec_b($v):utf8enc($v);}
+	else $rt[$k]=$o?utf8dec_b($v,1):utf8enc($v);}
 return $rt;}
 
 #tables
@@ -421,7 +424,7 @@ return html_entity_decode($d);}//mysql2utf8
 function utf2ascii($d){$d=$d??''; $d=htmlentities($d,ENT_QUOTES,'UTF-8'); $d=utf8dec2($d);
 return htmlspecialchars_decode($d);}////$d=ascii2iso($d);//html_entity_decode
 function utf8enc_b($d){$d=$d??''; $d=he2utf($d); return html_entity_decode($d);}
-function utf8dec_b($d){$d=utf2ascii($d); return str::html_entity_decode_b($d);}//most used//normalize quotes
+function utf8dec_b($d,$o=''){$d=utf2ascii($d); return $o?$d:str::html_entity_decode_b($d);}//most used
 function detect_enc($d){return mb_detect_encoding($d,'UTF-8,ISO-8859-1',true);}
 function is_utf($d){return strpos($d,'Ã')||strpos($d,'â€')||strpos($d,'Ð')||strpos($d,'ã');}
 function urlutf($u){return urlencode(utf8enc($u));}//str::urlenc()

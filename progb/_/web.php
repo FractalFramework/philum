@@ -28,7 +28,7 @@ if(!empty($defs[0])){
 return [$ti,$tx];}
 
 static function metas($u,$d=''){
-if(!$d)$d=vaccum_ses(http($u),''); //$d=utf2ascii($d);//eco($d);
+if(!$d)$d=vaccum_ses(http($u),''); $d=utf2ascii($d);//eco($d);
 if(!$d)return ['','','']; $dom=dom($d); $ti=''; $tx='';
 [$ti,$tx]=self::metas2($u,$d,$dom);
 if(!$ti)$ti=dom::extract($dom,'title:property:meta');
