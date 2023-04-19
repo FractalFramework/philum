@@ -35,9 +35,9 @@ $a='trans_'.self::$motor;
 return $a::detect($p,$o,$prm);}
 
 #translate
-static function build($from,$format,$txt,$to){
+static function build($txt,$from,$to,$format){
 $a='trans_'.self::$motor;
-return $a::build($from,$format,$txt,$to);}
+return $a::build($txt,$from,$to,$format);}
 
 static function cut($txt){
 $na=2000; $nb=strlen($txt); $n=ceil($nb/$na); $r=explode(' ',$txt); $nc=0; $ret='';
@@ -66,7 +66,7 @@ return $d;}
 
 #translate
 static function read($txt,$from='',$to='',$format='off'){
-$r=self::build($from,$format,$txt,$to); //pr($r);
+$r=self::build($txt,$from,$to,$format);
 $ret=$r['text'];
 $ret=self::correct($ret);
 return utf8dec_b($ret);}

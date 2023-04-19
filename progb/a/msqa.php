@@ -307,12 +307,12 @@ if($md=='import_conn')$d=self::edtconn($r);//use "|" for cells and "¬" for lines
 if($md=='import_csv')$d=self::mkcsv($r);
 if($md=='import_json')$d=self::edtjson($r);
 //if($prm[0]??'')$d.="\n".delbr($prm[0],"\n");//addcsv
-$ret=textarea($md,$d,60,10);
+$ret=textarea($md,$d??'',60,10);
 $ret.=lj('','admsql_msqlops_'.ajx($md).'__'.ajx($p).'_'.ajx($md),picto('ok'));
 return $ret;}
 
 //msqlops
-static function tools($dr,$nod,$md,$d){
+static function tools($dr,$nod,$md,$d,$o=''){
 $r=msql::read($dr,$nod); $ok=''; 
 switch($md){
 case('creatable'):[$dr,$nod,$r]=self::creatable_sav($d); $rl=1; break;
@@ -353,7 +353,7 @@ case('connexions'):$r=self::connexions($dr.'/'.$nod,$d); $ok=1; break;
 case('friends'):$r=self::friends($r,$d); $ok=1; break;
 case('import_json'):$r=self::import_json($d); break;
 case('import_jsonlk'):$r=self::import_json_lk($d); break;
-case('import_csv'):$r=self::import_csv($r,$d); break;
+case('import_csv'):$r=self::import_csv($r,$d,$o); break;
 case('rename_table'):[$dr,$nod]=self::optable($dr,$nod,$d,0); $ok=1; $rl=1; break;
 case('duplicate_table'):[$dr,$nod]=self::optable($dr,$nod,$d,1); $ok=1; $rl=1; break;
 case('del_backup'):self::deltable($dr,$nod,1); break;
@@ -408,11 +408,12 @@ if($r)foreach($r as $k=>$v){$rb=[$k];
 	$rc[]=implode('#',$rb);}
 return implode("\n",$rc);}
 
-static function import_csv($r,$d){
+static function import_csv($r,$d,$o=''){
 $ra=explode("\n",$d); $rc=[];
 foreach($ra as $k=>$v){$rb=explode('#',$v);
 	foreach($rb as $kb=>$vb)$rc[$k][$kb]=trim(delbr(str_replace(['(diez)','(n)'],['#',"\n"],$vb)));}
 $rc=self::del_keys($rc);
+if($o && $rc)$rc=$r+$rc;
 return $rc?$rc:$r;}
 
 //ops

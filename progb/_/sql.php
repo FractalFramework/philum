@@ -162,7 +162,7 @@ if($o){$n=ma::lastid($b); if($n)self::resetdb($b,$n+1);}}
 static function tuples($b,$c){return self::call('select count(*) as tuples, '.$c.' from '.ses($b).' group by '.$c.' having count(*)>1 order by tuples desc','w');}
 static function doublons($b,$c){$b=ses($b); return self::call('SELECT COUNT(*) AS nbr_doublon, '.$c.' FROM '.$b.' GROUP BY '.$c.' HAVING COUNT(*)>1','w');}
 static function killdoublons($b,$c){$b=ses($b); if(auth(6))return self::call('DELETE t1 FROM '.$b.' AS t1, '.$b.' AS t2 WHERE t1.id > t2.id AND t1.'.$c.' = t2.'.$c.'','w');}
-static function maintenance($k,$v,$b1,$b2){return self::read2($k.','.$v,$b1,'kv','p1 left outer join '.ses($b2).' p2 on p2.id=p1.'.$k.' where p2.id is null group by '.$k,1);}//maintenance('idtag','tag','qdta','qdt');
+static function maintenance($k,$v,$b1,$b2){return self::read2($k.','.$v,$b1,'kv','p1 right outer join '.ses($b2).' p2 on p1.id=p2.'.$k.' where p1.id is null group by '.$k,1);}//maintenance('idtag','tag','qdt','qdta');
 static function backup($b,$o=''){$bb='z_'.ses($b).$o; $b2=$b.'z'; ses($b2,$bb);
 if(self::ex($b2))self::qr('drop table '.$bb);
 self::qr('create table '.$bb.' like '.ses($b));

@@ -21,7 +21,7 @@ $rb=['EN','FR','ES','IT','DE','NL','PL','JA','PT','RU','SV','TR','ZH'];
 //,'BG','CS','DA','EL','ET','HU','ID','LT','LV','PL','RO','SK','SL','UK'
 return implode(',',$rb);}
 
-static function build($from,$format,$txt,$to){$prm='';
+static function build($txt,$from,$to,$format){$prm='';//$from,$format,$txt,$to
 if(!$to)$to=ses('lng');//$to=setlng($to);
 if($from)$prm='&source_lang='.strtoupper($from);
 if($to)$prm.='&target_lang='.strtoupper($to);
@@ -35,11 +35,11 @@ $prm.='&preserve_formatting=1';//
 //$prm.='&outline_detection=0';
 $prm.='&tag_handling=off';//html//xml
 $r=self::api($prm,'translate',$txt);
-$from=$r['detected_source_language']; $txt=$r['text'];
+$from=$r['detected_source_language']??$from; $txt=$r['text']??'';
 return ['text'=>$txt,'from'=>strtolower($from)];}
 
 static function detect($p,$o='',$prm=[]){$p=$prm[0]??$p; $lg=prmb(25);
-if($p){$r=self::build('','',$p,$lg); return $r['from']??'';}
+if($p){$r=self::build($p,'',$lg,''); return $r['from']??'';}
 }//else return ses('lang');
 
 }

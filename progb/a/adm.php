@@ -558,23 +558,23 @@ $btpg=pop::btpages($nbp,$page,$i,'admarts_adm,articles___'.ajx($admin).'_'.$dig.
 $ret=tabler($rtr,0);
 return $btpg.$ret.$btpg;}
 
-static function articles($admin,$dig='',$page=''){$bt='';
-$rb=['categories','all_arts','my_arts','users_arts','sys_arts','not_published','trash','trackbacks','chat','overcat','pictocat'];
-foreach($rb as $v)$bt.=lj('','admarts_admin___'.ajx($v),$v);
-$ret=divc('nbp',$bt);
-if($admin=='create')$ret.=edit::artform('','');
-elseif($admin=='categories')$ret.=adm_categories();
-elseif($admin=='overcat')$ret.=self::overcat(1);
-elseif($admin=='pictocat')$ret.=self::pictocat();
-elseif($admin=='trackbacks'){$ret.=md::trkarts('','Tracks',0,1);}
+static function articles($admin,$dig='',$page=''){$bt=''; $ret='';
+$rb=['categories','all_arts','my_arts','users_arts','sys_arts','not_published','trash','trackbacks','discussions','overcat','pictocat'];
+foreach($rb as $v)$bt.=lj(active($admin,$v),'admarts_admin___'.ajx($v),$v);
+if($admin=='create')$ret=edit::artform('','');
+elseif($admin=='categories')$ret=semf::adm_categories();
+elseif($admin=='overcat')$ret=self::adm_overcat(1);
+elseif($admin=='pictocat')$ret=self::adm_pictocat();
+elseif($admin=='trackbacks')$ret=md::trkarts('','Tracks',0,1);
+elseif($admin=='discussions')$ret=chat::home('','');
 else{
-$qr=['id','suj','frm','day','name','re'];
-$qrt=['id'=>'ID','suj'=>'Title (edit)','frm'=>'Category','day'=>'Date','name'=>'Author','re'=>'Published'];
-$dig=$dig?$dig:$_SESSION['nbj']; $nbj=$dig?$dig:9999;
-$r=self::artlist($qr,$admin,$dig); if($r)$r=self::list_articles($r);
-if(rstr(3))$ret.=pop::dig_it_j($nbj,'admarts_adm,articles___'.ajx($admin).'_').br();
-$ret.=self::adminarts_pages($r,$qrt,$admin,$dig,$page);}
-return divd('admarts',$ret);}
+	$qr=['id','suj','frm','day','name','re'];
+	$qrt=['id'=>'ID','suj'=>'Title (edit)','frm'=>'Category','day'=>'Date','name'=>'Author','re'=>'Published'];
+	$dig=$dig?$dig:$_SESSION['nbj']; $nbj=$dig?$dig:9999;
+	$r=self::artlist($qr,$admin,$dig); if($r)$r=self::list_articles($r);
+	if(rstr(3))$ret.=divb(pop::dig_it_j($nbj,'admarts_adm,articles___'.ajx($admin).'_'));
+	$ret.=self::adminarts_pages($r,$qrt,$admin,$dig,$page);}
+return divd('admarts',divc('nbp',$bt).$ret);}
 
 //categories
 static function cat2tag($d,$tg='tag'){
@@ -589,7 +589,7 @@ elseif($o=='publish' && substr($p,0,1)=='_')$cat=substr($p,1);
 elseif($o=='modif')$cat=$res;
 elseif($o=='totag')return self::cat2tag($p);
 if($cat)sqlup('qda',['frm'=>$cat],['nod'=>ses('qb'),'frm'=>$p]);
-return self::categories();}
+return self::adm_categories();}
 
 static function edit_cats($cat){//maintainance::fixtag();
 if(!auth(5))return; $ret='';
@@ -606,7 +606,7 @@ if($cat){//champs
 	$ret.=lkc('txtx','/?admin=all_arts&cat='.$cat,picto('view')).br();}
 return $ret.br();}
 
-static function categories(){
+static function adm_categories(){
 $r=sql('frm','qda','k','nod="'.ses('qb').'" ORDER BY frm');
 $rt[]=[nms(9),'nb'];
 //if($_SESSION['auth']>=6)$lk='/?admin=categories&modif='; else $lk='/cat/';
@@ -616,13 +616,13 @@ if($r)foreach($r as $k=>$v){
 return divd('edtcat',tabler($rt));}
 
 //overcat
-static function overcatdel($id){if(auth(6))sql::del('qdd',$id); return self::overcat(1);}
+static function overcatdel($id){if(auth(6))sql::del('qdd',$id); return self::adm_overcat(1);}
 static function overcatsav($cat,$id,$prm=[]){$over=$prm[0]??'';
 if($id)sql::upd('qdd',['msg'=>$over.'/'.$cat],$id);
 else sql::sav('qdd',[ses('qbd'),'surcat',$over.'/'.$cat]);
-return self::overcat(1);}
+return self::adm_overcat(1);}
 
-static function overcat($o=''){
+static function adm_overcat($o=''){
 $r=sql('id,msg','qdd','kv',['ib'=>ses('qbd'),'val'=>'surcat']);
 if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rb[$cat]=[$ov,$k];}
 $r=sql('frm','qda','k','nod="'.ses('qb').'" and substring(frm,1,1)!="_" order by frm');
@@ -643,9 +643,9 @@ return $ret;}
 static function pictocatsav(){
 $r=sql('distinct(frm)','qda','kv','');
 if(auth(6))msql::save('',nod('pictocat'),$r);
-return self::pictocat();}
+return self::adm_pictocat();}
 
-static function pictocat(){$da='cat,picto';//catpic
+static function adm_pictocat(){$da='cat,picto';//catpic
 $ret=lj('','popup_pictography,home',picto('icon')).' ';
 $ret.=lj('popsav','popup_adm,pictocatsav',pictit('drop','set from cats')).' ';
 $ret.=msqedit::call('pictocat',$da);
@@ -729,8 +729,6 @@ case('faq'):$r=msql::read('system','program_faq',''); $ret=nl2br(stripslashes(di
 if(ses('set')=='Articles')$ret=self::articles($admin,get('dig'),get('page'));//articles
 switch($admin){//configs
 //case('chat'):$ret=art::output_trk(ma::read_idy('microchat','DESC')); break;
-case('shop'):$ret=helps('shop_class'); break;//unused
-case('book'):$ret=book::home(); break;
 case('rstr'):$ret=admx::restrictions(); break;
 case('config'):$ret=self::prms(0); break;
 case('avatar'):if($usr)$ret=self::avatar(0); break;
@@ -742,6 +740,10 @@ case('description'):$ret=self::hubprm($admin); break;
 case('google'):$ret=self::hubprm($admin); break;
 case('members'):$ret=self::members(); break;
 case('authes'):$ret=self::adm_authes(); break;
+//apps
+case('shop'):$ret=helps('shop_class'); break;//unused
+case('book'):$ret=book::home(); break;
+case('discussions'):$ret=chat::home('',''); break;
 //constructors
 case('css'):$ret=sty::home(1); break;
 case('fonts'):$ret=few::edit_fonts(); break;

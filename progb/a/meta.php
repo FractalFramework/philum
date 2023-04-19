@@ -667,24 +667,47 @@ return $ret;}
 static function admin_tags2msql($cat,$lg){
 $rt=self::catag(); $rn=[]; $bt=''; $n=0; $ret=divc('txtcadr',nms(191));
 foreach($rt as $k=>$v){$rn[$v]=$k+1; $bt.=lj(active($cat,$v),'tg2msq_meta,admin*tags2msql___'.$v.'_'.$lg,$v).' ';}
-foreach(['en','es'] as $k=>$v){$bt.=lj(active($lg,$v),'tg2msq_meta,admin*tags2msql___'.$cat.'_'.$v,$v).' ';}
+foreach(['fr','en','es'] as $k=>$v){$bt.=lj(active($lg,$v),'tg2msq_meta,admin*tags2msql___'.$cat.'_'.$v,$v).' ';}
 $ret.=divc('nbp',$bt); if(!$cat)return divd('tg2msq',$ret);
 $n=$rn[$cat];//auteurs thèmes pays type personnalité org corp
-$ra=sql('id,tag','qdt','kv',['cat'=>$cat],0); //p($ra);
-$rb=msql::kx('',nod('tags_'.$n.'fr'),0); //pr($rb);
-$rc=array_diff_key($ra,$rb); //pr($rc);
+$ra=sql('id,tag','qdt','kv',['cat'=>$cat],0);
+$rb=msql::kx('',nod('tags_'.$n.'fr'),0);
+$rc=array_diff_key($ra,$rb);
 $ret.=divc('txtcadr','newly added:'.count($rc));
 $nod=nod('tags_'.$n.$lg);
-$ret.=msqbt('',$nod);
 $j='popup_meta,admin*tags*edit___';
 if($rc)foreach($rc as $idtag=>$v)$ret.=lj('txtx',$j.$idtag.'_'.$cat,pictxt('popup',$v)).' ';
-if($rc)$r=msql::modif('',nod('tags_'.$n.'fr'),$rc,'mdfv'); //pr($r);
-$rd=msql::kx('',nod('tags_'.$n.$lg),0,['idtag',$cat]);//pr($rd);
-$re=array_diff_key($rb,$rd); //pr($re);
+if($rc)$r=msql::modif('',nod('tags_'.$n.'fr'),$rc,'mdfv');
+$rd=msql::kx('',nod('tags_'.$n.$lg),0,['idtag',$cat]);
+$re=array_diff_key($rb,$rd);
 $ret.=divc('txtcadr',$n.':'.count($rb).'-'.count($rd).'='.count($re));
-if($re)$ret.=lj('popbt','popup_msqa,editors___users/'.ajx($nod).'_import*csv','inject').br();
-if($re)$ret.=divb(implode_k($re,br(),';'),'','addcsv');
-return divd('tg2msq',$ret);}
+$ret.=msqbt('',$nod);
+if($re){$rt=[];
+	foreach($re as $k=>$v)if($v)$rt[$k]=trans::read($v,ses('lng'),$lg,'xml');
+	$ret.=lj('popbt','tgtom_meta,cleanuptag___'.ajx($cat).'_'.$lg,'cleanup').' ';
+	$ret.=lj('popbt','tgtom_meta,addcsv_addcsv__'.ajx($nod).'_'.$lg,'inject').' ';
+	$ret.=lj('popbt','popup_msqa,editors___users/'.ajx($nod).'_import*csv','open csv').br();
+	$ret.=tagb('h2',nms(153)).textarea('addcsv',implode_k($rt,n(),'#'));}
+return divd('tg2msq',$ret).divd('tgtom','');}
+
+static function addcsv($nod,$lg,$prm=[]){$d=$prm[0]??'';
+msqa::tools('users',$nod,'import_csv',$d,1);
+return msqa::editors('users/'.$nod,'import_csv');}
+
+static function cleanuptag($cat,$lg){
+$rt=self::catag(); $rn=[];
+foreach($rt as $k=>$v)$rn[$v]=$k+1; $n=$rn[$cat];
+$nod=nod('tags_'.$n.$lg);//'fr'
+$ra=sql('id,tag','qdt','kv',['cat'=>$cat],0);
+//$rb=msql::kx('',$nod,0);
+$rb=msql::kx('',$nod,0);
+$rc=array_diff_key($rb,$ra); pr($rc);
+foreach($rc as $k=>$v)unset($rb[$k]);
+$r=msql::save('',$nod,$rb);
+//$r=sql::maintenance('idtag','tag','qdt','qdta'); pr($r);
+//$r=sql::maintenance('tag','idtag','qdta','qdt'); pr($r);
+//foreach($r as $k=>$v)
+}
 
 static function admin_syn_edit($cat,$idtag){
 $ret=divc('txtcadr','add synonym for id:'.$idtag.''); $rid='synedt'.$idtag;
