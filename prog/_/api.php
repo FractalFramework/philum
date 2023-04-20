@@ -97,7 +97,7 @@ static function mksql($r){$qda=ses('qda'); $in=''; $gr=''; $rtg=[];
 $p=valk($r,['count','select','json','sql','cat','nocat','nochilds','priority','notpublished','owner','hub','minday','maxday','from','until','mintime','maxtime','mindid','maxid','source','parent','nbchars','id','minid','lang','lg','search','search_whole','fullsearch','avoid','title','folder','related','relatedby','cmd','group','order','file','page','nbyp','idlist','media','catid','poll','cluster','date','msg','classtag','famous']);
 if($p['count'])$sq['slct'][]='count('.$qda.'.id)';
 elseif($p['select'])$sq['slct'][]=$p['select'];
-elseif($p['idlist'])$sq['slct'][]=$qda.'.id';
+elseif($p['idlist']){$sq['slct'][]=$qda.'.id';}
 else $sq['slct'][]=$qda.'.id,'.$qda.'.ib,'.$qda.'.day,'.$qda.'.mail,'.$qda.'.frm,'.$qda.'.suj,'.$qda.'.img,'.$qda.'.nod,'.$qda.'.thm,'.$qda.'.name,'.$qda.'.lu,'.$qda.'.re,'.$qda.'.host,'.$qda.'.lg';
 if($p['json'] or $p['sql'] or $p['msg'])$sq['slct'][]='msg';
 //if($p['catid']){$qdc=ses('qdc'); $sq['inner'][]='inner join '.$qdc.' on '.$qdc.'.id='.$qda.'.frm and '.$qda.'.frm="'.$p['catid'].'"';}
@@ -301,8 +301,8 @@ Head::add('jscode',$js); $jb='';
 return divd($ra['rid'],$nbpg.$ret).$jb;}
 
 #call
-static function call($p){
-$ra=explode_k($p,',',':');
+static function call($p,$o='',$prm=[]){
+$p=$prm[0]??$p; $ra=explode_k($p,',',':');
 $ra=self::defaults_rq($ra);
 if($ra['file']??'')return self::file($ra);
 elseif($ra['json']??'')return self::dump($ra,'json');
@@ -339,9 +339,9 @@ static function defaults_rq($ra,$rb=[]){if(!$ra)$ra=[];
 [$pg,$to,$dig,$prw,$lg]=vals($rb,['pg','to','dig','prw','lg']);
 if($to){$ord=strtolower($ra['order']??prmb(9));
 	if($ord=='id desc')$ra['maxid']=$to;
-	elseif($ord=='day desc'){$ra['maxtime']=sql('day','qda','v',$to);}
-	elseif($ord=='day asc'){$ra['mintime']=sql('day','qda','v',$to);}
-	elseif($ord=='id asc'){$ra['minid']=$to;}}
+	elseif($ord=='day desc')$ra['maxtime']=sql('day','qda','v',$to);
+	elseif($ord=='day asc')$ra['mintime']=sql('day','qda','v',$to);
+	elseif($ord=='id asc')$ra['minid']=$to;}
 if($ra['until']??'')$ra['nodig']=1;// or $ra['maxtime']??''
 if(empty($ra['hub']) && !rstr(105))$ra['hub']=ses('qb');
 if(!empty($ra['maxtime'])){$ra['nbdays']=30; $ra['mintime']=$ra['maxtime']-(84600*30);}

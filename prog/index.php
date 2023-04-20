@@ -1,9 +1,9 @@
 <?php 
-header('Content-Type: text/html; charset='.$enc);
+header('Content-Type: text/html; charset='.ses::$enc);
 $ret='<!DOCTYPE HTML>'."\n";
 $ret.='<html lang="'.prmb(25).'"><head>'."\n";
-$ret.='<meta charset="'.$enc.'">'."\n";
-//$ret.=meta('http-equiv','Content-Type','text/html; charset='.$enc);
+$ret.='<meta charset="'.ses::$enc.'">'."\n";
+//$ret.=meta('http-equiv','Content-Type','text/html; charset='.ses::$enc);
 $ret.='<title>'.$meta['title'].'</title>'."\n";
 $ret.='<link rel="shortcut icon" href="'.$meta['favicon'].'"><base href="'.$host.'/">'."\n";
 //<link rel="image_src" href="'.$host.$meta["img"].'">
@@ -34,7 +34,7 @@ $ret.=csslink('/css/_pictos.css'.$cst);
 $ret.=csslink('/css/_oomo.css'.$cst);
 $ret.=csslink('/css/'.$meta['css'].'.css'.$cst);
 $ret.=jscode('read="'.$read.'"; flow="'.$flow.'";
-fixpop="'.ses('mobile').'"; fulpop="1"; enc="'.$enc.'";
+fixpop="'.ses('mobile').'"; fulpop="1"; enc="'.ses::$enc.'";
 state='.json_encode(ses::$st).';');
 $ret.=jslink('/prog'.$b.'/j/lib.js'.$cst);
 $ret.=jslink('/prog'.$b.'/j/ajx.js'.$cst);

@@ -65,9 +65,7 @@ return stripslashes($d??'');}
 
 static function editart($id,$cont,$prm){$p1=$prm[0]??'';
 if($p1)$d=self::modif_art($id,$p1);
-//if(ses::$enc=='utf-8')$d=utf8dec_b($d);//devutf
 $edt=txarea1($d); $txt=ma::read_msg($id,3);
-//if(ses::$enc=='utf-8')$txt=utf8dec_b($txt);//devutf
 return $cont?[$edt,$txt]:$txt;}
 
 static function publish_art($d,$id,$bs){

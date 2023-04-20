@@ -10,7 +10,7 @@ if($log=get('log'))boot::log_mods($log);
 if(!ses('USE'))boot::define_use();
 $cache=boot::deductions($cache);
 if($bim=get('rebuild_img'))ses('rebuild_img',$bim);
-$read=get('read'); $enc=ses::$enc;
+$read=get('read');
 if(!ses('iqa'))boot::define_iq();
 if(!rstr(22))boot::block_crawls();
 #env

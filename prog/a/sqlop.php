@@ -103,7 +103,7 @@ return $ret;}
 
 static function create_table($b,$r,$o=''){if(!is_array($r))return;
 if($b=='_sys')$db=$b; else $db=qd($b); $ret='';
-if(sql::$enc=='utf8')$charset='utf8mb4_unicode_ci'; else $charset='latin1_general_ci';
+if(ses::$enc=='utf-8')$charset='utf8mb4_unicode_ci'; else $charset='latin1_general_ci';
 //if($o)$r=['id'=>'ai']+$r;
 $sql='create table if not exists `'.$db.'`(
   '.self::create_cols($r).'

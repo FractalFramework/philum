@@ -1,7 +1,6 @@
 <?php
 class sql{
 static $db;
-static $enc;
 static $qr;
 
 function __construct($r){if(!self::$qr)self::dbq($r);}
@@ -50,9 +49,9 @@ if($ex)return self::upd($b,$r,$ex,$o); else return self::sav($b,$r,$o);}
 static function del($b,$q,$o='',$ob=''){
 self::qr('delete from '.ses($b).' '.self::where($q).' limit 1',$o);
 if($ob)self::reflush($b,1);}
-static function del2($b,$q,$o='',$ob=''){if(auth(6))return;
+static function del2($b,$q,$o='',$ob=''){if(!auth(6))return;
 self::qr('delete from '.ses($b).' '.self::where($q),$o);
-if($ob)self::reflush($bs,1);}
+if($ob)self::reflush($b,1);}
 
 //req
 static function format($rq,$p){$rt=[];

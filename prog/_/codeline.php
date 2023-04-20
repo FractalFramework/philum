@@ -152,10 +152,9 @@ elseif(substr($p,0,1)=='/')return lka($p,$o);
 elseif(substr($p,0,1)=='@')return lj('txtx','popup_twit,call__3_'.ajx($p).'_ban',$p);
 elseif(strpos($p,'@'))return $p;
 elseif($xt=='.pdf')return mk::pdfdoc($d,0,640);//lka($p,$o);
-elseif($xt=='.mp3'){$g=goodroot($d,'1');
-	//return lj('','popup_usg,audio___'.ajx($g),pictxt('music',strend($d,'/')));
-	return audio($d);}
+elseif($xt=='.mp3'){$g=goodroot($d,'1'); return audio($d);}
 elseif($xt=='.mp4'){$g=goodroot($d,'1'); return video($g,'auto');}
+elseif($xt=='.epub'){[$p,$o]=cprm($d); return lkt('',$p,pictxt('book2',$o?$o:strend($p,'/')));}
 elseif(strpos($p,':iframe'))return lj('','popup_conn,parser___['.ajx($p).']_3_test',pictxt('window',$o));
 elseif(strpos($p,':pdf'))return lj('','popup_conn,parser___['.ajx($p).']_3_test',pictxt('window',$o));
 elseif(substr($p,0,4)=='http')return rstr(111)?mk::webview($d,$b):lka($p,$o);

@@ -301,8 +301,8 @@ Head::add('jscode',$js); $jb='';
 return divd($ra['rid'],$nbpg.$ret).$jb;}
 
 #call
-static function call($p){
-$ra=explode_k($p,',',':');
+static function call($p,$o='',$prm=[]){
+$p=$prm[0]??$p; $ra=explode_k($p,',',':');
 $ra=self::defaults_rq($ra);
 if($ra['file']??'')return self::file($ra);
 elseif($ra['json']??'')return self::dump($ra,'json');
@@ -339,9 +339,9 @@ static function defaults_rq($ra,$rb=[]){if(!$ra)$ra=[];
 [$pg,$to,$dig,$prw,$lg]=vals($rb,['pg','to','dig','prw','lg']);
 if($to){$ord=strtolower($ra['order']??prmb(9));
 	if($ord=='id desc')$ra['maxid']=$to;
-	elseif($ord=='day desc'){$ra['maxtime']=sql('day','qda','v',$to);}
-	elseif($ord=='day asc'){$ra['mintime']=sql('day','qda','v',$to);}
-	elseif($ord=='id asc'){$ra['minid']=$to;}}
+	elseif($ord=='day desc')$ra['maxtime']=sql('day','qda','v',$to);
+	elseif($ord=='day asc')$ra['mintime']=sql('day','qda','v',$to);
+	elseif($ord=='id asc')$ra['minid']=$to;}
 if($ra['until']??'')$ra['nodig']=1;// or $ra['maxtime']??''
 if(empty($ra['hub']) && !rstr(105))$ra['hub']=ses('qb');
 if(!empty($ra['maxtime'])){$ra['nbdays']=30; $ra['mintime']=$ra['maxtime']-(84600*30);}

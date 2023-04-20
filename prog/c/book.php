@@ -42,7 +42,7 @@ static function cover($t,$id){$t=str_replace(' ',"\n",$t); //$w=$_SESSION['prma'
 $t=lj('','popup_book,home__3_'.ajx($_SESSION['book'][$id]).'_'.ses('boko'),$t);
 return div(' class="book" style="background-color:black; padding:10px; width:220px;"',divs('background-color:#222; border:1px solid #fff; padding:5px; margin:auto; color:white; font-size:16px; text-align:center; text-decoration:none;',$t));}
 
-static function prevnxt($id,$rid){$r=$_SESSION['bookr'];
+static function prevnxt($id,$rid){$r=ses('bookr');
 $j='book'.$rid.'_book,reload___'.$id; $i=0; $ok=0; $old=0;
 $lk='book'.$rid.'_book,read___'; $n=count($r);
 if($r)foreach($r as $k=>$v){$i++;
@@ -74,7 +74,7 @@ ses::$r['popw']=1000;
 return $ret;}
 
 static function reload($id){//need read or art_id
-return self::home($_SESSION['book'][$id]??'',$_SESSION['boko']);}
+return self::home($_SESSION['book'][$id]??'',ses('boko'));}
 
 static function home($p,$id){
 //Head::add('csscode',self::css());
@@ -86,14 +86,14 @@ if(strpos($p,'§')){[$p,$o]=explode('§',$p);
 	$rb['title']=stripslashes($t);}
 //if(is_numeric($p) && ses('read')!=$p)return self::cover($t,$id);
 //if($o=='api')$r=api::call2($p);else
-if(strpos($p,'&') && strpos($p,'='))$r=api::mod_rq($p);//old format
-elseif(strpos($p,'|') && strpos($p,',')===false)$r=array_flip(explode('|',$p));
-if($id=='fav' or $id=='like' or $id=='poll')$r=sql('ib','qdf','k','type="'.$id.'" and iq="'.$p.'"',1);
+//if(strpos($p,'&') && strpos($p,'='))$r=api::mod_rq($p);//old format
+//elseif(strpos($p,'|') && strpos($p,',')===false){$r=array_flip(explode('|',$p)); pr($r);}
+if($id=='fav' or $id=='like' or $id=='poll')$r=sql('ib','qdf','k',['type'=>$id,'iq'=>$p],1);
 elseif($id=='visit')$r=array_flip(array_keys(ses('mem')));
-elseif(is_numeric($p))$r=sql('ib','qdd','k','msg="'.$p.'" and val="'.$id.'"');
-else $r=api::mod($p.'');//.',verbose:1,sql:1'
+elseif(is_numeric($p))$r=sql('ib','qdd','k',['msg'=>$p,'val'=>$id]);
+else $r=api::mod($p);//.',verbose:1,sql:1'
 //if($r[$p])unset($r[$id]);
-if(!$r)return; else $_SESSION['bookr']=$r; //p($r);
+if(!$r)return; else $_SESSION['bookr']=$r;
 if(is_array($r))$d=implode(' ',$r); $i=0; $msg='';
 $here='book'; $rid=randid();
 if($p)$rb['opt']=lj('','popup_book,ifr___'.$p,pictxt('get','iframe'));

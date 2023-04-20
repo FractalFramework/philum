@@ -1,5 +1,7 @@
 <?php 
 class favs{
+static $rid='';
+
 //render
 static function icons($r){
 return desk::pane_icons($r,'icones').divc('clear','');}
@@ -14,7 +16,7 @@ return self::nav('',$rb);}
 
 //likes
 static function cart($cat){
-return sql('ib','qdf','k','type="'.$cat.'" and iq="'.ses('iq').'" order by id desc');}
+return sql('ib','qdf','k',['type'=>$cat,'iq'=>ses('iq'),'_order'=>'id desc']);}
 
 static function mklist($p){
 if($p=='poll')$r=self::cart('poll');
@@ -38,21 +40,22 @@ $r=msql::modif('',nod('coms'),[ses('iq'),$ti,$tx,$tp],$k);
 return self::reload($r);}
 
 static function form($p,$o,$b){
-$ret=inputb('comn',$o,'',nms(38)).hlpbt('fav_edit').' ';
-$ret.=lj('','popup_api_comv',picto('view')).' ';
+$rid=randid(); self::$rid=$rid;
+$ret=inputb('comn'.$rid,$o,'',nms(38)).hlpbt('fav_edit').' ';
+$ret.=lj('','popup_api_comv'.$rid,picto('view')).' ';
 $ret.=lj('','popup_apicom,menu__loadself_'.ajx($p),picto('menu')).' ';
-$ret.=checkbox_j('comp',$b,'public').br();
-$ret.=textarea('comv',$p,44,4,['placeholder'=>'Api Command','size'=>'44']);
+$ret.=checkbox_j('comp'.$rid,$b,'public').br();
+$ret.=textarea('comv'.$rid,$p,44,4,['placeholder'=>'Api Command','size'=>'44']);
 return $ret;}
 
 static function edt($k){
 $r=msql::read_b('',nod('coms'),$k);
-$ret=self::form($r[2],$r[1],$r[3]);
-$ret.=lj('popsav','plgfavcom_favs,mdf_comn,comv,comp__'.$k,pictxt('save',nms(27)));
+$ret=self::form($r[2],$r[1],$r[3]); $rid=self::$rid;
+$ret.=lj('popsav','plgfavcom_favs,mdf_comn'.$rid.',comv'.$rid.',comp'.$rid.'__'.$k,pictxt('save',nms(27)));
 return $ret;}
 
-static function add($p){$ret=self::form($p,'','');
-$ret.=lj('popsav','plgfavcom_favs,sav_comn,comv,comp',pictxt('save',nms(27)));
+static function add($p){$ret=self::form($p,'',''); $rid=self::$rid;
+$ret.=lj('popsav','plgfavcom_favs,sav_comn'.$rid.',comv'.$rid.',comp'.$rid.'',pictxt('save',nms(27)));
 return divd('fvcmdt',$ret);}
 
 static function pub($p){
@@ -62,7 +65,7 @@ return self::reload($r);}
 
 static function bt($v){$a=ajx($v[2]); $t=ajx($v[1]);
 $bt=lj('','popup_api__3_'.$a.',nbyp:20,preview:2,t:'.$t,btn('',pictxt('newspaper',$v[1],32))).' ';
-$bt.=lj('','pagup_book,home__3_'.$a.',idlist:1,nodig:1,nopages:1,t:'.$v[1].'_api',pictit('book','Web-Book',24)).' ';
+$bt.=lj('','pagup_book,home__3_'.$a.',idlist:1,nodig:1,nopages:1,order:id asc,t:'.$t.'_api',pictit('book','Web-Book',24)).' ';
 $bt.=lj('','popup_api__3_'.$a.',preview:3,nodig:1,nopages:1,file:'.$t,pictit('file-txt','Html',24)).' ';
 //$bt.=lj('','popup_api__3_'.$a.',nodig:1,nopages:1,json:1',pictit('emission','Json',24)).' ';
 $bt.=lkt('','/apicom/'.$v[2].',nodig:1,nopages:1,json:1',pictit('emission','Api',24)).' ';

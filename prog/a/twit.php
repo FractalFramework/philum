@@ -730,6 +730,7 @@ static function install(){sqlop::install('twit',self::r(),0);}
 static function apk(){
 $d=domain(host()); $n=2;
 if($d=='newsnet.fr')$n=4;
+if($d=='oumo.fr')$n=1;
 return $n;}
 
 static function home($p,$o){$rid='tw'.randid();

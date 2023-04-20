@@ -676,7 +676,7 @@ elseif($p){$qr=[];//if($o=='search')
 	if(strpos($p,',')){$r=explode(',',$p);//multicall
 		foreach($r as $k=>$v){$qr=$t->search($v,$n,$id,$minid);
 			if(!$er=self::error($qr))$qr=$qr['statuses']; //pr($qr);
-			foreach($qr as $k=>$v)if(!isset($q[$v['id']]))$q[$v['id']]=$v;} krsort($q);}
+			foreach($qr as $k=>$v)if($v['id']??'' && !isset($q[$v['id']]))$q[$v['id']]=$v;} krsort($q);}
 	else{$q=$t->search($p,$n,$id,$minid);//since_id not works
 		if(!$er=self::error($q))$q=$q['statuses'];}}
 //$rb=$t->user($r['user']['screen_name']);
@@ -730,7 +730,8 @@ static function install(){sqlop::install('twit',self::r(),0);}
 static function apk(){
 $d=domain(host()); $n=2;
 if($d=='newsnet.fr')$n=4;
-return $n;}
+if($d=='oumo.fr')$n=1;
+return sesif('apk',$n);}
 
 static function home($p,$o){$rid='tw'.randid();
 //if($p=='install')self::install();

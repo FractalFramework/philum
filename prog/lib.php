@@ -352,7 +352,7 @@ function json_enc($r){$r=utf_r($r);
 return json_encode($r);}//JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_UNESCAPED_UNICODE
 
 function mkjson($r,$o=''){
-$rb=utf_r($r);//,sql::$enc=='utf8'?1:0
+$rb=utf_r($r);//,ses::$enc=='utf-8'?1:0
 $rt=json_encode($rb,JSON_HEX_TAG);
 $e=json_error(); if($e)$rt=json_encode(array_combine(array_keys($r),array_fill(0,count($r),$e)));
 return $rt;}
@@ -422,13 +422,13 @@ function noutf8($d){$enc=detect_enc($d); return $enc!='UTF-8'?$d:mb_convert_enco
 function ascii2iso($d){htmlentities($d??''); $d=iconv('ASCII','ISO-8859-1',$d);
 return html_entity_decode($d);}//mysql2utf8
 function utf2ascii($d){$d=$d??''; $d=htmlentities($d,ENT_QUOTES,'UTF-8'); $d=utf8dec2($d);
-return htmlspecialchars_decode($d);}////$d=ascii2iso($d);//html_entity_decode
+return html_entity_decode($d);}//htmlspecialchars_decode//$d=ascii2iso($d);//
 function utf8enc_b($d){$d=$d??''; $d=he2utf($d); return html_entity_decode($d);}
 function utf8dec_b($d,$o=''){$d=utf2ascii($d); return $o?$d:str::html_entity_decode_b($d);}//most used
 function detect_enc($d){return mb_detect_encoding($d,'UTF-8,ISO-8859-1',true);}
 function is_utf($d){return strpos($d,'Ã')||strpos($d,'â€')||strpos($d,'Ð')||strpos($d,'ã');}
 function urlutf($u){return urlencode(utf8enc($u));}//str::urlenc()
-function utf($d){return $d; sql::$enc=='utf8'?utf8enc($d):$d;}//devutf
+function utf($d){return $d; ses::$enc=='utf-8'?utf8enc($d):$d;}//devutf
 
 #strings
 function eradic_acc($d){

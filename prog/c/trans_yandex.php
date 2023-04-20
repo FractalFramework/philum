@@ -33,7 +33,7 @@ $var='detect'; $p=$prm[0]??$p;
 if($p){$r=self::api('',$var,$prm[0]); return $r['lang']??'';}
 else return ses('lang');}
 
-static function build($from,$format,$txt,$to){
+static function build($txt,$from,$to,$format){
 if(!$to)$to=ses('lng');//$to=setlng($to);
 $options=$from?'':'&options=1';
 if($from)$lang=$from.'-'.$to; else $lang=$to;

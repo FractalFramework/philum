@@ -63,7 +63,7 @@ if(!$ret)$ret=match($app){
 //readers
 'art'=>art::playc($g1,$g2,$g3),
 'popart'=>popart($g1),
-'api'=>api::call($g1,$g2,$g3,$g4),
+'api'=>api::call($g1,$g2,$prm),
 'site'=>usg::site($g1,$g2),//apps252
 'app'=>$g1::$g2($g3,$g4,$res),//old
 //sys

@@ -377,19 +377,19 @@ case(':oomo'):[$p,$o]=cprm($d); return oomo($p,$o); break;
 case(':typo'):[$p,$o]=cprm($d); return mk::typo($p,$o); break;
 case(':private'):if(auth(6))return $d.' '.picto('secret'); break;
 case(':dev'):if(auth(4))return $d; break;}
-
 if($da=='--')return hr();
-elseif($xt=='.m3u8')return twit::upvideo_m3u8($da);
 elseif($xt=='.pdf')return mk::pdfdoc($da,$nl,$pw);
+elseif($xt=='.epub'){[$p,$o]=cprm($d); return lkt('',$p,pictxt('book2',$o?$o:strend($p,'/')));}
 elseif($xt=='.svg'){[$p,$w,$h]=subparams($da); return image(goodroot($p),$w,$h);}//svg($da)
 elseif($xt=='.txt'){$dt=goodroot($da); return lkt('',$dt,strrchr($dt,'/'));}
 elseif($xt=='.gz')return mk::download($da);
+elseif($xt=='.m3u8')return twit::upvideo_m3u8($da);
 elseif($xt=='.mp3'||$xt=='.m4a')return pop::getmp3(goodroot($da),$id,rstr(145));
-elseif($xt=='.mp4'||$xt=='.ogg'||$xt=='.webm'){[$p,$o]=cprm($da); $vid=$o?$o:$p;//.h264
+elseif($xt=='.mp4'||$xt=='.ogg'||$xt=='.webm'){[$d,$t]=cprm($da); $vid=$t?$t:$d;//.h264
 	if($m!=3)return lj('txtx','pagup_usg,video___'.ajx($vid),pictxt('video',strend($vid,'/')));
-	else{//strpos($da,'§');
-		if(is_img($p))return lkt('',goodroot($o),img('img/'.$p));
-		elseif($o)return lkt('',goodroot($p),$o);
+	else{
+		if(is_img($d))return lkt('',goodroot($t),img('img/'.$d));
+		elseif($t)return lkt('',goodroot($d),$t);
 		else return pop::getmp4($da,$id,rstr(145));}}
 //links
 $res=self::connlk($da,$id,$m,$nl,$pw); if($res=='-')return; if($res)return $res;
