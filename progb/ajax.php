@@ -4,7 +4,7 @@ getsb(); //pr(ses::$r['get']);
 if(rstr(22))boot::block_crawls();
 if(!isset($_SESSION['qb']))boot::reboot();
 $res=get('res'); $callj=get('callj');
-$r=ajxr($callj,5);
+$r=ajxr($callj,5); //pr($r);
 [$app,$g1,$g2,$g3,$g4]=$r;
 $ret=''; $p1=''; $t=$app; $s='';
 $sz=get('sz'); $tg=get('tg'); //$dn2=get('dn2');

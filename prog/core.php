@@ -269,8 +269,8 @@ $rb=[$r[$c],$r[$d],'(und)','(and)','(add)','(quote)','(dquote)'];//,'(ddot)','(d
 if($v)$v=$p?str_replace($rb,$ra,$v):str_replace($ra,$rb,$v);
 return $v;}
 
-function decuri($d){$d=$d!=null?urldecode($d):''; return $d;}// $d=utf8dec_b($d); //ajx::encUri(
-function ajxg($d){$d=decuri($d); return ajx($d,1);}//
+function decuri($d){$d=$d!=null?html_entity_decode($d):''; return $d;}// $d=utf8dec_b($d); //ajx::encUri(
+function ajxg($d){$d=ajx($d,1); $d=decuri($d); return $d;}//
 function ajxr($res,$n=''){$r=explode('_',$res); $n=$n?$n:count($r);
 for($i=0;$i<$n;$i++)$ret[]=isset($r[$i])?ajxg($r[$i]):''; return $ret;}
 function ajxp($res,$p,$o){$r=ajxr($res);return [$r[0]??$p,$r[1]??$o];}//obs
