@@ -1,7 +1,7 @@
 <?php //atomic
 class atomic{
 static function build($p,$o){
-$r=msql::read('','public_atomic',''); $rb['-']=$r['_menus_'];
+$r=msql::read('','public_atomic',''); $rb['-']=$r[msql::$m];
 if(is_numeric($p))$rb[]=msql::row('','public_atomic',$p,1);
 elseif($p){foreach($r as $k=>$v)if(strtolower($v[0])==strtolower($p))$rb[$k]=$v;} //p($rb);
 else $rb=$r;

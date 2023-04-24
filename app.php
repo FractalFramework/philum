@@ -22,7 +22,7 @@ return $ret;}
 #--render
 if(rstr(22))boot::block_crawls();//crawl
 $_SESSION['onload']=''; $content='';
-$a=get('a'); $p=get('p'); $o=get('o'); $enc=sql::$enc;
+$a=get('a'); $p=get('p'); $o=get('o'); $enc=ses::$enc;
 if(substr($a,-1)=='/')$a=substr($a,0,-1); if(substr($p,-1)=='/')$p=substr($p,0,-1);
 Head::add('tag',['title',$a?$a:'plugin']);
 Head::add('meta',['http-equiv','Content-Type','text/html; charset='.$enc]);

@@ -32,7 +32,7 @@ static function detect_interface($f,$v){$d=read_file($f);
 if(strpos($d,$v.'input'))return 1;}
 
 static function update_table_lang($r,$d,$lg,$rh){//update_table in msql
-if(isset($r['_menus_']))$ret['_menus_']=$r['_menus_']; else $ret=[];
+if(isset($r[msql::$m]))$ret[msql::$m]=$r[msql::$m]; else $ret=[];
 $rb=msql::read_b('lang/'.$lg,$d); $ret=[];
 if($r)foreach($r as $k=>$v)
 $ret[$k]=$rb[$k]?$rb[$k]:array_pad(array(),count($rb["_menus_"]),"");

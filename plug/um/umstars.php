@@ -72,7 +72,7 @@ for($i=0;$i<24;$i++){$a=$i*15; $a=deg2rad($a); //15=360/24:
 
 static function draw($out,$r,$h){$w=$h*2; $im=imagecreate($w,$h); //p($r);
 [$white,$black,$red,$green,$blue,$yellow,$cyan]=img::clrpack($im);//spe
-$font=imageloadfont('gdf/Fixedsys.gdf');
+$font=imageloadfont('fonts/gdf/Fixedsys.gdf');
 ImageFilledRectangle($im,0,0,$w,$h,$black);
 self::map($r,$im,$h,$font);
 self::map($r,$im,$h,$font,2);

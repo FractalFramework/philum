@@ -39,7 +39,7 @@ if($r)foreach($r as $k=>$v){if(md5($v[5])==$md5)return true;}}
 
 //sugmail,sugtit,sugtxt,sugurl
 static function call($v1,$v2,$ra){$nod=nod('suggest');
-$dfb['_menus_']=['day','ok','url','mail','tit','msg','iq'];
+$dfb[msql::$m]=['day','ok','url','mail','tit','msg','iq'];
 $r=msql::read_b('',$nod,'','',$dfb);
 $back=lj('txtx','sugg_suggest,home',picto('back'));
 $alx=self::alx($r,$ra[2]); $rap='popup_suggest,rapport___'.ajx($ra[1]);

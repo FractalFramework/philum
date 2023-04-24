@@ -63,4 +63,4 @@ $r=["_"=>['date','text'],
 - système de tris et de pictos (col speciale) de msql
 - réfection de la config (gestion complexe, à refaire)
 - réfection de la gestion des catégories (bcp reste à faire)
-- application du patch de réforme des headers des tables msql (une heure pour se décider/se préparer)']]; ?>
+- application du patch de réforme des headers des tables msql (une heure pour se décider/se préparer, un clic, 338 fichiers modifiés)']]; ?>

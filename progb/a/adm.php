@@ -654,7 +654,7 @@ return $ret;}
 
 static function fastmenus($o,$m){$ret='';
 $r=self::authmenus(); $tg=$o?'popup':'admcnt';//'modules','templates'
-if(!$m)$rm=['console','desktop','rstr','config','css','Microsql','articles','tags','api','pictography','finder','connectors','stats','software','twit','apps','txt','pad','exec','test','members'];
+if(!$m)$rm=['console','desktop','rstr','config','css','tags','Microsql','articles','api','pictography','finder','connectors','stats','software','twit','apps','txt','pad','exec','test','members'];
 else $rm=['nodes','newsletter','banner','favicon','dev','backup','htaccess','links','rssurl','mail','password','descrption','icons','authes','avatar','messages'];
 foreach($rm as $v){$j='admin___'.ajx($v);//'sty,home__head__'//
 	if($v=='css' && !$o)$j='admin__url_css_1';

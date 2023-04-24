@@ -17,7 +17,7 @@ return $ret;}
 static function read(){$rb=[];
 $page=get('page',1); $npg=10;$min=($page-1)*$npg; $max=$page*$npg; $i=0;
 $site='http://philum.fr';//$site=upsrv();//father_server
-$r=microxml::call($site.'/msql/clients/philum_tickets'); unset($r['_menus_']);
+$r=microxml::call($site.'/msql/clients/philum_tickets'); unset($r[msql::$m]);
 if($r)foreach($r as $k=>$v){//array('host','hub','msg','day','ip')
 	if($v[0]==$_SERVER['HTTP_HOST'] && $v[1]==ses('qb')){
 		$del=lj('txtyl','tickets_tickets,call___'.$k.'_x','x');}else $del='';

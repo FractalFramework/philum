@@ -78,10 +78,10 @@ $d=msql::val('system','program_icons',$k); $r=str_split($d);
 self::graphics($r,16,16,$nm); return self::pictosys($k);}
 
 //sav
-static function sav($id,$d){$dfb['_menus_']=['data'];
+static function sav($id,$d){$dfb[msql::$m]=['data'];
 $r=msql::modif('system','program_icons',[$d],'one',$dfb,$id);}
 
-static function del($d){$dfb['_menus_']=['data'];
+static function del($d){$dfb[msql::$m]=['data'];
 $r=msql::modif('system','program_icons','','del',$dfb,$d);
 $f='imgb/icons/system/philum/16/'.$d.'.png'; if(is_file($f))unlink($f);
 return self::read();}

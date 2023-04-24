@@ -3,7 +3,7 @@
 class toposlides{
 
 static function displace($r,$a,$b){$add=0;
-$rb['_menus_']=['ib','val','to'];
+$rb[msql::$m]=['ib','val','to'];
 $move=$r[$a]; unset($r[$a]);
 foreach($r as $k=>$v){if($k==$b){$rb[$k]=$move; $add=1;}
 	if($k>=$a){$add=0; $v[0]=$b;}

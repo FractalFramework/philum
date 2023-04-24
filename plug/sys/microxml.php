@@ -51,12 +51,12 @@ if($pos!==false){$site=substr($d,0,$pos); $nod=substr($d,$pos+5);
 $keys=['key']; for($i=0;$i<20;$i++){$keys[]=''.$i;}//val
 $rss=rssin::read_old($call,'item',$keys);//p($rss);
 foreach($rss as $k=>$v){$key=$v[0]; array_shift($v);
-	if($key=='_menus_')$keys=$v; $n[$k]=0;
+	if($key==msql::$m)$keys=$v; $n[$k]=0;
 	foreach($v as $ka=>$va){if($va)$n[$k]++;}
 	if($key)$re[$key]=$v;}
 if($n){$max=max($n);
 foreach($re as $k=>$v)for($i=0;$i<$max;$i++){
-	if(sql::$enc=='utf8')$ret[$k][$i]=utf8enc_b(val($v,$i));//iso2ascii
+	if(ses::$enc=='utf-8')$ret[$k][$i]=utf8enc_b(val($v,$i));//iso2ascii
 	else $ret[$k][$i]=(val($v,$i));}//$keys[$i]
 return $ret;}}
 

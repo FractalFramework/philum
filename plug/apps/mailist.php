@@ -15,7 +15,7 @@ class mailist{
 'unregister_success'=>'Votre email a été effacé',
 'adios_mail'=>'clic this link to confirm unsubscribe');*/
 
-static function ra(){$defsb['_menus_']=['name','re','date','ip','id'];
+static function ra(){$defsb[msql::$m]=['name','re','date','ip','id'];
 return msql::read_b('',nod('mails'),'','',$defsb);}
 static function rb(){return msql::read('',nod('mails'),'');}
 static function rm($r,$d){msql::modif('',nod('mails'),$r,$d);}
@@ -28,7 +28,7 @@ if($r)foreach($r as $k=>$v){if(substr($v[0],0,1)=='_' && !$v[4])$upg=1;}
 if($p==1 && $upg)return lj('txtx','popup_maillist,upgrade','upgrade');
 elseif($upg){foreach($r as $k=>$v){
 	if(substr($v[0],0,1)=='_'){$v[0]=substr($v[0],1); $re=0;}
-	elseif($k=='_menus_')$re='re'; else $re=1; 
+	elseif($k==msql::$m)$re='re'; else $re=1; 
 	$rb[$k]=[$v[0],$re,$v[1],$v[2],$v[3]];}
 	self::rs($rb);
 	return 'updated';}}*/

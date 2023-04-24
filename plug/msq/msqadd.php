@@ -2,7 +2,7 @@
 class msqadd{
 static function build($p,$o,$prm){
 [$p,$o]=prmp($prm,$p,$o);
-$dfb['_menus_']=['day','text'];
+$dfb[msql::$m]=['day','text'];
 $nod=nod($p); $rb=explode(',',$msg);
 $r=msql::modif('',$nod,$rb,'push',$dfb);
 $bt=msqbt('users',$nod);

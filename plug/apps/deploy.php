@@ -15,7 +15,7 @@ if($deploy && $USE){//prep
 				$msg=lkc('',$http.$htacc,tagb("h2",$subj));
 				$msg.=divc('panel justy',$txt);}
 			else{$mail_format='txt'; 
-			$msg=clean_internaltag($msg); $msg=html_entity_decode($msg);}
+			$msg=str::stripconn($msg); $msg=html_entity_decode($msg);}
 	//send  
 	$sender=sql('mail','qdu','v','name="'.$USE.'"');
 	$lstm=str_replace("\n",",",$_POST['dpl']);

@@ -10,7 +10,7 @@ return $ret;}
 static function read($r,$p=1){
 $s='border:1px dotted silver; width:22vw; min-height:22px;';
 foreach($r as $k=>$v){
-	if(auth(3) && $k!='_menus_')for($i=0;$i<4;$i++){//nb of columns to add
+	if(auth(3) && $k!=msql::$m)for($i=0;$i<4;$i++){//nb of columns to add
 		$j='stda'.$k.$i.'_study,sav_stda'.$k.$i.'__'.$p.'-'.$k.'-'.$i;
 		//$bt=lj('',$j,picto('save')).' ';.$bt
 		$t=isset($v[$i])?$v[$i]:'';//stripslashes

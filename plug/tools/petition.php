@@ -38,7 +38,7 @@ static function count_valid($r){$i=0; foreach($r as $k=>$v){if($v[6]==1)$i++;} r
 
 static function read($r,$nba,$page){$limit=($page-1)*$nba; $nbr=self::count_valid($r);
 $ret=str_replace('_NB',$nbr,self::hlp('actually')).br().br();
-$head=$r['_menus_']; unset($r['_menus_']); krsort($r); $id=ses('read');
+$head=$r[msql::$m]; unset($r[msql::$m]); krsort($r); $id=ses('read');
 //$head=explode(',',self::hlp('entries'));
 $datas[]=['date',$head[0],$head[3],$head[4]];
 foreach($r as $k=>$v){if($v[6]==1){$i++;
@@ -56,7 +56,7 @@ return self::read($r,$nba,$page);}
 
 static function home($id,$p,$page=''){$p=$p?$p:10; $page=$page?$page:1;
 $keys=explode(',',self::hlp('entries').',host,valid');
-$defsb['_menus_']=['name','mail','web','city','country','host','valid'];
+$defsb[msql::$m]=['name','mail','web','city','country','host','valid'];
 if(auth(6))$msq=msqbt('',ses('qb').'_petition_'.$id);
 $nod=$_SESSION['qb'].'_petition_'.$id;
 $r=msql::read_b('',$nod,'','',$defsb);

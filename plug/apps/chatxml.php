@@ -55,7 +55,7 @@ return $d;}
 
 static function data($p){$lst=self::ses($p,'a'); $r1='';
 $f=upsrv().'/msql/clients/chat_'.$p; $r=microxml::call($f,$lst);
-if($r){unset($r['_menus_']); $r1=$r[1]??''; if(isset($r[1]))unset($r[1]);
+if($r){unset($r[msql::$m]); $r1=$r[1]??''; if(isset($r[1]))unset($r[1]);
 	$r=array_reverse_b($r,20); if($r)self::ses($p,key($r));}
 return [$r,$r1];}
 

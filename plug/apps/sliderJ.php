@@ -6,7 +6,7 @@ static function img($f,$n){$w=cw();
 if(is_numeric($n))$_SESSION[$sdj]=$n;
 elseif($n=='next')$_SESSION[$sdj]++; elseif($n=='prev')$_SESSION[$sdj]--;
 $ra=msql::read('gallery',$f,''); 
-if($ra){unset($ra['_menus_']); $ra=msql::reorder($ra); $nb=max(array_keys($ra));}
+if($ra){unset($ra[msql::$m]); $ra=msql::reorder($ra); $nb=max(array_keys($ra));}
 if($_SESSION[$sdj]>$nb)$_SESSION[$sdj]=1;
 if($_SESSION[$sdj]<1)$_SESSION[$sdj]=$nb;
 $r=$ra[$_SESSION[$sdj]]; //p($r);
@@ -27,7 +27,7 @@ $ret=self::nav($_SESSION[$sdj],$na,$nb,$f);
 if($r[7])$ret=divs($sty.$width.$font.$color.$align.$alpha.$pos,$ret.$r[7]);
 return div('',$ret.$im);}//style="text-align:center;"
 
-static function thumbs($r,$f,$a){$w=cw(); if($r)unset($r['_menus_']);
+static function thumbs($r,$f,$a){$w=cw(); if($r)unset($r[msql::$m]);
 if($r)$rb=array_keys_r($r,5); if($rb)$wt=array_sum($rb); $limit=0-($wt-$w+22);
 if($r)foreach($r as $k=>$v){$i++; $imn='gallery/mini/'.$v[1];
 	if(is_file($imn)){$im=image($imn,$v[5],$v[6]);

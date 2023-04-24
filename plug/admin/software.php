@@ -42,9 +42,9 @@ $r[]=self::patch();
 foreach($r as $k=>$v)$ret.=divc('',$v);
 return $ret;}
 
-static function dirs(){return ['progb','prog','plug','msql/system','msql/server','msql/lang','msql/design','msql/users','js','css','fonts','gdf','json/system','imgb/icons','imgb/avatar','imgb/usr','pub'];}
+static function dirs(){return ['progb','prog','plug','msql/system','msql/server','msql/lang','msql/design','msql/users','js','css','fonts','json/system','imgb/icons','imgb/avatar','imgb/usr','pub'];}
 static function files(){
-return ['ajax.php','app.php','call.php','index.php','plug.php','install.php'];}
+return ['ajax.php','app.php','call.php','index.php','install.php'];}
 
 static function exceptions($dr,$f){$no=0;
 if($dr=='msql/design' or $dr=='msql/users')if(strpos($f,$dr.'/public')===false)$no=1;

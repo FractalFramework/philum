@@ -17,7 +17,7 @@ if(!$col)return [''=>'ccc','Nonmetals'=>"92FF10",'Nobles Gasses'=>"05FFFF",'Alka
 static function clr($r,$col){
 if(!$col)return self::colors();
 else $ra=array_keys_r($r,$col);
-unset($ra['N/A']); unset($ra['_menus_']);
+unset($ra['N/A']); unset($ra[msql::$m]);
 $ra=array_flip($ra); //unset($ra['']);
 $ra=array_flip($ra);
 $min=0; $diff=0; $rb=[];

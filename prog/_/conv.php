@@ -163,10 +163,10 @@ if(strpos($bin,'popup_usg,nbp'))$mid='['.$txt.':nh]';//anchor
 elseif(strpos($src,'base64') && !$im)$mid='['.($src).':b64]';//self::b64img
 elseif($src){
 	if(substr($src,0,19)=='data:image/svg+xml,')return;
-	$src=preg_replace("/(\n)|(\t)/",'',$src); if($txt)$txt=preg_replace("/(\n)|(\t)/",'',$txt);
+	$src=preg_replace("/(\n)|(\t)/",'',$src); 
 	if(strpos($src,'#')!==false)$dz=strend(trim($src),'#');
 	$src=utmsrc(trim($src));
-	$txt=utmsrc($txt); $srcim=is_img($src); if($srcim)$src=str_replace(' ','%20',$src);
+	$srcim=is_img($src); if($srcim)$src=str_replace(' ','%20',$src);
 	if(substr($src,0,2)=='//' && strpos($src,'.'))$src='http:'.$src;
 	if(strpos($src,'http')===false && $root)$rot=self::urlroot($root,$src); else $rot='';
 	$delroot=host(); $nr=strlen($delroot);//wygsav figure
@@ -175,16 +175,19 @@ elseif($src){
 	if(!$rot && substr($src,0,5)=='/img/')$src=substr($src,5);
 	if(substr($src,0,1)=='/')$src=substr($src,1);
 	if(substr($src,-1)=='/')$src=substr($src,0,-1);
-	if(substr($txt,0,1)=='/')$txt=substr($txt,0,-1);
-	if(strpos($txt,'../')!==false)$src=str_replace('../','',$src);
-	if(substr($txt,0,6)=='users/')$src=substr($src,6);
+	if($txt){
+		if($txt)$txt=preg_replace("/(\n)|(\t)/",'',$txt);
+		if($txt)$txt=utmsrc($txt);
+		if(substr($txt,0,1)=='/')$txt=substr($txt,0,-1);
+		if(strpos($txt,'../')!==false)$src=str_replace('../','',$src);
+		if(substr($txt,0,6)=='users/')$src=substr($src,6);}
 	if($srcim && is_img($txa))return '['.$rot.$src.']';
 	if(strpos($src,'javascript')!==false)$src='';
 	if(strpos($bin,'cs_glossaire')!==false)$mid=$txa;//strend($txa,'§')
-	if(!$srcim && !is_url($rot.$src))return $txt;
+	if(!$srcim && !is_url($rot.$src) && $txt)return $txt;
 	elseif($dz=='outil_sommaire')$mid=$txa;//cadtm
 	elseif($srcim && !$txt)$mid='['.$rot.$src.'] ';//href to img
-	elseif(trim($txt)){$sp='';
+	elseif($txt){$sp='';
 		if(substr($txt,-1,1)==' '){$txt=substr($txt,0,-1); $sp=' ';}
 		if(substr($txt,-1,1)=='/')$txt=substr($txt,0,-1);
 		$rt=['youtube.com/watch','youtu.be','dailymotion.com','vimeo.com','rutube.com'];

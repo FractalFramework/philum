@@ -100,7 +100,7 @@ static function datas($r,$lang,$mode='',$q2=''){
 if(!$lg)$lg='fr'; $nl=0;
 $rb=['id'=>$id,'suj'=>$suj,'day'=>date('d-m-Y',$day),'source'=>'','author'=>'','tracks'=>'','player'=>''];
 $rb['url']='/'.$id;//'/app/umcom/'.$id;
-$msgb=str::clean_internaltag($msg); $msgb=trim($msgb); $from='';
+$msgb=str::stripconn($msg); $msgb=trim($msgb); $from='';
 if(substr($msgb,0,1)=='@')$from=strto($msgb,' ');
 $rb['lang']=self::slctlng($id,'umrec'.$id,$lang,$lg,$mode);//slctlng
 //$rb['lang']=ljtog('','umart'.$id.'_trans,callum___'.$id.'_'.$lang.'-'.$lg,'umart'.$id.'_umrec,playtx___'.$id,picto('translate'));

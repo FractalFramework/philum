@@ -38,7 +38,7 @@ for($i=0;$i<$nb;$i++){
 			if($xt && substr($rs,0,4)=='http' && $xt!='eot?')$rb[$xt]=$rs;
 			else $noturl=1;}}}
 //if($rb[0])$rb=msql::reorder($rb); //pr($rb);
-$dfb['_menus_']=array_keys($rb);
+$dfb[msql::$m]=array_keys($rb);
 if(count($rb)>1){$r=msql::modif('users','public_addfonts',$rb,'push',$dfb,''); //pr($r);
 	return self::read($r);}
 else return btn('txtred',$noturl?'not absolte url':'already_exists');}

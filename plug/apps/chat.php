@@ -7,7 +7,7 @@ static function erz($p,$erz){$nod=ses('qb').'_chat_'.$p;
 msql::modif('',$nod,$erz,'del'); return self::read($p);}
 
 static function sav($p,$nm,$prm=[]){$nod=ses('qb').'_chat_'.$p; $msg=$prm[0]??'';;
-if($ret)msql::modif('',$nod,[time(),$nm,embed_links($msg)],'push');
+if($ret)msql::modif('',$nod,[time(),$nm,str::embed_links($msg)],'push');
 return self::read($p);}
 
 static function nam($p,$nm,$prm=[]){$res=$prm[0]??'';

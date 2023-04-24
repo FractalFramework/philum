@@ -99,7 +99,7 @@ static function draw($out,$r){
 $w=self::$w; $h=$w/2; $im=imagecreate($w,$h);
 $klr=img::clrpack($im);//spe
 [$white,$black,$red,$green,$blue,$yellow,$cyan]=$klr;
-$font=imageloadfont('gdf/Fixedsys.gdf');
+$font=imageloadfont('fonts/gdf/Fixedsys.gdf');
 ImageFilledRectangle($im,0,0,$w,$h,$black);
 //self::map($r,$im,$klr,$font);
 //self::zones($im,$klr);

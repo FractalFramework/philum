@@ -45,7 +45,7 @@ msql::modif('',$_SESSION['sppnod'],$d,'del');
 return btn('txtred',$k.' deleted');}
 
 static function table($rid){
-$dfb['_menus_']=['projet','poll']; $ret='';
+$dfb[msql::$m]=['projet','poll']; $ret='';
 $r=msql::read('',$_SESSION['sppnod'],'',1);//p($r);
 if($r){$ra=array_keys_r($r,1); arsort($ra);
 foreach($ra as $k=>$v){

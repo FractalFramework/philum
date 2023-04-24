@@ -19,7 +19,7 @@ $c=bcmul($a,$b); $d=bcdiv(1,3); return bcpow($c,$d);}
 static function umx_manu_draw($out,$r,$b){
 $w=800; $h=300; $mx=$my=40; $im=imagecreate($w+$mx,$h+$my);
 [$white,$black,$red,$green,$blue,$yellow]=img::clrpack($im);
-$font=imageloadfont('gdf/Fixedsys.gdf');
+$font=imageloadfont('fonts/gdf/Fixedsys.gdf');
 ImageFilledRectangle($im,0,0,$w,$h,$white);
 //foreach($r as $k=>$v)
 $max1=max($r['imoo']); $max2=max($r['woam']); $max=$max1>$max2?$max1:$max2; $ratiox=$w/$max;
@@ -79,7 +79,7 @@ for($i=0;$i<$n;$i++){$ray=rand($a,$b)/2; $ang=deg2rad(rand(0,360));
 static function umx_draw($out,$r,$rk,$w){$h=$w; $im=imagecreate($w,$h); //p($r);
 [$white,$black,$red,$green,$blue,$yellow]=img::clrpack($im);
 $whit5=imagecolorallocatealpha($im,0,0,0,30); //imagecolortransparent($im,$white); 
-$font=imageloadfont('gdf/Fixedsys.gdf');
+$font=imageloadfont('fonts/gdf/Fixedsys.gdf');
 ImageFilledRectangle($im,0,0,$w,$h,$white);
 $max=max($r); $n=count($r); $ratio=$w/$max; $ctr=round($w/2);
 $rb=self::umx_clr($r); $rb=array_reverse($rb); $ta=''; $vald=0;//pr($rb); //pr($r);

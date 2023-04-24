@@ -5,7 +5,7 @@ function patch_msql(){
 $r=explorer('msql');
 foreach($r as $k=>$v){
 	$d=read_file($v);
-	$d=str_replace('_menus_','_',$d);
+	$d=str_replace(msql::$m,'_',$d);
 	file_put_contents($v,$d);}
 return 'ok';}
 
@@ -292,7 +292,7 @@ return $ret;}
 function patch_correct_option($nod){ 
 $dfb=["block","module","param","title","condition","command","option","cache","hide","template","nobr"];
 $r=read_vars('msql/users/',$nod,'');
-if(count($r['_menus_'])<11){echo $nod.' '.count($r['_menus_']); unset($r['_menus_']);
+if(count($r[msql::$m])<11){echo $nod.' '.count($r[msql::$m]); unset($r[msql::$m]);
 //backup_old
 	if($r){$valu=msql::dump($r,$nod);	write_file('msql/users/'.$nod.'_sav.php',$valu);}
 foreach($r as $k=>$v){
@@ -307,7 +307,7 @@ foreach($r as $k=>$v){patch_correct_option($v);}//if($v=='dev_mods_1')
 
 //110428
 /*function repair_nbofcols($r){
-$nb=count($r['_menus_']);
+$nb=count($r[msql::$m]);
 foreach($r as $k=>$v){$ra='';
 	for($i=0;$i<$nb;$i++){$ra[$i]=$v[$i];}
 	$ret[$k]=$ra;}
@@ -316,7 +316,7 @@ return $ret;}*/
 /*function patch_mods($qb){
 $bs='msql/users/'; $nd=$qb.'_mods';
 $r=read_vars($bs,$nd,""); 
-$r['_menus_'][]='template';
+$r[msql::$m][]='template';
 $r=repair_nbofcols($r);
 save_vars($bs,$nd.'_1',$r);
 //$rb=read_vars($bs,$nd.'_1',"");

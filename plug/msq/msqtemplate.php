@@ -7,7 +7,7 @@ return $ret;}
 
 static function build($nod,$tmp){
 [$dr,$nod]=split_right('/',$nod,0); if(!$dr)$dr='users';
-$r=msql::read_b($dr,$nod); $mnu=$r['_menus_']; unset($r['_menus_']);
+$r=msql::read_b($dr,$nod); $mnu=$r[msql::$m]; unset($r[msql::$m]);
 //$rb=array_keys_r($r,0); asort($rb); $r=self::conform_order($r,$rb);
 if($r)foreach($r as $k=>$v){$tpl=$tmp;
 	if(is_array($v)){$n=count($v)-1;
@@ -21,7 +21,7 @@ return conn::parser($ret);}
 
 static function read($nod,$p){
 $r=msql::read_b('',$nod);
-if(isset($r['_menus_'])){$mnu=$r['_menus_']; unset($r['_menus_']);}
+if(isset($r[msql::$m])){$mnu=$r[msql::$m]; unset($r[msql::$m]);}
 if(substr($p,0,1)=='x')$p=substr($p,1); else $o='x';
 $rb=array_keys_r($r,$p); if($o)arsort($rb); else asort($rb); $r=self::conform_order($r,$rb);
 foreach($mnu as $k=>$v){$pb=ajx($o.$v,0);

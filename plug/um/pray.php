@@ -22,7 +22,7 @@ static function build($p,$o,$r=''){//uid,day,act
 $ra=[]; $rb=[]; $rt=[];
 //$r=db_read('ummo/pray/1511');
 if(!$r)$r=msql::read('','ummo_pray_1','','1'); //p($r);
-if($r)foreach($r as $k=>$v)if($k!='_menus_')$ra[$v[0]][$v[1]]=$v[2]?1:0;
+if($r)foreach($r as $k=>$v)if($k!=msql::$m)$ra[$v[0]][$v[1]]=$v[2]?1:0;
 $rt=['user/day',1,2,3,4,5,6,7];//headers
 if($ra)foreach($ra as $k=>$v)$ra[$k]=self::arr_fill($v);//fill empties
 if($ra)foreach($ra as $k=>$v)foreach($v as $ka=>$va)$rb[$k][$ka]=self::clic($k,$ka,$va);

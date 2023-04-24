@@ -610,7 +610,7 @@ static function home($p,$o){
 $r=msql::read('','public_atomic_2','');
 $ra=self::spi_r(); pr($ra);
 $rb=self::spi_rb(); pr($rb);
-foreach($r as $k=>$v)if($k!='_menus_'){
+foreach($r as $k=>$v)if($k!=msql::$m){
 	$r[$k][4]=$ra[$k]['level'];//
 	$r[$k][3]=$rb[$k]['orb'];
 	$r[$k][9]=$rb[$k]['mass'];
