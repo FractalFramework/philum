@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-<?php //philum/msql/newsnet_citation_8
-$r=["_menus_"=>['Citations'],1=>['« Le vrai journalisme, c\'est une information minutieuse qui se battra pour le progrès et la réforme, ne tolérera jamais l\'injustice ou la corruption et combattra toujours les démagogues ». Celui qui donna son nom au célèbre prix journalistique ajoutait : ce journalisme doit « rester toujours dévoué au bien public et être toujours radicalement indépendant ». Joseph Pulitzer']];
-=======
 <?php //msql/public_citation_8
-$r=["_menus_"=>['Citations'],
-"1"=>['Ã‚Â« Le vrai journalisme, c\'est une information minutieuse qui se battra pour le progrÃƒÂ¨s et la rÃƒÂ©forme, ne tolÃƒÂ©rera jamais l\'injustice ou la corruption et combattra toujours les dÃƒÂ©magogues Ã‚Â». Celui qui donna son nom au cÃƒÂ©lÃƒÂ¨bre prix journalistique ajoutait : ce journalisme doit Ã‚Â« rester toujours dÃƒÂ©vouÃƒÂ© au bien public et ÃƒÂªtre toujours radicalement indÃƒÂ©pendant Ã‚Â». Joseph Pulitzer']]; ?>
->>>>>>> c3133bed7b5cef8cf040b043d741a1c96370c55d
+$r=["_"=>['Citations'],
+"1"=>['« Le vrai journalisme, c\'est une information minutieuse qui se battra pour le progrès et la réforme, ne tolérera jamais l\'injustice ou la corruption et combattra toujours les démagogues ». Celui qui donna son nom au célèbre prix journalistique ajoutait : ce journalisme doit « rester toujours dévoué au bien public et être toujours radicalement indépendant ». Joseph Pulitzer']]; ?>

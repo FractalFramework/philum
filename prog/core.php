@@ -48,7 +48,7 @@ $ret.=divb(textarea($rid,$d,$w,$h,['class'=>'console']+$js));
 return $ret;}
 
 #msql
-function msql_read($dr,$nod,$in='',$u=''){$f=msql::url($dr,$nod); $m='_menus_'; $r=[];//old
+function msql_read($dr,$nod,$in='',$u=''){$f=msql::url($dr,$nod); $m=msql::$m; $r=[];//old
 if(is_file($f))include $f; if(!isset($r)){alert('msq_er:'.$f);return;} if($u)unset($r[$m]);
 unset($r[0]); $r0=current($r); if(!$r0)$r0=next($r); $n=is_array($r0)?count($r0):0;
 if($r)foreach($r as $k=>$rb)foreach($rb as $kb=>$vb)$r[$k][$kb]=stripslashes_b($vb);

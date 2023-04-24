@@ -1,5 +1,5 @@
 <?php //msql/helps_editors
-$r=["_menus_"=>['title'],
+$r=["_"=>['title'],
 "b"=>['bold'],
 "i"=>['italic'],
 "u"=>['underline'],

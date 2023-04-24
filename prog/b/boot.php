@@ -355,7 +355,7 @@ static function cache_arts($x=''){$lastart=''; $rtb=[]; $ret=[]; $main=[]; $nod=
 if($x)msql::del('',$nod); else $main=msql::read_b('',$nod,'',1); //$_SESSION['rqt']=[];
 if($main){$last=current($main); $lastart=ma::lastart($last[0]);}
 if(($lastart && !isset($main[$lastart])) or $x){
-	$rh=['_menus_'=>['date','cat','title','img','hub','url','lu','author','length','src','ib','re','lg']];
+	$rh=[msql::$m=>['date','cat','title','img','hub','url','lu','author','length','src','ib','re','lg']];
 	$slct='id,day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg';
 	if(ses('dayb'))$wh=' and day>"'.ses('dayb').'"'; else $wh=' and day>"'.calctime(360).'"';
 	$r=sql::com($slct,'qda','nod="'.ses('qb').'"'.$wh.' and substring(frm,1,1)!="_" and re>"0" order by '.prmb(9));

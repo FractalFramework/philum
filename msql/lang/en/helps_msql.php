@@ -1,5 +1,5 @@
 <?php //msql/helps_msql
-$r=["_menus_"=>['title','description'],
+$r=["_"=>['title','description'],
 "1"=>['edit header','edit the header that names the columns'],
 "2"=>['backup','makes a backup of the table'],
 "3"=>['restore','restores the old saved version if it exists'],

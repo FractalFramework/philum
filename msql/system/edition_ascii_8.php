@@ -1,5 +1,5 @@
 <?php //msql/edition_ascii_8
-$r=["_menus_"=>['col_1','val2'],
+$r=["_"=>['col_1','val2'],
 "1"=>['119808','script bold'],
 "2"=>['119860','script italic'],
 "3"=>['119964','script bold italic'],

@@ -2,7 +2,7 @@
 class console{
 
 static function admactbt($p,$t,$x='',$o='',$tt='',$c=''){
-if($x=='self'){$tg='socket'; $x='';} elseif(!$x){$tg='popup'; $x='xx';} else$tg=$x;
+if($x=='self'){$tg='socket'; $x='';} elseif(!$x){$tg='popup'; $x='xx';} else $tg=$x;
 return lj($c,$tg.'_console,actions__'.$x.'_'.ajx($p).'_'.ajx($o),$t,att($tt)).' ';}
 
 static function select_mods_m(){
@@ -17,12 +17,12 @@ return btn('nbp',btn('txtsmall','mods').' '.$ret).hlpbt('console_mods').' ';}
 static function backup_console_bt(){//(421)
 $f=msql::url('',ses('modsnod'),'sav'); $ret='';
 $rt=['backup'=>'save2','restore'=>'rollback','refresh'=>'refresh','copy'=>'copy','default'=>'file','mkdef'=>'export']; foreach($rt as $k=>$v)$rt[$k]=picto($v);
-$ret.=self::admactbt('backup_mods',$rt['backup'],'','',nms(94));
-//if(is_file($f))$ret.=self::admactbt('restore_mods',$rt['restore'],'admcnt','',nms(95));
-$ret.=self::admactbt('refresh_mods',$rt['refresh'],'admcnt','',nms(97));
-if($p1=ses('prmb1'))$ret.=self::admactbt('make_copy',$rt['copy'],'','',nms(132));
-$ret.=self::admactbt('default_mods',$rt['default'],'','',nms(96));
-$ret.=self::admactbt('mk_default',$rt['mkdef'],'','',nms(113));
+$ret.=self::admactbt('backup_mods',$rt['backup'],'','',nms(94),'txtx');
+//if(is_file($f))$ret.=self::admactbt('restore_mods',$rt['restore'],'admcnt','',nms(95),'txtx');
+$ret.=self::admactbt('refresh_mods',$rt['refresh'],'admcnt','',nms(97),'txtx');
+if($p1=ses('prmb1'))$ret.=self::admactbt('make_copy',$rt['copy'],'','',nms(132),'txtx');
+$ret.=self::admactbt('default_mods',$rt['default'],'','',nms(96),'txtx');
+$ret.=self::admactbt('mk_default',$rt['mkdef'],'','',nms(113),'txtx');
 $ret.=hlpbt('console').' ';
 $ret.=msqbt('',ses('qb').'_mods_'.prmb(1));
 $ret.=msqbt('system','admin_modules');
@@ -31,10 +31,11 @@ return $ret;}
 static function backup_config_bt(){
 $f='cnfg/'.ses('qb').'_saveconfig.txt';
 $ret=self::admactbt('bckp_cnfg','backup');
-if(is_file($f))$ret.=self::admactbt('restore_cnfg','restore','admcnt');
+$ret.=self::admactbt('restore_cnfg','restore','admcnt');
+if(is_file($f))$ret.=self::admactbt('rollback_cnfg','rollback (from txt)','admcnt');
 $ret.=self::admactbt('reset_cnfg','reset','admcnt');
 $ret.=self::admactbt('cnfgxt','txt');
-return $ret;}
+return btn('nbp',$ret);}
 
 //conditions
 static function see_conds($vl){$sp='';
@@ -54,7 +55,7 @@ $ra=array_flip(['','home','cat','art']); $ret='';
 if($r){foreach($r as $k=>$v)if(isset($v[3]))$ra[$v[3]]=radd($ra,$v[3]);
 	foreach($ra as $k=>$v)if($k){$c=$k==$cnd[0] && !$cnd[1]?'active':'';
 		$ret.=self::admactbt('set_cond',$k,'admcnt',$k,'',$c);}}
-if($ret){$all=self::admactbt('set_cond',nms(100),'admcnt','all','',active($cnd[0],''));
+if($ret){$all=self::admactbt('set_cond',nms(100),'admcnt','all','','');
 return divc('',btn('nbp',$all.$ret).hlpbt('console_cond'));}}
 
 //build
@@ -108,8 +109,10 @@ $nod=ses('modsnod'); $fb=msql::url('',$nod,'sav'); $rl='';
 switch($p){
 //config
 case('bckp_cnfg'):write_file($f,'#'.implode('#',$_SESSION['prmb'])); $ret='saved'; break;
-case('restore_cnfg'):$config=read_file($f); $_SESSION['prmb']=explode('#',$config); $rl=1;
-	sql::upd('qdu',['config'=>$config],['name'=>ses('qb')]); $ret='old config restored'; break;
+case('restore_cnfg'):$r=msql::kv('',nod('config'),'',0); $_SESSION['prmb']=$r; $cnfg=implode('#',$r); $rl=1;
+	sql::upd('qdu',['config'=>$cnfg],['name'=>ses('qb')]); $ret='msql config restored'; break;
+case('rollback_cnfg'):$cnfg=read_file($f); $_SESSION['prmb']=explode('#',$cnfg); $rl=1;
+	sql::upd('qdu',['config'=>$cnfg],['name'=>ses('qb')]); $ret='old config restored'; break;
 case('reset_cnfg'):$prmdef=login::ndprms_defaults(); $config=ses('qb').$prmdef[1];
 	$_SESSION['prmb']=explode('#',$config); $rl=1;
 	sql::upd('qdu',['config'=>$config],['name'=>ses('qb')]); break;

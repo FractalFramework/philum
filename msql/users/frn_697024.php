@@ -1,0 +1,6 @@
+<?php //philum/msql/frn_697024
+$r=[1330457336=>['1330457336','BillClinton','Bill Clinton','New York, NY','Father, grandfather, 42nd President of the United States, Founder, Clinton Foundation. Follow @ClintonFdn for more on our work around the world.','http://pbs.twimg.com/profile_images/1239440892664086529/iY0Z83Dr_normal.jpg'],
+30354991=>['30354991','KamalaHarris','Kamala Harris','Washington, DC','Fighting for the people. Wife, Momala, Auntie. She/her. Official account is @VP.','http://pbs.twimg.com/profile_images/1377062766314467332/2hyqngJz_normal.jpg'],
+22255654=>['22255654','johndoerr','John Doerr','','Passionate about helping missionary entrepreneurs create the Next Big Thing. General partner @KPCB.','http://pbs.twimg.com/profile_images/893560287/John_Doerr_normal.jpg'],
+939091=>['939091','JoeBiden','Joe Biden','Washington, DC','Husband to @DrBiden, proud father and grandfather. Ready to build back better for all Americans. Official account is @POTUS.','http://pbs.twimg.com/profile_images/1308769664240160770/AfgzWVE7_normal.jpg'],
+30313925=>['30313925','ObamaWhiteHouse','White House Archived','Washington, DC','This is an archive of an Obama Administration account maintained by the National Archives and Records Administration (NARA).','http://pbs.twimg.com/profile_images/747463206759698432/c8cVVWhj_normal.jpg']];

@@ -1,5 +1,5 @@
 <?php //msql/public_atomic_5
-$r=["_menus_"=>['sym','origin','deg','pos','free'],
+$r=["_"=>['sym','origin','deg','pos','free'],
 "1"=>['H','1','0.5','1','1'],
 "2"=>['He','1','1','2',''],
 "3"=>['Li','3','0.5','1','1'],

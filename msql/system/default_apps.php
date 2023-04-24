@@ -1,5 +1,5 @@
 <?php //msql/default_apps
-$r=["_menus_"=>['button','type','process','param','option','condition','root','icon','hide','private'],
+$r=["_"=>['button','type','process','param','option','condition','root','icon','hide','private'],
 "1"=>['Desktop','ajax','page','desk,deskload__18_boot','','menu','os','desktop','',''],
 "2"=>['Root','ajax','desktop','desk,deskico___desk','','boot','os','desktop','',''],
 "3"=>['Root Folder','ajax','popup','desk,deskroot___desk','','menu','os','folder2','',''],

@@ -1,5 +1,5 @@
 <?php //msql/public_atomic_6
-$r=["_menus_"=>['origin','label'],
+$r=["_"=>['origin','label'],
 "1"=>['BB','Big Bang'],
 "2"=>['CSC','cosmic ray collisions'],
 "3"=>['LMS','dying low-mass stars'],

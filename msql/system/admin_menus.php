@@ -1,5 +1,5 @@
 <?php //msql/admin_menus
-$r=["_menus_"=>['category'],
+$r=["_"=>['category'],
 "Global"=>['Global'],
 "Builders"=>['Builders'],
 "Microsql"=>['Microsql'],

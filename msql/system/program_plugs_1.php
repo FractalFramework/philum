@@ -1,5 +1,5 @@
 <?php //msql/program_plugs_1
-$r=["_menus_"=>['usage','tag','boot','public'],
+$r=["_"=>['usage','tag','boot','public'],
 "__model"=>['','','no','secret'],
 "_authtest"=>['','','no','secret'],
 "_backup_mysql"=>['','','no','secret'],

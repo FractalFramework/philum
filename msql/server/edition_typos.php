@@ -1,5 +1,5 @@
 <?php //msql/edition_typos
-$r=["_menus_"=>['name','category','accents','fav','fam'],
+$r=["_"=>['name','category','accents','fav','fam'],
 "1"=>['FLORLI__-webfont','calligraphic','','1','1'],
 "2"=>['Chantelli_Antiqua-webfont','calligraphic','1','','1'],
 "3"=>['FLORLRG_-webfont','calligraphic','','','1'],

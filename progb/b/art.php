@@ -481,7 +481,7 @@ static function prepare_rech($id,$msg,$out){
 $rch=search::good_rech(get('search')); $nbp=0; $ret=''; ses::$n=0;
 if(get('bool')){$r=explode(' ',trim($rch)); $nbp=count($r);}
 if(strpos($rch,'|')){$r=explode('|',$rch); $nbp=count($r);}
-$msg=str::clean_internaltag($msg); $msgi=strtolower($msg); $msgb=$msg;//$msg=strip_tags($msg); 
+$msg=str::stripconn($msg); $msgi=strtolower($msg); $msgb=$msg;//$msg=strip_tags($msg); 
 if(get('titles'))$out['msg']='';
 elseif($nbp>1){foreach($r as $k=>$v)if($v){$ret.=self::find_word($msg,$v,'',$id);}}
 else $ret=self::find_word($msg,$rch,'',$id);

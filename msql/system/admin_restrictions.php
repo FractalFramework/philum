@@ -1,5 +1,5 @@
 <?php //msql/admin_restrictions
-$r=["_menus_"=>['category','name','defaults'],
+$r=["_"=>['category','name','defaults'],
 "1"=>['config','public trackbacks',''],
 "2"=>['config','open trackbacks',''],
 "3"=>['config','time system','1'],

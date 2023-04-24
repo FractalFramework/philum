@@ -1,5 +1,5 @@
 <?php //msql/default_htaccess
-$r=["_menus_"=>['title_1'],
+$r=["_"=>['title_1'],
 "1"=>['AddDefaultCharset ISO-8859-1
 RewriteEngine on
 RewriteRule ^([0-9]+)$ /?read=$1 [L]

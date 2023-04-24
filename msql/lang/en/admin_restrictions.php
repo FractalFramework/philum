@@ -1,5 +1,5 @@
 <?php //msql/admin_restrictions
-$r=["_menus_"=>['name','description'],
+$r=["_"=>['name','description'],
 "1"=>['trackbacks','comments opened to public'],
 "2"=>['moderation','comments are moderated (auth 4)'],
 "3"=>['time system','time system : used for periodic revues'],
@@ -18,9 +18,9 @@ $r=["_menus_"=>['name','description'],
 "16"=>['mini limits','place limits of image outside the limits of thumbnail'],
 "17"=>['columns','articles on multiples columns, as set by the css \'cols\' ;
 only long content is affected'],
-"18"=>['public defcons','DÃ©finitions for importations of articles. 
+"18"=>['public defcons','D�finitions for importations of articles. 
 Set public or private defs in rstr18'],
-"19"=>['_img1','inject variable _IMG1 (first image of article) for template (personalized thumbnails) as this : [_IMG1Â§100/100:thumb]'],
+"19"=>['_img1','inject variable _IMG1 (first image of article) for template (personalized thumbnails) as this : [_IMG1�100/100:thumb]'],
 "20"=>['menu home','display admin menu home'],
 "21"=>['restricted_area','acces to pages reserved to members'],
 "22"=>['bots','open to bots'],

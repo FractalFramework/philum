@@ -1,11 +1,11 @@
 <?php //msql/helps_api
-$r=["_menus_"=>['txt'],
+$r=["_"=>['txt'],
 "hub"=>['hub'],
 "cat"=>['multi'],
 "nocat"=>['multi'],
 "priority"=>['1-2-3-4'],
 "minday"=>['depuis nb de jours'],
-"maxday"=>['jusquÃ  nb de jours'],
+"maxday"=>['jusqu� nb de jours'],
 "mintime"=>['timestamp min'],
 "maxtime"=>['timestamp max'],
 "minid"=>['min id'],

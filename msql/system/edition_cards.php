@@ -1,5 +1,5 @@
 <?php //msql/edition_cards
-$r=["_menus_"=>['value'],
+$r=["_"=>['value'],
 "card_width"=>['241'],
 "card_height"=>['157'],
 "card_margin"=>['14'],

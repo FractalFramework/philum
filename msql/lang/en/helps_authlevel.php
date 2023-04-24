@@ -1,5 +1,5 @@
 <?php //msql/helps_authlevel
-$r=["_menus_"=>['permission'],
+$r=["_"=>['permission'],
 "1"=>['you have to be a member'],
 "2"=>['you have to be a commentator'],
 "3"=>['you have to be a publicator'],

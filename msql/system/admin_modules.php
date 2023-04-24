@@ -1,5 +1,5 @@
 <?php //msql/admin_modules
-$r=["_menus_"=>['category','param','title','command','option','cache','template','bt','div','prv','pop'],
+$r=["_"=>['category','param','title','command','option','cache','template','bt','div','prv','pop'],
 "All"=>['articles','','','','preview full false auto read','','','','','',''],
 "LOAD"=>['component','','','id-desc day-asc','preview full false auto read','','1','','','',''],
 "BLOCK"=>['content','','','','','','','','','',''],

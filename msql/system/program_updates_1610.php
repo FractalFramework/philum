@@ -1,3 +1,3 @@
 <?php //msql/program_updates_1610
-$r=["_menus_"=>['date','text'],
+$r=["_"=>['date','text'],
 "1"=>['1001','publication']]; ?>

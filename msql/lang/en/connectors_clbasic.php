@@ -1,5 +1,5 @@
 <?php //msql/connectors_clbasic
-$r=["_menus_"=>['car','help'],
+$r=["_"=>['car','help'],
 "1"=>['?','?_PARAM=1 assign 1 if _PARAM is empty'],
 "2"=>['!','!_PARAM=1 assign 1'],
 "3"=>['+','create an array'],

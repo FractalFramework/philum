@@ -1,0 +1,12 @@
+<?php
+//philum_microsql_ummo_twitter_pepetmurri
+$r["_menus_"]=array('id','date','msg','url','name','author','img','rtw');
+$r[1]=array('549172014494547968','28 déc.','Erase una vez una persona tan modesta tan modesta que siempre trataba de esconder y disimular sus cualidades, incluyendo la de la modestia !','https://twitter.com/pepetmurri/status/549172014494547968','@pepetmurri','pepetmurri','https://pbs.twimg.com/profile_images/556453101381488640/Q015YXhq_normal.jpeg','');
+$r[2]=array('549172014494547968','28 déc.','Erase una vez una persona tan modesta tan modesta que siempre trataba de esconder y disimular sus cualidades, incluyendo la de la modestia !','https://twitter.com/pepetmurri/status/549172014494547968','@pepetmurri','pepetmurri','https://pbs.twimg.com/profile_images/556453101381488640/Q015YXhq_normal.jpeg','');
+$r[3]=array('','','The Secret Corporate Takeover by Joseph E. Stiglitz via @ProSyn [https://twitter.com/hashtag/oped?src=hash§#oped]  [http://t.co/Ds8Ji964PH§http://po.st/XCtcZg&nbsp;]  via @po_st','https://twitter.com','@pepetmurri','pepetmurri','https://pbs.twimg.com/profile_images/556453101381488640/Q015YXhq_normal.jpeg','');
+$r[4]=array('','','Salud, @oomo_toa. Con mas formalidad: Podrían darnos a conocer un mapa mas detallado de su único continente?Gracias @ostralopithec @Elioo999','https://twitter.com','@pepetmurri','pepetmurri','https://pbs.twimg.com/profile_images/556453101381488640/Q015YXhq_normal.jpeg','');
+$r[5]=array('','','TPP vs. Democracy: Leaked Draft of Secretive Trade Deal Spells Out Plan for Corporate Power Grab - [http://t.co/k4Ja8Cj8ui§http://goo.gl/ZIcxtX&nbsp;] ','https://twitter.com','@pepetmurri','pepetmurri','https://pbs.twimg.com/profile_images/556453101381488640/Q015YXhq_normal.jpeg','');
+$r[6]=array('','','Some deny society exists. Let\'s prove them wrong | George Monbiot [http://t.co/cTAWZQt1dA§http://gu.com/p/45f47/stw&nbsp;] ','https://twitter.com','@pepetmurri','pepetmurri','https://pbs.twimg.com/profile_images/556453101381488640/Q015YXhq_normal.jpeg','');
+$r[7]=array('','','Erase una vez una persona tan modesta tan modesta que siempre trataba de esconder y disimular sus cualidades, incluyendo la de la modestia !','https://twitter.com','@pepetmurri','pepetmurri','https://pbs.twimg.com/profile_images/556453101381488640/Q015YXhq_normal.jpeg','');
+
+?>

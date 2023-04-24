@@ -23,7 +23,7 @@ foreach($todo as $ka=>$va){[$act,$pb]=split_one(':',$va,0);//global
 	elseif($act=='del'){if($pb=='title')$pb=$t; $v=str_replace($pb,'',$v);}
 	elseif($act=='-??')$v=str_replace('-??','-',$v);
 	elseif($act=='???')$v=preg_replace("/(\?){2,}/",'',$v);}
-$r=explode("\n",$v); $nbr=count($r); $no=0;
+$r=explode("\n",$v??''); $nbr=count($r); $no=0;
 foreach($r as $k=>$v){$cur=true;//by_lines
 	foreach($todo as $ka=>$va){
 	[$act,$pb]=split_right(':',$va,0);
@@ -43,7 +43,7 @@ foreach($r as $k=>$v){$cur=true;//by_lines
 $ret.=$cur."\n";}
 $ret=str::clean_br($ret);
 $ret=str::repair_tags($ret);
-$ret=str::utflatindecode($ret);
+$ret=str::utflatindecode($ret);//diffutf
 return trim($ret??'');}
 
 //defcon
@@ -63,7 +63,8 @@ return $rw;}
 static function vacuum_json($d){
 $r=json_decode($d,true); $er=json_error(); if($er)return $er;
 $ti=$r['title']??''; $tx=$r['content']??'';
-$ti=utf8dec_b($ti); $tx=utf8dec_b($tx); $tx=self::call($tx);
+$ti=utf8dec_b($ti); $tx=utf8dec_b($tx);//diffutf
+$tx=self::call($tx);
 return [$ti,$tx,''];}
 
 static function verif_defcon($f){$f=domain($f);
@@ -91,7 +92,7 @@ $d=read_file($f); $r=json_decode($d,true); $ra=utf_r($r[$id],1);
 return [$ra['title'],$ra['content']];}
 
 static function vacuum($f,$sj='',$h=''){//$f=https($f);
-$f=http($f); $f=utmsrc($f); $f=str::urlenc($f); $enc='';
+$enc=''; $f=http($f); $f=utmsrc($f); $f=str::urlenc($f);//diffutf
 $reb=vaccum_ses($f); if(!$reb){vacses($f,'b','x'); return ['','','','',''];}
 if(strpos($reb,'utf-8') or strpos($reb,'UTF-8'))$enc='utf-8';
 if(!$enc)$enc=between($reb,'charset="','"');
@@ -100,8 +101,7 @@ if(!$enc)$enc=mb_detect_encoding($reb,'UTF-8,ISO-8859-1',true);
 if(substr($reb,0,1)=='{')return self::vacuum_json($reb);
 $auv=video::detect($f);//,'pop'
 if(!$defs && !$auv)$defs=self::add_defcon($f,$reb);
-if((strtolower($enc)=='utf-8' or $defs[5]==1) && $defs[5]!=2)$reb=utf8dec_b($reb);//trouble dom::detect//trouble urldecode//trouble elliptics
-//else $reb=str::html_entity_decode_b($reb);
+if((strtolower($enc)=='utf-8' or $defs[5]==1) && $defs[5]!=2)$reb=utf8dec_b($reb);//diffutf
 if(!empty($defs[2])){//suj
 	if(strpos($defs[2],':')!==false)$suj=dom::detect($reb,$defs[2]);
 	elseif(empty($defs[3]))$suj=self::html_detect($reb,$defs[2]);
@@ -128,7 +128,7 @@ if($auv){$ret=$auv;//video
 elseif(strpos($f,'twitter.com'))[$suj,$ret,$day]=twit::vacuum($f);
 else $ret=self::call($rec,$h);
 if($suj)$title=str::clean_title($suj);
-else $title=$sj?str::clean_title(str::clean_internaltag(str::clean_html($sj,1))):'Title';
+else $title=$sj?str::clean_title(str::stripconn(str::clean_html($sj,1))):'Title';
 if($defs[6]??'')$ret=self::post_treat($ret,$title,$defs[6]);//post_treat
 if(ses::$r['sugm']??'')$sug=self::sugnote(); else $sug='';
 if(!$auv)$ret.="\n\n".$sug.'['.$f.']';
@@ -147,7 +147,7 @@ static function treat_link($bin,$txa){
 $sp='';$sp2='';$mid='';$txt='';$txb='';$bend='';$tag='';$len=0;$nb=0;$dz='';$imnb=0;
 if($txa){$tag='href='; $len=6;
 	if(substr($txa,0,1)==' ')$sp=' '; if(substr($txa,-1,1)==' ')$sp2=' ';
-	$txt=str::clean_internaltag($txa);//is_img($txa)?$txa:/testing
+	$txt=str::stripconn($txa);//is_img($txa)?$txa:/testing
 	if($n=strpos($txt,'>'))$txt=substr($txt,$n+1);}
 elseif(strpos($bin,'src=')!==false){$tag='src='; $len=5; $im='ok';}
 else return $txa;//things with onclick

@@ -1,5 +1,5 @@
 <?php //msql/program_urls
-$r=["_menus_"=>['type','commands'],
+$r=["_"=>['type','commands'],
 "1"=>['a','/hub'],
 "2"=>['1','/123'],
 "3"=>['aa','/section/public 

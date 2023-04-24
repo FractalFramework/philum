@@ -1,8 +1,8 @@
 <?php //msql/public_countries_4
-$r=["_menus_"=>['coutry','code'],
+$r=["_"=>['coutry','code'],
 "1"=>['AFGHANISTAN','AF'],
 "2"=>['AFRIQUE DU SUD','ZA'],
-"3"=>['ÃLAND, ÃLES','AX'],
+"3"=>['�LAND, �LES','AX'],
 "4"=>['ALBANIE','AL'],
 "5"=>['ALGERIE','DZ'],
 "6"=>['ALLEMAGNE','DE'],

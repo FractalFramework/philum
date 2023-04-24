@@ -1,7 +1,7 @@
 <?php //a/codeline
 class codeline{
 
-static function parse($msg,$op,$g){
+static function parse($msg,$op,$g){if(!$msg)return;
 $st='['; $nd=']'; $deb=''; $mid=''; $end='';
 $in=strpos($msg,$st);
 if($in!==false){
@@ -22,11 +22,11 @@ if($in!==false){
 		'sconn2'=>self::sconn2($mid,$op),
 		'sconn3'=>self::sconn3($mid),
 		'savimg'=>self::savimg($mid,$op),
+		'correct'=>self::correct($mid,$op),
 		'corrfast'=>self::corrfast($mid,$op),
 		'corrfastb'=>self::corrfastb($mid,$op),
 		'stripconn'=>self::stripconn($mid,$op),
 		'striptw'=>self::striptw($mid,$op),
-		'correct'=>self::correct($mid,$op),
 		'clpreview'=>clpreview($mid),
 		'delconn'=>self::delconn($mid),
 		'extractimg'=>self::extractimg($mid,$op),
@@ -80,27 +80,26 @@ $xp=strrpos($da,':'); $c=substr($da,$xp); $d=substr($da,0,$xp);
 if($op=='stripconn'){if(strpos($da,'§')!==false)$d=strend($d,'§'); return $d;}
 if(substr($op,0,8)=='replconn'){[$op,$a,$b]=opt($op,'-',3);
 	if(strpos($da,':'.$a)!==false)return '['.str_replace(':'.$a,':'.$b,$da).']';}
-if($op=='png2jpg'){[$d,$txt]=cprm($da); $id=get('read'); $xt=is_img($d);//illogical
+elseif($op=='png2jpg'){[$d,$txt]=cprm($da); $id=get('read'); $xt=is_img($d);//illogical
 	if($xt=='.png' && $id)return img::png2jpg($d,$id);}
-if($op=='webp2jpg'){[$d,$txt]=cprm($da); $id=get('read'); $xt=is_img($d);
+elseif($op=='webp2jpg'){[$d,$txt]=cprm($da); $id=get('read'); $xt=is_img($d);
 	if($xt=='.webp' && $id)return img::webp2jpg($d,$id);}
-if($op=='forcewebp2jpg'){[$d,$txt]=cprm($da); $id=get('read'); $xt=is_img($d);
+elseif($op=='forcewebp2jpg'){[$d,$txt]=cprm($da); $id=get('read'); $xt=is_img($d);
 	if($xt){$c=read_file('img/'.$d); if(strpos($c,'WEBP') or strpos($c,'JFIF')){return img::webp2jpg($d,$id);}}}
-if($op=='stripimg'){[$lin,$txt]=cprm($da);
+elseif($op=='stripimg'){[$lin,$txt]=cprm($da);
 	if(!is_img($lin))return '['.$da.']';}
-if($op=='stripvideo'){if($c==':video' && strpos($da,'§')===false)
+elseif($op=='stripvideo'){if($c==':video' && strpos($da,'§')===false)
 	return str_replace(':video','§1:video','['.$da.']');}
-if($op=='striplink'){[$lin,$txt]=cprm($da);
+elseif($op=='striplink'){[$lin,$txt]=cprm($da);
 	if(is_numeric($lin))$lin=host().urlread($lin);
 	elseif(strpos($da,'§')!=false or substr($lin,0,4)=='http')return ($txt?$txt:$lin);
 	elseif($c==':pub')return ma::suj_of_id($d).' ('.host().urlread($d).') ';
 	elseif($c==':figure')return $txt;}
-if($c==$op){
+elseif($c==$op){
 	if($c==':table'){
 		//if(get('clean_tab'))return str::del_n($d); else{}//del_n
 		$d=str_replace(array('¬','|'),array("\n","\t"),$d);
-		if(strpos($d,' ')!==false && strpos($d,'.jpg')===false && trim($d))
-			return '['.$d.':q]';
+		if(strpos($d,' ')!==false && strpos($d,'.jpg')===false && trim($d))return '['.$d.':q]';
 		else return $d;}
 	elseif($c==':chat')return;
 	elseif($c==':list')return str_replace('|','',$d);
@@ -233,6 +232,7 @@ $ret=match($c){
 ':w'=>lka($p),
 ':no'=>'',
 default=>''};
+if($ret)return $ret;
 //if(is_img($p))return image(goodroot($p,1));
 if(is_img($da) && strpos($da,'§')===false){$im=goodroot($da,'');
 	if($b=='epub'){$fb='_datas/epub/OEBPS/images/';
@@ -273,7 +273,6 @@ static function corrfast($da,$op){
 $r=explode(' ',$op); $n=count($r);
 for($i=0;$i<$n;$i++)if($c==$r[$i]){
 	$hk=strrpos($d,']'); $pa=strrpos($d,'§');
-	//if($pa>$hk)echo substr($d,0,$pa);
 	if($pa>$hk)return substr($d,0,$pa);
 	elseif($hk!==false)return $d;
 	else return $d;}
@@ -301,17 +300,11 @@ if(strpos($d,'https://twitter.com')!==false)return;
 return '['.$d.']';}
 
 static function delconn($da){
-if(strpos($da,'§')!==false && strpos($da,':')===false){
-	[$p,$o]=explode('§',$da); $ret='';
-	if(!is_img($o) && !is_http($o))$ret=$o;
-	elseif(!is_img($p) && !is_http($p))$ret=$p;
-	return $ret;}
-elseif(strpos($da,'§')!==false){[$p,$o]=explode('§',$da); $ret='';
-	if(!is_img($o))$ret=$o; return $ret;} //if(!is_img($p))$ret.=' ('.$p.')';
-elseif(!is_img($da) && strpos($da,':')===false)return $da;
-[$d,$c]=split_one(':',$da,1);
-if(!is_img($d)){if($d!='http')return $d; elseif($d!='http')return $c?$d:$da;}
-elseif($d=='http')return $da.' ';}
+[$p,$o,$c]=unpack_conn($da); $ret='';
+$rx=conn_ref_in(); if(in_array(':'.$c,$rx))return $p;
+if($p && $o && !$c)return $p.' '.$o;
+elseif(!$o && !$c)return $p;
+else return '['.$da.']';}
 
 static function extractimg($d,$id){
 [$p,$o,$c]=unpack_conn($d);

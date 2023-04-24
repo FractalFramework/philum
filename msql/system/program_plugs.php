@@ -1,5 +1,5 @@
 <?php //msql/program_plugs
-$r=["_menus_"=>['usage','dir','loadable','callable','interface','state','private'],
+$r=["_"=>['usage','dir','loadable','callable','interface','state','private'],
 "Telex"=>['','','','','','',''],
 "Twitter"=>['','','','','','',''],
 "addfonts"=>['','','','','','',''],
@@ -67,7 +67,6 @@ $r=["_menus_"=>['usage','dir','loadable','callable','interface','state','private
 "forum"=>['','com','','','','old',''],
 "frequency"=>['','','','','','',''],
 "ftext"=>['','','','','','',''],
-"futf"=>['','','','','','',''],
 "gaia"=>['','','','','','',''],
 "genpswd"=>['','goodies','','','','',''],
 "geo"=>['','','','','','',''],
@@ -111,6 +110,7 @@ $r=["_menus_"=>['usage','dir','loadable','callable','interface','state','private
 "panart"=>['','goodies','','','','',''],
 "panel"=>['','system','','','','',''],
 "parse"=>['','lib','','','','dev',''],
+"patches"=>['','','','','','',''],
 "patchs"=>['','system','','','','',''],
 "paypal"=>['','goodies','','','','',''],
 "pclerror"=>['','','','','','',''],

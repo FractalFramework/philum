@@ -1,5 +1,5 @@
 <?php //msql/connectors_tools
-$r=["_menus_"=>['type','param','category'],
+$r=["_"=>['type','param','category'],
 ":(x)"=>['conn','_delconn','del'],
 ":b"=>['conn','_delconn_b','del'],
 ":c"=>['conn','_delconn_c','del'],

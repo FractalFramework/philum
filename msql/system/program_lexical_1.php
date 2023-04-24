@@ -1,5 +1,5 @@
 <?php //msql/program_lexical_1
-$r=["_menus_"=>['syntax','usage'],
+$r=["_"=>['syntax','usage'],
 "1"=>['_a','before current'],
 "2"=>['_b','after current'],
 "3"=>['_r','recursive'],

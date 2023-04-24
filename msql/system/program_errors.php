@@ -1,5 +1,5 @@
 <?php //msql/program_errors
-$r=["_menus_"=>['error','repair'],
+$r=["_"=>['error','repair'],
 "1"=>['error 500','permission error : delete all and re-install from installer without copy yourself files by ftp ;
 the server set himself his good permissions : 777 or 705
 

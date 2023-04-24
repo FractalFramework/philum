@@ -43,13 +43,13 @@ case('make_default'):self::build_css('css/_classic.css',$defs);
 	alert('modified: table system/default_css_2, _classic.css, _default.css (no colors)'); break;
 case('reset_clr'):$_SESSION['clrs'][$clrset]=msql_read('system','default_clr_2',''); 
 	self::save_clr($noc); break;
-case('reset_default'):$defs=self::css_default(); unset($defs['_menus_']);
+case('reset_default'):$defs=self::css_default(); unset($defs[msql::$m]);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
-case('reset_global'):$defs=self::css_default(1); unset($defs['_menus_']);
+case('reset_global'):$defs=self::css_default(1); unset($defs[msql::$m]);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
 case('public_clr'):$_SESSION['clrs'][$clrset]=msql_read('design','public_clrset_'.$o,'');
 	self::save_clr($noc); break;
-case('public_design'):$defs=msql_read('design','public_design_'.$o,''); unset($defs['_menus_']);
+case('public_design'):$defs=msql_read('design','public_design_'.$o,''); unset($defs[msql::$m]);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
 case('empty_design'):$defs=self::empty_design($defs,'css');
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
@@ -57,13 +57,13 @@ case('null_clr'):$_SESSION['clrs'][$clrset]=['','','','','','','',''];
 	self::save_clr($noc); break;
 case('null_design'):$defs=self::css_default(); $defs=self::empty_design($defs,'css');
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
-case('append'):$defsc=self::css_default(); unset($defsc['_menus_']);
+case('append'):$defsc=self::css_default(); unset($defsc[msql::$m]);
 	$defs=self::array_append_css($defs,$defsc); msql::save($bd,$nod,$defs);
 	self::build_css($ftmp,$defs); break;
-case('append_global'):$defsc=self::css_default(); unset($defsc['_menus_']);
+case('append_global'):$defsc=self::css_default(); unset($defsc[msql::$m]);
 	$defs=self::array_append_css($defs,$defsc); msql::save($bd,$nod,$defs);
 	self::build_css($ftmp,$defs); break;
-case('inject_global'):$defsc=self::css_default(); unset($defsc['_menus_']);
+case('inject_global'):$defsc=self::css_default(); unset($defsc[msql::$m]);
 	$defs=self::append_design($defs,$defsc); msql::save($bd,$nod,$defs);
 	self::build_css($ftmp,$defs); break;
 case('reset_this'):$defsc=self::css_default(); $ecb=self::find_value($defsc,$defs[$o]);
@@ -201,7 +201,7 @@ if($r)foreach($r as $k=>$v)if($v)$rb[$k]=[$v]; $rb[]=[];
 if($rb)msql::save('design',$nod,$rb); return $rb;}
 
 static function reorder_keys($r){$i=0; $ret=[];
-if($r)foreach($r as $k=>$v){if($k!='_menus_'){$i++; $k=$i;} $ret[$k]=$v;}
+if($r)foreach($r as $k=>$v){if($k!=msql::$m){$i++; $k=$i;} $ret[$k]=$v;}
 return $ret;}
 
 //append
@@ -254,7 +254,7 @@ return [$res,array_part($_SERVER['HTTP_HOST'],'.',0),date('ymdHi',time()),$md];}
 static function dsnamedt($qb,$desgn,$prm=[]){$res=$prm[0]??'';
 $nd=$qb.'_'.$desgn; $ret=self::desname($qb,$desgn);
 if($res=='init')return self::dsnmform('rnt',$nd,'',$ret?$ret:'table_name');
-$defb=['_menus_'=>['name','site','last-update','mods']];
+$defb=[msql::$m=>['name','site','last-update','mods']];
 $r=self::dsnam_arr($res);
 if($res && $res!='init'){
 	msql::modif('',$qb.'_design',$r,'one',$defb,$desgn);
@@ -778,7 +778,7 @@ foreach($r as $k=>$v)if($v)$r[$k]=invert_color($v,0);
 return $r;}
 
 static function build_css($f,$defs,$neg=''){
-unset($defs['_menus_']); $clr=getclrs(); $ret=[];
+unset($defs[msql::$m]); $clr=getclrs(); $ret=[];
 if($neg){$f=str_replace('.css','_neg.css',$f); $clr=self::invertclrs($clr);}
 $sheets=[3=>'color',4=>'background-color',5=>'border-color',''];
 $attributes=['','a','a:hover',''];

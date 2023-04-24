@@ -1,5 +1,5 @@
 <?php //msql/edition_fontes
-$r=["_menus_"=>['x','y','width_character','height_line'],
+$r=["_"=>['x','y','width_character','height_line'],
 "4mylover"=>['','','27','32'],
 "ArialBlack16"=>['','','8','16'],
 "ArialBlack24"=>['','','12','24'],

@@ -1,5 +1,5 @@
 <?php //msql/program_plugs_public
-$r=["_menus_"=>['_menus_','usage','kljljk'],
+$r=["_"=>['_menus_','usage','kljljk'],
 "1"=>['editor','external','convert html to connectors'],
 "2"=>['ascii','external',''],
 "3"=>['backup_msql','system',''],

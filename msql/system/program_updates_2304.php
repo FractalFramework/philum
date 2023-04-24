@@ -1,5 +1,5 @@
 <?php //msql/program_updates_2304
-$r=["_menus_"=>['date','text'],
+$r=["_"=>['date','text'],
 "1"=>['0401','publication'],
 "2"=>['0403','- correctifs utf8- nouveaux utfenc/dec, nouvelle gestion des encodages'],
 "3"=>['0404','- préparatifs dom2conn'],
@@ -28,9 +28,39 @@ $r=["_menus_"=>['date','text'],
 - réforme du nom des images (sans le nom du hub)
 - application du correctif du pb d\'encodage à la branche main
 - ajout d\'un indicateur pour les sites en local (qui n\'aiment pas opcache)'],
-"14"=>['0418','- correctifs api twitter quand aucune auth n\'est signal&eacute;e
+"14"=>['0418','- correctifs api twitter quand aucune auth n\'est signalée
 - correctif bouton \'sauvegarder\' (au lieu de s\'enregistrer)
 - correctif mauvais nom de colonne de la table twit
-- application des r&eacute;formes de d&eacute;finition de tables issues de la branche dev
+- application des réformes de définition de tables issues de la branche dev
 - corrections des aides msql et ajout d\'une table twit comme exemple
-- r&eacute;novation import/export csv, json, entre plateformes utf8/iso8859']]; ?>
+- rénovation import/export [csv, json], entre plateformes utf8/iso8859
+- correction gestionnaire de choix d\'usage de l\'ordre des param&egrave;tres dans img§mp4 entre mp4§text
+- correctif foutue entité \'sect\''],
+"15"=>['0418','[branche dev]
+- le dossier \'video\' devient \'medias\'
+[dev,main]
+- réorganisation des fichiers des couches 0, 1, 2, 3'],
+"16"=>['0419','[branche dev/main]
+- le dossier gdf est déplacé dans fonts/gdf
+- tag multilingues connecté au translator
+- ajout d\'un cleanup de tags orphelins'],
+"17"=>['0420','- correctif lancement de l\'api depuis un post (depuis les favs)
+- correctif ordre des id dans le book (depuis les favs)
+- amélioration éditeur de commande de favoris (pb de distinction des champs)
+- modernisation de book (abandon des procédures dépréciées)
+- réfection des noms dans meta
+- ajout du convertisseur de folders en tags
+- ajout du présentateur de classes de tags
+- les classes de tags peuvent &ecirc;tre sauvegardées à la racine de la table \'tags\''],
+"18"=>['0422','- correctif d\'installation fraîche, lors d\'une migration en local
+- correctifs dans l\'éditeur css (comportement lors de fichiers absents d\'une installation fraîche)'],
+"19"=>['0423','- rénovation du fonctionnement du menu admin
+- rénovation du système de tri de colonnes dans msql
+- les colonnes \'picto\' affichent en sus, lesdits pictos'],
+"20"=>['0424','application d\'une masse d\'améliorations (ligne par ligne) faites sur la branche utf :
+- réfection de stripconn
+- réfection de msqedit (va être utile pour la réfection des params)
+- système de tris et de pictos (col speciale) de msql
+- réfection de la config (gestion complexe, à refaire)
+- réfection de la gestion des catégories (bcp reste à faire)
+- application du patch de réforme des headers des tables msql (une heure pour se décider/se préparer)']]; ?>

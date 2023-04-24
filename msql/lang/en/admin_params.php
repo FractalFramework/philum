@@ -1,5 +1,5 @@
 <?php //msql/admin_params
-$r=["_menus_"=>['description'],
+$r=["_"=>['description'],
 "1"=>['name (number) of the modules talbe (1 by default)'],
 "2"=>['ID of the article to display to the visitors who are not authorized in the table users/hub_authip'],
 "3"=>['nb max of signs in preview'],

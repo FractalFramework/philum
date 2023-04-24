@@ -1,5 +1,5 @@
 <?php //msql/helps_css
-$r=["_menus_"=>['title_1'],
+$r=["_"=>['title_1'],
 "1"=>['save condition'],
 "2"=>['specific condition'],
 "3"=>['herit'],

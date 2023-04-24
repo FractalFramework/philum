@@ -83,7 +83,7 @@ return $rc;}
 
 static function distrib_share(){
 $r=self::distrib_virtual_dir(); $dr='server'; $nod='shared_files';
-if($r){$ra['_menus_']=['url','vurl']; $ra+=$r;
+if($r){$ra[msql::$m]=['url','vurl']; $ra+=$r;
 msql::modif($dr,$nod,$ra,'arr');}}
 
 static function shared_files(){
@@ -171,7 +171,7 @@ return self::info_shared($d,$id);}
 
 static function sharedir($dr,$o){$r=explore('users/'.$dr);
 $sbdr=strfrom($dr,'/'); $sbdr=struntil($sbdr,'/');
-$dfb['_menus_']=['url','vurl'];
+$dfb[msql::$m]=['url','vurl'];
 foreach($r as $k=>$v)$ra[]=[$dr.'/'.$v,$sbdr];
 $_SESSION['curdir']=msql::modif('',nod('shared'),$ra,'add',$dfb);
 self::distrib_share();

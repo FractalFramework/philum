@@ -1,5 +1,5 @@
 <?php //msql/connectors_all
-$r=["_menus_"=>['type','param','category'],
+$r=["_"=>['type','param','category'],
 "h"=>['embed','','html'],
 "b"=>['embed','','html'],
 "i"=>['embed','','html'],

@@ -110,7 +110,7 @@ $txt=self::oembed(self::lk($q['user']['screen_name'],$q['id']));
 if($txt)[$res,$med]=self::clean($txt);
 else [$res,$med]=self::clean(utf8dec_b($q['text']));
 $ret['msg']=$res;
-if(isset($q['entities']['media']))foreach($q['entities']['media'] as $v)
+foreach($q['entities']['media']??[] as $v)
 	if($vb=$v['media_url_https'])$ret['msg'].=n().n().'['.$vb.']';
 return [$ret['suj'],$ret['msg'],$ret['day']];}
 
@@ -129,7 +129,7 @@ $ret.=input('cfg1',$r[1]??'',60).btn('small','oauth_token').br();
 $ret.=input('cfg2',$r[2]??'',60).btn('small','oauth_token_secret').br();
 $ret.=input('cfg3',$r[3]??'',60).btn('small','oauth_consumer_key').br();
 $ret.=input('cfg4',$r[4]??'',60).btn('small','oauth_consumer_secret').br();
-$ret.=hidden('cfg5',$r[5]);
+$ret.=hidden('cfg5',$r[5]??'');
 $ret.=lj('popsav',$rid.'_twit,config*sav_cfg1,cfg2,cfg3,cfg4,cfg5__'.$nd.'__',nms(27));
 $ret.=msqbt('',nod('twit_'.$nd)).' ';
 return divd($rid,$ret);}

@@ -1,5 +1,5 @@
 <?php //msql/connectors_basic
-$r=["_menus_"=>['type','param'],
+$r=["_"=>['type','param'],
 "conn"=>['embedslct','[\',\']'],
 "url"=>['embed',''],
 "img"=>['embed',''],

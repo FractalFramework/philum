@@ -137,7 +137,7 @@ if($rc)foreach($rc as $k=>$v){[$nm,$xt]=split_right('.',$v,1,1);//add
 		$rb[]=[$nm,'user','','','']; $vrf[]=$nm; $add[]=$nm;}
 	elseif(!in_array($nm,$vra) && in_array($nm,$vrb)){$kb=in_array_b($nm,$vrb);
 		$rb[]=$ra[$kb]; $vrf[]=$nm; $add[]=$nm;}}}
-foreach($rb as $k=>$v){if($k!='_menus_'){//del
+foreach($rb as $k=>$v){if($k!=msql::$m){//del
 	if(!is_file($dr.$v[0].'.woff') && !is_file($dr.$v[0].'.eot') && !is_file($dr.$v[0].'.svg')){unset($rb[$k]); $del[]=$v[0];}}}
 if(!is_dir('msql/server'))mkdir('msql/server');//sav
 msql::save('server','edition_typos',$rb);

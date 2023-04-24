@@ -1,5 +1,5 @@
 <?php //msql/admin_config
-$r=["_menus_"=>['category','name'],
+$r=["_"=>['category','name'],
 "1"=>['access','htaccess'],
 "2"=>['access','create_hub privilege to blogers'],
 "3"=>['access','first_node'],

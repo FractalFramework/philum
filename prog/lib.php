@@ -456,6 +456,9 @@ function strto($v,$s){$p=strpos($v??'',$s); return $p!==false?substr($v,0,$p):$v
 function struntil($v,$s){$p=strrpos($v??'',$s); return $p!==false?substr($v,0,$p):$v;}
 function strfrom($v,$s){$p=strpos($v??'',$s); return $p!==false?substr($v,$p+strlen($s)):$v;}
 function strend($v,$s){$p=strrpos($v??'',$s); return $p!==false?substr($v,$p+strlen($s)):$v;}
+function strfirst($d,$r){$q=[];
+foreach($r as $v){$n=strpos($d,$v); if($n!==false)$q[]=$n;} if($q)return min($q);}
+function nearest($d,$s){$r=str_split($s); $n=strfirst($d,$r); return $n?$n:strlen($d);}
 function strnext($d,$s){return substr($d,0,nearest($d,$s));}
 function split_one($s,$v,$n=''){if($n)$p=strrpos($v,$s); else $p=strpos($v,$s);
 if($p!==false)return [substr($v,0,$p),substr($v,$p+1)]; else return [$v,''];}
@@ -536,9 +539,6 @@ function randid($p=''){return $p.substr(microtime(),2,7);}//uniqid()
 function nchar($o,$n){$ret=''; for($i=0;$i<$o;$i++){$ret.=$n;}return $ret;}
 function count_r($r){$n=0;
 if($r)foreach($r as $k=>$v){if(is_array($v))$n+=count_r($v); else $n++;} return $n;}
-function nearest($d,$s){$r=str_split($s); $rt=[];
-foreach($r as $k=>$v)if($pos=strpos($d,$v))$rt[]=$pos;
-if($rt)return min($rt); else return strlen($d);}
 
 function xt($d,$o=0){$d=strtolower($d??'');
 $b=strrpos($d,'.'); if($b)$d=substr($d,$b+$o);

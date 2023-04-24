@@ -1,5 +1,5 @@
 <?php //msql/edition_colors
-$r=["_menus_"=>['rvb'],
+$r=["_"=>['rvb'],
 "aliceblue"=>['F0F8FF'],
 "antiquewhite"=>['FAEBD7'],
 "aqua"=>['00FFFF'],

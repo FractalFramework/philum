@@ -1,8 +1,8 @@
 <?php //msql/helps_langs
-$r=["_menus_"=>['title'],
-"fr"=>['FranÃ§ais'],
+$r=["_"=>['title'],
+"fr"=>['Fran�ais'],
 "en"=>['English'],
-"es"=>['EspaÃ±ol'],
+"es"=>['Espa�ol'],
 "de"=>['Duits'],
 "it"=>['Italiano'],
 "ru"=>['&#1088;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;'],

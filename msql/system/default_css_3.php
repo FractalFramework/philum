@@ -289,4 +289,4 @@ $r=["1"=>['','','a','8||','||','||',''],
 "288"=>['popup','','article','7||','||','||','margin:8px 0; '],
 "289"=>['','','@media only screen and (min-width: 980px)','','','','#bub{font-size:normal;} #bub li a{padding:2px 2px 1px;} #page{max-width:920px;} #menu li a{font-size:normal;} #artmod{display:block;} #rightbar{display:block;} .admnu{height:32px;} .philum {font-size:22px;} input{font-size:normal;} .justy{font-size:20px;}'],
 "290"=>['','','@media only screen and (min-width: 1400px)','','','',''],
-"291"=>['','','@media only screen and (max-width: 640px)','','','','']]; ?>
+"291"=>['','','@media only screen and (max-width: 640px)','','','','']];

@@ -1,5 +1,5 @@
 <?php //msql/admin_config
-$r=["_menus_"=>['description'],
+$r=["_"=>['description'],
 "1"=>['htaccess'],
 "2"=>['visitor allowed to create blogs'],
 "3"=>['default hub'],

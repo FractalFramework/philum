@@ -246,7 +246,7 @@ return divc('trkmsg',$ret);}
 
 //:msql
 static function msqplay($r,$o=''){
-$head=isset($r['_menus_'])?array_shift($r):'';
+$head=isset($r[msql::$m])?array_shift($r):'';
 if(is_array($r)){
 	if($o)$r=array_reverse($r);
 	$ret=tabler($r,$head);
@@ -314,7 +314,7 @@ return tabler($r,1);}}
 static function msqgraph($d){static $n; $n++; $i=0; $pw=prma('content');
 [$da,$rep]=split_one('§',$d,1); [$nd,$bs,$va,$op]=explode('_',$da);
 if($bs){$nd=$nd?$nd:ses('qb');}else{$nd=ses('qb'); $bs=$d;}
-$r=msql::goodtable($da); $menu=$r['_menus_']; unset($r['_menus_']);
+$r=msql::goodtable($da); $menu=$r[msql::$m]; unset($r[msql::$m]);
 if($r && $rep)foreach($r as $k=>$v){$i++; $bit[$k]=$v[$rep];}
 elseif($r && $op){foreach($r as $k=>$v){$i++; $bit[$k]=$v;}}
 $output='/imgc/'.ses('qd').'_'.ses('read').'_graph_'.$n.'.png';

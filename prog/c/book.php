@@ -80,14 +80,6 @@ static function home($p,$id){
 //Head::add('csscode',self::css());
 //Head::add('jscode',self::js());
 $_SESSION['book'][$id]=$p; $_SESSION['boko']=$id;
-//[$r,$rb]=book_builder($p);
-if(strpos($p,'§')){[$p,$o]=explode('§',$p);
-	[$t,$or,$tp,$oi]=explode('/',$o); if(!$tp)$tp='book'; 
-	$rb['title']=stripslashes($t);}
-//if(is_numeric($p) && ses('read')!=$p)return self::cover($t,$id);
-//if($o=='api')$r=api::call2($p);else
-//if(strpos($p,'&') && strpos($p,'='))$r=api::mod_rq($p);//old format
-//elseif(strpos($p,'|') && strpos($p,',')===false){$r=array_flip(explode('|',$p)); pr($r);}
 if($id=='fav' or $id=='like' or $id=='poll')$r=sql('ib','qdf','k',['type'=>$id,'iq'=>$p],1);
 elseif($id=='visit')$r=array_flip(array_keys(ses('mem')));
 elseif(is_numeric($p))$r=sql('ib','qdd','k',['msg'=>$p,'val'=>$id]);

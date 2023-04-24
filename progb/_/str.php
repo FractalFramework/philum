@@ -3,7 +3,7 @@ class str{
 #filters
 static function hardurl($d){
 $d=eradic_acc($d); $d=strtolower($d); $d=str_replace("&nbsp;",' ',$d);
-$r=['/','«','»',',','.',';',':','!','?','§','%','&','$','#','_','+','=','\n','\\','~','(',')','[',']','{','}'];
+$r=['/','«','»',',','.',';',':','!','?','|','§','%','&','$','#','_','+','=','\n','\\','~','(',')','[',']','{','}'];
 $d=str_replace($r,'',$d);
 $d=str_replace([' ',"'",'"'],'-',trim($d));
 $d=preg_replace('/(-){2,}/','-',$d);
@@ -37,7 +37,7 @@ $r=["&nbsp;","&thinsp;","&ensp;","&emsp;","&#8200;","&#8239;"];//&#3647;//bitcoi
 foreach($r as $k=>$v)$d=str_replace(html_entity_decode($v),' ',$d);
 return $d;}
 
-static function decode_unicode($d){
+static function decode_unicode($d){//return $d;//diffutf
 if(!$d)return; $n=strlen($d);//%u
 if(strpos($d,'%u')===false)return $d; $ret='';
 for($i=0;$i<$n;$i++){$c=substr($d,$i,1);
@@ -47,7 +47,7 @@ if($c=='%'){$i++; $cb=substr($d,$i,1);
 else $ret.=substr($d,$i,1);}
 return $ret;}
 
-static function utflatindecode($d){if(!$d)return;
+static function utflatindecode($d){if(!$d)return;//diffutf
 $ra=["%u201C","%u201D","%u2019","%u2026","%u0153","%u20AC","%u2013","%u2022"];
 $rb=['"','"',"'","...","&#339;","€","-","•"];//oe
 return str_replace($ra,$rb,$d);}
@@ -55,16 +55,15 @@ return str_replace($ra,$rb,$d);}
 static function urlenc($d,$o=''){//urlencode(utf8enc($d))
 $ra=["à","â","é","è","ê","ë","î","ï","ô","ö","û","ü","ù","’","'"];
 $rb=["%C3%A0","%C3%A2","%C3%A9","%C3%A8","%C3%AA","%C3%AB","%C3%AE","%C3%AF","%C3%B4","%C3%B6","%C3%BB","%C3%BC","%C3%B9","%E2%80%99",'%E2%80%99'];
-if($o)return str_replace($rb,$ra,$d); else return str_replace($ra,$rb,$d);}
+if($o)[$rb,$ra]=[$ra,$rb];
+return str_replace($ra,$rb,$d);}
 
-static function htmlentities_a($d){return htmlentities($d,ENT_QUOTES,ses::$enc);}
-static function htmlentities_b($d){return str_replace(['&','<','>'],['&amp;',"&lt;","&gt;"],$d);}
-/*static function hooks($d,$o=''){$ra=['[',']','{','}']; $rb=['(hka)','(hkb)','(aca)','(acb)'];
-return $o?str_replace($rb,$ra,$d):str_replace($ra,$rb,$d);}*/
+static function htmlentities_a($d){if($d)return htmlentities($d,ENT_QUOTES,ses::$enc);}
+static function htmlentities_b($d){if($d)return str_replace(['&','<','>'],['&amp;',"&lt;","&gt;"],$d);}
 
 static function clean_acc($v){
-$ra=["’","‘",'“','”',"…","–","¨","â€™","\t"];//"<o:p>","</o:p>",'https',
-$rb=["'","'",'"','"',"...","-",'"',"'",''];//'<!--','-->',"","",'http',
+$ra=["’","‘",'“','”',"…","–","â€™","\t"];//"<o:p>","</o:p>",'https',,"¨"
+$rb=["'","'",'"','"',"...","-","'",''];//'<!--','-->',"","",'http',,'"'
 if($v)return str_replace($ra,$rb,$v);}
 
 static function clean_punct($d,$o=''){if(!$d)return;
@@ -91,6 +90,9 @@ $d=str_replace("\n",'µ',$d);
 $d=str_replace('µµ',"\n\n",$d);
 $d=str_replace('µ',' ',$d);
 return $d;}
+
+static function mb_ucfirst($d,$e='utf-8'){//diffutf
+return mb_strtoupper(mb_substr($d,0,1,$e),$e).mb_substr($d,1,mb_strlen($d,$e),$e);}
 
 static function lowercase($v){if(!$v)return;
 $v=html_entity_decode($v); $nb=strlen($v); $y=0; $ret='';
@@ -142,12 +144,6 @@ $d=self::clean_inclusive($d);
 return trim($d);}
 
 #correctors
-static function stripconn($d){
-$conn=conn_ref_in();
-$d=str_replace($conn,'',$d);
-$d=str_replace(['[',']','¬','|','§'],' ',$d);
-$d=delnl($d);
-return $d;}
 
 //links
 static function embed_links($msg=''){if(!$msg)return;//oldest_static function!//19
@@ -191,14 +187,8 @@ $kmx=self::kmax_nb(prmb(3),$msg);
 return substr($msg,0,$kmx);}
 
 #repairs
-static function clean_internaltag($msg){$ret='';
-//return codeline::parse($msg,'','delconn');
-$msg=str_replace("\n","\n ",delbr($msg,"\n"));
-$re=explode(' ',$msg); foreach($re as $k)
-	if(strpos($k,'§')!==false){[$lin,$txt]=explode('§',$k); $ret.=$lin.' '.$txt.' ';}
-	else $ret.=$k.' ';
-$msg=str_replace(" \n","\n",$msg);
-return self::stripconn($ret);}
+static function stripconn($d){
+return codeline::parse($d,'','delconn');}
 
 static function stupid_acc($d){
 $d=str_replace(['<!--[if IE]>','<!--[if IE 9]>','<!--[if !IE]>','<!--<![endif]-->','<![endif]-->','<!-->'],'',$d??'');//,'<!--'

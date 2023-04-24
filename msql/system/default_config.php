@@ -1,5 +1,5 @@
 <?php //msql/default_config
-$r=["_menus_"=>['name','default'],
+$r=["_"=>['name','default'],
 "1"=>['htaccess','yes'],
 "2"=>['create_hub privilege to blogers','yes'],
 "3"=>['first_node','default_hub'],

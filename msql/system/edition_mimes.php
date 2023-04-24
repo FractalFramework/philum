@@ -1,5 +1,5 @@
 <?php //msql/edition_mimes
-$r=["_menus_"=>['val0'],
+$r=["_"=>['val0'],
 ".7z"=>['meet'],
 ".ai"=>['img'],
 ".bz3"=>['zip'],

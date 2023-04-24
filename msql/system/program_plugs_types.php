@@ -1,8 +1,8 @@
 <?php //msql/program_plugs_types
-$r=["_menus_"=>['_menus_','usage'],
+$r=["_"=>['_menus_','usage'],
 "1"=>['external','call directly the page'],
 "2"=>['system','used by software'],
-"3"=>['plug','connector [paramÂ§plugin:plug] or [paramÂ§option:plugin] '],
+"3"=>['plug','connector [param§plugin:plug] or [param§option:plugin] '],
 "4"=>['module','used by module'],
 "5"=>['connector','used by connector'],
 "6"=>['plgbtn','added in options of each articles'],

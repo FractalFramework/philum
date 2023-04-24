@@ -1,5 +1,5 @@
 <?php //msql/program_mimes
-$r=["_menus_"=>['val0'],
+$r=["_"=>['val0'],
 "folder"=>['folder'],
 ".jpg"=>['photo'],
 ".png"=>['photo'],

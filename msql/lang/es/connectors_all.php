@@ -1,5 +1,5 @@
 <?php //msql/connectors_all
-$r=["_menus_"=>['description'],
+$r=["_"=>['description'],
 "h"=>['h3'],
 "b"=>['bold'],
 "i"=>['italic'],
@@ -186,4 +186,4 @@ ex: [stext;plug;stext:apps] [6:apps]'],
 "vid"=>[''],
 "private"=>[''],
 "cita_italics"=>[''],
-"cita_quotes"=>['']];
+"cita_quotes"=>['']]; ?>

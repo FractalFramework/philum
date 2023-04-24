@@ -1,5 +1,5 @@
 <?php //msql/shared_files
-$r=["_menus_"=>['url','vurl'],
+$r=["_"=>['url','vurl'],
 "1"=>['philum/logo/philum_logo.png','philum/logo'],
 "2"=>['philum/videos/or.swf','docs'],
 "3"=>['philum/logo/philumlogo13.png','philum/logo'],

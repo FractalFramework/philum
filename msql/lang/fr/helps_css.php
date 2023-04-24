@@ -1,13 +1,13 @@
 <?php //msql/helps_css
-$r=["_menus_"=>['title_1'],
+$r=["_"=>['title_1'],
 "1"=>['sauver condition'],
-"2"=>['condition spÃ©cifique'],
-"3"=>['hÃ©riter'],
+"2"=>['condition sp�cifique'],
+"3"=>['h�riter'],
 "4"=>['rendre publique'],
 "5"=>['informer css public'],
-"6"=>['rendre par dÃ©faut'],
+"6"=>['rendre par d�faut'],
 "7"=>['rendre global'],
 "8"=>['rendre admin'],
-"9"=>['injecter dÃ©fs globales'],
+"9"=>['injecter d�fs globales'],
 "10"=>['css actuel public'],
-"11"=>['css en cours d\'Ã©dition']]; ?>
+"11"=>['css en cours d\'�dition']]; ?>

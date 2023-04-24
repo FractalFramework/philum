@@ -99,8 +99,8 @@ for($i=0;$i<$n;$i++){$nb+=strlen($r[$i]); if($nb<256)$ret.=$r[$i].' ';}
 if($nb>=256)$dot=' (...)'; return $ret.$dot;}
 
 static function tabler_bypage($r,$csa,$csb,$murl){$td=''; $tr='';
-if(isset($r['_menus_'])){foreach($r['_menus_'] as $k=>$v)$td.=tagc('th',$csa,$v);
-	$tr=tagb('tr',$td); unset($r['_menus_']);}
+if(isset($r[msql::$m])){foreach($r[msql::$m] as $k=>$v)$td.=tagc('th',$csa,$v);
+	$tr=tagb('tr',$td); unset($r[msql::$m]);}
 $n=count($r)+1; $page=get('page',1); $npg=500;
 //$ret=nb_page($n,$npg,$page,'');
 $bt=pop::btpages($npg,$page,$n,'msqdiv_msqa,home___'.ajx($murl).'_');//!
@@ -112,21 +112,25 @@ if(is_array($r))foreach($r as $k=>$v){$td=''; $i++;
 return divd('msqpg',$bt.scroll($r,tag('table',[],$tr),500).$bt);}
 
 static function draw_table($r,$murl,$adm=''){//adm=saving
-[$dr,$nd,$n]=self::murlvars($murl); $jurl=ajx($murl); $def=get('def'); $i=0;
+[$dr,$nd,$n]=self::murlvars($murl); $jurl=ajx($murl); $def=get('def'); $i=0; $rh=[];
 if($r)foreach($r as $k=>$v){$ra=[]; $i++;
 	if(is_array($v))foreach($v as $ka=>$va)$ra[]=self::displaydata(self::cutat($va),1);
 	$css=$k==$def?'popsav':'popbt';
 	$open=lj($css,'popup_msqa,editmsql___'.$jurl.'_'.ajx($k),$k);
-	//$edit=lk(self::sesm('url').$murl.':'.($k).self::gpage(),picto('editor'));
 	if(auth(6))$del=lj('popdel','admsql_msqa,msqldel___'.$jurl.'_'.$k,pictit('del',nms(76))).' ';
-	if($k=='_menus_' && $ra){
-		foreach($ra as $ka=>$va)$ra[$ka]=lk(self::sesm('url').$murl.'&sort='.$ka,$ka.':'.$va);
-		array_unshift($ra,lk(self::sesm('url').$murl.'&sort=k','keys'));}
+	if($k==msql::$m && $ra){$rh=['_'];
+		foreach($ra as $ka=>$va){$so=get('sort'.$ka)?'0':'1'; $rh[$ka]=trim($va);
+			$ra[$ka]=lj('','admsql_msqa,msqlops___'.$jurl.'_sort'.$so.'_'.$ka,$ka.':'.$va);
+			if($rh[$ka]=='picto')$ra[$ka.'pc']='(picto)';}
+		$so=get('sort_')?'0':'1';
+		$ks=lj('','admsql_msqa,msqlops___'.$jurl.'_sort'.$so.'_*','keys');
+		array_unshift($ra,$ks);}
 	elseif(is_array($ra))if(auth(4)){if(get('del'))$open=$del.$open;
 		foreach($ra as $ka=>$va){$rid=normalize('msqedt'.$k.'-'.$ka);
-			$ra[$ka]=divd($rid,self::mdfcolbt(trim($va),$k,$ka,$murl,$rid));}
+			$ra[$ka]=divd($rid,self::mdfcolbt(trim($va),$k,$ka,$murl,$rid));
+			if($rh && $rh[$ka]=='picto')$ra[$ka.'pc']=picto($va);}
 		array_unshift($ra,$open);}
-	else array_unshift($ra,$k);
+	else array_unshift($ra,$k); //eco($rh[$ka]);
 	$datas[$k]=$ra;}
 return self::tabler_bypage($datas,'popw','',$murl);}
 
@@ -199,7 +203,7 @@ return textarea($k,$v,$n,'1',$p);}
 static function editmsql($nod,$va,$o,$ob){
 $qb=$_SESSION['qb']; $tg=$ob?'socket':'admsql'; $rid=randid();
 [$dir,$node]=self::node_decompil($nod); $nodb=ajx($nod); $pn=''; $rc=[]; $kb='';
-$r=msql::read_b($dir,$node); $h=isset($r['_menus_'])?1:0; if($r)$rh=$h?$r['_menus_']:current($r);
+$r=msql::read_b($dir,$node); $h=isset($r[msql::$m])?1:0; if($r)$rh=$h?$r[msql::$m]:current($r);
 if($r)$nxtk=msql::nextentry($r); $idn=randid();
 if($va=='add'){$u=$o; $o=domain(strtolower($u));
 	$va=$o?$o:self::findnextkey($r,0); $ry=array_fill(0,count($rh),'');
@@ -211,7 +215,7 @@ if($rh)$ntkp=1; else $ntkp=0; $i=0; $key=''; $def='';
 if($r){foreach($r as $k=>$v){$i++; if($k==$va){$n=$i; $key=$k; $def=$v;}
 	if(!$key){$key=$va; $n=$i+1; $def='';}}
 	$keys=array_keys($r); $kyb=ajx($key); $na=$n-$ntkp;
-	if(isset($keys[$na-1]) && $keys[$na-1]!='_menus_')$kt=$keys[$na-1]; else $kt=$keys[$na]??'';
+	if(isset($keys[$na-1]) && $keys[$na-1]!=msql::$m)$kt=$keys[$na-1]; else $kt=$keys[$na]??'';
 		$pn.=lj('txtx','popup_msqa,editmsql__x_'.$nodb.'_'.ajx($kt),picto('before')); 
 	if(isset($keys[$na+1]))$kt=$keys[$na+1]; else $kt=$keys[$na]??'';
 		$pn.=lj('txtx','popup_msqa,editmsql__x_'.$nodb.'_'.ajx($kt),picto('after'));}
@@ -273,6 +277,8 @@ if($ob)return self::opsup($p,$md,$oa);//intercept action
 [$dr,$nod]=self::node_decompil($p); $p1=$prm[0]??'';
 if($md=='creatable')$p1=$prm;
 if($md=='sort_table')$p1=$oa;
+if($md=='sort1'){$p1=$oa; get('sort'.$oa,0);}
+if($md=='sort0'){$p1=$oa; get('sort'.$oa,1);}
 $r=self::tools($dr,$nod,$md,$p1);
 if($md=='creatable'||$md=='del_file'||$md=='rename_table'||$md=='duplicate_table')return $r;//reload//
 return self::editable($p,$r);}
@@ -287,7 +293,7 @@ if($md=='export_csv')return csvfile($nod,$r,$nod,1);
 $ret=input('msqop',$d,32);
 $rl=$md=='rename_table'||$md=='duplicate_table'?'url':'x';
 $ret.=lj('','admsql_msqlops_msqop_'.$rl.'_'.ajx($p).'_'.ajx($md).'_'.$oa,picto('ok'));
-if($md=='sort_table'){$ret=''; $rm=array_keys($r['_menus_']??next($r)); array_unshift($rm,'k');
+if($md=='sort_table'){$ret=''; $rm=array_keys($r[msql::$m]??next($r)); array_unshift($rm,'k');
 	foreach($rm as $v){if($v=='k')$t='keys'; elseif($v==0)$t=1; else $t=$v+1;
 	$ret.=lj('','admsql_msqlops__x_'.ajx($p).'_'.ajx($md).'_'.$v,pictxt('ascending',$t)).' ';}}
 return $ret;}
@@ -319,9 +325,9 @@ case('creatable'):[$dr,$nod,$r]=self::creatable_sav($d); $rl=1; break;
 case('backup'):msql::save($dr,$nod.'_sav',$r); $ok=1; break;
 case('restore'):$r=msql::read_b($dr,$nod.'_sav'); break;
 case('add_row'):$r[]=array_fill(0,count(current($r)),''); break;
-case('del_menus'):unset($r['_menus_']); break;
+case('del_menus'):unset($r[msql::$m]); break;
 case('del_file'):msql::save($dr,$nod.'_sav',$r); self::deltable($dr,$nod); $ok=1; $rl=1; break;
-case('trunc_table'):$ra['_menus_']=$r['_menus_']??''; $r=$ra; break;
+case('trunc_table'):$ra[msql::$m]=$r[msql::$m]??''; $r=$ra; break;
 case('append_update'):$r=self::append_update($r,$d); break;
 case('import_defs'):$r=self::import_defs($r,$d); break;
 case('import_keys'):$r=self::import_keys($r,$d); break;
@@ -334,9 +340,12 @@ case('repair'):$r=self::repair_table($r,$dr,$nod); $ok=1; break;
 case('repair_cols'):$r=self::repair_cols($r); break;
 case('repair_enc'):$r=utf_r($r); break;
 case('resav'):$r=self::resav($r); break;
+case('patch_m'):$r=self::patch_m($r); break;
+case('patch_s'):$r=self::patch_s($r); break;
 case('renove'):$r=self::import_defs($r,'msql/'.$dr.'/'.$nod); break;
-case('sort'):$r=self::sort_table($r,$d,1); $ok=1; break;
 case('sort_table'):$r=self::sort_table($r,$d); break;
+case('sort1'):$r=self::sort_table($r,$d,1); $ok=1; break;
+case('sort0'):$r=self::sort_table($r,$d,0); $ok=1; break;
 case('append_values'):$r=self::append_values($r,$d); break;
 case('del_multi'):$r=self::del_multi($r); break;
 case('reorder'):$r=self::reorder($r); break;
@@ -362,7 +371,6 @@ if(!$ok && $r)$r=msql::save($dr,$nod,$r);
 if(isset($rl))return 'msql/'.$dr.'/'.$nod;
 return $r;}
 
-//import
 static function edtconn($r){$ret=''; if($r)foreach($r as $k=>$v)$ret.=$k.'|'.implode('|',str_replace(['|','¬'],[':BAR:',':LINE:'],$v)).'¬'."\n"; return $ret;}
 
 #modif apps
@@ -373,27 +381,26 @@ if($r[3] && $r[3]!='version')$version=$r[3]; if(!$r[3])$version='';
 $rb=self::auto_cols(1); $node=self::mnod($hub,$table,$version);
 return [$dir,$node,$rb];}
 
-static function auto_cols($n){$r['_menus_']=[];
-for($i=1;$i<=$n;$i++)$r['_menus_'][]='col_'.$i;
+static function auto_cols($n){$r[msql::$m]=[];
+for($i=1;$i<=$n;$i++)$r[msql::$m][]='col_'.$i;
 return $r;}
 
 static function del_multi($defs){
 foreach($defs as $k=>$v){$g=$_POST['c'.$k]; if(!$g)$ret[$k]=$v;}
 return $ret;}
 
-static function import_defs($r,$d){$rh=$r['_menus_']??'';
+static function import_defs($r,$d){$rh=$r[msql::$m]??'';
 if(strpos($d,'msql/')!==false){$r=explode('/',$d); $n=count($r)-1; $nod=$r[$n]; $dr=$r[$n-1];
 	$u=upsrv().'/call/msqj/'.$dr.'|'.$nod; $r=self::import_json_lk($u);
 	return msql::save($dr,$nod,$r);}
 else{[$a,$b]=split_one('/',$d,1); return msql::read($a,$b,'','',$rh);}}
 
 //json
-static function edtjson($r){$ret=''; $r=utf_r($r); if($r)return json_encode($r);
-if($r)foreach($r as $k=>$v)if($v)$ret.='"'.$k.'":'.(is_array($v)?'["'.implode('","',$v).'"]':'"'.htmlentities($v[0])).'",'; return '{'.$ret.'}';}
+static function edtjson($r){$ret=''; $r=utf_r($r); if($r)return json_encode($r);}
 
-static function import_json($d){$r=json_decode($d,true); echo json_error();
-if(isset($r[0])){$rh['_menus_']=$r[0]; unset($r[0]); $r=$rh+$r;}
-if(isset($r['_'])){$rh['_menus_']=$r['_']; unset($r['_']); $r=$rh+$r;}//frct
+static function import_json($d){$r=json_decode($d,true); //echo json_error();
+if(isset($r[0])){$rh[msql::$m]=$r[0]; unset($r[0]); $r=$rh+$r;}
+if(isset($r['_'])){$rh[msql::$m]=$r['_']; unset($r['_']); $r=$rh+$r;}//frct//diffutf
 return utf_r($r,1);}
 
 static function import_json_lk($f){
@@ -427,7 +434,7 @@ $u=msql::url($dr,$nd,$o); unlink($u);}
 
 static function import_keys($r,$d){
 [$a,$b]=split_one('/',$d,1); $rb=msql::read_b($a,$b);
-if($rb['_menus_'])$r['_menus_']=$rb['_menus_']; return $r;}
+if($rb[msql::$m])$r[msql::$m]=$rb[msql::$m]; return $r;}
 
 static function merge_defs($r,$d){
 [$a,$b]=split_one('/',$d,1); $rb=msql::read_b($a,$b,'',1);
@@ -438,9 +445,9 @@ static function append_values($r,$d){
 
 static function reset_menus($r){
 if($r){reset($r); $first=key($r);} $ret=[];
-if($first=='_menus_'){next($r); $first=key($r);}
+if($first==msql::$m){next($r); $first=key($r);}
 $nb=count($r[$first]??[]);
-for($i=0;$i<$nb;$i++){$ret['_menus_'][]='val'.$i;}
+for($i=0;$i<$nb;$i++){$ret[msql::$m][]='val'.$i;}
 if($ret && $r)return $ret+$r;
 else return $r;}
 
@@ -450,8 +457,8 @@ foreach($r as $k=>$v){$obj=$v[$a]; $v[$a]=$v[$b]; $v[$b]=$obj; $ret[$k]=$v;}}
 return $ret;}
 
 static function addcol($r){
-if(!isset($r['_menus_']))$r['_menus_']=msql::menus($r);
-foreach($r as $k=>$v){$v[]=$k=='_menus_'?'col'.(count($v)+1):''; $ret[$k]=$v;}
+if(!isset($r[msql::$m]))$r[msql::$m]=msql::menus($r);
+foreach($r as $k=>$v){$v[]=$k==msql::$m?'col'.(count($v)+1):''; $ret[$k]=$v;}
 return $ret;}
 
 static function delcol($r,$n){$col=$n; 
@@ -459,15 +466,16 @@ foreach($r as $k=>$v){if($n=='=')$col=count($v)-1; unset($v[$col]); $ret[$k]=$v;
 return $ret;}
 
 static function sort_table($r,$n,$y=''){$y=$y?yesnoses('sort'):'';
-if(isset($r['_menus_'])){$ret['_menus_']=$r['_menus_']; unset($r['_menus_']);}
-if(is_numeric($n) or !$n){foreach($r as $k=>$v)$re[$k]=$v[$n]; $y?arsort($re):asort($re);
+if(isset($r[msql::$m])){$ret[msql::$m]=$r[msql::$m]; unset($r[msql::$m]);}
+if(is_numeric($n) or !$n){foreach($r as $k=>$v)$re[$k]=$v[$n];
+	$y?arsort($re,SORT_STRING):asort($re,SORT_STRING );
 	foreach($re as $k=>$v)$ret[$k]=$r[$k];}
 else{$y?krsort($r):ksort($r); if(isset($ret))$ret+=$r; else $ret=$r;}
 return $ret;}
 
 static function repair_cols($r){
-$rm=$r['_menus_']??[]; $n=1; $ret=[]; if(isset($rm))$n=count($rm);
-else{foreach($r as $k=>$v)$n=count($v)>$n?count($v):$n; $ret['_menus_']=array_pad([],$n,'');}
+$rm=$r[msql::$m]??[]; $n=1; $ret=[]; if(isset($rm))$n=count($rm);
+else{foreach($r as $k=>$v)$n=count($v)>$n?count($v):$n; $ret[msql::$m]=array_pad([],$n,'');}
 foreach($r as $k=>$v)for($i=0;$i<$n;$i++)$ret[$k][]=$v[$i]??'';
 return $ret;}
 
@@ -480,9 +488,17 @@ static function resav($r){$rb=[];//patches
 if($r)foreach($r as $k=>$v)$rb[$k]=$v;
 return $rb;}
 
+static function patch_m($r){$rt=[];//old header
+if(isset($r['_menus_'])){$rm['_']=$r['_menus_']; unset($r['_menus_']); $rt=$rm+$r;}
+return $rt;}
+
+static function patch_s($r){$rt=[];//old splitter
+if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[$k][$ka]=str_replace('§','|',$va);
+return $rt;}
+
 static function compare($ra,$d){
-$rh=$ra['_menus_']; $n=1;
-if(isset($ra['_menus_']))unset($ra['_menus_']);
+$rh=$ra[msql::$m]; $n=1;
+if(isset($ra[msql::$m]))unset($ra[msql::$m]);
 [$b,$d]=explode('/',$d);
 $rb=msql_read($b,$d,'','1');
 $rka=array_keys_r($ra,$n);
@@ -496,13 +512,13 @@ $ret[]=['removed']+$rh; if($r2)foreach($r2 as $k=>$v)$ret[]=$rb[$k];
 return $ret;}
 
 static function addition($r,$n){
-$rh=$r['_menus_']??[$n=>'']; $rk=array_column($r,$n); //p($rk);
-if(isset($rk['_menus_']))unset($rk['_menus_']);
+$rh=$r[msql::$m]??[$n=>'']; $rk=array_column($r,$n); //p($rk);
+if(isset($rk[msql::$m]))unset($rk[msql::$m]);
 echo tabler(['addition',$rh[$n],array_sum($rk)]);}
 
 static function average($r,$n){
-$rh=$r['_menus_']??[$n=>'']; unset($r['_menus_']); $rk=array_keys_r($r,$n);
-if(isset($rk['_menus_']))unset($rk['_menus_']);
+$rh=$r[msql::$m]??[$n=>'']; unset($r[msql::$m]); $rk=array_keys_r($r,$n);
+if(isset($rk[msql::$m]))unset($rk[msql::$m]);
 echo tabler(['addition',$rh[$n],array_sum($rk)/count($rk)]);}
 
 static function intersecter($r){$ra=[]; $rb=[]; $rc=[]; $re=[]; $rt=[]; $rtb=[];
@@ -543,9 +559,9 @@ echo $ret;
 return $r;}
 
 static function update_table($d,$r){
-$ret['_menus_']=$r['_menus_'];
+$ret[msql::$m]=$r[msql::$m];
 $defs=msql::read_b('system',$d);
-foreach($defs as $k=>$v)$ret[$k]=isset($r[$k])?$r[$k]:array_pad(array(),count($r['_menus_']),'');
+foreach($defs as $k=>$v)$ret[$k]=isset($r[$k])?$r[$k]:array_pad(array(),count($r[msql::$m]),'');
 return $ret;}
 
 static function import_conn($defs,$it,$aid){$ret=$defs['menus']??[];
@@ -572,18 +588,18 @@ foreach($r as $k=>$v){$up=$v['last-update']??''; $upa=valr($defs,$k,'last-update
 return $defs;}
 
 static function reorder($r){$i=0;
-if(isset($r['_menus_'])){$rb['_menus_']=$r['_menus_']; unset($r['_menus_']);}//sort($r);
+if(isset($r[msql::$m])){$rb[msql::$m]=$r[msql::$m]; unset($r[msql::$m]);}//sort($r);
 foreach($r as $k=>$v){$i++; $rb[$i]=$v;}
 return $rb;}
 
 static function add_keys($r){$i=1;
-foreach($r as $k=>$v){if($k=='_menus_')$kb=$k; else $kb=$i++; 
+foreach($r as $k=>$v){if($k==msql::$m)$kb=$k; else $kb=$i++; 
 	array_unshift($v,$k); $ret[$kb]=$v;}
 return $ret;}
 
 static function del_keys($r){
 foreach($r as $k=>$v){
-	if(is_array($v)){if($k==='_menus_')$kb='_menus_'; else $kb=$v[0]; array_shift($v);}
+	if(is_array($v)){if($k===msql::$m)$kb=msql::$m; else $kb=$v[0]; array_shift($v);}
 	$ret[$kb]=$v;}
 return $ret;}
 
@@ -598,8 +614,6 @@ if(auth(6))tar::folder($f,$r);
 if(is_file($f))return lkt('txtyl',$f,$f); else return 'brrrr';}
 
 #render
-static function sesm($k,$v=''){return sesr('mu',$k,$v);}
-
 static function murlread($u){
 if(!$u)$u='users/'.ses('qb');//default
 if(substr($u,0,4)=='lang')[$base,$dir,$node]=expl('/',$u,3);
@@ -610,6 +624,7 @@ else [$base,$node]=split_one('/',$u,1);
 if(!$b){$b=$p; $p='';} if(!$b)$b='users'; if($b=='lang')$d=$dir?$dir:prmb(25);
 return [$b,$d,$p,ajx($t),ajx($v),ajx($row)];}
 
+static function sesm($k,$v=''){return sesr('mu',$k,$v);}
 static function mnod($p,$t,$v){return $p.($t?'_'.$t:'').($v?'_'.$v:'');}
 static function murl($b,$d,$p,$t,$v){return $u=($b?$b.'/':'').($d?$d.'/':'').self::mnod($p,$t,$v);}
 static function murlvars($u){[$b,$d,$p,$t,$v,$n]=self::murlread($u);
@@ -644,13 +659,12 @@ if($files && $b){$ra[4]=array_keys($files);//hubes
 		if(($b=='users' && $v!='public' && $v!=ses('qb')) or 
 			($auth<6 && $v!='public'))unset($ra[4][$k]);}
 else $ra[4]='';
-$ra[5]=$hub;
-$ra[6]=$files;
+$ra[5]=$hub; $ra[6]=$files; $rf=[];
 	if($files && $auth<=$ath){foreach($files as $k=>$v){
-		if($k==ses('USE') && $k==ses('qb'))$filb[$k]=$v;
-		elseif($k==ses('USE'))$filb[$k]=['public'];
-		elseif($k=='public')$filb[$k]=$v;} 
-	$files=$filb;}
+		if($k==ses('USE') && $k==ses('qb'))$rf[$k]=$v;
+		elseif($k==ses('USE'))$rf[$k]=['public'];
+		elseif($k=='public')$rf[$k]=$v;} 
+	$files=$rf;}
 $ra[7]=$table;
 $ra[8]=ajx($version,1);
 $ra[9]=$folder;
@@ -672,7 +686,7 @@ geta('page',$pg?$pg:1);
 $ath=auth(6);
 #boot
 if($cmd && $cmd!='='){
-	if(ses('htacc'))$url=self::sesm('url','/msql/'); else $url=self::sesm('url','/?msql=');
+	if(prms('htacc'))$url=self::sesm('url','/msql/'); else $url=self::sesm('url','/?msql=');
 	$ra=self::boot($cmd); $_SESSION['msql_boot']=$ra;
 	[$bases,$base,$dirs,$dir,$hubs,$hub,$files,$table,$version,$folder,$node]=$ra;
 	//build url
@@ -691,7 +705,9 @@ $defs=[];
 if($is_file)$defs=msql::read_b($base.($dir?'/'.$dir:''),$node);
 if(get('sav'))msql::save($dir?$dir:$base,$node.'_sav',$defs);
 #render
-$lh=sesmk('msqlang','helps_msql',1);
+$lh=sesmk('msqlang','helps_msql',0);
+if(!$lh){$rl=msql::read('system','helps_msql'); foreach($rl as $k=>$v)$lh[]=[$v,$v];}
+if(!$lh)for($i=0;$i<50;$i++)$lh[]=['',''];//null
 $lkb=$lk.'&';
 $jurl=ajx($murl);
 #-menus
@@ -730,8 +746,12 @@ if(!$def && auth(6)){
 		$ret['utl'].=self::opbt('del_keys',$jurl,$lh[25]);
 		$ret['utl'].=self::opbt('add_col',$jurl,$lh[14]);
 		$ret['utl'].=self::opbt('del_col',$jurl,$lh[15],1);
-		if($is_file)$ret['utl'].=self::opbt('repair_cols',$jurl,$lh[13]).' ';
-		if($is_file)$ret['utl'].=self::opbt('repair_enc',$jurl,['enc','repair utf8']);
+		if($is_file && auth(6)){
+			$ret['utl'].=self::opbt('repair_cols',$jurl,$lh[13]).' ';
+			//$ret['utl'].=self::opbt('repair_enc',$jurl,['patch_enc','to utf8']);
+			$ret['utl'].=self::opbt('patch_m',$jurl,['patch_m','patch_menu']);
+			//$ret['utl'].=self::opbt('patch_s',$jurl,['patch_s','patch_splitter']);
+			}
 		$ret['utl'].=self::opbt('compare',$jurl,$lh[29],1);
 		$ret['utl'].=self::opbt('intersect',$jurl,$lh[33],1);
 		$ret['utl'].=self::opbt('addition',$jurl,['addition',''],1);
@@ -750,7 +770,7 @@ if(!$def && auth(6)){
 		$ret['utl'].=self::opedt('inject_defs2',$jurl,$lh[18],1);
 		$ret['utl'].=self::opedt('import_csv',$jurl,['csv',''],1);
 		$ret['utl'].=self::opedt('import_json',$jurl,['json',''],1);
-		$ret['utl'].=self::opbt('import_jsonlk',$jurl,['jsonlink',''],1);
+		$ret['utl'].=self::opbt('import_jsonlk',$jurl,['json_link',''],1);
 		$ret['utl'].=self::opbt('export_csv',$jurl,['export_csv',''],1);
 		if(auth(6))$ret['utl'].=self::opedt('export_mysql',$jurl,['mysql',''],1);
 		$ret['utl'].=lj('txtx','popup_msql___lang_helps_msql','?');}
@@ -771,7 +791,7 @@ if($table && $is_file){
 	//$ret['nfo'].=lkt('popbt',host().'/msql/'.$murl,pictit('link','web url'));
 	$ret['nfo'].=lkt('popbt','/call/microxml,stream/'.str_replace('/','|',$murl),pictit('rss','xml'));
 	$ret['nfo'].=lkt('popbt','/call/msqj/'.str_replace('/','|',$murl),pictit('emission','json')).' - ';
-	if(is_array($defs))$n=count($defs); else $n=0; if(isset($defs['_menus_']))$n-=1;
+	if(is_array($defs))$n=count($defs); else $n=0; if(isset($defs[msql::$m]))$n-=1;
 	$ret['nfo'].=btn('txtsmall2',$n.' '.plurial($n,116)).' - ';
 	if($is_file)$ret['nfo'].=btn('txtsmall2',fsize($basename.'.php',1)).' - ';
 	$ret['nfo'].=btn('txtsmall2',ftime($basename.'.php')).' ';

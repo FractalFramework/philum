@@ -1,5 +1,5 @@
 <?php //msql/helps_newsletter
-$r=["_menus_"=>['txt'],
+$r=["_"=>['txt'],
 "register"=>['register to the newsletter'],
 "see_newsletter"=>['actually sent newsletter'],
 "answer_success"=>['a mail for confirmation have been sent'],

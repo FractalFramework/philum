@@ -164,7 +164,8 @@ if($p['order']=='mostread')$sq['ord'][]='order by cast('.$qda.'.lu as integer) d
 elseif($p['order']=='nb')$sq['ord'][]='order by cast(nb as unsigned integer) desc';
 elseif($p['order'])$sq['ord'][]='order by '.$qda.'.'.str_replace('-',' ',$p['order']);
 if(!$p['file'] && $p['nbyp']>0 && is_numeric($p['page'])){if($p['page']==0)$p['page']=1;
-	$sq['ord'][]='limit '.($p['page']-1)*$p['nbyp'].','.$p['nbyp'];}//nbmx
+	$pg=$p['page']; if($pg==0)$pg=1; $nbyp=$p['nbyp']; $min=($pg-1)*$nbyp;
+	$sq['ord'][]='limit '.$min.','.$nbyp;}//nbmx
 //build
 $slct=implode(',',$sq['slct']);
 if(!empty($sq['inner']))$in=' '.implode(' ',$sq['inner']);

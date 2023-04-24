@@ -1,5 +1,5 @@
 <?php //msql/default_apps_home
-$r=["_menus_"=>['button','type','process','param','option','condition','root','icon','hide','private'],
+$r=["_"=>['button','type','process','param','option','condition','root','icon','hide','private'],
 "1"=>['home','link','','/home','','','','home','',''],
 "2"=>['cache','ajax','popup','rebuild__3xx','','','boot','upcloud','','8'],
 "3"=>['mini','ajax','','sesmake__self_1_rebuild*img','','','dev','upcloud','1','4'],

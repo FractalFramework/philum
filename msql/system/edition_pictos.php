@@ -1,5 +1,5 @@
 <?php //msql/edition_pictos
-$r=["_menus_"=>['hex','fam'],
+$r=["_"=>['hex','fam'],
 "alert"=>['0021','sys'],
 "quote"=>['0022','edit'],
 "trash"=>['0023','sys'],

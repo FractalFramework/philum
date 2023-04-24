@@ -1,5 +1,5 @@
 <?php //msql/edition_typos
-$r=["_menus_"=>['name','category','accents','fav','fam'],
+$r=["_"=>['name','category','accents','fav','fam'],
 "1756"=>['philum','user','','',''],
 "1761"=>['microsys4l','user','','',''],
 "1775"=>['microsys4','user','','',''],

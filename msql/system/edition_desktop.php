@@ -1,5 +1,5 @@
 <?php //msql/edition_desktop
-$r=["_menus_"=>['background'],
+$r=["_"=>['background'],
 "1"=>['top,#_4,#_2'],
 "2"=>['top,#_5,#_8'],
 "3"=>['center top,#098FE3,#787878'],

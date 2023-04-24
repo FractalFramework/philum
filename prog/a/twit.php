@@ -110,7 +110,7 @@ $txt=self::oembed(self::lk($q['user']['screen_name'],$q['id']));
 if($txt)[$res,$med]=self::clean($txt);
 else [$res,$med]=self::clean(utf8dec_b($q['text']));
 $ret['msg']=$res;
-if(isset($q['entities']['media']))foreach($q['entities']['media'] as $v)
+foreach($q['entities']['media']??[] as $v)
 	if($vb=$v['media_url_https'])$ret['msg'].=n().n().'['.$vb.']';
 return [$ret['suj'],$ret['msg'],$ret['day']];}
 
@@ -129,7 +129,7 @@ $ret.=input('cfg1',$r[1]??'',60).btn('small','oauth_token').br();
 $ret.=input('cfg2',$r[2]??'',60).btn('small','oauth_token_secret').br();
 $ret.=input('cfg3',$r[3]??'',60).btn('small','oauth_consumer_key').br();
 $ret.=input('cfg4',$r[4]??'',60).btn('small','oauth_consumer_secret').br();
-$ret.=hidden('cfg5',$r[5]);
+$ret.=hidden('cfg5',$r[5]??'');
 $ret.=lj('popsav',$rid.'_twit,config*sav_cfg1,cfg2,cfg3,cfg4,cfg5__'.$nd.'__',nms(27));
 $ret.=msqbt('',nod('twit_'.$nd)).' ';
 return divd($rid,$ret);}
@@ -676,7 +676,7 @@ elseif($p){$qr=[];//if($o=='search')
 	if(strpos($p,',')){$r=explode(',',$p);//multicall
 		foreach($r as $k=>$v){$qr=$t->search($v,$n,$id,$minid);
 			if(!$er=self::error($qr))$qr=$qr['statuses']; //pr($qr);
-			foreach($qr as $k=>$v)if(!isset($q[$v['id']]))$q[$v['id']]=$v;} krsort($q);}
+			foreach($qr as $k=>$v)if($v['id']??'' && !isset($q[$v['id']]))$q[$v['id']]=$v;} krsort($q);}
 	else{$q=$t->search($p,$n,$id,$minid);//since_id not works
 		if(!$er=self::error($q))$q=$q['statuses'];}}
 //$rb=$t->user($r['user']['screen_name']);
@@ -731,7 +731,7 @@ static function apk(){
 $d=domain(host()); $n=2;
 if($d=='newsnet.fr')$n=4;
 if($d=='oumo.fr')$n=1;
-return $n;}
+return sesif('apk',$n);}
 
 static function home($p,$o){$rid='tw'.randid();
 //if($p=='install')self::install();

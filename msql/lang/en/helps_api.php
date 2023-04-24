@@ -1,5 +1,5 @@
 <?php //msql/helps_api
-$r=["_menus_"=>['txt'],
+$r=["_"=>['txt'],
 "hub"=>['hub'],
 "section"=>['multi'],
 "nosection"=>['multi'],

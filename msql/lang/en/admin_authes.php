@@ -1,5 +1,5 @@
 <?php //msql/admin_authes
-$r=["_menus_"=>['category'],
+$r=["_"=>['category'],
 "console"=>['console'],
 "restrictions"=>['restrictions'],
 "params"=>['params'],

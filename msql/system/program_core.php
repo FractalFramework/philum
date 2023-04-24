@@ -1,5 +1,5 @@
 <?php //msql/program_core
-$r=["_menus_"=>['function','variables','usage','return','context'],
+$r=["_"=>['function','variables','usage','return','context'],
 "1"=>['<?php 
 spl_autoload_register','function(a','','',''],
 "2"=>['p','r','','',''],

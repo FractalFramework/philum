@@ -1,5 +1,5 @@
 <?php //msql/admin_apps
-$r=["_menus_"=>['button','type','process','param','option','condition','root','icon','hide'],
+$r=["_"=>['button','type','process','param','option','condition','root','icon','hide'],
 "1"=>['Desktop','ajax','page','deskload','','tools','','admin',''],
 "2"=>['site','ajax','popup','site___desktop_ok__autosize','','menu tools','','global',''],
 "3"=>['new art','ajax','popup','addArt____1','','tools','','editor',''],

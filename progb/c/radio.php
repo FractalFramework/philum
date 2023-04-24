@@ -21,7 +21,7 @@ if($r)return self::r($r);}
 static function build($dr,$nod){$dr='users/'.ajx($dr,1);
 $sqdir='msql/radio/'; if(!is_dir($sqdir))mkdir($sqdir);
 $nod=nod('radio'.ses('read')); $file=$sqdir.$nod.'.php';
-$ret['_menus_']=['prog','file','length','title','txt','img'];
+$ret[msql::$m]=['prog','file','length','title','txt','img'];
 $r=explore($dr);
 if($r)foreach($r as $k=>$v){
 	$length=round(filesize($dr.'/'.$v)/1024000);
@@ -52,11 +52,11 @@ if($dr)$ret.=self::build($dr,$nod);
 $r=msql_read('radio',$nod,''); 
 $ret.=msqbt('radio',$_SESSION['qb'].'_'.$nd);
 if(isset($r[$md])){foreach($r[$md] as $k=>$v){$ky.=$md.'.'.$k.'|';
-	$edit.=input($md.'.'.$k,$v).btn('txtsmall',$r['_menus_'][$k]).br();}
+	$edit.=input($md.'.'.$k,$v).btn('txtsmall',$r[msql::$m][$k]).br();}
 	$edit.=lj('popbt','popup_radio,edit___'.$nodb.'__'.$k.'__'.$ky,'save');}
 $ret.=divc('edit',$edit);
 if($r)foreach($r as $k=>$v){foreach($v as $ka=>$va){$datas[$k][]=$va;}
-	if($k!='_menus_' && $k!=$md){$datas[$k][]=lj('popbt','popup_radio,edit___'.$nodb.'__'.$k,'edit');}}
+	if($k!=msql::$m && $k!=$md){$datas[$k][]=lj('popbt','popup_radio,edit___'.$nodb.'__'.$k,'edit');}}
 $ret.=divtable($datas);
 ses::$r['popt']='build_playlist';
 return $ret;}

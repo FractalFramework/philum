@@ -1,5 +1,5 @@
 <?php //msql/admin_params
-$r=["_menus_"=>['category','name'],
+$r=["_"=>['category','name'],
 "1"=>['config','modules_table'],
 "2"=>['access','restricted area'],
 "3"=>['articles','kmax'],

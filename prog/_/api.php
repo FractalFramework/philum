@@ -97,7 +97,7 @@ static function mksql($r){$qda=ses('qda'); $in=''; $gr=''; $rtg=[];
 $p=valk($r,['count','select','json','sql','cat','nocat','nochilds','priority','notpublished','owner','hub','minday','maxday','from','until','mintime','maxtime','mindid','maxid','source','parent','nbchars','id','minid','lang','lg','search','search_whole','fullsearch','avoid','title','folder','related','relatedby','cmd','group','order','file','page','nbyp','idlist','media','catid','poll','cluster','date','msg','classtag','famous']);
 if($p['count'])$sq['slct'][]='count('.$qda.'.id)';
 elseif($p['select'])$sq['slct'][]=$p['select'];
-elseif($p['idlist']){$sq['slct'][]=$qda.'.id';}
+elseif($p['idlist'])$sq['slct'][]=$qda.'.id';
 else $sq['slct'][]=$qda.'.id,'.$qda.'.ib,'.$qda.'.day,'.$qda.'.mail,'.$qda.'.frm,'.$qda.'.suj,'.$qda.'.img,'.$qda.'.nod,'.$qda.'.thm,'.$qda.'.name,'.$qda.'.lu,'.$qda.'.re,'.$qda.'.host,'.$qda.'.lg';
 if($p['json'] or $p['sql'] or $p['msg'])$sq['slct'][]='msg';
 //if($p['catid']){$qdc=ses('qdc'); $sq['inner'][]='inner join '.$qdc.' on '.$qdc.'.id='.$qda.'.frm and '.$qda.'.frm="'.$p['catid'].'"';}
@@ -164,7 +164,8 @@ if($p['order']=='mostread')$sq['ord'][]='order by cast('.$qda.'.lu as integer) d
 elseif($p['order']=='nb')$sq['ord'][]='order by cast(nb as unsigned integer) desc';
 elseif($p['order'])$sq['ord'][]='order by '.$qda.'.'.str_replace('-',' ',$p['order']);
 if(!$p['file'] && $p['nbyp']>0 && is_numeric($p['page'])){if($p['page']==0)$p['page']=1;
-	$sq['ord'][]='limit '.($p['page']-1)*$p['nbyp'].','.$p['nbyp'];}//nbmx
+	$pg=$p['page']; if($pg==0)$pg=1; $nbyp=$p['nbyp']; $min=($pg-1)*$nbyp;
+	$sq['ord'][]='limit '.$min.','.$nbyp;}//nbmx
 //build
 $slct=implode(',',$sq['slct']);
 if(!empty($sq['inner']))$in=' '.implode(' ',$sq['inner']);

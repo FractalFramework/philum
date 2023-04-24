@@ -1,5 +1,5 @@
 <?php //msql/helps_petition
-$r=["_menus_"=>['txt'],
+$r=["_"=>['txt'],
 "confirm_before"=>['You will receive a mail :
 Call the link to confirmate'],
 "confirm_mail"=>['Hello _NAME,

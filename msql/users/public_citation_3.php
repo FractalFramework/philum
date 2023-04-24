@@ -1,137 +1,82 @@
-<<<<<<< HEAD
-<?php //philum/msql/newsnet_citation_3
-$r=["_menus_"=>['Droits de l\'Homme de 1948'],1=>['Article premier
-Tous les êtres humains naissent libres et égaux en dignité et en droits. Ils sont doués de raison et de conscience et doivent agir les uns envers les autres dans un esprit de fraternité.'],2=>['Article 2
-(1) Chacun peut se prévaloir de tous les droits et de toutes les libertés proclamés dans la présente Déclaration, sans distinction aucune, notamment de race, de couleur, de sexe, de langue, de religion, d\'opinion politique ou de toute autre opinion, d\'origine nationale ou sociale, de fortune, de naissance ou de toute autre situation.
-(2) De plus, il ne sera fait aucune distinction fondée sur le statut politique, juridique ou international du pays ou du territoire dont une personne est ressortissante, que ce pays ou territoire soit indépendant, sous tutelle, non autonome ou soumis à une limitation quelconque de souveraineté.'],3=>['Article 3
-Tout individu a droit à la vie, à la liberté et à la sûreté de sa personne.'],4=>['Article 4
-Nul ne sera tenu en esclavage ni en servitude; l\'esclavage et la traite des esclaves sont interdits sous toutes leurs formes.'],5=>['Article 5
-Nul ne sera soumis à la torture, ni à des peines ou traitements cruels, inhumains ou dégradants.'],6=>['Article 6
-Chacun a le droit à la reconnaissance en tous lieux de sa personnalité juridique.'],7=>['Article 7
-Tous sont égaux devant la loi et ont droit sans distinction à une égale protection de la loi. Tous ont droit à une protection égale contre toute discrimination qui violerait la présente Déclaration et contre toute provocation à une telle discrimination.'],8=>['Article 8
-Toute personne a droit à un recours effectif devant les juridictions nationales compétentes contre les actes violant les droits fondamentaux qui lui sont reconnus par la constitution ou par la loi.'],9=>['Article 9
-Nul ne peut être arbitrairement arrêté, détenu ou exilé.'],10=>['Article 10
-Toute personne a droit, en pleine égalité, à ce que sa cause soit entendue équitablement et publiquement par un tribunal indépendant et impartial, qui décidera, soit de ses droits et obligations, soit du bien-fondé de toute accusation en matière pénale dirigée contre elle.'],11=>['Article 11
-(1) Toute personne accusée d\'un acte délictueux est présumée innocente jusqu\'à ce que sa culpabilité ait été légalement établie au cours d\'un procès public où toutes les garanties nécessaires à sa défense lui auront été assurées.
-(2) Nul ne sera condamné pour des actions ou omissions qui, au moment où elles ont été commises, ne constituaient pas un acte délictueux d\'après le droit national ou international. De même, il ne sera infligé aucune peine plus forte que celle qui était applicable au moment où l\'acte délictueux a été commis.'],12=>['Article 12
-Nul ne sera l\'objet d\'immixtions arbitraires dans sa vie privée, sa famille, son domicile ou sa correspondance, ni d\'atteintes à son honneur et à sa réputation. Toute personne a droit à la protection de la loi contre de telles immixtions ou de telles atteintes.'],13=>['Article 13
-(1) Toute personne a le droit de circuler librement et de choisir sa résidence à l\'intérieur d\'un Etat.
-(2) Toute personne a le droit de quitter tout pays, y compris le sien, et de revenir dans son pays.'],14=>['Article 14
-(1) Devant la persécution, toute personne a le droit de chercher asile et de bénéficier de l\'asile en d\'autres pays.
-(2) Ce droit ne peut être invoqué dans le cas de poursuites réellement fondées sur un crime de droit commun ou sur des agissements contraires aux buts et aux principes des Nations Unies.'],15=>['Article 15
-(1) Tout individu a droit à une nationalité.
-(2) Nul ne peut être arbitrairement privé de sa nationalité, ni du droit de changer de nationalité.'],16=>['Article 16
-(1) A partir de l\'âge nubile, l\'homme et la femme, sans aucune restriction quant à la race, la nationalité ou la religion, ont le droit de se marier et de fonder une famille. Ils ont des droits égaux au regard du mariage, durant le mariage et lors de sa dissolution.
-(2) Le mariage ne peut être conclu qu\'avec le libre et plein consentement des futurs époux.
-(3) La famille est l\'élément naturel et fondamental de la société et a droit à la protection de la société et de l\'Etat.'],17=>['Article 17
-(1) Toute personne, aussi bien seule qu\'en collectivité, a droit à la propriété.
-(2) Nul ne peut être arbitrairement privé de sa propriété.'],18=>['Article 18
-Toute personne a droit à la liberté de pensée, de conscience et de religion ; ce droit implique la liberté de changer de religion ou de conviction ainsi que la liberté de manifester sa religion ou sa conviction seule ou en commun, tant en public qu\'en privé, par l\'enseignement, les pratiques, le culte et l\'accomplissement des rites.'],19=>['Article 19
-Tout individu a droit à la liberté d\'opinion et d\'expression, ce qui implique le droit de ne pas être inquiété pour ses opinions et celui de chercher, de recevoir et de répandre, sans considérations de frontières, les informations et les idées par quelque moyen d\'expression que ce soit.'],20=>['Article 20
-(1) Toute personne a droit à la liberté de réunion et d\'association pacifiques.
-(2) Nul ne peut être obligé de faire partie d\'une association.'],21=>['Article 21
-(1) Toute personne a le droit de prendre part à la direction des affaires publiques de son pays, soit directement, soit par l\'intermédiaire de représentants librement choisis.
-(2) Toute personne a droit à accéder, dans des conditions d\'égalité, aux fonctions publiques de son pays.
-(3) La volonté du peuple est le fondement de l\'autorité des pouvoirs publics ; cette volonté doit s\'exprimer par des élections honnêtes qui doivent avoir lieu périodiquement, au suffrage universel égal et au vote secret ou suivant une procédure équivalente assurant la liberté du vote.'],22=>['Article 22
-Toute personne, en tant que membre de la société, a droit à la sécurité sociale ; elle est fondée à obtenir la satisfaction des droits économiques, sociaux et culturels indispensables à sa dignité et au libre développement de sa personnalité, grâce à l\'effort national et à la coopération internationale, compte tenu de l\'organisation et des ressources de chaque pays.'],23=>['Article 23
-(1) Toute personne a droit au travail, au libre choix de son travail, à des conditions équitables et satisfaisantes de travail et à la protection contre le chômage.
-(2) Tous ont droit, sans aucune discrimination, à un salaire égal pour un travail égal.
-(3) Quiconque travaille a droit à une rémunération équitable et satisfaisante lui assurant ainsi qu\'à sa famille une existence conforme à la dignité humaine et complétée, s\'il y a lieu, par tous autres moyens de protection sociale.
-(4) Toute personne a le droit de fonder avec d\'autres des syndicats et de s\'affilier à des syndicats pour la défense de ses intérêts.'],24=>['Article 24
-Toute personne a droit au repos et aux loisirs et notamment à une limitation raisonnable de la durée du travail et à des congés payés périodiques.'],25=>['Article 25
-(1) Toute personne a droit à un niveau de vie suffisant pour assurer sa santé, son bien-être et ceux de sa famille, notamment pour l\'alimentation, l\'habillement, le logement, les soins médicaux ainsi que pour les services sociaux nécessaires ; elle a droit à la sécurité en cas de chômage, de maladie, d\'invalidité, de veuvage, de vieillesse ou dans les autres cas de perte de ses moyens de subsistance par suite de circonstances indépendantes de sa volonté.
-(2) La maternité et l\'enfance ont droit à une aide et à une assistance spéciales. Tous les enfants, qu\'ils soient nés dans le mariage ou hors mariage, jouissent de la même protection sociale.'],26=>['Article 26
-(1) Toute personne a droit à l\'éducation. L\'éducation doit être gratuite, au moins en ce qui concerne l\'enseignement élémentaire et fondamental. L\'enseignement élémentaire est obligatoire. L\'enseignement technique et professionnel doit être généralisé ; l\'accès aux études supérieures doit être ouvert en pleine égalité à tous en fonction de leur mérite.
-(2) L\'éducation doit viser au plein épanouissement de la personnalité humaine et au renforcement du respect des droits de l\'homme et des libertés fondamentales. Elle doit favoriser la compréhension, la tolérance et l\'amitié entre toutes les nations et tous les groupes raciaux ou religieux, ainsi que le développement des activités des Nations Unies pour le maintien de la paix.
-(3) Les parents ont, par priorité, le droit de choisir le genre d\'éducation à donner à leurs enfants.'],27=>['Article 27
-(1) Toute personne a le droit de prendre part librement à la vie culturelle de la communauté, de jouir des arts et de participer au progrès scientifique et aux bienfaits qui en résultent.
-(2) Chacun a droit à la protection des intérêts moraux et matériels découlant de toute production scientifique, littéraire ou artistique dont il est l\'auteur.'],28=>['Article 28
-Toute personne a droit à ce que règne, sur le plan social et sur le plan international, un ordre tel que les droits et libertés énoncés dans la présente Déclaration puissent y trouver plein effet.'],29=>['Article 29
-(1) L\'individu a des devoirs envers la communauté dans laquelle seul le libre et plein développement de sa personnalité est possible.
-(2) Dans l\'exercice de ses droits et dans la jouissance de ses libertés, chacun n\'est soumis qu\'aux limitations établies par la loi exclusivement en vue d\'assurer la reconnaissance et le respect des droits et libertés d\'autrui et afin de satisfaire aux justes exigences de la morale, de l\'ordre public et du bien-être général dans une société démocratique.
-(3) Ces droits et libertés ne pourront, en aucun cas, s\'exercer contrairement aux buts et aux principes des Nations Unies.'],30=>['Article 30
-Aucune disposition de la présente Déclaration ne peut être interprétée comme impliquant pour un Etat, un groupement ou un individu un droit quelconque de se livrer à une activité ou d\'accomplir un acte visant à la destruction des droits et libertés qui y sont énoncés.']];
-=======
 <?php //msql/public_citation_3
-$r=["_menus_"=>['Droits de l\'Homme de 1948'],
+$r=["_"=>['Droits de l\'Homme de 1948'],
 "1"=>['Article premier
-Tous les ÃƒÂªtres humains naissent libres et ÃƒÂ©gaux en dignitÃƒÂ© et en droits. Ils sont douÃƒÂ©s de raison et de conscience et doivent agir les uns envers les autres dans un esprit de fraternitÃƒÂ©.'],
+Tous les êtres humains naissent libres et égaux en dignité et en droits. Ils sont doués de raison et de conscience et doivent agir les uns envers les autres dans un esprit de fraternité.'],
 "2"=>['Article 2
-(1) Chacun peut se prÃƒÂ©valoir de tous les droits et de toutes les libertÃƒÂ©s proclamÃƒÂ©s dans la prÃƒÂ©sente DÃƒÂ©claration, sans distinction aucune, notamment de race, de couleur, de sexe, de langue, de religion, d\'opinion politique ou de toute autre opinion, d\'origine nationale ou sociale, de fortune, de naissance ou de toute autre situation.
-(2) De plus, il ne sera fait aucune distinction fondÃƒÂ©e sur le statut politique, juridique ou international du pays ou du territoire dont une personne est ressortissante, que ce pays ou territoire soit indÃƒÂ©pendant, sous tutelle, non autonome ou soumis ÃƒÂ  une limitation quelconque de souverainetÃƒÂ©.'],
+(1) Chacun peut se prévaloir de tous les droits et de toutes les libertés proclamés dans la présente Déclaration, sans distinction aucune, notamment de race, de couleur, de sexe, de langue, de religion, d\'opinion politique ou de toute autre opinion, d\'origine nationale ou sociale, de fortune, de naissance ou de toute autre situation.
+(2) De plus, il ne sera fait aucune distinction fondée sur le statut politique, juridique ou international du pays ou du territoire dont une personne est ressortissante, que ce pays ou territoire soit indépendant, sous tutelle, non autonome ou soumis à une limitation quelconque de souveraineté.'],
 "3"=>['Article 3
-Tout individu a droit ÃƒÂ  la vie, ÃƒÂ  la libertÃƒÂ© et ÃƒÂ  la sÃƒÂ»retÃƒÂ© de sa personne.'],
+Tout individu a droit à la vie, à la liberté et à la sûreté de sa personne.'],
 "4"=>['Article 4
 Nul ne sera tenu en esclavage ni en servitude; l\'esclavage et la traite des esclaves sont interdits sous toutes leurs formes.'],
 "5"=>['Article 5
-Nul ne sera soumis ÃƒÂ  la torture, ni ÃƒÂ  des peines ou traitements cruels, inhumains ou dÃƒÂ©gradants.'],
+Nul ne sera soumis à la torture, ni à des peines ou traitements cruels, inhumains ou dégradants.'],
 "6"=>['Article 6
-Chacun a le droit ÃƒÂ  la reconnaissance en tous lieux de sa personnalitÃƒÂ© juridique.'],
+Chacun a le droit à la reconnaissance en tous lieux de sa personnalité juridique.'],
 "7"=>['Article 7
-Tous sont ÃƒÂ©gaux devant la loi et ont droit sans distinction ÃƒÂ  une ÃƒÂ©gale protection de la loi. Tous ont droit ÃƒÂ  une protection ÃƒÂ©gale contre toute discrimination qui violerait la prÃƒÂ©sente DÃƒÂ©claration et contre toute provocation ÃƒÂ  une telle discrimination.'],
+Tous sont égaux devant la loi et ont droit sans distinction à une égale protection de la loi. Tous ont droit à une protection égale contre toute discrimination qui violerait la présente Déclaration et contre toute provocation à une telle discrimination.'],
 "8"=>['Article 8
-Toute personne a droit ÃƒÂ  un recours effectif devant les juridictions nationales compÃƒÂ©tentes contre les actes violant les droits fondamentaux qui lui sont reconnus par la constitution ou par la loi.'],
+Toute personne a droit à un recours effectif devant les juridictions nationales compétentes contre les actes violant les droits fondamentaux qui lui sont reconnus par la constitution ou par la loi.'],
 "9"=>['Article 9
-Nul ne peut ÃƒÂªtre arbitrairement arrÃƒÂªtÃƒÂ©, dÃƒÂ©tenu ou exilÃƒÂ©.'],
+Nul ne peut être arbitrairement arrêté, détenu ou exilé.'],
 "10"=>['Article 10
-Toute personne a droit, en pleine ÃƒÂ©galitÃƒÂ©, ÃƒÂ  ce que sa cause soit entendue ÃƒÂ©quitablement et publiquement par un tribunal indÃƒÂ©pendant et impartial, qui dÃƒÂ©cidera, soit de ses droits et obligations, soit du bien-fondÃƒÂ© de toute accusation en matiÃƒÂ¨re pÃƒÂ©nale dirigÃƒÂ©e contre elle.'],
+Toute personne a droit, en pleine égalité, à ce que sa cause soit entendue équitablement et publiquement par un tribunal indépendant et impartial, qui décidera, soit de ses droits et obligations, soit du bien-fondé de toute accusation en matière pénale dirigée contre elle.'],
 "11"=>['Article 11
-(1) Toute personne accusÃƒÂ©e d\'un acte dÃƒÂ©lictueux est prÃƒÂ©sumÃƒÂ©e innocente jusqu\'ÃƒÂ  ce que sa culpabilitÃƒÂ© ait ÃƒÂ©tÃƒÂ© lÃƒÂ©galement ÃƒÂ©tablie au cours d\'un procÃƒÂ¨s public oÃƒÂ¹ toutes les garanties nÃƒÂ©cessaires ÃƒÂ  sa dÃƒÂ©fense lui auront ÃƒÂ©tÃƒÂ© assurÃƒÂ©es.
-(2) Nul ne sera condamnÃƒÂ© pour des actions ou omissions qui, au moment oÃƒÂ¹ elles ont ÃƒÂ©tÃƒÂ© commises, ne constituaient pas un acte dÃƒÂ©lictueux d\'aprÃƒÂ¨s le droit national ou international. De mÃƒÂªme, il ne sera infligÃƒÂ© aucune peine plus forte que celle qui ÃƒÂ©tait applicable au moment oÃƒÂ¹ l\'acte dÃƒÂ©lictueux a ÃƒÂ©tÃƒÂ© commis.'],
+(1) Toute personne accusée d\'un acte délictueux est présumée innocente jusqu\'à ce que sa culpabilité ait été légalement établie au cours d\'un procès public où toutes les garanties nécessaires à sa défense lui auront été assurées.
+(2) Nul ne sera condamné pour des actions ou omissions qui, au moment où elles ont été commises, ne constituaient pas un acte délictueux d\'après le droit national ou international. De même, il ne sera infligé aucune peine plus forte que celle qui était applicable au moment où l\'acte délictueux a été commis.'],
 "12"=>['Article 12
-Nul ne sera l\'objet d\'immixtions arbitraires dans sa vie privÃƒÂ©e, sa famille, son domicile ou sa correspondance, ni d\'atteintes ÃƒÂ  son honneur et ÃƒÂ  sa rÃƒÂ©putation. Toute personne a droit ÃƒÂ  la protection de la loi contre de telles immixtions ou de telles atteintes.'],
+Nul ne sera l\'objet d\'immixtions arbitraires dans sa vie privée, sa famille, son domicile ou sa correspondance, ni d\'atteintes à son honneur et à sa réputation. Toute personne a droit à la protection de la loi contre de telles immixtions ou de telles atteintes.'],
 "13"=>['Article 13
-(1) Toute personne a le droit de circuler librement et de choisir sa rÃƒÂ©sidence ÃƒÂ  l\'intÃƒÂ©rieur d\'un Etat.
+(1) Toute personne a le droit de circuler librement et de choisir sa résidence à l\'intérieur d\'un Etat.
 (2) Toute personne a le droit de quitter tout pays, y compris le sien, et de revenir dans son pays.'],
 "14"=>['Article 14
-(1) Devant la persÃƒÂ©cution, toute personne a le droit de chercher asile et de bÃƒÂ©nÃƒÂ©ficier de l\'asile en d\'autres pays.
-(2) Ce droit ne peut ÃƒÂªtre invoquÃƒÂ© dans le cas de poursuites rÃƒÂ©ellement fondÃƒÂ©es sur un crime de droit commun ou sur des agissements contraires aux buts et aux principes des Nations Unies.'],
+(1) Devant la persécution, toute personne a le droit de chercher asile et de bénéficier de l\'asile en d\'autres pays.
+(2) Ce droit ne peut être invoqué dans le cas de poursuites réellement fondées sur un crime de droit commun ou sur des agissements contraires aux buts et aux principes des Nations Unies.'],
 "15"=>['Article 15
-(1) Tout individu a droit ÃƒÂ  une nationalitÃƒÂ©.
-(2) Nul ne peut ÃƒÂªtre arbitrairement privÃƒÂ© de sa nationalitÃƒÂ©, ni du droit de changer de nationalitÃƒÂ©.'],
+(1) Tout individu a droit à une nationalité.
+(2) Nul ne peut être arbitrairement privé de sa nationalité, ni du droit de changer de nationalité.'],
 "16"=>['Article 16
-(1) A partir de l\'ÃƒÂ¢ge nubile, l\'homme et la femme, sans aucune restriction quant ÃƒÂ  la race, la nationalitÃƒÂ© ou la religion, ont le droit de se marier et de fonder une famille. Ils ont des droits ÃƒÂ©gaux au regard du mariage, durant le mariage et lors de sa dissolution.
-(2) Le mariage ne peut ÃƒÂªtre conclu qu\'avec le libre et plein consentement des futurs ÃƒÂ©poux.
-(3) La famille est l\'ÃƒÂ©lÃƒÂ©ment naturel et fondamental de la sociÃƒÂ©tÃƒÂ© et a droit ÃƒÂ  la protection de la sociÃƒÂ©tÃƒÂ© et de l\'Etat.'],
+(1) A partir de l\'âge nubile, l\'homme et la femme, sans aucune restriction quant à la race, la nationalité ou la religion, ont le droit de se marier et de fonder une famille. Ils ont des droits égaux au regard du mariage, durant le mariage et lors de sa dissolution.
+(2) Le mariage ne peut être conclu qu\'avec le libre et plein consentement des futurs époux.
+(3) La famille est l\'élément naturel et fondamental de la société et a droit à la protection de la société et de l\'Etat.'],
 "17"=>['Article 17
-(1) Toute personne, aussi bien seule qu\'en collectivitÃƒÂ©, a droit ÃƒÂ  la propriÃƒÂ©tÃƒÂ©.
-(2) Nul ne peut ÃƒÂªtre arbitrairement privÃƒÂ© de sa propriÃƒÂ©tÃƒÂ©.'],
+(1) Toute personne, aussi bien seule qu\'en collectivité, a droit à la propriété.
+(2) Nul ne peut être arbitrairement privé de sa propriété.'],
 "18"=>['Article 18
-Toute personne a droit ÃƒÂ  la libertÃƒÂ© de pensÃƒÂ©e, de conscience et de religion ; ce droit implique la libertÃƒÂ© de changer de religion ou de conviction ainsi que la libertÃƒÂ© de manifester sa religion ou sa conviction seule ou en commun, tant en public qu\'en privÃƒÂ©, par l\'enseignement, les pratiques, le culte et l\'accomplissement des rites.'],
+Toute personne a droit à la liberté de pensée, de conscience et de religion ; ce droit implique la liberté de changer de religion ou de conviction ainsi que la liberté de manifester sa religion ou sa conviction seule ou en commun, tant en public qu\'en privé, par l\'enseignement, les pratiques, le culte et l\'accomplissement des rites.'],
 "19"=>['Article 19
-Tout individu a droit ÃƒÂ  la libertÃƒÂ© d\'opinion et d\'expression, ce qui implique le droit de ne pas ÃƒÂªtre inquiÃƒÂ©tÃƒÂ© pour ses opinions et celui de chercher, de recevoir et de rÃƒÂ©pandre, sans considÃƒÂ©rations de frontiÃƒÂ¨res, les informations et les idÃƒÂ©es par quelque moyen d\'expression que ce soit.'],
+Tout individu a droit à la liberté d\'opinion et d\'expression, ce qui implique le droit de ne pas être inquiété pour ses opinions et celui de chercher, de recevoir et de répandre, sans considérations de frontières, les informations et les idées par quelque moyen d\'expression que ce soit.'],
 "20"=>['Article 20
-(1) Toute personne a droit ÃƒÂ  la libertÃƒÂ© de rÃƒÂ©union et d\'association pacifiques.
-(2) Nul ne peut ÃƒÂªtre obligÃƒÂ© de faire partie d\'une association.'],
+(1) Toute personne a droit à la liberté de réunion et d\'association pacifiques.
+(2) Nul ne peut être obligé de faire partie d\'une association.'],
 "21"=>['Article 21
-(1) Toute personne a le droit de prendre part ÃƒÂ  la direction des affaires publiques de son pays, soit directement, soit par l\'intermÃƒÂ©diaire de reprÃƒÂ©sentants librement choisis.
-(2) Toute personne a droit ÃƒÂ  accÃƒÂ©der, dans des conditions d\'ÃƒÂ©galitÃƒÂ©, aux fonctions publiques de son pays.
-(3) La volontÃƒÂ© du peuple est le fondement de l\'autoritÃƒÂ© des pouvoirs publics ; cette volontÃƒÂ© doit s\'exprimer par des ÃƒÂ©lections honnÃƒÂªtes qui doivent avoir lieu pÃƒÂ©riodiquement, au suffrage universel ÃƒÂ©gal et au vote secret ou suivant une procÃƒÂ©dure ÃƒÂ©quivalente assurant la libertÃƒÂ© du vote.'],
+(1) Toute personne a le droit de prendre part à la direction des affaires publiques de son pays, soit directement, soit par l\'intermédiaire de représentants librement choisis.
+(2) Toute personne a droit à accéder, dans des conditions d\'égalité, aux fonctions publiques de son pays.
+(3) La volonté du peuple est le fondement de l\'autorité des pouvoirs publics ; cette volonté doit s\'exprimer par des élections honnêtes qui doivent avoir lieu périodiquement, au suffrage universel égal et au vote secret ou suivant une procédure équivalente assurant la liberté du vote.'],
 "22"=>['Article 22
-Toute personne, en tant que membre de la sociÃƒÂ©tÃƒÂ©, a droit ÃƒÂ  la sÃƒÂ©curitÃƒÂ© sociale ; elle est fondÃƒÂ©e ÃƒÂ  obtenir la satisfaction des droits ÃƒÂ©conomiques, sociaux et culturels indispensables ÃƒÂ  sa dignitÃƒÂ© et au libre dÃƒÂ©veloppement de sa personnalitÃƒÂ©, grÃƒÂ¢ce ÃƒÂ  l\'effort national et ÃƒÂ  la coopÃƒÂ©ration internationale, compte tenu de l\'organisation et des ressources de chaque pays.'],
+Toute personne, en tant que membre de la société, a droit à la sécurité sociale ; elle est fondée à obtenir la satisfaction des droits économiques, sociaux et culturels indispensables à sa dignité et au libre développement de sa personnalité, grâce à l\'effort national et à la coopération internationale, compte tenu de l\'organisation et des ressources de chaque pays.'],
 "23"=>['Article 23
-(1) Toute personne a droit au travail, au libre choix de son travail, ÃƒÂ  des conditions ÃƒÂ©quitables et satisfaisantes de travail et ÃƒÂ  la protection contre le chÃƒÂ´mage.
-(2) Tous ont droit, sans aucune discrimination, ÃƒÂ  un salaire ÃƒÂ©gal pour un travail ÃƒÂ©gal.
-(3) Quiconque travaille a droit ÃƒÂ  une rÃƒÂ©munÃƒÂ©ration ÃƒÂ©quitable et satisfaisante lui assurant ainsi qu\'ÃƒÂ  sa famille une existence conforme ÃƒÂ  la dignitÃƒÂ© humaine et complÃƒÂ©tÃƒÂ©e, s\'il y a lieu, par tous autres moyens de protection sociale.
-(4) Toute personne a le droit de fonder avec d\'autres des syndicats et de s\'affilier ÃƒÂ  des syndicats pour la dÃƒÂ©fense de ses intÃƒÂ©rÃƒÂªts.'],
+(1) Toute personne a droit au travail, au libre choix de son travail, à des conditions équitables et satisfaisantes de travail et à la protection contre le chômage.
+(2) Tous ont droit, sans aucune discrimination, à un salaire égal pour un travail égal.
+(3) Quiconque travaille a droit à une rémunération équitable et satisfaisante lui assurant ainsi qu\'à sa famille une existence conforme à la dignité humaine et complétée, s\'il y a lieu, par tous autres moyens de protection sociale.
+(4) Toute personne a le droit de fonder avec d\'autres des syndicats et de s\'affilier à des syndicats pour la défense de ses intérêts.'],
 "24"=>['Article 24
-Toute personne a droit au repos et aux loisirs et notamment ÃƒÂ  une limitation raisonnable de la durÃƒÂ©e du travail et ÃƒÂ  des congÃƒÂ©s payÃƒÂ©s pÃƒÂ©riodiques.'],
+Toute personne a droit au repos et aux loisirs et notamment à une limitation raisonnable de la durée du travail et à des congés payés périodiques.'],
 "25"=>['Article 25
-(1) Toute personne a droit ÃƒÂ  un niveau de vie suffisant pour assurer sa santÃƒÂ©, son bien-ÃƒÂªtre et ceux de sa famille, notamment pour l\'alimentation, l\'habillement, le logement, les soins mÃƒÂ©dicaux ainsi que pour les services sociaux nÃƒÂ©cessaires ; elle a droit ÃƒÂ  la sÃƒÂ©curitÃƒÂ© en cas de chÃƒÂ´mage, de maladie, d\'invaliditÃƒÂ©, de veuvage, de vieillesse ou dans les autres cas de perte de ses moyens de subsistance par suite de circonstances indÃƒÂ©pendantes de sa volontÃƒÂ©.
-(2) La maternitÃƒÂ© et l\'enfance ont droit ÃƒÂ  une aide et ÃƒÂ  une assistance spÃƒÂ©ciales. Tous les enfants, qu\'ils soient nÃƒÂ©s dans le mariage ou hors mariage, jouissent de la mÃƒÂªme protection sociale.'],
+(1) Toute personne a droit à un niveau de vie suffisant pour assurer sa santé, son bien-être et ceux de sa famille, notamment pour l\'alimentation, l\'habillement, le logement, les soins médicaux ainsi que pour les services sociaux nécessaires ; elle a droit à la sécurité en cas de chômage, de maladie, d\'invalidité, de veuvage, de vieillesse ou dans les autres cas de perte de ses moyens de subsistance par suite de circonstances indépendantes de sa volonté.
+(2) La maternité et l\'enfance ont droit à une aide et à une assistance spéciales. Tous les enfants, qu\'ils soient nés dans le mariage ou hors mariage, jouissent de la même protection sociale.'],
 "26"=>['Article 26
-(1) Toute personne a droit ÃƒÂ  l\'ÃƒÂ©ducation. L\'ÃƒÂ©ducation doit ÃƒÂªtre gratuite, au moins en ce qui concerne l\'enseignement ÃƒÂ©lÃƒÂ©mentaire et fondamental. L\'enseignement ÃƒÂ©lÃƒÂ©mentaire est obligatoire. L\'enseignement technique et professionnel doit ÃƒÂªtre gÃƒÂ©nÃƒÂ©ralisÃƒÂ© ; l\'accÃƒÂ¨s aux ÃƒÂ©tudes supÃƒÂ©rieures doit ÃƒÂªtre ouvert en pleine ÃƒÂ©galitÃƒÂ© ÃƒÂ  tous en fonction de leur mÃƒÂ©rite.
-(2) L\'ÃƒÂ©ducation doit viser au plein ÃƒÂ©panouissement de la personnalitÃƒÂ© humaine et au renforcement du respect des droits de l\'homme et des libertÃƒÂ©s fondamentales. Elle doit favoriser la comprÃƒÂ©hension, la tolÃƒÂ©rance et l\'amitiÃƒÂ© entre toutes les nations et tous les groupes raciaux ou religieux, ainsi que le dÃƒÂ©veloppement des activitÃƒÂ©s des Nations Unies pour le maintien de la paix.
-(3) Les parents ont, par prioritÃƒÂ©, le droit de choisir le genre d\'ÃƒÂ©ducation ÃƒÂ  donner ÃƒÂ  leurs enfants.'],
+(1) Toute personne a droit à l\'éducation. L\'éducation doit être gratuite, au moins en ce qui concerne l\'enseignement élémentaire et fondamental. L\'enseignement élémentaire est obligatoire. L\'enseignement technique et professionnel doit être généralisé ; l\'accès aux études supérieures doit être ouvert en pleine égalité à tous en fonction de leur mérite.
+(2) L\'éducation doit viser au plein épanouissement de la personnalité humaine et au renforcement du respect des droits de l\'homme et des libertés fondamentales. Elle doit favoriser la compréhension, la tolérance et l\'amitié entre toutes les nations et tous les groupes raciaux ou religieux, ainsi que le développement des activités des Nations Unies pour le maintien de la paix.
+(3) Les parents ont, par priorité, le droit de choisir le genre d\'éducation à donner à leurs enfants.'],
 "27"=>['Article 27
-(1) Toute personne a le droit de prendre part librement ÃƒÂ  la vie culturelle de la communautÃƒÂ©, de jouir des arts et de participer au progrÃƒÂ¨s scientifique et aux bienfaits qui en rÃƒÂ©sultent.
-(2) Chacun a droit ÃƒÂ  la protection des intÃƒÂ©rÃƒÂªts moraux et matÃƒÂ©riels dÃƒÂ©coulant de toute production scientifique, littÃƒÂ©raire ou artistique dont il est l\'auteur.'],
+(1) Toute personne a le droit de prendre part librement à la vie culturelle de la communauté, de jouir des arts et de participer au progrès scientifique et aux bienfaits qui en résultent.
+(2) Chacun a droit à la protection des intérêts moraux et matériels découlant de toute production scientifique, littéraire ou artistique dont il est l\'auteur.'],
 "28"=>['Article 28
-Toute personne a droit ÃƒÂ  ce que rÃƒÂ¨gne, sur le plan social et sur le plan international, un ordre tel que les droits et libertÃƒÂ©s ÃƒÂ©noncÃƒÂ©s dans la prÃƒÂ©sente DÃƒÂ©claration puissent y trouver plein effet.'],
+Toute personne a droit à ce que règne, sur le plan social et sur le plan international, un ordre tel que les droits et libertés énoncés dans la présente Déclaration puissent y trouver plein effet.'],
 "29"=>['Article 29
-(1) L\'individu a des devoirs envers la communautÃƒÂ© dans laquelle seul le libre et plein dÃƒÂ©veloppement de sa personnalitÃƒÂ© est possible.
-(2) Dans l\'exercice de ses droits et dans la jouissance de ses libertÃƒÂ©s, chacun n\'est soumis qu\'aux limitations ÃƒÂ©tablies par la loi exclusivement en vue d\'assurer la reconnaissance et le respect des droits et libertÃƒÂ©s d\'autrui et afin de satisfaire aux justes exigences de la morale, de l\'ordre public et du bien-ÃƒÂªtre gÃƒÂ©nÃƒÂ©ral dans une sociÃƒÂ©tÃƒÂ© dÃƒÂ©mocratique.
-(3) Ces droits et libertÃƒÂ©s ne pourront, en aucun cas, s\'exercer contrairement aux buts et aux principes des Nations Unies.'],
+(1) L\'individu a des devoirs envers la communauté dans laquelle seul le libre et plein développement de sa personnalité est possible.
+(2) Dans l\'exercice de ses droits et dans la jouissance de ses libertés, chacun n\'est soumis qu\'aux limitations établies par la loi exclusivement en vue d\'assurer la reconnaissance et le respect des droits et libertés d\'autrui et afin de satisfaire aux justes exigences de la morale, de l\'ordre public et du bien-être général dans une société démocratique.
+(3) Ces droits et libertés ne pourront, en aucun cas, s\'exercer contrairement aux buts et aux principes des Nations Unies.'],
 "30"=>['Article 30
-Aucune disposition de la prÃƒÂ©sente DÃƒÂ©claration ne peut ÃƒÂªtre interprÃƒÂ©tÃƒÂ©e comme impliquant pour un Etat, un groupement ou un individu un droit quelconque de se livrer ÃƒÂ  une activitÃƒÂ© ou d\'accomplir un acte visant ÃƒÂ  la destruction des droits et libertÃƒÂ©s qui y sont ÃƒÂ©noncÃƒÂ©s.']]; ?>
->>>>>>> c3133bed7b5cef8cf040b043d741a1c96370c55d
+Aucune disposition de la présente Déclaration ne peut être interprétée comme impliquant pour un Etat, un groupement ou un individu un droit quelconque de se livrer à une activité ou d\'accomplir un acte visant à la destruction des droits et libertés qui y sont énoncés.']]; ?>

@@ -1,0 +1,10 @@
+<?php
+//philum_microsql_ummo_twitter_Yael111
+$r["_menus_"]=array('id','date','msg','url','name','author','img','rtw');
+$r[1]=array('600553832876216320','19 mai','Bonjour @oomo_toa, est-ce un OIXXIIXI sous l&#39;astre IUMMA ?','https://twitter.com/Yael_111/status/600553832876216320','@Yael_111','Yael','https://pbs.twimg.com/profile_images/547731563832549377/f6MT4SmU_normal.jpeg','');
+$r[2]=array('600553832876216320','19 mai','The more you give, the more your heart is filled. Love is a never ending stream. - [https://twitter.com/hashtag/Amma?src=hash§#Amma] ','https://twitter.com/Yael_111/status/600553832876216320','@amritanandamayi','Mata Amritanandamayi','https://pbs.twimg.com/profile_images/1005217968/amritanandamayi_normal.jpg','');
+$r[3]=array('594833771289026560','3 mai','Racisme: l\'ONU dénonce la «banalisation» du discours haineux en France [http://t.co/AKoU3GB8KY§http://www.liberation.fr/societe/2015/04/28/racisme-l-onu-denonce-la-banalisation-du-discours-haineux-en-france_1274588&nbsp;..].  via @libe','https://twitter.com/Yael_111/status/594833771289026560','@Yael_111','Yael','https://pbs.twimg.com/profile_images/547731563832549377/f6MT4SmU_normal.jpeg','');
+$r[4]=array('575582653589622784','11 mars','Bonjour @ostralopithec @oaxiiboo6 La matière n&#39;est-elle pas déjà contenue, et largement, dans les documents U. :) ?','https://twitter.com/Yael_111/status/575582653589622784','@Yael_111','Yael','https://pbs.twimg.com/profile_images/547731563832549377/f6MT4SmU_normal.jpeg','');
+$r[5]=array('575267856201478144','10 mars','Nous évaluons toute connaissance avec une échelle dont le niveau le plus élevé est occupé par la fonctionnalité (D33-1)','https://twitter.com/Yael_111/status/575267856201478144','@Yael_111','Yael','https://pbs.twimg.com/profile_images/547731563832549377/f6MT4SmU_normal.jpeg','');
+
+?>

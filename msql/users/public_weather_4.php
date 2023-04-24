@@ -1,5 +1,5 @@
 <?php //msql/public_weather_4
-$r=["_menus_"=>['Code temps','Description','picto','ascii'],
+$r=["_"=>['Code temps','Description','picto','ascii'],
 "1"=>['','Soleil','sunshine','&#9728;&#65039;'],
 "2"=>['1','Peu nuageux','smallclouds','&#127780;&#65039;'],
 "3"=>['2','Ciel voilé','localclouds','&#9925;'],

@@ -463,7 +463,7 @@ static function prep_msg($id){
 $suj=sql('suj','qda','v',$id);
 $msg=sql('msg','qdm','v',$id); $msg=html_entity_decode($suj."\n".$msg);
 if(strpos($msg,':import') or strpos($msg,':read'))$msg=strip_tags(conn::read($msg,$id,3));
-else $msg=str::clean_internaltag($msg); $msg=strtolower(eradic_acc($msg)); $msg=deln($msg,' ');
+else $msg=str::stripconn($msg); $msg=strtolower(eradic_acc($msg)); $msg=deln($msg,' ');
 $msg=str_replace("&nbsp;",' ',$msg);
 return $msg;}
 

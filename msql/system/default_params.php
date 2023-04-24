@@ -1,5 +1,5 @@
 <?php //msql/default_params
-$r=["_menus_"=>['default','name'],
+$r=["_"=>['default','name'],
 "1"=>['1','modules_table'],
 "2"=>['','auto_member'],
 "3"=>['400','kmax'],

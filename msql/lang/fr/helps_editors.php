@@ -1,8 +1,8 @@
 <?php //msql/helps_editors
-$r=["_menus_"=>['title'],
+$r=["_"=>['title'],
 "b"=>['gras'],
 "i"=>['italique'],
-"u"=>['soulignÃ©'],
+"u"=>['soulign�'],
 "h"=>['titre'],
 "q"=>['citation'],
 "list"=>['liste'],

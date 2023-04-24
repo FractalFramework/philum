@@ -1,18 +1,18 @@
 <?php 
 class msql{
 static $dr,$nod,$f,$r;
-static $m='_menus_';
+static $m='_';
 
 static function nod($d){return ses('qb').'_'.$d;}
 static function url($dr,$nod,$o=''){if($o)$nod.='_sav';
 $dr=$dr=='lang'?$dr.'/'.prmb(25):$dr; $dr=$dr?$dr:'users';
 return root('msql/').$dr.'/'.$nod.'.php';}
-//static function patch_m($f,$r,$nod){write_file($f,self::dump($r,$nod));}
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
+static function patch_m($dr,$nod){$r=msql::read($dr,$nod); $r=msqa::patch_m($r); self::save($dr,$nod,$r);}
 
 static function menus($r){$ret=[];
-if(isset($r['_menus_']))return $r['_menus_']; $n=count($r); if($r)$r=current($r);
-if(is_array($r))foreach($r as $k=>$v)$ret['_menus_'][]=$k; return $ret;}
+if(isset($r[self::$m]))return $r[self::$m]; $n=count($r); if($r)$r=current($r);
+if(is_array($r))foreach($r as $k=>$v)$ret[self::$m][]=$k; return $ret;}
 
 static function dump($r,$p=''){$rc=[]; $ret='';
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
@@ -25,7 +25,7 @@ return '<?php //msql/'.$p."\n".'$r=['.$ret.']; ?>';}
 static function del($dr,$nod){$f=self::url($dr,$nod); if(is_file($f) && auth(6))unlink($f);}
 
 static function save($dr,$nod,$r,$rh=[]){if(!$r)$r=[];
-if($rh && !isset($r['_menus_']))$r=array_merge(['_menus_'=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
+if($rh && !isset($r[self::$m]))$r=array_merge([self::$m=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
 $f=self::url($dr,$nod); $d=self::dump($r,$nod); write_file($f,$d); return $r;}
 
 static function array_push_after($ra,$rb,$p){
@@ -35,7 +35,7 @@ elseif($ra)foreach($ra as $k=>$v){$r[$k]=$v; if($k==$p)$r=array_merge($r,$rb);} 
 static function modif($dr,$nod,$ra,$act,$rh=[],$n=''){
 if(!$dr)$dr='users'; $r=self::read($dr,$nod,'','',$rh);
 if($act=='one')$r[$n]=$ra;
-elseif($act=='arr'){$r=$ra; if($rh)$r=array_merge(['_menus_'=>$rh],$r);}
+elseif($act=='arr'){$r=$ra; if($rh)$r=array_merge([self::$m=>$rh],$r);}
 elseif($act=='push')$r[]=array_values($ra);
 elseif($act=='row')$r[$n]=array_values($ra);
 elseif($act=='del')unset($r[$n?$n:$ra]);
@@ -63,23 +63,23 @@ static function rollback($f){
 }
 
 static function read($dr,$nod,$in='',$u='',$rh=[]){$f=self::url($dr,$nod);
-if(is_file($f))include $f; elseif($rh)$r=self::save($dr,$nod,[],$rh); $m='_menus_';
+if(is_file($f))include $f; elseif($rh)$r=self::save($dr,$nod,[],$rh); $m=self::$m;
 if(isset($r)){foreach($r as $k=>$rb)foreach($rb as $kb=>$vb)$r[$k][$kb]=stripslashes($vb);
 if($u && isset($r[$m]))unset($r[$m]);
 return $r[$in]??$r;}}
 
 static function read_b($dr,$nod,$in='',$u='',$rh=[]){$f=self::url($dr,$nod);
-if(is_file($f))include $f; elseif($rh)$r=self::save($dr,$nod,[],$rh); $m='_menus_';
+if(is_file($f))include $f; elseif($rh)$r=self::save($dr,$nod,[],$rh); $m=self::$m;
 if(isset($r)){if($u && isset($r[$m]))unset($r[$m]);
 return $r[$in]??$r;}}
 
 static function row($dr,$nod,$in,$o=''){$f=self::url($dr,$nod);//assoc
-if(is_file($f))include $f; $m='_menus_'; if(!isset($r[$in]))return;
+if(is_file($f))include $f; $m=self::$m; if(!isset($r[$in]))return;
 if($o && isset($r[$m]))return array_combine_a($r[$m],$r[$in]);
 return $r[$in];}
 
 static function col($dr,$nod,$n=0,$u=1){$f=self::url($dr,$nod);
-if(is_file($f))include $f; $m='_menus_'; $rb=[];
+if(is_file($f))include $f; $m=self::$m; $rb=[];
 if(isset($r)){if($u && isset($r[$m]))unset($r[$m]);
 if($r)foreach($r as $k=>$v)$rb[$k]=stripslashes_b($v[$n]??'');}
 return $rb;}
@@ -111,9 +111,9 @@ static function findlast($dr,$pr,$nod){//next table
 $r=self::choose($dr,$pr,$nod); return self::nextnod($r);}//
 static function nextnod($r){if($r){$mx=max($r); asort($r); $i=0;
 foreach($r as $v){$i++; if($v!=$i)return $i;} return $mx+1;} return 1;}
-static function nextentry($r){if(!$r)return; ksort($r); $i=0; $n=isset($r['_menus_'])?1:0;//next free
+static function nextentry($r){if(!$r)return; ksort($r); $i=0; $n=isset($r[self::$m])?1:0;//next free
 foreach($r as $k=>$v){$i++; if(!isset($r[$i]) && is_numeric($k))return $i;}
-if($n)unset($r['_menus_']); $rb=array_keys($r); $max=$rb?(int)max($rb)+1:1; return $max;}
+if($n)unset($r[self::$m]); $rb=array_keys($r); $max=$rb?(int)max($rb)+1:1; return $max;}
 static function exists($dr,$nod){$f=self::url($dr,$nod); if(is_file($f))return true;}
 /*static function exentry($dr,$nod,$k){$f=self::url($dr,$nod);
 if(is_file($f))include $f; if(isset($r[$k]))return true;}*/
@@ -141,12 +141,12 @@ if($rb)foreach($rb as $k=>$v)if(count($v)==$n)$rc[]=$r[$k];
 return $rc;}
 
 static function where_assoc($dr,$nod,$q,$rh=[]){
-$r=self::read($dr,$nod,'','',$rh); $rb=[]; $m='_menus_';
+$r=self::read($dr,$nod,'','',$rh); $rb=[]; $m=self::$m;
 if($r)foreach($r as $k=>$v){$v=array_combine_a($r[$m],$v);
 	foreach($q as $ka=>$va)if($v[$ka]==$va)$rb[]=$v;}
 return $rb;}
 
-static function assoc($dr,$nod){$r=self::read($dr,$nod,'',0); $m='_menus_'; $rb=[]; $rh=$r[$m]??'';
+static function assoc($dr,$nod){$r=self::read($dr,$nod,'',0); $m=self::$m; $rb=[]; $rh=$r[$m]??'';
 if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)if($rh[$ka]??'')$rb[$k][$rh[$ka]]=$va; return $rb;}
 static function select($dr,$nod,$d,$n=0){$r=self::read($dr,$nod,'',1); $rb=[];
 if($r)foreach($r as $k=>$v)if($v[$n]==$d)$rb[$k]=$v; return $rb;}
@@ -165,7 +165,7 @@ if($r)foreach($r as $k=>$v)$rb[$v[$n]]=$v[$n2]; return $rb;}
 static function find_k($dr,$nod,$d,$n=0){$r=self::read($dr,$nod,'',1);
 if($r)foreach($r as $k=>$v)if($v[$n]==$d)return $k;}
 static function find($dr,$nod,$d,$n=0,$o=''){$r=self::read($dr,$nod);//like row
-if($r)foreach($r as $k=>$v)if($v[$n]==$d)$in=$k; if(!isset($in))return; $m='_menus_';
+if($r)foreach($r as $k=>$v)if($v[$n]==$d)$in=$k; if(!isset($in))return; $m=self::$m;
 if($o && isset($r[$m]))return array_combine_a($r[$m],$r[$in]); else return $r[$in];}
 
 //filters
@@ -175,14 +175,14 @@ static function cat($r,$n,$o=''){$rb=[]; foreach($r as $k=>$v)$rb[$v[$n]??$v]=$k
 static function tri($r,$n,$d){$rt=[]; foreach($r as $k=>$v)if($v[$n]==$d)$rt[$k]=$v; return $rt;}
 static function sort($r,$n,$o=''){$rt=array_keys_r($r,$n); if($o)arsort($rt); else asort($rt);
 foreach($rt as $k=>$v)$rt[$k]=$r[$k]; return $rt;}
-static function order($r,$n){$b='_menus_'; $i=0; if(isset($r[$b])){$rt[$b]=$r[$b]; unset($r[$b]);}
+static function order($r,$n){$b=self::$m; $i=0; if(isset($r[$b])){$rt[$b]=$r[$b]; unset($r[$b]);}
 $rc=self::clb($r,$n); arsort($rc); foreach($rc as $k=>$v)$rt[]=$r[$k]; return $rt;}
-static function reorder($r){$b='_menus_'; $i=0; if(isset($r[$b])){$rt[$b]=$r[$b]; unset($r[$b]);}
+static function reorder($r){$b=self::$m; $i=0; if(isset($r[$b])){$rt[$b]=$r[$b]; unset($r[$b]);}
 foreach($r as $k=>$v){$i++; $rt[$i]=$v;} return $rt;}
 static function move($r,$id,$to){$rk=$r[$id]; unset($r[$id]); $i=0; $rt=[];
-foreach($r as $k=>$v){if($k==$to){$i++; $rt[$i]=$rk;} $i++; $rt[$k=='_menus_'?$k:$i]=$v;} return $rt;}
+foreach($r as $k=>$v){if($k==$to){$i++; $rt[$i]=$rk;} $i++; $rt[$k==self::$m?$k:$i]=$v;} return $rt;}
 static function moveafter($r,$id,$to){$rk=$r[$id]; unset($r[$id]); $i=0; $rt=[];
-foreach($r as $k=>$v){$i++; $rt[$k=='_menus_'?$k:$i]=$v; if($k==$to){$i++; $rt[$i]=$rk;}} return $rt;}
+foreach($r as $k=>$v){$i++; $rt[$k==self::$m?$k:$i]=$v; if($k==$to){$i++; $rt[$i]=$rk;}} return $rt;}
 static function displace($r,$id,$to){if($id==$to)return $r; $rk=$r[$id]; unset($r[$id]); $rt=[];
 foreach($r as $k=>$v){if($k==$to)$rt[$id]=$rk; $rt[$k]=$v;} return $rt;}
 static function walk($r,$n,$fn,$p){foreach($r as $k=>$v){$r[$k][$n]=$fn($k,$v[$n],$v,$p);} return $r;}
@@ -198,7 +198,7 @@ static function push($dr,$nod,$r){if(!is_array($r))$r=[$r];
 return self::modif($dr,$nod,$r,'push');}
 static function append($ra,$d){[$a,$b]=split_right('/',$d,1);
 $r=self::read($a,$b); foreach($r as $k=>$v)if(!$ra[$k])$ra[$k]=$v; return $ra;}
-static function reverse($r){$rh=val($r,'_menus_'); if($rh)unset($r['_menus_']);
+static function reverse($r){$rh=val($r,self::$m); if($rh)unset($r[self::$m]);
 if($r){$r=array_reverse($r); array_unshift($r,$rh);} return $r;}
 static function merge($r,$dr,$nd){$rt=self::read($dr,$nd,'',1); return array_merge_b($r,$rt);}
 static function ses($v,$dr,$nod,$u){return $_SESSION[$v]=$_SESSION[$v]??self::col($dr,$nod,0);}

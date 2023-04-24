@@ -24,7 +24,7 @@ case('append'):foreach($ra as $k=>$v)$r[]=$v; break;}
 return $r;}
 
 static function import($defs,$b){$ra=[];//from msql
-if($defs['_menus_']){$index=$defs['_menus_']; unset($defs['_menus_']);
+if($defs[msql::$m]){$index=$defs[msql::$m]; unset($defs[msql::$m]);
 	foreach($index as $k=>$v)$index[$k]=normalize($v);}
 else $index=range(1,count($defs[0]));
 foreach($defs as $k=>$v)foreach($v as $ka=>$va){
