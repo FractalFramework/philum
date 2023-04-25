@@ -89,11 +89,10 @@ elseif(prmb(11)>=1 or $newhub or !$first or prms('create_hub')=='on'){$rl='ok';
 	$_SESSION['qbin']['adminmail']=$mail;
 	self::log_result($usr,$uid,$qb,$rl,$cook);}}}
 
-static function modif_cnfgtxt($qb,$first){
-$f=boot::cnf();
+static function modif_cnfgtxt($qb,$first){$f=boot::cnf();
 if(is_file($f)){$d=read_file($f); $r=explode('#',$d);}
 else $r=[ses('qd'),'no','yes',ses('qb'),'','philum.fr','','','','Europe/Paris','6135','4000'];
-if(!$first)$r[3]=$qb; if(ses('htacc'))$r[1]='yes';
+if(!$first)$r[3]=$qb; if(prms('htacc'))$r[1]='yes';
 write_file($f,implode('#',$r));}
 
 static function message2newuser($usr,$mail,$psw){

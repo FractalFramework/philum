@@ -256,7 +256,7 @@ function get_file($f){return curl_get_contents($f);}
 function read_file($f){$fp=false; if($f)$fp=fopen($f,'r') or die('er'); $ret='';//fgets
 if($fp){while(!feof($fp))$ret.=fread($fp,8192); fclose($fp);} return $ret;}
 function write_file($f,$t){$h=fopen($f,'w') or die('er'); $w=false;
-if($h){$w=fwrite($h,$t); fclose($h); if(!ses::$local)opcache_invalidate($f);}
+if($h){$w=fwrite($h,$t); fclose($h); opcache($f);}
 if($w===false)return 'error';}
 
 function read_file2($f){if(fex1($f))return read_file($f);}
@@ -593,8 +593,8 @@ function sesg($v,$d){$s=ses($v); $g=get($v); return $g?$g:($s?$s:$d);}
 function sesif($d,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=$v; return $_SESSION[$d];}
 function sesmk($v,$p='',$b=''){if(!isset($_SESSION[$v.$p]) or $b)
 if(function_exists($v))$_SESSION[$v.$p]=call_user_func($v,$p); return $_SESSION[$v.$p]??'';}
-function sesmk2($a,$m,$p='',$b=''){if(empty($_SESSION[$a.$m.$p]) or $b)
-if(method_exists($a,$m))$_SESSION[$a.$m.$p]=$a::$m($p); return $_SESSION[$a.$m.$p]??'';}
+function sesmk2($a,$m,$p='',$b=''){if(empty($_SESSION[$a.$m]) or $b)
+if(method_exists($a,$m))$_SESSION[$a.$m]=$a::$m($p); return $_SESSION[$a.$m]??'';}
 function setses($d,$o=''){return !isset($_SESSION[$d])?$_SESSION[$d]=$o:$_SESSION[$d];}
 
 #csv

@@ -22,14 +22,14 @@ $ra=['&nbsp;','&ndash;','&mdash;',"%27",'&#8216;','&#8217;','&#174;','&#175;','&
 '&#39;','&#8239;','&#8206;','&#8201;','&hellip;','&bdquo;','&ldquo;','&lsquo;','&rsquo;','&#8203;',
 '&#039;','&thinsp;','&ensp;','&emsp;','&#160;','&#8194;','&#8195;','&#8201;','&#8208;','&#750;',
 '&acute;','&rdquo;','&#xFFFD;','&#8200;','&#137;','&#128;','&#153;','&#156;','&#159;','&#135;',
-'&#152;','&pound;','&#2013265929;','&#13;','&#x2019;','&sect;'];
+'&#152;','&pound;','&#2013265929;','&#13;','&#x2019;','&sect;','&#149;'];
 $rb=[' ','-','-',"'","'","'",'«','»','«','»',
 '-','"','"','"','','-','é','à','g','i',
 'I','','"','"','è','à','é','ê','°',"'",
 "'",' ',' ',' ','...','"','"',"'","'",'',
 "'",' ',' ',' ',' ',' ',' ',' ','-','"',
 "'",'"',"'",' ','%','€','™','œ','Ÿ','‡',
-'~','£','é','',"'",'§'];
+'~','£','é','',"'",'§','•'];
 return str_replace($ra,$rb,$v);}
 
 static function specialspace($d){if(!$d)return;
@@ -94,16 +94,6 @@ return $d;}
 static function mb_ucfirst($d,$e='utf-8'){//diffutf
 return mb_strtoupper(mb_substr($d,0,1,$e),$e).mb_substr($d,1,mb_strlen($d,$e),$e);}
 
-static function lowercase($v){if(!$v)return;
-$v=html_entity_decode($v); $nb=strlen($v); $y=0; $ret='';
-$a='ÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜİ'; $b='àáâãäçèéêëìíîïñòóôõöùúûüı';
-for($i=0;$i<$nb;$i++){$k=substr($v,$i,1);
-	if($y==0)$ret.=$k;
-	else{$k=strtolower($k); $k=strtr($k,$a,$b); $ret.=$k;}
-	if($k==' ' or $k=="&nbsp;" or $k=="'" or $k=='"' or $k=='«' or $k=='-' or $k=='[' or $k=='(')
-		$y=0; else $y=1;}
-return $ret;}
-
 #detect
 static function detect_words($msg,$d,$sg=''){$rb=[];
 $d=strend($d,'/'); if(strpos($d,'.'))$d=strto($d,'.');
@@ -134,7 +124,7 @@ if(!$d)return; $nb="&nbsp;";
 $d=self::html_entity_decode_b($d);
 $d=self::clean_punct($d,1);
 //$d=self::clean_punct_b($d);
-if(rstr(104))$d=self::lowercase($d);
+if(rstr(104))$d=self::mb_ucfirst($d);
 if(substr($d,-1)=='"')$d=substr($d,0,-1).$nb.'»';
 if(substr($d,0,1)=='"')$d='«'.$nb.substr($d,1);
 $d=str_replace(' "',' «'.$nb,$d);
@@ -144,7 +134,6 @@ $d=self::clean_inclusive($d);
 return trim($d);}
 
 #correctors
-
 //links
 static function embed_links($msg=''){if(!$msg)return;//oldest_static function!//19
 $msg=str_replace("\n",' µµ ',$msg); $ra=explode(' ',$msg); $r=[];
@@ -192,8 +181,8 @@ return codeline::parse($d,'','delconn');}
 
 static function stupid_acc($d){
 $d=str_replace(['<!--[if IE]>','<!--[if IE 9]>','<!--[if !IE]>','<!--<![endif]-->','<![endif]-->','<!-->'],'',$d??'');//,'<!--'
-$ra=["a`","a^","A`","e´","e`","e^","e¨","o^","i^","E´","´´","´","`",'<<','>>','=>'];//,'->'
-$rb=["à","â","A","é","è","ê","ë","ô","î","E",'"',"'","'",'«'.sep(),sep().'»','&rArr;'];//,'&rArr;'
+$ra=["a`","a^","A`","e´","e`","e^","o^","i^","E´","´´","´","`",'<<','>>','=>'];//,'->',"e¨"
+$rb=["à","â","A","é","è","ê","ô","î","E",'"',"'","'",'«'."\n","\n".'»','&rArr;'];//,'&rArr;',"ë"
 return str_replace($ra,$rb,$d);}
 
 static function clean_spaces($d){

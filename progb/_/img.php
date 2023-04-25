@@ -24,7 +24,7 @@ static function reduce($d,$o,$id=''){$im='img/'.$d;
 [$wo,$ho,$ty]=getimagesize($im);
 if($o){$w=$wo/2; $h=$ho/2;}
 else [$w,$h]=self::sz($wo,$ho,940,940);
-make_mini($im,$im,$w,$h,''); opcache_invalidate($im);
+make_mini($im,$im,$w,$h,''); opcache($im);
 return conn::place_image($d.'?'.$w,3,'',920,$id);}
 
 static function png2jpg($a,$id){

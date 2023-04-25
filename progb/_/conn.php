@@ -176,7 +176,6 @@ $pw=$_SESSION['prma']['content'];
 $xt=strtolower(strrchr($da,'.')); $cp=strrpos($da,':');
 $c=substr($da,$cp); $d=substr($da,0,$cp);
 if(rstr(70))$c=self::retape_conn($c,$id);
-//[$d,$p]=cprm($d);
 $ret=match($c){
 ':br'=>br(),
 ':p'=>'<p>'.$d.'</p>',
@@ -356,25 +355,26 @@ $ret=match($c){
 ':ko'=>$d,
 default=>''};
 if($ret)return $ret;
+[$p,$o]=cprm($d);
+$ret=match($c){
+':svg'=>svg::call($p,$o),
+':search'=>lj('','popup_search,home__3_'.ajx($d).'_',picto('search').($o?$o:$d)),
+':tag'=>lj('txtx','popup_api__3_'.($o?$o:'tag').':'.ajx($p),pictxt('tag',$p)),
+':papi'=>lj('','popup_api__3_'.ajx($p),pictxt('atom',$o?$o:strend($p,':'))),//relegated
+':basic'=>codeline::cbasic($p,$o),
+':ver'=>substr_replace(ses('philum'),'.',2,0),
+':picto'=>picto($p,$o),
+':ascii'=>ascii($p,$o),
+':glyph'=>glyph($p,$o),
+':oomo'=>oomo($p,$o),
+':typo'=>mk::typo($p,$o),
+default=>''};
+if($ret)return $ret;
 switch($c){
-case(':svg'):[$p,$o]=cprm($d); return svg::call($p,$o); break;
 case(':app'):[$p,$o,$fc]=unpack_conn($d); return appin($fc,'home',$p,$o); break;
-case(':search'):[$d,$o]=cprm($d);
-	return lj('','popup_search,home__3_'.ajx($d).'_',picto('search').($o?$o:$d)); break;
-case(':tag'):[$p,$o]=cprm($d); if(!$o)$o='tag';
-	return lj('txtx','popup_api__3_'.$o.':'.ajx($p),pictxt('tag',$p)); break;
-case(':papi'):[$p,$o]=cprm($d);//relegated
-	return lj('','popup_api__3_'.ajx($p),pictxt('atom',$o?$o:strend($p,':'))); break;
-case(':header'):[$t,$p]=cprm($d); Head::add($p?$p:'code',delbr($t,"\n")); return; break;
+case(':header'):Head::add($o?$o:'code',delbr($p,"\n")); return; break;
 case(':jscode'):Head::add('jscode',delbr($d,"\n")); return; break;
 case(':jslink'):Head::add('jslink',delbr($d,"\n")); return; break;
-case(':basic'):[$func,$var]=cprm($d); return codeline::cbasic($func,$var); break;
-case(':ver'):$phi=ses('philum'); return substr($phi,0,2).'.'.substr($phi,2,2); break;
-case(':picto'):[$p,$o]=cprm($d); return picto($p,$o); break;
-case(':ascii'):[$p,$o]=cprm($d); return ascii($p,$o); break;
-case(':glyph'):[$p,$o]=cprm($d); return glyph($p,$o); break;
-case(':oomo'):[$p,$o]=cprm($d); return oomo($p,$o); break;
-case(':typo'):[$p,$o]=cprm($d); return mk::typo($p,$o); break;
 case(':private'):if(auth(6))return $d.' '.picto('secret'); break;
 case(':dev'):if(auth(4))return $d; break;}
 if($da=='--')return hr();
@@ -385,11 +385,11 @@ elseif($xt=='.txt'){$dt=goodroot($da); return lkt('',$dt,strrchr($dt,'/'));}
 elseif($xt=='.gz')return mk::download($da);
 elseif($xt=='.m3u8')return twit::upvideo_m3u8($da);
 elseif($xt=='.mp3'||$xt=='.m4a')return pop::getmp3(goodroot($da),$id,rstr(145));
-elseif($xt=='.mp4'||$xt=='.ogg'||$xt=='.webm'){[$d,$t]=cprm($da); $vid=$t?$t:$d;//.h264
-	if($m!=3)return lj('txtx','pagup_usg,video___'.ajx($vid),pictxt('video',strend($vid,'/')));
+elseif($xt=='.mp4'||$xt=='.ogg'||$xt=='.webm'){$t=$o?$o:$p;//.h264
+	if($m!=3)return lj('txtx','pagup_usg,video___'.ajx($p),pictxt('video',strend($t,'/')));
 	else{
-		if(is_img($d))return lkt('',goodroot($t),img('img/'.$d));
-		elseif($t)return lkt('',goodroot($d),$t);
+		if(is_img($o))return lkt('',goodroot($p),img('img/'.$o));
+		elseif($o)return lkt('',goodroot($p),$o);
 		else return pop::getmp4($da,$id,rstr(145));}}
 //links
 $res=self::connlk($da,$id,$m,$nl,$pw); if($res=='-')return; if($res)return $res;
@@ -398,18 +398,21 @@ if(method_exists($cn,'call') && isset($cn::$conn)){[$p,$o]=cprm($d); return $cn:
 //if($cn){$ret=codeline::mod_basic($cn,$d); if($ret)return $ret;}
 return '['.$da.']';}
 
+static function rules($p,$o){
+}
+
 static function connlk($da,$id,$m,$nl,$pw){
-$par=strpos($da,'§'); $http=strpos($da,'http'); $html=strpos($da,'<');
+$par=strpos($da,'§'); $http=strpos($da,'http'); $html=strpos($da,'<a');
 if(is_img($da) && $par===false){// && $html===false
 	if(substr($da,0,4)=='http' && $id)$da=conn::get_image($da,$id,$m);
 	return conn::place_image($da,$m,$nl,$pw,$id);}
-if(($par or $http!==false) && $html===false){//secure double hooks
+if(($par or $http!==false)){//secure double hooks// && $html===false
 	[$p,$o]=cprm($da);
 	if(is_img($p)){//image§text
 		//if(substr($p,0,4)=='http')$p=conn::get_image($p,$id,$m);
 		if(is_img($o))return mk::popim($p,image(goodroot($o)),$id);//mini
 		//return pop::figure($p.'§'.$o,$pw,$nl,$id);
-		if(is_http($o))return lkt('',$o,img($p));
+		if(is_http($o))return lkt('',$o,img(goodroot($p)));
 		return mk::popim($p,pictxt('img',$o),$id);}
 	elseif(is_img($o)){//link§image
 		if(substr($o,0,4)=='http')$o=conn::get_image($o,$id,$m);

@@ -10,7 +10,7 @@ foreach($r as $k=>$v)for($i=0;$i<$v;$i++){$ib++; if($ib==$nb)return [$k,$i];}}
 
 static function build($p,$o){
 [$na,$nb]=self::random();//$na=rand(1,5); 
-$r=msql::read_b('',('public_citation_'.$na));//$nb=array_rand($r); 
+$r=msql::read_b('',pub('citation_'.$na));//$nb=array_rand($r); 
 if(!$r)return;
 $ra=array_shift($r); $t=$ra[0]; $ret=$r[$nb][0];
 //$b=lj('','ctt_citation,build___citation*1',picto('reload')).' ';
@@ -28,7 +28,7 @@ $ret=inputj('inp',$p,$j);
 $ret.=lj('',$j,picto('ok')).' ';
 //$cols='ib,val,to';//create table, name cols
 //$ret.=lj('','popup_msqedit,call___citation*1_'.$cols,picto('edit')).' ';
-$ret.=msqbt('',('public_citation_1'));
+$ret.=msqbt('',pub('citation_1'));
 return $ret;}
 
 static function home($p,$o){$rid=randid('citation');

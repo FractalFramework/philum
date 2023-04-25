@@ -146,9 +146,14 @@ if($m)return '['.nmx([56,88]).' '.$m.':q]'."\n";}
 static function treat_link($bin,$txa){
 $sp='';$sp2='';$mid='';$txt='';$txb='';$bend='';$tag='';$len=0;$nb=0;$dz='';$imnb=0;
 if($txa){$tag='href='; $len=6;
-	if(substr($txa,0,1)==' ')$sp=' '; if(substr($txa,-1,1)==' ')$sp2=' ';
-	$txt=str::stripconn($txa);//is_img($txa)?$txa:/testing
-	if($n=strpos($txt,'>'))$txt=substr($txt,$n+1);}
+	if(substr($txa,0,1)==' ')$sp=' '; if(substr($txa,-1,1)==' ')$sp2=' '; $txt=trim($txa);
+	$txt=str::stripconn($txt);//kill conns inside links
+	if($n=strpos($txt,'>'))$txt=substr($txt,$n+1);
+	$txt=utmsrc($txt); $txt=preg_replace("/(\n)|(\t)/",'',$txt);
+	if(substr($txt,0,1)=='/')$txt=substr($txt,1);
+	if(substr($txt,-1,1)=='/')$txt=substr($txt,0,-1);
+	//if(strpos($txt,'[')!==false)echo $txt=substr($txt,1,-1);//lk§img not works
+	}
 elseif(strpos($bin,'src=')!==false){$tag='src='; $len=5; $im='ok';}
 else return $txa;//things with onclick
 $root=findroot(ses::$urlsrc); if($root==host())$root='';
@@ -161,13 +166,12 @@ if($bend===false && strlen($bin)>=$imnb+$nb)$bend=strpos($bin,'>',$imnb+$nb);
 $src=substr($bin,$imnb+$nb,$bend-$imnb-$nb);
 if(strpos($bin,'popup_usg,nbp'))$mid='['.$txt.':nh]';//anchor
 elseif(strpos($src,'base64') && !$im)$mid='['.($src).':b64]';//self::b64img
-elseif($src){
+elseif($src){$src=trim($src);
 	if(substr($src,0,19)=='data:image/svg+xml,')return;
-	$src=preg_replace("/(\n)|(\t)/",'',$src); 
-	if(strpos($src,'#')!==false)$dz=strend(trim($src),'#');
-	$src=utmsrc(trim($src));
+	$src=utmsrc($src); $src=preg_replace("/(\n)|(\t)/",'',$src); 
+	if(strpos($src,'#')!==false)$dz=strend($src,'#');
 	$srcim=is_img($src); if($srcim)$src=str_replace(' ','%20',$src);
-	if(substr($src,0,2)=='//' && strpos($src,'.'))$src='http:'.$src;
+	if(substr($src,0,2)=='//' && strpos($src,'.'))$src='https:'.$src;
 	if(strpos($src,'http')===false && $root)$rot=self::urlroot($root,$src); else $rot='';
 	$delroot=host(); $nr=strlen($delroot);//wygsav figure
 	if(substr($src,0,$nr)==$delroot)$src=substr($src,$nr);
@@ -175,24 +179,17 @@ elseif($src){
 	if(!$rot && substr($src,0,5)=='/img/')$src=substr($src,5);
 	if(substr($src,0,1)=='/')$src=substr($src,1);
 	if(substr($src,-1)=='/')$src=substr($src,0,-1);
-	if($txt){
-		if($txt)$txt=preg_replace("/(\n)|(\t)/",'',$txt);
-		if($txt)$txt=utmsrc($txt);
-		if(substr($txt,0,1)=='/')$txt=substr($txt,0,-1);
-		if(strpos($txt,'../')!==false)$src=str_replace('../','',$src);
-		if(substr($txt,0,6)=='users/')$src=substr($src,6);}
-	if($srcim && is_img($txa))return '['.$rot.$src.']';
+	if(strpos($src,'../')!==false)$src=str_replace('../','',$src);
+	if(substr($src,0,6)=='users/')$src=substr($src,6);
+	if($srcim && is_img($txt))return '['.$rot.$src.']';
 	if(strpos($src,'javascript')!==false)$src='';
-	if(strpos($bin,'cs_glossaire')!==false)$mid=$txa;//strend($txa,'§')
+	if(strpos($bin,'cs_glossaire')!==false)$mid=$txt;//strend($txt,'§')
 	if(!$srcim && !is_url($rot.$src) && $txt)return $txt;
-	elseif($dz=='outil_sommaire')$mid=$txa;//cadtm
+	elseif($dz=='outil_sommaire')$mid=$txt;//cadtm
 	elseif($srcim && !$txt)$mid='['.$rot.$src.'] ';//href to img
 	elseif($txt){$sp='';
-		if(substr($txt,-1,1)==' '){$txt=substr($txt,0,-1); $sp=' ';}
-		if(substr($txt,-1,1)=='/')$txt=substr($txt,0,-1);
 		$rt=['youtube.com/watch','youtu.be','dailymotion.com','vimeo.com','rutube.com'];
 		if($dz){//anchors
-		//echo '--'.$dz.';';
 			if(substr($dz,0,2)=='nb')$mid=' ['.$txt.':nh]';//spip
 			elseif(substr($dz,0,2)=='nh')$mid='['.$txt.':nb] ';
 			elseif(substr($dz,0,7)=='_ftnref')$mid='['.$txt.':nb] ';//symfony
@@ -217,9 +214,9 @@ elseif($src){
 				elseif(substr($txt,0,1)=='[' or substr($txt,0,1)=='(')$mid=$txt;
 				elseif($txt && $src!=$txt)$mid='['.$rot.$src.'§'.$txt.']';
 				else $mid='['.$txt.']';}
-			if(strto(trim($src),'#')==$root)$mid=$txt;}
+			if(strto($src,'#')==$root)$mid=$txt;}
 //		elseif(httproot($src)=='t')$mid='['.$rot.$src.'] ';
-		elseif(in_array_p($src,$rt)){$txt=trim($txt);//video
+		elseif(in_array_p($src,$rt)){//video
 			if(!is_img($txt) && !is_url($txt))$txb=$txt;// && !ishttp($txt)
 			$mid=video::detect($src,1,$txb);}
 //		elseif(in_array(httproot($txt),$rt))$mid=video::detect($txt,'pop',$src);
