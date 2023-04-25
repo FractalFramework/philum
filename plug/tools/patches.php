@@ -8,17 +8,29 @@ file_put_contents($f,$d);
 return $f;}*/
 
 static function dbsplitters(){
-qr('UPDATE `pub_txt` SET `msg`=REPLACE(msg,"§","|");');
+//qr('UPDATE `pub_txt` SET `msg`=REPLACE(msg,"§","|");');
 qr('UPDATE `pub_trk` SET `msg`=REPLACE(msg,"§","|");');
 }
 
-static function dbutf(){
-$r=sqldb::$rt;
+static function dbutf($p){
+//$r=sqldb::$rt;
 //foreach($r as $k=>$v)$qb=qd($v);
-$ra=sql('id,suj','qda','kv','');
-foreach($ra as $k=>$v){
-$rb[$k]=utf8enc(html_entity_decode($v));
-sqlup('qda',['suj'=>$d],['id'=>$k]);}
+//SELECT *  FROM `pub_art` WHERE `suj` LIKE '%&#%';
+//$ra=sql::read2('id,suj','qda','kv','limit 0,100)');
+//$ra=sql::read2('id,msg','qdm','kv','where msg LIKE "%&#%" order by id limit 1');
+$rb=[];
+foreach($ra as $k=>$v){$d=$v;
+$d=html_entity_decode($d,ENT_QUOTES,'UTF-8');
+$d=str::html_entity_decode_b($d);
+//$d=utf8dec($d);
+///$d=ascii2iso($v);
+$rb[$k]=$d;
+//sqlup('qda',['suj'=>$d],['id'=>$k],0);
+//sqlup('qdm',['msg'=>$d],['id'=>$k],0);
+//$rb[$k]=' suj="'.sql::qres($d).'" where id='.$k;
+}
+eco($rb);
+//sql::qr('update '.ses('qda').' set '.implode(',',$rb),1);
 }
 
 static function nod($dr,$k,$v){
@@ -59,11 +71,11 @@ return implode(' ',$r);}
 
 static function menu($p){
 $ret=inputb('fto',$p,18,'directory');
-//$ret.=lj('popbt','fut_patches,call_fto__utf','utf');
+//$ret.=lj('popbt','fut_patches,call_fto__utf','msqutf');
 //$ret.=lj('popbt','fut_patches,call_fto__headers','headers');
 //$ret.=lj('popbt','fut_patches,call_fto__splitters','splitters_msql');
 //$ret.=lj('popbt','fut_patches,dbsplitters_fto_','splitters_mysql');
-$ret.=lj('popbt','fut_patches,dbuft_fto_','utf_mysql');
+//$ret.=lj('popbt','fut_patches,dbutf_fto_','utf_mysql');
 $ret.=lj('popbt','fut_patches,cats_fto_','art_cats');
 return $ret;}
 

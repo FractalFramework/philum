@@ -55,7 +55,7 @@ case('exec'):$ret=exec::run($d); break;
 case('entities'):$ret=html_entity_decode($d); break;
 case('utf8'):$ret=utf8dec_b($d); break;
 case('url'):$ret=urldecode($d); break;
-case('lower'):$ret=str::lowercase($d); break;}
+case('lower'):$ret=str::mb_ucfirst($d); break;}
 return $ret;}
 
 static function repl($p,$o){
