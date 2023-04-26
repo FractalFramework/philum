@@ -65,7 +65,7 @@ return '<img src="'.$d.'"'.atb('width',$w).atb('height',$h).' '.$p.'/>';}
 function img($d,$s=''){return '<img src="'.$d.'"'.ats($s).' />';}
 function rolloverimg($a,$b){
 return taga('img',['src'=>$a,'onmouseover'=>'this.src=\''.$b.'\'','onmouseout'=>'this.src=\''.$a.'\'']);}
-function etc($d,$n=400){if($d)return mb_substr($d,0,$n).(substr($d,$n)?'...':'');}
+function etc($d,$n=400){if($d)return mb_substr($d,0,$n).(mb_substr($d,$n)?'...':'');}
 function gridpos($d){$r=explode('-',$d); return 'grid-row:'.$r[0].'; grid-column:'.$r[1].';';}
 function btim($d,$w='',$h=''){$j=str_replace('_','*',$d).'_'.$w.'_'.$h; $rot=root(); $s=$rot?'':'/';
 return lj('','popup_usg,overim___'.$j,img($rot.$s.$d,$w));}
@@ -512,10 +512,7 @@ foreach($r as $k=>$v)$rb[]=explode($b,$v); return $rb;}
 function explode_k($d,$a,$b){$r=explode($a,$d); $rb=[];
 foreach($r as $k=>$v){if($v){$ra=split_right($b,$v);
 if(!empty($ra[0]))$rb[$ra[0]]=$ra[1]; else $rb[]=$ra[1];}} return $rb;}
-/*function implode_b($r,$a=''){$rb=[]; foreach($r as $k=>$v)
-	if(is_array($v))$rb=array_merge($rb,implode_b($v)); else $rb[]=$v;
-return implode($a,$rb);}*/
-function implode_r($r,$a,$b){$rb=[]; foreach($r as $k=>$v)if($v)$rb[]=$k.$b.implode($b,$v);
+function implode_r($r,$a,$b){$rb=[]; foreach($r as $k=>$v)if($v)$rb[]=implode($b,$v);
 if($rb)return implode($a,$rb);}
 function implode_k($r,$a,$b){$rb=[]; foreach($r as $k=>$v)if($v)$rb[]=$k.$b.$v;
 if($rb)return implode($a,$rb);}
@@ -573,15 +570,16 @@ function is255($d){return strlen($d)>255?substr($d,0,255):($d??'');}
 
 //gets
 function gets(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=utf8dec(urldecode($v));}
-function getsb(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=urldecode($v);}
+function getsb(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=urldecode($v);}//diffutf
 function get($k,$v=''){return !empty(ses::$r['get'][$k])?ses::$r['get'][$k]:ses::$r['get'][$k]=$v;}
 //function get($k,$v=''){return ses::$r['get'][$k]??(ses::$r['get'][$k]=$v);}
 function geta($k,$v){return ses::$r['get'][$k]=$v;}//assign
+function getb($k,$v=''){return ses::$r['get'][$k]??ses::$r['get'][$k]=$v;}
 function getz($k){ses::$r['get'][$k]='';}
 function post($k,$v=''){return $_POST[$k]??$_POST[$k]=$v;}
 function cookie($d,$v=''){if($v)setcookie($d,$v,ses('daya')+(86400*30)); return $_COOKIE[$d]??'';}
 function ses($d,$v=null){if(isset($v))$_SESSION[$d]=$v; return $_SESSION[$d]??'';}//assign
-function sesb($k,$v=''){return ses::$r['get'][$k]??ses::$r['get'][$k]=$v;}
+function sesb($d,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=$v; return $_SESSION[$d];}
 function sesz($d){if(isset($_SESSION[$d]))unset($_SESSION[$d]);}
 function sesr($d,$k,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=[];
 if(!isset($_SESSION[$d][$k]))$_SESSION[$d][$k]='';
@@ -590,7 +588,6 @@ function sesrr($d,$k,$v=[]){if(!isset($_SESSION[$d]))$_SESSION[$d]=[];
 return $v?$_SESSION[$d][$k]=$v:($_SESSION[$d][$k]??[]);}
 function sesrz($d,$k){if(array_key_exists($k,$_SESSION[$d]))unset($_SESSION[$d][$k]);}
 function sesg($v,$d){$s=ses($v); $g=get($v); return $g?$g:($s?$s:$d);}
-function sesif($d,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=$v; return $_SESSION[$d];}
 function sesmk($v,$p='',$b=''){if(!isset($_SESSION[$v.$p]) or $b)
 if(function_exists($v))$_SESSION[$v.$p]=call_user_func($v,$p); return $_SESSION[$v.$p]??'';}
 function sesmk2($a,$m,$p='',$b=''){if(empty($_SESSION[$a.$m]) or $b)

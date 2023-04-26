@@ -177,7 +177,7 @@ $wh='and cat="'.$cat.'"'.$dy.' order by day desc';
 return ma::artags('idart',$wh,'k');}
 
 static function tags_cloud($p,$smin,$smax,$r=[]){
-if(!$r)$r=ma::tags_list_nb($p,sesb('nbj',360)); $ret='';
+if(!$r)$r=ma::tags_list_nb($p,getb('nbj',360)); $ret='';
 if($r){arsort($r); $ratio=($smax-$smin)/log(max($r));
 foreach($r as $k=>$fa){$size=round((log($fa)*$ratio)+$smin);
 $ret.=lj('popbt','popup_api__3_'.$p.':'.$k,$k."&nbsp".'('.$fa.')',ats('font-size:'.$size.'px')).' ';}}

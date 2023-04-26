@@ -22,14 +22,14 @@ $ra=['&nbsp;','&ndash;','&mdash;',"%27",'&#8216;','&#8217;','&#174;','&#175;','&
 '&#39;','&#8239;','&#8206;','&#8201;','&hellip;','&bdquo;','&ldquo;','&lsquo;','&rsquo;','&#8203;',
 '&#039;','&thinsp;','&ensp;','&emsp;','&#160;','&#8194;','&#8195;','&#8201;','&#8208;','&#750;',
 '&acute;','&rdquo;','&#xFFFD;','&#8200;','&#137;','&#128;','&#153;','&#156;','&#159;','&#135;',
-'&#152;','&pound;','&#2013265929;','&#13;','&#x2019;','&sect;','&#149;'];
+'&#152;','&pound;','&#2013265929;','&#13;','&#x2019;','&sect;','&#149;','&#x201C;','&#x201D'];
 $rb=[' ','-','-',"'","'","'",'«','»','«','»',
 '-','"','"','"','','-','é','à','g','i',
 'I','','"','"','è','à','é','ê','°',"'",
 "'",' ',' ',' ','...','"','"',"'","'",'',
 "'",' ',' ',' ',' ',' ',' ',' ','-','"',
 "'",'"',"'",' ','%','€','™','œ','Ÿ','‡',
-'~','£','é','',"'",'§','•'];
+'~','£','é','',"'",'§','•','"','"'];
 return str_replace($ra,$rb,$v);}
 
 static function specialspace($d){if(!$d)return;
@@ -91,8 +91,18 @@ $d=str_replace('µµ',"\n\n",$d);
 $d=str_replace('µ',' ',$d);
 return $d;}
 
-static function mb_ucfirst($d,$e='utf-8'){//diffutf
-return mb_strtoupper(mb_substr($d,0,1,$e),$e).mb_substr($d,1,mb_strlen($d,$e),$e);}
+/**/static function mb_ucfirst($d,$e='utf-8'){//diffutf
+return mb_strtoupper(mb_substr($d,0,1,$e),$e).mb_strtolower(mb_substr($d,1,mb_strlen($d,$e),$e));}
+
+static function lowercase($v){if(!$v)return;
+$v=html_entity_decode($v); $nb=strlen($v); $y=0; $ret='';
+$a='ÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜİ'; $b='àáâãäçèéêëìíîïñòóôõöùúûüı';
+for($i=0;$i<$nb;$i++){$k=substr($v,$i,1);
+	if($y==0)$ret.=$k;
+	else{$k=strtolower($k); $k=strtr($k,$a,$b); $ret.=$k;}
+	if($k==' ' or $k=="&nbsp;" or $k=="'" or $k=='"' or $k=='«' or $k=='-' or $k=='[' or $k=='(')
+		$y=0; else $y=1;}
+return $ret;}
 
 #detect
 static function detect_words($msg,$d,$sg=''){$rb=[];
@@ -121,10 +131,13 @@ if($pb!==false)return substr($d,$pa,$pb-$pa);}
 static function clean_title($d){
 if(!$d)return; $nb="&nbsp;";
 //$d=htmlentities($d);//provoque erreur qui bloque save, sous utf8
+//$d=ascii2iso($d);// iconv(): Detected an illegal character 
+$d=html_entity_decode($d);
 $d=self::html_entity_decode_b($d);
 $d=self::clean_punct($d,1);
 //$d=self::clean_punct_b($d);
-if(rstr(104))$d=self::mb_ucfirst($d);
+//$d=self::clean_acc($d);
+if(rstr(104))$d=self::lowercase($d);
 if(substr($d,-1)=='"')$d=substr($d,0,-1).$nb.'»';
 if(substr($d,0,1)=='"')$d='«'.$nb.substr($d,1);
 $d=str_replace(' "',' «'.$nb,$d);
@@ -191,12 +204,12 @@ $d=delnl($d);
 return $d;}
 
 static function clean_html($d,$o=''){
+$d=html_entity_decode($d);
+//$d=htmlspecialchars_decode($d);
+$d=self::html_entity_decode_b($d);//create pb
 $d=self::clean_spaces($d);
 $d=self::clean_acc($d);
 $d=self::stupid_acc($d);
-$d=htmlspecialchars_decode($d);
-$d=self::html_entity_decode_b($d);//create pb
-$d=html_entity_decode($d);
 $r=['b','i','em','strong','p'];
 for($i=0;$i<4;$i++){
 	$d=str_replace('<'.$r[$i].'> </'.$r[$i].'>',' ',$d);
@@ -224,7 +237,7 @@ $d=str_replace("\t",'',$d);
 $d=self::specialspace($d);
 $d=str_replace("\n ","\n",$d);
 $d=str_replace(" \n","\n",$d);
-if(rstr(9)){
+if(rstr(9)){//floatimg
 	$d=str_replace(".jpg]\n",".jpg]",$d);
 	$d=str_replace(".gif]\n",".gif]",$d);
 	$d=str_replace(".png]\n",".png]",$d);}

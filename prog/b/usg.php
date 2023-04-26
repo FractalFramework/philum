@@ -123,8 +123,8 @@ if(strpos($id,'-'))[$id,$i]=explode('-',$id);
 $t=lkc('nbp',urlread($read).'#nb'.$id.'" name="nh'.$id,'['.$id.']');//nb($id,1)
 $d=sql('msg','qdm','v',$read);
 $pos=strpos($d,'['.$id.':nb]'); $posb=0; $d2=substr($d,$pos);
-if(is_numeric($id))$posb=strpos($d,'['.($id+1).':nb]');
-if(!$posb)$posb=strpos($d2,':aside]')+$pos+1;
+if(is_numeric($id))$posb=strpos($d2,'['.($id+1).':nb]'); if($posb)$posb-=2;
+if(!$posb)$posb=strpos($d2,':aside]'); if($posb)$posb+=$pos+1;
 if(!$posb)$posb=strpos($d2,"\n")+$pos;
 $ret=subtopos($d,$pos,$posb);
 $ret=str_replace('['.$id.':nb]','',$ret);

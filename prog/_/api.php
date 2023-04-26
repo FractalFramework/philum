@@ -354,7 +354,7 @@ if($dig){$ra['nbarts']='';
 	unset($ra['mintime']); unset($ra['maxtime']);}
 elseif(empty($ra['minday']) && !isset($ra['id']) && empty($ra['mintime']) && empty($ra['maxtime']) && empty($ra['from']) && empty($ra['nodig']) && rstr(3)){$ra['minday']=get('dig',ses('nbj'));
 	$pday=time_prev($ra['minday']); if($pday==1)$pday=0; $ra['maxday']=$pday;}
-$ra['page']=$pg?$pg:$ra['page']??sesif('page',1);
+$ra['page']=$pg?$pg:$ra['page']??sesb('page',1);
 if($lg)$ra['lg']=$lg;
 //if(!isset($ra['lg']) && ses('lang')!='all')$ra['lg']=ses('lang');
 if($prw)$ra['preview']=$prw; //$ra['nl']=get('nl');

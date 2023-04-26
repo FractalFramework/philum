@@ -277,7 +277,7 @@ else return art::mktmp($tmp,$rb);}
 
 static function callj($p,$o,$prm=[]){//p:cats,o:page
 $p=$prm[0]??$p;
-$lg=sesif('umrlg',ses('lang')?ses('lang'):'all');//set lang for thread
+$lg=sesb('umrlg',ses('lang')?ses('lang'):'all');//set lang for thread
 //timelang($lg);//setlocale
 if(strpos($p,',')){$r=explode(',',$p); $lang=ses('umrlg');
 	$rc[]=['ID','Date','Question','Réponse','tags'];
@@ -334,7 +334,7 @@ return divc('nbp',$ret);}
 
 //global lang
 static function lng($p,$o,$rid){$r=explode(' ','all '.prmb(26));//['all','fr','en','es'];
-$lg=sesif('umrlg',ses('lang')?ses('lang'):'all');
+$lg=sesb('umrlg',ses('lang')?ses('lang'):'all');
 $now=in_array_b($lg,$r); return radioj('umrlg',$r,$now);
 //foreach($r as $k=>$v)$ret.=lj($v==$g?'active':'',$rid.'_umrec,home___'.$p.'_'.$v,$v).' ';
 return btn('nbp',$ret);}

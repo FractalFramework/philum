@@ -21,11 +21,12 @@ static function rapport($p){
 $r=msql::kv('',nod('cron')); $ret=''; $rt=[];
 foreach($r as $k=>$v){$nod=nod('cron_'.$k);
 	$rb=msql::assoc('',$nod); if(!$rb)$rb=self::reload($k);
-	$r0=array_shift($rb); $r0=array_shift($rb);
+	$r0=array_shift($rb); //$r0=array_shift($rb);
 	foreach($rb as $kb=>$vb){$rd=array_diff($vb,$r0);
 		$date=$rd['date']; unset($rd['date']);
 		if($rd['status-id']??'')$rd['status-id']=pop::poptwit($rd['status-id']);
-		$rt[$date]=divb($k.' / '.$date.' - '.key($rd).': '.current($rd));
+		//$rt[$date]=divb($k.' / '.$date.' - '.key($rd).': '.current($rd));
+		$rt[$date]=tabler($rd,[$k,$date]);
 		$r0=$vb;}}
 krsort($rt);
 return implode('',$rt);}

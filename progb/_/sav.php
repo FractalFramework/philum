@@ -275,6 +275,7 @@ return art::playd($id,$prw,'');}
 
 static function reimport($id,$prw=1,$prm=[]){
 $u=sql('mail','qda','v',$id); $u=$prm[0]??$u;
+self::allimgdel($id);
 if(auth(4))$ret=self::websav($id,$u);
 return art::playd($id,$prw,'');}
 
@@ -323,6 +324,12 @@ static function orderim($id){
 $ims=sql('img','qda','v',$id); $r=explode('/',$ims); 
 if($r)foreach($r as $v)if(is_file('img/'.$v)){[$w,$h]=getimagesize('img/'.$v); $rb[$w]=$v;}
 if(isset($rb)){krsort($rb); return '/'.implode('/',$rb);}}
+
+static function allimgdel($id){
+$ims=sql('img','qda','v',$id); $r=explode('/',$ims);
+if(auth(5))foreach($r as $k=>$v){img::rm($id,$v); 
+	if(is_file('img/'.$v))unlink('img/'.$v); if(is_file('imgc/'.$v))unlink('imgc/'.$v);}
+sql::upd('qda',['img'=>''],$id);}
 
 static function placeimdel($id,$x){
 $ims=sql('img','qda','v',$id); $r=explode('/',$ims);

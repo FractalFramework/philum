@@ -109,6 +109,10 @@ foreach($r as $k=>$v)foreach($v as $ka=>$va){
 return tabs($rt);
 return divc('table',implode_b('',$rt));}
 
+static function implode_b($r,$a=''){$rb=[]; foreach($r as $k=>$v)
+	if(is_array($v))$rb=array_merge($rb,self::implode_b($v)); else $rb[]=$v;
+return implode($a,$rb);}
+
 /*static function edit($p,$cat){$ret='';
 $d=sql('tag','qdt','v',['id'=>$p],0); $inpid='addclst'.$p;
 $ra=sql::inner('tag,idtag','qdt','qdtc','idtag','kv',['word'=>$d],0);

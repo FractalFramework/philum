@@ -45,7 +45,7 @@ return $deb.$mid.$end;}//clean_nb
 
 static function read($d){
 $d=self::parse($d,'','sconn');
-return nl2br($d);}
+if($d)return nl2br($d);}
 
 static function png2jpg($id,$o=''){
 $d=sql('msg','qdm','v',$id); get('read',$id);
@@ -143,10 +143,10 @@ static function sconn_links($d,$xt,$b){
 if(is_img($d) && strpos($d,'§')===false)return conn::place_image($d,3,$b);
 [$p,$o]=cprm($d);
 if(is_img($p)){//image§text
-	if(is_img($o))return lk(goodroot($p),image(goodroot($o)));
-	return lka(goodroot($p),goodroot($o));}
+	if(is_img($o))return lkt('',goodroot($p),image(goodroot($o)));
+	return lkt('',goodroot($o),image(goodroot($p)));}
 elseif(is_img($o)){//link§image
-	return lka(goodroot($p),image(goodroot($o)));}
+	return lkt('',goodroot($p),image(goodroot($o)));}
 elseif(substr($p,0,1)=='/')return lka($p,$o);
 elseif(substr($p,0,1)=='@')return lj('txtx','popup_twit,call__3_'.ajx($p).'_ban',$p);
 elseif(strpos($p,'@'))return $p;
@@ -348,7 +348,7 @@ return '['.$p.']';}
 
 #.md
 static function md($da){$ret='';
-[$d,$c]=getconn($da); //if($c=='h')echo $c.':'.$p.' - ';//[$p,$o,$c]=unpack_conn(
+[$d,$c]=getconn($da);//[$p,$o,$c]=unpack_conn($da)
 switch($c){
 case(':h'):$ret='# '.$d;break;
 case(':h1'):$ret='# '.$d;break;

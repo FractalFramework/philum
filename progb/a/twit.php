@@ -98,17 +98,17 @@ return self::send($p,$o,[$ret]);}//$suj.' '.
 //philum::save
 static function vacuum($f){
 $p=strend($f,'/'); $p=strto($p,'?');
-$t=self::init(1);
-$q=$t->read($p); //pr($q);
+$t=self::init();
+$q=$t->read($p);//pr($q);
 self::cache($p,0,1,$q);
 setlocale(LC_TIME,prmb(25).'_'.strtoupper(prmb(25)));
 //$ret['from']='@'.$q['user']['screen_name'];
-$name=$q['user']['screen_name'];//'('.$q['user']['name'].') ';
-$ret['suj']=$name.' '.date('d b Y - H:i',strtotime($q['created_at']));
-$ret['day']=$q['created_at'];
-$txt=self::oembed(self::lk($q['user']['screen_name'],$q['id']));
+$name=$q['user']['screen_name']??'';//'('.$q['user']['name'].') ';
+$ret['day']=$q['created_at']??''; $id=$q['id']??'';
+$ret['suj']=$name.' '.date('d b Y - H:i',strtotime($ret['day']));
+$txt=self::oembed(self::lk($name,$id));
 if($txt)[$res,$med]=self::clean($txt);
-else [$res,$med]=self::clean(utf8dec_b($q['text']));
+else [$res,$med]=self::clean(utf8dec_b($q['text']??''));
 $ret['msg']=$res;
 foreach($q['entities']['media']??[] as $v)
 	if($vb=$v['media_url_https'])$ret['msg'].=n().n().'['.$vb.']';
@@ -430,7 +430,7 @@ $ref='twt'.substr($id,-8); $lng=ses('lng');
 //if($lg!=$lng)$ret.=lj('',$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,picto('translate'));
 if($lg!=$lng)$ret.=ljtog('','ynd'.$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,'ynd'.$ref.'_twit,playtxt___'.$id,picto('language'));
 //$ret.=lkt('',self::lk($nm,$id),picto('chain'));
-$ret.=lkt('','plug/twit/'.$id,picto('url'));
+$ret.=lkt('','app/twit/'.$id,picto('url'));
 $ret=divc('nbp',$ret);
 $txt=divd('ynd'.$ref,str_replace('|','-',$txt));//nl2br
 $rb=explode(' ',$med);
@@ -639,7 +639,7 @@ if(substr($p,0,4)=='http')$p=strend($p,'/');
 //json::add('','twit'.mkday(),[$p.':stopped',$o,$id,$minid,$prm[0],0,mkday('','His'),hostname()]);
 return;}
 $p=$p?$p:$usr;//msql::val('',nod('twit_'.ses('apk')),5)
-$o=$o?$o:'search'; ses('twusr',$p); $n=sesif('nbp',40);
+$o=$o?$o:'search'; ses('twusr',$p); $n=sesb('nbp',40);
 //$ret=self::banner($t->show($q['user']['screen_name']));
 if(is_numeric($p)){//$q=$t->read($p);
 	//if($o=='rtw')$q=$t->retweets($p,$id);
@@ -720,7 +720,7 @@ $ret.=hidden('exs','exs=[];');
 $ret.=hlpbt('twit');
 return $ret;}
 
-static function init($n=''){$n2=sesif('apk',self::apk()); if(!$n)$n=$n2;//if(!$n)$n=2;
+static function init($n=''){$n2=sesb('apk',self::apk()); if(!$n)$n=$n2;//if(!$n)$n=2;
 require_once('plug/tiers/Twitter.php'); return new Twitter($n);}
 
 static function r(){return ['ib'=>'int','twid'=>'bint','name'=>'var','screen_name'=>'var','user_id'=>'bint','date'=>'int','text'=>'var','media'=>'var','mentions'=>'var','reply_id'=>'bint','reply_name'=>'var','favs'=>'int','retweets'=>'int','followers'=>'int','friends'=>'int','quote_id'=>'bint','quote_name'=>'var','retweeted'=>'bint','lang'=>'var'];}//geo,coordinates
@@ -728,10 +728,10 @@ static function r(){return ['ib'=>'int','twid'=>'bint','name'=>'var','screen_nam
 static function install(){sqlop::install('twit',self::r(),0);}
 
 static function apk(){
-$d=domain(host()); $n=2;
+$d=domain(host()); $n=1;
 if($d=='newsnet.fr')$n=4;
-if($d=='oumo.fr')$n=3;
-return sesif('apk',$n);}
+if($d=='oumo.fr')$n=6;
+return $n;}
 
 static function home($p,$o){$rid='tw'.randid();
 //if($p=='install')self::install();

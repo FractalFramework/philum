@@ -379,7 +379,7 @@ case(':private'):if(auth(6))return $d.' '.picto('secret'); break;
 case(':dev'):if(auth(4))return $d; break;}
 if($da=='--')return hr();
 elseif($xt=='.pdf')return mk::pdfdoc($da,$nl,$pw);
-elseif($xt=='.epub'){[$p,$o]=cprm($d); return lkt('',$p,pictxt('book2',$o?$o:strend($p,'/')));}
+elseif($xt=='.epub')return lkt('',$p,pictxt('book2',$o?$o:strend($p,'/')));
 elseif($xt=='.svg'){[$p,$w,$h]=subparams($da); return image(goodroot($p),$w,$h);}//svg($da)
 elseif($xt=='.txt'){$dt=goodroot($da); return lkt('',$dt,strrchr($dt,'/'));}
 elseif($xt=='.gz')return mk::download($da);
@@ -398,23 +398,23 @@ if(method_exists($cn,'call') && isset($cn::$conn)){[$p,$o]=cprm($d); return $cn:
 //if($cn){$ret=codeline::mod_basic($cn,$d); if($ret)return $ret;}
 return '['.$da.']';}
 
-static function rules($p,$o){
-}
-
 static function connlk($da,$id,$m,$nl,$pw){
-$par=strpos($da,'§'); $http=strpos($da,'http'); $html=strpos($da,'<a');
+$par=strpos($da,'§'); $http=strpos($da,'http'); $html=strpos($da,'<');
 if(is_img($da) && $par===false){// && $html===false
 	if(substr($da,0,4)=='http' && $id)$da=conn::get_image($da,$id,$m);
 	return conn::place_image($da,$m,$nl,$pw,$id);}
-if(($par or $http!==false)){//secure double hooks// && $html===false
+if(($par or $http!==false) && $html===false){//secure double hooks//
 	[$p,$o]=cprm($da);
 	if(is_img($p)){//image§text
+		//restore conn from html, if lk§im (disactivatedf in conv)
+		//if(strpos($p,'<img')!==false)$p=between($p,'src="/img/','"');
 		//if(substr($p,0,4)=='http')$p=conn::get_image($p,$id,$m);
 		if(is_img($o))return mk::popim($p,image(goodroot($o)),$id);//mini
 		//return pop::figure($p.'§'.$o,$pw,$nl,$id);
 		if(is_http($o))return lkt('',$o,img(goodroot($p)));
 		return mk::popim($p,pictxt('img',$o),$id);}
 	elseif(is_img($o)){//link§image
+		//if(strpos($o,'<img')!==false)$o=between($o,'src="/img/','"');//str::prop_detect($o,'src')
 		if(substr($o,0,4)=='http')$o=conn::get_image($o,$id,$m);
 		if(substr($p,0,4)=='http')return lk($p,conn::place_image($o,$m,$nl,$pw,$id));
 		elseif(is_numeric($p))return mk::popim($o,pictxt('img',urlread($p)),$id);

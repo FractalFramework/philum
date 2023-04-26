@@ -196,6 +196,7 @@ elseif(substr($f,0,6)=='video/')return $h.''.$f;
 elseif(strpos($f,'video/')!==false)return $h.'users/'.$f;
 elseif(strpos($f,'_datas/')!==false)return '/'.$h.''.$f;
 elseif(strpos($f,'/')!==false)return $h.'users/'.$f;
+//elseif(strpos($f,'<img')!==false)return between($o,'src="','"');
 else return $f;}
 
 function urlroot($u){$h=ses::$urlsrc;

@@ -57,6 +57,7 @@ if($in){if(!isset($r[$in]))return; if($u=='k')return $r[$in]; elseif($n==1)retur
 elseif($n==1 && $u!='k')foreach($r as $k=>$v)$r[$k]=$v[0]??'';
 return ($r);}//utf_r
 
+function pub($d){return 'public_'.$d;}
 function nod($d){return $_SESSION['qb'].'_'.$d;}
 function msqbt($b,$p,$d=''){if($d)return msqedt($b,$p,$d);
 $u=($b?$b:'users').'_'.ajx($p).($d?'~'.ajx($d):'');
@@ -135,6 +136,7 @@ return '<li><a'.ath($lk).atd($id).atk($oc.' closebub(this);').atmo($ov).$tg.'>'.
 
 function offon($d,$t=''){return pictxt($d?'true':'false',$t,'color:#'.($d?'428a4a':'853d3d').';');}
 function togon($d,$t=''){return pictxt($d?'switch-on':'switch-off',$t,$d?'color:#428a4a;':'');}
+function order($d,$t=''){return pictxt($d?'arrow-top':'arrow-down',$t);}
 
 #slct
 function mkbub($d,$c='',$s='',$o=''){
@@ -165,16 +167,16 @@ return lj('txtx'.$c,'popup_chkj_'.$id.'_'.$hid.'_'.$j,$t,atd($hid)).$h;}
 
 #roots
 function root($d=''){return (is_dir('plug')?'':'/').$d;}//used by rss
-function htac($d){return $_SESSION['htacc']?'/'.$d.'/':'/?'.$d.'=';}
-function htacc($d){return $_SESSION['htacc']?'/':'/?'.$d.'=';}//read/id
-function urlread($d){return $_SESSION['htacc']?'/'.$d:'/?read='.$d;}//read
+function htac($d){return prms('htacc')?'/'.$d.'/':'/?'.$d.'=';}
+function htacc($d){return prms('htacc')?'/':'/?'.$d.'=';}//read/id
+function urlread($d){return prms('htacc')?'/'.$d:'/?read='.$d;}//read
 function upsrv(){$srv=prms('srvup'); return $srv?http($srv):'http://philum.fr';}
 function srvmir(){return http(prms('srvmirror'));}
-function subdomain($v){if($_SESSION['sbdm']){
+function subdomain($v){if(prms('sbdm')){
 $r=explode('.',$_SERVER['HTTP_HOST']); $n=count($r);
 return 'http://'.$v.'.'.$r[$n-2].'.'.$r[$n-1].'/';}
 else return htac('hub').$v;}
-function prep_host($nod){if($_SESSION['sbdm'])return subdomain($nod);
+function prep_host($nod){if(prms('sbdm'))return subdomain($nod);
 else return host().htac('hub').$nod;}
 function contact($t,$c){return lj($c,'popup_tracks,form___'.ses('qb'),$t?$t:picto('mail'));}
 
@@ -191,10 +193,11 @@ elseif(strpos($f,'/')===false)return $h.'img/'.$f;
 elseif(strpos($f,'img/')!==false)return $h.$f;
 elseif(strpos($f,'app/')!==false)return $h.$f;
 elseif(substr($f,0,6)=='video/')return $h.''.$f;
-elseif(substr($f,0,6)=='/video')return $h.''.$f;
 elseif(strpos($f,'video/')!==false)return $h.'users/'.$f;
 elseif(strpos($f,'_datas/')!==false)return '/'.$h.''.$f;
 elseif(strpos($f,'/')!==false)return $h.'users/'.$f;
+//elseif(strpos($f,'<img')!==false)return str::prop_detect($o,'src');
+//elseif(strpos($f,'<img')!==false)return between($o,'src="','"');
 else return $f;}
 
 function urlroot($u){$h=ses::$urlsrc;
@@ -269,7 +272,7 @@ $rb=[$r[$c],$r[$d],'(und)','(and)','(add)','(quote)','(dquote)'];//,'(ddot)','(d
 if($v)$v=$p?str_replace($rb,$ra,$v):str_replace($ra,$rb,$v);
 return $v;}
 
-function decuri($d){$d=$d!=null?html_entity_decode($d):''; return $d;}// $d=utf8dec_b($d); //ajx::encUri(
+function decuri($d){return $d!=null?html_entity_decode($d):'';}
 function ajxg($d){$d=ajx($d,1); $d=decuri($d); return $d;}//
 function ajxr($res,$n=''){$r=explode('_',$res); $n=$n?$n:count($r);
 for($i=0;$i<$n;$i++)$ret[]=isset($r[$i])?ajxg($r[$i]):''; return $ret;}
@@ -277,7 +280,7 @@ function ajxp($res,$p,$o){$r=ajxr($res);return [$r[0]??$p,$r[1]??$o];}//obs
 function prmp($r,$p,$o,$ob=''){return [$r[0]??$p,$r[1]??$o,$r[2]??$ob];}
 
 #btns
-function preplink($u){$u=nohttp($u); $pos=strpos($u,'/');
+function preplink($u){$u=nohttp($u); $pos=strpos($u,'/',1);
 if($pos===false)$pos=strpos($u,'.'); return substr($u,0,$pos);}
 function prepdlink($d){[$p,$o]=cprm($d);
 if(!$o or $o==$p)$o=domain($p); return [$p,$o];}
@@ -322,22 +325,21 @@ function subparams($d){[$p,$v]=cprm($d);//p1/p2§p
 if($v)[$x,$y]=explode('/',$p); else{$v=$p; $x=''; $y='';} return [$v,$x,$y];}
 function subparams_a($d){[$v,$p]=cprm($d);//p§p1/p2
 [$x,$y,$p,$o,$d]=opt($p,'/',5); return [$v,$x,$y,$p,$o,$d];}
-function cprm($d){$n=strrpos($d,'§'); //goodpar($d)
+function cprm($d){$n=strrpos($d,'§');
 if($n===false)return [$d,'']; else return [substr($d,0,$n),substr($d,$n+1)];}
-function getconn($d){$p=''; $c=''; $xt=strtolower(strrchr($d,'.'));
-$s=strrpos($d,':'); if($s!==false){$p=substr($d,0,$s); $c=substr($d,$s);}
-return [$p,$c,$xt];}
+function getconn($d){$p=$d; $c=''; $s=strrpos($d,':');
+if($s!==false){$p=substr($d,0,$s); $c=substr($d,$s);}
+$xt=strtolower(strrchr($p,'.')); return [$p,$c,$xt];}
 function connmod($d){$r=split_one('§',$d,1);//a:p1,b:p2§bt:c
 $ra=split_one(':',$r[1],1); $rb=explode_k($r[0],',',':');
 if(!$r[1] && strpos($r[0],',')===false)$rb=expl(':',$r[0]);//bridge2old
 if($ra[0])$rb['bt']=$ra[0]; if($ra[1])$rb['m']=$ra[1];
 if($rb[0]??'')$rb['p']=$rb[0]; if($rb[1]??'')$rb['m']=$rb[1]; return $rb;}
-function goodpar($d){return str_replace('Â§','§',$d??'');}
 
 #vacuum
 function vacurl($f){$f=nohttp($f); return normalize($f);}// $f=strend($f,'/');
 function vacses($f,$k='',$v=''){$u=vacurl($f);//v,t,d(data),c(cat),u(url),p(parent),b(brut)
-if($v=='x' && $r=sesr('vac',$u)){sesrz('vac',$u); return val($r,$k);}
+if($v=='x' && $r=sesr('vac',$u)){sesrz('vac',$u); return $r[$k]??'';}
 elseif($v){sesrr('vac',$u,[$k=>$v]); $_SESSION['vac'][$u]['u']=$f;}//pre_clean
 return $_SESSION['vac'][$u][$k]??'';}
 function vaccum_ses($f){$d=vacses($f,'b');//obso
@@ -367,6 +369,7 @@ function antipuces($v){if(forbidden_img($v)!==false && strpos($v,'puce')===false
 function cachevs($id,$n,$v,$o=''){
 if(isset($_SESSION['rqt'][$id]) && is_array($_SESSION['rqt'][$id])){$_SESSION['rqt'][$id][$n]=$v;
 if($o)msql::modif('',nod('cache'),$v,'val',$n,$id);}}
+function opcache($d){if(!ses::$local)opcache_invalidate($d);}
 
 function alert($d){if(ses('dev'))Head::add('jscode',sj('popup_alert___'.ajx($d))); geta('er',$d);}
 function patch_replace($bs,$in,$wh,$repl){$rq=sql('id',$bs,'q',$in.'="'.$wh.'"');

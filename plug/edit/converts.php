@@ -73,7 +73,8 @@ elseif(in_array($d,['pc2al','pc2km','al2km','al2pc','deg2ra','ra2deg','deg2dec',
 	$m=new maths(20); $ret=$m::$d($txt);}
 elseif($d=='twostars'){$m=new maths(20); $r=explode(',',$txt); $ret=$m::stars_distance($r[0],$r[1]??'');}
 elseif(function_exists($d))$ret=$d($txt);
-return stripslashes($ret);}
+if($ret)stripslashes($ret);
+return $ret;}
 
 static function call($p,$o,$prm=[]){$d=$prm[0]??'';
 return self::act($d,$p,$o);}

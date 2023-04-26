@@ -120,14 +120,14 @@ return lj($c.$tt,$tg.'_sty,actions_'.$id.'_'.$x.'_'.ajx($p).'_'.ajx($o),$t);}
 static function home($on=''){self::clrpckr_js();//if($on)
 $qb=ses('qb'); $lh=sesmk2('adm','csslang'); $defs='';
 $defsb=['div','class','element','color','bkg','border','free'];
-$numb=sesif('desgn',$_SESSION['prmd']);
+$numb=sesb('desgn',$_SESSION['prmd']);
 //$numb=get('desgn');
 if($numb && $numb!='='){$_SESSION['desgn']=$numb;
 	$_SESSION['clrset']=$numb; $_SESSION['prmd']=$numb;
 	$_SESSION['clrs'][$numb]=msql_read('design',$qb.'_clrset_'.$numb,'');
 	$defs=msql::read_b('design',$qb.'_design_'.$numb,'','',$defsb);}
 $prmd=$_SESSION['prmd']; $desgn=$_SESSION['desgn']; //if(strpos($desgn,'_neg'))$desgn=substr($desgn,0,-4);
-$clrset=sesif('clrset',$prmd);
+$clrset=sesb('clrset',$prmd);
 $nod=$qb.'_design_'.$desgn;
 $noc=$qb.'_clrset_'.$clrset;
 $fcss='css/'.$nod.'.css';
@@ -384,9 +384,9 @@ Head::add('csslink',$jsp.'css/layout.css');
 Head::add('jscode',self::clrpckr_layout());}
 
 //see_css
-static function editcss($d){$qb=ses('qb'); $prmd=ses('prmd'); $nod=$qb.'_design_'.sesb('desgn',$prmd);
+static function editcss($d){$qb=ses('qb'); $prmd=ses('prmd'); $nod=$qb.'_design_'.getb('desgn',$prmd);
 $r=msql::read_b('design',$nod); return self::form_facilities($r,$d);}
-static function chargeclr(){$qb=ses('qb'); $prmd=ses('prmd'); $ndc=$qb.'_clrset_'.sesb('clrset',$prmd);
+static function chargeclr(){$qb=ses('qb'); $prmd=ses('prmd'); $ndc=$qb.'_clrset_'.getb('clrset',$prmd);
 $r=msql::read_b('design',$ndc); return tabler($r,'txtblc','txtx');}
 
 static function save_css_j_del($r,$n){//vrf n

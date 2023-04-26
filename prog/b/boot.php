@@ -4,8 +4,8 @@ class boot{
 static function cnf(){return 'cnfg/_'.sql::$db.'_config.txt';}
 static function cnc(){return 'cnfg/'.str_replace('www.','',$_SERVER['HTTP_HOST']).'.php';}
 static function reset_mjx(){for($i=1;$i<12;$i++)$_SESSION['heremjx'.$i]='';}
-static function reset_ses(){self::reset_mjx(); $r=['dev','prog','mdc','mem','digr','icotag','recache','adminauthes','msqmimes','negcss','delaytext','scanplug','simplified','connedit','lang','lng','flags','murl'];
-$n=count($r); for($i=1;$i<$n;$i++)unset($_SESSION[$r[$i]]);}
+static function reset_ses(){self::reset_mjx(); $r=['mdc','modc','mods','mem','digr','icotag','recache','adminauthes','msqmimes','msqlang','negcss','delaytext','scanplug','simplified','connedit','lang','lng','flags','murl','prma','prms','prmb','prmb1','editbt'];
+foreach($r as $v)unset($_SESSION[$v]);}
 
 #master_cnfg//qd
 static function master_params(){$f=self::cnf();
@@ -18,21 +18,21 @@ if($qdb=get('qd')){$bqd=sqb('id',$qdb.'_user','v','limit 1');//master_node
 $_SESSION['qd']=$qd;
 $r=sqldb::$rt;//defs
 foreach($r as $k=>$v)$_SESSION[$k]=$qd.'_'.$v;
-//if(ses('dev')=='b')$_SESSION['qda']=$qd.'_art_b';//
-$_SESSION['htacc']=$prms[1]=='yes'?1:'';
-sesr('prms','create_hub',$prms[2]=='yes'?'on':'off');
-sesr('prms','default_hub',$aqb?$aqb:($prms[3]?$prms[3]:''));//1
-$_SESSION['sbdm']=$prms[4]=='yes'&&!$subd?1:'';
-sesr('prms','srvup',$prms[5]?$prms[5]:'philum.fr');//updates
-sesr('prms','nogdf',$prms[6]=='no'?1:'');
-sesr('prms','goog',$prms[7]);
-sesr('prms','timez',$prms[8]?$prms[8]:'Europe/Paris');
-sesr('prms','error',$prms[9]?$prms[9]:'NULL');
-//sesr('prms','enc',ses::$enc);//defined by cnfg
-sesr('prms','uplimit',$prms[12]?$prms[12]:'2500');
-sesr('prms','aupdate',$prms[13]);
-sesr('prms','srvmirror',$prms[14]);
-sesr('prms','srvimg',http($prms[15]));}
+$prms['htacc']=$prms[1]=='yes'?1:'';
+$prms['create_hub']=$prms[2]=='yes'?'on':'off';
+$prms['default_hub']=$aqb?$aqb:($prms[3]?$prms[3]:'');//1
+$prms['sbdm']=$prms[4]=='yes'&&!$subd?1:'';
+$prms['srvup']=$prms[5]?$prms[5]:'philum.fr';//updates
+$prms['nogdf']=$prms[6]=='no'?1:'';
+$prms['goog']=$prms[7];
+$prms['timez']=$prms[8]?$prms[8]:'Europe/Paris';
+$prms['error']=$prms[9]?$prms[9]:'NULL';
+//$prms['enc']=ses::$enc);//defined by cnfg
+$prms['uplimit']=$prms[12]?$prms[12]:'2500';
+$prms['aupdate']=$prms[13];
+$prms['srvmirror']=$prms[14];
+$prms['srvimg']=http($prms[15]);
+$_SESSION['prms']=$prms;}
 
 static function restore_mprm($f){
 $d=sql('struct','qdu','v','id="'.ses('USE').'"');
