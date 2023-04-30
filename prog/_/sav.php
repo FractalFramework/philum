@@ -16,7 +16,7 @@ if($mail=='mail' or $mail=='url'){$mail='';$urlsrc='';}
 if($d){$d=nl2br($d); $d=str_replace(['<br />','<br/>','<br>','<BR>'],"\n",$d);}
 if(!$d && $urlsrc)[$suj,$d]=conv::vacuum($mail,$suj);
 $d=str::html_entity_decode_b($d); $d=str::embed_links($d);
-if(ses::$enc!='utf-8')$d=str::decode_unicode($d);
+//if(ses::$enc!='utf-8')$d=str::decode_unicode($d);
 $d=str::clean_br_lite($d); $d=str::clean_punct($d);
 if($pdat)$pdt=strtotime($pdat); else $pdt=$dayx;
 if(empty($suj))$suj='forbidden title';
@@ -62,7 +62,7 @@ $d=str::stupid_acc($d);
 $d=str::embed_links($d);
 if(ses::$enc!='utf-8')$d=str::decode_unicode($d);
 $d=codeline::parse($d,$id,'savimg');
-if(ses::$enc!='utf-8')$d=str::clean_br_lite($d);
+$d=str::clean_br_lite($d);
 $d=str::clean_punct($d);
 $d=str::repair_tags($d);//if(rstr(70))$d=conn::retape($d,$id);
 if(is_numeric($id))sqlup('qdm',['msg'=>$d],$id);
@@ -198,7 +198,7 @@ $bt=hidden($id,$t); if(!$t)$t=picto('filelist'); $opt='adcat';//innerhtml
 return $bt.togbub('sav,catslct',$id.'_'.$id.'_'.$opt.'_'.$n,btd($opt.$id,$t));}
 
 static function catslct($btid,$hid,$opt,$n){$frm=ses('frm');
-$r=sql('frm','qda','k','nod="'.ses('qb').'" and frm not in ("_system","_trash") and day>"'.timeago(360).'" order by frm');
+$r=sql('frm','qda','k','nod="'.ses('qb').'" and substring(frm,1,1)!="_" and day>"'.timeago(360).'" order by frm');
 if(auth(3))$r['_system']=1; if(!isset($r[$frm]))$r[$frm]=1; $r['public']=1;
 return usg::dropmenu_jb($r,$hid,$btid,'adcat',$n);}
 

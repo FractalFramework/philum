@@ -41,7 +41,7 @@ return $ret;}
 static function dev(){$ret=[];
 if(auth(4) or ses('dev')){
 	$ret[]=['dev','ajax','socket','dev__self_b','','','dev','circle-full'];
-	$ret[]=['dev2','ajax','socket','dev__self_c','','','dev','circle-half'];//triangle
+	//$ret[]=['dev2','ajax','socket','dev__self_c','','','dev','circle-half'];
 	$ret[]=['prod','ajax','socket','dev__self_','','','dev','circle-empty'];}
 if(auth(6)){
 	if(rstr(99))$ret[]=['twitletter','ajax','popup','tweetfeed,batch__3','','','dev','tw2'];
@@ -323,11 +323,11 @@ return $ret;}
 
 static function adm_admn($dir){
 $r=self::adminauthes2(); $rm=msql::kv('lang','admin_authes',1);
-$ret[]=['backoffice','link','blank','/?msql=users','','','Microsql','link'];
-$r[]=[ses('murl'),'ajax','bubble','bubs,root','msql','',ses('murl'),''];
+$ret[]=['backoffice','link','blank','/admin/msql','','','Microsql','link'];
 $ret[]=['hub','ajax','popup','msql___users_'.ses('qb'),'','','Microsql','window'];
 if(auth(6))$ret[]=['lang','ajax','popup','msql___lang','','','Microsql','window'];
 if(auth(6))$ret[]=['system','ajax','popup','msql___system','','','Microsql','window'];
+$r[]=[ses('murl'),'ajax','bubble','bubs,root','msql','',ses('murl'),''];
 foreach($r as $k=>$v){if($k==$dir)foreach($v as $ka=>$va){$t=$rm[$ka]??$ka;
 	if($k!='Microsql')$ret[]=[$t,'ajax','popup','admin___'.ajx($ka),'','',$k,mime($ka)];
 	else $ret[]=[$t,'ajax','popup','msql___users_'.ses('qb').'_'.$ka,'','',$k,'window'];}}

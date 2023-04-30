@@ -13,19 +13,19 @@ $d1='
 [100,100,40,80:ellipse]
 [200/10-250/190-160/210:polygon]
 [20/20-40/20-60/60-20/40-20/20:polyline]
-[popup_svg,home§[20,20§hello:text]:lj]
+[popup_svg,home|[20,20|hello:text]:lj]
 [rand,red,2:attr][M150 0 L75 200 L225 200 Z:path]
-[purple,,,,,,rotate(330-40/20):attr][10,20§hello:text]
-[blue:attr][280,140,http://philum.fr§[80,20,,1§hello:text]:a]
-[20,20§[20,20§hello1:tspan][green:attr][20,40§hello2:tspan]:text]
-[§[f1,0,0§[SourceGraphic,15:feGaussianBlur]:filter]:defs][rand,,,,0.4:attr][300,200,200,1:circle]';
+[purple,,,,,,rotate(330-40/20):attr][10,20|hello:text]
+[blue:attr][280,140,http://philum.fr|[80,20,,1|hello:text]:a]
+[20,20|[20,20|hello1:tspan][green:attr][20,40|hello2:tspan]:text]
+[|[f1,0,0|[SourceGraphic,15:feGaussianBlur]:filter]:defs][rand,,,,0.4:attr][300,200,200,1:circle]';
 $d2='
-[§[grad1,0%,0%,0%,100%§[0%,rand:stop][100%,rand:stop]:linearGradient]:defs][,,,,,,,grad1:attr][0,0,600,400:rect]
-[§[grad2,0%,0%,0%,100%§[0%,red,0:stop][100%,yellow:stop]:linearGradient]:defs][,,,,,,,grad2:attr][300,120,100:circle]
-[§[grad3,0%,0%,0%,100%§[0%,rand,0:stop][100%,rand:stop]:linearGradient]:defs][,,,,,,,grad3:attr][0,200,600,200:rect]
-[§[f1,0,0§[SourceGraphic,15:feGaussianBlur]:filter]:defs][rand,,,,0.4:attr][300,200,200,1:circle]
+[|[grad1,0%,0%,0%,100%|[0%,rand:stop][100%,rand:stop]:linearGradient]:defs][,,,,,,,grad1:attr][0,0,600,400:rect]
+[|[grad2,0%,0%,0%,100%|[0%,red,0:stop][100%,yellow:stop]:linearGradient]:defs][,,,,,,,grad2:attr][300,120,100:circle]
+[|[grad3,0%,0%,0%,100%|[0%,rand,0:stop][100%,rand:stop]:linearGradient]:defs][,,,,,,,grad3:attr][0,200,600,200:rect]
+[|[f1,0,0|[SourceGraphic,15:feGaussianBlur]:filter]:defs][rand,,,,0.4:attr][300,200,200,1:circle]
 
-[§[f1§
+[|[f1|
 [SourceGraphic,offOut,10,10:feOffset]
 [offOut,matrixOut,matrix,0.2-0-0-0-0-0-0-2-0-0-0-0-0-0-2-0-0-0-0-0-1-0:feColorMatrix]
 [matrixOut,10,blurOut:feGaussianBlur]
@@ -36,7 +36,7 @@ $d2='
 return $d2;}
 
 static function text($sz,$x,$y,$t,$clr){
-self::$ret[]='['.$clr.':attr]['.$x.','.$y.','.$sz.'§'.$t.':text]';}
+self::$ret[]='['.$clr.':attr]['.$x.','.$y.','.$sz.'|'.$t.':text]';}
 static function rect($x,$y,$w,$h,$clr,$clr2='',$wb='',$o='',$id='',$op=''){if(!$clr)$clr='none';
 self::$ret[]='['.$clr.','.$clr2.','.$wb.',,'.$op.':attr]['.$x.','.$y.','.$w.','.$h.','.$o.','.$id.':rect]';}
 static function line($x,$y,$x2,$y2,$clr,$wb='',$o='',$ob=''){
@@ -52,17 +52,17 @@ self::$ret[]='['.$clr.','.$clr2.','.$wb.',,'.$op.':attr]['.implode('-',$r).':pol
 static function path($p,$clr,$clr2='',$wb='',$op=''){if(!$clr)$clr='none';
 self::$ret[]='['.$clr.','.$clr2.','.$wb.',,'.$op.':attr]['.$p.':path]';}
 static function lk($x,$y,$lk,$clr,$bt='',$onc=''){if(!$clr)$clr='black';
-self::$ret[]='['.$clr.':attr]['.$x.','.$y.''.$lk.','.$onc.',1§'.$bt.':a]';}
+self::$ret[]='['.$clr.':attr]['.$x.','.$y.''.$lk.','.$onc.',1|'.$bt.':a]';}
 static function lj($x,$y,$sz,$clr,$j,$bt){if(!$clr)$clr='black'; if(!$sz)$sz=12;
-self::$ret[]='['.$clr.':attr]['.$j.'§['.$x.','.$y.','.$sz.'§'.$bt.':text]:lj]';}
+self::$ret[]='['.$clr.':attr]['.$j.'|['.$x.','.$y.','.$sz.'|'.$bt.':text]:lj]';}
 static function tog($x,$y,$sz,$clr,$ti='',$bt=''){if(!$clr)$clr='black'; if(!$sz)$sz=12;
-self::$ret[]='['.$clr.':attr][['.$x.','.$y.','.$sz.'§'.$bt.':text]§'.$ti.':tog]';}
+self::$ret[]='['.$clr.':attr][['.$x.','.$y.','.$sz.'|'.$bt.':text]|'.$ti.':tog]';}
 static function bub($x,$y,$sz,$clr,$tx,$bt){if(!$clr)$clr='black'; if(!$sz)$sz=12;
-self::$ret[]='['.$clr.':attr]['.$tx.'§['.$x.','.$y.','.$sz.'§'.$bt.':text]:bub]';}
+self::$ret[]='['.$clr.':attr]['.$tx.'|['.$x.','.$y.','.$sz.'|'.$bt.':text]:bub]';}
 static function bubj($x,$y,$sz,$clr,$j,$bt){if(!$clr)$clr='black'; if(!$sz)$sz=12;
-self::$ret[]='['.$clr.':attr]['.$j.'§['.$x.','.$y.','.$sz.'§'.$bt.':text]:bubj]';}
+self::$ret[]='['.$clr.':attr]['.$j.'|['.$x.','.$y.','.$sz.'|'.$bt.':text]:bubj]';}
 static function bubj2($x,$y,$sz,$clr,$j,$tx,$bt){if(!$clr)$clr='black'; if(!$sz)$sz=12;
-self::$ret[]='['.$clr.':attr]['.$tx.','.$j.'§['.$x.','.$y.','.$sz.'§'.$bt.':text]:bubj2]';}
+self::$ret[]='['.$clr.':attr]['.$tx.','.$j.'|['.$x.','.$y.','.$sz.'|'.$bt.':text]:bubj2]';}
 static function img($im,$w='',$h=''){self::$ret[]='['.$im.','.$w.','.$h.':image]';}
 static function draw(){$ret=implode('',self::$ret); self::$ret=''; $ret=self::com($ret);
 return tag('svg',['version'=>'1.1','xmlns'=>'http://www.w3.org/2000/svg','xmlns:xlink'=>'http://www.w3.org/1999/xlink','x'=>'0px','y'=>'0px','width'=>self::$w,'height'=>self::$h],$ret);}//,'viewBox'=>'1400 0 1400 700'
@@ -76,7 +76,7 @@ write_file($f,$ret);
 return $f;}
 
 static function spe(){
-$path_type=['M'=>'moveto','L'=>'lineto','H'=>'horizontal lineto','V'=>'vertical lineto','C'=>'curveto','S'=>'smooth curveto','Q'=>'quadratic B§zier curve','T'=>'smooth quadratic B§zier curveto','A'=>'elliptical Arc','Z'=>'closepath'];
+$path_type=['M'=>'moveto','L'=>'lineto','H'=>'horizontal lineto','V'=>'vertical lineto','C'=>'curveto','S'=>'smooth curveto','Q'=>'quadratic B|zier curve','T'=>'smooth quadratic B|zier curveto','A'=>'elliptical Arc','Z'=>'closepath'];
 $filters=['feBlend','feColorMatrix','feComponentTransfer','feComposite','feConvolveMatrix','feDiffuseLighting','feDisplacementMap','feFlood','feGaussianBlur','feImage','feMerge','feMorphology','feOffset','feSpecularLighting','feTile','feTurbulence','feDistantLight','fePointLight','feSpotLight'];}
 
 static function motor(){return [
@@ -116,7 +116,7 @@ static function prop($d){return str_replace(['/','-','_'],[',',' ','-'],$d);}
 
 //svgconn
 static function conn($d){$ra=self::motor();
-[$p,$b]=split_one(':',$d,1); [$p,$v]=expl('§',$p); $rb=explode(',',$p);
+[$p,$b]=split_one(':',$d,1); [$p,$v]=expl('|',$p); $rb=explode(',',$p);
 if(isset($ra[$b]))$pr=array_combine_a($ra[$b],$rb); else $pr=[];
 if($b=='attr'){ses('attr',$pr);$pr=[];}
 elseif(ses('attr')){$pr=array_merge_b($pr,ses('attr'));$_SESSION['attr']='';}//

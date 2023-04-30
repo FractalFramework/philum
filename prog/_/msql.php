@@ -20,7 +20,7 @@ if(is_array($r))foreach($r as $k=>$v){$rb=[];
 		if($rb)$rc[]=('"'.$k.'"').'=>['.implode(',',$rb).']';}
 	else $rc[$k]=('"'.$k.'"').'=>[\''.($v?addslashes(stripslashes($v)):'').'\']';}
 if($rc)$ret=implode(','.n(),$rc);
-return '<?php //msql/'.$p."\n".'$r=['.$ret.']; ?>';}
+return '<?php //msql/'.$p."\n".'$r=['.$ret.'];';}
 
 static function del($dr,$nod){$f=self::url($dr,$nod); if(is_file($f) && auth(6))unlink($f);}
 
@@ -118,7 +118,7 @@ static function exists($dr,$nod){$f=self::url($dr,$nod); if(is_file($f))return t
 /*static function exentry($dr,$nod,$k){$f=self::url($dr,$nod);
 if(is_file($f))include $f; if(isset($r[$k]))return true;}*/
 
-static function goodtable($d){//table_line§col
+static function goodtable($d){//table_line|col
 [$dn,$vn]=cprm($d); [$dr,$da]=split_one('/',$dn);
 if(!$da){$da=$dr;$dr='';} [$nd,$bs,$va,$op]=expl('_',$da,4);
 if($op){$da=$nd.'_'.$bs.'_'.$va; $r=self::read($dr,$da,$op);}
@@ -126,9 +126,9 @@ if($da && !isset($r))$r=self::read($dr,$da);
 if(!$r)$r=self::read($dr,$nd.'_'.$bs,$va);
 return $vn?$r[$vn]:$r;}
 
-static function goodtable_b($d){$da=''; $row=''; $ob=0; $dr='';//table§line|col
+static function goodtable_b($d){$da=''; $row=''; $ob=0; $dr='';//table|line|col
 if(strpos($d,'/'))[$dr,$p]=split_one('/',$d); else $p=$d;
-if(strpos($p,'§'))[$p,$row]=expl('§',$p); else $row='';//row
+if(strpos($p,'|'))[$p,$row]=expl('|',$p); else $row='';//row
 if(strpos($row,'|'))[$row,$col]=expl('|',$row); else $col='';//col
 [$bs,$nd,$nb]=expl('_',$p,3);
 if($nb)$da=$bs.'_'.$nd.'_'.$nb; else $da=$bs.'_'.$nd;

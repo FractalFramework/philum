@@ -1,4 +1,4 @@
-<?php //arts_tools
+<?php 
 class ma{
 
 #arts

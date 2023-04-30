@@ -34,7 +34,7 @@ return $ret;}
 static function tmp(){
 //return '[[[tit:var]$popbt:spanc] [edt:var] [del:var]:div][[txt:var]$[track:class][[id:var]:id]:div]';
 return '[[{tit}$popbt:spanc] {edt} {del}:div][{txt}$[track panel:class][{id}:id]:div]';
-return '[[_tit§popbt:spanc] _edt _del:div][_txt§[track panel:class][_id:id]:div]';}
+return '[[_tit|popbt:spanc] _edt _del:div][_txt|[track panel:class][_id:id]:div]';}
 
 static function read($v,$p){$id=$v[0];
 if(auth(6)){$del=lj('',$id.'_microarts,del___'.ajx($p).'_x'.$id,picto('del')).btd('x'.$id,'');

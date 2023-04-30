@@ -81,6 +81,5 @@ $btd.=divd('txarea',txarea1($msg));
 $ret.=divd($rid,$btd);
 //if(auth(4))$ret.=checkbox("randim","ok","rename_img",0);
 return $ret;}
-
 }
 ?>

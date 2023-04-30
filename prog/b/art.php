@@ -257,7 +257,7 @@ return $rb;}
 static function social($id,$suj='',$ro=[],$rf=[],$prw=''){
 if(!$ro){$ro=self::metart($id); $rf=self::favs($id); $suj=sql('suj','qda','v',$id);}
 $root=host().urlread($id); $rst=arr($_SESSION['rstr'],140); $ret='';
-$rsoc=[44=>'http://www.facebook.com/sharer.php?u='.$root,45=>'http://twitter.com/intent/tweet?url='.$root.'&text='.utf8enc_b($suj),46=>'http://wd.sharethis.com/api/sharer.php?destination=stumbleupon&url='.$root];
+$rsoc=[44=>'http://www.facebook.com/sharer.php?u='.$root,45=>'http://twitter.com/intent/tweet?url='.$root.'&text='.($suj),46=>'http://wd.sharethis.com/api/sharer.php?destination=stumbleupon&url='.$root];
 if(!$rst[100] && auth(6))$ret.=togbub('tlex,share',$id,picto('tlex')).' ';//,'color:gray'
 if(!$rst[99] && auth(6))$ret.=togbub('twit,share',$id,picto('tw')).' ';//,'color:gray'
 if(!$rst[45] && $prw>2)$ret.=lkt('',$rsoc[45],picto('tw2')).' ';

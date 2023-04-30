@@ -2,7 +2,7 @@
 class finder{
 //utils
 static function normalize($n){//let the "/"
-$n=str_replace([" ","'",'"',"?","ï¿½",",",";",":","!","%","&","$","#","_","+","!","\n","\r","\0","[\]","~","(",")","[","]",'{','}',"§","§"],"",($n));
+$n=str_replace([" ","'",'"',"?","Ã¯Â¿Â½",",",";",":","!","%","&","$","#","_","+","!","\n","\r","\0","[\]","~","(",")","[","]",'{','}',"Â§","|"],"",($n));
 return eradic_acc($n);}
 
 static function mkprm($r,$d='',$n='',$ar=''){
@@ -281,9 +281,9 @@ else{if($rb[0]=='shared'){$url=$v; $f=strpos($v,'/')!==false?strend($v,'/'):$v;}
 		else $rc['typ']=$xt;
 	if($rb[3]=='icon'){if($xt){[$fd,$fl]=split_one('/',$url,1);
 		if($xt=='.svg'){$fsvg=substr($url,0,-4);
-			$rc['conn']='['.$fsvg.'§24:svg]'; $rc['img']=svg($fsvg.'§24');}
+			$rc['conn']='['.$fsvg.'|24:svg]'; $rc['img']=svg($fsvg.'|24');}
 		elseif(strpos('.jpg.png.gif',$xt)!==false)
-			$rc['conn']='['.substr($fl,0,-4).'ï¿½'.$fd.':icon]';}}
+			$rc['conn']='['.substr($fl,0,-4).'Ã¯Â¿Â½'.$fd.':icon]';}}
 	if($rb[3]=='disk')$rc['conn']='['.$url.']';}
 $ret[]=$rc;}
 return $ret;}

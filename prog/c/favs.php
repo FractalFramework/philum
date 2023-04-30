@@ -86,7 +86,7 @@ if(auth(6))$bt=msqbt('',nod('coms')); else $bt='';
 return divd('plgfavcom',$ret);}
 
 static function shar($p){
-$r=msql::read('',nod('coms'),'',1); $r=array_reverse($r,true);
+$r=msql::read('',nod('coms'),'',1); if(!$r)$r=[]; $r=array_reverse($r,true);
 $rb=array_keys_r($r,0,1); $rn=[]; $ret='';
 foreach($rb as $k=>$v){$ip=sql('ip','qdp','v',$k);
 	$rn[$k]=sql('name','qdu','v','ip="'.$ip.'"');}

@@ -60,8 +60,8 @@ if($r)foreach($r as $k=>$v){$id=self::valid($p.$v[1]); $edt=art::favs_edt($id,'a
 	$rc[]=['tit'=>$tit,'edt'=>$edt,'del'=>$del,'txt'=>$v[1],'id'=>$k];
 	$rt[$k]=divc('track',btn('popbt',$tit.' '.$edt.' '.$del).divc('panel',$v[1]));}
 if($rb){arsort($rb); foreach($rb as $k=>$v)$ret.=$rt[$k];}
-//$tmp='[[[_tit _edt _del§popbt:spanc]:div]_txt§[track:class][_id:id]:div]';
-$tmp='[[[{tit} {edt} {del}§popbt:spanc]:div]{txt}§[track:class][{id}:id]:div]';
+//$tmp='[[[_tit _edt _del|popbt:spanc]:div]_txt|[track:class][_id:id]:div]';
+$tmp='[[[{tit} {edt} {del}|popbt:spanc]:div]{txt}|[track:class][{id}:id]:div]';
 //return vue::call($tmp,$rc);
 return $ret;}
 

@@ -4,7 +4,7 @@ class pop{
 #admin
 static function m_system(){$auth=$_SESSION['auth']; $id=ses('read');
 $rst=ses('rstr'); $top=!$rst[69]?'':'d'; $hv=1;
-$ra=[0=>prmb(8),1=>'loading',2=>'admin',3=>'desktop',4=>'download',5=>'search',6=>'articles',7=>'add',8=>'link',9=>'language',10=>'time',11=>'circle-full',12=>'circle-empty',13=>'list',14=>'user',15=>'menu']; 
+$ra=[0=>prmb(8),1=>'loading',2=>'admin',3=>'desktop',4=>'download',5=>'search',6=>'articles',7=>'add',8=>'link',9=>'language',10=>'time',11=>'circle-full',12=>'circle-empty',13=>'list',14=>'user',15=>'menu',16=>'circle-half']; 
 foreach($ra as $k=>$v)$ico[$k]=picto($v);
 $ret['home']=popbub('home','',$ico[0],$top,$hv);//if(!$rst[20])
 if(!$rst[94])$ret['menuB']=popbub('menubub','',$ico[15],$top,$hv);
@@ -38,7 +38,7 @@ if($id && auth(6)){
 	$edt2=btj(picto('editor'),atj('editart',$id));
 	//if(!$rst[1])$trk=li(lj('','popup_tracks,form___'.$id,picto('forum')));
 	$ret['edit']=li($tag).li($tit).li($edt).tag('li',['id'=>'adt2'.$id],$edt2);}//.$trk
-$dev=ses('dev'); $ic=$dev=='b'||$dev=='c'?$ico[11]:$ico[12];
+$dev=ses('dev'); $ic=$dev=='b'?$ico[11]:($dev=='c'?$ico[16]:$ico[12]);
 if(auth(6) or $dev)$ret['dev']=popbub('dev','dev',$ic,$top,$hv);//dev
 $ret['fixit']=span(atd('fixtit').atc('etc'),' ');
 ses::$adm+=$ret;}
@@ -65,16 +65,16 @@ return $ret;}
 
 #articles
 static function btapp($d,$nl=''){
-[$p,$o,$c]=unpack_conn($d); [$c,$ob]=cprm($c);//p§o:c§ob
+[$p,$o,$c]=unpack_conn($d); [$c,$ob]=cprm($c);//p|o:c|ob
 $ic=mime($c,'cube'); $t=pictxt($ic,$ob?$ob:$c); if($ob==1)$t=picto('url');
 $u='/app/'.$c; if($p){$u.='/'.$p; if($o)$u.='/'.$o;} if($nl)return lkt('',$u,$t); if(!$ob)$ob='conn';
 return lj('','popup_'.$c.',home__3_'.ajx($p).'_'.ajx($o),$t).' '.lkt('',$u,picto('chain'));}
 
 static function connbt($d,$nl=''){
-[$p,$o,$c]=unpack_conn($d); [$c,$ob]=cprm($c);//p§o:c§ob
+[$p,$o,$c]=unpack_conn($d); [$c,$ob]=cprm($c);//p|o:c|ob
 $ic=mime($c,'cube'); $t=pictxt($ic,$ob?$ob:$c); if($ob==1)$t=picto('url');
 $u='/app/'.$c; if($p){$u.='/'.$p; if($o)$u.='/'.$o;} if($nl)return lkt('',$u,$t); if(!$ob)$ob='conn';
-return lj('','popup_conn,parser__3_['.ajx($p.($o?'§'.$o:'').':'.$c).']_3_test',$t).' '.lkt('',$u,picto('chain'));}
+return lj('','popup_conn,parser__3_['.ajx($p.($o?'|'.$o:'').':'.$c).']_3_test',$t).' '.lkt('',$u,picto('chain'));}
 
 static function orimg($im,$id,$o){
 $dc=conn::original_img($im,$id);
@@ -95,7 +95,7 @@ if(is_img($pre.$im) && strpos($im,'<')===false){
 else $ret=$im;
 return tagb('figure',$ret.tagb('figcaption',$t));}
 
-static function pubart($d){[$v,$p]=split_one('§',$d,1);//plug
+static function pubart($d){[$v,$p]=split_one('|',$d,1);//plug
 if($p==1 or $p==2 or $p==3)return art::playb($v,$p);
 elseif($p==4)return delbr(mod::pub_art($v),'');
 elseif($p)return ma::popart($v,$p);
@@ -144,7 +144,7 @@ if(is_numeric($id)){$j='_art,playc___'.$id.'_3'; $t=$t?$t:ma::suj_of_id($id);}
 else $j='_conn,read_'.$d.'['.$id.']';
 return toggle('',$rid.$j,$t?$t:nms(25)).' '.btd($rid,'');}
 
-static function btart($d){[$id,$t]=split_one('§',$d);//conn
+static function btart($d){[$id,$t]=split_one('|',$d);//conn
 if(substr($d,0,4)=='http')$j='popup_mc,api*read__3_'.ajx($id).'_1';
 else $j='popup_popart__3_'.$id.'_3'; $t=$t?$t:ma::suj_of_id($id);
 return lj('popbt',$j,pictxt('articles',!$t&&$d?preplink($d):$t));}
@@ -152,23 +152,23 @@ return lj('popbt',$j,pictxt('articles',!$t&&$d?preplink($d):$t));}
 #lk
 static function pictoconn($t){
 [$t,$ico]=opt($t,':'); if($ico=='picto')$t=picto($t); return $t;}
-static function poplk($d,$id){[$lk,$t]=split_right('§',$d,1); 
+static function poplk($d,$id){[$lk,$t]=split_right('|',$d,1); 
 return ljp(att($t),$id.'_mod,callmod___'.ajx($lk),self::pictoconn($t));}
-static function toglk($d){[$lk,$t]=split_right('§',$d,1);
+static function toglk($d){[$lk,$t]=split_right('|',$d,1);
 return togbub('mod,callmod',ajx($lk),self::pictoconn($t));}
 static function ajlk($d){[$p,$o]=cprm($d);
 return lj('popbt',$p,$o);}
 
 static function vacuum_media($da,$id){
 if(substr($da,0,4)!='http')return $da;
-[$d,$t]=split_one('§',$da,1);
+[$d,$t]=split_one('|',$da,1);
 $xt=xt($d); $qb=$_SESSION['qb']; $nmw=$d; $dc='';
 if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($d),0,6).$xt; $dc=$d; $dc=str::urlenc($dc);}
 if(!is_file('video/'.$nmw) && $dc){@copy($dc,'video/'.$nmw);}//conn::replaceinmsg($id,$d,$nmw,'vid');
 if(is_file('video/'.$nmw)){$sz=fsize('video/'.$nmw);
 	if($sz>50000){ses::$adm['alert']='media: '.$sz;//exclude from importation
 		conn::replaceinmsg($id,$da,str_replace('.mp4',':mp4',$da));}
-	return 'video/'.$nmw.($t?'§'.$t:'');}
+	return 'video/'.$nmw.($t?'|'.$t:'');}
 else return $da;}
 
 static function getmp4($d,$id,$o=1){if($o)$d=self::vacuum_media($d,$id); return video($d);}
@@ -269,7 +269,7 @@ if(substr($k,0,4)=='http')$k=strend($k,'/'); if($nm==1)$nm=$k;
 if($nm=='thread')return self::twitapi($d);
 if($nm=='users')return twit::play_usrs($d);
 if(strpos($k,' '))return self::twits($d,$id);
-if($nm or !is_numeric($k))return self::poptwit($k.'§'.$nm,$ty,$nl);
+if($nm or !is_numeric($k))return self::poptwit($k.'|'.$nm,$ty,$nl);
 if($nl)return lka($k);
 if($k)return twit::cache($k,$id);}
 

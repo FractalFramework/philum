@@ -386,7 +386,7 @@ static function m_suj_r($r,$cs1,$cs2){
 $id=ses('read'); $ret='';
 foreach($r as $k=>$v){
 $csb=$id==$k?$cs1:$cs2;
-$ret.=llk($csb,urlread($k),'â?¢ '.ma::suj_of_id($k));
+$ret.=llk($csb,urlread($k),'Ã¢?Â¢ '.ma::suj_of_id($k));
 if(is_array($v)){
 	if($id==$k or self::verif_array_exists_s($id,$v)){
 		foreach($v as $ka=>$va){$csc=$id==$ka?$cs1:$cs2;

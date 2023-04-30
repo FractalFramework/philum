@@ -127,7 +127,7 @@ if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($da),0,6).$xt;//soon, del qb
 			$dc=utf8dec_b($dc); $dc=str::html_entity_decode_b($dc);}
 		$dcb=preg_replace('/-[0-9]+x[0-9]+/','',$dc);
 		if($dcb!=$dc && is_file($dcb))$dc=$dcb;
-		if(strpos($dc,' '))$dc=urlencode($dc); $dc=str::urlenc($dc);//
+		if(strpos($dc,' '))$dc=urlencode($dc);
 		if(!$ok){$d=curl_get_contents($dc);
 			if($d && strlen($d)>1000 && strpos($d,'Forbidden')===false){// && strpos($d,'<')===false
 				$er=write_file('img/'.$nmw,$d); $ok=1;
@@ -399,21 +399,21 @@ if(method_exists($cn,'call') && isset($cn::$conn)){[$p,$o]=cprm($d); return $cn:
 return '['.$da.']';}
 
 static function connlk($da,$id,$m,$nl,$pw){
-$par=strpos($da,'§'); $http=strpos($da,'http'); $html=strpos($da,'<');
+$par=strpos($da,'|'); $http=strpos($da,'http'); $html=strpos($da,'<');
 if(is_img($da) && $par===false){// && $html===false
 	if(substr($da,0,4)=='http' && $id)$da=conn::get_image($da,$id,$m);
 	return conn::place_image($da,$m,$nl,$pw,$id);}
-if(($par or $http!==false) && $html===false){//secure double hooks//
+if(($par or $http!==false) && $html===false){//secure double hooks
 	[$p,$o]=cprm($da);
-	if(is_img($p)){//image§text
+	if(is_img($p)){//image|text
 		//restore conn from html, if lk§im (disactivatedf in conv)
 		//if(strpos($p,'<img')!==false)$p=between($p,'src="/img/','"');
 		//if(substr($p,0,4)=='http')$p=conn::get_image($p,$id,$m);
 		if(is_img($o))return mk::popim($p,image(goodroot($o)),$id);//mini
-		//return pop::figure($p.'§'.$o,$pw,$nl,$id);
+		//return pop::figure($p.'|'.$o,$pw,$nl,$id);
 		if(is_http($o))return lkt('',$o,img(goodroot($p)));
 		return mk::popim($p,pictxt('img',$o),$id);}
-	elseif(is_img($o)){//link§image
+	elseif(is_img($o)){//link|image
 		//if(strpos($o,'<img')!==false)$o=between($o,'src="/img/','"');//str::prop_detect($o,'src')
 		if(substr($o,0,4)=='http')$o=conn::get_image($o,$id,$m);
 		if(substr($p,0,4)=='http')return lk($p,conn::place_image($o,$m,$nl,$pw,$id));

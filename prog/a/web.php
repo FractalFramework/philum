@@ -36,7 +36,7 @@ if(!$ti)$ti=dom::extract($dom,'name:itemprop:meta');
 if(!$ti)$ti=dom::extract($dom,'og(ddot)title:property:meta');
 if(!$ti)$ti=dom::extract($dom,'::title');
 if(!$ti)$ti=dom::extract($dom,'::h1');
-if(!$tx)$tx=dom::extract($dom,'description:name:meta'); //$x=''; if($tx)$x.=1;
+if(!$tx)$tx=dom::extract($dom,'description:name:meta');
 if(!$tx)$tx=dom::extract($dom,'og(ddot)description:property:meta');
 if(!$tx)$tx=dom::extract($dom,'description:itemprop:meta');
 $im=dom::extract($dom,'image:name:meta');
@@ -44,10 +44,7 @@ if(!$im)$im=dom::extract($dom,'og(ddot)image:property:meta');
 if(!$im)$im=dom::extract($dom,'og(ddot)image:itemprop:meta');
 if(!$im)$im=dom::extract($dom,'thumbnailUrl:itemprop:link:href');
 if(strpos($u,'youtube')!==false)$im=self::imgyt($u);
-///$ti=html_entity_decode($ti); $tx=html_entity_decode($tx);
-$ti=str::html_entity_decode_b($ti); $tx=str::html_entity_decode_b($tx);
-if(is_utf($ti) or is_utf($tx)){$ti=utf8dec_b($ti); $tx=utf8dec_b($tx);}
-$tx=str::clean_br($tx); //$ti=utf8enc_b($ti); $tx=utf8enc_b($tx);
+$tx=str::clean_br($tx);
 return [$ti,etc($tx),$im];}
 
 static function read($u,$o='',$id=0){$k=nohttp(utmsrc($u));
@@ -57,12 +54,12 @@ if(!$r or $o==1){$ra=$r?$r:[];
 	if(!$ti && ($ra[0]??''))$ti=$ra[0];
 	if(!$im && strpos($u,'youtube')!==false)$im=self::imgyt($u);
 	if(!$ti && rstr(133) && substr($u,0,7)=='youtube')$r=self::kit($k,$id);
-	if($ti)$ti=strip_tags($ti); if($tx)$tx=strip_tags($tx); //sql::setutf8();
+	if($ti)$ti=strip_tags($ti); if($tx)$tx=strip_tags($tx);
 	//json::add('','web'.mkday(),[$ti,$tx,$im,$id,mkday('','Ymd:His')]);
 	if($ra && $ti)sqlup('qdw',['tit'=>$ti,'txt'=>$tx,'img'=>$im],['url'=>$k],0,1);
 	elseif(!$ra)sqlsav('qdw',['ib'=>$id,'url'=>$k,'tit'=>$ti,'txt'=>$tx,'img'=>$im],0,1);
 	if($ti)$r=[$ti,$tx,$im,$id];}
-if(!$r)$r=['','','',$id]; sql::setlatin();
+if(!$r)$r=['','','',$id];
 return $r;}
 
 static function kit($f,$id){
@@ -82,13 +79,11 @@ return utf_r($r,1);}
 static function resav($u,$o,$r){$k=nohttp(utmsrc($u));
 if($o)$r=self::read($u,$o);
 if($u){[$ti,$tx,$im,$ib]=arr($r,4);
-	//if($ti)$ti=utf8dec_b($ti); if($tx)$tx=utf8dec_b($tx);
-	$ex=sql('id','qdw','v',['url'=>$k],0); sql::setutf8();
-	$rs=['ib'=>$ib,'tit'=>utf8enc($ti),'txt'=>utf8enc($tx),'img'=>$im];
+	$ex=sql('id','qdw','v',['url'=>$k],0);
+	$rs=['ib'=>$ib,'tit'=>($ti),'txt'=>($tx),'img'=>$im];
 	if($ex)sqlup('qdw',$rs,['url'=>$k],0,1);
 	else sqlsav('qdw',$rs,0,1);}
-if(strpos($u,'youtube.com')!==false)return video::any(http($u),$ib,3);
-sql::setlatin();
+if(strpos($u,'youtube.com')!==false)return video::any(strfrom($u,'='),$ib,3);
 return self::com($u);}
 
 static function redit($u,$rid,$id){$r=self::read($u,'',$id);

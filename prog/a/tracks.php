@@ -23,7 +23,7 @@ return div(atd('trknm'.$id),$ret);}
 static function trkstatus($id,$st){$ret='';
 if($st){sql::upd('qdi',['re'=>$st],$id); return art::trkone($id);}
 $re=sql('re','qdi','v','id="'.$id.'"');
-//$r=[1=>nms(21),nms(171),nms(91),nms(182)];//commentaire/question/rÈponse/solution
+//$r=[1=>nms(21),nms(171),nms(91),nms(182)];//commentaire/question/r√©ponse/solution
 $r=explode('/','/'.prmb(10));
 for($i=1;$i<=4;$i++){$c=active($i,$re);
 	$ret.=lj($c,'trk'.$id.'_tracks,trkstatus___'.$id.'_'.$i,$r[$i]);}
@@ -105,7 +105,7 @@ static function preview($id,$p,$prm=[]){return conn::read2($prm[0]??'');}
 static function form($id,$msg='',$capt=false){
 $w=cw()-100; $ret=''; $ib=''; $user=''; $nfo='';
 if(is_numeric($msg)){$ib=$msg; $msg='['.$ib.':to]'."\n\n"; $nfo='reply';}
-elseif($capt!=false){$msg='['.$msg.'ß'.$capt.':callquote]'."\n\n"; $nfo='quote';}
+elseif($capt!=false){$msg='['.$msg.'|'.$capt.':callquote]'."\n\n"; $nfo='quote';}
 elseif(!is_numeric($id)){$user=$id; $id=''; $nfo='private';}
 $use=ses('USE'); if(!$use)$use=cookie('use'); $ml=cookie('mail');
 if(!$use)[$use,$ml]=sql('name,mail','qdi','r',['host'=>hostname(),'_code'=>'order by id desc limit 1']);

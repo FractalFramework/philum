@@ -103,7 +103,7 @@ var arr=[0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f']; //if(a)arr=arr.reverse();
 for(i=0;i<arr.length;i++){rgb=String(arr[i])+String(arr[i])+'4444';
 	setTimeout(function(){setit(rgb,div)},200*i);}}
 
-//enc//encodeURI():utf8 error with »//not enc to utf8
+//enc//encodeURI():utf8 error with Â»//not enc to utf8
 function encUri(val){return val;}//enc!='utf-8'?encodeURIComponent(val)://test core decuri
 //function decUri(val){return unescape(val);}//SaveJm//decodeURIComponent
 function encUriJ(val){val=ajx(val); //if(enc!='utf-8')val=encodeURIComponent(val);
@@ -121,6 +121,17 @@ function clean_entity(a,b,v){var vn=v.split(a); var nb=vn.length;
 for(var i=0;i<nb;i++){var v=v.replace(a,b);} return v;}
 function undefine(d){return typeof d=='undefined'?'':d;}//
 function undefiner(r,n){for(i=0;i<n;i++)r[i]=undefine(r[i]); return r;}
+
+function jra(val){
+var r=new Object; var ra=val.split('_');
+for(i=0;i<ra.length;i++)r['g'+i]=ra[i];
+return r;}
+function jrb(ra){var rb=[];
+for(var key in ra)rb.push(key+'='+ra[key]);
+return rb.join('&');}
+function jrc(ra){var rb=[];
+for(i=1;i<=ra.length;i++)rb.push('g'+i+'='+ra[i]);
+return rb.join('&');}
 
 function exploder(d,l,c){var r=d.split(l); var rt={};
 for(i=0;i<r.length;i++)rt[i]=r[i].split(c); return rt;}
@@ -342,10 +353,10 @@ return r.join("\n");}
 function clean_mail(d){
 d=clean_lines(d);
 d=strreplace("\n ","\n",d);
-d=strreplace(".\n",".µµ",d);
-d=strreplace("\n","µ",d);
-d=strreplace("µµ","\n\n",d);
-d=strreplace("µ"," ",d);
+d=strreplace(".\n",".ÂµÂµ",d);
+d=strreplace("\n","Âµ",d);
+d=strreplace("ÂµÂµ","\n\n",d);
+d=strreplace("Âµ"," ",d);
 return d;}
 
 function base64DecodeUnicode(str){
@@ -368,7 +379,7 @@ if(ok && ok.value==1)audio();}
 
 //utils
 function ajx(val,n){
-var arr=['_','*','&','+',"'",'"'];//'?',':','#','’','“','”','/'
+var arr=['_','*','&','+',"'",'"'];//'?',':','#','â€™','â€œ','â€','/'
 var arb=['(und)','(star)','(and)','(add)','(quote)','(dquote)'];//,'(qmark)','(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)'
 if(n){for(var i=0;i<arr.length;i++){val=strreplace(arb[i],arr[i],val);}}//decode
 else{for(var i=0;i<arr.length;i++){val=strreplace(arr[i],arb[i],val);}}
@@ -376,12 +387,12 @@ return val;}
 
 function utflatin(va){
 var arr=['%3D','%7E','%E8','%E9','%EA','%E0','%E2','%F4','%F6','%FB','%FC','%F9','%EE','%EF','%20','%2C','%3B','%3A','%21','%3F','%A7','%25','%26','%7C'];
-var arb=['=','~','è','é','ê','à','â','ô','ö','û','ü','ù','î','ï',' ',',',';',':','!','?','§','%','&','|'];
+var arb=['=','~','Ã¨','Ã©','Ãª','Ã ','Ã¢','Ã´','Ã¶','Ã»','Ã¼','Ã¹','Ã®','Ã¯',' ',',',';',':','!','?','Â§','%','&','|'];
 for(var i=0;i<arr.length;i++)va=strreplace(arr[i],arb[i],va);
 return va;}
 
 function normalize(va){
-var arr=['=','~','è','é','ê','à','â','ô','ö','û','ü','ù','î','ï',' ',',',';',':','!','?','§','%','&','|'];
+var arr=['=','~','Ã¨','Ã©','Ãª','Ã ','Ã¢','Ã´','Ã¶','Ã»','Ã¼','Ã¹','Ã®','Ã¯',' ',',',';',':','!','?','Â§','%','&','|'];
 var arb=['','','e','e','e','a','a','o','o','u','u','u','i','i','','','','','','','','','',''];
 for(var i=0;i<arr.length;i++)va=strreplace(arr[i],arb[i],va);
 return va;}

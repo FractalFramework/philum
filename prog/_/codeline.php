@@ -77,7 +77,7 @@ return $ret;}
 #correctors
 static function correct($da,$op){
 $xp=strrpos($da,':'); $c=substr($da,$xp); $d=substr($da,0,$xp);
-if($op=='stripconn'){if(strpos($da,'§')!==false)$d=strend($d,'§'); return $d;}
+if($op=='stripconn'){if(strpos($da,'|')!==false)$d=strend($d,'|'); return $d;}
 if(substr($op,0,8)=='replconn'){[$op,$a,$b]=opt($op,'-',3);
 	if(strpos($da,':'.$a)!==false)return '['.str_replace(':'.$a,':'.$b,$da).']';}
 elseif($op=='png2jpg'){[$d,$txt]=cprm($da); $id=get('read'); $xt=is_img($d);//illogical
@@ -88,23 +88,23 @@ elseif($op=='forcewebp2jpg'){[$d,$txt]=cprm($da); $id=get('read'); $xt=is_img($d
 	if($xt){$c=read_file('img/'.$d); if(strpos($c,'WEBP') or strpos($c,'JFIF')){return img::webp2jpg($d,$id);}}}
 elseif($op=='stripimg'){[$lin,$txt]=cprm($da);
 	if(!is_img($lin))return '['.$da.']';}
-elseif($op=='stripvideo'){if($c==':video' && strpos($da,'§')===false)
-	return str_replace(':video','§1:video','['.$da.']');}
+elseif($op=='stripvideo'){if($c==':video' && strpos($da,'|')===false)
+	return str_replace(':video','|1:video','['.$da.']');}
 elseif($op=='striplink'){[$lin,$txt]=cprm($da);
 	if(is_numeric($lin))$lin=host().urlread($lin);
-	elseif(strpos($da,'§')!=false or substr($lin,0,4)=='http')return ($txt?$txt:$lin);
+	elseif(strpos($da,'|')!=false or substr($lin,0,4)=='http')return ($txt?$txt:$lin);
 	elseif($c==':pub')return ma::suj_of_id($d).' ('.host().urlread($d).') ';
 	elseif($c==':figure')return $txt;}
 elseif($c==$op){
 	if($c==':table'){
 		//if(get('clean_tab'))return str::del_n($d); else{}//del_n
-		$d=str_replace(array('¬','|'),array("\n","\t"),$d);
+		$d=str_replace(array('Â¬','|'),array("\n","\t"),$d);
 		if(strpos($d,' ')!==false && strpos($d,'.jpg')===false && trim($d))return '['.$d.':q]';
 		else return $d;}
 	elseif($c==':chat')return;
 	elseif($c==':list')return str_replace('|','',$d);
-	//elseif($n=strrpos($d,'§'))return substr($d,0,$n);
-	elseif($n=strrpos($d,'§')){$nb=strpos($d,']');
+	//elseif($n=strrpos($d,'|'))return substr($d,0,$n);
+	elseif($n=strrpos($d,'|')){$nb=strpos($d,']');
 		if($nb>$n)return $d; else return substr($d,0,$n);}
 	else return ($d);}
 else return '['.$da.']';}
@@ -140,12 +140,12 @@ return match($c){
 default=>''};}
 
 static function sconn_links($d,$xt,$b){
-if(is_img($d) && strpos($d,'§')===false)return conn::place_image($d,3,$b);
+if(is_img($d) && strpos($d,'|')===false)return conn::place_image($d,3,$b);
 [$p,$o]=cprm($d);
-if(is_img($p)){//image§text
+if(is_img($p)){//image|text
 	if(is_img($o))return lkt('',goodroot($p),image(goodroot($o)));
 	return lkt('',goodroot($o),image(goodroot($p)));}
-elseif(is_img($o)){//link§image
+elseif(is_img($o)){//linkÂ§image
 	return lkt('',goodroot($p),image(goodroot($o)));}
 elseif(substr($p,0,1)=='/')return lka($p,$o);
 elseif(substr($p,0,1)=='@')return lj('txtx','popup_twit,call__3_'.ajx($p).'_ban',$p);
@@ -209,10 +209,10 @@ $ret=match($c){
 ':c'=>'<txtclr>'.$p.'</txtclr>',
 ':stabilo'=>'<stabilo>'.$p.'</stabilo>',
 ':color'=>mk::pub_clr($d),
-':red'=>mk::pub_clr($p.'§#bd0000'),
-':blue'=>mk::pub_clr($p.'§#333399'),
-':parma'=>mk::pub_clr($p.'§#993399'),
-':green'=>mk::pub_clr($p.'§#339933'),
+':red'=>mk::pub_clr($p.'|#bd0000'),
+':blue'=>mk::pub_clr($p.'|#333399'),
+':parma'=>mk::pub_clr($p.'|#993399'),
+':green'=>mk::pub_clr($p.'|#339933'),
 ':bkgclr'=>mk::pub_bkgclr($d),
 ':video'=>video::titlk($p,''),
 ':videourl'=>video::titlk($p,''),
@@ -224,7 +224,7 @@ $ret=match($c){
 ':code'=>tagb('code',delbr($d)),
 ':web'=>lka($p),
 ':twitter'=>$b=='epub'?pop::twitxt($p,''):lka($p,'twitter.com'),
-':div'=>$b=='epub'?strto($p,'§'):'',
+':div'=>$b=='epub'?strto($p,'|'):'',
 ':mini'=>$b=='epub'?$da=$p:'',
 ':download'=>lka($p),
 ':pdf'=>lka($p),
@@ -234,7 +234,7 @@ $ret=match($c){
 default=>''};
 if($ret)return $ret;
 //if(is_img($p))return image(goodroot($p,1));
-if(is_img($da) && strpos($da,'§')===false){$im=goodroot($da,'');
+if(is_img($da) && strpos($da,'|')===false){$im=goodroot($da,'');
 	if($b=='epub'){$fb='_datas/epub/OEBPS/images/';
 		if(file_exists($im) && !file_exists($fb.$da))copy($im,$fb.$da); return image('../images/'.$da);}
 	else return conn::place_image($da,3,1);}//image($im);
@@ -257,22 +257,22 @@ static function savimg2($da,$id){
 [$d,$o,$c]=unpack_conn($da); $d2=''; $o2='';
 if(is_img($d) && substr($d,0,4)=='http' && !$o)$d2=conn::get_image($p,$id);
 if(is_img($o) && substr($o,0,4)=='http')$o2=conn::get_image($o,$id);
-$ret=$d2?$d2:$d; if($o)$ret.='§'.($o2?$o2:$o); if($c)$ret.=':'.$c;
+$ret=$d2?$d2:$d; if($o)$ret.='|'.($o2?$o2:$o); if($c)$ret.=':'.$c;
 return '['.$ret.']';}
 
 static function savimg($da,$id){
 [$p,$o]=prepdlink($da); $_SESSION['read']=$id;
 if(is_img($p) && substr($p,0,4)=='http')
-	return '['.conn::get_image($p,$id).(strpos($da,'§')?'§'.$o:'').']';
+	return '['.conn::get_image($p,$id).(strpos($da,'|')?'|'.$o:'').']';
 elseif(is_img($o)==true && substr($o,0,4)=='http')
-	return '['.(strpos($da,'§')?$p.'§':'').conn::get_image($o,$id).']';
+	return '['.(strpos($da,'|')?$p.'|':'').conn::get_image($o,$id).']';
 else return '['.$da.']';}
 
 static function corrfast($da,$op){
 [$d,$c]=split_one(':',$da,1);
 $r=explode(' ',$op); $n=count($r);
 for($i=0;$i<$n;$i++)if($c==$r[$i]){
-	$hk=strrpos($d,']'); $pa=strrpos($d,'§');
+	$hk=strrpos($d,']'); $pa=strrpos($d,'|');
 	if($pa>$hk)return substr($d,0,$pa);
 	elseif($hk!==false)return $d;
 	else return $d;}
@@ -281,7 +281,7 @@ return '['.$da.']';}
 static function corrfastb($da,$op){
 [$d,$o,$c]=unpack_conn($da);
 $r=explode(' ',$op); $n=count($r);
-for($i=0;$i<$n;$i++)if($c==$r[$i])return strend($d,'§');
+for($i=0;$i<$n;$i++)if($c==$r[$i])return strend($d,'|');
 return '['.$da.']';}
 
 static function stripconn($da,$op){$no='';
@@ -370,7 +370,7 @@ if(substr($p,0,4)=='http' or substr($p,0,2)=='//')$ret=($o?'['.$o.']':'').'('.$p
 return $ret?$ret:$da;}
 
 #templates
-static function template($da,$o,$b=''){//d§p:c
+static function template($da,$o,$b=''){//d|p:c
 [$d,$c,$xt]=getconn($da); //if(!$da)return;
 [$p,$o]=cprm($d);
 $ret=self::sconn_html($p,$o,$c); if($ret)return $ret;
@@ -398,7 +398,7 @@ case(':txt'):return $p?$p:$o; break;
 case(':url'):return lka($p,$o?$o:preplink($p)); break;
 case(':hurl'):return lh($p,$o?$o:preplink($p)); break;
 case(':jurl'): return lj('',$p,$o); break;
-case(':link'):return md::special_link($p.'§'.$o); break;
+case(':link'):return md::special_link($p.'|'.$o); break;
 case(':anchor'):return lkn($p); break;
 case(':date'):return mkday(is_numeric($o)?$o:'',$p); break;
 case(':title'):return ma::suj_of_id($p); break;
@@ -429,11 +429,11 @@ static function exec_run($d,$id){$f='_datas/exec/'.$id.'.php'; mkdir_r($f);
 if(!is_file($f) or auth(4))write_file($f,'<?php '.$d);
 if(is_file($f))require($f); return $ret;}
 
-#cbasic //§txtit:css§h2:html
+#cbasic //|txtit:css|h2:html
 static function cbasic_exec($d,$p,$r,$o){
-[$av,$ap,$c]=unpack_conn_b($d);//v§p:c
+[$av,$ap,$c]=unpack_conn_b($d);//v|p:c
 if(strpos($av,':')!==false)$av=self::cbasic_exec($av,$p,$r,$o);//iteration
-if($o==2)$av=$av?$av:$p;//param on left (no §) //strpos($ap,'_PARAM')===false
+if($o==2)$av=$av?$av:$p;//param on left (no |) //strpos($ap,'_PARAM')===false
 if(!is_array($av))$av=self::cbasic_vars($av,$p,$r);
 if($ap)$ap=self::cbasic_vars($ap,$p,$r);
 if($o==1)echo $av.'$'.$ap.':'.$c.br();
@@ -476,7 +476,7 @@ static function mod_basic($p,$o){
 $b=sesmk2('codeline','uconns',$p,0); if(!$b)$b=sesmk2('codeline','pconns',$p,0);
 if(!$b && $p)return self::parse('['.$p.']','','template');
 $r=['insert','update','delete','qr','write_file','file_put_contents'];
-foreach($r as $v)if(strpos($p,'§'.$v)!==false)return;
+foreach($r as $v)if(strpos($p,'|'.$v)!==false)return;
 //if($b && !is_array($b))return self::parse($b,'','template');
 if($b && !is_array($b))return self::cbasic($b,$o);}
 

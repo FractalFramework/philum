@@ -80,7 +80,7 @@ static function home($p,$id){
 //Head::add('csscode',self::css());
 //Head::add('jscode',self::js());
 $_SESSION['book'][$id]=$p; $_SESSION['boko']=$id;
-if($id=='fav' or $id=='like' or $id=='poll')$r=sql('ib','qdf','k',['type'=>$id,'iq'=>$p],1);
+if($id=='fav' or $id=='like' or $id=='poll')$r=sql('ib','qdf','k',['type'=>$id,'iq'=>$p]);
 elseif($id=='visit')$r=array_flip(array_keys(ses('mem')));
 elseif(is_numeric($p))$r=sql('ib','qdd','k',['msg'=>$p,'val'=>$id]);
 else $r=api::mod($p);//.',verbose:1,sql:1'

@@ -254,7 +254,7 @@ if(is_array($r)){
 return $r;}
 
 static function msqcall($com,$id,$o){
-if(strpos($com,'|'))[$d,$p]=split_one('|',$com,1); else $d=$com; if(isset($p))$o=$p;
+if(strpos($com,'|'))[$d,$p]=split_one('|',$com); else $d=$com; if(isset($p))$o=$p;
 if(strpos($o,'|'))[$oa,$ob]=opt($o,'|'); else{$oa=$o; $ob='';}
 $ret=match($oa){
 'pop'=>self::microread_pop($d),

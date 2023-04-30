@@ -21,7 +21,7 @@ $rb=['EN','FR','ES','IT','DE','NL','PL','JA','PT','RU','SV','TR','ZH'];
 //,'BG','CS','DA','EL','ET','HU','ID','LT','LV','PL','RO','SK','SL','UK'
 return implode(',',$rb);}
 
-static function build($txt,$from,$to,$format){$prm='';//$from,$format,$txt,$to
+static function build($txt,$from,$to,$format){$prm='';
 if(!$to)$to=ses('lng');//$to=setlng($to);
 if($from)$prm='&source_lang='.strtoupper($from);
 if($to)$prm.='&target_lang='.strtoupper($to);

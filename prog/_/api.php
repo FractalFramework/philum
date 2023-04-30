@@ -66,7 +66,7 @@ if($y)$dtr[]=strlen($y)==4?'%Y':'%y'; if($m)$dtr[]='%m'; if($d)$dtr[]='%d'; $dt=
 if($y)$dyr[]=$y; if($m)$dyr[]=$m; if($d)$dyr[]=$d; $dy=implode('-',$dyr);
 //echo $ret='date_format(from_unixtime('.$qda.'.day),"'.$dt.'")="'.$dy.'"';
 $ret='date_format(date_add("1970-01-01 00:00:00",INTERVAL '.$qda.'.day second),"'.$dt.'")="'.$dy.'"';//neg
-//DATE_ADD('1970-01-01 00:00:00',INTERVAL pub_art.day SECOND
+//DATE_ADD('1970-01-01 00:00:00',INTERVAL '.ses('qda').'.day SECOND
 return $ret;}
 
 static function sql_tags($tags,$cat){$r=explode('|',$tags);//accept negative -tags//!
@@ -160,7 +160,7 @@ if(($p['json'] or $p['sql'] or $p['msg']) && !$p['search']){$qdm=ses('qdm');
 	//$sq['inner'][]='natural join '.$qdm;//not works
 	$sq['inner'][]='inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id';}
 if($p['group'])$sq['ord'][]='group by '.$qda.'.id';
-if($p['order']=='mostread')$sq['ord'][]='order by cast('.$qda.'.lu as integer) desc';
+if($p['order']=='mostread')$sq['ord'][]='order by '.$qda.'.lu desc';//cast('.$qda.'.lu as integer)
 elseif($p['order']=='nb')$sq['ord'][]='order by cast(nb as unsigned integer) desc';
 elseif($p['order'])$sq['ord'][]='order by '.$qda.'.'.str_replace('-',' ',$p['order']);
 if(!$p['file'] && $p['nbyp']>0 && is_numeric($p['page'])){if($p['page']==0)$p['page']=1;

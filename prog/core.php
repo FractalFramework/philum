@@ -37,7 +37,7 @@ foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[',':'.$v.']',$id],$v,att($rb[$v
 $r=['stabilo'=>'highlight','art'=>'article','web'=>'web2','video'=>'video','twitter'=>'tw'];//'h'=>'big','b'=>'bold','i'=>'italic','u'=>'underline','s'=>'fontsize','q'=>'quote2','k'=>'strike','list'=>'textlist',,'toggle'=>'bubble','appbt'=>'window'
 foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[',':'.$k.']',$id],picto($v,16),att($rb[$k]??$k));
 $r=sesmk('usrconn','',0);
-if($r)foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[','ß1:'.$k.']',$id],$k,att($v));
+if($r)foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[','|1:'.$k.']',$id],$k,att($v));
 //$ret.=togbub('mc,navs','trk_'.$id,'...');
 $ret.=togbub('mc,navs','ascii_'.$id,ascii(128578));
 return btn('nbp',$ret);}
@@ -158,7 +158,7 @@ $hid='bt'.$id; $j=$id.'_'.$f.'_'.ajx($v).'_'.ajx($o);
 $c=$v?'active':''; $t=$t?$t:($v?$v:'select...');
 if($ty==1)$h=input($id,$v,3); elseif($ty!=2)$h=hidden($id,$v); else $h='';
 //return togbub('hidj',$j,$t,$c).$h; //return lj('popbt','bubble_usg,hidslct___'.$j,$t,atd($hid)).$h;
-return lj('txtx','popup_hidj_'.$id.'_'.$hid.'_'.$j,$t,atd($hid)).$h;}//$hid dÈclenche bub
+return lj('txtx','popup_hidj_'.$id.'_'.$hid.'_'.$j,$t,atd($hid)).$h;}//$hid d√©clenche bub
 
 function slct_cases($id,$f,$v='',$o='',$t=''){$rid=randid();//hidslct
 $c=$v?' active':''; $t=$t?$t:($v?$v:'...'); $h=hidden($id,$v);
@@ -192,7 +192,7 @@ elseif(substr($f,0,3)=='../')return $f;
 elseif(strpos($f,'/')===false)return $h.'img/'.$f;
 elseif(strpos($f,'img/')!==false)return $h.$f;
 elseif(strpos($f,'app/')!==false)return $h.$f;
-elseif(substr($f,0,6)=='video/')return $h.''.$f;
+elseif(substr($f,0,7)=='video/')return $h.''.$f;
 elseif(strpos($f,'video/')!==false)return $h.'users/'.$f;
 elseif(strpos($f,'_datas/')!==false)return '/'.$h.''.$f;
 elseif(strpos($f,'/')!==false)return $h.'users/'.$f;
@@ -266,13 +266,13 @@ function conn_ref(){return array_keys(msql_read('system','connectors_all',''));}
 #ajax
 function ajx($v,$p=''){#dont edit!
 $r=['*','_','(star)']; $a=$p?1:0; $b=$p?0:1; $c=$p?0:2; $d=$p?2:0;
-$ra=[$r[$a],$r[$b],'_','&','+',"'",'"'];//,':','#','í','ì','î','/'
+$ra=[$r[$a],$r[$b],'_','&','+',"'",'"'];//,':','#','‚Äô','‚Äú','‚Äù','/'
 $rb=[$r[$c],$r[$d],'(und)','(and)','(add)','(quote)','(dquote)'];//,'(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)'
 if($v)$v=$p?str_replace($rb,$ra,$v):str_replace($ra,$rb,$v);
 return $v;}
 
 function decuri($d){return $d!=null?html_entity_decode($d):'';}
-function ajxg($d){$d=ajx($d,1); $d=decuri($d); return $d;}//
+function ajxg($d){return ajx($d,1);}//$d=decuri($d);
 function ajxr($res,$n=''){$r=explode('_',$res); $n=$n?$n:count($r);
 for($i=0;$i<$n;$i++)$ret[]=isset($r[$i])?ajxg($r[$i]):''; return $ret;}
 function ajxp($res,$p,$o){$r=ajxr($res);return [$r[0]??$p,$r[1]??$o];}//obs
@@ -303,7 +303,7 @@ return span(atc('fa fa-'.$d).ats($s).att($t),'');}
 function imgico($f,$sz='',$t=''){if(!$sz)$sz=4;
 return taga('img',['src'=>$f,'style'=>'vertical-align:-'.$sz.'px; border:0;','title'=>$t]);}
 function uicon($d,$p,$o=''){return $o.'/imgb/icons/'.($p?$p:'system/philum/16/').'/'.$d.'.png';}
-function icon($v,$t='',$h='',$jc=''){[$d,$p]=opt($v,'ß'); $f=uicon($d,$p);
+function icon($v,$t='',$h='',$jc=''){[$d,$p]=opt($v,'|'); $f=uicon($d,$p);
 return is_file($f)?imgico($jc.$f,$h,$t):$t;}
 function ico($d,$t=''){[$p,$c]=explode(':',$d); if($c=='icon')return icon($p,$t);
 elseif(is_numeric($c))return icosys($p,$c); elseif($c=='svg')return svg($p);
@@ -314,17 +314,17 @@ return $ret?nl2br($ret):'';}//stripslashes
 function hlpbt($j,$t=''){return togbub('msqa,syshlp',ajx($j),picto($t?$t:'question',18),'grey');}
 
 #cmd
-function unpack_conn($d){$r=split_right(':',$d,1);//pßo:c
-$p=split_one('ß',$r[0],1); return [$p[0],$p[1],$r[1]];}
-function unpack_conn_b($d){$r=split_right(':',$d,1);//p:cßb:c2//clbasic,menusj
-$p=split_right('ß',$r[0],1); return [$p[0],$p[1],$r[1]];}
-function unpack_mod($d){$r=split_right('ß',$d,1);//p:cßo
+function unpack_conn($d){$r=split_right(':',$d,1);//p|o:c
+$p=split_one('|',$r[0],1); return [$p[0],$p[1],$r[1]];}
+function unpack_conn_b($d){$r=split_right(':',$d,1);//p:c|b:c2//clbasic,menusj
+$p=split_right('|',$r[0],1); return [$p[0],$p[1],$r[1]];}
+function unpack_mod($d){$r=split_right('|',$d,1);//p:c|o
 $p=split_right(':',$r[0],1); return [$p[0],$p[1],$r[1]];}
-function subparams($d){[$p,$v]=cprm($d);//p1/p2ßp
+function subparams($d){[$p,$v]=cprm($d);//p1/p2|p
 if($v)[$x,$y]=explode('/',$p); else{$v=$p; $x=''; $y='';} return [$v,$x,$y];}
-function subparams_a($d){[$v,$p]=cprm($d);//pßp1/p2
+function subparams_a($d){[$v,$p]=cprm($d);//p|p1/p2
 [$x,$y,$p,$o,$d]=opt($p,'/',5); return [$v,$x,$y,$p,$o,$d];}
-function cprm($d){$n=strrpos($d,'ß');
+function cprm($d){$n=strrpos($d,'|');
 if($n===false)return [$d,'']; else return [substr($d,0,$n),substr($d,$n+1)];}
 function getconn($d){$p=$d; $c=''; $s=strrpos($d,':');
 if($s!==false){$p=substr($d,0,$s); $c=substr($d,$s);}

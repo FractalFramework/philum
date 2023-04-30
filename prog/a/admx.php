@@ -297,11 +297,11 @@ case('block'):$rh[$v]=hlpbt($v);break;
 case('module'):if($mod=='Page_titles')$rh[$v]=hlpbt('breadcrumb');
 	if($mod=='MenuBub')$rh[$v].=hlpbt('menubub').hlpbt('menubub_edit');
 	elseif($mod=='desktop')$rh[$v].=hlpbt('desklr');break;
-case('param'):if($arc[$v])$rh[$v]=self::admhlp($mod,$v);break;
+case('param'):if($arc[$v]??'')$rh[$v]=self::admhlp($mod,$v);break;
 case('title'):;break;
 case('condition'):$rh[$v]=hlpbt('mod_cond');break;
-case('command'):if($arc[$v])$rh[$v]=self::admhlp($mod,$v);break;
-case('option'):if($arc[$v])$rh[$v]=self::admhlp($mod,$v);
+case('command'):if($arc[$v]??'')$rh[$v]=self::admhlp($mod,$v);break;
+case('option'):if($arc[$v]??'')$rh[$v]=self::admhlp($mod,$v);
 	if($mod=='LOAD')$rh[$v].=hlpbt('art_render');break;
 case('template'):$rh[$v]=hlpbt($v);break;}}
 //fields//$rc
@@ -329,7 +329,7 @@ case('pop'):$rc[$v]=checkbox_j($rvs[$k],$rm[$v],$k);break;}
 //specials//$rc
 $rs=['description','edit','article'];
 foreach($rs as $k=>$v)switch($v){
-case('description'):if($arc[$v])$rc[$v]=divc('small',$arc[$v]);break;
+case('description'):if($arc[$v]??'')$rc[$v]=divc('small',$arc[$v]);break;
 case('edit'):$rc[$v]=$edit;break;
 case('article'):
 	if(sesr('line',$p))$rc[$v]=lkt('',htac('cat').$p,$p);

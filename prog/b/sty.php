@@ -1,4 +1,4 @@
-<?php //css_builder
+<?php 
 class sty{
 
 static function actions($p,$o,$prm){$res=$prm[0]??'';
@@ -75,7 +75,7 @@ case('herit_design'):[$qbb,$nbd]=explode('_',$o);
 	$defs=msql::read_b('design',$qbb.'_design_'.$nbd,'','',$defsb);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
 case('herit_clrset'):[$qbb,$nbd]=explode('_',$o);
-	$_SESSION['clrs'][$clrset]=msql_read('design',$qbb.'_clrset_'.$nbd,'');;
+	$_SESSION['clrs'][$clrset]=msql_read('design',$qbb.'_clrset_'.$nbd,'');
 	self::save_clr($noc); self::build_css($ftmp,$defs); break;
 case('addff'):$defs=self::defs_adder_ff($defs,$o);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
@@ -104,7 +104,7 @@ case('exit_design'):sesz('desgn'); $_SESSION['clrset']=''; ses::$adm['design']='
 	boot::define_mods(); boot::define_condition(); boot::define_clr(); return '/admin'; break;
 case('displaycss'):return nl2br(read_file($fcss)); break;
 case('displaycsstmp'):return nl2br(read_file($ftmp)); break;}
-return btn('txtyl',$p.': ok');}
+return btn('txtyl',$p.' '.$fcss.': ok');}
 
 static function exitbt(){
 ses::$adm['design']=lj('popbt','socket_sty,actions__url_exit*design','design:'.ses('desgn'));}
@@ -163,7 +163,7 @@ $ret.=self::cssactbt('invert_clr',nms(115),'self','');
 $ret.=self::cssactbt('make_public',$lh[4],'','');//make_public
 $ret.=self::cssactbt('make_public',$lh[5],'','1');//inform_public
 if($_SESSION['auth']>5){$r=msql::row('',$qb.'_design',$desgn); 
-	$desgname=!empty($r[0])?$r[0]:val($r,'name');
+	$desgname=!empty($r[0])?$r[0]:$r['name']??'';
 	if($desgname=='admin')$make='make_admin';
 	elseif($desgname=='global')$make='make_global';
 	else $make='make_default';
@@ -249,8 +249,8 @@ return $r;}
 #rename
 static function desname($qb,$desgn){
 return msql::val('users',$qb.'_design',$desgn);}
-static function dsnam_arr($res){$md=prmb(1);
-return [$res,array_part($_SERVER['HTTP_HOST'],'.',0),date('ymdHi',time()),$md];}
+static function dsnam_arr($res){
+return [$res,array_part($_SERVER['HTTP_HOST'],'.',0),date('ymdHi',time()),prmb(1)];}
 static function dsnamedt($qb,$desgn,$prm=[]){$res=$prm[0]??'';
 $nd=$qb.'_'.$desgn; $ret=self::desname($qb,$desgn);
 if($res=='init')return self::dsnmform('rnt',$nd,'',$ret?$ret:'table_name');
@@ -261,7 +261,7 @@ if($res && $res!='init'){
 	return self::dsnmform('rnt',$nd,$res,'');}
 return self::dsnmform('rnt',$nd,$ret,'');}
 
-static function dsnmform($id,$nd,$p,$v){ $ret='';
+static function dsnmform($id,$nd,$p,$v){$ret='';
 if(!$p){static $i; $i++; $ret.=input('inp'.$i,$v).' ';
 $ret.=lj('txtbox',$id.'_sty,dsnamedt_inp'.$i.'__'.$nd,'ok');}
 else $ret=lj('txtblc',$id.'_sty,dsnamedt_zero__'.$nd,$p);
@@ -285,7 +285,7 @@ if($rb)foreach($rb as $k=>$v){
 	if(is_array($v)){$taba=[]; $tabb=[];
 	$ra=msql_read('users',$k.'_design','');
 	foreach($v as $nb=>$bs){
-		$ds=val($bs,'design'); $cl=val($bs,'clrset');
+		$ds=$bs['design']??''; $cl=$bs['clrset']??'';
 		$na=isset($ra[$nb][0])?$ra[$nb][0]:$ds;//name
 		if($k==$qb)$tabt[$nb]=self::cssactbt('open_design',$na,'url',$ds);
 		else $tabt[$nb]=$nb;
@@ -294,7 +294,7 @@ if($rb)foreach($rb as $k=>$v){
 			$tabb[$nb]=self::cssactbt('herit_clrset',$bt,'self',$k.'_'.$ds);}}
 	if($taba)$nbd=count($taba); if($tabb)$nbc=count($tabb);
 	$tab[]=[btn('txtcadr',$k),'','']; $nb=count($taba);
-	for($i=0;$i<=$nb;$i++){$tab[]=[val($tabt,$i),val($taba,$i),val($tabb,$i)];}}}}
+	for($i=0;$i<=$nb;$i++){$tab[]=[$tabt[$i]??'',$taba[$i]??'',$tabb[$i]??''];}}}}
 return scroll($tab,tabler($tab),20,320,320);}//txtblc//txtx
 
 static function clrset_edit(){$ret='';
@@ -491,7 +491,7 @@ return $ret;}
 
 static function preview_ff($k,$v,$c){
 $nm=str_replace('-webfont','',$v[0]); 
-$str=ses('ffstr','AaBbCcDdEe0123éà;!');
+$str=ses('ffstr','AaBbCcDdEe0123Ã©Ã ;!');
 //$seeall=lj('txtx','pop_stylsall___','set');
 $opt=div(atd('fnt'.$k),self::preview_ff_p($k,$v)).br().br();
 return divs('font-family:'.$nm.'; font-size:'.$c.'px; line-height:'.round($c*1.2).'px;',$str).br().$opt;}
@@ -544,7 +544,7 @@ $max=$p*$no; $min=$max-$no; $ia=0; $rta=''; $rtb='';
 if($rc)foreach($rc as $k=>$v){$ia++; if($ia>=$min && $ia<$max && $v[0]){
 	$rta.='@font-face {'.self::css_ff($v[0]).'}'."\n"; $rtb.=preview_ff($k,$v,$c);}}
 $ret.=csscode($rta).$mnu.$hlp.$siz.$prp.$srch.br().br();
-$ret.=input('ffwr',$_SESSION['ffstr']??'AaBbCcDdEe0123éà','44');
+$ret.=input('ffwr',$_SESSION['ffstr']??'AaBbCcDdEe0123Ã©Ã ','44');
 $ret.=lj('txtx','ffwr_sesmake_ffwr__ffstr','set');
 $ret.=divd('scroll',divd('pop',$nbp.br().$rtb.$nbp)).br();
 //return csscode($rta).$nbp.br().$rtb.$nbp;
@@ -607,7 +607,7 @@ return divs($s.'padding:2px 4px; color:#'.$cb.'; background-color:#'.$clr,$t);}
 
 static function selectclr($p,$n){//stylclr
 $r=getclrs(); $n=$r?count($r):0; $ret='';
-for($i=0;$i<=$n;$i++){$ri=val($r,$i); $t=self::mnu_line_t($ri,$i);
+for($i=0;$i<=$n;$i++){$ri=$r[$i]??''; $t=self::mnu_line_t($ri,$i);
 	$ret.=lj('','bt'.$p.'_sty,setclr___'.$ri.'_'.$i.'_'.$p,$t);}
 return $ret;}
 
@@ -617,7 +617,7 @@ return togbub('sty,selectclr',$p.'_'.$n,$t).$h;}
 
 static function mnu_line_color($d,$p){$r=explode('|',$d);//txt|link|hover/a.c.hover
 $kr=getclrs(); $n=$kr?count($kr):0; $ret='';//pr($r);
-for($i=0;$i<=3;$i++){$ri=val($r,$i);
+for($i=0;$i<=3;$i++){$ri=$r[$i]??'';
 	$clrn=$ri=='undefined'||!$ri?'0':$ri; $nid=$i+1;
 	$kl=isset($kr[$clrn])?$kr[$clrn]:'';
 	$ret.=span(atc('cell').atd('bt'.$p.$nid),self::setclr($kl,$clrn,$p.$nid));}
@@ -765,11 +765,11 @@ $ret=str_replace([' ,','  ','a a',' }'],[',',' ','a','}'],$ret);//clean//{{
 write_file($fcss,$ret);}
 
 static function affect_rgba($d,$clr){$ret='';
-$r=explode('#',$d); $n=count($r); $clr[0]=''; for($i=0;$i<$n;$i++){$ri=val($r,$i);
+$r=explode('#',$d); $n=count($r); $clr[0]=''; for($i=0;$i<$n;$i++){$ri=$r[$i]??'';
 if(substr($ri,0,1)=='_'){$klr=strnext($ri,';,) '); $vlr=substr(trim($klr),1);
 	if(strpos($vlr,'.')){[$abs,$alp]=explode('.',$vlr);
-		$ret.=str_replace($klr,hexrgb(val($clr,$abs),$alp/10),$ri);}
-	else $ret.='#'.str_replace($klr,val($clr,$vlr),$ri);}
+		$ret.=str_replace($klr,hexrgb($clr[$abs]??0,$alp/10),$ri);}
+	else $ret.='#'.str_replace($klr,$clr[$vlr]??'',$ri);}
 elseif($i)$ret.='#'.$ri; else $ret.=$ri;}
 return $ret;}
 
@@ -787,7 +787,7 @@ if($defs)foreach($defs as $k=>$v){$css_name=self::name_classe($v); $v=arr($v,7);
 		for($i=3;$i<6;$i++){
 		$conn=expl('|',$v[$i],4);
 			for($o=0;$o<=3;$o++){$cn=isset($conn[$o])?$conn[$o]:'';
-				if(is_numeric($cn))$cur='#'.val($clr,$cn).';';
+				if(is_numeric($cn))$cur='#'.($clr[$cn]??'').';';
 				//elseif(is_numeric(hexdec($cn)))$cur='#'.$cn.';';
 				elseif($cn)$cur='#'.$cn.';';
 				else $cur='';

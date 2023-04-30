@@ -64,7 +64,7 @@ foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1);//rca
 		$tag=self::tag($va[0]);
 		$rca[$idb]=[$idb,$va[1],'0',$tag];
 		$rc[$idb][]=1;}} //pr($re);
-//l'id des pusr n'apparaît que s'ils sont suivis par un des suivis du groupe
+//l'id des pusr n'apparaÃ®t que s'ils sont suivis par un des suivis du groupe
 foreach($rk as $k=>$v){$ka=in_array_r($re,$v,1); if($ka){$kb=$re[$ka][0]; if($kb)$rn[$v]=$kb;}} //pr($rn); //[usr]=id
 foreach($rab as $k=>$v)if($v)foreach($v as $ka=>$va){$kb=$rn[$k]??'';
 	$ida=self::rid($kb); $idb=self::rid($va[0]); $n=count($rc[$idb]);

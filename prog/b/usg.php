@@ -30,7 +30,7 @@ static function yesno($g1,$g2){return offon($g1,$g2);}
 static function togno($g1,$g2){return togon($g1,$g2);}
 
 static function fbcall($u){
-$d=curl_get_contents($u); $d=utf8dec_b($d);
+$d=curl_get_contents($u); $d=($d);
 $ret=conv::html_detect($d,'<div class="_5pcr userContentWrapper"');
 if(!$ret)$ret=conv::html_detect($d,'<p class="_1q3v">');
 $ret.=div('',lkt('txtx',$u,pictxt('link',domain($u))));
@@ -83,7 +83,7 @@ $r=$_SESSION['iv'.$iv]; ses::$r['curdiv']=$cr_div;
 $jx='iv'.$iv.'_usg,playvideo___'.$iv.'_'.$cr_div.'_';
 $ret=divc('nbp right',self::nb_pages_j($r,$jx,$n));
 $ret.=tagb('h3',lk(htac('read').$r[$n][0],ma::suj_of_id($r[$n][0])));
-$ret.=video::any(strfrom($r[$n][1],'§'),$r[$n][0],3);
+$ret.=video::any(strfrom($r[$n][1],'|'),$r[$n][0],3);
 return $ret.br();}
 
 static function videoboard($p,$c,$o){static $iv; $iv++; $ra=[]; 

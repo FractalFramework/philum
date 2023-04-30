@@ -41,7 +41,7 @@ return $ret;}
 static function dev(){$ret=[];
 if(auth(4) or ses('dev')){
 	$ret[]=['dev','ajax','socket','dev__self_b','','','dev','circle-full'];
-	$ret[]=['dev2','ajax','socket','dev__self_c','','','dev','circle-half'];//triangle
+	//$ret[]=['dev2','ajax','socket','dev__self_c','','','dev','circle-half'];
 	$ret[]=['prod','ajax','socket','dev__self_','','','dev','circle-empty'];}
 if(auth(6)){
 	if(rstr(99))$ret[]=['twitletter','ajax','popup','tweetfeed,batch__3','','','dev','tw2'];
