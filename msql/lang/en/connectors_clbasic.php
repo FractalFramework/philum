@@ -8,4 +8,4 @@ $r=["_"=>['car','help'],
 "6"=>['/','/unexecuted line'],
 "7"=>[';','show work (dev)'],
 "8"=>['_PARAM','variable get from usage of connector or module'],
-"9"=>['_0','occurrence 0 of the current array (bidimensional only)']]; ?>
+"9"=>['_0','occurrence 0 of the current array (bidimensional only)']];

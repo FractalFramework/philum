@@ -6,12 +6,10 @@ static $qr;
 function __construct($r){if(!self::$qr)self::dbq($r);}
 
 static function dbq($r){
-self::$qr=new mysqli($r[0],$r[1],$r[2],$r[3]);
-self::$db=$r[3]; ses::$local=$r[5]??''?1:0; 
-$enc=isset($r[4]) && $r[4]==1?'utf8mb4':'latin1';
-ses::$enc=$enc=='utf8mb4'?'utf-8':'iso-8859-1';
-self::$qr->query('set names '.$enc);
-self::$qr->query('set character set '.$enc);}
+self::$qr=new mysqli($r[0],$r[1],$r[2],$r[3]); self::$db=$r[3];
+$enc=$r[4]??'utf-8'; $char=$enc=='utf-8'?'utf8mb4':'latin1';
+self::$qr->query('set names '.$char);
+self::$qr->query('set character set '.$char);}
 
 //job
 static function qd($d){return ses('qd').'_'.$d;}
@@ -64,7 +62,7 @@ if($p=='ar'){$rb=[]; while($r=self::qra($rq))$rb[]=$r; return $rb;}
 while($r=self::qrw($rq))if($r[0])switch($p){
 	case('k'):$rt[$r[0]]=($rt[$r[0]]??0)+1; break;//radd($rt,$r[0])
 	case('rv'):$rt[]=$r[0]; break;//r
-	case('kv'):$rt[$r[0]]=$r[1]; break;
+	case('kv'):$rt[$r[0]]=$r[1]??''; break;
 	case('kk'):$rt[$r[0]][$r[1]]=($rt[$r[0]][$r[1]]??0)+1; break;//radd($rt[$r[0]],$r[1])
 	case('vv'):$rt[]=[$r[0],$r[1]]; break;
 	case('kr'):$rt[$r[0]][]=$r[1]; break;
@@ -149,7 +147,7 @@ if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
 return $ret;}
 
 //ops
-static function setutf8(){self::$qr->query('set names utf8');}
+static function setutf8(){self::$qr->query('set names utf8mb4');}
 static function setlatin(){self::$qr->query('set names latin1');}
 static function tables($db){return self::call('show tables from '.$db,'rv');}
 static function resetdb($b,$n=1){self::qr('alter table '.ses($b).' auto_increment='.$n);}

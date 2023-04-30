@@ -12,5 +12,5 @@ $r=["_"=>['label','url','license','usage'],
 "10"=>['ajax_multithread','http://philum.fr','GPL','ajax'],
 "11"=>['picol','http://picol.org','Creative Commons','icons'],
 "12"=>['thenounproject','http://thenounproject.com','CC BY 3.0','icons'],
-"13"=>['FontForge','http://fontforge.org/','revised BSD','éditeur typographique'],
-"14"=>['typo Philum','philum.fr','GPL','pictographie']]; ?>
+"13"=>['FontForge','http://fontforge.org/','revised BSD','Ã©diteur typographique'],
+"14"=>['typo Philum','philum.fr','GPL','pictographie']];

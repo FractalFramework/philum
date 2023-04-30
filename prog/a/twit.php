@@ -117,11 +117,12 @@ return [$ret['suj'],$ret['msg'],$ret['day']];}
 //config
 static function slct_apikey($nd,$rid){$ret='';//$r=[1=>'dav8119',2=>'tlexfr'];
 $r=self::apikeys(); if($r)foreach($r as $i=>$nm)
-	$ret.=lj(active($i,$nd),$rid.'_twit,config__3_'.$i,$nm).' ';
+	$ret.=lj(active($i,$nd),$rid.'_twit,config__3_'.$i,$nm.'('.$i.')').' ';
 return divc('nbp',$ret);}
 
-static function config($nd){if(!$nd)$nd=self::apk();
-$rid='plg'.randid(); $nd=ses('apk',$nd); $ret='';
+static function config($nd){
+if($nd)ses('apk',$nd); else $nd=ses('apk'); if(!$nd)$nd=ses('apk',self::apk());
+$rid='plg'.randid(); $ret='';
 $r=msql::col('',nod('twit_'.$nd),0,1);
 $ret.=divc('twit',helps('twitter_oAuth')).br();
 $ret.=self::slct_apikey($nd,$rid);
@@ -430,7 +431,7 @@ $ref='twt'.substr($id,-8); $lng=ses('lng');
 //if($lg!=$lng)$ret.=lj('',$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,picto('translate'));
 if($lg!=$lng)$ret.=ljtog('','ynd'.$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,'ynd'.$ref.'_twit,playtxt___'.$id,picto('language'));
 //$ret.=lkt('',self::lk($nm,$id),picto('chain'));
-$ret.=lkt('','plug/twit/'.$id,picto('url'));
+$ret.=lkt('','app/twit/'.$id,picto('url'));
 $ret=divc('nbp',$ret);
 $txt=divd('ynd'.$ref,str_replace('|','-',$txt));//nl2br
 $rb=explode(' ',$med);
@@ -589,8 +590,7 @@ $t=self::init(); $q=$t->read($p);
 return $q;}
 
 //economizer
-static function search($p,$maxid,$o){
-$rid=randid('tw');
+static function search($p,$maxid,$o){$rid=randid('tw');
 if($o=='tl')$q='screen_name="'.$p.'" ';
 elseif($dt=strtotime($p))$q='date<"'.$dt.'"';
 else $q='(text like "%'.$p.'%" or mentions like "%'.$p.'%") ';

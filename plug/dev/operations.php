@@ -36,7 +36,7 @@ $d=sql('msg','qdm','v','id='.$id); $idb=between($d,'[',':read]');
 if(is_numeric($idb)){
 $hub=sql('nod','qda','v','id='.$idb);
 $ret=sql('msg','qdm','v','id='.$idb);
-$ret.="\n".'['.$idb.'§'.$hub.':pub]';
+$ret.="\n".'['.$idb.'|'.$hub.':pub]';
 sql::upd('qdm',['msg'=>$ret],$id);}
 return $ret;}
 

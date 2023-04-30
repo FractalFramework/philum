@@ -46,12 +46,12 @@ foreach($dom->childNodes as $v){//pr($v);
 	$c=$v->nodeName;
 	$p=domattr($v,'p');
 	$o=domattr($v,'o');
-	//echo $p.'§'.$o.':'.$c.'/'.$t.br();
+	//echo $p.'|'.$o.':'.$c.'/'.$t.br();
 	if(in_array($c,$ra) or in_array($c,$rb))$p=$t;
 	elseif(in_array($c,$rc))$o=$t;
 	///if($t)$ret.='['.$t.':'.$c.']';
 	//if(in_array($c,$rb))$ret.='['.$t.':'.$c.']';
-	$ret.='['.$p.($o?'§'.$o:'').':'.$c.']';}
+	$ret.='['.$p.($o?'|'.$o:'').':'.$c.']';}
 return $ret;}
 
 static function xhtml2conn($d){

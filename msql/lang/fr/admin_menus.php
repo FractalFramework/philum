@@ -4,4 +4,4 @@ $r=["_"=>['category'],
 "Builders"=>['Utils'],
 "Microsql"=>['Msql'],
 "Articles"=>['Articles'],
-"User"=>['Users']]; ?>
+"User"=>['Users']];

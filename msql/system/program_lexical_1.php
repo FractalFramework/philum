@@ -36,4 +36,4 @@ $r=["_"=>['syntax','usage'],
 "34"=>['w','width, where'],
 "35"=>['wh','where'],
 "36"=>['x','confiscated, eraser'],
-"37"=>['z','trash']]; ?>
+"37"=>['z','trash']];

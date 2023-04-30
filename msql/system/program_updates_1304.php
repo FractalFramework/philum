@@ -1,128 +1,128 @@
 <?php //msql/program_updates_1304
 $r=["_"=>['day','text'],
 "1"=>['0401','- externalisation dans un plugin de tout ce qui concerne les stats (8Ko) ;
-- une milliseconde est ajoutÈe entre chaque enregistrement du batch (Èvite les mauvais tris, quand param/art_order est sur DAY au lieu de ID) ;
-- amÈlioration de la dÈtection d\'ancres : appliquÈe d\'office par dÈfaut, prend en compte de nouveaux patterns ;
+- une milliseconde est ajout√©e entre chaque enregistrement du batch (√©vite les mauvais tris, quand param/art_order est sur DAY au lieu de ID) ;
+- am√©lioration de la d√©tection d\'ancres : appliqu√©e d\'office par d√©faut, prend en compte de nouveaux patterns ;
 - rebuild_cache en ajax ;
 - fix pb de largeur en appelant le site dans une iframe dans une popup ;'],
 "2"=>['0402','- francisation des restrictions
 - les 4 templates pub, titles, tracks et book sont personnalisables individuellement via les restrictions de l\'onglet \'local\'
-- meilleure diffÈrenciation entre templates publics et privÈs dans l\'admin, et du transport de l\'un vers l\'autre'],
-"3"=>['0402','- amÈlioration du fonctionnement du frein aux modules d\'articles (rstr60) qui affiche un bouton qui appelle le contenu sur place ;
--  le template prend en charge le paramËtre width du module art_mod, ce qui rend sa largeur contrÙlable \"de l\'extÈrieur\" ; la largeur du content prÈvoit l\'arrivÈe du module d\'article ;'],
-"4"=>['0403','- petite amÈlioration du fonctionnement du AMT : l\'Èchec incrÈmente la temporalitÈ des ÈvÈnements
-- amÈlioration de la prÈsentation de la console : on peut crÈer et appliquer une table sur place
-- le moteur de recherche exclut en mode boolÈen une petite somme de mots courants
+- meilleure diff√©renciation entre templates publics et priv√©s dans l\'admin, et du transport de l\'un vers l\'autre'],
+"3"=>['0402','- am√©lioration du fonctionnement du frein aux modules d\'articles (rstr60) qui affiche un bouton qui appelle le contenu sur place ;
+-  le template prend en charge le param√®tre width du module art_mod, ce qui rend sa largeur contr√¥lable \"de l\'ext√©rieur\" ; la largeur du content pr√©voit l\'arriv√©e du module d\'article ;'],
+"4"=>['0403','- petite am√©lioration du fonctionnement du AMT : l\'√©chec incr√©mente la temporalit√© des √©v√©nements
+- am√©lioration de la pr√©sentation de la console : on peut cr√©er et appliquer une table sur place
+- le moteur de recherche exclut en mode bool√©en une petite somme de mots courants
 - le LOAD accepte les hypertags avec des accents
-- grande somme de dÈbugs : inscription, menus admin, auto-rÈparation des modules critiques, accËs aux designs publics, etc...'],
-"5"=>['0404','# Inauguration du nouveau procÈdÈ de menus \'bubbles\' : des popups qui s\'ouvrent en menu ‡ tiroirs, en explorant des sous-modules de type \'Apps\' (hiÈrarchies de type dossier virtuel comme le Finder). phase 1/3 : mise en place des dispositions ajax, des css \'bubs\', physiquement opÈrationnel, remplacera les menus dÈroulants en css'],
-"6"=>['0404','- petit correctif pour pas que soit gÍnant l\'ajustement automatique de la taille des champs de texte 
-- ajout du connecteur \'popart\' (Áa manquait aux 7 autres du mÍme genre), permet d\'ouvrir un article philum, local ou distant, dans une popup. utilisÈ dans le \'about\' pour afficher notre pub
-- ajout d\'un bouton d\'Èdition \'test\' dans l\'Èditeur pour prÈvisualiser avant de sauver ;
-- ajout du bouton d\'Èdition \'findconn\' qui sÈlectionne le connecteur autour du focus, trËs pratique'],
-"7"=>['0405','# procÈdÈ Bubble, phase 2/3 :
-- crÈation de tables msql volatiles
-- adjonction de la mÈthode Apps
-- regÈnÈration des menus de l\'Admin'],
-"8"=>['0406','# procÈdÈ Bubble, phase 2,5/3 :
-- le chargement des bulles est rendu progressif au fur et ‡ mesure de la navigation (au lieu de tout charger d\'un coup)
-- les rÈsultats sont mises en cache
-- les donnÈes dÈj‡ affichÈes une fois n\'ont plus besoin d\'Ítre chargÈes ‡ nouveau
-- le design des bulles dÈpend du type de contenu (par dÈfaut affiche des bulles vides)
+- grande somme de d√©bugs : inscription, menus admin, auto-r√©paration des modules critiques, acc√®s aux designs publics, etc...'],
+"5"=>['0404','# Inauguration du nouveau proc√©d√© de menus \'bubbles\' : des popups qui s\'ouvrent en menu √† tiroirs, en explorant des sous-modules de type \'Apps\' (hi√©rarchies de type dossier virtuel comme le Finder). phase 1/3 : mise en place des dispositions ajax, des css \'bubs\', physiquement op√©rationnel, remplacera les menus d√©roulants en css'],
+"6"=>['0404','- petit correctif pour pas que soit g√™nant l\'ajustement automatique de la taille des champs de texte 
+- ajout du connecteur \'popart\' (√ßa manquait aux 7 autres du m√™me genre), permet d\'ouvrir un article philum, local ou distant, dans une popup. utilis√© dans le \'about\' pour afficher notre pub
+- ajout d\'un bouton d\'√©dition \'test\' dans l\'√©diteur pour pr√©visualiser avant de sauver ;
+- ajout du bouton d\'√©dition \'findconn\' qui s√©lectionne le connecteur autour du focus, tr√®s pratique'],
+"7"=>['0405','# proc√©d√© Bubble, phase 2/3 :
+- cr√©ation de tables msql volatiles
+- adjonction de la m√©thode Apps
+- reg√©n√©ration des menus de l\'Admin'],
+"8"=>['0406','# proc√©d√© Bubble, phase 2,5/3 :
+- le chargement des bulles est rendu progressif au fur et √† mesure de la navigation (au lieu de tout charger d\'un coup)
+- les r√©sultats sont mises en cache
+- les donn√©es d√©j√† affich√©es une fois n\'ont plus besoin d\'√™tre charg√©es √† nouveau
+- le design des bulles d√©pend du type de contenu (par d√©faut affiche des bulles vides)
 - ajout d\'une routine de comportement des bulles et de leur contenu (recherche, ajout d\'article et batch : loading, auto-fermeture)'],
-"9"=>['0407','# procÈdÈ Bubble, phase 3/3 :
+"9"=>['0407','# proc√©d√© Bubble, phase 3/3 :
 - ajout des menus msql, qui joint le plupart des tables
-- ajout de l\'icÙne \'arts\' qui renvoie les articles du cache ;
-- ehancements : animation de la fermeture, fadings, fermeture automatique, dÈtachement dans une popup ;
-- suppression de 10Ko de code (contre 14 ajoutÈs) et de 19 classes css (#menuA, Global) des anciens types de menus ; les pages sont toutes allÈgÈes de 11 ‡ 15 Ko ‡ cause de l\'absence de menu prÈdÈfini.'],
-"10"=>['0408','nombreux petits ajustements liÈs ‡ l\'implantation de des bulles'],
-"11"=>['0408','- meilleur calage des menus bulles qui dÈpassent
-- menu admin en bubbles (celui de derriËre) par un menu bubble : 31 classes css supprimÈes (#menuH, design admin)
+- ajout de l\'ic√¥ne \'arts\' qui renvoie les articles du cache ;
+- ehancements : animation de la fermeture, fadings, fermeture automatique, d√©tachement dans une popup ;
+- suppression de 10Ko de code (contre 14 ajout√©s) et de 19 classes css (#menuA, Global) des anciens types de menus ; les pages sont toutes all√©g√©es de 11 √† 15 Ko √† cause de l\'absence de menu pr√©d√©fini.'],
+"10"=>['0408','nombreux petits ajustements li√©s √† l\'implantation de des bulles'],
+"11"=>['0408','- meilleur calage des menus bulles qui d√©passent
+- menu admin en bubbles (celui de derri√®re) par un menu bubble : 31 classes css supprim√©es (#menuH, design admin)
 - externalisation des fonctions meta et bubble (13 et 7Ko en moins pour les autres appels ajax)'],
-"12"=>['0409','- toutes les images sont renommÈes en randomname et la dÈtection inclue les images php (images sans nom)
-- ajout d\'un bouton \'test\' des css en cours d\'Èdition
-- Èmulation de la dÈsirÈe fonction javascript \'onClickOutside\' pour fermer les bulles'],
-"13"=>['0410','- adaptation du module \'submenus\' au systËme des bulles ;
-- suppression des 17 classes associÈes \'menuH\' du css \'global\', et les 17 du design par dÈfaut
+"12"=>['0409','- toutes les images sont renomm√©es en randomname et la d√©tection inclue les images php (images sans nom)
+- ajout d\'un bouton \'test\' des css en cours d\'√©dition
+- √©mulation de la d√©sir√©e fonction javascript \'onClickOutside\' pour fermer les bulles'],
+"13"=>['0410','- adaptation du module \'submenus\' au syst√®me des bulles ;
+- suppression des 17 classes associ√©es \'menuH\' du css \'global\', et les 17 du design par d√©faut
 - ajout du connecteur \"bubble\" qui fait comme le module \'submenus\' (avec les menus sur une ligne)'],
-"14"=>['0411','- nouvelle promo, avec 3 slideshows et une centaine d\'images commentÈes : http://philum.fr/129
-- amÈlioration de la commoditÈ et petites rÈparations au moment de la crÈation des slideshows'],
-"15"=>['0411','- rÈnovation de la radio et du jukebox, qui sont un peut vieillots...'],
-"16"=>['0412','- ajout du module \'Wall\', systËme de publication rapide (commentaires attachÈs ‡ un paramËtre)
-- petit effort pour rendre l\'ajout de commentaire sans rÈafficher les autres
-- ajout de messages d\'alertes dont un pour les pdf (nÈcessite google) 
-- correctif dÈtection de la racine des rÈpertoires des articles qui voyagent dans les c‚bles'],
-"17"=>['0413','- rstr 70 : retape, dÈclenche une conversion des anciennes specs (double accolades, br dans le code, anciens connecteurs)
-- ajout de la page ajax ‡ la racine dans l\'update (reliftÈ en passant) : une ligne change car on va conditionner l\'accËs ‡ ajxf'],
+"14"=>['0411','- nouvelle promo, avec 3 slideshows et une centaine d\'images comment√©es : http://philum.fr/129
+- am√©lioration de la commodit√© et petites r√©parations au moment de la cr√©ation des slideshows'],
+"15"=>['0411','- r√©novation de la radio et du jukebox, qui sont un peut vieillots...'],
+"16"=>['0412','- ajout du module \'Wall\', syst√®me de publication rapide (commentaires attach√©s √† un param√®tre)
+- petit effort pour rendre l\'ajout de commentaire sans r√©afficher les autres
+- ajout de messages d\'alertes dont un pour les pdf (n√©cessite google) 
+- correctif d√©tection de la racine des r√©pertoires des articles qui voyagent dans les c√¢bles'],
+"17"=>['0413','- rstr 70 : retape, d√©clenche une conversion des anciennes specs (double accolades, br dans le code, anciens connecteurs)
+- ajout de la page ajax √† la racine dans l\'update (relift√© en passant) : une ligne change car on va conditionner l\'acc√®s √† ajxf'],
 "18"=>['0413','- fix pb wyswyg prend pas effet quand on clic sur le textarea
-- fix enregistrement AMT dans l\'Èditeur sText
-- fix s\'y reprendre ‡ deux fois pour dÈclencher une recherche
-- fix bug critique, pour pas que \'retape\' ne soit dÈclenchÈ lors de la lecture d\'un commentaire'],
-"19"=>['0413','- moteur de recherche : la virgule (,) permet une recherche boolÈenne sur des termes contenant des espaces( trËs pratique)
+- fix enregistrement AMT dans l\'√©diteur sText
+- fix s\'y reprendre √† deux fois pour d√©clencher une recherche
+- fix bug critique, pour pas que \'retape\' ne soit d√©clench√© lors de la lecture d\'un commentaire'],
+"19"=>['0413','- moteur de recherche : la virgule (,) permet une recherche bool√©enne sur des termes contenant des espaces( tr√®s pratique)
 - ajout du module de rendu d\'article \'read\' (preview|full|false|auto|read) : ne retourne que le contenu (sites de showcase)'],
-"20"=>['0414','- les Apps peut Ítres publiques ou privÈes
-- les menus de l\'admin tiennent (‡ nouveau) compte du niveau d\'autorisation'],
+"20"=>['0414','- les Apps peut √™tres publiques ou priv√©es
+- les menus de l\'admin tiennent (√† nouveau) compte du niveau d\'autorisation'],
 "21"=>['0415','- nouvelle gestion des pages en ajax, marche aussi pour les modules (y compris le moteur de recherche)
-- fix pb numÈrotation des menus ajax quand certains sont dÈsactivÈs ;
+- fix pb num√©rotation des menus ajax quand certains sont d√©sactiv√©s ;
 - fix pb localisation de la source des stats (depuis leur externalisation)'],
-"22"=>['0416','normalisation des css avec le webkit (open source alors OK) utilisÈ par Chrome et Safari (mÍme si Áa fait un peu tarte d\'avoir plusieurs dÈfinitions d\'une dÈclaration)'],
-"23"=>['0417','le login auto est conditionnÈ par la reconnaissance IP'],
-"24"=>['0418','- l\'option du desktop dÈfinit le jeu de couleur du dÈgradÈ du fond d\'Ècran
-- le connecteur :pop permet d\'ouvrir le contenu dans une popup [hello worldßbutton:bub]
-- l\'importateur d\'images Ètait f‚chÈ avec les .jpEg
-- dÈsormais toutes les images renommÈe avec un randid()
-- remise ‡ niveau de l\'auto-rÈparation des modules critiques (absence de paramËtre autant qu\'absence de module)
+"22"=>['0416','normalisation des css avec le webkit (open source alors OK) utilis√© par Chrome et Safari (m√™me si √ßa fait un peu tarte d\'avoir plusieurs d√©finitions d\'une d√©claration)'],
+"23"=>['0417','le login auto est conditionn√© par la reconnaissance IP'],
+"24"=>['0418','- l\'option du desktop d√©finit le jeu de couleur du d√©grad√© du fond d\'√©cran
+- le connecteur :pop permet d\'ouvrir le contenu dans une popup [hello world|button:bub]
+- l\'importateur d\'images √©tait f√¢ch√© avec les .jpEg
+- d√©sormais toutes les images renomm√©e avec un randid()
+- remise √† niveau de l\'auto-r√©paration des modules critiques (absence de param√®tre autant qu\'absence de module)
 - les messages d\'alerte s\'affichent dans une popup'],
-"25"=>['0419','nouvelle version de la typo \'philum\' complËtement remaniÈe, en 16px, ajout d\'icÙnes pour le Finder'],
-"26"=>['0420','un truc gÈnial : 
+"25"=>['0419','nouvelle version de la typo \'philum\' compl√®tement remani√©e, en 16px, ajout d\'ic√¥nes pour le Finder'],
+"26"=>['0420','un truc g√©nial : 
 - ajout du meta \'folder\'
 - ajout du module \'desktop_varts\' (virtual articles)
-= les articles peuvent figurer dans le Desktop et on peut naviguer dans les rÈpertoires virtuels'],
-"27"=>['0421','- le param \'auto\' du type de sous-modules \'arts\', en plus de renvoyer le titre de l\'article ‡ la place du bouton, renvoie la miniature de l\'image. (par dÈfaut depuis \'desktop_folder\')'],
-"28"=>['0421','- desktop_varts reÁoit en paramËtre une ligne de commande d\'article (cat=public) pour restreindre les rÈsultats ‡ cette condition
-- ajout d\'aides et de cohÈrence dans l\'Èditeur de sous-modules
-- ajout du module desktop_arts : comme desktop_varts sauf que les rÈpertoires sont les catÈgories (n\'utilise pas les rÈpertoires virtuels)'],
-"29"=>['0421','- ajout du module desktop_files : affiche les fichiers partagÈs dans le Desktop, param = global ou local, option = chemin rÈel ou virtuel
-- le sous-modules \'file\' renvoie la miniature de l\'image. (par dÈfaut depuis \'desktop_files)'],
-"30"=>['0422','- fix pb cohÈrence des icÙnes dans les systËme de navigation ajax
+= les articles peuvent figurer dans le Desktop et on peut naviguer dans les r√©pertoires virtuels'],
+"27"=>['0421','- le param \'auto\' du type de sous-modules \'arts\', en plus de renvoyer le titre de l\'article √† la place du bouton, renvoie la miniature de l\'image. (par d√©faut depuis \'desktop_folder\')'],
+"28"=>['0421','- desktop_varts re√ßoit en param√®tre une ligne de commande d\'article (cat=public) pour restreindre les r√©sultats √† cette condition
+- ajout d\'aides et de coh√©rence dans l\'√©diteur de sous-modules
+- ajout du module desktop_arts : comme desktop_varts sauf que les r√©pertoires sont les cat√©gories (n\'utilise pas les r√©pertoires virtuels)'],
+"29"=>['0421','- ajout du module desktop_files : affiche les fichiers partag√©s dans le Desktop, param = global ou local, option = chemin r√©el ou virtuel
+- le sous-modules \'file\' renvoie la miniature de l\'image. (par d√©faut depuis \'desktop_files)'],
+"30"=>['0422','- fix pb coh√©rence des ic√¥nes dans les syst√®me de navigation ajax
 - fix pb de condition dans le menu Apps
 - correctifs graphiques et ajout de 11 autres signes dans la typo philum (version 7g)
-- fix pg partage des modifs des rÈpertoires virtuels'],
-"31"=>['0423','- rÈÈcriture du plugin \'chat\', entiËrement en Msql ;
-- ajout du plugin \'chatxml\', entre serveurs, multi-canaux, accepte les miniconn (et dans les Apps par dÈfaut)
-- ajout des miniconnecteurs, permet de rÈdiger la mise en forme sans les crochets:b
+- fix pg partage des modifs des r√©pertoires virtuels'],
+"31"=>['0423','- r√©√©criture du plugin \'chat\', enti√®rement en Msql ;
+- ajout du plugin \'chatxml\', entre serveurs, multi-canaux, accepte les miniconn (et dans les Apps par d√©faut)
+- ajout des miniconnecteurs, permet de r√©diger la mise en forme sans les crochets:b
 - et ajout du module \'chatxml\''],
-"32"=>['0424','amÈlioration substantielle du Desktop :
-- simplification de la fenÍtre d\'Èdition des Apps 
-- on peut afficher le premier niveau du Desktop en mode \'icÙnes de bureau\'
-- le module \'desktop\' renvoie dÈsormais les icÙnes de bureau, sÈparÈment de l\'effacement du contenu, confiÈe ‡ un module \'deskload\' (les actions sont distinctes)
-- la condition \'tools\' est renommÈe \'desk\', plus comprÈhensible, ‡ part que toutes vos Apps sont invalidÈes, il faut soit les renommer soit recharger les valeurs par dÈfaut (trËs conseillÈ)'],
-"33"=>['0424','- les commentaires utilisent dÈsormais une sÈrie minimale de connecteurs
-- les liens vers des vidÈos sont tous interprÈtÈs en :popvideo'],
-"34"=>['0425','- amÈlioration de la prÈsentation des Apps prÈdÈfinies
+"32"=>['0424','am√©lioration substantielle du Desktop :
+- simplification de la fen√™tre d\'√©dition des Apps 
+- on peut afficher le premier niveau du Desktop en mode \'ic√¥nes de bureau\'
+- le module \'desktop\' renvoie d√©sormais les ic√¥nes de bureau, s√©par√©ment de l\'effacement du contenu, confi√©e √† un module \'deskload\' (les actions sont distinctes)
+- la condition \'tools\' est renomm√©e \'desk\', plus compr√©hensible, √† part que toutes vos Apps sont invalid√©es, il faut soit les renommer soit recharger les valeurs par d√©faut (tr√®s conseill√©)'],
+"33"=>['0424','- les commentaires utilisent d√©sormais une s√©rie minimale de connecteurs
+- les liens vers des vid√©os sont tous interpr√©t√©s en :popvideo'],
+"34"=>['0425','- am√©lioration de la pr√©sentation des Apps pr√©d√©finies
 - nouveau gestionnaire de positionnement des modules (et sous-modules)
-- nouvelles vidÈos dans le showroom : defcons, batch, et usertags
-- dans les articles, les @adresses Twitter sont dÈtectÈs et appellent le flux dans une popup'],
+- nouvelles vid√©os dans le showroom : defcons, batch, et usertags
+- dans les articles, les @adresses Twitter sont d√©tect√©s et appellent le flux dans une popup'],
 "35"=>['0426','chatXml : 
-- les miniconn marchent en sÈrie : test:b:i:u
-- on peut appeler d\'autres #chaÓnes avec le #
-- fonctionne en n\'Ètant pas loguÈ'],
-"36"=>['0426','- la rstr 48 Ètait stupide : auto-update devient un paramËtre serveur et rstr 48 devient \'login\' pour ne pas afficher le login au public
-- amÈliorations du gestionnaire Apps'],
-"37"=>['0427','- amÈlioration des miniconn : miniatures, connecteurs :video, :room, picto ;
-- partages de ressources avec les smallconn (vrais connecteurs destinÈs au public), notamment pour l\'itÈration de type :b:i:u
+- les miniconn marchent en s√©rie : test:b:i:u
+- on peut appeler d\'autres #cha√Ænes avec le #
+- fonctionne en n\'√©tant pas logu√©'],
+"36"=>['0426','- la rstr 48 √©tait stupide : auto-update devient un param√®tre serveur et rstr 48 devient \'login\' pour ne pas afficher le login au public
+- am√©liorations du gestionnaire Apps'],
+"37"=>['0427','- am√©lioration des miniconn : miniatures, connecteurs :video, :room, picto ;
+- partages de ressources avec les smallconn (vrais connecteurs destin√©s au public), notamment pour l\'it√©ration de type :b:i:u
 - tickets et preview tracks utilisent miniconn
 - preview article : sconn
 - chat et tracks : sconn + miniconn'],
 "38"=>['0427','- ajout du connecteur \':chatxml\', permet d\'ouvrir un chat (comme :room dans les miniconn)
-- ajout du connecteur \':modpop\', le mÍme que \':module\', permet d\'ouvrir un module dans une popup (ce qu\'on pouvait faire avec \':apps\')'],
+- ajout du connecteur \':modpop\', le m√™me que \':module\', permet d\'ouvrir un module dans une popup (ce qu\'on pouvait faire avec \':apps\')'],
 "39"=>['0428','- remise en forme du codeline basic
-- Èdition de la nouvelle typo \'microsys4\' et son pendant \'microsys4l\', la typo du logo Philum'],
-"40"=>['0429','- encore des modifs sur les typos + systËme pour qu\'elles soient chargÈes correctement
-- modernisation du design global et par dÈfaut'],
-"41"=>['0430','- correctif de sÈcuritÈ (n\'importe qui pouvait se loguer...)
+- √©dition de la nouvelle typo \'microsys4\' et son pendant \'microsys4l\', la typo du logo Philum'],
+"40"=>['0429','- encore des modifs sur les typos + syst√®me pour qu\'elles soient charg√©es correctement
+- modernisation du design global et par d√©faut'],
+"41"=>['0430','- correctif de s√©curit√© (n\'importe qui pouvait se loguer...)
 - patch d\'optimisation des tables msql (18 changements...)
-- la popup d\'Èdition des css se relance quand on recherge la page (commoditÈ)
-- les css rendus publics n\'Ètaient pas visibles dans le sÈlecteur de design parce que leur nom n\'Ètait pas signalÈ enregistrÈ ;
-- un module trËs inutile, csscode, permet d\'appeler des fonction prÈdÈfinies (pour la dev des pictos) ;
-- fond d\'Ècran : on peut signaler une image dans l\'option du desktop au lieu des couleurs']]; ?>
+- la popup d\'√©dition des css se relance quand on recherge la page (commodit√©)
+- les css rendus publics n\'√©taient pas visibles dans le s√©lecteur de design parce que leur nom n\'√©tait pas signal√© enregistr√© ;
+- un module tr√®s inutile, csscode, permet d\'appeler des fonction pr√©d√©finies (pour la dev des pictos) ;
+- fond d\'√©cran : on peut signaler une image dans l\'option du desktop au lieu des couleurs']];

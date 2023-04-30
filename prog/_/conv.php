@@ -153,7 +153,7 @@ if($txt){
 	$txt=utmsrc($txt); $txt=preg_replace("/(\n)|(\t)/",'',$txt);
 	if(substr($txt,0,1)=='/')$txt=substr($txt,1);
 	if(substr($txt,-1,1)=='/')$txt=substr($txt,0,-1);
-	$d=self::delhook($d);}//lk§img not works
+	$txt=self::delhook($txt);}//lk§img not works
 elseif(strpos($bin,'src=')!==false){$tag='src='; $len=5; $im='ok';}
 else return $txa;//things with onclick
 $root=findroot(ses::$urlsrc); if($root==host())$root='';
@@ -368,8 +368,8 @@ case('hr'):$tagb='[--]'; break;
 case('span'):$b=self::dico($bin,$b); break;
 case('div'):$taga=$n.$n; $tagb=$n.$n;//$taga=$n;
 	if(strpos($bin,'class="notes')!==false){$taga='['; $tagb=':q]';} break;
-case('dt'):if(is_img(self::delhook($b)))$dt=trim($b); else $dd=trim($b); $b=''; break;//dl(dt.dd)
-case('dd'):$dd=trim($b); $b=''; break;
+case('dt'):if(is_img(self::delhook($b)))$dt=trim($b); else $dd.=trim($b).$n.$n; $b=''; break;//dl(dt.dd)
+case('dd'):$dd=trim($b).''; $b=''; break;
 case('dl')://prevent double img from <a<img
 	if($dt && strpos($dt,'§')){[$oa,$ob]=explode('§',self::delhook($dt));
 		if(is_img($oa))$dt=$oa; else $dt=$ob;}
@@ -475,7 +475,7 @@ if(strpos($bal,'<'.$aa_bal)!==false){$bab=strpos($v,'</'.$aa_bal,$ba+1);
 	if($bab!==false)$ba=self::recursearch($v,$bb,$bab,$aa_bal);}
 return $ba;}
 
-static function delhook($d){$d=trim($d);
+static function delhook($d){if(!$d)return''; $d=trim($d);
 if(substr($d,0,1)=='[' && substr($d,-1)==']')$d=substr($d,1,-1);
 return $d;}
 

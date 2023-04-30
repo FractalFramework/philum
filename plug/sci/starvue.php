@@ -37,8 +37,8 @@ if($r)foreach($r as $k=>$v){
 	//svg::circle($x,$y,$sz,$clr,'none',2);
 	$circ='['.$clr.','.$bdr.',1,,'.round($opac,2).':attr]['.$x.','.$y.','.round($sz,2).':circle]';
 	$tx='Hip'.$v['hip'].' ('.round($ds,2).' LY)';
-	//svg::$ret[]='['.$clr.',none,1:attr][strv_starvue;call__2_'.$v['hip'].'§'.$t.':lj]';
-	svg::$ret[]='['.$tx.',star;info___'.$v['hip'].'_hip§'.$circ.':bubj2]';
+	//svg::$ret[]='['.$clr.',none,1:attr][strv_starvue;call__2_'.$v['hip'].'|'.$t.':lj]';
+	svg::$ret[]='['.$tx.',star;info___'.$v['hip'].'_hip|'.$circ.':bubj2]';
 	$l=strlen($nm)*6; $xb=$x-26; $yb=$y+20;
 	if($xb+$l>$w){$xb=$x-$l;}
 	if($n<50)svg::lj($xb,$yb,$xs,$white,'popup_star;info___'.$v['hip'].'_hip',$nm);

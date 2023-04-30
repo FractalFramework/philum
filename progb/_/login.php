@@ -116,7 +116,7 @@ return lj('small','lgn_login,form',"password sent to user $usr $qmail");}
 
 #newuser
 static function adduser($qb,$usr,$psw,$mail,$newhub){$dayx=ses('dayx');
-$qdu=ses('qdu'); $mbrs="7::admin,"; $open=''; $ip=hostname();
+$qdu=ses('qdu'); $mbrs='7::admin,'; $open=''; $ip=hostname();
 if(prmb(11)>=6 or $newhub){
 	$open=1; $menus=$dayx; $hub=$usr;
 	[$rstr,$config]=self::ndprms_defaults();

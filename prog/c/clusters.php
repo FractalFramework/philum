@@ -107,7 +107,7 @@ foreach($r as $k=>$v)foreach($v as $ka=>$va){
 	$bt=self::viewone($id,$va[2]);
 	$rt[$k][]=divc('row',divc('cell',$va[1]).divb($bt,'cell','edt'.$va[2]));}
 return tabs($rt);
-return divc('table',implode_b('',$rt));}
+return divc('table',self::implode_b('',$rt));}
 
 static function implode_b($r,$a=''){$rb=[]; foreach($r as $k=>$v)
 	if(is_array($v))$rb=array_merge($rb,self::implode_b($v)); else $rb[]=$v;

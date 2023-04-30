@@ -90,4 +90,4 @@ $r=["_"=>['_menus_','usage','kljljk'],
 "88"=>['pi','plug','give number pi'],
 "89"=>['session','dev','option:call'],
 "90"=>['tools','system','tags and meta tools'],
-"91"=>['mail','internal','send mail']]; ?>
+"91"=>['mail','internal','send mail']];

@@ -6,4 +6,4 @@ $r=["_"=>['title'],
 "de"=>['Deutsh'],
 "it"=>['Italian'],
 "ru"=>['Russian'],
-"cn"=>['China']]; ?>
+"cn"=>['China']];

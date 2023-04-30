@@ -40,7 +40,7 @@ return divd('hubprm',$ret);}
 //core
 static function core_view_edit($rb,$s){
 $r=['static function'=>$rb[0],'variables'=>$rb[1],'usage'=>stripslashes($rb[2]),'return'=>$rb[3],'context'=>$rb[4]];
-$inp=input('crvw',str_replace(',','/',$rb[1]).'§'.$s.':core');
+$inp=input('crvw',str_replace(',','/',$rb[1]).'|'.$s.':core');
 $bt=ljb('txtbox','jumpText_insert_b',['crvw','txarea'],'insert');
 return on2cols($r,300,5).$inp.$bt.br();}
 
@@ -59,10 +59,10 @@ $r=msql::tri($r,0,'embed'); if($r)$cat=msql::cat($r,2);
 $ret=slctmnuj($cat,$js,$d,' ').br().br(); $cat=msql::tri($r,2,$d);//p($cat);
 if($d){$r=msql::tri($r,2,$d);
 	if($s){$ret.=divc('',nl2br(msql::val('lang','connectors_all',$s))).br();
-	$ins='§'.$s.':conn'; if($_SESSION['cur_cl']=='template')$ins='[value'.$ins.']';
+	$ins='|'.$s.':conn'; if($_SESSION['cur_cl']=='template')$ins='[value'.$ins.']';
 	$ret.=input('cnvw',$ins);
 	$ret.=ljb('txtbox','jumpText_insert_b',['cnvw','txarea'],'insert').br();
-	$ret.=btn('txtsmall2','use value§option if needed').br().br();}
+	$ret.=btn('txtsmall2','use value|option if needed').br().br();}
 	$ret.=slctmnuj($cat,$js.$d.'_',$s,br()).br();}//!
 return $ret;}
 
@@ -94,9 +94,9 @@ $ret.=divc('txtx',btn('txtblc','connector').' '.$r[2]);
 return div(atc('txtbox').ats('margin:4px;'),$ret);}
 //codeline
 static function clview($v,$t){
-$p=msql::val('system','connectors_codeline',$v); [$p,$o]=opt($p,'§');
+$p=msql::val('system','connectors_codeline',$v); [$p,$o]=opt($p,'|');
 $hlp=msql::val('lang','connectors_codeline',$v);
-$val=$p.($o?'§'.$o:'').':'.$v; if($t=='template')$val='['.$val.']';
+$val=$p.($o?'|'.$o:'').':'.$v; if($t=='template')$val='['.$val.']';
 $ret=divc('',$hlp).br().input('clvw',$val);
 $ret.=ljb('txtbox','jumpText_insert_b',['clvw','txarea'],'insert').br();
 return $ret;}
@@ -264,7 +264,7 @@ $r=ma::read_idy(0,'desc',$frm);
 return art::output_trk($r);}
 
 static function ifradmin($adm){$st=get('admin','=');
-return iframe('index.php?admin='.($adm?$adm:$st).'§680/500');}
+return iframe('index.php?admin='.($adm?$adm:$st).'|680/500');}
 
 static function modhlp($p=''){$ret=''; $nb=0;
 $mod=msql::prep('system','admin_modules');
@@ -372,7 +372,7 @@ for($i=1;$i<=$max;$i++)$rmb[$i]=$rm[$i]??''; $mv=implode(',',$rmb);
 $bt=lj('popsav','admprm_adm,cnfgsav_'.$mv.'_k_'.$sup.'_'.$max,picto('ok'));
 return tabs($r,'prm').$bt;}
 
-static function config($sup){
+static function config($sup){$prms=[];
 if($sup){$f=boot::cnf();
 	if(is_file($f))$prms=explode('#',read_file($f));
 	$ra=msql::prep('system','admin_config');}
@@ -588,8 +588,7 @@ if($cat){//champs
 	$ret.=lkc('txtx',htac('cat').$cat,pictxt('url','go'));
 	//$ret.=lj('txtx','admcnt_admin___all*arts',pictxt('view',$rub));
 	//$ret.=lj('txtx','admarts_admin___all*arts',picto('articles'));
-	$ret.=lkc('txtx','/?admin=all_arts&cat='.$cat,picto('view'));
-	}
+	$ret.=lkc('txtx','/?admin=all_arts&cat='.$cat,picto('view'));}
 return $ret;}
 
 static function adm_categories(){

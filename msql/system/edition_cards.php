@@ -5,4 +5,4 @@ $r=["_"=>['value'],
 "card_margin"=>['14'],
 "card_border"=>['1px dotted grey'],
 "page_width"=>['594'],
-"page_padding"=>['28']]; ?>
+"page_padding"=>['28']];

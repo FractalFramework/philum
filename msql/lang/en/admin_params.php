@@ -19,4 +19,4 @@ $r=["_"=>['description'],
 "23"=>['permissions for upload'],
 "25"=>['language'],
 "26"=>['articles languages'],
-"27"=>['thumbnail of articles - set the size: w/h']]; ?>
+"27"=>['thumbnail of articles - set the size: w/h']];

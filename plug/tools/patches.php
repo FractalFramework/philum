@@ -1,5 +1,5 @@
 <?php 
-class patches{//futf,msqlreform,splitreform
+class patches{
 
 /*static function conv($dr,$k,$v){$f=$dr.'/'.$v;
 $d=file_get_contents($f);
@@ -7,16 +7,18 @@ $d=str_replace('_menus_','_',$d);
 file_put_contents($f,$d);
 return $f;}*/
 
+#mysql
 static function dbsplitters(){
-//qr('UPDATE `pub_txt` SET `msg`=REPLACE(msg,"§","|");');
+if(!auth(6))return;
+qr('UPDATE `pub_txt` SET `msg`=REPLACE(msg,"§","|");');
 qr('UPDATE `pub_trk` SET `msg`=REPLACE(msg,"§","|");');
 }
 
-static function dbutf($p){
+static function dbutf($p){return;
+if(!auth(6))return;
 //$r=sqldb::$rt;
 //foreach($r as $k=>$v)$qb=qd($v);
-//SELECT *  FROM `pub_art` WHERE `suj` LIKE '%&#%';
-//$ra=sql::read2('id,suj','qda','kv','limit 0,100)');
+$ra=sql::read2('id,suj','qda','kv','limit 0,100)');
 //$ra=sql::read2('id,msg','qdm','kv','where msg LIKE "%&#%" order by id limit 1');
 $rb=[];
 foreach($ra as $k=>$v){$d=$v;
@@ -25,14 +27,53 @@ $d=str::html_entity_decode_b($d);
 //$d=utf8dec($d);
 ///$d=ascii2iso($v);
 $rb[$k]=$d;
-//sqlup('qda',['suj'=>$d],['id'=>$k],0);
+sqlup('qda',['suj'=>$d],['id'=>$k],0);
 //sqlup('qdm',['msg'=>$d],['id'=>$k],0);
-//$rb[$k]=' suj="'.sql::qres($d).'" where id='.$k;
 }
 eco($rb);
-//sql::qr('update '.ses('qda').' set '.implode(',',$rb),1);
 }
 
+//hubs
+static function hubarts($p,$o,$prm=[]){
+if(!auth(6))return;
+$rc=sql('hub,id','qdh','kv','');
+$r=sql('id,nod','qda','kv',''); $rt=[];
+foreach($r as $k=>$v)if($rc[$v]??'' && !is_numeric($v))
+	$rt[]=sqlup('qda',['nod'=>$rc[$v]],['id'=>$k]);
+return 'ok'.implode(',',$rt);}
+
+static function hubs($p,$o,$prm=[]){
+if(!auth(6))return;
+$r=sql('distinct(nod)','qda','rv','');
+$rx=sql('hub,id','qdh','kv',''); $rt=[];
+foreach($r as $k=>$v)if(!($rx[$v]??'') && !is_numeric($v))
+	$rt[]=sqlsav('qdh',['hub'=>$v,'no'=>'0']);
+return 'ok:'.implode(',',$rt);}
+
+//cats
+static function catarts($p,$o,$prm=[]){
+if(!auth(6))return;
+$rc=sql('cat,id','qdc','kv','');
+$r=sql('id,frm','qda','kv',''); $rt=[];
+foreach($r as $k=>$v)if($rc[$v]??'' && !is_numeric($v))
+	$rt[]=sqlup('qda',['frm'=>$rc[$v]],['id'=>$k]);
+return 'ok'.implode(',',$rt);}
+
+static function cats($p,$o,$prm=[]){
+if(!auth(6))return;
+$r=sql('distinct(frm)','qda','rv','');
+$rx=sql('cat,id','qdc','kv',''); $rt=[];
+foreach($r as $k=>$v)if(!($rx[$v]??'') && !is_numeric($v))
+	$rt[]=sqlsav('qdc',['cat'=>$v,'pic'=>sesr('catpic',$v,''),'no'=>'0']);
+return 'ok:'.implode(',',$rt);}
+
+#call
+static function call2($p,$o,$prm=[]){$r=[];
+[$p1,$o]=prmp($prm,$p,$o);
+if(!auth(6))return;
+return self::$p($p1,$o,$prm);}
+
+#msql
 static function nod($dr,$k,$v){
 $v=str_replace('.php','',$v);
 [$b,$d,$p,$t,$v]=msqa::murlread($v);
@@ -42,25 +83,24 @@ $f=msql::url($d,$nod);
 if(is_file($f))return [$d,$nod];}
 
 static function renove_utf($dr,$k,$v){
+if(!auth(6))return;
 [$dr,$nod]=self::nod($dr,$k,$v);
 msqa::tools($dr,$nod,'repair_enc','');
 return $nod;}
 
 static function renove_headers($dr,$k,$v){
+if(!auth(6))return;
 [$dr,$nod]=self::nod($dr,$k,$v);
 msqa::tools($dr,$nod,'patch_m','');
 return $nod;}
 
 static function renove_splitters($dr,$k,$v){
+if(!auth(6))return;
 [$dr,$nod]=self::nod($dr,$k,$v);
 msqa::tools($dr,$nod,'patch_s','');
 return $nod;}
 
-static function cats($p,$o,$prm=[]){
-[$dr,$nod]=self::nod($dr,$k,$v);
-msqa::tools($dr,$nod,'patch_s','');
-return $nod;}
-
+#call
 static function call($p,$o,$prm=[]){$r=[];
 [$p1,$o]=prmp($prm,$p,$o);
 if(!auth(6))return;
@@ -71,12 +111,19 @@ return implode(' ',$r);}
 
 static function menu($p){
 $ret=inputb('fto',$p,18,'directory');
-//$ret.=lj('popbt','fut_patches,call_fto__utf','msqutf');
-//$ret.=lj('popbt','fut_patches,call_fto__headers','headers');
-//$ret.=lj('popbt','fut_patches,call_fto__splitters','splitters_msql');
-//$ret.=lj('popbt','fut_patches,dbsplitters_fto_','splitters_mysql');
-//$ret.=lj('popbt','fut_patches,dbutf_fto_','utf_mysql');
-$ret.=lj('popbt','fut_patches,cats_fto_','art_cats');
+$rok=[0,1,3,4,6];
+$rt[0]='msql: ';
+$rt[1]=lj('popbt','fut_patches,call_fto_3_utf','msqutf');
+$rt[2]=lj('popbt','fut_patches,call_fto_3_headers','headers');
+$rt[3]=lj('popbt','fut_patches,call_fto_3_splitters','splitters_msql');
+$rt[4]=' | mysql: ';
+$rt[5]=lj('popbt','fut_patches,call2_fto_3_dbutf','mysqlutf');
+$rt[6]=lj('popbt','fut_patches,call2_fto_3_dbsplitters','splitters_mysql');
+$rt[7]=lj('popbt','fut_patches,call2_fto_3_cats','create_cats');
+$rt[8]=lj('popbt','fut_patches,call2_fto_3_catarts','art_cats');
+$rt[9]=lj('popbt','fut_patches,call2_fto_3_hubs','hubs');
+$rt[10]=lj('popbt','fut_patches,call2_fto_3_hubarts','art_hubs');
+foreach($rok as $v)$ret.=$rt[$v];
 return $ret;}
 
 static function home($p){

@@ -362,6 +362,7 @@ else return self::popim($v,$img,$id);}
 //:mini
 static function mini_b($d,$id){//mode w/h max//adlin
 [$im,$sz]=split_one('§',$d,1); if(!$sz)$sz='320/320';//prmb(27);
+if(!is_file('img/'.$im))return;
 [$w,$h]=explode('/',$sz); [$wo,$ho,$ty]=getimagesize('img/'.$im);
 [$w,$h]=img::sz($wo,$ho,$w,$h); $imb=img::thumbname($im,$w,$h);
 if(!file_exists($imb) or ses('rebuild_img'))make_mini('img/'.$im,$imb,$w,$h,'');

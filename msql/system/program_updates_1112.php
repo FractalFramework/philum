@@ -1,97 +1,97 @@
 <?php //msql/program_updates_1112
 $r=["_"=>['day','text'],
-"1"=>['111201','- bouton twitter envoie titre bien formatÈ
+"1"=>['111201','- bouton twitter envoie titre bien format√©
 - modif template (bouton open float right)
-- icÙnes non rÈÈcrites si dimensions infÈrieures ‡ la celle des miniatures, dans l\'inspecteur d\'icÙnes, dans l\'Èditeur
-- icÙnes accessibles depuis l\'Èditeur externe'],
-"2"=>['111202','- une idÈe surgie soudainement a permit d\'accÈlÈrer encore la vitesse du moteur de recherche de 1/3 sur les trËs gros volumes ;
-- un choix prit permet de faire que les articles d\'une catÈgorie prise comme condition pour un design particulier hÈritent de ce design (c\'est plus drÙle que l\'inverse)'],
-"3"=>['111203','introduction d\'un plugin \'text\' prÈsentÈ par un post-it qui permet de prendre des notes ‡ la volÈe'],
-"4"=>['111204','rÈforme du systËme des popup en ajax, progrËs, fiabilitÈ, prÈcision... et rÈvision des Ècritures devenues obsolËtes (35 lignes de code supprimÈes)'],
-"5"=>['111205','rÈvision du viewer qui permet d\'afficher une image trop grande en plein Ècran : le zoom est accessible avec la roulette sans avoir ‡ se mettre en plein-Ècran.'],
-"6"=>['111207','ajout d\'un restriction ‡ la possibilitÈ d\'Ètendre le contexte \'cat\' dans \'art\' nommÈe \'herit_cat\' (20)'],
-"7"=>['111208','rÈforme de la nomination de la prioritÈ des articles : au dÈbut \'Une\', puis ensuite \'Stay\' Ètaient des nominations maladroites. La prioritÈ des articles est dÈsormais reconnue par les termes \'*\', \'**\', voire \'***\'. Au niveau du sitemap, rien ne change, aucun argument renvoie 1, \'*\' renvoie 5 et \'**\' renvoie 10.'],
-"8"=>['111208','correctif d\'un imbroglio avec le systËme de protection des caractËres spÈciaux lors des transactions javascript (souvent le trop simple est l\'ennemi du fonctionnel)'],
-"9"=>['111209','- ajout du module \'plug\' qui sert ‡ appeler un plugin, comme avec le connecteur \':plug\'
-- ajout du plugin \'favs\' qui permet au visiteur de mÈmoriser une liste d\'articles ;
-- structure amÈliorÈe de l\'intÈgration du plugin : un ÈlÈment du plugin peut Ítre ajoutÈ aux options proposÈes par l\'article, si la variable de session \'plgs\' est utilisÈe.
-- abolition de l\'usage de \'display:block\' dans les css:link (‡ part la dÈco, Áa empÍche trop de choses)'],
-"10"=>['111210','- condamnation d\'une clique de fonctions prÈhistoriques (10Ko), supplantÈes par les routines microsql, auxquelles font dÈsormais rÈfÈrence les tables mails, rss et url ;
-- rÈorganisation des menus de l\'admin'],
-"11"=>['111211','petites amÈliorations dans l\'admin microsql : fonctionnements, aides, prÈsentation'],
-"12"=>['111212','intÈgration de l\'Èditeur de nouvelles dÈfinitions de sites dans l\'Èditeur d\'articles (de faÁon un peu brutale), et d\'un bouton \'edit\' quand ces dÈfinitions existent, de faÁon ‡ rÈaliser ces opÈrations sur place quand se prÈsente le cas d\'une importation d\'article dont les dÈfinitions sont inexistantes. Elles sont crÈÈes ‡ la volÈes, vierges, prÍts ‡ Ítre ÈditÈes.'],
-"13"=>['111215','ajout du support de prioritÈ des articles, de faÁon ‡ ne plus avoir ‡ loger cette information parmi les tags. 
-- la prioritÈ se dÈfinit dans les mÈta de l\'article
-- le module \'articles\' accepte un paramËtre supplÈmentaire : \'priority=0-4\' : 
-A zÈro l\'article est hors-ligne, ‡ 1 l\'article est publiÈ normalement, les trois niveaux supÈrieurs (2, 3, 4) confËrent une prioritÈ de 5,7 et 10 dans sitemap.
+- ic√¥nes non r√©√©crites si dimensions inf√©rieures √† la celle des miniatures, dans l\'inspecteur d\'ic√¥nes, dans l\'√©diteur
+- ic√¥nes accessibles depuis l\'√©diteur externe'],
+"2"=>['111202','- une id√©e surgie soudainement a permit d\'acc√©l√©rer encore la vitesse du moteur de recherche de 1/3 sur les tr√®s gros volumes ;
+- un choix prit permet de faire que les articles d\'une cat√©gorie prise comme condition pour un design particulier h√©ritent de ce design (c\'est plus dr√¥le que l\'inverse)'],
+"3"=>['111203','introduction d\'un plugin \'text\' pr√©sent√© par un post-it qui permet de prendre des notes √† la vol√©e'],
+"4"=>['111204','r√©forme du syst√®me des popup en ajax, progr√®s, fiabilit√©, pr√©cision... et r√©vision des √©critures devenues obsol√®tes (35 lignes de code supprim√©es)'],
+"5"=>['111205','r√©vision du viewer qui permet d\'afficher une image trop grande en plein √©cran : le zoom est accessible avec la roulette sans avoir √† se mettre en plein-√©cran.'],
+"6"=>['111207','ajout d\'un restriction √† la possibilit√© d\'√©tendre le contexte \'cat\' dans \'art\' nomm√©e \'herit_cat\' (20)'],
+"7"=>['111208','r√©forme de la nomination de la priorit√© des articles : au d√©but \'Une\', puis ensuite \'Stay\' √©taient des nominations maladroites. La priorit√© des articles est d√©sormais reconnue par les termes \'*\', \'**\', voire \'***\'. Au niveau du sitemap, rien ne change, aucun argument renvoie 1, \'*\' renvoie 5 et \'**\' renvoie 10.'],
+"8"=>['111208','correctif d\'un imbroglio avec le syst√®me de protection des caract√®res sp√©ciaux lors des transactions javascript (souvent le trop simple est l\'ennemi du fonctionnel)'],
+"9"=>['111209','- ajout du module \'plug\' qui sert √† appeler un plugin, comme avec le connecteur \':plug\'
+- ajout du plugin \'favs\' qui permet au visiteur de m√©moriser une liste d\'articles ;
+- structure am√©lior√©e de l\'int√©gration du plugin : un √©l√©ment du plugin peut √™tre ajout√© aux options propos√©es par l\'article, si la variable de session \'plgs\' est utilis√©e.
+- abolition de l\'usage de \'display:block\' dans les css:link (√† part la d√©co, √ßa emp√™che trop de choses)'],
+"10"=>['111210','- condamnation d\'une clique de fonctions pr√©historiques (10Ko), supplant√©es par les routines microsql, auxquelles font d√©sormais r√©f√©rence les tables mails, rss et url ;
+- r√©organisation des menus de l\'admin'],
+"11"=>['111211','petites am√©liorations dans l\'admin microsql : fonctionnements, aides, pr√©sentation'],
+"12"=>['111212','int√©gration de l\'√©diteur de nouvelles d√©finitions de sites dans l\'√©diteur d\'articles (de fa√ßon un peu brutale), et d\'un bouton \'edit\' quand ces d√©finitions existent, de fa√ßon √† r√©aliser ces op√©rations sur place quand se pr√©sente le cas d\'une importation d\'article dont les d√©finitions sont inexistantes. Elles sont cr√©√©es √† la vol√©es, vierges, pr√™ts √† √™tre √©dit√©es.'],
+"13"=>['111215','ajout du support de priorit√© des articles, de fa√ßon √† ne plus avoir √† loger cette information parmi les tags. 
+- la priorit√© se d√©finit dans les m√©ta de l\'article
+- le module \'articles\' accepte un param√®tre suppl√©mentaire : \'priority=0-4\' : 
+A z√©ro l\'article est hors-ligne, √† 1 l\'article est publi√© normalement, les trois niveaux sup√©rieurs (2, 3, 4) conf√®rent une priorit√© de 5,7 et 10 dans sitemap.
 - ajout du module \'priority_arts\', param 0-4'],
-"14"=>['111216','ajout du bouton \'img\' dans l\'Èditeur d\'articles, qui permet de :
+"14"=>['111216','ajout du bouton \'img\' dans l\'√©diteur d\'articles, qui permet de :
 - placer une image connue du portfolio dans l\'article ;
 - uploader une image
 - importer une image depuis une url '],
-"15"=>['111216','ajout d\'un gestionnaire de crÈation de tableaux en ajax, beaucoup plus pratique que l\'antique systËme d\'alertes en sÈrie (30 lignes supprimÈes, 20 ajoutÈes) ;
+"15"=>['111216','ajout d\'un gestionnaire de cr√©ation de tableaux en ajax, beaucoup plus pratique que l\'antique syst√®me d\'alertes en s√©rie (30 lignes supprim√©es, 20 ajout√©es) ;
 usage: indiquer le nombre de colonnes et de lignes, remplir les cases, et \'insert\'.'],
-"16"=>['111217','l\'assistant du connecteur :video dÈsormais capable de recevoir l\'url complËte au lieu de l\'ID (trop long ‡ expliquer ce qu\'est l\'ID), l\'ID est extrait et le connecteur insÈrÈ dans le texte'],
-"17"=>['111218','- ajout param 4 et 5 dans SaveJ, 4 renvoie la value, 5 insert() le rÈsultat (utilisÈ par l\'assistant du connecteur video)
-- rÈparation de l\'assistant de rÈdaction de commande d\'articles en sÈrie
+"16"=>['111217','l\'assistant du connecteur :video d√©sormais capable de recevoir l\'url compl√®te au lieu de l\'ID (trop long √† expliquer ce qu\'est l\'ID), l\'ID est extrait et le connecteur ins√©r√© dans le texte'],
+"17"=>['111218','- ajout param 4 et 5 dans SaveJ, 4 renvoie la value, 5 insert() le r√©sultat (utilis√© par l\'assistant du connecteur video)
+- r√©paration de l\'assistant de r√©daction de commande d\'articles en s√©rie
 - support de uftlatin dans js'],
-"18"=>['111218','- ajout d\'un gestionnaire de plugins (program_plugs), qui permet d\'affecter des types de plugin, de faÁon ‡ rendre disponibles ceux qui sont spÈcifiquement destinÈs ‡ Ítre utilisÈs par le connecteur \':plug\'.
+"18"=>['111218','- ajout d\'un gestionnaire de plugins (program_plugs), qui permet d\'affecter des types de plugin, de fa√ßon √† rendre disponibles ceux qui sont sp√©cifiquement destin√©s √† √™tre utilis√©s par le connecteur \':plug\'.
 - index des types de plugins dans la table program_plugs_type ;
 - types de plugin : 
 external	call directly the page
 system	used by software
-plug	connector [valueßparam:plug]
+plug	connector [value|param:plug]
 module	used by module
 plgbtn	added in options of each articles
 callable	iframe src : /plug/index.php?call=plugin&p=param&o=option
 server	client-server application
 internal	php library
 dev	php example'],
-"19"=>['111219','- nouveaux boutons plus pratiques que le menu dÈroulant pour dÈsigner la prioritÈ d\'un article ;
-- nouveau patch \'priority\' programmÈ pour le 111220 qui va convertir les *, **, et *** en niveau de prioritÈ ;
-- module \'board\' rÈÈcrit pour faire apparaÓtre les articles en fonction de leur niveau de prioritÈ ;
+"19"=>['111219','- nouveaux boutons plus pratiques que le menu d√©roulant pour d√©signer la priorit√© d\'un article ;
+- nouveau patch \'priority\' programm√© pour le 111220 qui va convertir les *, **, et *** en niveau de priorit√© ;
+- module \'board\' r√©√©crit pour faire appara√Ætre les articles en fonction de leur niveau de priorit√© ;
 - emplacement \'priority\' dans l\'article ;
 - video_viewer capable de discerner le type de tri (cat, tag, priority) ;'],
-"20"=>['111220','- popup dÈplaÁable (dev) ;
-- popup fixÈe ‡ l\'Ècran quand c\'est pour afficher des images plein-Ècran (option d\'appel ajax=1) ;
-- ajout du connecteur \'popmsq\', fonctionne comme \'poptxt\' ou \'popread\', renvoie le contenu d\'une entrÈe msql dans une popup (permet d\'afficher un contenu du calepin)
-- petite rÈparation SliderJ qui n\'arrivait pas ‡ afficher la derniËre image (ajout d\'une marge d\'erreur) ;'],
-"21"=>['111220','rÈforme du commentaire d\'images, (imgßtxt) renvoie dÈsormais un simple lien vers l\'image en popup, au lieu d\'une image avec un commentaire. Pour commenter une image, c\'est mieux d\'utiliser le blockquote.'],
-"22"=>['111221','- ajout du connecteur \':comment\' qui permet d\'ajouter un commentaire ‡ une image : [imgßtxt:comment ]
-- le texte et l\'image sont placÈs ‡ l\'intÈrieur d\'un div de la largeur de l\'image.
-- utilise une nouvelle dÈfinition css \'blocktext\'
-- ajout de \'blocktext\' dans le design par dÈfaut'],
-"23"=>['111222','- rÈparation connecteur :comment pour les images de taille intermÈdiaire ;
-- rÈparation taille de l\'image renvoyÈe en popup par un lien ;
-- rÈapparition du bouton \'fermer\' sur l\'image en popup pour se sortir des erreurs possibles (impossibles en fait mais on sait jamais)
-- le connecteur [--] ne renvoie plus de class=\'tabc\', le hr se gËre dans le css
+"20"=>['111220','- popup d√©pla√ßable (dev) ;
+- popup fix√©e √† l\'√©cran quand c\'est pour afficher des images plein-√©cran (option d\'appel ajax=1) ;
+- ajout du connecteur \'popmsq\', fonctionne comme \'poptxt\' ou \'popread\', renvoie le contenu d\'une entr√©e msql dans une popup (permet d\'afficher un contenu du calepin)
+- petite r√©paration SliderJ qui n\'arrivait pas √† afficher la derni√®re image (ajout d\'une marge d\'erreur) ;'],
+"21"=>['111220','r√©forme du commentaire d\'images, (img|txt) renvoie d√©sormais un simple lien vers l\'image en popup, au lieu d\'une image avec un commentaire. Pour commenter une image, c\'est mieux d\'utiliser le blockquote.'],
+"22"=>['111221','- ajout du connecteur \':comment\' qui permet d\'ajouter un commentaire √† une image : [img|txt:comment ]
+- le texte et l\'image sont plac√©s √† l\'int√©rieur d\'un div de la largeur de l\'image.
+- utilise une nouvelle d√©finition css \'blocktext\'
+- ajout de \'blocktext\' dans le design par d√©faut'],
+"23"=>['111222','- r√©paration connecteur :comment pour les images de taille interm√©diaire ;
+- r√©paration taille de l\'image renvoy√©e en popup par un lien ;
+- r√©apparition du bouton \'fermer\' sur l\'image en popup pour se sortir des erreurs possibles (impossibles en fait mais on sait jamais)
+- le connecteur [--] ne renvoie plus de class=\'tabc\', le hr se g√®re dans le css
 - correctif tableaux : ne pas afficher de lignes vides ;
-- ajout de tr et td au design par dÈfaut (updater le design courant) ;
-- petite amÈlioration import vidÈo
-- le connecteur :comment accepte de n\'Ítre pas liÈ ‡ une image, dans ce cas il se souvient de la largeur de l\'image prÈcÈdente.'],
-"24"=>['111223','- amÈlioration sliderJ pour permettre de reconstruire les tabbles en mode manuel ;
-- correctif suppression des espaces indÈsirables dans l\'interprÈtation des tableaux ;
-- correctif dÈtection sites philum dans l\'auto-updater de dÈfinitions de sites ;
-- les stats affichent le rÈsultat de la recherche (avant il Ètait dans le graphique mais disparaissait dans les graphiques trop denses)
+- ajout de tr et td au design par d√©faut (updater le design courant) ;
+- petite am√©lioration import vid√©o
+- le connecteur :comment accepte de n\'√™tre pas li√© √† une image, dans ce cas il se souvient de la largeur de l\'image pr√©c√©dente.'],
+"24"=>['111223','- am√©lioration sliderJ pour permettre de reconstruire les tabbles en mode manuel ;
+- correctif suppression des espaces ind√©sirables dans l\'interpr√©tation des tableaux ;
+- correctif d√©tection sites philum dans l\'auto-updater de d√©finitions de sites ;
+- les stats affichent le r√©sultat de la recherche (avant il √©tait dans le graphique mais disparaissait dans les graphiques trop denses)
 - ajout du module \'stats\' qui renvoie un histogramme'],
-"25"=>['111224','- le connecteur \'articles\' (qui renvoie vers le module du mÍme nom) accepte trois paramËtres en plus, de quoi utiliser un template personnalisÈ (on en a eu besoin pour pouvoir gÈnÈrer un texte au format spip)
-- rÈinitialisation des sessions inattendues lors du passage d\'un \'mod\' ‡ l\'autre (mode GSM notamment)
-- ajout d\'une petite somme díicÙnes en 16px'],
-"26"=>['111226','- ajout d\'un menu des variables existantes dans l\'Èditeur de templates
-- rÈforme du nom \'textarea_1\' qui Ètait antique pour \'txtarea\' (commoditÈ de dev)
-- ajout du plugin \'dev\' visible dans admin/code (auth 7), permet de d\'Èditer le code php, et de sauvegarder des versions dans \'history\' (version beta)'],
-"27"=>['111227','- l\'ajout de dÈfinitions ‡ la volÈe n\'affiche plus que la partie utile
-- nettoyage javascript : fÈdÈration, suppressions et renommages
-- fonction \'toggle\' plus ÈlaborÈe, sur le modËle SaveJ (qui est la star) et application ‡ divers endroits'],
-"28"=>['111228','- ajout du filtre \'lowcase\' qui met le texte sÈlectionnÈ en minuscules et la premiËre lettre en majuscule
-- accessibilitÈ des menus dans le plugin \'dev\' (admin/code)'],
-"29"=>['111229','- refonte rËgles internes de transport en js
-- mise en conformitÈ des nouveaux protocoles dans le plugin \'dev\''],
-"30"=>['111230','- le plugin \'dev\' mÈmorise les pages ouvertes (ainsi que leur rÈpertoire) tandis que les fonctions utilisÈes sont listÈes dans le menu \'history\' ;
-- connecteurs \'table\', \'table1\' et \'table2\' (1=en-tÍte, 2=lignes diffÈrenciÈes)
+"25"=>['111224','- le connecteur \'articles\' (qui renvoie vers le module du m√™me nom) accepte trois param√®tres en plus, de quoi utiliser un template personnalis√© (on en a eu besoin pour pouvoir g√©n√©rer un texte au format spip)
+- r√©initialisation des sessions inattendues lors du passage d\'un \'mod\' √† l\'autre (mode GSM notamment)
+- ajout d\'une petite somme d¬íic√¥nes en 16px'],
+"26"=>['111226','- ajout d\'un menu des variables existantes dans l\'√©diteur de templates
+- r√©forme du nom \'textarea_1\' qui √©tait antique pour \'txtarea\' (commodit√© de dev)
+- ajout du plugin \'dev\' visible dans admin/code (auth 7), permet de d\'√©diter le code php, et de sauvegarder des versions dans \'history\' (version beta)'],
+"27"=>['111227','- l\'ajout de d√©finitions √† la vol√©e n\'affiche plus que la partie utile
+- nettoyage javascript : f√©d√©ration, suppressions et renommages
+- fonction \'toggle\' plus √©labor√©e, sur le mod√®le SaveJ (qui est la star) et application √† divers endroits'],
+"28"=>['111228','- ajout du filtre \'lowcase\' qui met le texte s√©lectionn√© en minuscules et la premi√®re lettre en majuscule
+- accessibilit√© des menus dans le plugin \'dev\' (admin/code)'],
+"29"=>['111229','- refonte r√®gles internes de transport en js
+- mise en conformit√© des nouveaux protocoles dans le plugin \'dev\''],
+"30"=>['111230','- le plugin \'dev\' m√©morise les pages ouvertes (ainsi que leur r√©pertoire) tandis que les fonctions utilis√©es sont list√©es dans le menu \'history\' ;
+- connecteurs \'table\', \'table1\' et \'table2\' (1=en-t√™te, 2=lignes diff√©renci√©es)
 - relookings divers (chat, css, tableaux)
-- bug connu : la largeur de colonne retourne ‡ \'content\' (par dÈfaut) et y reste aprËs l\'usage d\'un \'MenusJ\' (incapable de connaÓtre son contexte ‡ cause de son indÈpendance fonctionnelle) ;'],
-"31"=>['111231','- nettoyages dus aux prÈcÈdentes mutations, suppression de \'_mbr\' (rÈpertoire et rÈfÈrences dans le css, remplacÈ par \'shadows\'), aides contextuelles ;
+- bug connu : la largeur de colonne retourne √† \'content\' (par d√©faut) et y reste apr√®s l\'usage d\'un \'MenusJ\' (incapable de conna√Ætre son contexte √† cause de son ind√©pendance fonctionnelle) ;'],
+"31"=>['111231','- nettoyages dus aux pr√©c√©dentes mutations, suppression de \'_mbr\' (r√©pertoire et r√©f√©rences dans le css, remplac√© par \'shadows\'), aides contextuelles ;
 - finalement le connecteur microsql ne renvoie plus de tableau hors de la lecture de l\'article ;
-- rÈnovation des css, anciens inspirÈs de nouveaux ;
-- correctif liÈ au renouveau de la fonction tri_rqt (beaucoup de modules y font rÈfÈrence, fait des tri dans les articles en cache) ;']]; ?>
+- r√©novation des css, anciens inspir√©s de nouveaux ;
+- correctif li√© au renouveau de la fonction tri_rqt (beaucoup de modules y font r√©f√©rence, fait des tri dans les articles en cache) ;']];

@@ -167,9 +167,10 @@ if(dn[0]=='popup'||dn[0]=='pagup')pp='&'+dn[0]+'==';
 //else if(dn[0]=='pop'){dn[0]='pop'+curid; var tp=12;}
 else if(dn[0].indexOf(',')!=-1)tp='json';
 else if(dn[2]){var dn2=dn[2].split(','); tp=dn2[0]; var tx=dn2[1];}
+//if(dn[3]!=undefined)g=dn[3];
+if(dn[3]){prm=dn[3].split(','); for(i=0;i<prm.length;i++)fd.append('p'+i,prm[i]);}
 if(dn[4]){prm=dn[4].split(','); for(i=0;i<prm.length;i++)fd.append(prm[i],capture(prm[i]));}
-if(dn[3]!=undefined)g=dn[3];
-new AJAX('/ajax.php?_a='+dn[1]+'&_g='+g,dn[0],tp,fd);
+new AJAX('/ajax.php?_a='+dn[1],dn[0],tp,fd);//+'&_g='+g
 if(tx=='x')Close('popup');
 else if(tx=='xc')clpop();//autoclose togbub
 else if(tx=='xb')cltog(dn[2].split(',')[1]);//close tog

@@ -1,16 +1,16 @@
 <?php //msql/helps_newsletter
 $r=["_"=>['txt'],
-"register"=>['Incription ‡ la liste de diffusion'],
+"register"=>['Incription √† la liste de diffusion'],
 "see_newsletter"=>['Newsletter actuelle'],
-"answer_success"=>['un mail de confirmation a ÈtÈ envoyÈ'],
-"answer_exists"=>['ce mail est dÈj‡ enregistrÈ'],
+"answer_success"=>['un mail de confirmation a √©t√© envoy√©'],
+"answer_exists"=>['ce mail est d√©j√† enregistr√©'],
 "answer_not_exists"=>['mail non valide'],
-"answer_error"=>['champ mal renseignÈ'],
+"answer_error"=>['champ mal renseign√©'],
 "form_name"=>['nom'],
 "form_mail"=>['mail'],
 "form_button"=>['ok'],
 "welcome_mail"=>['Merci pour votre inscription'],
-"unregister"=>['dÈsabonnement'],
-"unregister_success"=>['l\'adresse mail a ÈtÈ effacÈe'],
+"unregister"=>['d√©sabonnement'],
+"unregister_success"=>['l\'adresse mail a √©t√© effac√©e'],
 "adios_mail"=>['cliquer sur le lien de confirmation'],
-"uns_mail"=>['mail de dÈsinscription envoyÈ ‡']]; ?>
+"uns_mail"=>['mail de d√©sinscription envoy√© √†']];

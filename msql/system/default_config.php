@@ -15,4 +15,4 @@ $r=["_"=>['name','default'],
 "13"=>['updates',''],
 "14"=>['server mirror',''],
 "15"=>['server img',''],
-"27"=>['thumb size','240/100']]; ?>
+"27"=>['thumb size','240/100']];

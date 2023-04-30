@@ -63,7 +63,7 @@ if($aqb!=$_SESSION['qb'])geta('hub',$aqb);}}
 static function define_qb(){$hub=get('hub');
 $r=ses('mn'); $defo=prms('default_hub'); //if(!$hub)$hub=$defo;
 if($hub && $hub!='=' && isset($_SESSION['mn'][$hub])){$aqb=$hub; $qbd=$_SESSION['mnd'][$hub];}
-elseif($defo && !ses('qb'))[$qbd,$aqb]=arr(sql('id,name,hub','qdu','r','name="'.$defo.'"'),2);
+elseif($defo && !ses('qb'))[$qbd,$aqb]=arr(sql('id,name,hub','qdu','r',['name'=>$defo]),2);
 if(isset($aqb)){$_SESSION['qb']=$aqb; $_SESSION['qbd']=$qbd;}
 if(!ses('qbd') && ses('qb'))$_SESSION['qbd']=sql('id','qdu','v','name="'.$_SESSION['qb'].'"');}
 
@@ -78,13 +78,13 @@ if(!$pm[8])$pm[8]='phi';//logo
 if(!$pm[9])$pm[9]='id desc';//order
 if(!$pm[10])$pm[10]=nms(21).'/'.nms(171).'/'.nms(91).'/'.nms(182);//tracks
 if(!$pm[17])$pm[17]='ymd.Hi';//date
-//if(!$pm[19])$pm[19]='fr en es';//langs
+if(!$pm[19])$pm[19]='fr en es';//langs
 if(!$pm[24])$pm[24]='http://philum.fr';//server
 if(!$pm[25])$pm[25]='fr';//lang
 return $pm;}
 
 static function define_config(){$qb=ses('qb');
-$qbn=sql('mail,config,dscrp','qdu','a','name="'.$qb.'"');
+$qbn=sql('mail,config,dscrp','qdu','a',['name'=>$qb]);
 $rst=msql::col('',$qb.'_rstr',0,1); if(!$rst)$rst=msql::col('system','default_rstr',0,1);
 $_SESSION['rstr']=arr($rst,150);
 $_SESSION['prmb']=self::prmb_defaults($qbn['config']??'');
@@ -179,7 +179,7 @@ $_SESSION['mods']=$ret;
 $_SESSION['tmpc']=$tmp;}
 
 static function define_modc(){//define_mods_cond
-$r=$_SESSION['mods']; $cnd=$_SESSION['cond']; $ret=[];
+$r=$_SESSION['mods']??[]; $cnd=$_SESSION['cond']??['','']; $ret=[];
 if(is_array($r))foreach($r as $k=>$v)if(is_array($v))foreach($v as $ka=>$va)if(isset($va[7]) && $va[7]!=1){
 if($va[3]==$cnd[0] or (isset($cnd[1]) && $va[3]==$cnd[1]) or !$va[3]){
 if($va[0]=='LOAD' && isset($rb[$va[0]]))$ka=$rb[$va[0]];//substitute
@@ -276,7 +276,8 @@ elseif(is_numeric($n))return 'public_design_'.$n;}
 
 #users
 //log
-static function log_mods($log){$use=ses('USE'); $ret='';
+static function log_mods($log){
+$use=ses('USE'); $ret='';
 switch($log){
 case('on'): $usr=post('user','login');
 	$ret=login::call($usr,post('pass'),post('mail')); break;
@@ -284,7 +285,7 @@ case('in'): $ret=login::form('','',''); break;
 case('out'): $_SESSION['USE']=''; $_SESSION['auth']=''; $dayz=$_SESSION['dayx']-86400;
 	setcookie('use',$use,$dayz); setcookie('uid',ses('uid'),$dayz); $_SESSION['nuse']=1;  relod('/'); break;
 case('reboot'): $r=['qd','qb','USE','uid','iq','dev']; $rb=[];
-	foreach($r as $v)$rb[$v]=ses($v); $_SESSION=$rb; relod('/'); break;
+	foreach($r as $v)$rb[$v]=ses($v); $_SESSION=$rb; boot::init(); relod('/'); break;
 case('create_hub'): $_POST['create_hub']=ses('qb'); 
 	$ret=login::call(ses('qb'),'pass',''); break;
 case('off'): $qd=$_SESSION['qd']; $dev=$_SESSION['dev']; session_destroy();
@@ -326,9 +327,10 @@ $_SESSION['ip']=$ip; $_SESSION['iq']=$iq;}
 
 #update
 static function verif_update(){
-if($_SESSION['auth']>5 && !prms('aupdate')){
+if($_SESSION['auth']>5){
+	if(!prms('aupdate')){
 	$localver=checkversion(2); $distver=sesmk('checkupdate',2,1);//ses('philum')
-	if($distver>$localver)Head::add('jscode',sj('popup_software,call___1'));
+	if($distver>$localver)Head::add('jscode',sj('popup_software,call___1'));}
 	if(!isset($_SESSION['verifs'])){
 	if(prms('srvmirror'))Head::add('jscode',sj('popup_transport,batch__3'));}
 $_SESSION['verifs']=1;}}

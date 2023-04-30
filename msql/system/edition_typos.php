@@ -36,4 +36,4 @@ $r=["_"=>['name','category','accents','fav','fam'],
 "1820"=>['customicons','user','','',''],
 "1821"=>['GlyphiconsRegular','user','','',''],
 "1822"=>['glyphicons-regular','user','','',''],
-"1823"=>['edgeicons','user','','','']]; ?>
+"1823"=>['edgeicons','user','','','']];

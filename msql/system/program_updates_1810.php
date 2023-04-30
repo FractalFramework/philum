@@ -1,6 +1,6 @@
 <?php //msql/program_updates_1810
 $r=["1"=>['1007','publication'],
-"2"=>['1015','rÈfection du dÈtecteur de traductions en relation avec une prÈcÈdente rÈforme de leur emplacement'],
-"3"=>['1019','- rÈfection des champs de recherche : dÈclenchement ‡ la touche entrÈe et possibilitÈ d\'ouvrir plusieurs fenÍtres de recherche ;
-- r&d nodjs : sÈparation des actions et des boutons'],
-"4"=>['1027','- rÈfection de l\'Èdition de certains paramËtres de hubs (description + obsolËtes)']]; ?>
+"2"=>['1015','r√©fection du d√©tecteur de traductions en relation avec une pr√©c√©dente r√©forme de leur emplacement'],
+"3"=>['1019','- r√©fection des champs de recherche : d√©clenchement √† la touche entr√©e et possibilit√© d\'ouvrir plusieurs fen√™tres de recherche ;
+- r&d nodjs : s√©paration des actions et des boutons'],
+"4"=>['1027','- r√©fection de l\'√©dition de certains param√®tres de hubs (description + obsol√®tes)']];

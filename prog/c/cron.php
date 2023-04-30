@@ -21,12 +21,11 @@ static function rapport($p){
 $r=msql::kv('',nod('cron')); $ret=''; $rt=[];
 foreach($r as $k=>$v){$nod=nod('cron_'.$k);
 	$rb=msql::assoc('',$nod); if(!$rb)$rb=self::reload($k);
-	$r0=array_shift($rb); //$r0=array_shift($rb);
-	foreach($rb as $kb=>$vb){$rd=array_diff($vb,$r0);
+	$r0=array_shift($rb); $r0=array_shift($rb);
+	foreach($rb as $kb=>$vb){$rd=array_diff($vb,$r0);//vb-r0
 		$date=$rd['date']; unset($rd['date']);
 		if($rd['status-id']??'')$rd['status-id']=pop::poptwit($rd['status-id']);
-		//$rt[$date]=divb($k.' / '.$date.' - '.key($rd).': '.current($rd));
-		$rt[$date]=tabler($rd,[$k,$date]);
+		$rt[$date.$v]=tabler($rd,[$k,$date]);
 		$r0=$vb;}}
 krsort($rt);
 return implode('',$rt);}
@@ -37,7 +36,8 @@ $r=msql::kv('',nod('cron')); $ret=''; $bt=''; $h=0;
 $f='_backup/cron_last.txt'; if($p && is_file($f))$ret=btn('txtred',read_file($f)).' ';
 foreach($r as $k=>$v){$nod=nod('cron_'.$k);
 	$rb=msql::assoc('',$nod,'',1); if(!$rb)$rb=self::reload($k);
-	$r2=array_pop($rb); $r1=array_pop($rb); $rd=array_diff($r2,$r1);
+	$r2=array_pop($rb); $r1=array_pop($rb);
+	if(is_array($r2) && is_array($r1))$rd=array_diff($r2,$r1); elseif(is_array($r2))$rd=$r2; elseif(is_array($r1))$rd=$r1; else continue;
 	$date=$rd['date']; unset($rd['date']); self::$cr[$k]=$date;
 	if($date!=self::$cr[$k]){$h=1; self::$cr[$k]=$date;}//active then shutdown sound
 	if($rd['status-id']??'')$rd['status-id']=pop::poptwit($rd['status-id']);

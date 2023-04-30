@@ -31,7 +31,7 @@ $ret=''; $u=self::$unit; $w=$u; $h=$u/2; $b=self::$base; $x=$v[0]*$u; $y=$b-$v[1
 $ratio=255/48; 
 $clr=self::mkclr($k*$ratio);
 $ret.='[#'.$clr.',gray,,,1:attr]['.$x.','.$y.','.$w.','.$h.',,id'.$k.':rect]';
-$ret.='[black,:attr]['.($x+16).','.($y+16).'§'.$k.':text]';
+$ret.='[black,:attr]['.($x+16).','.($y+16).'|'.$k.':text]';
 return $ret;}
 
 //fonction qui détermine la prochaine sous-couronne à remplir

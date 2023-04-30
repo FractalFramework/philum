@@ -13,7 +13,7 @@ if($r)foreach($r as $v)if($v!='.' && $v!='..'){$f=$dr.$v; $fa=$u.'/'.$v;
 $dl=ftp_get($ftp,$f,$fa,FTP_ASCII);}*/
 
 $r=msql::read('','ummo_es_4');
-foreach($r as $k=>$v)$rb[]=between($v[1],'[','§',0,1);
+foreach($r as $k=>$v)$rb[]=between($v[1],'[','|',0,1);
 foreach($rb as $k=>$v)if(substr($v,-3)=='pdf')$rc[]=$v;
 //pr($rc);
 $dr='users/ummo/origin/';

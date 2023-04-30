@@ -1,2 +1,2 @@
 <?php //msql/program_conn
-$r=["_"=>['col_1']]; ?>
+$r=["_"=>['col_1']];

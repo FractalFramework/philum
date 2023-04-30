@@ -154,4 +154,4 @@ $r=["_"=>['category','param','title','command','option','cache','template','bt',
 "conn_playlist"=>['api','','','articles','cols','','','','','',''],
 "video_viewer"=>['articles','','','cols','','','','','','',''],
 "microarts"=>['apps','','','','','','','','','',''],
-"vacuum"=>['apps','','','','','','','','','','']]; ?>
+"vacuum"=>['apps','','','','','','','','','','']];

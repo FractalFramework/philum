@@ -1,15 +1,15 @@
 <?php //ajax_hangar
 error_report();
-getsb(); //pr(ses::$r['get']);
+gets(); //pr(ses::$r['get']);
 if(rstr(22))boot::block_crawls();
 if(!isset($_SESSION['qb']))boot::reboot();
 $res=get('res'); $callj=get('callj');
-$r=ajxr($callj,5); //pr($r);
+$r=ajxr($callj,5);
 [$app,$g1,$g2,$g3,$g4]=$r;
 $ret=''; $p1=''; $t=$app; $s='';
 $sz=get('sz'); $tg=get('tg'); //$dn2=get('dn2');
 $prm=$_POST??[];
-if($prm){$prm=utf_r($prm,1);//$prm0=$prm; 
+if($prm){//$prm=utf_r($prm,1);//if(ses::$enc!='utf-8')
 $prm=delr_r($prm);
 [$p1,$p2]=arb($prm,2);}
 
@@ -37,10 +37,10 @@ else $ret=$a::$b($g1,$g2,$g3,$g4);
 $t=tit($a,$b,$g1,$g2);
 if(is_array($ret))$ret=mkjson($ret);}
 //ff
-elseif($_a=get('_a')){[$a,$b]=explode(',',$_a); $g=explode(',',get('_g'));//new canal
+elseif($_a=get('_a')){[$a,$b]=explode(',',$_a); //$g=explode(',',get('_g'));//new canal
 if($a=='sql' or $a=='msql')return 'no';
 if(!method_exists($a,$b))$ret='nothing';
-else $ret=$a::$b($g,$prm); //json::add('','fc',$r);
+else $ret=$a::$b($prm);//$g,//json::add('','fc',$r);
 $t=tit($a,$b,$g1,$g2);
 if(is_array($ret))$ret=mkjson($ret);}
 

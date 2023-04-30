@@ -2,24 +2,24 @@
 $r=["_"=>['date','text'],
 "1"=>['1201','publication'],
 "2"=>['1204','ajout du plug et du gestionnaire d\'Api tlex (publier articles sur tlex.fr)'],
-"3"=>['1205','rÈsolution petit pb de compatibilitÈ en mode utf8'],
-"4"=>['1208','- rÈfection du systËme de newsletters
-- rectificatifs divers de compatibilitÈ avec un serveur ovh mutualisÈ'],
-"5"=>['1212','- on dÈplace l\'Èditeur dans une dv plutÙt qu\'une popup, et de mÍme avec le menu folders de l\'Èditeur de titres'],
-"6"=>['1213','- ajout du mode (et du template associÈ) \'simplified\', permet de rÈduire l\'info affichÈe au minimum, pour rendre plus agrÈable la synthËse vocale.
-Les modes sont disponibles dans le menu Phi (gÈnÈralement public).
-- les boutons d\'api ne s\'affichent que pour leur propriÈtaire
-- le bouton-menu track rendu rÈactif au paramËtre local'],
-"7"=>['1215','- ajout du connecteur imgßheight:fluid, permet de poser une image statique dont l\'ensemble se dÈcouvre pendant le scroll
-- le module Banner rÈagit de faÁon fluide, et accepte des connecteurs dans le titre (l\'option donne la hauter)'],
+"3"=>['1205','r√©solution petit pb de compatibilit√© en mode utf8'],
+"4"=>['1208','- r√©fection du syst√®me de newsletters
+- rectificatifs divers de compatibilit√© avec un serveur ovh mutualis√©'],
+"5"=>['1212','- on d√©place l\'√©diteur dans une dv plut√¥t qu\'une popup, et de m√™me avec le menu folders de l\'√©diteur de titres'],
+"6"=>['1213','- ajout du mode (et du template associ√©) \'simplified\', permet de r√©duire l\'info affich√©e au minimum, pour rendre plus agr√©able la synth√®se vocale.
+Les modes sont disponibles dans le menu Phi (g√©n√©ralement public).
+- les boutons d\'api ne s\'affichent que pour leur propri√©taire
+- le bouton-menu track rendu r√©actif au param√®tre local'],
+"7"=>['1215','- ajout du connecteur img|height:fluid, permet de poser une image statique dont l\'ensemble se d√©couvre pendant le scroll
+- le module Banner r√©agit de fa√ßon fluide, et accepte des connecteurs dans le titre (l\'option donne la hauter)'],
 "8"=>['1217','- ajout du module audio_^playlist, comme video_playlist, renvoie les articles contenant des .mp3
-- rÈnovation du retape d\'anciens connecteurs
-- mise au rancart du connecteur :popvideo (remplacÈ par ßtxt:video)'],
+- r√©novation du retape d\'anciens connecteurs
+- mise au rancart du connecteur :popvideo (remplac√© par |txt:video)'],
 "9"=>['1220','- ajout du support de conversion multibyte aux capteurs ajax (ceux qui manquaient)
-- retrait de la prÈcÈdente (politique de \"Áa marche, on laisse\")'],
+- retrait de la pr√©c√©dente (politique de \"√ßa marche, on laisse\")'],
 "10"=>['1221','- ajout des connecteurs :floatleft et :floatright
-- obsolescence des connecteurs :2cols, 3cols, :/2, :/3 remplacÈs par ß2:cols et ß2:block
-- Èradication des anciens connecteurs obsolËtes :microsql, microtemplate
+- obsolescence des connecteurs :2cols, 3cols, :/2, :/3 remplac√©s par |2:cols et |2:block
+- √©radication des anciens connecteurs obsol√®tes :microsql, microtemplate
 - ajout du connecteur :sigle (certifie l\'affichage des monnaies)
-- suppression du module search (y\'a qu\'‡ /search/) et conversion du module search_form vers search (ouverture du formulaire de recherche)'],
-"11"=>['1225','rÈhabilitation du connecteur twitter_cache, renommÈ twitter_stored (met le rÈsultat du twit en cache)']]; ?>
+- suppression du module search (y\'a qu\'√† /search/) et conversion du module search_form vers search (ouverture du formulaire de recherche)'],
+"11"=>['1225','r√©habilitation du connecteur twitter_cache, renomm√© twitter_stored (met le r√©sultat du twit en cache)']];

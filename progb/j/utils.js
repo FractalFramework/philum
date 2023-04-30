@@ -84,12 +84,12 @@ if(action=="clean_n"){
 else if(action=="clean_mail"){var s2=s2.split("\n\n").join("#br#");
 		var s2=s2.split("\n").join(" "); var s2=s2.split("#br#").join("\n\n");}
 else if(action=="lowercase"){var s2=s2[0].toUpperCase()+s2.substring(1).toLowerCase();}
-else if(action=="mktable"){var s2=s2.split("\n").join("¬\n"); s2=s2.split(",").join("|");
+else if(action=="mktable"){var s2=s2.split("\n").join("Â¬\n"); s2=s2.split(",").join("|");
 	s2='['+s2+':table]';}
 else if(action=="delconn"){
 	if(s2){var s2=connectors(s2,acm,'delconn');
 		if(acm=='list')s2=strreplace('|',"\n",s2);
-		if(acm=='table')s2=strreplace(['|','¬'],[' ',"\n"],s2);}
+		if(acm=='table')s2=strreplace(['|','Â¬'],[' ',"\n"],s2);}
 	else if(acm){var s1=s1+s3; s3=''; var s1=connectors(s1,acm,'delconn');}
 	else{
 		if(s1)var na=find_next(s1,0); if(s3)var nb=find_next(s3,1);
@@ -120,7 +120,7 @@ if(p)var n1=substr_count(d1,'['); else var n1=substr_count(d2,']');
 return n;}
 
 function delconn(d,cn){
-var na=d.lastIndexOf(':'); var nb=d.lastIndexOf('§'); var xt=d.substr(na+1);
+var na=d.lastIndexOf(':'); var nb=d.lastIndexOf('|'); var xt=d.substr(na+1);
 if((d.substr(nb)).indexOf(']')!=-1)nb=-1;
 if(xt==cn||!cn){
 	if(d.substr(0,4)=='http' && !cn){
@@ -161,7 +161,7 @@ var slctd=embedslct('','');
 if(val=='video' && slctd)SaveJ('socket_video,extractid__repl_'+ajx(slctd));
 else if(val=='url' && slctd)togglebub('mc,conns__'+bid+'_'+val+'_'+ajx(slctd)+'_'+bid+'_'+id);
 else if(val=='img' && slctd){
-	if(slctd.indexOf('§')!=-1)slctd=embedslct('[',':figure]');
+	if(slctd.indexOf('|')!=-1)slctd=embedslct('[',':figure]');
 	else slctd=embedslct('[',']',id);}
 else slctd=embedslct('[',':'+val+']');
 if(!slctd)togglebub('mc,conns__'+bid+'_'+ajx(val)+'__'+bid+'_'+id);}
@@ -192,17 +192,17 @@ if(slctd==undefined)insert('['+p+']');}
 function embedart(id,rid){
 var val=getbyid('art').value; //var o=getbyid('cnp').value;
 if(!val)embedslct('[',':art]',rid);
-else{var slctd=embedslct('['+val+'§',':art]',rid);
+else{var slctd=embedslct('['+val+'|',':art]',rid);
 	if(slctd==undefined)insert('['+val+':art]');}}
 
 function embedcss(conn){
 var val=getbyid('cnn').value;
 if(val=="")return;
-else embedslct('[','§'+val+':'+conn+']');}
+else embedslct('[','|'+val+':'+conn+']');}
 function insert_conn(cnn){
 var va=getbyid('cnv').value;
 var vp=getbyid('cnp').value;
-if(vp!='')val=va+'§'+vp; else val=va;
+if(vp!='')val=va+'|'+vp; else val=va;
 if(va)insert('['+val+':'+cnn+']');}
 
 //embed|insert
@@ -430,7 +430,7 @@ for(i=0;i<vn.length;i++){
 		var np=(val); nb.push(np); if(i==0)var nm=np;
 		else if(i==1||i==2||i==3)var nm=nm+'/'+np;
 		else if(i==4){if(nm)var nm=nm+':'+np; else nm=np;}
-		else if(i==5 && np)var nm=nm+'§'+np; }}
+		else if(i==5 && np)var nm=nm+'|'+np; }}
 if(!nb[1] && !nb[2] && !nb[3])nm=nm.replace('///','');
 if(!nb[0] && !nb[1] && !nb[2] && !nb[3])nm=nm.replace(':','');
 var to=getbyid(tar).value; if(to)nm=to+',\n'+nm;
@@ -447,7 +447,7 @@ if(va){var va=va+dn[3]+slct;} else{var va=slct;}
 getbyid(dn[0]).value=old+va;}
 
 function log_finger(id){var va=getbyid(id).value;
-var arr=['-',',','?',';','.',':','/','!','§',' ','"',"'",'(',')','_','=','+','$','*','%','<','>',' ','|','~','&','^','¨','é','è','à','ç','ù','£','@','{','}','[',']','`','^','µ','¨','^','²'];
+var arr=['-',',','?',';','.',':','/','!','Â§',' ','"',"'",'(',')','_','=','+','$','*','%','<','>',' ','|','~','&','^','Ã©','Ã¨','Ã ','Ã§','Ã¹','Â£','@','{','}','[',']','`','^','Âµ','Â¨','^','Â²'];
 for(i=0;i<arr.length;i++)va=va.replace(arr[i],'');
 if(Number(va.substr(0,1)))va=va.substr(1); //var va=va.toLowerCase();
 getbyid(id).value=va;
@@ -576,7 +576,7 @@ SaveJ('socket_sesmake___offon_'+p+'');
 setTimeout(function(){addjs_old(f,d,p)},1000);
 SaveJ('offonbt'+d+'_offon___'+p);}
 
-function poplist(id){var icon='='; var list='ý';//pictos
+function poplist(id){var icon='='; var list='Ã½';//pictos
 var bt=getbyid(id); var popu=getbyid('popu'+curid);
 if(bt.innerHTML==icon){var c='pubart'; bt.innerHTML=list; var inl='display:inline;';}
 else{var c='icones'; bt.innerHTML=icon; var inl='display:block;';}
@@ -721,7 +721,7 @@ return{start:elStart,end:elEnd,txt:slct};}
 
 function useslct(e,id){var d=getrange('art'+id);
 if(d.txt){var ex=getbyid('edtrk'+id);
-	if(ex)insert('['+d.txt+'§'+d.start+':callquote]'+"\n\n",'edtrk'+id);
+	if(ex)insert('['+d.txt+'|'+d.start+':callquote]'+"\n\n",'edtrk'+id);
 	else SaveJ('popup_tracks,form___'+id+'_'+encUriJ(d.txt)+'_'+d.start);}}
 
 function callquote(id,s,pad,idt){

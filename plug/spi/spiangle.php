@@ -14,9 +14,9 @@ foreach($r as $k=>$v)if($k){$i++;
 	$w=$sz[$i];
 	$ret.='[#'.$v.',gray:attr]';
 	$ret.='['.$x.','.$y.','.$w.','.$h.':rect]';
-	$ret.='['.($x+4).','.($y+15).',12px§'.$k.':text]';
+	$ret.='['.($x+4).','.($y+15).',12px|'.$k.':text]';
 	$x+=$w;}
-	$ret.='[50,590,12px§@Davy2016:text]';
+	$ret.='[50,590,12px|@Davy2016:text]';
 return $ret;}
 
 static function layers(){
@@ -25,7 +25,7 @@ $rd=['k'=>2,'l'=>5,'m'=>9,'n'=>14,'o'=>19,'p'=>23,'q'=>26];
 $rh=['k'=>1,'l'=>2,'m'=>3,'n'=>4,'o'=>4,'p'=>3,'q'=>2];
 foreach($rd as $k=>$v){$h=$rh[$k]*$u;
 	$ret.='[,black,1:attr][40,'.$y.',40,'.($y+$h).':line]';
-	$ret.='[black,,:attr][20,'.($y+($h/2)).',12px§'.$k.':text]';
+	$ret.='[black,,:attr][20,'.($y+($h/2)).',12px|'.$k.':text]';
 	$y+=$h+$u;}
 return $ret;}
 
@@ -57,8 +57,8 @@ $x=($rx[$sub][$pos-1]*3+$zerox)*$u;
 $y=($rd[$ring]+($sub)+$zeroy)*$u;
 //if($n==11)echo $n.'-'.$rd[$ring].'-'.$ry[$sub][$pos].br();
 $w=$u*3;$h=$u;
-$t1='[spg_spiangle;call___'.$n.'§['.($x+4).','.($y+14).',12px§'.$n.':text]:lj]';
-$t2='[popup_spitable;infos___'.$n.'§['.($x+$w/2+2).','.($y+14).',12§'.$v.':text]:lj]';
+$t1='[spg_spiangle;call___'.$n.'|['.($x+4).','.($y+14).',12px|'.$n.':text]:lj]';
+$t2='[popup_spitable;infos___'.$n.'|['.($x+$w/2+2).','.($y+14).',12|'.$v.':text]:lj]';
 $ret=$t1.$t2;
 //echo $x.'-'.$y.'-'.$w.'-'.$h.br();
 return [$x,$y,$w,$h,$ret];}
@@ -104,7 +104,7 @@ $bt=self::nav($p,$o,'spg');
 //mode linear
 if($o){$mode='linear'; $sz='1900/400';} else{$mode=0; $sz='1000/600';}
 //$ret='[rand,black,1:attr]';
-//$txt1='[popup_svg;call§[20,20§hello:text]:lj]';
+//$txt1='[popup_svg;call|[20,20|hello:text]:lj]';
 $max=118;
 $limit=$p?$p:$max;
 $rb[0]=self::legend();

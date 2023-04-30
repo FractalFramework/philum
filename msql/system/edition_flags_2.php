@@ -52,4 +52,4 @@ $r=["_"=>['img','name'],
 "50"=>['Ukraine.gif',''],
 "51"=>['Uruguay.gif',''],
 "52"=>['Venezuela.gif',''],
-"53"=>['Virgin Islands.gif','']]; ?>
+"53"=>['Virgin Islands.gif','']];

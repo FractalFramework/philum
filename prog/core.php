@@ -196,7 +196,6 @@ elseif(substr($f,0,6)=='video/')return $h.''.$f;
 elseif(strpos($f,'video/')!==false)return $h.'users/'.$f;
 elseif(strpos($f,'_datas/')!==false)return '/'.$h.''.$f;
 elseif(strpos($f,'/')!==false)return $h.'users/'.$f;
-//elseif(strpos($f,'<img')!==false)return str::prop_detect($o,'src');
 //elseif(strpos($f,'<img')!==false)return between($o,'src="','"');
 else return $f;}
 
@@ -330,11 +329,6 @@ if($n===false)return [$d,'']; else return [substr($d,0,$n),substr($d,$n+1)];}
 function getconn($d){$p=$d; $c=''; $s=strrpos($d,':');
 if($s!==false){$p=substr($d,0,$s); $c=substr($d,$s);}
 $xt=strtolower(strrchr($p,'.')); return [$p,$c,$xt];}
-function connmod($d){$r=split_one('§',$d,1);//a:p1,b:p2§bt:c
-$ra=split_one(':',$r[1],1); $rb=explode_k($r[0],',',':');
-if(!$r[1] && strpos($r[0],',')===false)$rb=expl(':',$r[0]);//bridge2old
-if($ra[0])$rb['bt']=$ra[0]; if($ra[1])$rb['m']=$ra[1];
-if($rb[0]??'')$rb['p']=$rb[0]; if($rb[1]??'')$rb['m']=$rb[1]; return $rb;}
 
 #vacuum
 function vacurl($f){$f=nohttp($f); return normalize($f);}// $f=strend($f,'/');

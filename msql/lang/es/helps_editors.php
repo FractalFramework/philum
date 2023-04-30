@@ -6,4 +6,4 @@ $r=["_"=>['title'],
 "h"=>['title'],
 "q"=>['quote'],
 "list"=>['list'],
-"pub"=>['article']]; ?>
+"pub"=>['article']];

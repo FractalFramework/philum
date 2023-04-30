@@ -9,7 +9,7 @@ static function pub_clr($d,$o=''){if(!$o)[$d,$o]=cprm($d); return bts('color:'.$
 static function pub_bkgclr($d){[$d,$o]=cprm($d); return bts('background-color:'.$o,$d);}
 static function pub_size($d){[$d,$o]=cprm($d); $s='font-size:'.$o.'px; line-height:'.round($o*1.2).'px;';
 return tag('font',['style'=>$s],$d);}
-static function pub_html($d){[$p,$o]=split_right('§',$d); $r=explode_k($o,' ','=');
+static function pub_html($d){[$p,$o]=split_right('|',$d); $r=explode_k($o,' ','=');
 $ra=['css'=>'class','font'=>'font-family','size'=>'font-size']; $rb=colors(); $atb='';
 foreach($r as $k=>$v){if($k=='color')$v=$rb[$v]?$rb[$v]:'#'.$v; $atb.=(isset($ra[$k])?$ra[$k]:$k).':'.$v.'; ';}
 return bts($atb,$p);}
@@ -44,7 +44,7 @@ static function wlink($d){[$p,$t]=cprm($d);
 return lkt('',goodroot($p),$t?$t:preplink($p));}
 
 static function download($d,$t=''){//$f=goodroot($f);//root_security
-if(strpos($d,'§'))[$d,$t]=split_one('§',$d); [$f,$nm]=prepdlink($d); if($t==1)$t=strend($d,'/');
+if(strpos($d,'|'))[$d,$t]=split_one('|',$d); [$f,$nm]=prepdlink($d); if($t==1)$t=strend($d,'/');
 if(!is_file($f))$g='img/'.$f; if(!is_file($f))$f='users/'.$f;
 if(is_http($d))return lkc('small',$d,pictxt('chain',$t));//$nm
 elseif(is_file($f)){$size=' '.btn('small','('.fsize($f,1).')'); $nbd=self::nbdwnl($f);
@@ -53,7 +53,7 @@ else return btn('small',$nm.' (file not exists)');}
 
 static function make_li($d,$ul){$ret='';
 //[$d,$n]=cprm($d); //atb('start',$n)
-if(strpos($d,'¬'))$r=explode('¬',$d); else $r=explode("\n",$d);
+if(strpos($d,'Â¬'))$r=explode('Â¬',$d); else $r=explode("\n",$d);
 foreach($r as $v){if(substr($v,0,1)=='-')$v=substr($v,1); $v=trim($v);
 	if(strpos($v,'<li')!==false)$ret.=$v; elseif($v)$ret.=li($v);}
 if($ret)return tagb($ul,$ret);}
@@ -82,7 +82,7 @@ static function popurl($d){
 return lj('','popup_sav,batchpreview__3_'.ajx(nohttp($d)),preplink($d).' '.picto('get'));}
 
 static function img_fluid($d){
-[$im,$h]=split_one('§',$d,1); $h=is_numeric($h)?$h:200; $im=goodroot($im);
+[$im,$h]=split_one('|',$d,1); $h=is_numeric($h)?$h:200; $im=goodroot($im);
 $s='height:'.$h.'px; background-image:url(/'.$im.'); background-size:cover; background-attachment:fixed;';
 return div(ats($s),'');}
 
@@ -92,10 +92,10 @@ if(!$d){$d=time(); meta::utag_sav($id,'lastup',$d);}
 if($d)return btn('txtsmall2',nms(118).' : '.mkday($d,1));}
 
 static function table($d){
-[$d,$o]=cprm($d); $s='¬';
+[$d,$o]=cprm($d); $s='Â¬';
 if($o=='div')return self::dtable($d);
-if(strpos($d,'¬')===false && $o=='no')$s='¬';
-elseif(strpos($d,'¬')===false or $o=='esc')$s="\n";
+if(strpos($d,'Â¬')===false && $o=='no')$s='Â¬';
+elseif(strpos($d,'Â¬')===false or $o=='esc')$s="\n";
 $r=explode($s,$d); foreach($r as $k=>$v)$ret[]=explode('|',$v);
 return tabler($ret,$o==1?1:'','');}
 
@@ -137,7 +137,7 @@ return divs('display:inline-block; width:'.$sz.'px; margin:0 10px;',$p);}
 static function artwork($d,$m=''){
 if(!$d)return; $nbo=0; $n=','; $r=explode(',',$d.$n); $ret='';// or $m<3
 foreach($r as $k=>$v){$nb=substr_count($v,'-'); $id=substr($v,$nb);
-	if($id){$ret.=pop::openart($id.'§'.tagb('h'.$nb,ma::suj_of_id($id)));}}
+	if($id){$ret.=pop::openart($id.'|'.tagb('h'.$nb,ma::suj_of_id($id)));}}
 return $ret;}
 
 static function artlook($d){[$p,$o]=cprm($d);
@@ -228,18 +228,18 @@ $rb=msql::read('system','edition_ascii_8');
 if(!is_numeric($o)){$k=in_array_r($rb,$o,1); $o=$rb[$k][0];} $na=$rb[$o][0];
 $rd=array_flip(str_split('ARCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'));
 foreach($ra as $k=>$v)if(is_numeric($v))$ret.=asciinb($v);
-else $ret.=strpos(' ?./§,;:!$*',$v)!==false?$v:chr_b($na+$rd[$v]);
+else $ret.=strpos(' ?./|,;:!$*',$v)!==false?$v:chr_b($na+$rd[$v]);
 return $ret;}
 
 static function scan_txt($d,$m){
-[$f,$t]=split_one('§',$d,1); $ret='';
+[$f,$t]=split_one('|',$d,1); $ret='';
 $f=goodroot($f); $tb=strend($f,'/'); if($t && $t!=1)$tb=$t;
 if($m<3 or $t)return lj('txtx','popup_mk,scan*txt___'.ajx($f).'_3',pictxt('doc',$tb));
 else{$ret=read_file($f); if($t==1)$ret=conn::read(conv::call($ret),'','');}
 return $ret."\n\n".lkt('txtx',$f,$tb);}
 
 static function translate($d,$m){if($m<3)return $d;
-[$d,$lg]=cprm($d,'§');
+[$d,$lg]=cprm($d,'|');
 $lng=ses('lng'); $setlg=$lng.'-'.$lg; $ref=rid($d,11);
 $ret=trans::callxt($d,$ref,$setlg,0);
 return divc('trkmsg',$ret);}
@@ -253,8 +253,8 @@ if(is_array($r)){
 	return scroll($r,$ret,20,'',640);}
 return $r;}
 
-static function msqcall($com,$id,$o){$ret='';
-if(strpos($com,'§'))[$d,$p]=split_one('§',$com,1); else $d=$com; if(isset($p))$o=$p;
+static function msqcall($com,$id,$o){
+if(strpos($com,'|'))[$d,$p]=split_one('|',$com,1); else $d=$com; if(isset($p))$o=$p;
 if(strpos($o,'|'))[$oa,$ob]=opt($o,'|'); else{$oa=$o; $ob='';}
 $ret=match($oa){
 'pop'=>self::microread_pop($d),
@@ -286,14 +286,14 @@ static function microread_pop($d){[$p,$o]=cprm($d);
 return lj('','popup_msql___'.ajx($p),pictxt('msql2',$o));}
 
 static function msqconn($d,$id,$ob){$bt='';
-[$d,$p]=split_one('§',$d);
+[$d,$p]=split_one('|',$d);
 $r=msql::goodtable($d);
 [$b,$nd]=split_right('/',$d);
 if(auth(6))$bt=msqbt($b,$nd);
 if($r)foreach($r as $k=>$v)foreach($v as $kb=>$vb)$r[$k][$kb]=conn::parser(str::embed_links($vb));
 return self::msqplay($r,$ob).$bt;}
 
-static function msqlasts($d,$ob){[$d,$l]=split_one('§',$d,1);
+static function msqlasts($d,$ob){[$d,$l]=split_one('|',$d,1);
 $r=msql::goodtable($d); $n=count($r); $l=$l?$l:10; $l*=-1;
 $r=array_slice($r,$l,$n,true); arsort($r);
 return self::msqplay($r,$ob);}
@@ -312,7 +312,7 @@ foreach($r as $k=>$v){
 return tabler($r,1);}}
 
 static function msqgraph($d){static $n; $n++; $i=0; $pw=prma('content');
-[$da,$rep]=split_one('§',$d,1); [$nd,$bs,$va,$op]=explode('_',$da);
+[$da,$rep]=split_one('|',$d,1); [$nd,$bs,$va,$op]=explode('_',$da);
 if($bs){$nd=$nd?$nd:ses('qb');}else{$nd=ses('qb'); $bs=$d;}
 $r=msql::goodtable($da); $menu=$r[msql::$m]; unset($r[msql::$m]);
 if($r && $rep)foreach($r as $k=>$v){$i++; $bit[$k]=$v[$rep];}
@@ -325,7 +325,7 @@ static function microread($d){[$nod,$tmp]=cprm($d);
 return msqlvue::call($nod,$tmp);}
 
 static function msqdata($d,$id){
-[$v,$k]=split_right('§',$d); $k=$k?$k:1;
+[$v,$k]=split_right('|',$d); $k=$k?$k:1;
 if($v){$ra=[$v];
 	if($k){$msg=sql('msg','qdm','v',$id);
 	$msg=str_replace($d.':msq_data',$k.':msq_data',$msg);
@@ -336,7 +336,7 @@ if(auth(3))$ret.=msqbt('',ses('qb').'_art_'.$id,$k);
 return $ret;}
 
 static function msqusrs($d,$o=''){
-[$d,$p]=split_one('§',$d);
+[$d,$p]=split_one('|',$d);
 $r=msql::goodtable($d);
 [$b,$nd]=split_right('/',$d);
 if(auth(6))$bt=msqbt($b,$nd); $csv=csvfile($b.$nd,$r);
@@ -354,14 +354,15 @@ if(is_file($im) or substr($im,0,4)=='http'){$lmt='';//$_SESSION['rstr'][16];
 	return image($imb,$w,$h);}
 else return picto('img',48);}
 
-static function mini_d($da,$id,$nl){//im§w/h//conn_thumb//codeline
-[$v,$p]=split_one('§',$da,1); $img=self::thumb_d($v,$p,$id);
+static function mini_d($da,$id,$nl){//im|w/h//conn_thumb//codeline
+[$v,$p]=split_one('|',$da,1); $img=self::thumb_d($v,$p,$id);
 if($nl)return image(goodroot($v),cw(),'');
 else return self::popim($v,$img,$id);}
 
 //:mini
 static function mini_b($d,$id){//mode w/h max//adlin
-[$im,$sz]=split_one('§',$d,1); if(!$sz)$sz='320/320';//prmb(27);
+[$im,$sz]=split_one('|',$d,1); if(!$sz)$sz='320/320';//prmb(27);
+if(!is_file('img/'.$im))return;
 [$w,$h]=explode('/',$sz); [$wo,$ho,$ty]=getimagesize('img/'.$im);
 [$w,$h]=img::sz($wo,$ho,$w,$h); $imb=img::thumbname($im,$w,$h);
 if(!file_exists($imb) or ses('rebuild_img'))make_mini('img/'.$im,$imb,$w,$h,'');
@@ -369,9 +370,9 @@ return self::popim($im,img('/'.$imb),$id);}
 
 //citation
 static function citations($d,$c){$d=str_replace("&nbsp;",' ',htmlentities($d));
-if($c=='i'){$d=str_replace('&laquo; ','§ [',$d); $d=str_replace(' &raquo;',':i] §',$d);}
-if($c=='q'){$d=str_replace('&laquo; ','[§ ',$d); $d=str_replace(' &raquo;',' §:q]',$d);}
-$d=str_replace('§ ',"§&nbsp;",$d); $d=str_replace(' §',"&nbsp;§",$d); $d=str_replace(':q].','.:q]',$d);
+if($c=='i'){$d=str_replace('&laquo; ','| [',$d); $d=str_replace(' &raquo;',':i] |',$d);}
+if($c=='q'){$d=str_replace('&laquo; ','[| ',$d); $d=str_replace(' &raquo;',' |:q]',$d);}
+$d=str_replace('| ',"|&nbsp;",$d); $d=str_replace(' |',"&nbsp;|",$d); $d=str_replace(':q].','.:q]',$d);
 return html_entity_decode($d);}
 
 //:photos
@@ -406,7 +407,7 @@ return [$r,$src];}
 
 //:sliderj//old
 static function sliderj($d,$id,$nl){if($nl)return;
-[$f,$o]=split_one('§',$d,1);
+[$f,$o]=split_one('|',$d,1);
 return sliderJ::home($f,$id,$o);}//
 
 static function sliderslct($da,$id,$d){$w=''; $h=''; $pw='';//to revise
@@ -437,7 +438,7 @@ static function jukebox($f,$m,$id){[$f,$t]=cprm($f);
 if($m<3)return lj('','popup_mk,jukebox___'.ajx($f).'_3',pictxt('music',$t?$t:'Jukebox'));
 $r=explore('users/'.$f); $ret=''; $rb=[];
 if($r)foreach($r as $k=>$v)$rb[ftime('users/'.$f.'/'.$v)]=$v; if($rb)krsort($rb);
-if($rb)foreach($rb as $k=>$v)$ret.=lj('','juke'.$id.'_call___pop_audio_'.ajx('users/'.$f.'/'.$v).'§'.ajx($v).'_'.$id,ascii('speaker').' '.$v);//pictxt('music',$v)
+if($rb)foreach($rb as $k=>$v)$ret.=lj('','juke'.$id.'_call___pop_audio_'.ajx('users/'.$f.'/'.$v).'|'.ajx($v).'_'.$id,ascii('speaker').' '.$v);//pictxt('music',$v)
 $bt=divd('juke'.$id,audio('users/'.$f.'/'.$r[0],$id,$r[0]));
 return $bt.divc('list',$ret);}
 
@@ -446,7 +447,7 @@ static function modpop($d){
 return lj('','popup_mod,callmod__3_'.ajx($d),picto('get'));}
 
 //:form
-//$d='date=date,choix1/choix2=list,entr§e1,entr§e2,message=text,image=upload,mail=mail,ok=button';
+//$d='date=date,choix1/choix2=list,entr|e1,entr|e2,message=text,image=upload,mail=mail,ok=button';
 static function form($d,$tg,$p=''){
 $prod=explode(',',$d); $n=count($prod); $ret=''; $ia=0;
 for($i=0;$i<$n;$i++){[$val,$type]=explode('=',$prod[$i]); $vb=normalize($val);
@@ -471,10 +472,10 @@ return divd($tg,$ret);}
 //called by art_read_c
 static function find_quotes($d,$id,$s,$pad,$l2){static $dc=0;//decal because of previous results
 $d=htmlentities($d);
-$d=str_replace("&laquo;",'§',$d); $d=str_replace("&raquo;",'§',$d); $d=str_replace("&nbsp;",' ',$d);
+$d=str_replace("&laquo;",'|',$d); $d=str_replace("&raquo;",'|',$d); $d=str_replace("&nbsp;",' ',$d);
 $d=html_entity_decode($d); //$pad=str::clean_punct($pad);
 $l=mb_strlen($pad); $s2=0; if($dc)$s+=$dc*$l2;//lenght to add
-$s2=mb_strpos($d,$pad,$s); if(!$s2)$s2=strpos($d,$pad,$s); if(!$s2)$s2=strpos($d,$pad);
+$s2=mb_strpos($d,$pad,$s); if(!$s2)$s2=mb_strpos($d,$pad,$s); if(!$s2)$s2=mb_strpos($d,$pad);
 if($s2){$d1=mb_substr($d,0,$s2); $d2=mb_substr($d,$s2,$l); $d3=mb_substr($d,$s2+$l);}
 else{$d1=$d; $d2=''; $d3='';} $dc++;
 return [$d1,$d2,$d3];}
@@ -483,7 +484,7 @@ static function apply_quote2($d,$id,$s,$pad,$idtrk){
 $nh=ljb('','scrolltoob','qnb'.$s,picto('arrow-down'),atd('qnh'.$s));
 [$d1,$d2,$d3]=self::find_quotes($d,$id,$s,$pad,10+strlen($idtrk)+strlen($nh));
 if($d2){$d2=preg_replace('/(\n){2,}/',br().br(),$d2);
-	return $d1.'['.$d2.'§'.$idtrk.':quote2]'.$nh.$d3;}
+	return $d1.'['.$d2.'|'.$idtrk.':quote2]'.$nh.$d3;}
 else return $d;}
 
 //highlight begin
@@ -491,7 +492,7 @@ static function allquotes($id){
 $msg=sql('msg','qdm','v','id="'.$id.'"');
 $r=sql('id,name,msg','qdi','','ib="'.$id.'"');
 if($r)foreach($r as $k=>$v){$rb=explode(':callquote]',$v[2]); $n=count($rb);
-	if($n>1){foreach($rb as $ka=>$va){$s1=strrpos($va,'['); $va=substr($va,$s1+1); [$p,$s]=cprm($va);
+	if($n>1){foreach($rb as $ka=>$va){$s1=mb_strrpos($va,'['); $va=mb_substr($va,$s1+1); [$p,$s]=cprm($va);
 		if($s)$msg=self::apply_quote2($msg,$id,$s,$p,$v[0]);}}}
 return div(atb('ondblclick','useslct(this,\''.$id.'\')'),conn::read($msg,3,$id,''));}
 
@@ -503,7 +504,7 @@ return togbub('mk,quotrk',$id.'_'.$o.'_'.ajx($p),$p,'stabilo',att('notes'));}
 static function quotrk($id,$s,$pad){//todo
 $r=sql('id,name,msg','qdi','','ib="'.$id.'"');
 if($r)foreach($r as $k=>$v){$rb=explode(':callquote]',$v[2]); $n=count($rb);
-	if($n>1){foreach($rb as $ka=>$va){$s1=strrpos($va,'['); $va=substr($va,$s1+1); [$p,$s2]=cprm($va);
+	if($n>1){foreach($rb as $ka=>$va){$s1=mb_strrpos($va,'['); $va=mb_substr($va,$s1+1); [$p,$s2]=cprm($va);
 		if($s==$s2)return $p;}}}}
 
 //quotes in trk
@@ -529,8 +530,8 @@ $ret=divc('trkmsg',$pad); $bt=''; $p=ajx($pad);
 foreach($r as $k=>$v)$bt.=lj('','art'.$id.'_mk,applyconn__x_'.$id.'_'.$p.'_'.$s.'_'.$v,$v);
 return $ret.divc('nbp',$bt);}
 
-static function applyconn($id,$pad,$s,$conn){$msg=sql('msg','qdm','v','id="'.$id.'"');
-[$d1,$d2,$d3]=self::find_quotes($msg,$id,$s,$pad,3+strlen($conn));
+static function applyconn($id,$pad,$s,$conn){$msg=sql('msg','qdm','v',$id);
+[$d1,$d2,$d3]=self::find_quotes($msg,$id,$s,$pad,3+mb_strlen($conn));
 if($d2){$msg=$d1.'['.$d2.':'.$conn.']'.$d3; sqlup('qdm',['msg'=>$msg],$id);}
 return self::xltags($id,$conn,$msg);}
 

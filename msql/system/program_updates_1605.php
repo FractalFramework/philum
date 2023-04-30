@@ -1,44 +1,44 @@
 <?php //msql/program_updates_1605
 $r=["1"=>['0501','publication'],
 "2"=>['0511','ajout du dispositif overcat :
-- /admin/overcat permet d\'affecter un menu hiÈrarchique auquel s\'attache une catÈgorie d\'articles
+- /admin/overcat permet d\'affecter un menu hi√©rarchique auquel s\'attache une cat√©gorie d\'articles
 - module overcats : affiche un menu ouvrable en javascript ou en bubbles ajax'],
-"3"=>['0511','- ajout d\'un convertisseur de catÈgorie en tags dans /admin/categories (l\'inverse, de tag vers une catÈgorie, est disponible dans Admin/tags)
-- ajout d\'un sous-systËme qui empÍche les doublons dans la table de liaison des tags
-- amÈlioration du module \'submenus\', capable de faire comme \'overcats\' mais avec des liens de type du module \'link\'
-- amÈlioration du gestionnaire de contrÙle des bulles pour qu\'elles soient utilisÈes ailleurs que pour le menu admin'],
+"3"=>['0511','- ajout d\'un convertisseur de cat√©gorie en tags dans /admin/categories (l\'inverse, de tag vers une cat√©gorie, est disponible dans Admin/tags)
+- ajout d\'un sous-syst√®me qui emp√™che les doublons dans la table de liaison des tags
+- am√©lioration du module \'submenus\', capable de faire comme \'overcats\' mais avec des liens de type du module \'link\'
+- am√©lioration du gestionnaire de contr√¥le des bulles pour qu\'elles soient utilis√©es ailleurs que pour le menu admin'],
 "4"=>['0512','- ajout du plugin ph1, ouvre le logiciel (ph1.fr) dans une iframe'],
-"5"=>['0513','- ajout du module menubub, crÈe des menus bubbles ‡ partir d\'une table msql (insensible aux sessions)
-- ajout du plugin msqedit, permet d\'Èditer rapidement des nouvelles tables msql crÈÈes ‡ la volÈe. variables: p=node, o=colonnes,a,b'],
+"5"=>['0513','- ajout du module menubub, cr√©e des menus bubbles √† partir d\'une table msql (insensible aux sessions)
+- ajout du plugin msqedit, permet d\'√©diter rapidement des nouvelles tables msql cr√©√©es √† la vol√©e. variables: p=node, o=colonnes,a,b'],
 "6"=>['0515','- finalisation de menubub, peut remplacer avantageusement le module submenus
-- amÈliorations de msqedit
-- amÈlioration du moteur bubble, qui Ètait incapable d\'ouvrir un sous-menu profond sans l\'accompagnement d\'un item dans le niveau infÈrieur'],
-"7"=>['0516','- ajout du module last_tags, relate les derniers tags ajoutÈs
-- rÈvision d\'overcats de sorte ‡ fonctionner comme menububs : ajout des rstr94 et rstr 95 pour l\'activer dans le menu admin'],
+- am√©liorations de msqedit
+- am√©lioration du moteur bubble, qui √©tait incapable d\'ouvrir un sous-menu profond sans l\'accompagnement d\'un item dans le niveau inf√©rieur'],
+"7"=>['0516','- ajout du module last_tags, relate les derniers tags ajout√©s
+- r√©vision d\'overcats de sorte √† fonctionner comme menububs : ajout des rstr94 et rstr 95 pour l\'activer dans le menu admin'],
 "8"=>['0517','- correctif comportement de l\'Api avec les classements utilisateurs (prms9)
-- remise en fonctionnement du rendu des recherches commandÈes par la console url (la barre d\'adresse)'],
-"9"=>['0519','- nouveau systËme de reboot auto, dÈclenchÈ ‡ l\'usage d\'ajax aprËs la fermeture des sessions
-- amÈlioration de la portÈe des paramËtres par dÈfaut de l\'api notamment pour ne pas afficher la prÈsence des articles dÈsactivÈs dans les icÙnes du desktop
-- dÈsormais les articles masquÈs sont inaccessibles (avant il restait le titre et un contenu rÈservÈ)'],
+- remise en fonctionnement du rendu des recherches command√©es par la console url (la barre d\'adresse)'],
+"9"=>['0519','- nouveau syst√®me de reboot auto, d√©clench√© √† l\'usage d\'ajax apr√®s la fermeture des sessions
+- am√©lioration de la port√©e des param√®tres par d√©faut de l\'api notamment pour ne pas afficher la pr√©sence des articles d√©sactiv√©s dans les ic√¥nes du desktop
+- d√©sormais les articles masqu√©s sont inaccessibles (avant il restait le titre et un contenu r√©serv√©)'],
 "10"=>['0520','maintenance du menu admin : 
-- comportement javascript bulle au premier plan qui Èteint les autres sauf son menu parent)
+- comportement javascript bulle au premier plan qui √©teint les autres sauf son menu parent)
 - en passant au menu vertical le moteur de recherche passe sous un bouton et le tite de l\'article en cours ne s\'affiche plus pendant le scroll
-- rÈformes css'],
-"11"=>['0521','- fix pb en passant par m_apps (o˘ on a installÈ le support menubub)
-- remise ‡ niveau des paramËtres globaux pour les nouveaux dispositifs, adaptation ‡ l\'api'],
-"12"=>['0522','- mise en place du dispositif deskpage, permet de retrouver dans un espace desktop tous les ÈlÈments de la navigation sur un site normal, c\'est ‡ dire ouvrir depuis l\'url des articles, catÈgories, tags, etc...'],
-"13"=>['0523','- rendu possible d\'utiliser les contextes en mode desktop : l\'url appelle la sÈrie de modules de ce contexte
-- amÈliorations de pad et txt'],
-"14"=>['0524','- ajout d\'une nouvelle mÈthode-type \'desktop\', utilisÈe pour ‡ peu prËs tous les modules qu\'on veut voir s\'afficher en mode bureau 
-- ajout du support pour desktop de \'explore\', revient ‡ crÈer des apps (objets de navigation) d\'aprËs des dossiers rÈels, sans passer par le navigateur \'finder\' (qui se charge dÈj‡ de cela dans une fenÍtre unique). l\'option \'virtual\' permet d\'utiliser les urls virtuelles plutÙt que les fichiers en dur.
-- ajout du support pour desktop \'menubub\', qu\'on peut dÈclencher en mode deskop depuis une App utilisant la mÈthode-type \'menubub\' (il dÈduit le type de lien (cat, read, context...) et en fait un appel ajax via ajxlnk2'],
-"15"=>['0525','- ajout du support pour desktop \'overcats\', utilise de l\'architecture des catÈgories d\'articles
-- suppression de certains dispositis du gestionnaire en mode url (‡ partir d\'ici le Cms ne peut plus rÈtrograder vers les anciennes mÈthodes de type POST pour l\'ajout d\'un nouvel article. AprËs 6 ans, ok l\'ajax est fiable, l\'ancien dispositif va Ítre graduellement supprimÈ'],
-"16"=>['0530','- les articles congÈdiÈs sont placÈs sur un _hub
-- qq amÈliorations du gestionnaire desktop (erreurs js, background img)
-- amÈlioration module Tracks pour lier les rÈsultats avec l\'Ètat des articles (dÈpubliÈs ou congÈdiÈs)'],
+- r√©formes css'],
+"11"=>['0521','- fix pb en passant par m_apps (o√π on a install√© le support menubub)
+- remise √† niveau des param√®tres globaux pour les nouveaux dispositifs, adaptation √† l\'api'],
+"12"=>['0522','- mise en place du dispositif deskpage, permet de retrouver dans un espace desktop tous les √©l√©ments de la navigation sur un site normal, c\'est √† dire ouvrir depuis l\'url des articles, cat√©gories, tags, etc...'],
+"13"=>['0523','- rendu possible d\'utiliser les contextes en mode desktop : l\'url appelle la s√©rie de modules de ce contexte
+- am√©liorations de pad et txt'],
+"14"=>['0524','- ajout d\'une nouvelle m√©thode-type \'desktop\', utilis√©e pour √† peu pr√®s tous les modules qu\'on veut voir s\'afficher en mode bureau 
+- ajout du support pour desktop de \'explore\', revient √† cr√©er des apps (objets de navigation) d\'apr√®s des dossiers r√©els, sans passer par le navigateur \'finder\' (qui se charge d√©j√† de cela dans une fen√™tre unique). l\'option \'virtual\' permet d\'utiliser les urls virtuelles plut√¥t que les fichiers en dur.
+- ajout du support pour desktop \'menubub\', qu\'on peut d√©clencher en mode deskop depuis une App utilisant la m√©thode-type \'menubub\' (il d√©duit le type de lien (cat, read, context...) et en fait un appel ajax via ajxlnk2'],
+"15"=>['0525','- ajout du support pour desktop \'overcats\', utilise de l\'architecture des cat√©gories d\'articles
+- suppression de certains dispositis du gestionnaire en mode url (√† partir d\'ici le Cms ne peut plus r√©trograder vers les anciennes m√©thodes de type POST pour l\'ajout d\'un nouvel article. Apr√®s 6 ans, ok l\'ajax est fiable, l\'ancien dispositif va √™tre graduellement supprim√©'],
+"16"=>['0530','- les articles cong√©di√©s sont plac√©s sur un _hub
+- qq am√©liorations du gestionnaire desktop (erreurs js, background img)
+- am√©lioration module Tracks pour lier les r√©sultats avec l\'√©tat des articles (d√©publi√©s ou cong√©di√©s)'],
 "17"=>['0531','- dans overcats, ajout de la suppression d\'une oc, ajout d\'aides
-- ajout d\'un bouton \'preview\' dans l\'Èditeur sub-modules des apps
-- rÈparation du problËme (d\'appel d\'un article puis d\'appel du background du desktop) ‡ l\'allumage sur un hub secondaire ‡ partir des dÈductions de l\'appel d\'un article
-- petite rÈnovation de l\'allumage de modules assez rares
-- suppression du module cssfonts (permettait de lancer des fontes supplÈtives ; se rÈfÈrer dÈsormais au css supplÈtif)']]; ?>
+- ajout d\'un bouton \'preview\' dans l\'√©diteur sub-modules des apps
+- r√©paration du probl√®me (d\'appel d\'un article puis d\'appel du background du desktop) √† l\'allumage sur un hub secondaire √† partir des d√©ductions de l\'appel d\'un article
+- petite r√©novation de l\'allumage de modules assez rares
+- suppression du module cssfonts (permettait de lancer des fontes suppl√©tives ; se r√©f√©rer d√©sormais au css suppl√©tif)']];

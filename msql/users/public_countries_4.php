@@ -2,7 +2,7 @@
 $r=["_"=>['coutry','code'],
 "1"=>['AFGHANISTAN','AF'],
 "2"=>['AFRIQUE DU SUD','ZA'],
-"3"=>['ÅLAND, ÎLES','AX'],
+"3"=>['Ã…LAND, ÃŽLES','AX'],
 "4"=>['ALBANIE','AL'],
 "5"=>['ALGERIE','DZ'],
 "6"=>['ALLEMAGNE','DE'],
@@ -249,4 +249,4 @@ $r=["_"=>['coutry','code'],
 "247"=>['WALLIS ET FUTUNA','WF'],
 "248"=>['YEMEN','YE'],
 "249"=>['ZAMBIE','ZM'],
-"250"=>['ZIMBABWE','ZW']]; ?>
+"250"=>['ZIMBABWE','ZW']];

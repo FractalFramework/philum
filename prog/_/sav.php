@@ -16,7 +16,8 @@ if($mail=='mail' or $mail=='url'){$mail='';$urlsrc='';}
 if($d){$d=nl2br($d); $d=str_replace(['<br />','<br/>','<br>','<BR>'],"\n",$d);}
 if(!$d && $urlsrc)[$suj,$d]=conv::vacuum($mail,$suj);
 $d=str::html_entity_decode_b($d); $d=str::embed_links($d);
-$d=str::decode_unicode($d); $d=str::clean_br_lite($d); $d=str::clean_punct($d);
+if(ses::$enc!='utf-8')$d=str::decode_unicode($d);
+$d=str::clean_br_lite($d); $d=str::clean_punct($d);
 if($pdat)$pdt=strtotime($pdat); else $pdt=$dayx;
 if(empty($suj))$suj='forbidden title';
 if(empty($d)){self::$er='miss::msg;';}//alert('msg forbidden'); 
@@ -40,7 +41,7 @@ static function saveart_url($u){$cat=vacses($u,'c'); if(!auth(4))return;
 $qda=ses('qda'); $qdm=ses('qdm'); $qb=$name=ses('qb'); 
 $pdt=ses('dayx'); $frm=$cat?$cat:'public'; $re=rstr(11)?1:0;
 ses::$urlsrc=$u; [$suj,$d]=conv::vacuum($u,''); $ib='0'; $lg='';
-$d=str::embed_links($d); $d=str::clean_br_lite($d); $d=str::clean_punct($d);//$d=goodpar($d); 
+$d=str::embed_links($d); $d=str::clean_br_lite($d); $d=str::clean_punct($d);
 $sz=mb_strlen($d); $img=''; $lg='';
 $thm=str::hardurl($suj);//if(rstr(38))
 //$lg=ses('lang')!='all'?ses('lang'):substr($_SERVER['HTTP_ACCEPT_LANGUAGE'],0,2);
@@ -56,9 +57,14 @@ $_SESSION['daya']=ses('dayx');
 return $nid;}
 
 static function modif_art($id,$d){$qdm=$_SESSION['qdm']; if(!auth(3))return; //$d=delr($d);
-$d=str::clean_acc($d); $d=str::stupid_acc($d); $d=str::embed_links($d);
-$d=str::decode_unicode($d); $d=codeline::parse($d,$id,'savimg'); $d=str::clean_br_lite($d);
-$d=str::clean_punct($d); $d=str::repair_tags($d);//if(rstr(70))$d=conn::retape($d,$id);
+if(ses::$enc!='utf-8')$d=str::clean_acc($d);
+$d=str::stupid_acc($d);
+$d=str::embed_links($d);
+if(ses::$enc!='utf-8')$d=str::decode_unicode($d);
+$d=codeline::parse($d,$id,'savimg');
+if(ses::$enc!='utf-8')$d=str::clean_br_lite($d);
+$d=str::clean_punct($d);
+$d=str::repair_tags($d);//if(rstr(70))$d=conn::retape($d,$id);
 if(is_numeric($id))sqlup('qdm',['msg'=>$d],$id);
 $sz=mb_strlen($d??''); sql::upd('qda',['host'=>$sz],$id); cachevs($id,8,$sz);
 return stripslashes($d??'');}

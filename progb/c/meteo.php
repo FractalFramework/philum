@@ -45,13 +45,13 @@ $weather=$as?$as:picto($pc);
 //$weather=self::weather2($weather,$nm);
 $moon=self::goodmoon($r['moon_age']);
 $nfo=$nm.' | ';
-if(($v=$r['probarain'])>30)$nfo.='Probabilité de pluie : '.$v.'% | ';
-if(($v=$r['probafog'])>30)$nfo.='Probabilité de brouillard : '.$v.'% | ';
-if(($v=$r['probafrost'])>30)$nfo.='Probabilité de gel : '.$v.'% | ';
+if(($v=$r['probarain'])>30)$nfo.='ProbabilitÃ© de pluie : '.$v.'% | ';
+if(($v=$r['probafog'])>30)$nfo.='ProbabilitÃ© de brouillard : '.$v.'% | ';
+if(($v=$r['probafrost'])>30)$nfo.='ProbabilitÃ© de gel : '.$v.'% | ';
 if(($v=$ra['wind_speed'])>30)$nfo.='Vitesse du vent : '.$v.'&nbsp;Km/h | ';
 if(($v=$ra['windgust_speed'])>50)$nfo.='Rafales de vent : '.$v.'&nbsp;Km/h | ';
 if(($v=$ra['rainfall'])>50)$nfo.='Cumul de pluie : '.$v.'&nbsp;mm | ';
-if(($v=$ra['solar_radiation'])>200)$nfo.='Radiation solaire : '.$v.'&nbsp;W/m² | ';
+if(($v=$ra['solar_radiation'])>200)$nfo.='Radiation solaire : '.$v.'&nbsp;W/mÂ² | ';
 $baro=$ra['barometer'];
 $diffday=$r['diffday']; $sign=$r['diffday']>0?'+':'';
 $nfo.=$sign.$diffday.' min de soleil | ';
@@ -59,7 +59,7 @@ if(!$r['moon_age'])$r['moon_age']=1;
 $nfo.=$moon.' '.$r['moon_phase'];
 $ret.=lk(auth(6)?$f:'',$weather,att($nfo)).' ';//render
 $ret.=togbub('meteo,umenu','',$r['town'],'txtx').' ';//$r['station']
-if($tmp<0)$ic='degree0'; else $ic='degree'.(substr($tmp,0,1)+1); $ret.=picto($ic).$tmp.'&#8451; ';//°C
+if($tmp<0)$ic='degree0'; else $ic='degree'.(substr($tmp,0,1)+1); $ret.=picto($ic).$tmp.'&#8451; ';//Â°C
 $ret.=picto('barometer').round((int)$baro).btn('small','hPa').' ';
 $ret.=picto('humidity').$ra['outside_humidity'].btn('small','%').' ';//'&#128167; '.
 $ret.='&uarr;'.$r['sunrise'].' '.'&darr;'.$r['sunset'];//10548//10549//.' ('.$diffday.' min)'//

@@ -2,8 +2,8 @@
 $r=["_"=>['title'],
 "b"=>['gras'],
 "i"=>['italique'],
-"u"=>['souligné'],
+"u"=>['soulignÃ©'],
 "h"=>['titre'],
 "q"=>['citation'],
 "list"=>['liste'],
-"pub"=>['article']]; ?>
+"pub"=>['article']];

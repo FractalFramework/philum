@@ -149,4 +149,4 @@ $r=["_"=>['usage','tag','boot','public'],
 "twitter"=>['','system','yes',''],
 "upload"=>['','','yes',''],
 "userdl.ta"=>['','','no',''],
-"xmlbook"=>['','external','no','']]; ?>
+"xmlbook"=>['','external','no','']];

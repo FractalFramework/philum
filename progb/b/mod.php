@@ -7,7 +7,16 @@ static $rha=[];
 foreach($_SESSION['mods'] as $k=>$v)if(key($v)==$n)return $v;}*/
 
 #new protocole
-static function mkcmd($p,$r=[],$o=0){if(!$r)$r=connmod($p);//p§bt:m
+/*static function connmod0($d){$r=split_one('|',$d,1);//a:p1,b:p2|bt:c
+$ra=split_one(':',$r[1],1); $rb=explode_k($r[0],',',':');
+if(!$r[1] && strpos($r[0],',')===false)$rb=expl(':',$r[0]);//bridge2old
+if($ra[0])$rb['bt']=$ra[0]; if($ra[1])$rb['m']=$ra[1];
+if($rb[0]??'')$rb['p']=$rb[0]; if($rb[1]??'')$rb['m']=$rb[1]; return $rb;}*/
+
+static function connmod($d){$rb=explode_k($d,',',':');
+if($rb[0]??'')$rb['p']=$rb[0]; if($rb[1]??'')$rb['m']=$rb[1]; return $rb;}
+
+static function mkcmd($p,$r=[],$o=0){if(!$r)$r=self::connmod($p);//p|bt:m
 if($o)return array_combine(self::$r,arr($r,13));//build keys
 else return valk($r,self::$r);}//verify keys
 
@@ -26,7 +35,7 @@ $cmd=implode_k($r,',',':'); $g=ajx($cmd);//$tg.'_mod,callmod_'..'_'.$k.'_'.$ik.'
 self::$rha[$t]=$i; $c=active($i,$ni);
 return tag('a',['onclick'=>'SaveBg('.$i.')','data-g'=>$g,'class'=>$c,'id'=>'n'.$i],$t);}
 
-//a:p1,b:p2§bt:m//compatible p/t:m§bt:module
+//a:p1,b:p2|bt:m//compatible p/t:m|bt:module
 static function callmod($p){$r=self::mkcmd($p,[],0);
 //if(is_numeric($r['m']))$p=$r['m'];
 if(is_numeric($p)){$r=msql::row('',nod('mods_'.prmb(1)),$p);
@@ -62,7 +71,7 @@ if(self::$rha){$h=self::jsmap('rha'); self::$rha=[];}
 return divd($va,$ret.$h);}
 
 static function blocks(){
-$r=explode(' ',$_SESSION['prma']['blocks']);
+$r=explode(' ',prma('blocks'));
 foreach($r as $k=>$v)$ret[$v]=self::block($v,'');
 return $ret;}
 
@@ -72,7 +81,7 @@ boot::deductions(); boot::define_condition();
 return self::block('content','');}
 
 static function playcontext($g1,$g2,$g3){
-$g2=utf8dec_b(urldecode($g2)); if($n=strpos($g2,'#'))$g2=substr($g2,0,$n);
+$g2=(urldecode($g2)); if($n=strpos($g2,'#'))$g2=substr($g2,0,$n);
 geta($g1,$g2); if($g3)geta('dig',$g3);//str::protect_url
 boot::deductions(); boot::define_condition(); boot::define_modc(); $rt=self::blocks(); //pr(ses('cond'));
 return implode('',$rt);}

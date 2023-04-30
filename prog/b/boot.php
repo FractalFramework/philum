@@ -326,9 +326,10 @@ $_SESSION['ip']=$ip; $_SESSION['iq']=$iq;}
 
 #update
 static function verif_update(){
-if($_SESSION['auth']>5 && !prms('aupdate')){
+if($_SESSION['auth']>5){
+	if(!prms('aupdate')){
 	$localver=checkversion(2); $distver=sesmk('checkupdate',2,1);//ses('philum')
-	if($distver>$localver)Head::add('jscode',sj('popup_software,call___1'));
+	if($distver>$localver)Head::add('jscode',sj('popup_software,call___1'));}
 	if(!isset($_SESSION['verifs'])){
 	if(prms('srvmirror'))Head::add('jscode',sj('popup_transport,batch__3'));}
 $_SESSION['verifs']=1;}}

@@ -1,3 +1,3 @@
 <?php //msql/program_updates_1401
 $r=["_"=>['date','text'],
-"1"=>['0115','dans l\'importateur html, les dictionnaires sont reconnus et prennent forme d\'un connecteur :pop, pour afficher une bulle ‡ cÙtÈ d\'un lien']]; ?>
+"1"=>['0115','dans l\'importateur html, les dictionnaires sont reconnus et prennent forme d\'un connecteur :pop, pour afficher une bulle √† c√¥t√© d\'un lien']];

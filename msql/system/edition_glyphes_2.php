@@ -673,4 +673,4 @@ $r=["glass"=>['f000'],
 "snowflake-o"=>['f2dc'],
 "superpowers"=>['f2dd'],
 "wpexplorer"=>['f2de'],
-"meetup"=>['f2e0']]; ?>
+"meetup"=>['f2e0']];

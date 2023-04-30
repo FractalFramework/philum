@@ -69,7 +69,7 @@ static function read($txt,$from='',$to='',$format='off'){
 $r=self::build($txt,$from,$to,$format);
 $ret=$r['text'];
 $ret=self::correct($ret);
-return utf8dec_b($ret);}
+return ($ret);}//utf8dec_b
 
 //com
 static function com($ref,$d,$to='',$from='',$z=''){
@@ -168,7 +168,7 @@ if(!$nobt)$bt=self::menulg($ref,$to,$from);
 if(!$ret)$ret=self::redo($ref,$setlg,1,$edt);//patch
 if($edt==2)return $ret;//txt brut
 if(!$edt)$ret=self::convconn($ret,'');
-//if($ret && $edt==1)return '['.$bt.$ret.'§ynd'.$ref.':divd]';
+//if($ret && $edt==1)return '['.$bt.$ret.'|ynd'.$ref.':divd]';
 return btd('ynd'.$ref,$bt.$ret);}
 
 static function artsuj($id,$setlg=''){

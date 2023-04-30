@@ -158,7 +158,7 @@ qr('UPDATE '.$_SESSION['qdu'].' SET pass=PASSWORD("'.$v.'") WHERE id='.$k);
 //141110
 function repsep($d,$k,$f,$n){
 $doc=read_file('/msql/'.$d.'/'.$f);
-$doc=str_replace('§','$',$doc);
+$doc=str_replace('|','$',$doc);
 write_file('/msql/'.$d.'/'.$f,$doc);}
 
 function patch_varseparator(){

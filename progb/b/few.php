@@ -29,7 +29,7 @@ $rw=sql('*','qda','a',$id); $re=$ath>4?1:0; unset($rw['id']);
 $rw['ib']=$suj!='ok'?$suj:''; $rw['nod']=!$node?$qb:$node; $day=$rw['day']; $rw['frm']='frm';
 $rw['day']=time();
 $nid=sql::sav('qda',$rw,0,1);
-$ret='['.$id.'§'.mkday($day).':art]'.n().n().'['.$id.':read]';
+$ret='['.$id.'|'.mkday($day).':art]'.n().n().'['.$id.':read]';
 if($nid)return sql::savi('qdm',[$nid,$ret]);}
 
 static function importation($id){
@@ -37,7 +37,7 @@ $d=sql('msg','qdm','v',$id); $idb=between($d,'[',':import]');
 if(is_numeric($idb)){
 $day=sql('day','qda','v',$idb);
 $ret=sql('msg','qdm','v',$idb);
-$ret='['.$id.'§'.mkday($day).':art]'.n().n().$ret;
+$ret='['.$id.'|'.mkday($day).':art]'.n().n().$ret;
 sql::upd('qdm',['msg'=>$ret],$id);}
 return $ret;}
 
@@ -55,7 +55,8 @@ $bt=lj('','popup_few,seesrc2__3_'.ajx($f),pictit('file-html','code')).' ';
 return $bt.tagc('code','console',$d);}
 
 static function seesrc2($f){$d=get_file($f); 
-$enc=detect_enc($d); if($enc=='UTF-8')$d=utf8dec_b($d); $d=self::progcode($d);
+//$enc=detect_enc($d); if($enc=='UTF-8')$d=utf8dec_b($d);
+$d=self::progcode($d);
 return tagc('code','console',$d);}
 
 static function insrc($f){

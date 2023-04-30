@@ -7,4 +7,4 @@ $r=["_"=>['process','param','option'],
 "msql"=>['base','prefix','table_version'],
 "mod"=>['module name','','title'],
 "art"=>['auto title','ID of article',''],
-"link"=>['','url','']]; ?>
+"link"=>['','url','']];

@@ -2,7 +2,7 @@
 spl_autoload_register(function($a){$dr='prog'.$_SESSION['dev'].'/'; $r=['_','a','b','c'];
 for($i=0;$i<4;$i++)if(is_file($f=$dr.$r[$i].'/'.$a.'.php')){
 	require($f); ses::$r['spl'][]=$r[$i].'/'.$a; return;}
-$r=sesmk('scanplug','',0);
+$r=sesmk('scandir_b','plug',0);
 if($r)foreach($r as $v)if(is_file($f='plug/'.$v.'/'.$a.'.php')){
 	require($f); ses::$r['spl'][]=$v.'/'.$a; return;}});
 
@@ -165,7 +165,7 @@ return '<form id="upl'.$id.'" action="" style="display:inline-block" method="POS
 function select($ra,$r,$kv='',$h='',$j=''){$ret=''; $pr=[];
 if(is_string($ra))$ra=['id'=>$ra];
 if($j)$ra['onchange']=sj($j.'\'+this.value+\'');
-$ret.=tag('option',$pr+['value'=>''],'Select...');
+//$ret.=tag('option',$pr+['value'=>''],'Select...');
 if($r)foreach($r as $k=>$v){
 	if($kv=='vv')$k=$v; elseif($kv=='kk')$v=$k;
 	if($k==$h)$pr['selected']='selected'; else $pr=[];
@@ -348,8 +348,8 @@ JSON_ERROR_SYNTAX=>4,//'Erreur de syntaxe ; JSON malformé'
 JSON_ERROR_UTF8=>5,//'Caractères UTF-8 malformés, erreur encodage'
 default=>6};}//'Erreur inconnue'
 
-function json_enc($r){$r=utf_r($r);
-return json_encode($r);}//JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_UNESCAPED_UNICODE
+/*function json_enc($r){$r=utf_r($r);
+return json_encode($r);}//JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_UNESCAPED_UNICODE*/
 
 function mkjson($r,$o=''){
 $rb=utf_r($r);//,ses::$enc=='utf-8'?1:0
@@ -358,11 +358,11 @@ $e=json_error(); if($e)$rt=json_encode(array_combine(array_keys($r),array_fill(0
 return $rt;}
 
 function utf_r($r,$o=''){$rt=[];
-//if($o==1 && ses::$enc=='utf-8')return $r;//devutf
+if($o==1 && ses::$enc=='utf-8')return $r;
 if(is_array($r))foreach($r as $k=>$v){
-	$kb=$o?utf8dec_b($k):utf8enc($k); $k=$kb?$kb:$k;
+	$kb=$o?utf8dec_b($k):toutf8($k); $k=$kb?$kb:$k;
 	if(is_array($v))$rt[$k]=utf_r($v,$o);
-	else $rt[$k]=$o?utf8dec_b($v):utf8enc($v);}
+	else $rt[$k]=$o?utf8dec_b($v):toutf8($v);}//devutf
 return $rt;}
 
 #tables
@@ -436,7 +436,7 @@ $a='àáâãäçèééêëìíîïñòóôõöùúûüıÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜİ';
 $b='aaaaaceeeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';
 return strtr($d,$a,$b);}
 function normalize_alpha($d,$o=''){if(!$d)return;
-$r=[' ','-','&nbsp;',"'",'"','/',',',';',':','§','%','&','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','«','»']; if($o)unset($r[$o]); return str_replace($r,'',$d);}
+$r=[' ','-','&nbsp;',"'",'"','/',',',';',':','|','§','%','&','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','«','»']; if($o)unset($r[$o]); return str_replace($r,'',$d);}
 function normalize_ext($d){if(!$d)return;
 return str_replace(['.JPG','.JPEG','.jpeg','.GIF','.PNG'],['.jpg','.jpg','.jpg','.gif','.png'],$d);}
 function normalize($d,$o=''){if(!$d)return;
@@ -477,8 +477,8 @@ function array_combine_a($a,$b){$n=count($a); $r=[];//php4
 for($i=0;$i<$n;$i++)if(isset($b[$i]))$r[$a[$i]]=stripslashes($b[$i]); return $r;}
 function array_combine_sub($a,$b){$rb=[];//bar_org
 foreach($a as $k=>$v)if(!isset($b[$k]))$rb[$k]=$v; return $rb;}
-function array_merge_b($r,$rb){
-if($r && $rb)return array_merge($r,$rb); elseif($rb)return $rb; else return $r;}
+function array_merge_b($ra,$rb){$a=is_array($ra)?1:0; $b=is_array($rb)?1:0;
+if($a && $b)return array_merge($ra,$rb); elseif($b)return $rb; else return $ra;}
 function array_merge_r($a,$b){$n=count($a);
 foreach($b as $k=>$v)if(!$a[$k])$a[$k]=$v; return $a;}
 function array_append($r,$rb){foreach($r as $k=>$v){$vb=$rb[$k]; $n=count($vb);
@@ -570,7 +570,7 @@ function is255($d){return strlen($d)>255?substr($d,0,255):($d??'');}
 
 //gets
 function gets(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=utf8dec(urldecode($v));}
-function getsb(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=urldecode($v);}
+function getsb(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=urldecode($v);}//diffutf
 function get($k,$v=''){return !empty(ses::$r['get'][$k])?ses::$r['get'][$k]:ses::$r['get'][$k]=$v;}
 //function get($k,$v=''){return ses::$r['get'][$k]??(ses::$r['get'][$k]=$v);}
 function geta($k,$v){return ses::$r['get'][$k]=$v;}//assign

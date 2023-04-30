@@ -17,8 +17,8 @@ if($dom)foreach($r as $va)if($va){
 		elseif($op=='clean'){$dest=$dom->createElement('img');//:src:img:clean
 			$src=$v->getAttribute($at); $dest->setAttribute('src',$src); $v->parentNode->replaceChild($dest,$v);}
 		elseif(($c && strpos($attr,$c)!==false) or !$c){self::remove($v); $v->parentNode->removeChild($v);}}}
-$ret=$dom->saveHTML(); //eco($ret);
-return utf8dec_b($ret);}
+$ret=$dom->saveHTML();
+return ($ret);}//utf8dec_b
 
 static function cleanimg($d){
 $dom=dom($d); $rec=dom(''); $dest=$dom->createElement('img');
@@ -34,7 +34,7 @@ if($dom)foreach($dom->getElementsByTagName('img') as $k=>$v){
 	//$nn->setAttribute('src',$src);
 	}
 $ret=$dom->saveHTML();
-return utf8dec_b($ret);}
+return ($ret);}//utf8dec_b
 
 //dom
 static function importnode($rec,$v,$tg){
@@ -57,7 +57,7 @@ static function detect($d,$o){
 $r=explode('|',$o); $dom=dom($d); $rec=dom(''); $rec->formatOutput=true;
 if($dom)foreach($r as $k=>$va)self::capture($dom,$va,$rec);//var_dump($rec);
 $ret=$rec->saveHTML();
-if($ret)return utf8dec_b(trim($ret));}//_b
+if($ret)return (trim($ret));}//utf8dec_b
 
 //dom2
 static function extract($dom,$va){$ret='';//all-in-one
@@ -67,7 +67,7 @@ $r=$dom->getElementsByTagName($tg); $c=str_replace('(ddot)',':',$c);
 foreach($r as $k=>$v){$attr=$v->getAttribute($at);
 	if(!$ret && ($c==$attr or ($c && strpos($attr,$c)!==false) or !$c))
 		$ret.=$g?domattr($v,$g):$v->nodeValue;}
-return utf8dec_b($ret);}//
+return ($ret);}//utf8dec_b
 
 static function extract_batch($d,$o){$ret='';
 $r=explode('|',$o); $dom=dom($d);
@@ -77,8 +77,8 @@ return $ret;}
 //href
 static function href($d){$lk=''; $va=''; $dom=dom($d);
 $r=$dom->getElementsByTagName('a');
-foreach($r as $k=>$v){$lk=domattr($v,'href'); $va=utf8dec_b($v->nodeValue);}
-return '['.$lk.($va?'§'.$va:'').']';}
+foreach($r as $k=>$v){$lk=domattr($v,'href'); $va=($v->nodeValue);}//utf8dec_b
+return '['.$lk.($va?'|'.$va:'').']';}
 
 //dom2conn//dev
 /**/static function dc($v){$at=[];
@@ -164,13 +164,13 @@ $p=$prm[0]??$p;
 $dom=dom($p); $rec=dom(''); $rec->formatOutput=true;
 self::detect($dom,$o,$rec);
 $ret=$rec->saveHTML();
-return utf8dec_b($ret);}
+return ($ret);}//utf8dec_b
 
 static function com($d,$fc,$o=''){
 $dom=dom($d);
 self::$fc($dom,$o);
 $ret=$dom->saveHTML();
-return utf8dec_b($ret);}
+return ($ret);}//utf8dec_b
 
 static function menu($p,$o,$rid){
 $bid='inp'.$rid; $cid='txt'.$rid;

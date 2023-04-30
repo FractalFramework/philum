@@ -1,16 +1,16 @@
 <?php //msql/program_updates_1302
 $r=["_"=>['day','text'],
-"1"=>['0203','ajout de \'over-blog\' et \'wordpress\' dans les dÈfinitions gÈnÈriques d\'importation ;'],
-"2"=>['0210','rÈsurrection du composant \'2cols\', qui dÈpend de la rstr 17 de faÁon globale, et d\'un paramËtre d\'article de faÁon locale ;'],
-"3"=>['0222','ajout d\'un composant pour l\'Èdition de l\'article parent, disponible dans les divers points d\'entrÈe d\'un article (rss, batch, admenu, Èdition) ;
-tous ces points d\'entrÈe sont rendus sensibles ‡ la config des restrictions (save in popup, autoparent, autopublish) ;'],
-"4"=>['0223','amÈlioration du batch :
-- les sÈlecteurs de contexte de l\'article (catÈgorie et parent) s\'affichent lors de l\'importation ponctuelle ;
-- on peut prÈparer la catÈgorie d\'un article avant le batch ;
-- le rÈsultat du batch utilise le module \'recents\' ;'],
-"5"=>['0224','rÈparation de la mise ‡ jour auto des bases publiques du finder'],
-"6"=>['0225','icÙnes dans le menu Apps'],
-"7"=>['0226','les articles enregistrÈs n\'ont plus besoin d\'attendre le \'rebuild\' pour apparaÓtre dans les rÈsultats (c\'Ètait un Ècueil du champ temporel) '],
-"8"=>['0227','correctif prise en compte d\'un article fraÓchement publiÈ par le cache'],
-"9"=>['0228','la rstr art_mod (60) sert ‡ dÈsactiver les modules d\'articles dans une popup pour gagner en vitesse'],
-"10"=>['0229','rÈnovation du systËme d\'auto-reboot aprËs fermeture de la session (aprËs une heure sans activitÈ) ;']]; ?>
+"1"=>['0203','ajout de \'over-blog\' et \'wordpress\' dans les d√©finitions g√©n√©riques d\'importation ;'],
+"2"=>['0210','r√©surrection du composant \'2cols\', qui d√©pend de la rstr 17 de fa√ßon globale, et d\'un param√®tre d\'article de fa√ßon locale ;'],
+"3"=>['0222','ajout d\'un composant pour l\'√©dition de l\'article parent, disponible dans les divers points d\'entr√©e d\'un article (rss, batch, admenu, √©dition) ;
+tous ces points d\'entr√©e sont rendus sensibles √† la config des restrictions (save in popup, autoparent, autopublish) ;'],
+"4"=>['0223','am√©lioration du batch :
+- les s√©lecteurs de contexte de l\'article (cat√©gorie et parent) s\'affichent lors de l\'importation ponctuelle ;
+- on peut pr√©parer la cat√©gorie d\'un article avant le batch ;
+- le r√©sultat du batch utilise le module \'recents\' ;'],
+"5"=>['0224','r√©paration de la mise √† jour auto des bases publiques du finder'],
+"6"=>['0225','ic√¥nes dans le menu Apps'],
+"7"=>['0226','les articles enregistr√©s n\'ont plus besoin d\'attendre le \'rebuild\' pour appara√Ætre dans les r√©sultats (c\'√©tait un √©cueil du champ temporel) '],
+"8"=>['0227','correctif prise en compte d\'un article fra√Æchement publi√© par le cache'],
+"9"=>['0228','la rstr art_mod (60) sert √† d√©sactiver les modules d\'articles dans une popup pour gagner en vitesse'],
+"10"=>['0229','r√©novation du syst√®me d\'auto-reboot apr√®s fermeture de la session (apr√®s une heure sans activit√©) ;']];

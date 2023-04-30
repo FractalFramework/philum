@@ -33,4 +33,4 @@ $r=["_"=>['txt'],
 "nodig"=>['1'],
 "nopages"=>['1'],
 "template"=>['title'],
-"file"=>['1']]; ?>
+"file"=>['1']];

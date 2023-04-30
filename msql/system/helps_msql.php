@@ -35,4 +35,4 @@ $r=["_"=>['title'],
 "33"=>['intersection'],
 "34"=>['connections'],
 "35"=>['switch'],
-"36"=>['merge']]; ?>
+"36"=>['merge']];

@@ -43,7 +43,8 @@ elseif($msq)$out['content']=msqa::home();
 elseif(rstr(85) && (!rstr(146) or $_SESSION['cond'][0]=='home'))$out['content']=boot::deskpage();
 else $out=mod::blocks();
 #admin
-if(ses('dev'))ses::$adm['chrono']=btn('small',round(microtime(1)-$stime,3));
+$chrono=round(microtime(1)-$stime,3); 
+if(ses('dev'))ses::$adm['chrono']=btn('small',$chrono);
 //if(ses::r('tst'))ses::$adm['chrono'].=divb(play_r(ses::r['tst']),'small');
 if(!rstr(98) or auth(4))$madmin=pop::popadmin();
 #meta

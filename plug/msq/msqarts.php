@@ -33,7 +33,7 @@ $r=explode(' ',$d);
 foreach($r as $k=>$v){
 	//$v=str_replace($rm,'',$v);
 	if(strpos($v,':b'))$v=strto($v,':');
-	if(strpos($v,'§'))$v=strto($v,'§');
+	if(strpos($v,'|'))$v=strto($v,'|');
 	//if(substr($v,0,1)!='@')
 	if(strpos($v,'/status/')!==false)$lnk=$v; 
 	elseif(substr($v,0,1)!='@')$ret.=$v.' ';}

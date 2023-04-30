@@ -6,7 +6,7 @@ static function bin_answ(){return ['aa'=>'001011010111','am'=>'000000100101','ab
 static function cleanup($d){
 $d=codeline::parse($d,'','delconn');
 $d=str_replace('&nbsp;',' ',$d);
-//$d=str_replace(['&nbsp;',"'",'"','-','/',',',';',':','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','§','%','&'],'',$d);
+//$d=str_replace(['&nbsp;',"'",'"','-','/',',',';',':','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','|','%','&'],'',$d);
 return $d;}
 
 static function encode($d){$ret=''; if(!$d)return; $d=self::cleanup($d); $r=explode(' ',$d);

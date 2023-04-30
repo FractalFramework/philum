@@ -7,7 +7,7 @@ return sql::call('select id from '.self::pub($b).' order by id desc limit 1','v'
 static function dumpall(){
 $r=self::tables(); foreach($r as $k=>$v)backup::dump($v);}
 
-static function tables(){return ['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','yandex','ips','live','live2','stat','_sys','cat','hub','mbr','img'];}//,'umvoc','umvoc_arts','umtwits','bdvoc','dicoen','dicofr','dicoum','hipparcos','gaia'
+static function tables(){return ['art','cat','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','yandex','ips','live','live2','stat','_sys','cat','hub','mbr','img'];}//,'umvoc','umvoc_arts','umtwits','bdvoc','dicoen','dicofr','dicoum','hipparcos','gaia'
 
 static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','yandex','ips','live','live2','stat','cat','hub','mbr','img'];//,'umvoc','umvoc_arts','umtwits'
 if(in_array($b,$r))return qd($b); else return $b;}
@@ -153,7 +153,9 @@ else{//partial and complete dumps, not gziped
 	if(is_file($f))unlink($f); if(!is_file($f)){$e='wget -P '.$dr.'/_backup '.$u; exc($e);}
 	if(is_file($f)){$o=='d'?'ssh':'rq';// -t '.qd($p).'
 		if($o=='ssh'){$e='mysql -u '.$usr.' -p'.$ps.' '.$db.' < '.$dr.'/'.$f; exc($e);}
-		else{$d=file_get_contents($srv.'/'.$f); if($d)qr($d);}
+		else{$d=file_get_contents($srv.'/'.$f);
+			//$d=utf8enc($d); $d=str_replace(['Â|','|'],'|',$d);
+			if($d)qr($d);}
 	$res=$maxid==$dist_maxid?'ok':$maxid.'->'.$dist_maxid;}
 	//exc('rm '.$dr.'/'.$f);
 	//todo: del local and distant

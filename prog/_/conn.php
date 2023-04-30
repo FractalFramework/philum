@@ -350,9 +350,8 @@ $ret=match($c){
 ':sigle'=>'&'.$d.';',
 ':caviar'=>mk::caviar($d),
 ':exec'=>codeline::exec_run($d,$id),
-':on'=>'['.tagb('code',delbr($d)).']',
-':no'=>'',
-':ko'=>$d,
+':on'=>tagb('code','['.delbr($d).']'),
+':ko'=>'['.$d.']',
 default=>''};
 if($ret)return $ret;
 [$p,$o]=cprm($d);
@@ -376,7 +375,8 @@ case(':header'):Head::add($o?$o:'code',delbr($p,"\n")); return; break;
 case(':jscode'):Head::add('jscode',delbr($d,"\n")); return; break;
 case(':jslink'):Head::add('jslink',delbr($d,"\n")); return; break;
 case(':private'):if(auth(6))return $d.' '.picto('secret'); break;
-case(':dev'):if(auth(4))return $d; break;}
+case(':dev'):if(auth(4))return $d; break;
+case(':no'):return ''; break;}
 if($da=='--')return hr();
 elseif($xt=='.pdf')return mk::pdfdoc($da,$nl,$pw);
 elseif($xt=='.epub')return lkt('',$p,pictxt('book2',$o?$o:strend($p,'/')));

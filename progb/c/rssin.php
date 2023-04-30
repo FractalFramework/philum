@@ -46,7 +46,7 @@ return $ret;}
 static function feedproxy($f){
 if(substr($f,0,2)=='//')$f='http:'.$f; $d=get_file($f);
 $enc=between(strtolower($d),'charset=','"','');
-if(strtolower($enc)=='utf-8')$d=utf8dec_b($d);
+//if(strtolower($enc)=='utf-8')$d=utf8dec_b($d);
 $s='<meta property="og:url" content="'; if(strpos($d,$s))return between($d,$s,'"');
 $s="<link rel='canonical' href='"; if(strpos($d,$s))return between($d,$s,"'");}
 
@@ -117,7 +117,7 @@ switch($mth){
 		if(!$r)$r=self::rssin_old($f);//3
 	break;}
 if($r)foreach($r as $k=>$v){[$suj,$lnk,$dat,$txt]=arr($v,4);
-	$suj=utf8dec_b($suj); $suj=trim(str::del_n(strip_tags($suj)));
+	$suj=trim(str::del_n(strip_tags($suj)));//$suj=utf8dec_b($suj); 
 	$suj=str::clean_title($suj); $lnk=utmsrc($lnk); 
 	//if(strpos($lnk,'feedproxy'))$lnk=self::feedproxy($lnk);
 	//if(strpos($lnk,'spip.'))$lnk=strto($lnk,'spip.').strend($lnk,'/spip');

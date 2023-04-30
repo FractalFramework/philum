@@ -19,4 +19,4 @@ $r=["_"=>['category','name'],
 "23"=>['config','upload_extensions'],
 "25"=>['access','lang'],
 "26"=>['meta','articles_lang'],
-"27"=>['config','thumbnails']]; ?>
+"27"=>['config','thumbnails']];

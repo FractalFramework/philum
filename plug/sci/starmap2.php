@@ -5,9 +5,10 @@ static $conn=1;
 static $default='2021,8102,7981,99461,Yooma,64394,88601';//81693,99461,88601
 static $w=800;
 static $subd=5;
+static $rid='stm2';
 static $rtx=[];
 
-static function legend($r,$p1,$p2,$ob){
+static function legend($r,$p1,$p2,$ob){$rid=self::$rid;
 $w=self::$w; $h=$w; $mid=$h/2; $sz=16; $p1b=ajx($p1); $n=self::$subd; $scale=$p2/$n;
 [$white,$black,$red,$green,$blue,$yellow,$cyan,$orange,$silver,$gray]=starlib::$clr;
 $rc=starlib::$clr2; $i=1; $l=($mid-40)/$n; $x=40; $y=$mid;
@@ -18,12 +19,12 @@ foreach($rc as $k=>$v){$i++;
 	$clr=$v; $y=$i*$sz;
 	svg::circle(20,$y-5,5,$clr);
 	svg::text(11,20+$sz-2,$y,$k,$white);}
-$x=60; $j='stm2_starmap2;call__2_'.$p1.'_'.$p2.'-';
+$x=60; $j=$rid.'_starmap2;call__2_'.str_replace(',',';',$p1).'_'.$p2.'-';
 $i=2; $y=$i*$sz; svg::lj($x,$y,11,$silver,$j.'0','0d');
 $x+=18; svg::lj($x,$y,11,$silver,$j.'1','90d');
 $x+=24; svg::lj($x,$y,11,$silver,$j.'2','180d');
 $x+=32; svg::lj($x,$y,11,$silver,$j.'3','270d');
-$x=60; $j='stm2_starmap2;call__2_'.$p1.'_';
+$x=60; $j=$rid.'_starmap2;call__2_'.str_replace(',',';',$p1).'_';
 $i+=2; $y=$i*$sz; svg::lj($x,$y,11,$silver,$j.'20-'.$ob,'20Ly');
 $i++; $y=$i*$sz; svg::lj($x,$y,11,$silver,$j.'60-'.$ob,'60Ly');
 $i++; $y=$i*$sz; svg::lj($x,$y,11,$silver,$j.'200-'.$ob,'200Ly');
@@ -51,7 +52,7 @@ foreach($r as $k=>$v){
 	//svg::lj($xb,$yb,12,$white,'popup_star,call___'.$hip.'_1','HIP '.$hip);
 	//svg::bubj($xb,$yb,12,$white,'star;info___'.$v['hip'].'_hip',$nm);
 	$clr=$ds>$p2?'gray':'white';
-	svg::$ret[]='['.$clr.':attr]['.$tx.',star;info___'.$hip.'_hip§['.$xb.','.$yb.',12§'.$nm.':text]:bubj2]';}}
+	svg::$ret[]='['.$clr.':attr]['.$tx.',star;info___'.$hip.'_hip|['.$xb.','.$yb.',12|'.$nm.':text]:bubj2]';}}
 	
 static function len($d){$r=str_split($d); $n=0;
 foreach($r as $k=>$v)if(strstr('itl ',$v))$n+=3; else $n+=8;
@@ -145,12 +146,12 @@ $ret.=lj('txtx',$rid.'_starmap2,call__2_allstars_50','all').' ';
 return tag('header','',$ret);}
 
 static function home($p1,$p2){
-$rid=('stm2'); $bt=''; $ret='';
-$bt=self::menu($p1,$p2,$rid);
+self::$rid=('stm2'); $bt=''; $ret='';
+$bt=self::menu($p1,$p2,self::$rid);
 if(!$p1)$p1=self::$default;
 $ret=self::call($p1,$p2);
 //ses::$r['popw']=self::$w+20;
 //$s='width:'.(self::$w+20).'px';
-return $bt.divb($ret,'',$rid);}
+return $bt.divb($ret,'',self::$rid);}
 }
 ?>

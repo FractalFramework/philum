@@ -25,13 +25,13 @@ static function card($p,$o){
 $t=self::init(); $q=$t->show($p);//lookup//
 $er=self::error($q); if($er)return $er; //pr($q);
 $ret=self::img($q['profile_image_url'],1);
-$nm=utf8dec_b($q['name']); $sn=$q['screen_name'];
+$nm=($q['name']); $sn=$q['screen_name'];
 //$q2=$t->credentials($q['screen_name']);
 $ret.=lkt('txtx',self::lk($q['screen_name']),tagb('h2',$nm)).' ';
 $ret.=lj('grey','popup_twit,call__3_'.ajx($sn).'_stream','@'.$sn).br();
 $ret.=self::img($q['profile_banner_url']??'',1);
-$ret.=divc('panel justy',utf8dec_b($q['description']));
-$ret.=divc('frame-blue',utf8dec_b($q['location']));
+$ret.=divc('panel justy',($q['description']));
+$ret.=divc('frame-blue',($q['location']));
 $clr=$q['profile_link_color'];
 $ret.=div(atc('txtcadr').ats('background-color:#'.$clr.';'),'user color theme: '.$clr);
 $ret.=btn('small','id: '.$q['id']);
@@ -51,7 +51,7 @@ if($id)$ret.='/status/'.$id;
 return $ret;}
 
 static function reply($q){if($id=$q['in_reply_to_status_id']){
-$name=utf8dec_b($q['in_reply_to_screen_name']);
+$name=($q['in_reply_to_screen_name']);
 $link=lkt('txtx',self::lk($name,$id),pictxt('url',$name)).' ';
 $thread=lj('txtx','popup_twit,thread__3_'.ajx($q['id']),pictxt('up','thread')).' ';
 $prev=lj('txtx','popup_twit,call__3_'.ajx($q['in_reply_to_status_id']),pictxt('back','last')).' ';
@@ -108,7 +108,7 @@ $ret['day']=$q['created_at']??''; $id=$q['id']??'';
 $ret['suj']=$name.' '.date('d b Y - H:i',strtotime($ret['day']));
 $txt=self::oembed(self::lk($name,$id));
 if($txt)[$res,$med]=self::clean($txt);
-else [$res,$med]=self::clean(utf8dec_b($q['text']??''));
+else [$res,$med]=self::clean(($q['text']??''));
 $ret['msg']=$res;
 foreach($q['entities']['media']??[] as $v)
 	if($vb=$v['media_url_https'])$ret['msg'].=n().n().'['.$vb.']';
@@ -117,11 +117,12 @@ return [$ret['suj'],$ret['msg'],$ret['day']];}
 //config
 static function slct_apikey($nd,$rid){$ret='';//$r=[1=>'dav8119',2=>'tlexfr'];
 $r=self::apikeys(); if($r)foreach($r as $i=>$nm)
-	$ret.=lj(active($i,$nd),$rid.'_twit,config__3_'.$i,$nm).' ';
+	$ret.=lj(active($i,$nd),$rid.'_twit,config__3_'.$i,$nm.'('.$i.')').' ';
 return divc('nbp',$ret);}
 
-static function config($nd){if(!$nd)$nd=self::apk();
-$rid='plg'.randid(); $nd=ses('apk',$nd); $ret='';
+static function config($nd){
+if($nd)ses('apk',$nd); else $nd=ses('apk'); if(!$nd)$nd=ses('apk',self::apk());
+$rid='plg'.randid(); $ret='';
 $r=msql::col('',nod('twit_'.$nd),0,1);
 $ret.=divc('twit',helps('twitter_oAuth')).br();
 $ret.=self::slct_apikey($nd,$rid);
@@ -163,7 +164,7 @@ return divd('edt'.$p,$bt.$ret);}
 //write
 static function send($p,$o,$prm){
 $p=$prm[0]??$p; $t=self::init($o?$o:1);
-$q=$t->update(utf8enc_b($p));//
+$q=$t->update(($p));//utf8enc_b
 if(isset($q['errors'][0]['message'])){self::$er=1; return btn('txtyl',$q['errors'][0]['message']);}
 return divc('txtalert',nms(34).' '.nms(79));}
 
@@ -236,7 +237,7 @@ $n=count($r); $nb=ceil($n/100); $rb=[]; $rc=[]; $ia=0; $i=0; //$qu=$t->show($q['
 if($r)foreach($r as $v){if($i==99){$i=0; $ia++;} $rb[$ia][$i]=$v; $i++;} //pr($rb);
 //$rb=array_slice($rb,0,1);//limit to 500
 if($rb)foreach($rb as $v){$d=implode(',',$v); $qu=$t->lookup($d); //pr($qu);
-	if($qu)foreach($qu as $k=>$vb)$rc[]=[$vb['id'],utf8dec_b($vb['screen_name']),utf8dec_b($vb['name']),utf8dec_b($vb['location']),utf8dec_b($vb['description']),$vb['profile_image_url'],$vb['protected'],$vb['verified'],$vb['followers_count'],$vb['friends_count'],$vb['following'],$vb['lang'],strtotime($vb['created_at']),$vb['profile_background_color'],$vb['profile_text_color']];}//pr($rc);
+	if($qu)foreach($qu as $k=>$vb)$rc[]=[$vb['id'],($vb['screen_name']),($vb['name']),($vb['location']),($vb['description']),$vb['profile_image_url'],$vb['protected'],$vb['verified'],$vb['followers_count'],$vb['friends_count'],$vb['following'],$vb['lang'],strtotime($vb['created_at']),$vb['profile_background_color'],$vb['profile_text_color']];}
 return $rc;}
 
 static function datasav($p,$r,$d){
@@ -263,7 +264,7 @@ $r=explode(',',$d); $t=self::init(); $ra=[]; $rb=[];
 $nd=nod('twusr_'.$rid); $rb=msql::read('',$nd,'',1);
 if(!$rb){if(!is_numeric(array_sum($r)))$rq=$t->lookup($d);//id1,id2
 else foreach($r as $k=>$v)$rq[]=$t->show($v);//usr1,usr2,id3
-foreach($rq as $k=>$v)if(isset($v['id']))$rb[]=[$v['id'],utf8dec_b($v['screen_name']),utf8dec_b($v['name']),utf8dec_b($v['location']),utf8dec_b($v['description']),$v['profile_image_url']];//$q['user']['followers_count']
+foreach($rq as $k=>$v)if(isset($v['id']))$rb[]=[$v['id'],($v['screen_name']),($v['name']),($v['location']),($v['description']),$v['profile_image_url']];//$q['user']['followers_count']
 msql::save('users',$nd,$rb,['id','name','user','location','description','img']);}
 return $rb;}
 
@@ -290,7 +291,7 @@ if($r && $o!='frnb')$ret.=self::usrnfo($r);
 return $ret;}
 
 static function usrs2($q,$p,$o){static $i=0; //pr($q);//using list
-foreach($q['users'] as $k=>$v)$r[]=[$v['id'],utf8dec_b($v['screen_name']),utf8dec_b($v['name']),utf8dec_b($v['location']),utf8dec_b($v['description']),$v['profile_image_url']];
+foreach($q['users'] as $k=>$v)$r[]=[$v['id'],($v['screen_name']),($v['name']),($v['location']),($v['description']),$v['profile_image_url']];
 if($o=='flw')$ret=self::datasav($p,$r,'followers');
 if($o=='frn')$ret=self::datasav($p,$r,'friends');
 if($r)$ret=self::usrnfo($r);
@@ -357,7 +358,7 @@ $n=strrpos($txt,'&mdash; '.$nm); if($n!==false)$txt=mb_substr($txt,0,$n);//del e
 //$txt=self::text($u);
 $ret=delbr($txt,"\n");
 $ret=strip_tags($ret);
-$ret=utf8dec_b($ret);
+$ret=($ret);
 return $ret;}
 
 static function upvideo_m3u8($f){//tw_video
@@ -507,19 +508,19 @@ return $rb;}
 
 static function datas($q){
 //if($er=self::error($q))return $er;
-$ret['name']=utf8dec_b(valr($q,'user','name'));
-$ret['screen_name']=utf8dec_b(valr($q,'user','screen_name'));
-$ret['user_id']=valr($q,'user','id',0);
+$ret['name']=$q['user']['name']??'';
+$ret['screen_name']=$q['user']['screen_name']??'';
+$ret['user_id']=$q['user']['id']??0;
 $ret['date']=strtotime($q['created_at']);
 $txt=self::oembed(self::lk(valr($q,'user','screen_name'),$q['id']));
 if($txt)[$res,$med]=self::clean($txt);
-else [$res,$med]=self::clean(utf8dec_b($q['text']));
+else [$res,$med]=self::clean(($q['text']));
 $ret['text']=$res;
 $md=self::medias($q);
 $ret['media']=utmsrc($md?$md:$med);
 $ret['mentions']=self::mentions($q['entities']['user_mentions']);
 $ret['reply_id']=$q['in_reply_to_status_id']??0;
-$ret['reply_name']=utf8dec_b($q['in_reply_to_screen_name']);
+$ret['reply_name']=($q['in_reply_to_screen_name']);
 $ret['favs']=$q['favorite_count']??0;
 $ret['retweets']=$q['retweet_count']??0;
 $ret['followers']=$q['user']['followers_count']??0;
@@ -589,8 +590,7 @@ $t=self::init(); $q=$t->read($p);
 return $q;}
 
 //economizer
-static function search($p,$maxid,$o){
-$rid=randid('tw');
+static function search($p,$maxid,$o){$rid=randid('tw');
 if($o=='tl')$q='screen_name="'.$p.'" ';
 elseif($dt=strtotime($p))$q='date<"'.$dt.'"';
 else $q='(text like "%'.$p.'%" or mentions like "%'.$p.'%") ';

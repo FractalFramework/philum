@@ -11,8 +11,8 @@ function construct(){self::$r=self::defs();}
 static function defs(){$u=0;
 $r['art']=['id'=>'ai','ib'=>'int','name'=>'mvar','mail'=>'var','day'=>'int10','nod'=>'svar','frm'=>'var','suj'=>'var','re'=>'int','lu'=>'int','img'=>'text','thm'=>'bvar','host'=>'var','lg'=>'var2','key'=>'KEY `nod_frm` (`day`,`frm`), KEY `suj` (`suj`), KEY `nod_day` (`day`,`nod`)'];
 $r['txt']=['id'=>'ai','msg'=>'text'];
-$r['cat']=['id'=>'ai','cat'=>'mvar','pic'=>'svar','active'=>'enum(01)'];
-$r['hub']=['id'=>'ai','hub'=>'svar'];
+$r['cat']=['id'=>'ai','cat'=>'var','pic'=>'svar','no'=>'enum(01)'];
+$r['hub']=['id'=>'ai','hub'=>'var','no'=>'enum(01)'];
 $r['trk']=['id'=>'ai','ib'=>'int','name'=>'var','mail'=>'var','day'=>'int10','nod'=>'var','frm'=>'svar','suj'=>'var','msg'=>'text','re'=>'int','host'=>'var','lg'=>'var2','key'=>'KEY `nod` (`nod`), KEY `suj_nod` (`suj`,`nod`), KEY `day_nod` (`day`,`nod`)'];
 $r['user']=['id'=>'ai','name'=>'var','pass'=>'psw','mail'=>'var','day'=>'int10','clr'=>'var','ip'=>'var','rstr'=>'var','mbrs'=>'bvar','hub'=>'var','nbarts'=>'int','config'=>'bvar','struct'=>'var','dscrp'=>'var','menus'=>'var','active'=>'int','key'=>'UNIQUE KEY `one` (`name`)'];
 $r['data']=['id'=>'ai','ib'=>'var','val'=>'mvar','msg'=>'var','key'=>'KEY `ib_val` (`ib`,`val`)'];

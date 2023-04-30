@@ -73,7 +73,7 @@ return !$ret?'no result':self::draw_table($ret,self::sesm('murl'),'');}
 static function msqcall($g1,$g2,$g3,$g4){$ret='';
 $r=msql::row($g1,$g2,$g3,1); $v=$r[$g4]??($r[0]??'');
 if(auth(6))$ret=msqbt($g1,$g2,$g3).' '; $ret.=btn('small',nl2br($v)); return $ret;}
-static function msqread($g1,$g2,$g3,$g4){$r=msql::goodtable_b($g1.'_'.$g2.'_'.$g3.'§'.$g4.'|'.$g4);
+static function msqread($g1,$g2,$g3,$g4){$r=msql::goodtable_b($g1.'_'.$g2.'_'.$g3.'|'.$g4.'|'.$g4);
 return conn::parser(stripslashes($r));}//unused
 static function msqlp($g1,$g2,$g3,$g4){$r=msql::read($g1,$g2,$g3);
 return is_array($r)?divtable($r,1):$r;}
@@ -159,7 +159,7 @@ $r=msql::displace($r,$va,$to);
 $r=msql::modif($dir,$node,$r,'arr');
 return self::editable($id,$r);}
 
-static function editable($nod,$r=''){
+static function editable($nod,$r=[]){
 [$dir,$node]=self::node_decompil($nod);
 $defs=$r?$r:msql::read_b($dir,$node,'');
 if($defs)return self::draw_table($defs,$nod,1);}
@@ -309,7 +309,7 @@ static function editors($p,$md,$prm=[]){
 $r=msql::read($dr,$nod); if(!$r)return;
 if($md=='inject_defs')$d=str_replace('<?php ','',self::dump_a($r,$nod));
 if($md=='inject_defs2')$d=str_replace('<?php ','',msql::dump($r,$nod));
-if($md=='import_conn')$d=self::edtconn($r);//use "|" for cells and "¬" for lines
+if($md=='import_conn')$d=self::edtconn($r);//use "|" for cells and "Â¬" for lines
 if($md=='import_csv')$d=self::mkcsv($r);
 if($md=='import_json')$d=self::edtjson($r);
 //if($prm[0]??'')$d.="\n".delbr($prm[0],"\n");//addcsv
@@ -371,7 +371,7 @@ if(!$ok && $r)$r=msql::save($dr,$nod,$r);
 if(isset($rl))return 'msql/'.$dr.'/'.$nod;
 return $r;}
 
-static function edtconn($r){$ret=''; if($r)foreach($r as $k=>$v)$ret.=$k.'|'.implode('|',str_replace(['|','¬'],[':BAR:',':LINE:'],$v)).'¬'."\n"; return $ret;}
+static function edtconn($r){$ret=''; if($r)foreach($r as $k=>$v)$ret.=$k.'|'.implode('|',str_replace(['|','Â¬'],[':BAR:',':LINE:'],$v)).'Â¬'."\n"; return $ret;}
 
 #modif apps
 static function creatable_sav($r){if(!auth(6))return;
@@ -396,11 +396,11 @@ if(strpos($d,'msql/')!==false){$r=explode('/',$d); $n=count($r)-1; $nod=$r[$n]; 
 else{[$a,$b]=split_one('/',$d,1); return msql::read($a,$b,'','',$rh);}}
 
 //json
-static function edtjson($r){$ret=''; $r=utf_r($r); if($r)return json_encode($r);}
+static function edtjson($r){if($r)return json_encode($r);}//$r=utf_r($r);
 
-static function import_json($d){$r=json_decode($d,true); //echo json_error();
-if(isset($r[0])){$rh[msql::$m]=$r[0]; unset($r[0]); $r=$rh+$r;}
-if(isset($r['_'])){$rh[msql::$m]=$r['_']; unset($r['_']); $r=$rh+$r;}//frct//diffutf
+static function import_json($d){$r=json_decode($d,true);
+if(isset($r[0])){$rh['_']=$r[0]; unset($r[0]); $r=$rh+$r;}
+if(isset($r['_menus_'])){$rh['_']=$r['_menus_']; unset($r['_menus_']); $r=$rh+$r;}//old
 return utf_r($r,1);}
 
 static function import_json_lk($f){
@@ -468,7 +468,7 @@ return $ret;}
 static function sort_table($r,$n,$y=''){$y=$y?yesnoses('sort'):'';
 if(isset($r[msql::$m])){$ret[msql::$m]=$r[msql::$m]; unset($r[msql::$m]);}
 if(is_numeric($n) or !$n){foreach($r as $k=>$v)$re[$k]=$v[$n];
-	$y?arsort($re,SORT_STRING):asort($re,SORT_STRING );
+	$y?arsort($re,SORT_STRING):asort($re,SORT_STRING);
 	foreach($re as $k=>$v)$ret[$k]=$r[$k];}
 else{$y?krsort($r):ksort($r); if(isset($ret))$ret+=$r; else $ret=$r;}
 return $ret;}
@@ -484,16 +484,16 @@ if($r)foreach($r as $k=>$v){if(!is_array($v))$v=[$v]; if($k && $v[0])$rb[$k]=$v;
 if(isset($rb[0]) && array_sum(array_keys($rb))>0)$rb=msql::reorder($rb);
 return $rb;}
 
-static function resav($r){$rb=[];//patches
-if($r)foreach($r as $k=>$v)$rb[$k]=$v;
-return $rb;}
+static function resav($r){$rt=[];//renove lines
+if($r)foreach($r as $k=>$v)$rt[$k]=$v;
+return $rt;}
 
 static function patch_m($r){$rt=[];//old header
 if(isset($r['_menus_'])){$rm['_']=$r['_menus_']; unset($r['_menus_']); $rt=$rm+$r;}
 return $rt;}
 
 static function patch_s($r){$rt=[];//old splitter
-if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[$k][$ka]=str_replace('§','|',$va);
+if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[$k][$ka]=str_replace('Â§','|',$va);
 return $rt;}
 
 static function compare($ra,$d){
@@ -566,11 +566,11 @@ return $ret;}
 
 static function import_conn($defs,$it,$aid){$ret=$defs['menus']??[];
 if(substr($it,0,1)=='[')$it=substr($it,1); $it=str_replace(':table]','',$it); 
-if(strpos($it,'¬')===false)$r=explode("\n",$it); else $r=explode('¬',$it);
+if(strpos($it,'Â¬')===false)$r=explode("\n",$it); else $r=explode('Â¬',$it);
 foreach($r as $k=>$v)if(trim($v) && $v!='//'){$ra=explode('|',$v);
 	if(is_array($ra)){$rb=[]; 
 		foreach($ra as $ka=>$va){
-			$va=str_replace([':BAR:',':LINE:'],['|','¬'],$va);
+			$va=str_replace([':BAR:',':LINE:'],['|','Â¬'],$va);
 			$rb[]=trim($va);} $ra=$rb;}
 	if($aid=='ok')$ret[$k+1]=$ra;
 	else{$ret[]=$ra;}} //$va=$ra[0]??$k; unset($ra[0]); $va
@@ -673,10 +673,10 @@ return $ra;}
 
 static function opbt($d,$jurl,$lh,$o=''){$a=$o?'popup':'admsql';//msql_opsup
 $rl=$d=='del_file'||$d=='del_backup'?'url':'';
-return lj('txtx',$a.'_msqlops__'.$rl.'_'.$jurl.'_'.ajx($d).'__'.$o,$lh[0],att($lh[1])).' ';}
+return lj('txtx',$a.'_msqlops__'.$rl.'_'.$jurl.'_'.ajx($d).'__'.$o,$lh[0]??'',att($lh[1]??'')).' ';}
 
 static function opedt($d,$jurl,$lh,$o=''){$a=$o?'popup':'admsql';//msql_opsup
-return lj('txtx','popup_msqa,editors___'.$jurl.'_'.ajx($d),$lh[0],att($lh[1])).' ';}
+return lj('txtx','popup_msqa,editors___'.$jurl.'_'.ajx($d),$lh[0]??'',att($lh[1]??'')).' ';}
 
 #ok, go
 static function home($cmd='',$pg=''){
@@ -739,7 +739,7 @@ if(!$def && auth(6)){
 	#-util
 	$ret['utl']='';
 	if($table && $authorized && $hub && $is_file){
-		$ret['utl']=lj('txtblc','popup_msqa,editmsql___'.$jurl.'_*menus*',$lh[1][0]).' ';
+		$ret['utl']=lj('txtblc','popup_msqa,editmsql___'.$jurl.'_*',$lh[1][0]).' ';
 		$ret['utl'].=self::opbt('reset_menus',$jurl,$lh[22]);
 		$ret['utl'].=self::opbt('del_menus',$jurl,$lh[23]);
 		$ret['utl'].=self::opbt('add_keys',$jurl,$lh[24]);
@@ -748,7 +748,7 @@ if(!$def && auth(6)){
 		$ret['utl'].=self::opbt('del_col',$jurl,$lh[15],1);
 		if($is_file && auth(6)){
 			$ret['utl'].=self::opbt('repair_cols',$jurl,$lh[13]).' ';
-			//$ret['utl'].=self::opbt('repair_enc',$jurl,['patch_enc','to utf8']);
+			$ret['utl'].=self::opbt('repair_enc',$jurl,['patch_enc','to utf8']);
 			$ret['utl'].=self::opbt('patch_m',$jurl,['patch_m','patch_menu']);
 			//$ret['utl'].=self::opbt('patch_s',$jurl,['patch_s','patch_splitter']);
 			}

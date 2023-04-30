@@ -28,8 +28,8 @@ if($r)foreach($r as $k=>$v){
 	//svg::circle($x,$y,$sz,$clr,$black,2);
 	$circ='['.$clr.',black,1:attr]['.$x.','.$y.','.$sz.':circle]';
 	$tx=round($dist,2).' Al';
-	svg::$ret[]='['.$tx.',star;info___'.$hip.'_hip§'.$circ.':bubj2]';
-	//svg::$ret[]='['.$tx.'§'.$circ.':bub]';
+	svg::$ret[]='['.$tx.',star;info___'.$hip.'_hip|'.$circ.':bubj2]';
+	//svg::$ret[]='['.$tx.'|'.$circ.':bub]';
 	svg::lj($x+6,$y+6,12,$white,'popup_star;call___'.$hip.'_1',$star);}}
 
 static function map($r,$ha,$font,$hemi=1){

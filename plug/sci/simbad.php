@@ -11,10 +11,11 @@ if(is_numeric($p))$p='hip'.$p;
 if(strpos($p,'=')===false && strpos($p,'&')===false)$pg='sim-id?Ident='; else $pg='sim-sam?Criteria=';
 return 'http://simbad.u-strasbg.fr/simbad/'.$pg.''.urlencode($p);}
 
-static function find_names($r){$rb=[];
+static function find_names($r){$rb=[]; //pr($r);
 foreach($r as $k=>$v)foreach($v as $ka=>$va)
-if(substr($va,0,3)=='HIP')$rb['hip']=substr($va,4);
-elseif(substr($va,0,2)=='HD')$rb['hd']=substr($va,3);
+if(substr($va,0,2)=='HD')$rb['hd']=substr($va,3);
+elseif(substr($va,0,3)=='HIP')$rb['hip']=substr($va,4);
+elseif(substr($va,0,3)=='LHS')$rb['hip']=substr($va,4);
 elseif(substr($va,0,4)=='Gaia')$rb['Gaia']=substr($va,5);
 return $rb;}
 
@@ -66,7 +67,7 @@ if($dom)$r=$dom->getElementsByTagName('tr');
 if($r)foreach($r as $k=>$v){$rt[$k]=[];
 	//if($v->childNodes)foreach($v->childNodes as $kb=>$el){}
 	$rb=$v->getElementsByTagName('th'); if(!$rb['length'])$rb=$v->getElementsByTagName('td');
-	if($rb)foreach($rb as $kb=>$el)$rt[$k][$kb]=clean_br(self::getxt($el));}//html2conn
+	if($rb)foreach($rb as $kb=>$el)$rt[$k][$kb]=str::clean_br(self::getxt($el));}//html2conn
 return $rt;}
 
 static function build($u){//hip32578
@@ -74,7 +75,7 @@ $d=get_file($u); $dom=dom($d);
 $r=$dom->getElementsByTagName('table'); $n=count($r);
 $rt=self::detect_table($r[3]);
 $rt=self::cleanup($rt);
-$rd=self::detect_table($r[9]);
+$rd=self::detect_table($r[8]);
 $rd=self::find_names($rd);
 if($rd)$rt+=$rd;
 return $rt;}

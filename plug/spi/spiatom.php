@@ -42,12 +42,12 @@ $x=($rx[$sub][$pos]+$zerox)*$u+$addx;
 $y=($ry[$sub][$pos]+$zeroy)*$u+$addy;
 //t, vertical-horizontal
 if($rg[$sub][$pos]){$w=$u;$h=$u*2;
-$t1='[spt_spiatom,call___'.$i.'§['.($x+10).','.($y+22).'§'.$i.':text]:lj]';
-$t2='[popup_spitable;infos___'.$i.'§['.($x+10).','.($y+$h-16).'§'.$v.':text]:lj]';}
+$t1='[spt_spiatom,call___'.$i.'|['.($x+10).','.($y+22).'|'.$i.':text]:lj]';
+$t2='[popup_spitable;infos___'.$i.'|['.($x+10).','.($y+$h-16).'|'.$v.':text]:lj]';}
 else{$w=$u*2;$h=$u;
-$t1='[spt_spiatom;call___'.$i.'§['.($x+10).','.($y+22).'§'.$i.':text]:lj]';
-$t2='[popup_spitable;infos___'.$i.'§['.($x+$w/2+6).','.($y+24).'§'.$v.':text]:lj]';}
-//$ret='[popup_svg;call§[20,20§'.$t2.':text]:lj]';
+$t1='[spt_spiatom;call___'.$i.'|['.($x+10).','.($y+22).'|'.$i.':text]:lj]';
+$t2='[popup_spitable;infos___'.$i.'|['.($x+$w/2+6).','.($y+24).'|'.$v.':text]:lj]';}
+//$ret='[popup_svg;call|[20,20|'.$t2.':text]:lj]';
 $ret='';//$t1.$t2;
 //echo $x.'-'.$y.'-'.$w.'-'.$h.br();
 return [$x,$y,$w,$h,$ret];}
@@ -105,7 +105,7 @@ for($i=1;$i<=$max;$i++)$rb[]=self::atom($r,$i,$mode,$p);
 $h+=24;
 $ret='[white,gray:attr][0,0,'.$w.','.$h.':rect]';
 $t=$p.' - '.$r[$p][0].' ('.$r[$p][1].') : '.$pos.' electron(s) - '.$free.' free socket(s)';
-$ret.='[black,gray:attr][popup_spitable;infos___'.$i.'§[10,'.($h-14).'§'.$t.':text]:lj]';
+$ret.='[black,gray:attr][popup_spitable;infos___'.$i.'|[10,'.($h-14).'|'.$t.':text]:lj]';
 $ret.=implode("\n",$rb);
 if($ret)$ret=svg::home($ret,$w.'/'.$h);
 return $ret;}//$bt.

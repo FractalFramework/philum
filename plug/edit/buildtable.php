@@ -7,7 +7,7 @@ return $r;}
 
 static function bt_func($d){
 //$d=codeline::parse($d,'','delconn');
-if(strpos($d,'§'))$d=strto(strend($d,'§'),']');
+if(strpos($d,'|'))$d=strto(strend($d,'|'),']');
 $d=trim($d);
 return $d;}
 

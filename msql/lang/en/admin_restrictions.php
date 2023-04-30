@@ -18,9 +18,9 @@ $r=["_"=>['name','description'],
 "16"=>['mini limits','place limits of image outside the limits of thumbnail'],
 "17"=>['columns','articles on multiples columns, as set by the css \'cols\' ;
 only long content is affected'],
-"18"=>['public defcons','Définitions for importations of articles. 
+"18"=>['public defcons','DÃ©finitions for importations of articles. 
 Set public or private defs in rstr18'],
-"19"=>['_img1','inject variable _IMG1 (first image of article) for template (personalized thumbnails) as this : [_IMG1§100/100:thumb]'],
+"19"=>['_img1','inject variable _IMG1 (first image of article) for template (personalized thumbnails) as this : [_IMG1|100/100:thumb]'],
 "20"=>['menu home','display admin menu home'],
 "21"=>['restricted_area','acces to pages reserved to members'],
 "22"=>['bots','open to bots'],
@@ -151,4 +151,4 @@ If the rstr is disabled, it is the opposite: only urls converted into connectors
 "146"=>['deskhome','limit the desktop to the home'],
 "147"=>['png2jpg','try to convert png\'s to jpg\'s if it is advantageous'],
 "148"=>['webp2jpg','convert webp to jpg'],
-"149"=>['hurl','title link in hurl mode (uses the href as a js)']]; ?>
+"149"=>['hurl','title link in hurl mode (uses the href as a js)']];

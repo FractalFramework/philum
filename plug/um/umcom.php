@@ -3,7 +3,7 @@ class umcom{
 static $conn=1;
 
 static function bt($p,$o){
-if($o==1)$o=is_numeric($p)?ma::suj_of_id($p):$p;//p§o
+if($o==1)$o=is_numeric($p)?ma::suj_of_id($p):$p;//p|o
 return lj('','popup_umrec,home___'.$p,pictxt('cube',$o));}
 
 static function call($p,$o,$prm=[]){$p=$prm[0]??$p;
@@ -25,7 +25,7 @@ $ret.=lj('',$j,picto('ok'));
 return divc('',$ret).br();}
 
 static function home($p,$o){
-//if(strpos($p,'§'))[$p,$t]=explode('§',$p); else $t='';
+//if(strpos($p,'|'))[$p,$t]=explode('|',$p); else $t='';
 //ummo_aliens_4
 if(strpos($p,'_')){$ret=''; $r=msql::col('',$p,0);
 	foreach($r as $k=>$v)if($v)$ret.=self::home($v,$o); return $ret;}

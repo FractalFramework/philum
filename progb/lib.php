@@ -2,7 +2,7 @@
 spl_autoload_register(function($a){$dr='prog'.$_SESSION['dev'].'/'; $r=['_','a','b','c'];
 for($i=0;$i<4;$i++)if(is_file($f=$dr.$r[$i].'/'.$a.'.php')){
 	require($f); ses::$r['spl'][]=$r[$i].'/'.$a; return;}
-$r=sesmk('scanplug','',0);
+$r=sesmk('scandir_b','plug',0);
 if($r)foreach($r as $v)if(is_file($f='plug/'.$v.'/'.$a.'.php')){
 	require($f); ses::$r['spl'][]=$v.'/'.$a; return;}});
 
@@ -165,7 +165,7 @@ return '<form id="upl'.$id.'" action="" style="display:inline-block" method="POS
 function select($ra,$r,$kv='',$h='',$j=''){$ret=''; $pr=[];
 if(is_string($ra))$ra=['id'=>$ra];
 if($j)$ra['onchange']=sj($j.'\'+this.value+\'');
-$ret.=tag('option',$pr+['value'=>''],'Select...');
+//$ret.=tag('option',$pr+['value'=>''],'Select...');
 if($r)foreach($r as $k=>$v){
 	if($kv=='vv')$k=$v; elseif($kv=='kk')$v=$k;
 	if($k==$h)$pr['selected']='selected'; else $pr=[];
@@ -308,7 +308,7 @@ curl_close($c); if(!$er)return $ret;}
 
 #dom
 function dom($d){
-$dom=new DomDocument();//'2.0','UTF-8'
+$dom=new DomDocument('2.0','UTF-8');//
 $dom->validateOnParse=true;
 $dom->preserveWhiteSpace=true;//false
 libxml_use_internal_errors(true);
@@ -340,29 +340,29 @@ include_once($p.'error.lib.php'); include_once($p.'trace.lib.php'); PclTarExtrac
 //json
 function json_error(){
 return match(json_last_error()){
-JSON_ERROR_NONE=>'',
+JSON_ERROR_NONE=>0,
 JSON_ERROR_DEPTH=>1,//'Profondeur maximale atteinte'
-JSON_ERROR_STATE_MISMATCH=>2,//'InadÈquation des modes ou underflow'
-JSON_ERROR_CTRL_CHAR=>3,//'Erreur lors du contrÙle des caractËres'
-JSON_ERROR_SYNTAX=>4,//'Erreur de syntaxe ; JSON malformÈ'
-JSON_ERROR_UTF8=>5,//'CaractËres UTF-8 malformÈs, erreur encodage'
+JSON_ERROR_STATE_MISMATCH=>2,//'Inad√©quation des modes ou underflow'
+JSON_ERROR_CTRL_CHAR=>3,//'Erreur lors du contr√¥le des caract√®res'
+JSON_ERROR_SYNTAX=>4,//'Erreur de syntaxe ; JSON malform√©'
+JSON_ERROR_UTF8=>5,//'Caract√®res UTF-8 malform√©s, erreur encodage'
 default=>6};}//'Erreur inconnue'
 
-function json_enc($r){$r=utf_r($r);
-return json_encode($r);}//JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_UNESCAPED_UNICODE
+/*function json_enc($r){$r=utf_r($r);
+return json_encode($r);}//JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_UNESCAPED_UNICODE*/
 
 function mkjson($r,$o=''){
-$rb=utf_r($r);//,ses::$enc=='utf-8'?1:0
+$rb=utf_r($r,0);//,ses::$enc=='utf-8'?1:0
 $rt=json_encode($rb,JSON_HEX_TAG);
 $e=json_error(); if($e)$rt=json_encode(array_combine(array_keys($r),array_fill(0,count($r),$e)));
 return $rt;}
 
 function utf_r($r,$o=''){$rt=[];
-//if($o==1 && ses::$enc=='utf-8')return $r;//devutf
+if($o==1 && ses::$enc=='utf-8')return $r;
 if(is_array($r))foreach($r as $k=>$v){
-	$kb=$o?utf8dec_b($k):utf8enc($k); $k=$kb?$kb:$k;
+	$kb=$o?utf8dec($k):toutf8($k); $k=$kb?$kb:$k;
 	if(is_array($v))$rt[$k]=utf_r($v,$o);
-	else $rt[$k]=$o?utf8dec_b($v):utf8enc($v);}
+	else $rt[$k]=$o?utf8dec($v):toutf8($v);}
 return $rt;}
 
 #tables
@@ -423,20 +423,20 @@ function ascii2iso($d){htmlentities($d??''); $d=iconv('ASCII','ISO-8859-1',$d);
 return html_entity_decode($d);}//mysql2utf8
 function utf2ascii($d){$d=$d??''; $d=htmlentities($d,ENT_QUOTES,'UTF-8'); $d=utf8dec2($d);
 return html_entity_decode($d);}//htmlspecialchars_decode//$d=ascii2iso($d);//
-function utf8enc_b($d){$d=$d??''; $d=he2utf($d); return html_entity_decode($d);}
-function utf8dec_b($d,$o=''){$d=utf2ascii($d); return $o?$d:str::html_entity_decode_b($d);}//most used
+//function utf8enc_b($d){$d=$d??''; $d=he2utf($d); return html_entity_decode($d);}//lated used for web output
+function utf8dec_b($d){$d=utf2ascii($d); return str::html_entity_decode_b($d);}//most used//normalize quotes
 function detect_enc($d){return mb_detect_encoding($d,'UTF-8,ISO-8859-1',true);}
-function is_utf($d){return strpos($d,'√')||strpos($d,'‚Ä')||strpos($d,'–')||strpos($d,'„');}
+function is_utf($d){return strpos($d,'√É')||strpos($d,'√¢‚Ç¨')||strpos($d,'√ê')||strpos($d,'√£');}
 function urlutf($u){return urlencode(utf8enc($u));}//str::urlenc()
-function utf($d){return $d; ses::$enc=='utf-8'?utf8enc($d):$d;}//devutf
+function utf($d){return $d; ses::$enc=='utf-8'?utf8enc($d):$d;}
 
 #strings
 function eradic_acc($d){
-$a='‡·‚„‰ÁËÈÈÍÎÏÌÓÔÒÚÛÙıˆ˘˙˚¸˝ˇ¿¡¬√ƒ«»… ÀÃÕŒœ—“”‘’÷Ÿ⁄€‹›';
+$a='√†√°√¢√£√§√ß√®√©√©√™√´√¨√≠√Æ√Ø√±√≤√≥√¥√µ√∂√π√∫√ª√º√Ω√ø√Ä√Å√Ç√É√Ñ√á√à√â√ä√ã√å√ç√é√è√ë√í√ì√î√ï√ñ√ô√ö√õ√ú√ù';
 $b='aaaaaceeeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';
 return strtr($d,$a,$b);}
 function normalize_alpha($d,$o=''){if(!$d)return;
-$r=[' ','-','&nbsp;',"'",'"','/',',',';',':','ß','%','&','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','´','ª']; if($o)unset($r[$o]); return str_replace($r,'',$d);}
+$r=[' ','-','&nbsp;',"'",'"','/',',',';',':','|','¬ß','%','&','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','¬´','¬ª']; if($o)unset($r[$o]); return str_replace($r,'',$d);}
 function normalize_ext($d){if(!$d)return;
 return str_replace(['.JPG','.JPEG','.jpeg','.GIF','.PNG'],['.jpg','.jpg','.jpg','.gif','.png'],$d);}
 function normalize($d,$o=''){if(!$d)return;
@@ -477,8 +477,8 @@ function array_combine_a($a,$b){$n=count($a); $r=[];//php4
 for($i=0;$i<$n;$i++)if(isset($b[$i]))$r[$a[$i]]=stripslashes($b[$i]); return $r;}
 function array_combine_sub($a,$b){$rb=[];//bar_org
 foreach($a as $k=>$v)if(!isset($b[$k]))$rb[$k]=$v; return $rb;}
-function array_merge_b($r,$rb){
-if($r && $rb)return array_merge($r,$rb); elseif($rb)return $rb; else return $r;}
+function array_merge_b($ra,$rb){$a=is_array($ra)?1:0; $b=is_array($rb)?1:0;
+if($a && $b)return array_merge($ra,$rb); elseif($b)return $rb; else return $ra;}
 function array_merge_r($a,$b){$n=count($a);
 foreach($b as $k=>$v)if(!$a[$k])$a[$k]=$v; return $a;}
 function array_append($r,$rb){foreach($r as $k=>$v){$vb=$rb[$k]; $n=count($vb);
@@ -541,7 +541,7 @@ function xt($d,$o=0){$d=strtolower($d??'');
 $b=strrpos($d,'.'); if($b)$d=substr($d,$b+$o);
 $b=strpos($d,'?'); if($b)$d=substr($d,0,$b);
 $b=strpos($d,'#'); if($b)$d=substr($d,0,$b);
-$b=strpos($d,'ß'); if($b)$d=substr($d,0,$b);
+$b=strpos($d,'|'); if($b)$d=substr($d,0,$b);
 $b=strpos($d,' '); if($b)$d=substr($d,0,$b);
 if(strlen($d)<7)return $d;}
 function xtb($d,$o=0){return substr(strtolower(strrchr($d??'','.')),$o);}
@@ -569,8 +569,8 @@ function is255($d){return strlen($d)>255?substr($d,0,255):($d??'');}
 //function is255mb($d){return mb_strlen($d)>255?mb_substr($d,0,255):($d??'');}
 
 //gets
-function gets(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=utf8dec(urldecode($v));}
-function getsb(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=urldecode($v);}//diffutf
+function gets(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=urldecode($v);}
+function getsb(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=utf8dec(urldecode($v));}
 function get($k,$v=''){return !empty(ses::$r['get'][$k])?ses::$r['get'][$k]:ses::$r['get'][$k]=$v;}
 //function get($k,$v=''){return ses::$r['get'][$k]??(ses::$r['get'][$k]=$v);}
 function geta($k,$v){return ses::$r['get'][$k]=$v;}//assign
@@ -588,8 +588,9 @@ function sesrr($d,$k,$v=[]){if(!isset($_SESSION[$d]))$_SESSION[$d]=[];
 return $v?$_SESSION[$d][$k]=$v:($_SESSION[$d][$k]??[]);}
 function sesrz($d,$k){if(array_key_exists($k,$_SESSION[$d]))unset($_SESSION[$d][$k]);}
 function sesg($v,$d){$s=ses($v); $g=get($v); return $g?$g:($s?$s:$d);}
+function sesk($d,$v){$_SESSION[$d][]=$v; return $_SESSION[$d];}
 function sesmk($v,$p='',$b=''){if(!isset($_SESSION[$v.$p]) or $b)
-if(function_exists($v))$_SESSION[$v.$p]=call_user_func($v,$p); return $_SESSION[$v.$p]??'';}
+if(function_exists($v))$_SESSION[$v.$p]=call_user_func($v,$p); return $_SESSION[$v.$p]??[];}
 function sesmk2($a,$m,$p='',$b=''){if(empty($_SESSION[$a.$m]) or $b)
 if(method_exists($a,$m))$_SESSION[$a.$m]=$a::$m($p); return $_SESSION[$a.$m]??'';}
 function setses($d,$o=''){return !isset($_SESSION[$d])?$_SESSION[$d]=$o:$_SESSION[$d];}
@@ -624,7 +625,7 @@ return date('ymd',filemtime($doc)).'-'.round(filesize($doc)/1024).'Ko';}
 function ftime($f,$d=''){if(is_file($f))return date($d?$d:'ymd.Hi',filemtime($f));}
 function fsize($f,$o=''){if(is_file($f))return round(filesize($f)/1024,1).($o?' Ko':'');}
 function fwidth($f){if(is_file($f))return getimagesize($f);}
-function frdate($d){$r=['','janvier','fÈvrier','mars','avril','mai','juin','juillet','ao˚t','septembre','octobre','novembre','dÈcembre']; return $r[$d];}
+function frdate($d){$r=['','janvier','f√©vrier','mars','avril','mai','juin','juillet','ao√ªt','septembre','octobre','novembre','d√©cembre']; return $r[$d];}
 function localdate($d){$r=explode('/',date('d/m/Y',$d)); $r[1]=frdate(intval($r[1]));
 return implode(' ',$r);}
 function ts2time($t){$nd=date('z',$t); $nh=date('H',$t)*60*60; $nm=date('i',$t)*60; $ns=date('s',$t);
@@ -686,7 +687,7 @@ return $ret.divc('clear','');}
 
 #medias
 function iframe($d,$w='',$h=''){
-[$dc,$wb,$hb,$p,$o,$d]=subparams_a($d);//urlßw/h
+[$dc,$wb,$hb,$p,$o,$d]=subparams_a($d);//url|w/h
 $w=$wb?$wb:$w; $h=$hb?$hb:($h?$h:'440px'); $w=$w?$w:'100%';
 if(strpos($dc,'http')===false)$f='/users/'.$dc;
 return tag('iframe',['src'=>$dc,'frameborder'=>'0','width'=>$w,'height'=>$h,'name'=>$p,'seamless'=>$o,'srcdoc'=>$o,'allowfullscreen'=>'true'],'');}
@@ -785,12 +786,13 @@ if($o)return "&#93".(31+$d); else return "&#93".(51+$d);}
 
 #maths
 function phi($n=32){$d=1; for($i=0;$i<$n;$i++)$d=1+(1/$d); return $d;}//dav algo :)
+function average($r){return round(array_sum($r)/count($r),3);}
 function ratio($r,$min,$max,$k){$minr=min($r); $diff=max($r)-$minr; $rb=[];
 foreach($r as $k=>$v)$rb[$k]=(($v-$minr)/$diff)*($max-$min)+$min;
 return $rb;}
 
 #tools
-function genpswd($nb=8){$v='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$^ß:()[]{}∞+-/*';
+function genpswd($nb=8){$v='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$^¬ß:()[]{}¬∞+-/*';
 $r=str_split($v); $n=count($r); $ret=''; for($i=0;$i<$nb;$i++)$ret.=$r[rand(0,$n)]; return $ret;}
 function exc($d){if(auth(6))return shell_exec(($d));}////system//shell_exec//escapeshellcmd
 function excdir(){$dr=__DIR__; $r=explode('/',$dr); return '/'.$r[1].'/'.$r[2];}

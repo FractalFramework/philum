@@ -40,7 +40,7 @@ if(is_array($ret))$ret=mkjson($ret);}
 elseif($_a=get('_a')){[$a,$b]=explode(',',$_a); $g=explode(',',get('_g'));//new canal
 if($a=='sql' or $a=='msql')return 'no';
 if(!method_exists($a,$b))$ret='nothing';
-else $ret=$a::$b($g,$prm); //json::add('','fc',$r);
+else $ret=$a::$b($prm);//$g,//json::add('','fc',$r);
 $t=tit($a,$b,$g1,$g2);
 if(is_array($ret))$ret=mkjson($ret);}
 

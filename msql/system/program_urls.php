@@ -31,4 +31,4 @@ $r=["_"=>['type','commands'],
 /log/on (autolog)
 /log/out (close user)
 /log/off (close visitor)
-/log/down (shut down application)']]; ?>
+/log/down (shut down application)']];

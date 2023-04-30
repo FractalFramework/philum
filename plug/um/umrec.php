@@ -149,19 +149,19 @@ $rb['social'].=lkt('','/app/umcom/'.$idx,picto('chain'));
 return $rb;}
 
 static function template(){
-return '[[_TITLE:h2][_SOCIAL #_PID _TAG§small:css][_LANG§nbp:divc]
+return '[[_TITLE:h2][_SOCIAL #_PID _TAG|small:css][_LANG|nbp:divc]
 [[_SOURCE:b] [_AUTHOR:u] _BTRK:div][_TRACKS:p]
 [[_OPT:b] [_PLAYER:u] (_DAY) _BTXT:div][_MSG:p]:section]';}
 
 static function temp_brut(){
-return '[[_URL§_SUJ:url]:h2]
+return '[[_URL|_SUJ:url]:h2]
 [[_SOURCE:b] [_AUTHOR:u]:p][_TRACKS:p]
-[[_OPT:b] [_PLAYER:u] (_DAY) [#_ID§small:css]:p]
+[[_OPT:b] [_PLAYER:u] (_DAY) [#_ID|small:css]:p]
 [_MSG:p]';}
 
 static function temp_vue(){
-return '[[[{url}§{suj}:url]:h2]
-[{source}:b] [{author}:u][{tracks}:div][{opt}:b] [{player}:u] ({day}) [#{id}§small:css][{msg}:div]:section]';}
+return '[[[{url}|{suj}:url]:h2]
+[{source}:b] [{author}:u][{tracks}:div][{opt}:b] [{player}:u] ({day}) [#{id}|small:css][{msg}:div]:section]';}
 
 static function text($r){//umcom
 $ret=divc('nbp',$r['lang']);

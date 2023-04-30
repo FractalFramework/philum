@@ -13,4 +13,4 @@ To validate the signature, please call this link :
 "sign"=>['Sign the petition'],
 "actually"=>['Actually _NB signatures'],
 "entries"=>['name,mail,web,city,country'],
-"1"=>['']]; ?>
+"1"=>['']];

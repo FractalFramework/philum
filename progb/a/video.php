@@ -3,7 +3,7 @@ class video{
 static $rp=['youtube','youtu','vimeo','rumble','vk','rutube','dailymotion','framatube','crowdbunker','ted','livestream'];
 
 static function detect($f,$o='',$t='',$op=''){$fb=$f;
-//if(strpos($f,'/')===false)return '['.$f.'§'.$t.':'.$o.'video]';
+//if(strpos($f,'/')===false)return '['.$f.'|'.$t.':'.$o.'video]';
 $f=nohttp($f); $fa=httproot($f); $ret='';
 if(strpos($f,'#'))$f=strto($f,'#'); $f=urldecode($f);//if(strpos($f,'?'))$f=strend($f,'?');
 if(in_array($fa,self::$rp))switch($fa){
@@ -26,7 +26,7 @@ if(in_array($fa,self::$rp))switch($fa){
 	default:return $fb;}
 //elseif(strpos($f,'.mp4'))return $fb;
 if($ret){
-	if(is_img($t))$t=''; else $t=$o?'§'.($t?$t:1):'';
+	if(is_img($t))$t=''; else $t=$o?'|'.($t?$t:1):'';
 	if($op==2)return $ret;
 	else return '['.$ret.$t.':video]';}}
 
@@ -119,14 +119,14 @@ if(auth(4))$lk.=lj('','popup_web,redit___'.ajx($u).'_'.$rid.'_'.$id,picto('editx
 if($m=='vd')$ret=div(atc('video').atd($rid),$bt).$lk;
 elseif($o)$ret=span(att($ti).atd($rid),$bt.$lk);
 elseif($m<3 or $m=='noimages')$ret=btd($rid,$bt.$lk);
-else $ret=div(atc('video').atd($rid),$bt).btn('small',$lk);
+else $ret=divb($bt.divc('small',$lk),'video',$rid);
 return $ret;}
 
-static function any($d,$id,$m,$nl=''){//p§w/h
+static function any($d,$id,$m,$nl=''){//p|w/h
 if($nl)return self::lk($d);
 if(strpos($d,'.mp4') or strpos($d,'.m3u8'))return video($d);//if(!$d2)
 if(rstr(132) or $id=='epub')return self::player($d2,$id);
-if(substr($d,0,4)=='http'){[$d,$tx]=cprm($d);//contourne procédure
+if(substr($d,0,4)=='http'){[$d,$tx]=cprm($d);//contourne procÃ©dure
 	$pr=self::extractpr($d); $d2=self::detect($d,$m,'',2);
 	if($tx)return self::play($d,$id,$m?$m:3);
 	else return self::reader($d2,$pr,'','',$id);}
@@ -137,7 +137,7 @@ static function call($d,$p,$w){
 return self::reader($d,$p,$w,'','');}
 
 static function player($d){
-[$d,$o]=expl('§',$d);
+[$d,$o]=expl('|',$d);
 if($o)return self::lk($d);
 $p=self::providers($d); $w=prma('content')-80;
 return self::reader($d,$p,$w,'','');}

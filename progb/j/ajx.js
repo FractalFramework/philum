@@ -167,9 +167,10 @@ if(dn[0]=='popup'||dn[0]=='pagup')pp='&'+dn[0]+'==';
 //else if(dn[0]=='pop'){dn[0]='pop'+curid; var tp=12;}
 else if(dn[0].indexOf(',')!=-1)tp='json';
 else if(dn[2]){var dn2=dn[2].split(','); tp=dn2[0]; var tx=dn2[1];}
+//if(dn[3]!=undefined)g=dn[3];
+if(dn[3]){prm=dn[3].split(','); for(i=0;i<prm.length;i++)fd.append('p'+i,prm[i]);}
 if(dn[4]){prm=dn[4].split(','); for(i=0;i<prm.length;i++)fd.append(prm[i],capture(prm[i]));}
-if(dn[3]!=undefined)g=dn[3];
-new AJAX('/ajax.php?_a='+dn[1]+'&_g='+g,dn[0],tp,fd);
+new AJAX('/ajax.php?_a='+dn[1],dn[0],tp,fd);//+'&_g='+g
 if(tx=='x')Close('popup');
 else if(tx=='xc')clpop();//autoclose togbub
 else if(tx=='xb')cltog(dn[2].split(',')[1]);//close tog
@@ -429,7 +430,6 @@ if(dn[2])prm=mkprm(dn[2],dn[3]);
 for(i=4;i<ns;i++){if(dn[i])opt+=encUri(dn[i])+'_'; else opt+='_';}
 if(dn[7]=='autosize'||dn[1]=='msql')opt+='&sz='+innerW()+'-'+innerH();
 if(dn[7]=='autowidth'){var ob=getbyid('content'); opt+='&sz='+(ob.offsetWidth);}
-//if(dn[8])res='&res='+SaveJm(dn,8);//obs
 var gets=dn[1]+'_'+opt+res+pp; //if(dn[2])gets+='&dn2='+dn[2];
 ajaxcall(dn[0],gets,prm,tp);
 //if(dn[1]=='popart')history.pushState(urlbar,dn[4],dn[4]);
@@ -460,6 +460,7 @@ var j='content_mod,callmod_'+g;
 var dn=j.split("_");//dn[5]=i;
 active_list(bt.parentNode.id,ia);
 var gets=dn[1]+'_'+encUri(dn[2])+'_'+dn[3];
+//var gets=jrc([dn[1],dn[2],dn[3]]);
 if(b!=2)updateurl('menu',j,ia,b);
 ajaxcall(dn[0],gets,[],'');}
 
@@ -468,20 +469,23 @@ var dn=val.split('_'); var w=dn[1]; var h=dn[2];
 var sw=innerW(); var sh=innerH(); sh-=30; //var py=window.pageYOffset;
 var th=getbyid('page').clientHeight; if(th>sh)sw-=20;
 if(w>sw)var com='usg,overim_'; else var com='usg,photo_';
-var URL=dn[0]+'_'+w+'-'+h+'_'+sw+'-'+sh+'_'+dn[3];
-ajaxcall('popup',com+URL,[],25);}
+var URL=com+'_'+dn[0]+'_'+w+'-'+h+'_'+sw+'-'+sh+'_'+dn[3];
+//var URL=com+'&'+jrc([dn[0],w,h,sw,sh,dn[3]]);
+ajaxcall('popup',URL,[],25);}
 
 //import-edit
 function SaveI(val){
 var src=getbyid(val).value;
 if(src==''||src.indexOf('.')==-1)return;
 var gets='sav,webread_'+encUriJ(src);
+//var gets='sav,webread&p1='+src;
 ajaxcall('suj1,txtarea,urledt',gets,[],'json');}
 function SaveIt(){setTimeout(function(){SaveI('urlsrc')},2000);}
 
 function SaveIb(id){//import art//call_url
 var src=getbyid('urlsrc').value;
 var URL='sav,websav_'+id+'_'+encUriJ(src);
+//var URL='sav,websav&'+jrc([id,src]);
 ajaxcall('txtarea',URL,[],4);
 Close('popup');}
 
@@ -489,7 +493,9 @@ function SaveIe(){//addurl_fastmenu
 var src=getbyid('addsrc').value; src=encUriJ(src);
 if(src.substr(0,4)!='http')return;
 inform_field('addsrc','adb');
-if(src)ajaxcall('popup','sav,batchpreview_'+src,[],''); Close('popup');}
+var URL='sav,batchpreview_'+src;
+//var URL='sav,batchpreview&p1='+src;
+if(src)ajaxcall('popup',URL,[],''); Close('popup');}
 function SaveIeb(){if(x)clearTimeout(x); x=setTimeout(function(){SaveIe()},1500);}
 
 function SaveIec(src,cat,cid,cib,x,suj){//batch
@@ -497,6 +503,7 @@ if(!cat && cid)var cat=getbyid(cid).value;
 if(!cat){SaveJ('popup_sav,newartcat__'+x+'_'+encUri(src)+'_'+suj); return;}
 if(cib)var ib=getbyid(cib).value; else var ib='';
 var gets='sav,addurlsav_'+encUri(src)+'_'+encUri(cat)+'_1_'+ib;
+//var gets='sav,addurlsav&'+jrc([src,cat,'1',ib]);
 ajaxcall('socket',gets,[],7);}
 
 function inform_field(id,di){
@@ -519,7 +526,7 @@ var ob=getbyid(id); if(ob!=null)var src=ob.value;
 if((!src||src.length<2)&& src!='1')return;
 if(src!=old){if(!old)return SearchT(id); else return;}
 if(src){inform_field(id,(id=='srchb'?'ada':''));
-	ajaxcall('popup','search,home_',[src],3);}}
+	ajaxcall('popup','search,home',[src],3);}}
 
 function SearchT(id){var ob=getbyid(id);
 if(ob!=null)var old=(ob.value); else var old='';
@@ -549,6 +556,7 @@ if(old==''){for(i=0;i<vn.length;i++)getbyid('slct'+normalize(vn[i])+id).innerHTM
 else if(cur!=old||cur.length<2)return;
 else for(i=0;i<vn.length;i++){var tg='slct'+normalize(vn[i])+id;
 	var gets='meta,slctag_'+id+'_'+encUri(vn[i])+'_'+encUriJ(cur);
+	//var gets='meta,slctag&'+jrc([id,vn[i],cur]);
 	//ajaxcall(tg,gets,[],2);//bigcrash of all
 	new AJAX(jurl()+gets,tg,2);}}
 

@@ -713,4 +713,4 @@ $r=["_"=>['hex','fam'],
 "fscreen2-op"=>['0533','signs'],
 "fscreen2-cl"=>['0534','signs'],
 "gradient-top"=>['0535','inkart'],
-"gradient-bot"=>['0536','inkart']]; ?>
+"gradient-bot"=>['0536','inkart']];

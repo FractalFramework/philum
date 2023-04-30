@@ -5,9 +5,9 @@ class mc{
 static function assistant($id,$j,$jv,$va,$chk){
 $idb=is_array($jv)?$jv[0]:$jv; $bi='';
 if($jv)$help=msql::val('lang','connectors_all',$idb);
-if($help && !is_array($help))$bi=strpos($help,'§');//prop_detect
+if($help && !is_array($help))$bi=strpos($help,'|');//prop_detect
 $ret=goodarea($id,!is_numeric($va)?$va:'',36,0);
-if($chk or $bi)$ret.='§'.input('cnp',$chk);
+if($chk or $bi)$ret.='|'.input('cnp',$chk);
 else $ret.=hidden('cnp','');
 $ret.=ljb('popsav',$j,$jv,'ok');
 return divs('width:320px;',$ret);}
@@ -81,7 +81,7 @@ static function upload($id){
 if(!$id)$id=ses('read');
 $id=$id?$id:ma::lastid('qda')+1;
 $ret=inputb('upim','Url','32','1').' ';
-$ret.=lj('popsav','popb_sav,uplim_upim',nms(132),5).br();
+$ret.=lj('popsav','popb_sav,uplim_upim_5__'.$id,nms(132)).br();
 $ret.=toggle('txtx',$id.'up_sav,placeim___'.$id,'portfolio').' ';
 $ret.=upload_j($id,'art');
 return divs('width:320px;',$ret);}
@@ -141,9 +141,9 @@ $ret.=div(' contenteditable id="txtareb" class="panel justy" style="padding:10px
 return $ret;}
 
 //table
-static function mktc($na,$nb,$o,$r){$i=0; $opt=$o?'§'.$o:''; $rt=[];
+static function mktc($na,$nb,$o,$r){$i=0; $opt=$o?'|'.$o:''; $rt=[];
 for($b=0;$b<$nb;$b++){$rw=[]; for($a=0;$a<$na;$a++){$rw[]=$r[$i]; $i++;} $rt[]=implode('|',$rw);}
-return '['.implode('¬',$rw).$opt.':table]';}
+return '['.implode('Â¬',$rw).$opt.':table]';}
 
 static function mktb($na,$nb,$prm=[]){
 $na=$prm[0]??$na; $bt=''; $md=[];
@@ -161,7 +161,7 @@ $ret.=divd('mkb','');
 return $ret;}
 
 static function mkt_build($d){
-$d=str_replace(',','|',$d); $d=str_replace("\n",'¬',$d); $h=hidden('mktb',$d);
+$d=str_replace(',','|',$d); $d=str_replace("\n",'Â¬',$d); $h=hidden('mktb',$d);
 return lj('popbt','socket_jump__5_____mktb','ok').$h;
 return ljb('popbt','insert',ajx($d),'ok');}
 
@@ -228,7 +228,7 @@ elseif($va=='cleanpunct')$rt=str::clean_punct($d,2);
 elseif($va=='cleanpdf')$rt=self::clean_pdf($d);
 elseif($va=='striplink')$rt=codeline::parse($d,'striplink','correct');
 elseif($va=='converthtml'){$rt=conv::call(nl2br($d)); $rt=str::post_treat_repair($rt);}
-//elseif($va=='easytables')$rt=str_replace("\n","¬\n",$d);
+//elseif($va=='easytables')$rt=str_replace("\n","Â¬\n",$d);
 elseif($va=='addlines')$rt=self::add_lines($d);
 elseif($va=='addanchors')$rt=self::add_anchors($d);
 elseif($va=='deltables')$rt=self::del_tables($d);
@@ -278,7 +278,7 @@ return $d;}
 
 static function del_tables($v){
 $d=codeline::parse($v,':table','correct');
-$d=str_replace(['|','¬'],[' ',"\n"],$d);
+//$d=str_replace(['|','Â¬'],[' ',"\n"],$d);
 $d=str::clean_br($d);//clean_prespace//repair_badn//
 return $d;}
 
@@ -346,13 +346,13 @@ if($op=='ascii'){$r=msql::read_b('system','edition_ascii_11','',1); $r=msql::cat
 	foreach($r as $k=>$v)$ret.=lj('','asc4_mc,ascii___'.$k.'_'.$id,$k).' ';
 	$ret.=divd('asc4','');}
 elseif($op=='pictos'){$r=msql::read_b('system','edition_pictos','',1);
-	foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$k.'§16:picto]',$id],picto($k),att($k)).' ';
+	foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$k.'|16:picto]',$id],picto($k),att($k)).' ';
 	$ret.=lj('txtx','popup_pictocss,home','table');
 	if(auth(6))$ret.=msqbt('system','edition_pictos');}
 elseif($op=='glyphs'){$r=msql::kv('system','edition_glyphes_1','',1);
-	if($r)foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$v.'§32:glyph]',$id],glyph($k)).' ';}
+	if($r)foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$v.'|32:glyph]',$id],glyph($k)).' ';}
 elseif($op=='oomo'){$r=msql::kv('system','edition_pictos_2','',1);
-	if($r)foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$k.'§32:oomo]',$id],oomo($k,32),att($k.' ('.$v[1].')')).' ';}
+	if($r)foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$k.'|32:oomo]',$id],oomo($k,32),att($k.' ('.$v[1].')')).' ';}
 elseif($op=='uc'){$r=msql::read_b('',ses('qb').'_connectors_1','',1);
 	if($r)foreach($r as $k=>$v)$ret.=ljb('','insertmbd',['[','',':'.$k.']'],$k).' ';}
 elseif($op=='sc'){$r=msql::read_b('','public_connectors','',1);

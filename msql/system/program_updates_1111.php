@@ -1,32 +1,32 @@
 <?php //msql/program_updates_1111
 $r=["_"=>['day','text'],
-"1"=>['111110','ajout d\'un bouton qui permet de choisir la chronologie des articles affiliÈs ‡ un article parent'],
-"2"=>['111118','amÈlioration du confort de la visionneuse flash \'Slider\''],
-"3"=>['111119','correctifs dÈtection de l\'ID des vidÈos youtube et dailymotion'],
-"4"=>['111119','amÈlioration commoditÈ de batch_import, permet d\'ajouter des url en sÈrie, avant de les importer en sÈrie'],
-"5"=>['111124','rÈnovation de \'model.php\', le modËle de plugins, pour une meilleure comprÈhension'],
+"1"=>['111110','ajout d\'un bouton qui permet de choisir la chronologie des articles affili√©s √† un article parent'],
+"2"=>['111118','am√©lioration du confort de la visionneuse flash \'Slider\''],
+"3"=>['111119','correctifs d√©tection de l\'ID des vid√©os youtube et dailymotion'],
+"4"=>['111119','am√©lioration commodit√© de batch_import, permet d\'ajouter des url en s√©rie, avant de les importer en s√©rie'],
+"5"=>['111124','r√©novation de \'model.php\', le mod√®le de plugins, pour une meilleure compr√©hension'],
 "6"=>['111124','ajout du plugin \'superpoll\' qui permet de voter des propositions :
-- ne nÈcessite aucun login (ouvert au visiteur) ;
-- permet d\'ajouter des entrÈes en plus des propositions ;
-- rÈordonne les entrÈes les plus votÈes ;
+- ne n√©cessite aucun login (ouvert au visiteur) ;
+- permet d\'ajouter des entr√©es en plus des propositions ;
+- r√©ordonne les entr√©es les plus vot√©es ;
 - interdit les votes multiples mais permet de changer son vote ;
-- fonctionne en mode autonome (dans une iframe sur n\'importe quelle page) : appeler plug/index.php?call=superpoll&p=1 o˘ 1 est l\'ID de la table ;
-- autorise la crÈation de nouvelles tables ‡ la volÈe ;
-- entiËrement en ajax ;
-- propose le code et le flux xml des rÈsultats (open data)
+- fonctionne en mode autonome (dans une iframe sur n\'importe quelle page) : appeler plug/index.php?call=superpoll&p=1 o√π 1 est l\'ID de la table ;
+- autorise la cr√©ation de nouvelles tables √† la vol√©e ;
+- enti√®rement en ajax ;
+- propose le code et le flux xml des r√©sultats (open data)
 '],
-"7"=>['111125','index.php peut dÈsormais servir ‡ appeler des plugins avec les variables ?call=plugin&param=&opt= (deux options), de faÁon ‡ les rendre utilisable hors contexte, notamment lors d\'un appel depuis l\'extÈrieur dans une iframe'],
-"8"=>['111125','nouveau connecteur :video, qui remplace les connecteurs spÈcialisÈs de chaque provider (youtube, dailymotion, google, ted, livestream), Ètant donnÈ que leur format est dÈtectable'],
-"9"=>['111126','amÈnagements de fiabilitÈ du nouveau connecteur :video ;
-(les paramËtres optionnels qui apparaissent parfois sont supprimÈs, les providers ne faisant aucun effort de conformitÈ il faut s\'adapter ‡ de nombreux cas de figure)'],
-"10"=>['111130','introduction du module \'video_viewer\' qui recrute toutes les vidÈos (avec le connecteur \':video\') des articles  publics (en cache) et les propose dans une fenÍtre qui permet de naviguer de l\'une ‡ l\'autre (viewer) ;
-- le param permet d\'opÈrer un tri selon un ou plusieurs tags
+"7"=>['111125','index.php peut d√©sormais servir √† appeler des plugins avec les variables ?call=plugin&param=&opt= (deux options), de fa√ßon √† les rendre utilisable hors contexte, notamment lors d\'un appel depuis l\'ext√©rieur dans une iframe'],
+"8"=>['111125','nouveau connecteur :video, qui remplace les connecteurs sp√©cialis√©s de chaque provider (youtube, dailymotion, google, ted, livestream), √©tant donn√© que leur format est d√©tectable'],
+"9"=>['111126','am√©nagements de fiabilit√© du nouveau connecteur :video ;
+(les param√®tres optionnels qui apparaissent parfois sont supprim√©s, les providers ne faisant aucun effort de conformit√© il faut s\'adapter √† de nombreux cas de figure)'],
+"10"=>['111130','introduction du module \'video_viewer\' qui recrute toutes les vid√©os (avec le connecteur \':video\') des articles  publics (en cache) et les propose dans une fen√™tre qui permet de naviguer de l\'une √† l\'autre (viewer) ;
+- le param permet d\'op√©rer un tri selon un ou plusieurs tags
 '],
-"11"=>['111130','amÈlioration substantielle du moteur de recherche : 
-- capable de choisir la mÈthode selon le ratio optimal entre les titres Èligibles et les titres testables ; dans certains cas il vaut mieux que les Èligibles soit utilisÈs dans la requÍte sql, mais elle supporte mal les grosses requÍtes. L\'optimisation permet díaccÈlÈrer certaines requÍtes de 2000% (0,4s contre 11 secondes), mais cette disposition ralentit fortement (38s au lieu de 15) quand le ratio est de 0.1, ce qui justifie de garder l\'ancienne mÈthode dans ces cas.
-- une meilleure Ècriture sql occasionne une autre accÈlÈration qui peut atteindre 1000% sur 10000 titres inspectÈs (7s contre 15) ;
-- ajout de la case ‡ cocher \'boolean\', qui renvoie tous les rÈsultats pour chaque mot'],
-"12"=>['111201','- ajout d\'un design par dÈfaut nommÈ \'monoblog\' (colonne unique, simplicitÈ, efficacitÈ !) ;
-- le template par dÈfaut ajoute l\'ID \'article\' dans la balise \'article\', ce qui permet de le cerner graphiquement ;
-- la table \'design\' dans \'users\' permet d\'associer une table \'mods\' associÈe, pour ne pas avoir ‡ reconstruire les largeurs ;
-- rÈnovation du design classic_3_gsm, et de sa table mods associÈe']]; ?>
+"11"=>['111130','am√©lioration substantielle du moteur de recherche : 
+- capable de choisir la m√©thode selon le ratio optimal entre les titres √©ligibles et les titres testables ; dans certains cas il vaut mieux que les √©ligibles soit utilis√©s dans la requ√™te sql, mais elle supporte mal les grosses requ√™tes. L\'optimisation permet d¬íacc√©l√©rer certaines requ√™tes de 2000% (0,4s contre 11 secondes), mais cette disposition ralentit fortement (38s au lieu de 15) quand le ratio est de 0.1, ce qui justifie de garder l\'ancienne m√©thode dans ces cas.
+- une meilleure √©criture sql occasionne une autre acc√©l√©ration qui peut atteindre 1000% sur 10000 titres inspect√©s (7s contre 15) ;
+- ajout de la case √† cocher \'boolean\', qui renvoie tous les r√©sultats pour chaque mot'],
+"12"=>['111201','- ajout d\'un design par d√©faut nomm√© \'monoblog\' (colonne unique, simplicit√©, efficacit√© !) ;
+- le template par d√©faut ajoute l\'ID \'article\' dans la balise \'article\', ce qui permet de le cerner graphiquement ;
+- la table \'design\' dans \'users\' permet d\'associer une table \'mods\' associ√©e, pour ne pas avoir √† reconstruire les largeurs ;
+- r√©novation du design classic_3_gsm, et de sa table mods associ√©e']];

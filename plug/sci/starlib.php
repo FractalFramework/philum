@@ -43,7 +43,7 @@ static function sz($r){$rb=[];
 //$r0=array_column($r,'star'); pr($r0);
 $r1=self::proportion(array_keys_r($r,'radius'),2,12,50,0); //pr($r1);
 $r2=self::proportion(array_keys_r($r,'dist'),2,12,100,1); //pr($r2);
-if($r)foreach($r as $k=>$v)$rb[$k]=round((($r1[$k]??10)+$r2[$k])/3,2); //pr($rb);
+if($r)foreach($r as $k=>$v)$rb[$k]=round(((val($r1,$k,10))+val($r2,$k,0))/3,2); //pr($rb);
 return $rb;}
 
 static function zpt(){
@@ -143,7 +143,7 @@ if($p1=='knownstars' or $p1=='allstars')$r2=array_diff($rc,$rcb);//add known to 
 elseif($p1){$sq=self::sq($p1); $rb1=array_column($rb,1); $rb2=array_column($rb,0); $r2a=[]; $r2b=[]; //pr($rb1);
 	if(isset($sq['hip']))foreach($sq['hip'] as $k=>$v)$r2a[]=array_search($v,$rb1); //pr($r2a);
 	if(isset($sq['hd']))foreach($sq['hd'] as $k=>$v)$r2b[]=array_search($v,$rb2); //pr($r2b);
-	$r2=array_merge($r2a,$r2b);}
+	$r2=array_merge_b($r2a,$r2b);}
 if($r2)foreach($r2 as $k=>$v)if(!isset($rt[$v]) && isset($rb[$v]))$rt[$v]=array_combine($cols,$rb[$v]);
 $rd=['star'=>0,'status'=>5,'planet'=>6,'radius'=>7];//add props
 if($rt)foreach($rt as $k=>$v){if(isset($ra[$k]))foreach($rd as $ka=>$va)if($ra[$k][$va])$rt[$k][$ka]=$ra[$k][$va];

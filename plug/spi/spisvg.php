@@ -123,14 +123,14 @@ $y=($ry[$sub][$pos]+$zeroy)*$u+$addy;
 //t, vertical-horizontal
 $mg=round($u/4)-3; $mg2=round($u/2)+4; $sz=10+($u/10);
 if($rg[$sub][$pos]){$w=$u; $h=$u*2;//horizontal
-$t1='[spt_spisvg;call__2_'.$i.'_'.$o.'§['.($x+$mg).','.($y+$mg2).','.$sz.'px§'.$i.':text]:lj]';
-$t2='[popup_spitable;infos___'.$i.'§['.($x+$mg).','.($y+$h-$mg2).','.$sz.'px§'.$v.':text]:lj]';}
+$t1='[spt_spisvg;call__2_'.$i.'_'.$o.'|['.($x+$mg).','.($y+$mg2).','.$sz.'px|'.$i.':text]:lj]';
+$t2='[popup_spitable;infos___'.$i.'|['.($x+$mg).','.($y+$h-$mg2).','.$sz.'px|'.$v.':text]:lj]';}
 else{$w=$u*2; $h=$u;
-$t1='[spt_spisvg;call__2_'.$i.'_'.$o.'§['.($x+$mg).','.($y+$mg2).','.$sz.'px§'.$i.':text]:lj]';
-$t2='[popup_spitable;infos___'.$i.'§['.($x+$w/2+6).','.($y+$mg2).','.$sz.'px§'.$v.':text]:lj]';;
-//$t2='[popup_spitable;infos___'.$i.'§['.($x+$w/2+6).','.($y+$mg2).','.$sz.'§'.$v.':text]:bubj]';
+$t1='[spt_spisvg;call__2_'.$i.'_'.$o.'|['.($x+$mg).','.($y+$mg2).','.$sz.'px|'.$i.':text]:lj]';
+$t2='[popup_spitable;infos___'.$i.'|['.($x+$w/2+6).','.($y+$mg2).','.$sz.'px|'.$v.':text]:lj]';;
+//$t2='[popup_spitable;infos___'.$i.'|['.($x+$w/2+6).','.($y+$mg2).','.$sz.'|'.$v.':text]:bubj]';
 }
-//$ret='[popup_svg;call§[20,20§'.$t2.':text]:lj]';
+//$ret='[popup_svg;call|[20,20|'.$t2.':text]:lj]';
 $ret=$t1.$t2;
 //echo $x.'-'.$y.'-'.$w.'-'.$h.br();
 return [$x,$y,$w,$h,$ret];}

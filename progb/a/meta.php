@@ -451,7 +451,7 @@ static function catag(){return explode(' ','tag '.prmb(18));}
 static function pctag(){return explode(' ','tag '.prmb(19));}
 
 static function each_words($d){
-$d=str_replace(['?','.','/',',',';',':','!','"','(',')','[',']','«','»'],'',$d);
+$d=str_replace(['?','.','/',',',';',':','!','"','(',')','[',']','Â«','Â»'],'',$d);
 $d=str_replace("&nbsp;",' ',$d);
 $r=explode(' ',$d); $n=count($r); $ret=[];
 for($i=0;$i<$n;$i++)if($r[$i])$ret[$r[$i]]=radd($ret,$r[$i]);
@@ -468,7 +468,7 @@ $msg=str_replace("&nbsp;",' ',$msg);
 return $msg;}
 
 //$ra:mot=>nb occurences //$rb,rx,rd,rf:tag=>id //rdb:id=>tag //re:id=>nb
-//todo:mots reconnus comme étant déjà tagués dans une autre langue via leur id
+//todo:mots reconnus comme Ã©tant dÃ©jÃ  taguÃ©s dans une autre langue via leur id
 static function matchtags($idart,$cat,$o='',$msg='',$ra=[]){$rd=[]; $re=[];
 if(!$ra){$msg=self::prep_msg($idart); $ra=self::each_words($msg); arsort($ra);}
 $rn=array_flip(self::catag()); $n=($rn[$cat]??0)+1;
@@ -693,7 +693,7 @@ $rt=self::catag(); $rn=[]; $bt=''; $n=0; $ret=divc('txtcadr',nms(191));
 foreach($rt as $k=>$v){$rn[$v]=$k+1; $bt.=lj(active($cat,$v),'tg2msq_meta,tags2msql___'.$v.'_'.$lg,$v).' ';}
 foreach(['fr','en','es'] as $k=>$v){$bt.=lj(active($lg,$v),'tg2msq_meta,tags2msql___'.$cat.'_'.$v,$v).' ';}
 $ret.=divc('nbp',$bt); if(!$cat)return divd('tg2msq',$ret);
-$n=$rn[$cat];//auteurs thèmes pays type personnalité org corp
+$n=$rn[$cat];//auteurs thÃ¨mes pays type personnalitÃ© org corp
 $ra=sql('id,tag','qdt','kv',['cat'=>$cat],0);
 $rb=msql::kx('',nod('tags_'.$n.'fr'),0);
 $rc=array_diff_key($ra,$rb);

@@ -1,8 +1,8 @@
 <?php //msql/program_updates_1901
 $r=["1"=>['0101','publication'],
-"2"=>['0102','- ajout du bouton d\'article \'virtual folders\', permet de joindre les articles qui appartiennent au mÍme rÈpertoire virtuel
-- ajout du bouton d\'article \'recognized words\', permet de reconnaÓtre les mots prÈsents dans les recherches enregistrÈes
-- ajout des modules \'searched_words\' et \'searched_arts\', pour trouver les articles liÈs par les mots reconnus dans un premier
+"2"=>['0102','- ajout du bouton d\'article \'virtual folders\', permet de joindre les articles qui appartiennent au m√™me r√©pertoire virtuel
+- ajout du bouton d\'article \'recognized words\', permet de reconna√Ætre les mots pr√©sents dans les recherches enregistr√©es
+- ajout des modules \'searched_words\' et \'searched_arts\', pour trouver les articles li√©s par les mots reconnus dans un premier
 - ajout de la rstr114 : activation du bouton d\'article \'searched\''],
-"3"=>['0114','- amÈlioration des recherches enregistrÈes
-- rÈnovation du dÈtecteur de mÈdias, permettant d\'inaugurer des modules capables d\'extraire des articles des vidÈos, audios, pdf et les twits.']]; ?>
+"3"=>['0114','- am√©lioration des recherches enregistr√©es
+- r√©novation du d√©tecteur de m√©dias, permettant d\'inaugurer des modules capables d\'extraire des articles des vid√©os, audios, pdf et les twits.']];

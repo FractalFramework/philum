@@ -54,4 +54,4 @@ $r=["_"=>['category'],
 "Microsql"=>['user database'],
 "txt"=>['edit txt'],
 "pad"=>['edit html'],
-"twit"=>['Twitter\'s Api']]; ?>
+"twit"=>['Twitter\'s Api']];

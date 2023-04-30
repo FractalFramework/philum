@@ -7,7 +7,16 @@ static $rha=[];
 foreach($_SESSION['mods'] as $k=>$v)if(key($v)==$n)return $v;}*/
 
 #new protocole
-static function mkcmd($p,$r=[],$o=0){if(!$r)$r=connmod($p);//p§bt:m
+/*static function connmod0($d){$r=split_one('§',$d,1);//a:p1,b:p2§bt:c
+$ra=split_one(':',$r[1],1); $rb=explode_k($r[0],',',':');
+if(!$r[1] && strpos($r[0],',')===false)$rb=expl(':',$r[0]);//bridge2old
+if($ra[0])$rb['bt']=$ra[0]; if($ra[1])$rb['m']=$ra[1];
+if($rb[0]??'')$rb['p']=$rb[0]; if($rb[1]??'')$rb['m']=$rb[1]; return $rb;}*/
+
+static function connmod($d){$rb=explode_k($d,',',':');
+if($rb[0]??'')$rb['p']=$rb[0]; if($rb[1]??'')$rb['m']=$rb[1]; return $rb;}
+
+static function mkcmd($p,$r=[],$o=0){if(!$r)$r=self::connmod($p);//p§bt:m
 if($o)return array_combine(self::$r,arr($r,13));//build keys
 else return valk($r,self::$r);}//verify keys
 

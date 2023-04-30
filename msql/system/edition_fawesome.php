@@ -728,4 +728,4 @@ $r=["1"=>['500px'],
 "727"=>['yoast'],
 "728"=>['youtube'],
 "729"=>['youtube-play'],
-"730"=>['youtube-square']]; ?>
+"730"=>['youtube-square']];

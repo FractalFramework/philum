@@ -12,4 +12,4 @@ $r=["_"=>['description'],
 "10"=>['buffer ajax'],
 "11"=>['1=utf8'],
 "12"=>['upload max'],
-"13"=>['updates, 1=no']]; ?>
+"13"=>['updates, 1=no']];

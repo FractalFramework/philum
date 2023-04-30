@@ -3,7 +3,7 @@ class pictos{
 
 static function see($id){
 $r=explore('imgb/icons/svg/noun'); asort($r);
-foreach($r as $k=>$v){$im=svg('/noun/'.substr($v,0,-4).'§24').' ';
+foreach($r as $k=>$v){$im=svg('/noun/'.substr($v,0,-4).'|24').' ';
 	$ret.=ljb('popbt',atjr('jumpvalue',[$id,'noun/'.$v]),$im).' ';}
 return divd('scroll',$ret);}
 

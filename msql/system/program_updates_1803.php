@@ -3,35 +3,35 @@ $r=["_"=>['_menus_','date','text'],
 "1"=>['0301','publication'],
 "2"=>['0303','ajout du connecteur :papi (pop api) renvoie le bouton qui renvoie le connecteur :api'],
 "3"=>['0305','ajout du connecteur :wiki, renvoie le contenu de wikipedia pour un mot dans une popup'],
-"4"=>['0306','rÈnovation du formulaire de commentaire pour Èviter les collisions avec les autres Èditeurs ouverts'],
-"5"=>['0311','rÈparation de la signalisation des contextes particuliers des articles au moment de leur dÈroulÈ depuis un appel exogËne de l\'API (signalement de la langue par ex)'],
+"4"=>['0306','r√©novation du formulaire de commentaire pour √©viter les collisions avec les autres √©diteurs ouverts'],
+"5"=>['0311','r√©paration de la signalisation des contextes particuliers des articles au moment de leur d√©roul√© depuis un appel exog√®ne de l\'API (signalement de la langue par ex)'],
 "6"=>['0314','introduction du terme et du dispositif asciicss : 
 - table msql /system/edition/picto_2
-- plugin gÈnÈrateur de css \'asciicss\', 
+- plugin g√©n√©rateur de css \'asciicss\', 
 - feuille \'_ascii.css\'
-- reconnaissance par la mises ‡ jour
-- connecteur :ascii (‡ partir de sa nomination)
+- reconnaissance par la mises √† jour
+- connecteur :ascii (√† partir de sa nomination)
 
-De mÍme que pour picto(), asciicss() permet d\'appeler un glyphe ‡ partir de sa dÈnomination.
+De m√™me que pour picto(), asciicss() permet d\'appeler un glyphe √† partir de sa d√©nomination.
 269 glyphes sont reconnus.
-(pour fÍter l\'arrivÈe du printemps et des nouveaux ascii couleur, on anticipe une future standardisation de cet usage)'],
-"7"=>['0314','- dÈplacement du lecteur de radio dans un plugin
-- confiscation du procÈdÈ rendu obsolËte \'miniconn\'
-- rÈforme du procÈdÈ \'sconn\', rÈduit ‡ l\'essentiel pour servir ‡ l\'Èdition rapide d\'un article'],
-"8"=>['0317','- ajout de la classe css globale \'sticky\' qui s\'applique au menu de mise en forme d\'un texte ÈditÈ sur place en wyswyg (pour qu\'il reste ‡ l\'Ècran quand on scroll)
-- correctif pour que menubub/overcat prenne en compte le paramËtre de niveau de privilËge
-- rectification du comportement des images prÈcÈdÈes d\'un texte, renvoie le texte avec un lien vers l\'image, puisque le contraire (img/txt) renvoie une balise \'figure\'
-- favorisation lors de l\'import d\'article de l\'usage de la balise \'figure\', y compris sur les balises de dictionnaire (obsolËtes) dd,dt,dl.
+(pour f√™ter l\'arriv√©e du printemps et des nouveaux ascii couleur, on anticipe une future standardisation de cet usage)'],
+"7"=>['0314','- d√©placement du lecteur de radio dans un plugin
+- confiscation du proc√©d√© rendu obsol√®te \'miniconn\'
+- r√©forme du proc√©d√© \'sconn\', r√©duit √† l\'essentiel pour servir √† l\'√©dition rapide d\'un article'],
+"8"=>['0317','- ajout de la classe css globale \'sticky\' qui s\'applique au menu de mise en forme d\'un texte √©dit√© sur place en wyswyg (pour qu\'il reste √† l\'√©cran quand on scroll)
+- correctif pour que menubub/overcat prenne en compte le param√®tre de niveau de privil√®ge
+- rectification du comportement des images pr√©c√©d√©es d\'un texte, renvoie le texte avec un lien vers l\'image, puisque le contraire (img/txt) renvoie une balise \'figure\'
+- favorisation lors de l\'import d\'article de l\'usage de la balise \'figure\', y compris sur les balises de dictionnaire (obsol√®tes) dd,dt,dl.
 - correctif confusion entre les connecteurs :s et :c (stabilo et css txtclr)
-- ajout du bouton d\'Èdition \'quo\' (ajoute des guillemets typographiques)
+- ajout du bouton d\'√©dition \'quo\' (ajoute des guillemets typographiques)
 - remplacement de quelques pictos par des ascii
-- ajout d\'une gestion des traduction dans l\'Èditeur de mÈtas'],
-"9"=>['0320','- ajout de la typo GlyphiconsHalfings, et du dispositif \'glyph\' (avec son connecteur :glyph), qui complËte \'icons\', \'pictos\', et \'ascii\' : beaux pictos bien fonctionnels pompÈs sur le site de pole-emploi'],
-"10"=>['0321','- ajout de l\'option-utilisateur \'preview\', permet de supplanter le, et revenir au niveau de prÈvisualisation des articles de l\'API.
-- rÈvision de la nomination des langues, en conformitÈ avec les conventions internationales'],
-"11"=>['0324','- rÈnovation du connecteur :jukebox, le lecteur flash antique est oubliÈ et ‡ la place on met un joli sÈlecteur ajax de lecteur html5'],
-"12"=>['0328','- le panneau ascii de l\'Èditeur ouvre vers un autre panneau des connecteur ascii
-- rÈvision du systËme de mise en cache des options d\'articles, rendu individualisÈ plutÙt que global (causait, au choix, selon la prÈsence ou l\'absence du cache, une erreur d\'attribution dans les fils, ou une absence d\'articles liÈs)'],
+- ajout d\'une gestion des traduction dans l\'√©diteur de m√©tas'],
+"9"=>['0320','- ajout de la typo GlyphiconsHalfings, et du dispositif \'glyph\' (avec son connecteur :glyph), qui compl√®te \'icons\', \'pictos\', et \'ascii\' : beaux pictos bien fonctionnels pomp√©s sur le site de pole-emploi'],
+"10"=>['0321','- ajout de l\'option-utilisateur \'preview\', permet de supplanter le, et revenir au niveau de pr√©visualisation des articles de l\'API.
+- r√©vision de la nomination des langues, en conformit√© avec les conventions internationales'],
+"11"=>['0324','- r√©novation du connecteur :jukebox, le lecteur flash antique est oubli√© et √† la place on met un joli s√©lecteur ajax de lecteur html5'],
+"12"=>['0328','- le panneau ascii de l\'√©diteur ouvre vers un autre panneau des connecteur ascii
+- r√©vision du syst√®me de mise en cache des options d\'articles, rendu individualis√© plut√¥t que global (causait, au choix, selon la pr√©sence ou l\'absence du cache, une erreur d\'attribution dans les fils, ou une absence d\'articles li√©s)'],
 "13"=>['0329','- ajout de la picto-font \'oomo\''],
-"14"=>['0330','- rÈvision 9.4 de la picto-font \'philum\''],
-"15"=>['0331','- rÈvision 10.6 de la picto-font \'philum\', entiËrement rÈvisÈe sur une grille multiple de puissance 2 ; ajout de nombreux glyphes (174 au total)']]; ?>
+"14"=>['0330','- r√©vision 9.4 de la picto-font \'philum\''],
+"15"=>['0331','- r√©vision 10.6 de la picto-font \'philum\', enti√®rement r√©vis√©e sur une grille multiple de puissance 2 ; ajout de nombreux glyphes (174 au total)']];

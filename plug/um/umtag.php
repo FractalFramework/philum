@@ -15,8 +15,8 @@ $msg=codeline::parse($msg,'','sconn'); $msg=embed_p($msg); $msg=nl2br($msg);
 return $msg;}
 
 static function template(){return '
-[[[_URL§_DAY:url]§small:css] [_SUJ§popw:css] _OPEN _SOCIAL:h2]
-[_MSG§[track:class]:div]
+[[[_URL|_DAY:url]|small:css] [_SUJ|popw:css] _OPEN _SOCIAL:h2]
+[_MSG|[track:class]:div]
 [:clear][:br]';}
 
 static function build($p,$o){

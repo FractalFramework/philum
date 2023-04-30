@@ -74,8 +74,8 @@ if($r)foreach($r as $k=>$v){
 	//svg::circle($x,$y,round($sz,2),$clr,$white,1);
 	$circ='['.$clr.',white,1:attr]['.$x.','.$y.','.round($sz,2).':circle]';
 	$tx='HD '.$v['hd'].' - '.round($ds,2).' LY';
-	if($n<100)svg::$ret[]='['.$tx.'§'.$circ.':bub]';
-	else svg::$ret[]='[star;info___'.$v['hip'].'_hip§'.$circ.':bubj]';
+	if($n<100)svg::$ret[]='['.$tx.'|'.$circ.':bub]';
+	else svg::$ret[]='[star;info___'.$v['hip'].'_hip|'.$circ.':bubj]';
 	$xb=$x-20; $yb=$y+$decaly;
 	if($nm=='6 G. Piscium' or $nm=='38 Piscium' or $nm=='Iota Piscium' or $nm=='Gliese 250'){$xb=$x+8; $yb=$y+6;}
 	if($v['hd']=='114710'){$xb=$x-60;}//Berenice

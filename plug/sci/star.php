@@ -41,7 +41,8 @@ if($p=='Oomo'){$p='Yooma'; $n=0;}
 if($p=='Galactic center'){$p='Agitarius A'; $n=0;}
 $ret=self::call($p,2);
 $r=msql::find('','ummo_exo_5',$p,$n,1); if($r)$ret.=tabler($r);
-$r=msql::find('','ummo_aliens_5',$r['HD'],0,1); if($r)$ret.=tag('blockquote','',nl2br($r['infos']));
+$r=msql::find('','ummo_aliens_5',$r['HD']??'',0,1);
+if($r)$ret.=tag('blockquote','',nl2br($r['infos']??''));
 $ret.=lj('txtx','popup_starvue,call___'.$pb,pictxt('target','vue')).' ';
 $ret.=lj('txtx','popup_simbad,call___'.$pb,pictxt('stars','Simbad'));
 //$ret.=self::simbad('hd'.$pb);
@@ -127,7 +128,7 @@ return $r;}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
-if(strpos($p,'§')!==false){[$p,$t]=cprm($p);//obsolete
+if(strpos($p,'|')!==false){[$p,$t]=cprm($p);//obsolete
 	return lj('txtx','popup_star,call___'.ajx($p).'_'.$o,pictxt('stars',$t==1?$p:$t)).'';}
 if($o && $o!=2)return lj('txtx','popup_star,call___'.ajx($p),pictxt('stars',$o==1?$p:$o)).'';
 $sq=self::sq($p); if(!$sq)return 'no star found in Hipparcos catalog';
@@ -136,8 +137,8 @@ $bt=lj('txtx','popup_star,infosrq___'.ajx(json_encode($sq)),picto('info2').nbof(
 $bt.=self::simbad($sq).' ';
 $bt.=self::simbad2($sq);
 $rb=array_column($r,1); $p=implode(',',$rb);
-$bt.=lj('txtx','popup_starmap4,build___'.$p,pictxt('map','map2d')).' ';
-$bt.=lj('txtx','popup_starmap2,build___'.$p,pictxt('map','map3d')).' ';
+$bt.=lj('txtx','popup_starmap4,home___'.$p,pictxt('map','map2d')).' ';
+$bt.=lj('txtx','popup_starmap2,home___'.$p,pictxt('map','map3d')).' ';
 $bt.=lj('txtx','popup_iframe__xr_/app/star3d/'.$p.'___autosize',pictxt('galaxy2','3d'));
 if($o==2)$bt='';//starinfos
 if($r){

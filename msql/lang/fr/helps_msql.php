@@ -35,4 +35,4 @@ $r=["_"=>['titre','description'],
 "33"=>['intersection','entr&eacute;es communes'],
 "34"=>['connexions','entr&eacute;es communes'],
 "35"=>['commutations','entr&eacute;es communes'],
-"36"=>['fusion','entr&eacute;es communes']]; ?>
+"36"=>['fusion','entr&eacute;es communes']];

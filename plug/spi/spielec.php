@@ -37,8 +37,8 @@ $x=($rx[$pos]*3+$zerox)*$u;
 $y=($rd[$ring]+($sub)+$zeroy)*$u;
 //if($i==11)echo $i.'-'.$rd[$ring].'-'.$ry[$sub][$pos].br();
 $w=$u*3;$h=$u;
-$t1='[spe_spielec;call___'.$i.'§['.($x+6).','.($y+15).'§'.$i.':text]:lj]';
-$t2='[popup_spitable;infos___'.$i.'§['.($x+$w/2).','.($y+15).'§'.$v.':text]:lj]';
+$t1='[spe_spielec;call___'.$i.'|['.($x+6).','.($y+15).'|'.$i.':text]:lj]';
+$t2='[popup_spitable;infos___'.$i.'|['.($x+$w/2).','.($y+15).'|'.$v.':text]:lj]';
 $ret=$t1.$t2;
 //echo $x.'-'.$y.'-'.$w.'-'.$h.br();
 return [$x,$y,$w,$h,$ret];}
@@ -73,7 +73,7 @@ $bt=self::nav($p,$o,'spe');
 //mode linear
 if($o){$mode='linear'; $sz='1900/400';} else{$mode=0; $sz='900/600';}
 //$ret='[rand,black,1:attr]';
-//$txt1='[popup_svg;call§[20,20§hello:text]:lj]';
+//$txt1='[popup_svg;call|[20,20|hello:text]:lj]';
 $max=118;
 $limit=$p?$p:$max;
 for($i=1;$i<=$limit;$i++)$rb[]=self::atom($r,$i,$mode);

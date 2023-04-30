@@ -28,9 +28,9 @@ foreach($r as $k=>$v)if($k){$i++;
 	$w=$sz[$i];
 	$ret.='[#'.$v.',gray:attr]';
 	$ret.='['.$x.','.$y.','.$w.','.$h.':rect]';
-	$ret.='['.($x+4).','.($y+15).',12px§'.$k.':text]';
+	$ret.='['.($x+4).','.($y+15).',12px|'.$k.':text]';
 	$x+=$w;}
-	$ret.='[50,1200,12px§@Davy2019:text]';
+	$ret.='[50,1200,12px|@Davy2019:text]';
 return $ret;}
 
 static function layers(){
@@ -39,7 +39,7 @@ $rd=['k'=>2,'l'=>5,'m'=>9,'n'=>14,'o'=>19,'p'=>23,'q'=>26];
 $rh=['k'=>1,'l'=>2,'m'=>3,'n'=>4,'o'=>4,'p'=>3,'q'=>2];
 foreach($rd as $k=>$v){$h=$rh[$k]*$u*self::$ratio;
 	$ret.='[,black,1:attr][40,'.$y.',40,'.($y+$h).':line]';
-	$ret.='[black,,:attr][20,'.($y+($h/2)).',12px§'.$k.':text]';
+	$ret.='[black,,:attr][20,'.($y+($h/2)).',12px|'.$k.':text]';
 	$y+=$h+$u*self::$ratio;}
 return $ret;}
 
@@ -76,9 +76,9 @@ elseif(self::$mode==5)$x=(3+$rx[$sub][$pos-1]*3+$zerox)*$u;//angular
 $y=($rd[$ring]+($sub)+$zeroy)*$u*self::$ratio;
 //if($n==11)echo $n.'-'.$rd[$ring].'-'.$ry[$sub][$pos].br();
 $w=$u*3; $h=$u*self::$ratio;
-$ret='[spl_spiline;call___'.$n.'_'.$mode.'§['.($x+4).','.($y+15).',12§'.$n.':text]:lj]';
-if($ratio==2)$ret.='['.($x+4).','.($y+35).',12§'.$valence.':text]';
-$ret.='[popup_spitable;infos___'.$n.'§['.($x+$w/($ratio==2?2:2)).','.($y+(15*$ratio)).','.(12*$ratio).'§'.$v.':text]:lj]';
+$ret='[spl_spiline;call___'.$n.'_'.$mode.'|['.($x+4).','.($y+15).',12|'.$n.':text]:lj]';
+if($ratio==2)$ret.='['.($x+4).','.($y+35).',12|'.$valence.':text]';
+$ret.='[popup_spitable;infos___'.$n.'|['.($x+$w/($ratio==2?2:2)).','.($y+(15*$ratio)).','.(12*$ratio).'|'.$v.':text]:lj]';
 //echo $x.'-'.$y.'-'.$w.'-'.$h.br();
 return [$x,$y,$w,$h,$ret];}
 

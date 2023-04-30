@@ -130,7 +130,7 @@ $ret=subtopos($d,$pos,$posb);
 $ret=str_replace('['.$id.':nb]','',$ret);
 if(!is_numeric(substr($ret,0,1)))$ret=substr($ret,1);
 if(!is_numeric(substr($ret,-1)))$ret=substr($ret,0,-1);
-return divc('twit small scroll',conn::read2(trim($ret),3,$id));}//$t.' '.
+return divc('twit small scroll',conn::read2(trim($ret),3,$id));}
 
 //dropmenu
 static function dropmenuform($id,$rid,$v,$opt){//mc::assistant($id,$j,$jv,$va,$chk);

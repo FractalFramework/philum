@@ -18,4 +18,4 @@ $r=["_"=>['button','type','process','param','option','condition','root','icon','
 "16"=>['article','art','auto','418','','tools','','',''],
 "17"=>['ixquick','link','','https://www.ixquick.com/fra/','','tools','','search',''],
 "18"=>['web','plug','ixquick','','','tools','','search','1'],
-"19"=>['iframe','plug','ifram','','','menu tools','','','']]; ?>
+"19"=>['iframe','plug','ifram','','','menu tools','','','']];

@@ -23,7 +23,7 @@ static function home($d){$here='htaccess';
 $default=msql::val('system','default_htaccess',1); $ret='';
 if(is_file('.'.$here))$actual=read_file('.'.$here); else $actual='';
 if(!$actual or $d){$actual=$default; $ret=btn('txtyl','default_loaded').br();}
-$ret.=picto('alert§24').' '.btn('txtcadr','critical_operations').' ';
+$ret.=picto('alert|24').' '.btn('txtcadr','critical_operations').' ';
 $ret.=lj('txtbox','txt_htaccess,default__xd','default').' ';
 $ret.=lj('txtbox','cbk_htaccess,mkdefault_txt_xd','backup').' ';
 $ret.=msqbt('system','default_htaccess').' ';

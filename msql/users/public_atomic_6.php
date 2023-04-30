@@ -7,4 +7,4 @@ $r=["_"=>['origin','label'],
 "5"=>['WDS','white dwarf supernovae'],
 "6"=>['MNS','merging neutron stars'],
 "7"=>['RD','radioactive decay'],
-"8"=>['HM','human-made']]; ?>
+"8"=>['HM','human-made']];

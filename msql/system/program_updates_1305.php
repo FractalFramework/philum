@@ -1,64 +1,64 @@
 <?php //msql/program_updates_1305
 $r=["_"=>['day','text'],
 "1"=>['0501','- fix pb affichage login, et \'reboot\' ne se relogue pas
-- fix pb miniconn activable en dÈbut de ligne
+- fix pb miniconn activable en d√©but de ligne
 - ajout de raccourcis dans apps/sys
-- upgrade iconographique (Èditeur, finder)
-- le connecteur \':color\' gËre et prÈsente les couleurs html nommÈes (blue, yellow...)
-- ajout du connecteur :html, qui rÈunie :size, :font, :css, et :color dans une syntaxe par attributs : [pHilUMßcss=txtcadr size=16 font=microsys color=firebrick:html]
-- module \'desktop\' : le paramËtre restera toujours \'boot\' par dÈfaut, alors l\'option revient au paramËtre (couleurs ou image de fond)
+- upgrade iconographique (√©diteur, finder)
+- le connecteur \':color\' g√®re et pr√©sente les couleurs html nomm√©es (blue, yellow...)
+- ajout du connecteur :html, qui r√©unie :size, :font, :css, et :color dans une syntaxe par attributs : [pHilUM|css=txtcadr size=16 font=microsys color=firebrick:html]
+- module \'desktop\' : le param√®tre restera toujours \'boot\' par d√©faut, alors l\'option revient au param√®tre (couleurs ou image de fond)
 - le miniconn accepte 1234:pub, lien vers un article du site'],
-"2"=>['0502','- les flux rss sont classÈs par catÈgories (zapÈ pour l\'instant)
-- rÈfection du plugin petition
-- amÈliorations du chatXml : bouton d\'activation de chat en live, bouton d\'envoi d\'invitation
-- la couleur des icÙnes du desktop est optimale par rapport ‡ la moyenne des couleurs du dÈgradÈ du background (normalement issue de la couleur 7, ou du css \'desktop\')'],
-"3"=>['0503','- les miniconn deviennent cross-server : les liens vers des articles, images et musiques publiÈes sur le chat, mÍme avec un chemin local, sont joignables depuis les autres serveurs.'],
-"4"=>['0504','- raffinement chatXml : seules les nouvelles donnÈes sont chargÈes et affichÈes lors d\'un ajout ou d\'une mise ‡ jour
-- le bouton \'live\' reste parlant de l\'Ètat rÈel aprËs avoir relancÈ le chat'],
-"5"=>['0505','- plus d\'icÙnes dans le menu Admin
-- petites amÈlioration du gestionnaire Apps
-- le module Desktop peut Ítre activÈ, si aucun submodule n\'est en \'boot\', afin d\'obtenir son paramËtre de couleurs de backgroud (c\'est pas trËs bien foutu)'],
+"2"=>['0502','- les flux rss sont class√©s par cat√©gories (zap√© pour l\'instant)
+- r√©fection du plugin petition
+- am√©liorations du chatXml : bouton d\'activation de chat en live, bouton d\'envoi d\'invitation
+- la couleur des ic√¥nes du desktop est optimale par rapport √† la moyenne des couleurs du d√©grad√© du background (normalement issue de la couleur 7, ou du css \'desktop\')'],
+"3"=>['0503','- les miniconn deviennent cross-server : les liens vers des articles, images et musiques publi√©es sur le chat, m√™me avec un chemin local, sont joignables depuis les autres serveurs.'],
+"4"=>['0504','- raffinement chatXml : seules les nouvelles donn√©es sont charg√©es et affich√©es lors d\'un ajout ou d\'une mise √† jour
+- le bouton \'live\' reste parlant de l\'√©tat r√©el apr√®s avoir relanc√© le chat'],
+"5"=>['0505','- plus d\'ic√¥nes dans le menu Admin
+- petites am√©lioration du gestionnaire Apps
+- le module Desktop peut √™tre activ√©, si aucun submodule n\'est en \'boot\', afin d\'obtenir son param√®tre de couleurs de backgroud (c\'est pas tr√®s bien foutu)'],
 "6"=>['0506','correctifs :
 - images dans le chat
-- systËme d\'injection de javascript ‡ la volÈe
-- affichage de la catÈgorie \'_trash\'
-- fonctionnement rstr53 dÈsactivÈ (enregistrement sans ajax)
-- niveau de prioritÈ dans le module \'articles\' (erreur depuis upgrade mysql)'],
-"7"=>['0507','- correctifs dÈtection des images du rÈpertoire \'pub\' (hors logiciel)
-- on remet (encore) l\'aspirateur de certaines images en mode littÈral (Èvite les doublons)
-- nouveau gestionnaire msql, en mode objet, trËs pratique (plugin msql)
+- syst√®me d\'injection de javascript √† la vol√©e
+- affichage de la cat√©gorie \'_trash\'
+- fonctionnement rstr53 d√©sactiv√© (enregistrement sans ajax)
+- niveau de priorit√© dans le module \'articles\' (erreur depuis upgrade mysql)'],
+"7"=>['0507','- correctifs d√©tection des images du r√©pertoire \'pub\' (hors logiciel)
+- on remet (encore) l\'aspirateur de certaines images en mode litt√©ral (√©vite les doublons)
+- nouveau gestionnaire msql, en mode objet, tr√®s pratique (plugin msql)
 - fix pb ouverture d\'image distante vide (miniconn)'],
-"8"=>['0508','- mise ‡ jour de plug/model.php (protocoles des plugins)
-- ajout d\'un contrÙle d\'affichage des icÙnes dans une popup : liste ou icones '],
-"9"=>['0509','- le chatXml prÈsente un champ d\'Èdition en html5 (wygswyg)
-- le paramËtre \'real\' du module \'desktop_files\' permet (enfin) de naviguer dans les rÈpertoires rÈels (c\'Ètait l\'idÈe du dÈbut...)
-- petit effort pour que les images et mp3 s\'affichent directement depuis la navigation sans passer par le sÈlecteur d\'applications du Finder ;'],
-"10"=>['0510','rÈvision du systËme de navigation dans les rÈpertoires (les rÈpertoires sans fichiers mais avec un rÈpertoire ne s\'affichaient pas)'],
-"11"=>['0511','- ajout d\'un sÈlecteur de valeurs existantes pour le champ \'folder\' des metas
-- normalisation du protocole mXml concernant les sauts de lignes (la mÍme rËgle partout)
+"8"=>['0508','- mise √† jour de plug/model.php (protocoles des plugins)
+- ajout d\'un contr√¥le d\'affichage des ic√¥nes dans une popup : liste ou icones '],
+"9"=>['0509','- le chatXml pr√©sente un champ d\'√©dition en html5 (wygswyg)
+- le param√®tre \'real\' du module \'desktop_files\' permet (enfin) de naviguer dans les r√©pertoires r√©els (c\'√©tait l\'id√©e du d√©but...)
+- petit effort pour que les images et mp3 s\'affichent directement depuis la navigation sans passer par le s√©lecteur d\'applications du Finder ;'],
+"10"=>['0510','r√©vision du syst√®me de navigation dans les r√©pertoires (les r√©pertoires sans fichiers mais avec un r√©pertoire ne s\'affichaient pas)'],
+"11"=>['0511','- ajout d\'un s√©lecteur de valeurs existantes pour le champ \'folder\' des metas
+- normalisation du protocole mXml concernant les sauts de lignes (la m√™me r√®gle partout)
 - fix pb affichage image distante depuis :rss_read
-- ajout systËme de backup/restauration, dÈfauts et fabrication des restrictions par dÈfaut'],
+- ajout syst√®me de backup/restauration, d√©fauts et fabrication des restrictions par d√©faut'],
 "12"=>['0512','- fix pb largeur chatxml
 - fix pb hauteur book
 - fix pb bon serveur dans le code iframe du book
-- ajout du connecteur :popbook (mode preview forcÈ)'],
+- ajout du connecteur :popbook (mode preview forc√©)'],
 "13"=>['0513','- francisation de l\'admin msql'],
-"14"=>['0514','- francisation de l\'Èditeur css
-- ajout du param \'auto_design\', permet de toujours avoir les dÈfinitions css par dÈfaut (qui Èvoluent vite), avec les couleurs locales'],
+"14"=>['0514','- francisation de l\'√©diteur css
+- ajout du param \'auto_design\', permet de toujours avoir les d√©finitions css par d√©faut (qui √©voluent vite), avec les couleurs locales'],
 "15"=>['0515','- ajout de la restriction 71 : stats d\'article, affiche un graphique
-- encore une amÈlioration de vitesse gr‚ce ‡ l\'aide de notre hÈbergeur Infomaniak : la dÈtection du dÈclenchement de la mise ‡ jour du cache est 100 fois plus rapide, ensuite appliquÈe en diffÈrents endroits
-- nouveau systËme de mise ‡ jour du nombre d\'articles, moins gourmand en ressources (mÍme principe)
+- encore une am√©lioration de vitesse gr√¢ce √† l\'aide de notre h√©bergeur Infomaniak : la d√©tection du d√©clenchement de la mise √† jour du cache est 100 fois plus rapide, ensuite appliqu√©e en diff√©rents endroits
+- nouveau syst√®me de mise √† jour du nombre d\'articles, moins gourmand en ressources (m√™me principe)
 - ajout d\'un moyen d\'inviter un membre du chat par mail'],
-"16"=>['0516','- fix pbs ouverture popup des commentaires (externalisation de la fabrication du captcha) et prise en compte de l\'identitÈ reconnue automatiquement (placeholder ne renvoie aucune valeur)
-- fix pb dÈplacement des modules (mauvais comptage gÈnÈrÈ par l\'absence du header)
-- amÈlioration du fonctionnement du flux rss secondaire du Batch : y figure les sites dont on est s˚r qu\'on veut les aspirer entiËrement. L\'opÈration s\'arrÍte au premier titre dÈj‡ enregistrÈ.
-- la rstr 22 (block bots) est inversÈe (vague question de logique)'],
-"17"=>['0517','- externalisation du systËme des commentaires dans un plugin'],
+"16"=>['0516','- fix pbs ouverture popup des commentaires (externalisation de la fabrication du captcha) et prise en compte de l\'identit√© reconnue automatiquement (placeholder ne renvoie aucune valeur)
+- fix pb d√©placement des modules (mauvais comptage g√©n√©r√© par l\'absence du header)
+- am√©lioration du fonctionnement du flux rss secondaire du Batch : y figure les sites dont on est s√ªr qu\'on veut les aspirer enti√®rement. L\'op√©ration s\'arr√™te au premier titre d√©j√† enregistr√©.
+- la rstr 22 (block bots) est invers√©e (vague question de logique)'],
+"17"=>['0517','- externalisation du syst√®me des commentaires dans un plugin'],
 "18"=>['0518','- miniconn : la room d\'un chat peut s\'appeler avec un diez #public (plus intuitif)
 - simplification du connecteur video (automatiquement :popvideo dans les commentaires)'],
 "19"=>['0519','- ajout d\'un moyen de joindre l\'auteur d\'un commentaire par mail en ligne
-- rÈforme du gestionnaire Msql, phase 1/10 (au moins)'],
-"20"=>['0520','- menus bubbles dans l\'admin msql (non publiÈ)
-- ajout d\'une aide ‡ la langue franÁaise dans les commentaires
+- r√©forme du gestionnaire Msql, phase 1/10 (au moins)'],
+"20"=>['0520','- menus bubbles dans l\'admin msql (non publi√©)
+- ajout d\'une aide √† la langue fran√ßaise dans les commentaires
 - ajout d\'un gestionnaire des messages d\'erreurs pour les commentaires
-- ajout d\'une procÈdure pour afficher dans une popup le commentaire prit en rÈfÈrence, lors d\'une rÈponse : @123 affiche le pseudo et le message de ce commentaire']]; ?>
+- ajout d\'une proc√©dure pour afficher dans une popup le commentaire prit en r√©f√©rence, lors d\'une r√©ponse : @123 affiche le pseudo et le message de ce commentaire']];
