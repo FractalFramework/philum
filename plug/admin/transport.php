@@ -154,7 +154,7 @@ else{//partial and complete dumps, not gziped
 	if(is_file($f)){$o=='d'?'ssh':'rq';// -t '.qd($p).'
 		if($o=='ssh'){$e='mysql -u '.$usr.' -p'.$ps.' '.$db.' < '.$dr.'/'.$f; exc($e);}
 		else{$d=file_get_contents($srv.'/'.$f);
-			//$d=utf8enc($d); $d=str_replace(['ย|','|'],'|',$d);
+			//$d=utf8enc($d); $d=str_replace(['ยง','|'],'|',$d);
 			if($d)qr($d);}
 	$res=$maxid==$dist_maxid?'ok':$maxid.'->'.$dist_maxid;}
 	//exc('rm '.$dr.'/'.$f);

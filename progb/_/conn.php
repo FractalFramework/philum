@@ -28,7 +28,7 @@ static function read($d,$m='',$id='',$nl=''){$r13=rstr(13);
 if(!$r13)$d=self::connbr($d);
 $d=self::parser($d,$m,$id,$nl);
 if($r13)$d=embed_p($d);
-if(rstr(70))self::retape($d,$id);
+if(rstr(70))self::art_retape($d,$id);
 $d=nl2br($d);
 return $d;}
 
@@ -44,15 +44,14 @@ $r=[':q]',':h]',':h1]',':h2]',':h3]',':h4]',':ul]',':ol]',':table]',':figure]','
 for($i=0;$i<$n;$i++)$msg=str_replace($r[$i]."\n\n",$r[$i]."\n",$msg);
 return $msg;}
 
-static function retape($ret,$id){if(isset($_SESSION['rtp'.$id])){$rk=[];
-$r=msql::ses('oldconn','system','connectors_old',1); if($r)$rk=array_keys($r);
-$ret=delbr($ret,"\n"); $ret=str::clean_br($ret); if($rk)$ret=str_replace($rk,$r,$ret);
-if($id){sql::upd('qdm',['msg'=>$ret],$id); $_SESSION['rtp'.$id]='';}}}
+static function art_retape($d,$id){$r=ses::$r['rtp'.$id]??[];
+foreach($r as $k=>$v)$d=str_replace($k,$v,$d);
+if($id){sql::upd('qdm',['msg'=>$d],$id); ses::$r['rtp'.$id]=[];}}
 
-static function retape_conn($c,$id){
-if(!isset($_SESSION['rtp'.$id]))$_SESSION['rtp'.$id]='';
-$r=msql::ses('oldconn','system','connectors_old',1); $ret='';
-if(isset($r[$c])){$_SESSION['rtp'.$id].=$c.'->'.$r[$c]; return $r[$c];}
+static function detect_retape($c,$id){
+if(!isset(ses::$r['rtp'.$id]))ses::$r['rtp'.$id]=[];
+$r=msql::ses('oldconn','system','connectors_old',1);
+if(isset($r[$c])){ses::$r['rtp'.$id][$c]=$r[$c]; return $r[$c];}
 return $c;}
 
 #img
@@ -175,7 +174,7 @@ static function connectors($da,$m,$id='',$nl=''){
 $pw=$_SESSION['prma']['content'];
 $xt=strtolower(strrchr($da,'.')); $cp=strrpos($da,':');
 $c=substr($da,$cp); $d=substr($da,0,$cp);
-if(rstr(70))$c=self::retape_conn($c,$id);
+if(rstr(70))$c=self::detect_retape($c,$id);
 $ret=match($c){
 ':br'=>br(),
 ':p'=>'<p>'.$d.'</p>',
@@ -406,7 +405,7 @@ if(is_img($da) && $par===false){// && $html===false
 if(($par or $http!==false) && $html===false){//secure double hooks
 	[$p,$o]=cprm($da);
 	if(is_img($p)){//image|text
-		//restore conn from html, if lk§im (disactivatedf in conv)
+		//restore conn from html, if lk|im (disactivatedf in conv)
 		//if(strpos($p,'<img')!==false)$p=between($p,'src="/img/','"');
 		//if(substr($p,0,4)=='http')$p=conn::get_image($p,$id,$m);
 		if(is_img($o))return mk::popim($p,image(goodroot($o)),$id);//mini

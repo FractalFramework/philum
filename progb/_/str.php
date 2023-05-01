@@ -2,7 +2,7 @@
 class str{
 #filters
 static function hardurl($d){
-$d=eradic_acc($d); $d=mb_strtolower($d); $d=str_replace("&nbsp;",' ',$d);
+echo $d=eradic_acc($d); $d=mb_strtolower($d); $d=str_replace("&nbsp;",' ',$d);
 $r=['/','«','»',',','.',';',':','!','?','|','§','%','&','$','#','_','+','=','\n','\\','~','(',')','[',']','{','}'];
 $d=str_replace($r,'',$d);
 $d=str_replace([' ',"'",'"'],'-',trim($d));
@@ -31,6 +31,11 @@ $rb=[' ','-','-',"'","'","'",'«','»','«','»',
 "'",'"',"'",' ','%','€','™','œ','Ÿ','‡',
 '~','£','é','',"'",'§','•','"','"'];
 return str_replace($ra,$rb,$v);}
+
+static function goodquotes($d){
+$a=['â€œ','â€','â€˜','â€™','â€¦','â€”','â€“'];
+$b=['"','"',"'","'","...","-","-"];
+return str_replace($a,$b,$d);}
 
 static function specialspace($d){if(!$d)return;
 $r=["&nbsp;","&thinsp;","&ensp;","&emsp;","&#8200;","&#8239;"];//&#3647;//bitcoin
@@ -96,7 +101,8 @@ return mb_strtoupper(mb_substr($d,0,1,$e),$e).mb_strtolower(mb_substr($d,1,mb_st
 
 static function lowercase($d){if(!$d)return;
 $nb=mb_strlen($d); $y=0; $ret='';
-$a=str_split('ÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'); $b=str_split('àáâãäçèéêëìíîïñòóôõöùúûüý');
+$a=['À','Á','Â','Ã','Ä','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ñ','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý'];
+$b=['à','á','â','ã','ä','ç','è','é','ê','ë','ì','í','î','ï','ñ','ò','ó','ô','õ','ö','ù','ú','û','ü','ý'];
 for($i=0;$i<$nb;$i++){$k=mb_substr($d,$i,1);
 	if($y==0)$ret.=$k;
 	else{$k=mb_strtolower($k,ses::$enc); $k=str_replace($a,$b,$k); $ret.=$k;}

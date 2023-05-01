@@ -468,7 +468,7 @@ function SaveBf(val){//photo
 var dn=val.split('_'); var w=dn[1]; var h=dn[2];
 var sw=innerW(); var sh=innerH(); sh-=30; //var py=window.pageYOffset;
 var th=getbyid('page').clientHeight; if(th>sh)sw-=20;
-if(w>sw)var com='usg,overim_'; else var com='usg,photo_';
+if(w>sw)var com='usg,overim'; else var com='usg,photo';
 var URL=com+'_'+dn[0]+'_'+w+'-'+h+'_'+sw+'-'+sh+'_'+dn[3];
 //var URL=com+'&'+jrc([dn[0],w,h,sw,sh,dn[3]]);
 ajaxcall('popup',URL,[],25);}

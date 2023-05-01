@@ -5,9 +5,7 @@ static $a=__CLASS__;
 static $enc='UTF-8';
 
 static function enc($d){
-//return $d;
-//return utf8enc($d);
-return utf8enc_b($d);}
+return ($d);}//utf8enc_b
 
 static function manifest($r,$dr,$ti=''){$n=count($r); $lg='fr';
 //$t0='Oummo - Corpus principal';
@@ -49,7 +47,7 @@ $d.='</ol></nav></body></html>';
 write_file($dr.'/toc.xhtml',$d);}
 
 static function build($r,$ti=''){//rmdir_r('_datas/200802OEBPS');
-$ret=''; $dy=date('ymd'); $ti=$ti?$ti:$dy;
+$ret=''; $dy=date('ymd'); $ti=$ti?str::hardurl($ti):$dy;
 $dr='_datas/epub'; rmdir_r($dr); //$gz=$dr.'zip'; //gz_write2();
 mkdir_r($dr); mkdir_r($dr.'/OEBPS'); mkdir_r($dr.'/META-INF');
 $d='<?xml version="1.0" encoding="'.self::$enc.'"?>
@@ -126,7 +124,7 @@ elseif($o=='favs'){$r=self::req3($p); $t=$p.'-'.date('ymd');}
 elseif($o=='art'){$r=self::req4($p); $t=$r[0][2];}
 elseif($o=='api'){[$t,$r]=self::req5($p,$t); $t=$t?$t:'Ebook-'.date('ymd');}
 else $r=self::req($p,'',0);//req2
-if($r)return self::build($r,str::hardurl($t));}
+if($r)return self::build($r,$t);}
 
 static function menu($p,$o,$rid){
 $r=sql('distinct(frm)','qda','rv',['nod'=>ses('qb')]);

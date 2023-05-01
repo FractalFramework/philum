@@ -234,7 +234,7 @@ elseif($va=='addanchors')$rt=self::add_anchors($d);
 elseif($va=='deltables')$rt=self::del_tables($d);
 elseif($va=='delqmark')$rt=self::del_qmark($d);//old
 elseif($va=='imglabel')$rt=self::add_comments($d);
-elseif($va=='oldconn'){$rt=sav::art_retape($d,$va);}
+elseif($va=='oldconn'){$rt=sav::conn_retape($d,$va);}
 elseif($va=='replace')$rt=str_replace($rep,$by,$d);
 elseif($va=='randim'){geta('randim',1); $read=ses('read');
 	if(is_numeric($read))sql::upd('qdm',['msg'=>$d],$read);

@@ -152,7 +152,7 @@ if($txt){
 	$txt=utmsrc($txt); $txt=preg_replace("/(\n)|(\t)/",'',$txt);
 	if(substr($txt,0,1)=='/')$txt=substr($txt,1);
 	if(substr($txt,-1,1)=='/')$txt=substr($txt,0,-1);
-	$txt=self::delhook($txt);}//lk§img not works
+	$txt=self::delhook($txt);}//lk|img not works
 elseif(strpos($bin,'src=')!==false){$tag='src='; $len=5; $im='ok';}
 else return $txa;//things with onclick
 $root=findroot(ses::$urlsrc); if($root==host())$root='';
@@ -182,7 +182,7 @@ elseif($src){$src=trim($src);
 	if(substr($src,0,6)=='users/')$src=substr($src,6);
 	if($srcim && is_img($txt))return '['.$rot.$src.']';
 	if(strpos($src,'javascript')!==false)$src='';
-	if(strpos($bin,'cs_glossaire')!==false)$mid=$txt;//strend($txt,'§')
+	if(strpos($bin,'cs_glossaire')!==false)$mid=$txt;//strend($txt,'|')
 	if(!$srcim && !is_url($rot.$src) && $txt)return $txt;
 	elseif($dz=='outil_sommaire')$mid=$txt;//cadtm
 	elseif($srcim && !$txt)$mid='['.$rot.$src.'] ';//href to img
@@ -211,7 +211,7 @@ elseif($src){$src=trim($src);
 			elseif(substr($dz,0,9)=='xref-ref-')$mid=' ['.subtostr($dz,9,'-').':nb]';
 			if(!$mid){if(!$txt)$mid=substr($dz,0);
 				elseif(substr($txt,0,1)=='[' or substr($txt,0,1)=='(')$mid=$txt;
-				elseif($txt && $src!=$txt)$mid='['.$rot.$src.'§'.$txt.']';
+				elseif($txt && $src!=$txt)$mid='['.$rot.$src.'|'.$txt.']';
 				else $mid='['.$txt.']';}
 			if(strto($src,'#')==$root)$mid=$txt;}
 //		elseif(httproot($src)=='t')$mid='['.$rot.$src.'] ';
@@ -225,10 +225,10 @@ elseif($src){$src=trim($src);
 		elseif($txt && $src && strpos(str_replace('...','',$txt),$src))$mid='['.$rot.$src.']';
 		elseif($rot.$src!=$txt){
 			if($srcim){
-				if(!is_img($txt) && $txt!='https')$mid='['.$rot.$src.($txt?'§'.$txt:'').']';
-				else $mid='['.$rot.$src.'§'.$txt.']';}
+				if(!is_img($txt) && $txt!='https')$mid='['.$rot.$src.($txt?'|'.$txt:'').']';
+				else $mid='['.$rot.$src.'|'.$txt.']';}
 			elseif(domain($txt)==domain($rot.$src))$mid='['.$rot.$src.'] ';
-			else $mid='['.$rot.$src.'§'.$txt.']';}
+			else $mid='['.$rot.$src.'|'.$txt.']';}
 		else $mid='['.$rot.$src.'] '.$txb;}
 	else $mid='['.$rot.$src.'] '.$txb;}
 elseif($txt)$mid=$txt.' ';
@@ -281,9 +281,9 @@ static function piege_sott($u){$d=read_file('http:'.$u); return between($d,'/sta
 static function piege_jsm($d){$d=between($d,'file:',','); if($d)return '['.trim(str_replace('"','',$d)).']';}
 static function piege_mp3_b64($v){$d=between($v,'soundFile=','&');
 	if(strpos($d,'.mp3')===false)return base64_decode($d); else return $d;}
-static function trap_v_id($v,$s){$e=strpos($v,'?');
-	if($e!==false)$d=between($v,$s,'?'); else $d=between($v,$s,'"');
-	$e=strpos($d??'','&'); if($e!==false)$d=substr($d,0,$e); return $d;}
+static function trap_v_id($v,$s){$v=html_entity_decode($v); $d=between($v,$s,'"');
+	$e=mb_strpos($d,'?'); if($e!==false)$d=mb_substr($d,0,$e); 
+	$e=mb_strpos($d,'&'); if($e!==false)$d=mb_substr($d,0,$e); return $d;}
 
 static function dico($bin,$bal){//dico de cadtm
 $cl=between($bin,'class="','"');
@@ -324,7 +324,7 @@ case('a'):$b=self::treat_link($bin,$b); break;
 case('img'):$b=$n.self::treat_img($bin,$b,$fig); break;
 //case('picture'):$b=str::prop_detect($bin,'src'); break;
 case('blockquote'):
-	if(strpos($bin,'twitter-')!==false){$d=between($b,'status/','|'); if(strpos($d,'?'))$d=strto($d,'?');}
+	if(strpos($bin,'twitter-')!==false){$d=between($b,'status/','|'); if($d && strpos($d,'?'))$d=strto($d,'?');}
 	if(isset($d))$b='['.$d.':twitter]'.$n;
 	elseif(self::notin($b,':q]'))$b=$n.$n.'['.$b.':q]'.$n.$n; break;
 case('p'):$b=$n.$n.$b.$n.$n; break;

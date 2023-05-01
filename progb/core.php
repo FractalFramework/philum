@@ -6,7 +6,9 @@
 class ses{static $r=[]; static $adm=[]; static $st=[]; static $er=[];
 static $urlsrc=''; static $loader=''; static $enc=''; static $local=0; static $n=0; static $nb=0;
 static function adm($k){return self::$adm[$k]??'';}
+static function k($k,$v){return self::$r[$k]=$v;}
 static function r($k){return self::$r[$k]??'';}
+static function z($k){unset(self::$r[$k]);}
 static function er($v){return self::$er[]=$v;}}
 
 #popart
@@ -324,10 +326,10 @@ function subparams($d){[$p,$v]=cprm($d);//p1/p2|p
 if($v)[$x,$y]=explode('/',$p); else{$v=$p; $x=''; $y='';} return [$v,$x,$y];}
 function subparams_a($d){[$v,$p]=cprm($d);//p|p1/p2
 [$x,$y,$p,$o,$d]=opt($p,'/',5); return [$v,$x,$y,$p,$o,$d];}
-function cprm($d){$n=strrpos($d,'|');
-if($n===false)return [$d,'']; else return [substr($d,0,$n),substr($d,$n+1)];}
-function getconn($d){$p=$d; $c=''; $s=strrpos($d,':');
-if($s!==false){$p=substr($d,0,$s); $c=substr($d,$s);}
+function cprm($d){$n=mb_strrpos($d,'|'); if($n===false)$n=mb_strrpos($d,'§');
+if($n===false)return [$d,'']; else return [mb_substr($d,0,$n),mb_substr($d,$n+1)];}
+function getconn($d){$p=$d; $c=''; $s=mb_strrpos($d,':');
+if($s!==false){$p=mb_substr($d,0,$s); $c=mb_substr($d,$s);}
 $xt=strtolower(strrchr($p,'.')); return [$p,$c,$xt];}
 
 #vacuum

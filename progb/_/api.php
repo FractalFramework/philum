@@ -85,7 +85,8 @@ $sq['and'][]=$qda.'.lg in ("'.$lg.'")';
 return $sq;}
 
 static function sql_in($d,$o='',$nb=''){if($o){$na=' not'; $nb='!';} else $na='';
-if(strpos($d,'|')!==false)return $na.' in ("'.str_replace('|','","',$d).'")';//'REGEXP "'.$d.'"';
+if(strpos($d,'-')!==false)return $na.' in ("'.str_replace('-','","',$d).'")';
+elseif(strpos($d,'|')!==false)return $na.' in ("'.str_replace('|','","',$d).'")';
 elseif(substr($d,0,1)=='<' or substr($d,0,1)=='>')return $nb.''.$d.'';
 else return $nb.'="'.$d.'"';}
 
@@ -291,7 +292,7 @@ if($md=$ra['media']??'')$ra['preview']='conn'.$md;
 else $ra['preview']=art::slct_media($ra['preview']??'');
 $ra['nl']=$ra['nl']??get('nl');
 if(!($ra['ti']??''))$ra['ti']=self::tit($ra);
-if($ra['id']??'' && !($ra['preview']??'')){$ra['nodig']=1; $ra['preview']=3; $ra['noheader']=1;}
+if($ra['id']??''){$ra['nodig']=1; $ra['preview']=3; $ra['noheader']=1; $ra['template']='read';}
 $ret=self::callr($ra);
 if($ra['noheader']??'')return $ret;
 $nbpg=self::head($ra);
@@ -470,5 +471,8 @@ $com=implode_k($ra,',',':');
 $bt=hlpbt('api').' '.lj('grey','popup_favs,home___com_'.ajx($com),picto('save')).' '.lj('grey','popup_apicom,home___'.ajx($com),picto('view')).' '.lkc('grey','/api/'.$com,picto('url')).' ';
 $bt.=lj('','popup_apicom,menu___'.ajx($p).'_'.$rid,picto('menu'));
 return $bt.divc('editor',$com);}
+
+static function home($p,$o,$prm=[]){
+return self::call($p,$o,$prm);}
 }
 ?>

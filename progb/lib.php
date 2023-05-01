@@ -432,9 +432,9 @@ function utf($d){return $d; ses::$enc=='utf-8'?utf8enc($d):$d;}
 
 #strings
 function eradic_acc($d){
-$a='àáâãäçèééêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ';
-$b='aaaaaceeeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY';
-return strtr($d,$a,$b);}
+$a=['À','Á','Â','Ã','Ä','Å','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý','à','á','â','ã','ä','å','ç','è','é','ê','ë','ì','í','î','ï','ð','ò','ó','ô','õ','ö','ù','ú','û','ü','ý','ÿ'];
+$b=['A','A','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y'];	
+return str_replace($a,$b,$d);}
 function normalize_alpha($d,$o=''){if(!$d)return;
 $r=[' ','-','&nbsp;',"'",'"','/',',',';',':','|','§','%','&','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','«','»']; if($o)unset($r[$o]); return str_replace($r,'',$d);}
 function normalize_ext($d){if(!$d)return;
@@ -457,21 +457,21 @@ function struntil($v,$s){$p=strrpos($v??'',$s); return $p!==false?substr($v,0,$p
 function strfrom($v,$s){$p=strpos($v??'',$s); return $p!==false?substr($v,$p+strlen($s)):$v;}
 function strend($v,$s){$p=strrpos($v??'',$s); return $p!==false?substr($v,$p+strlen($s)):$v;}
 function strfirst($d,$r){$q=[];
-foreach($r as $v){$n=strpos($d,$v); if($n!==false)$q[]=$n;} if($q)return min($q);}
-function nearest($d,$s){$r=str_split($s); $n=strfirst($d,$r); return $n?$n:strlen($d);}
-function strnext($d,$s){return substr($d,0,nearest($d,$s));}
-function split_one($s,$v,$n=''){if($n)$p=strrpos($v,$s); else $p=strpos($v,$s);
-if($p!==false)return [substr($v,0,$p),substr($v,$p+1)]; else return [$v,''];}
-function split_right($s,$v,$n=''){if($n)$p=strrpos($v,$s); else $p=strpos($v,$s);
-if($p!==false)return [substr($v,0,$p),substr($v,$p+1)]; else return ['',$v];}
-function between($d,$a,$b,$na='',$nb='',$o=''){$pa=$na?strrpos($d,$a):strpos($d,$a);
-if($pa!==false){$pa+=strlen($a); $pb=$nb?strrpos($d,$b,$pa):strpos($d,$b,$pa);
-	if($pb!==false)return substr($d,$pa,$pb-$pa); elseif($o)return substr($d,$pa);}}
+foreach($r as $v){$n=mb_strpos($d,$v); if($n!==false)$q[]=$n;} if($q)return min($q);}
+function nearest($d,$s){$r=str_split($s); $n=strfirst($d,$r); return $n?$n:mb_strlen($d);}
+function strnext($d,$s){return mb_substr($d,0,nearest($d,$s));}
+function split_one($s,$v,$n=''){if($n)$p=mb_strrpos($v,$s); else $p=mb_strpos($v,$s);
+if($p!==false)return [mb_substr($v,0,$p),mb_substr($v,$p+1)]; else return [$v,''];}
+function split_right($s,$v,$n=''){if($n)$p=mb_strrpos($v,$s); else $p=mb_strpos($v,$s);
+if($p!==false)return [mb_substr($v,0,$p),mb_substr($v,$p+1)]; else return ['',$v];}
+function between($d,$a,$b,$na='',$nb='',$o=''){$pa=$na?mb_strrpos($d,$a):mb_strpos($d,$a);
+if($pa!==false){$pa+=mb_strlen($a); $pb=$nb?mb_strrpos($d,$b,$pa):mb_strpos($d,$b,$pa);
+	if($pb!==false)return mb_substr($d,$pa,$pb-$pa); elseif($o)return mb_substr($d,$pa);}}
 function segment($d,$a,$b){return between($d,$a,$b,0,0,1);}
 function strin($d,$a,$b){return between($d,$a,$b,0,0,1);}
 function isnum($d){return preg_replace("/[^0-9]/",'',$d);}
-function str_slice($d,$n=1){$r=[]; $nb=strlen($d); $na=ceil($nb/$n);
-for($i=0;$i<$na;$i++)$r[]=substr($d,$i*$n,$n); return $r;}
+function str_slice($d,$n=1){$r=[]; $nb=mb_strlen($d); $na=ceil($nb/$n);
+for($i=0;$i<$na;$i++)$r[]=mb_substr($d,$i*$n,$n); return $r;}
 //r
 function array_combine_a($a,$b){$n=count($a); $r=[];//php4
 for($i=0;$i<$n;$i++)if(isset($b[$i]))$r[$a[$i]]=stripslashes($b[$i]); return $r;}

@@ -64,7 +64,7 @@ if(ses::$enc!='utf-8')$d=str::decode_unicode($d);
 $d=codeline::parse($d,$id,'savimg');
 $d=str::clean_br_lite($d);
 $d=str::clean_punct($d);
-$d=str::repair_tags($d);//if(rstr(70))$d=conn::retape($d,$id);
+$d=str::repair_tags($d);//if(rstr(70))$d=conn::art_retape($d,$id);
 if(is_numeric($id))sqlup('qdm',['msg'=>$d],$id);
 $sz=mb_strlen($d??''); sql::upd('qda',['host'=>$sz],$id); cachevs($id,8,$sz);
 return stripslashes($d??'');}
@@ -366,9 +366,9 @@ $d=sql('img','qda','v',$id); $r=explode('/',$d);
 if($r)foreach($r as $v)if($v)$ret.=mk::popim($v,img::make_thumb($v,$id),$id);
 return $ret;}
 
-static function art_retape($ret,$id){
+static function conn_retape($d,$id){
 $r=msql::ses('oldconn','system','connectors_old',1); if($r)$rk=array_keys($r);
-$ret=delbr($ret,"\n"); $ret=str::clean_br($ret); return str_replace($rk,$r,$ret);}
+$d=delbr($d,"\n"); $d=str::clean_br($d); return str_replace($rk,$r,$d);}
 
 static function rectifart($id,$prw=3){
 $d=sql('msg','qdm','v',$id);

@@ -145,7 +145,7 @@ if(is_img($d) && strpos($d,'|')===false)return conn::place_image($d,3,$b);
 if(is_img($p)){//image|text
 	if(is_img($o))return lkt('',goodroot($p),image(goodroot($o)));
 	return lkt('',goodroot($o),image(goodroot($p)));}
-elseif(is_img($o)){//link§image
+elseif(is_img($o)){//link|image
 	return lkt('',goodroot($p),image(goodroot($o)));}
 elseif(substr($p,0,1)=='/')return lka($p,$o);
 elseif(substr($p,0,1)=='@')return lj('txtx','popup_twit,call__3_'.ajx($p).'_ban',$p);
