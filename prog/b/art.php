@@ -47,7 +47,7 @@ if(($USE==$kem) or $auth>3){
 	$ret.=togbub('meta,titedt',$id.'_'.$prw.'_'.$rech,picto('meta')).' ';
 	//$ret.=toggle('','edt'.$id.'_meta,titedt___'.$id.'_'.$prw,picto('meta'));
 	//$ret.=toggle('','edt'.$id.'_edit,artform____'.$id,picto('edit')).' ';
-	$ret.=lj('','popup_edit,artform____'.$id.'__autosize',picto('edit')).' ';
+	$ret.=lj('','popup_edit,artform____'.$id.'__autowidth',picto('edit')).' ';
 	$ret.=btd('adt'.$id,btj(picto('editor'),atj('editart',$id)));}
 return btd('artmnu'.$id,$ret);}
 
@@ -379,9 +379,9 @@ elseif(is_numeric($v))$d=$v; elseif($v=='flow' or !$v)$d=rstr(5)?2:1; else $d=1;
 return $d;}
 
 static function tometa($d){//$d=strip_tags($d);
-$d=codeline::parse($d,'','delconn'); $d=deln($d,' '); $d=delsp($d); $lgh=strlen($d);
-if($lgh>200)$n=strpos($d,'.',200); else $n=$lgh; $d=substr($d,0,$n+1);
-ses::$r['descr']=stripslashes($d);}
+$d=codeline::parse($d,'','delconn'); $d=deln(trim($d),' '); $d=delsp($d); $lgh=mb_strlen($d);
+if($lgh>200)$n=mb_strpos($d,'.',200); else $n=$lgh; $d=mb_substr($d,0,$n+1);
+ses::$r['descr']=stripslashes(utf8dec($d));}
 
 static function make_thumb_css($im){
 if(!file_exists('imgc/'.$im) or ses('rebuild_img')){

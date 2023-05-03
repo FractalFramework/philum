@@ -53,19 +53,20 @@ foreach($r as $k=>$v)$ret.=self::callmod($v);
 return $ret;}
 
 static function block($va,$cr,$bt=''){$ath=auth(6); $g=get('read'); //pr(ses::$r['get']);
-$r=sesr('modc',$va); ses::$r['curdiv']=$va; $ret=''; $tg=$va; $ik=1; $i=-1; $ni=0;
+$r=sesr('modc',$va); ses::$r['curdiv']=$va; $rb=[]; $rl=[]; $ret=''; $tg=$va; $ik=1; $i=-1; $ni=0;
 if($r)foreach($r as $k=>$v){if(!$v[7] && (!$v[11] or $ath)){//hide/private
-	if($v[9]??'')$re[$k]=self::btmod('',$v);
+	if($v[9]??'')$rl[$k]=self::btmod('',$v);
 	elseif($bt){$i++;//menu
-		$re[$k]=self::btmnu($v,$ik,$i,$ni,$k);
+		$rl[$k]=self::btmnu($v,$ik,$i,$ni,$k);
 		if($i==$ni && !$g)ses::$loader=self::build($v);}//superflous if #
 	elseif($v[6]){$mdc=sesr('mdc',$k);//cache
-		if(!$mdc or $cr){$re[$k]=self::build($v); $_SESSION['mdc'][$k]=$re[$k];}
-		else $re[$k]=$mdc;}
-	//elseif($v[11]??'')$re[$k]=divd('mod'.$k,lj('txtcadr','mod'.$k.'_md::modj___'.$k.'_'.$va,$v[2]));
+		if(!$mdc or $cr){$rb[$k]=self::build($v); $_SESSION['mdc'][$k]=$rb[$k];}
+		else $rb[$k]=$mdc;}
+	//elseif($v[11]??'')$rb[$k]=divd('mod'.$k,lj('txtcadr','mod'.$k.'_md::modj___'.$k.'_'.$va,$v[2]));
 	//elseif($v[12]??'')Head::add('jscode',sj('popup_mod,callmod___'.$k));//better use apps
-	else $re[$k]=self::build($v);
-if($re[$k])$ret.=$re[$k]."\n";}}
+	else $rb[$k]=self::build($v);}}
+if($rl)$ret=implode(thin(),$rl);
+if($rb)$ret.=implode(n(),$rb);
 ses::$r['curdiv']='content'; $h='';
 if(self::$rha){$h=self::jsmap('rha'); self::$rha=[];}
 return divd($va,$ret.$h);}
@@ -241,17 +242,17 @@ case('fav_mod'):$ret=self::fav_mod($p,$t); break;
 //users
 case('login'):$ret=md::login_btn($p,$o); break;
 case('login_popup'):$ret=self::login_btn_p($p,$o); break;
-case('log-out'):if(ses('USE'))$ret.=lkc($csb,'/logout',picto('logout')).' '; break;
+case('log-out'):if(ses('USE'))$ret.=lkc($csb,'/logout',picto('logout')); break;
 case('search'):$ret=search_btn($o); break;
 //banner
 case('Banner'):$ret=self::make_ban($p,$o,$t); break;
 case('ban_art'):if($p!=1)$ret.=lk(subdomain(ses('qb')),ma::read_msg($p,'')); break;
 //footer
 case('credits'):$ret=lj('bevel','popup_md,about',picto('phi2')); break;
-case('admin'):$ret=lkc($csb,'/admin/log/open',$t?$t:picto('admin')).' '; $t=''; break;
-case('chrono'):$ret=btn('txtsmall2',round(microtime(1)-$_SERVER['REQUEST_TIME_FLOAT'],3).'s').' '; break;
+case('admin'):$ret=lkc($csb,'/admin/log/open',$t?$t:picto('admin')); $t=''; break;
+case('chrono'):$ret=btn('txtsmall2',round(microtime(1)-$_SERVER['REQUEST_TIME_FLOAT'],3).'s'); break;
 case('contact'):if($p)$ret=tracks::form(ses('qb'),$t);
-else $ret=contact($t,$o?$o:$csb).' '; break;
+else $ret=contact($t,$o?$o:$csb); break;
 //plugs
 case('iframe'):$ret=iframe::home('',''); break;
 case('suggest'):$ret=self::mdtitle(nms(126)).suggest::home($o); break;

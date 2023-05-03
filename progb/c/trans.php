@@ -61,7 +61,7 @@ return conn::read2($d,0);}
 
 static function convhtml($d){
 $d=conv::interpret_html($d,'','');
-$d=str::post_treat_repair($d); $d=str::clean_br($d); $d=str::clean_prespace($d);
+$d=str::post_treat_repair($d); //$d=str::clean_prespace($d);
 return $d;}
 
 #translate

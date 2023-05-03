@@ -23,8 +23,8 @@ if(textEl.createTextRange)textEl.caretPos=document.selection.createRange().dupli
 function findfunc(e,o){var t=e.innerHTML;//codev
 var st=e.selectionStart; var end=e.selectionEnd; var lgth=e.textLength;
 var p=(e.value).substring(st,end); if(st==end)return;
-SaveJ('results_codeview,findfunc__21_'+ajx(p));}
-//SaveJ('results_coremap,coremap__14_'+ajx(p));
+ajaxcall('results','codeview,findfunc',[p],[],'21');}
+//ajaxcall('results','coremap,coremap',[p],[],'14');
 
 function detctfunc(e){var t=e.innerHTML;
 var t=strreplace('&amp;','&',t);var t=strreplace('&lt;','<',t);var t=strreplace('&gt;','>',t);
@@ -37,7 +37,7 @@ for(i=0;i<ptr.length;i++){
 var pa=one.substr(first); var pb=two.substring(0,last); var p=pa+pb;
 //alert(char+' - '+first+' - '+pa); //alert(char+' - '+last+' - '+pb);
 var p=(e.value).substring(first+1,st+last); jumphtml('results',p);}
-//SaveJ('results_dev,findev___'+ajx(p));
+//ajaxcall('results','dev,findev',[p],[],'');
 
 //slctdropmenu
 function callSaveJ(tg,e,restore){
@@ -158,7 +158,7 @@ return deb+mid+end;}
 //embed
 function embed(val,bid,id){
 var slctd=embedslct('','');
-if(val=='video' && slctd)SaveJ('socket_video,extractid__repl_'+ajx(slctd));
+if(val=='video' && slctd)ajaxcall('socket','video,extractid',[slctd],['repl'],'');
 else if(val=='url' && slctd)togglebub('mc,conns__'+bid+'_'+val+'_'+ajx(slctd)+'_'+bid+'_'+id);
 else if(val=='img' && slctd){
 	if(slctd.indexOf('|')!=-1)slctd=embedslct('[',':figure]');
@@ -167,14 +167,15 @@ else slctd=embedslct('[',':'+val+']');
 if(!slctd)togglebub('mc,conns__'+bid+'_'+ajx(val)+'__'+bid+'_'+id);}
 
 function captslct(val){
-var txt=getbyid('txtarea'); txt.focus(); var s2=false;
+var txt=getbyid('txtarea'); txt.focus(); var s2='';
 if((clientVer>=4) && is_ie && is_win){var s2=document.selection.createRange().text;}
 else{var s2=(txt.value).substring(txt.selectionStart,txt.selectionEnd);}
-if(!s2)var s2=txt.value; SaveJ('popup_mc,conns___'+val+'_'+encUriJ(s2));}
+if(!s2)var s2=txt.value;
+ajaxcall('popup','mc,conns',[val,s2],[],'');}
 
 function edtmode(rid,id){var a=active('edtmd');
-if(a)SaveJ(rid+'_mc,wygedt_txtarea_15_'+id+'_txtarea');
-else SaveJ(rid+'_mc,wygoff_txtarea_15_'+id+'_txtarea');}
+if(a)ajaxcall(rid,'mc,wygedt',[id,'txtarea'],['txtarea'],'15');
+else ajaxcall(rid,'mc,wygoff',[id,'txtarea'],['txtarea'],'15');}
 
 function autoslct(val){var id=val?val:'txtarea';
 var txt=getbyid(id); txt.focus();
@@ -212,9 +213,6 @@ if(slctd==undefined){insert(deb+val+fin);}}
 function insert_jc(conn,id){
 var val=getbyid(id).value;
 if(val=="")return; else insert('['+val+':'+conn+']');}
-function insert_jcb(id){//video
-var val=getbyid(id).value;
-ajaxcall(id,'call_tri_auto*video_'+val,[],'');}
 function insert_close(text){insert(text);}
 
 //insert
@@ -252,15 +250,13 @@ if(v)insert_b(v,id);}
 
 function cmd(e){var k=e.keyCode;//115/s
 //if(getbyid('srch').value='')
-if(k==110){SaveJ('popup_bubs,root__focus:addsrc_call_addart');}//n //getbyid('addurl').focus();
-}
+if(k==110){ajaxcall('popup','bubs,root',['call','addart'],['txtarea'],'focus:addsrc');}}//n //getbyid('addurl').focus();
 //addEvent(document,'keypress',function(){cmd(event)});
 
 //toggles
 function SaveBc(val){var dn=val.split("_");//artopen
 var op=active('toggleart'+dn[1]); if(op)var nb=3; else var nb=dn[2];
-var gets=dn[0]+"_"+dn[1]+"_"+nb+"_"+undefine(dn[4]);
-ajaxcall(dn[0]+dn[1],gets,[],2);}
+ajaxcall(dn[0]+dn[1],dn[0],[dn[1],nb,undefine(dn[4])],[],2);}
 
 function active(id,ob,a){if(id)ob=getbyid(id); var op=ob.className;
 if(op.indexOf('active')==-1 && !a){ob.classList.add("active"); return 1;}
@@ -353,9 +349,9 @@ for(i=0;i<mnu.length;i++){
 	if(i==dn[4]){
 		if(mnu[i].className=='active' && !dn[5]){//!notclosable
 			mnu[i].className=''; falseClose(dn[0]);
-			ajaxcall(dn[0],'sesmake_'+dn[0]+'_0_',[],'');}
-		else{mnu[i].className='active'; var gets=dn[1]+'_'+encUri(dn[2])+'_'+dn[3];
-			ajaxcall(dn[0],gets,[],'');}}
+			ajaxcall(dn[0],'sesmake',[dn[0],'0'],[],'');}
+		else{mnu[i].className='active';
+			ajaxcall(dn[0],dn[1],[dn[2],dn[3]],[],'');}}
 	else mnu[i].className='';}}
 
 function active_tg(val,nb,nob){//tabs
@@ -389,7 +385,7 @@ var act=active('bt'+id); var div=getbyid(id);
 if(act==1)div.style.display='block'; else div.style.display='none';}
 
 function toggle_tab(tab,obj){//tabs_html
-ajaxcall('socket','sesmake_tbmd'+tab+'_'+obj,[],4);
+ajaxcall('socket','sesmake',['tbmd'+tab,obj],[],4);
 var mnu=getbyid('mnuab'+tab).getElementsByTagName("a");
 for(i=1;i<=mnu.length;i++){var b=i-1;
 	if(i==obj){mnu[b].className='txtaa';
@@ -421,16 +417,16 @@ pp.style.top=(mp.y+15)+'px'; pp.style.left=(mp.x-8)+'px';}
 else{pp.style.display='none'; pp.innerHTML='';}}
 
 function radiobtj(rid,id,v,n){active_list(rid,n); getbyid(id).value=v;}
-function radioj(rid,id,v,n){active_list(rid,n); SaveJ('socket_sesmake___'+id+'_'+v);}
+function radioj(rid,id,v,n){active_list(rid,n); ajaxcall('socket','sesmake',[id,v],[],'');}
 
 function modedit(arr,tar){
 vn=arr.split("|"); var nm=""; var nb=new Array();
 for(i=0;i<vn.length;i++){
-	if(vn[i]){var val=encUri(getbyid(vn[i]).value);
+	if(vn[i]){var val=getbyid(vn[i]).value;
 		var np=(val); nb.push(np); if(i==0)var nm=np;
 		else if(i==1||i==2||i==3)var nm=nm+'/'+np;
 		else if(i==4){if(nm)var nm=nm+':'+np; else nm=np;}
-		else if(i==5 && np)var nm=nm+'|'+np; }}
+		else if(i==5 && np)var nm=nm+'|'+np;}}
 if(!nb[1] && !nb[2] && !nb[3])nm=nm.replace('///','');
 if(!nb[0] && !nb[1] && !nb[2] && !nb[3])nm=nm.replace(':','');
 var to=getbyid(tar).value; if(to)nm=to+',\n'+nm;
@@ -462,8 +458,8 @@ function num_mail(id){var v=getbyid(id); var va=v.value;//mk::form
 if(va.indexOf("@")==-1)v.className='txtred';
 else if(va.indexOf(".")==-1)v.className='txtred'; else v.className='';}
 
-function log_goodname(id){va=log_finger(id);
-ajaxcall(id,'login,usdhub_'+va,[],4);}
+function log_goodname(id){let va=log_finger(id);
+ajaxcall(id,'login,usdhub',[va],[],4);}
 
 //storage
 function locals(id,va){if(localStorage){//,com
@@ -572,9 +568,9 @@ else clearTimeout(xch);}
 
 function offon(f,d){
 var v=getbyid('offon'+d); var p=v.value==1?0:1; v.value=p;
-SaveJ('socket_sesmake___offon_'+p+'');
+ajaxcall('socket','sesmake',['offon',p],[],'');
 setTimeout(function(){addjs_old(f,d,p)},1000);
-SaveJ('offonbt'+d+'_offon___'+p);}
+ajaxcall('offonbt'+d,'offon',[p],[],'');}
 
 function poplist(id){var icon='='; var list='ý';//pictos
 var bt=getbyid(id); var popu=getbyid('popu'+curid);
@@ -619,7 +615,7 @@ var idx=exs.indexOf(id);
 if(idx==-1 && scrl>pos.y){exs.push(id);
 	var rq=getbyid('hid'+div);
 	if(rq.value!='undefined'){
-		SaveJ(div+'_api,callj__after_'+ajx(rq.value)+'_to:'+id);}}}//addiv()
+		ajaxcall(div,'api,callj',[rq.value,'to:'+id],[],'after');}}}//addiv()
 //addEvent(document,'scroll',function(){artlive2('content')});
 
 function artlive(){var ret=''; var ia=0;
@@ -635,7 +631,7 @@ if(mnu.length)for(i=0;i<mnu.length;i++){var did=mnu[i].id; var id=did.substr(1);
 				if(ia==20)i=mnu.length;//stop loop
 				if(idx==-1 && ia<20){
 					exs.push(id); if(mnu[i])var md=mnu[i].dataset.prw;
-					SaveJ(did+'_art,playb__2_'+id+'_'+md);}}}}}}}
+					ajaxcall(did,'art,playb',[id,md],[],'2');}}}}}}}
 
 if(typeof read==='string' && flow==1)
 addEvent(document,'scroll',function(){artlive()});
@@ -722,11 +718,11 @@ return{start:elStart,end:elEnd,txt:slct};}
 function useslct(e,id){var d=getrange('art'+id);
 if(d.txt){var ex=getbyid('edtrk'+id);
 	if(ex)insert('['+d.txt+'|'+d.start+':callquote]'+"\n\n",'edtrk'+id);
-	else SaveJ('popup_tracks,form___'+id+'_'+encUriJ(d.txt)+'_'+d.start);}}
+	else ajaxcall('popup','tracks,form',[id,d.txt,d.start],[],'');}}
 
 function callquote(id,s,pad,idt){
 var ob=getbyid('art'+id); var t=ob.innerHTML;
-SaveJ('art'+id+'_art,playq___'+id+'_'+s+'_'+pad+'_'+idt);
+ajaxcall('art'+id,'art,playq',[id,s,pad,idt],[],'');
 setTimeout(function(){scrolltoob('qnh'+s,200)},300);}
 
 function xltags(e,id,cnn){var d=getrange('art'+id);
@@ -734,6 +730,6 @@ if(d.txt){var tg=cnn=='all'?'popup':'art'+id; if(cnn=='all')cnn='';
 	//var ob=getbyid('art'+id); var t=ob.innerHTML;
 	//var s1=t.substr(0,d.start); var s2=t.substr(d.start,d.end-d.start); var s3=t.substr(d.end);
 	//ob.innerHTML=s1+'<span id="slct1'+id+'"></span>'+s2+'<span id="slct2'+id+'"></span>'+s3; pr(s2);
-	SaveJ(tg+'_mk,slctconn___'+id+'_'+encUriJ(d.txt)+'_'+d.start+'_'+cnn);}}
+	ajaxcall(tg,'mk,slctconn',[id,d.txt,d.start,cnn],[],'');}}
 
 function dec2hex(n){var hex=n.toString(16); if(hex.length==1)hex="0"+hex; return hex;}//255

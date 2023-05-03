@@ -1,17 +1,15 @@
 <?php //ajax_hangar
 error_report();
-gets(); //pr(ses::$r['get']);
+$grm=gets();
+$prm=posts();
+//header('Content-Type: text/html; charset='.ses::$enc);
 if(rstr(22))boot::block_crawls();
 if(!isset($_SESSION['qb']))boot::reboot();
-$res=get('res'); $callj=get('callj');
-$r=ajxr($callj,5);
-[$app,$g1,$g2,$g3,$g4]=$r;
-$ret=''; $p1=''; $t=$app; $s='';
-$sz=get('sz'); $tg=get('tg'); //$dn2=get('dn2');
-$prm=$_POST??[];
-if($prm){//$prm=utf_r($prm,1);//if(ses::$enc!='utf-8')
-$prm=delr_r($prm);
-[$p1,$p2]=arb($prm,2);}
+[$app,$sz,$tg]=vals($grm,['app','sz','tg']);
+$ret=''; $t=$app;
+[$g1,$g2,$g3,$g4]=vals($grm,['g0','g1','g2','g3']);
+//[$g1,$g2,$g3,$g4]=vals($prm,['g0','g1','g2','g3']);
+[$p1,$p2]=vals($prm,[0,1]);
 
 function popup($d,$t){$s='';
 $w=ses::$r['popw']??cw(); if($w)$s='max-width:'.($w+36).'px;'; $t=ses::$r['popt']??$t;
@@ -31,16 +29,15 @@ return isset($r[$k])?nms($r[$k]):$k;}
 #load
 if(strpos($app,',')){[$a,$b]=explode(',',$app);
 if($a=='sql' or $a=='msql')return 'no';
-//if($res)$ret=$a::$b($g1,$g2,$res);else//obs
 if($prm)$ret=$a::$b($g1,$g2,$prm);
 else $ret=$a::$b($g1,$g2,$g3,$g4);
 $t=tit($a,$b,$g1,$g2);
 if(is_array($ret))$ret=mkjson($ret);}
 //ff
-elseif($_a=get('_a')){[$a,$b]=explode(',',$_a); //$g=explode(',',get('_g'));//new canal
+elseif($_a=get('_a')){[$a,$b]=explode(',',$_a);
 if($a=='sql' or $a=='msql')return 'no';
 if(!method_exists($a,$b))$ret='nothing';
-else $ret=$a::$b($prm);//$g,//json::add('','fc',$r);
+else $ret=$a::$b($prm);//json::add('','fc',$r);
 $t=tit($a,$b,$g1,$g2);
 if(is_array($ret))$ret=mkjson($ret);}
 
@@ -65,7 +62,7 @@ if(!$ret)$ret=match($app){
 'popart'=>popart($g1),
 'api'=>api::call($g1,$g2,$prm),
 'site'=>usg::site($g1,$g2),//apps252
-'app'=>$g1::$g2($g3,$g4,$res),//old
+//'app'=>$g1::$g2($g3,$g4,$res),//old
 //sys
 'hidj'=>usg::hidslct($g1,$g2,$g3,$g4,$prm),
 'chkj'=>usg::chkslct($g1,$g2,$g3,$g4,$prm),
@@ -86,10 +83,9 @@ if(!$ret)$ret=match($app){
 default=>'',
 };
 
-if($tg=='popup')$ret=popup($ret,$t,$s);
+if($tg=='popup')$ret=popup($ret,$t);
 elseif($tg=='pagup')$ret=pagup($ret,$t);
 
-//header('Content-Type: text/html; charset='.ses::$enc);
-echo ($ret);//utf
+echo $ret;
 sqlclose();
 ?>

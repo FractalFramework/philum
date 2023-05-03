@@ -76,10 +76,9 @@ return $ret;}
 
 #correctors
 static function correct($da,$op){
-$xp=strrpos($da,':'); $c=substr($da,$xp); $d=substr($da,0,$xp);
-if($op=='stripconn'){if(strpos($da,'|')!==false)$d=strend($d,'|'); return $d;}
-if(substr($op,0,8)=='replconn'){[$op,$a,$b]=opt($op,'-',3);
-	if(strpos($da,':'.$a)!==false)return '['.str_replace(':'.$a,':'.$b,$da).']';}
+$xp=mb_strrpos($da,':'); $c=mb_substr($da,$xp); $d=mb_substr($da,0,$xp);
+if($op=='stripconn'){if(mb_strpos($da,'|'))$d=strend($d,'|'); return $d;}
+elseif(substr($op,0,8)=='replconn'){[$op,$a,$b]=opt($op,'-',3); return '['.str_replace(':'.$a,':'.$b,$da).']';}
 elseif($op=='png2jpg'){[$d,$txt]=cprm($da); $id=get('read'); $xt=is_img($d);//illogical
 	if($xt=='.png' && $id)return img::png2jpg($d,$id);}
 elseif($op=='webp2jpg'){[$d,$txt]=cprm($da); $id=get('read'); $xt=is_img($d);
@@ -299,12 +298,15 @@ if(strpos($d,'twitter.com/hashtag'))return '#'.between($d,'twitter.com/hashtag/'
 if(strpos($d,'https://twitter.com')!==false)return;
 return '['.$d.']';}
 
-static function delconn($da){
-[$p,$o,$c]=unpack_conn($da); $ret='';
+static function delconn($da){if(!$da)return;
+[$p,$o,$c]=unpack_conn($da); 
+//[$p,$o,$c]=getconn($da);
+if($p=='https'){$p.=':'.$o; $o='';}
 $rx=conn_ref_in(); if(in_array(':'.$c,$rx))return $p;
-if($p && $o && !$c)return $p.' '.$o;
-elseif(!$o && !$c)return $p;
-else return '['.$da.']';}
+$ia=is_img($da);
+if($p && $o && !$c && !$ia)return $p.' '.$o;
+elseif(!$o && !$c)return !$ia?$p:'';
+elseif(!$ia)return '['.$da.']';}
 
 static function extractimg($d,$id){
 [$p,$o,$c]=unpack_conn($d);

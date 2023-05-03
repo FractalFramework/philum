@@ -179,7 +179,7 @@ static function rech($p){
 if(isset($_SESSION['recache'][$p])){$_SESSION['recache'][$p]=[]; return 'x';}
 elseif(isset($_SESSION['recache']))$_SESSION['recache']=[]; return 'xx';}
 
-static function good_rech($d){if(!$d)return; $d=str::utflatindecode($d); $d=str::clean_acc($d);
+static function good_rech($d){if(!$d)return; $d=str::clean_acc($d);//$d=str::utflatindecode($d); 
 $d=str_replace("&nbsp;",' ',$d); $d=strip_tags($d); $d=stripslashes($d); return trim($d);}
 
 static function home($d0,$n0,$prm=[]){chrono(); $load=[]; $ret='';

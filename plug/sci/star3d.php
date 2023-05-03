@@ -75,7 +75,7 @@ case('amical'):$clr='green';break;
 case('inamical'):$clr='orange';break;
 case('danger'):$clr='red';break;
 case('neutre'):$clr='white';break;
-case('indéfini'):$clr='silver';break;
+case('indÃ©fini'):$clr='silver';break;
 default:$clr='grey';break;}
 if($nm=='Sun')$clr='yellow';
 if($nm=='Yooma')$clr='green';
@@ -88,7 +88,7 @@ $pl=$rc[$nm]['planet']??'';
 
 //names
 if($rc[$nm]['nm']??'')$nm=$rc[$nm]['nm'];
-elseif($nm=='81693')$nm='Dookaïa';
+elseif($nm=='81693')$nm='DookaÃ¯a';
 elseif($nm=='88601')$nm='70 Ophiuchi';
 elseif($nm=='99461')$nm='Iox';
 elseif($nm=='2021')$nm='Bet Hyi';

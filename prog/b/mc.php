@@ -262,12 +262,17 @@ return $ret;}
 
 static function add_anchors($d){
 for($i=200;$i>0;$i--){
-$types=['[['.$i.':nh]]','(['.$i.':nh])','['.$i.':nh]','[['.$i.':nh]:e]','[['.$i.':nb]]','(['.$i.':nb])','['.$i.':nb]','[['.$i.']:b]','[['.$i.']:i]','[['.$i.']]','['.$i.'.]','['.$i.']','['.$i.':e]',"\n".$i.'.',"\n".$i];//'|'.$i.'|'
-$d=str_replace($types,'('.$i.')',$d);}
+$types=['[['.$i.':nh]]','(['.$i.':nh])','['.$i.':nh]','[['.$i.':nh]:e]','[['.$i.':nb]]','(['.$i.':nb])','['.$i.':nb]','[['.$i.']:b]','[['.$i.']:i]','[['.$i.']]','['.$i.'.]','['.$i.']','['.$i.':e]'];//'|'.$i.'|'
+$d=str_replace($types,'('.$i.') ',$d);
+$types=["\n".$i.'.',"\n".$i];
+$d=str_replace($types,"\n".'('.$i.') ',$d);}
 for($i=200;$i>0;$i--){
-	$no=strpos($d,'['.$i.':n'); $fnd='('.$i.')'; $sp=strrpos($d,$fnd);
-	if($no===false){$end=str_replace($fnd,'(['.$i.':nb])',substr($d,$sp));
-		$d=str_replace($fnd,'(['.$i.':nh])',substr($d,0,$sp)).$end;}}
+	$nd='('.$i.')'; $m1=strpos($d,$nd); $m2=strrpos($d,$nd);
+	if($m1 && $m2 && $m1!=$m2){
+		$end=str_replace($nd,'(['.$i.':nb])',substr($d,$m2));
+		$d=str_replace($nd,'(['.$i.':nh])',substr($d,0,$m2)).$end;}
+	if($m1 && $m2 && $m1==$m2){
+		$d=str_replace($nd,'(['.$i.':nh])',substr($d,0,$m2));}}
 $r=explode(':numlist]',$d); $n=count($r);
 if($n>1){$d='';
 for($i=0;$i<$n;$i++)

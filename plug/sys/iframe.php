@@ -3,6 +3,7 @@ class iframe{
 
 static function call($p,$o='',$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
+$o=ses::$r['popw']=get('sz')*(2/3);
 return iframe($p,$o);}
 
 static function home($p,$o){$rid='plg'.randid();

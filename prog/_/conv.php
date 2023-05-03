@@ -43,7 +43,6 @@ foreach($r as $k=>$v){$cur=true;//by_lines
 $ret.=$cur."\n";}
 $ret=str::clean_br($ret);
 $ret=str::repair_tags($ret);
-//$ret=str::utflatindecode($ret);
 return trim($ret??'');}
 
 //defcon
@@ -77,10 +76,9 @@ static function call($d,$h=''){
 $h=$h?$h:rstr(137);
 $d=str::clean_html($d);
 $d=str::br_rules($d);
-$d=str::clean_html($d);//
+//$d=str::clean_html($d);
 $d=self::interpret_html($d,'',$h);
 $d=str::post_treat_repair($d);
-$d=str::clean_br($d);
 $d=str::embed_links($d);
 return $d;}
 
@@ -91,16 +89,19 @@ $d=read_file($f); $r=json_decode($d,true); $ra=utf_r($r[$id],1);
 return [$ra['title'],$ra['content']];}
 
 static function vacuum($f,$sj='',$h=''){//$f=https($f);
-$enc=''; $f=http($f); $f=utmsrc($f); //$f=str::urlenc($f);
+$f=http($f); $f=utmsrc($f); //$f=str::urlenc($f); //$enc='';
 $reb=vaccum_ses($f); if(!$reb){vacses($f,'b','x'); return ['','','','',''];}
-if(strpos($reb,'utf-8') or strpos($reb,'UTF-8'))$enc='utf-8';
-if(!$enc)$enc=between($reb,'charset="','"');
-if(!$enc)$enc=mb_detect_encoding($reb,'UTF-8,ISO-8859-1',true);
+//if(strpos($reb,'utf-8') or strpos($reb,'UTF-8'))$enc='utf-8';
+//if(!$enc)$enc=between($reb,'charset="','"');
+//if(!$enc)$enc=mb_detect_encoding($reb,'UTF-8,ISO-8859-1',true);
 [$defid,$defs]=self::verif_defcon($f);//defcons
 if(substr($reb,0,1)=='{')return self::vacuum_json($reb);
 $auv=video::detect($f);//,'pop'
 if(!$defs && !$auv)$defs=self::add_defcon($f,$reb);
 //if((strtolower($enc)=='utf-8' or $defs[5]==1) && $defs[5]!=2)$reb=utf8dec_b($reb);//
+$reb=str::clean_html($reb);
+/*$reb=str::br_rules($reb);
+$reb=str::clean_html($reb);*/
 if(!empty($defs[2])){//suj
 	if(strpos($defs[2],':')!==false)$suj=dom::detect($reb,$defs[2]);
 	elseif(empty($defs[3]))$suj=self::html_detect($reb,$defs[2]);
@@ -149,10 +150,10 @@ if($txa){$tag='href='; $len=6;
 if($txt){
 	$txt=str::stripconn($txt);//kill conns inside links
 	if($n=strpos($txt,'>'))$txt=substr($txt,$n+1);
-	$txt=utmsrc($txt); $txt=preg_replace("/(\n)|(\t)/",'',$txt);
-	if(substr($txt,0,1)=='/')$txt=substr($txt,1);
-	if(substr($txt,-1,1)=='/')$txt=substr($txt,0,-1);
-	$txt=self::delhook($txt);}//lk|img not works
+	$txt=utmsrc($txt); if($txt)$txt=str_replace(["\n","\t"],'',$txt);
+	if($txt && substr($txt,0,1)=='/')$txt=substr($txt,1);
+	if($txt && substr($txt,-1,1)=='/')$txt=substr($txt,0,-1);
+	if($txt)$txt=self::delhook($txt);}//lk|img not works
 elseif(strpos($bin,'src=')!==false){$tag='src='; $len=5; $im='ok';}
 else return $txa;//things with onclick
 $root=findroot(ses::$urlsrc); if($root==host())$root='';

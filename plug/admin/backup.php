@@ -11,14 +11,15 @@ static function atmrk($r){foreach($r as $k=>$v)$ret[]=$k.'='.self::atm($v); retu
 static function atmra($r,$o=''){$rb=self::atmr($r); $d=$o?'"",':''; if($rb)return '('.$d.implode(',',$rb).')';}
 static function atmrak($r,$o=''){$rb=self::atmrk($r); $d=$o?'"",':''; if($rb)return $d.implode(',',$rb);}
 
-static function build($db,$id,$o=''){$ret=''; $rb=[]; $err=''; $b=transport::pub($db);//$rb=[];
+static function build($db,$id,$o=''){
+$ret=''; $rb=[]; $err=''; $b=transport::pub($db);//$rb=[];
 $ra=self::dbcols($b); $cols=implode(',',array_keys($ra)); //pr($ra);
 $r=sql::call('select '.$cols.' from '.($b).' where id>"'.$id.'"','ar',0);
 if($o==1){$deb='update `'.($b).'` set ';
 	if($r)foreach($r as $k=>$v)$rb[]=$deb.self::atmrak($v).' where id="'.$v['id'].'";'.n();}
 else{$deb='INSERT INTO `'.($b).'` ('.$cols.') VALUES ';
 	if($r)foreach($r as $k=>$v)$rb[]=self::atmra($v);}//pr($rb);
-if($rb){if($o==1)$ret=implode("\n",$rb); else $ret=$deb.implode(",\n",$rb).';';}
+if($rb){if($o==1)$ret=implode("\n",$rb); else $ret=$deb.implode(",\n",$rb).' ON DUPLICATE KEY UPDATE;';}
 //if($o)return $ret;
 $f='_backup/'.$db.'.dump';//_from_'.$id.'
 if(is_file($f))unlink($f); //eco($ret);

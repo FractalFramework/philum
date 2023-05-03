@@ -273,9 +273,9 @@ return $d;}
 
 static function art_mirror($id,$prw){
 $u=srvmir().'/apicom/id:'.$id.',json:1,conn:1'; $d=read_file($u);
-$r=json_decode($d,true); $r=$r[$id]??[]; $r=utf_r($r,1);
-if($r){$t=$r['title']; $d=$r['content'];
-$sq=['suj'=>$t,'mail'=>$r['url'],'img'=>$r['image']??'','thm'=>str::hardurl($t),'ib'=>$r['parent'],'re'=>$r['priority']];
+$r=json_decode($d,true); $r=$r[$id]??[];
+if($r){$t=$r['title']; $d=$r['content']; $imgs=$r['catalog-images']; $ib=$r['parent']; $re=$r['priority'];
+$sq=['suj'=>$t,'mail'=>$r['source'],'img'=>$imgs,'thm'=>str::hardurl($t),'ib'=>$ib,'re'=>$re];
 sqlup('qda',$sq,$id); self::modif_art($id,$d);}
 return art::playd($id,$prw,'');}
 

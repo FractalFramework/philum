@@ -36,7 +36,7 @@ $rh=msql::kv('lang','connectors_basic','',1);
 if(ses('USE'))$ret=self::props($id);//rid used for mc,conns
 foreach($r as $k=>$v){$txt=self::icon($k); $rid=''; if($k=='nl')$v[1]='\n';
 	if($v[0]=='embed'){if($v[1])$v[0]='embedslct'; else $v[1]=$k; $rid=randid();}
-	$ret.=btd('bt'.$rid,ljb('',$v[0],[$v[1],$rid,$id],$txt,att($rh[$k])));}
+	$ret.=btd('bt'.$rid,ljb('',$v[0],[$v[1],$rid,$id],$txt,att($rh[$k]??'')));}
 return divc('nbp',$ret.divd('scb',''));}
 
 static function com($f,$o,$prm=[]){$u=vacurl($f);

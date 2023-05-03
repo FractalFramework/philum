@@ -34,7 +34,7 @@ if($id && !$rst[89])$ret['seek']=popbub('seek','',$ico[13],$top,$hv);//metas
 if($id && auth(6)){
 	$tag=lj('','popup_meta,metall___'.$id.'_3',picto('tag'));
 	$tit=lj('','popup_meta,titedt___'.$id.'_3',picto('meta'));
-	$edt=lj('','popup_edit,artform____'.$id.'__autosize',picto('edit'));
+	$edt=lj('','popup_edit,artform____'.$id.'__autowidth',picto('edit'));
 	$edt2=btj(picto('editor'),atj('editart',$id));
 	//if(!$rst[1])$trk=li(lj('','popup_tracks,form___'.$id,picto('forum')));
 	$ret['edit']=li($tag).li($tit).li($edt).tag('li',['id'=>'adt2'.$id],$edt2);}//.$trk

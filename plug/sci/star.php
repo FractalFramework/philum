@@ -67,7 +67,7 @@ if($pr)foreach($pr as $k=>$v){$t=''; $n='';
 	if($t=='hd')$sq['hd'][]=$n;
 	elseif($t=='hip')$sq['hip'][]=$n;
 	elseif($t=='ra' && $n){
-		if(substr($n,-1)=='d' or substr($n,-1)=='°')$n=substr($n,0,-1);
+		if(substr($n,-1)=='d' or substr($n,-1)=='Â°')$n=substr($n,0,-1);
 		else $n*=15;//hours2deg
 		$sq['ra'][]=($s==1?'>':($s==-1?'<':'=')).(is_numeric($n)?$n:maths::ra2deg($n));}
 	elseif($t=='dc' && $n)$sq['dc'][]=($s==1?'>':($s==-1?'<':'=')).(is_numeric($n)?$n:maths::dec2deg($n));
@@ -75,7 +75,7 @@ if($pr)foreach($pr as $k=>$v){$t=''; $n='';
 	elseif($t=='radius'){
 		if(substr($n,-3)=='rad')$n=rad2deg(substr($n,0,-3));
 		elseif(substr($n,-3)=='mas')$n=maths::mas2deg(substr($n,0,-3));
-		elseif(substr($n,-1)=='d' or substr($n,-1)=='°')$n=substr($n,0,-1);
+		elseif(substr($n,-1)=='d' or substr($n,-1)=='Â°')$n=substr($n,0,-1);
 		elseif(substr($n,-1)=='m')$n=maths::ra2deg('00h'.str_pad(substr($n,0,-1),2,0,STR_PAD_LEFT).'m');
 		elseif(substr($n,-1)=='h')$n=maths::ra2deg(str_pad(substr($n,0,-1),2,0,STR_PAD_LEFT).'h00m');
 		elseif(!is_numeric($n))$n=maths::ra2deg($n);
@@ -105,17 +105,17 @@ static function build($sq,$o=''){$r=[]; $wr=[]; $w='';
 if($sq)foreach($sq as $k=>$v){
 	if($k=='ra')foreach($v as $ka=>$va)$sq[$k][$ka]=substr($va,0,1).substr($va,1)/15;//hipparcos ra is on 24h
 	if($k=='ds')foreach($v as $ka=>$va)$sq[$k][$ka]=substr($va,0,1).maths::al2pc(substr($va,1));}
-if($hip=val($sq,'hip'))$wr['or'][]='hip in("'.implode('","',$hip).'")';
-if($hd=val($sq,'hd'))$wr['or'][]='hd in("'.implode('","',$hd).'")';
-if($ra=val($sq,'ra'))$wr['and'][]='ra'.implode(' and ra',$ra);
-if($dc=val($sq,'dc'))$wr['and'][]='dc'.implode(' and dc',$dc);
-if($ds=val($sq,'ds'))$wr['and'][]='dist'.implode(' and dist',$ds);
-if($mg=val($sq,'mg'))$wr['and'][]='mag'.implode(' and mag',$ds); //p($wr);
-if($and=val($wr,'and'))$w=implode(' and ',$and);
-if($or=val($wr,'or'))$w=implode(' or ',$or);
+if($sq['hip']??'')$wr['or'][]='hip in ("'.implode('","',$sq['hip']).'")';
+if($sq['hd']??'')$wr['or'][]='hd in ("'.implode('","',$sq['hd']).'")';
+if($sq['ra']??'')$wr['and'][]='ra'.implode(' and ra',$sq['ra']);
+if($sq['dc']??'')$wr['and'][]='dc'.implode(' and dc',$sq['dc']);
+if($sq['ds']??'')$wr['and'][]='dist'.implode(' and dist',$sq['ds']);
+if($sq['mg']??'')$wr['and'][]='mag'.implode(' and mag',$sq['mg']);
+if($wr['and']??'')$w=implode(' and ',$wr['and']);
+if($wr['or'])$w=implode(' or ',$wr['or']);
 $cols=['hd','hip','rarad','decrad','dist','spect','mag'];
 if($o)array_push($cols,'lum','ra','dc');
-if($w)$r=sql::call('select '.implode(',',$cols).' from hipparcos where '.$w.'','',0);//auth(6)?1:
+if($w)$r=sql::call('select '.implode(',',$cols).' from hipparcos where '.$w.'','',0);
 if($r)foreach($r as $k=>$v){//if(round($v[4])<99999)
 	$r[$k][2]=maths::deg2ra(rad2deg($v[2]));//
 	$r[$k][3]=maths::deg2dec(rad2deg($v[3]));//
@@ -139,7 +139,7 @@ $bt.=self::simbad2($sq);
 $rb=array_column($r,1); $p=implode(',',$rb);
 $bt.=lj('txtx','popup_starmap4,home___'.$p,pictxt('map','map2d')).' ';
 $bt.=lj('txtx','popup_starmap2,home___'.$p,pictxt('map','map3d')).' ';
-$bt.=lj('txtx','popup_iframe__xr_/app/star3d/'.$p.'___autosize',pictxt('galaxy2','3d'));
+$bt.=lj('txtx','popup_iframe,home__xr_app/star3d/'.$p.'___autowidth',pictxt('galaxy2','3d'));
 if($o==2)$bt='';//starinfos
 if($r){
 	$rh=['hd','hip','RA (h-m-s)','dec (d-m-s)','dist (al)','spect','mag'];

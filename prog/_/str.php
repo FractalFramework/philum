@@ -2,7 +2,7 @@
 class str{
 #filters
 static function hardurl($d){
-echo $d=eradic_acc($d); $d=mb_strtolower($d); $d=str_replace("&nbsp;",' ',$d);
+$d=eradic_acc($d); $d=mb_strtolower($d); $d=str_replace("&nbsp;",' ',$d);
 $r=['/','«','»',',','.',';',':','!','?','|','§','%','&','$','#','_','+','=','\n','\\','~','(',')','[',']','{','}'];
 $d=str_replace($r,'',$d);
 $d=str_replace([' ',"'",'"'],'-',trim($d));
@@ -53,29 +53,29 @@ else $ret.=substr($d,$i,1);}
 return $ret;}
 
 static function utflatindecode($d){return $d;//if(!$d)
-$ra=["%u201C","%u201D","%u2019","%u2026","%u0153","%u20AC","%u2013","%u2022"];
-$rb=['"','"',"'","...","&#339;","€","-","•"];//oe
-return str_replace($ra,$rb,$d);}
+$a=["%u201C","%u201D","%u2019","%u2026","%u0153","%u20AC","%u2013","%u2022"];
+$b=['"','"',"'","...","&#339;","€","-","•"];//oe
+return str_replace($a,$b,$d);}
 
 static function urlenc($d,$o=''){//urlencode(utf8enc($d))
-$ra=["à","â","é","è","ê","ë","î","ï","ô","ö","û","ü","ù","’","'"];
-$rb=["%C3%A0","%C3%A2","%C3%A9","%C3%A8","%C3%AA","%C3%AB","%C3%AE","%C3%AF","%C3%B4","%C3%B6","%C3%BB","%C3%BC","%C3%B9","%E2%80%99",'%E2%80%99'];
-if($o)[$rb,$ra]=[$ra,$rb];
-return str_replace($ra,$rb,$d);}
+$a=["à","â","é","è","ê","ë","î","ï","ô","ö","û","ü","ù","’","'"];
+$b=["%C3%A0","%C3%A2","%C3%A9","%C3%A8","%C3%AA","%C3%AB","%C3%AE","%C3%AF","%C3%B4","%C3%B6","%C3%BB","%C3%BC","%C3%B9","%E2%80%99",'%E2%80%99'];
+if($o)[$b,$a]=[$a,$b];
+return str_replace($a,$b,$d);}
 
 static function htmlentities_a($d){if($d)return htmlentities($d,ENT_QUOTES,ses::$enc);}
 static function htmlentities_b($d){if($d)return str_replace(['&','<','>'],['&amp;',"&lt;","&gt;"],$d);}
 
 static function clean_acc($v){
-$ra=["’","‘",'“','”',"…","–","\t"];
-$rb=["'","'",'"','"',"...","-",''];
-if($v)return str_replace($ra,$rb,$v);}
+$a=["’","‘",'“','”',"…","–","\t"];
+$b=["'","'",'"','"',"...","-",''];
+if($v)return str_replace($a,$b,$v);}
 
 static function clean_punct($d,$o=''){if(!$d)return;
 //if($o)$d=self::clean_acc($d); if($o)$d=self::clean_punct_b($d); if($o==2)$d=self::clean_punct_c($d);
-$ra=[' )','( ',' ,',' .',' ;',' :',' !',' ?','« ',' »','0 0','<<','>>'];
-$rb=[')','(',',','.',"&nbsp;;","&nbsp;:","&nbsp;!","&nbsp;?",'«'."&nbsp;","&nbsp;".'»','0&nbsp;0','"','"'];
-return str_replace($ra,$rb,$d);}
+$a=[' )','( ',' ,',' .',' ;',' :',' !',' ?','« ',' »','0 0','<<','>>'];
+$b=[')','(',',','.',"&nbsp;;","&nbsp;:","&nbsp;!","&nbsp;?",'«'."&nbsp;","&nbsp;".'»','0&nbsp;0','"','"'];
+return str_replace($a,$b,$d);}
 
 static function clean_punct_b($d){if(!$d)return;//del space after first and before last " //"
 $nbc=substr_count($d,'"'); if($nbc%2)return $d;
@@ -177,29 +177,30 @@ $d=str_replace("\n]","]\n",$d);
 return $d;}
 
 #cuts
-static function kmax_nb($kmx,$msg){
-$poa=mb_strpos(substr($msg,$kmx),'. ');
-$pob=mb_strpos(substr($msg,$kmx),"\n"); $pos=$poa<$pob?$poa+1:$pob;
+static function kmax_nb($kmx,$d){
+$poa=mb_strpos(substr($d,$kmx),'. ');
+$pob=mb_strpos(substr($d,$kmx),"\n"); $pos=$poa<$pob?$poa+1:$pob;
 if($pos!==false){$kmx+=$pos;}
-$deb=substr_count(substr($msg,0,$kmx),'[');
-$end=substr_count(substr($msg,0,$kmx),']');
+$deb=substr_count(substr($d,0,$kmx),'[');
+$end=substr_count(substr($d,0,$kmx),']');
 if($deb>$end){$dif=$deb-$end;
 	for($i=0;$i<$dif;$i++){
-		$kmx+=mb_strpos(substr($msg,$kmx),']')+1;
-		$debb=substr_count(substr($msg,0,$kmx),'[');
+		$kmx+=mb_strpos(substr($d,$kmx),']')+1;
+		$debb=substr_count(substr($d,0,$kmx),'[');
 		if($debb>$deb)$dif=($debb-$end);}}
 return $kmx;}
 
-static function kmax($msg){
-$kmx=self::kmax_nb(prmb(3),$msg);
-return substr($msg,0,$kmx);}
+static function kmax($d){
+if(!$d)return 0;
+$kmx=self::kmax_nb(prmb(3),$d);
+return substr($d,0,$kmx);}
 
 #repairs
 static function stripconn($d){
 return codeline::parse($d,'','delconn');}
 
-static function stupid_acc($d){
-$d=str_replace(['<!--[if IE]>','<!--[if IE 9]>','<!--[if !IE]>','<!--<![endif]-->','<![endif]-->','<!-->'],'',$d??'');//,'<!--'
+static function stupid_acc($d){if(!$d)return;//,'<!-->':kill utf8
+$d=str_replace(['<!--[if IE]>','<!--[if IE 9]>','<!--[if !IE]>','<!--<![endif]-->','<![endif]-->'],'',$d);
 $ra=["a`","a^","A`","e´","e`","e^","o^","i^","E´","´´","´","`",'<<','>>','=>'];//,'->',"e¨"
 $rb=["à","â","A","é","è","ê","ô","î","E",'"',"'","'",'«'."\n","\n".'»','&rArr;'];//,'&rArr;',"ë"
 return str_replace($ra,$rb,$d);}
@@ -213,7 +214,7 @@ static function clean_html($d,$o=''){
 $d=html_entity_decode($d);
 $d=self::html_entity_decode_b($d);//create pb
 $d=self::clean_spaces($d);
-//$d=self::clean_acc($d);
+$d=self::clean_acc($d);
 $d=self::stupid_acc($d);
 $r=['b','i','em','strong','p'];
 for($i=0;$i<4;$i++){
@@ -238,7 +239,7 @@ return implode("\n",$rb);}
 
 static function clean_prespace($d){if(!$d)return '';
 $d=str_replace("\t",'',$d);
-//$d=str_replace("\r","\n",$d);
+$d=str_replace("\r",'',$d);
 $d=self::specialspace($d);
 $d=str_replace("\n ","\n",$d);
 $d=str_replace(" \n","\n",$d);
@@ -267,7 +268,7 @@ $d=preg_replace("/(\r\n)|(\n\r)|(\r)/","\n",$d);
 $d=delnl($d);
 $d=self::clean_prespace($d);
 $d=self::repair_badn($d);
-$d=self::repair_badn($d);
+//$d=self::repair_badn($d);
 //$r=conn_ref_out();
 $r=conn_ref_in();
 foreach($r as $k=>$v)$d=str_replace("\n".$v.']',$v.']',$d);
@@ -317,26 +318,26 @@ static function repair_badn($d){//2 fois
 $d=str_replace('µ','(micro)',$d);
 $d=str_replace("\n",'µ',$d);
 if(rstr(9))$d=str_replace('.jpg]µ','.jpg]',$d);
-$ra=[' µ','µ.','µ ','[µ',':]','] .',' ]','[ ',' )','( '];
-$rb=['µ','µ','µ','µ[',']:',']. ','] ',' [',')','('];
+$ra=[' µ',' µ','µ ','µ ','[µ','[µ',':]','] .',' ]','[ ','[ ',' )','( '];//,'µ.'
+$rb=['µ','µ','µ','µ','µ[','[',']:',']. ','] ',' [','[',')','('];//,'µ'
 $d=str_replace($ra,$rb,$d);
-$ra=['[µ[','µ:h]','µ:b]','µ:i]','µ:u]','µ:q]','|µ','| ','-µ','.]'];
-$rb=['µ[[',':h]µ',':b]µ',':i]µ',':u]µ',':q]µ','|','|','- ','].'];
+$ra=['[µ[','µ:h]','µ:b]','µ:i]','µ:u]','µ:q]','µ:q]','|µ','| ','-µ'];
+$rb=['µ[[',':h]µ',':b]µ',':i]µ',':u]µ',':q]µ',':q]','|','|','- '];
 $d=str_replace($ra,$rb,$d);
 $d=str_replace('µ',"\n",$d);
 $d=preg_replace('/(\n){2,}/',"\n\n",$d);
 $d=str_replace('(micro)','µ',$d);
-return $d;}
+return trim($d);}
 
 static function post_treat_repair($d){
 $d=self::clean_prespace($d);
 $d=self::repair_badn($d);
 $d=self::repair_tags($d);
-//$d=self::utflatindecode($d);
-//$d=self::clean_acc($d);
+$d=self::clean_acc($d);
 $d=self::clean_tables($d);
 $d=self::clean_punct($d);
 $d=self::clean_punct_b($d);
+$d=str::clean_br($d);
 $d=delsp($d);
 return $d;}
 

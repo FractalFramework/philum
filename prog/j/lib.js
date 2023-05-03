@@ -22,8 +22,9 @@ if(st.a=='menu')SaveBg(st.i,1);//abort update
 else if(st.a=='module' && st.j)SaveJ(st.j);
 else if(st.a=='art' && st.j){SaveJ(st.j); document.title=st.t;}//?st.t:recuptit()
 else if(st.a=='context' && st.j){let r=st.u.split('/').splice(3);
-	for(var k in r)r[k]=ajx(r[k]); var g=r.join('_');//g=st.p;
-	SaveJ('page_mod,playcontext___'+g); document.title=st.t;}
+	//for(var k in r)r[k]=ajx(r[k]); var g=r.join('_');//g=st.p;
+	ajaxcall('page','mod,playcontext',r,[],'');
+	document.title=st.t;}
 else if(st.j)SaveJ(st.j);}//unused
 
 function startstate(st){
@@ -103,35 +104,18 @@ var arr=[0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f']; //if(a)arr=arr.reverse();
 for(i=0;i<arr.length;i++){rgb=String(arr[i])+String(arr[i])+'4444';
 	setTimeout(function(){setit(rgb,div)},200*i);}}
 
-//enc//encodeURI():utf8 error with »//not enc to utf8
-function encUri(val){return val;}//enc!='utf-8'?encodeURIComponent(val)://test core decuri
-//function decUri(val){return unescape(val);}//SaveJm//decodeURIComponent
-function encUriJ(val){val=ajx(val); //if(enc!='utf-8')val=encodeURIComponent(val);
-return val;}// else var val=encodeURI(val);
-function decUriJ(val){return unescape(ajx(val));}//decodeURI
-function utf8_enc(v){return unescape(encodeURIComponent(v));}
-function utf8_dec(v){return decodeURIComponent(escape(v));}
+//function utf8_enc(v){return unescape(encodeURIComponent(v));}
+//function utf8_dec(v){return decodeURIComponent(escape(v));}
 function addslashes(val){var val=clean_entity(/\"/g,'\\"',val);
 return clean_entity(/\'/g,'\\\'',val);}
 function stripslashes(val){var val=clean_entity(/\\"/g,'"',val);
 return clean_entity(/\\'/g,'\'',val);}
-function strreplace(rep,by,val){if(!val)return ''; return val.split(rep).join(by);}
-//var repl=function(rep,by){return this.split(rep).join(by);}
+function strreplace(rep,by,val){return val?val.split(rep).join(by):'';}
+var jx=function(){return this.split('*').join('_');}
 function clean_entity(a,b,v){var vn=v.split(a); var nb=vn.length;
 for(var i=0;i<nb;i++){var v=v.replace(a,b);} return v;}
 function undefine(d){return typeof d=='undefined'?'':d;}//
 function undefiner(r,n){for(i=0;i<n;i++)r[i]=undefine(r[i]); return r;}
-
-function jra(val){
-var r=new Object; var ra=val.split('_');
-for(i=0;i<ra.length;i++)r['g'+i]=ra[i];
-return r;}
-function jrb(ra){var rb=[];
-for(var key in ra)rb.push(key+'='+ra[key]);
-return rb.join('&');}
-function jrc(ra){var rb=[];
-for(i=1;i<=ra.length;i++)rb.push('g'+i+'='+ra[i]);
-return rb.join('&');}
 
 function exploder(d,l,c){var r=d.split(l); var rt={};
 for(i=0;i<r.length;i++)rt[i]=r[i].split(c); return rt;}
@@ -379,8 +363,8 @@ if(ok && ok.value==1)audio();}
 
 //utils
 function ajx(val,n){
-var arr=['_','*','&','+',"'",'"'];//'?',':','#','’','“','”','/'
-var arb=['(und)','(star)','(and)','(add)','(quote)','(dquote)'];//,'(qmark)','(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)'
+var arr=['_','*','&','+','_'];//'?',':','#','’','“','”','/',"'",'"'
+var arb=['(und)','(star)','(and)','(add)','*'];//,'(qmark)','(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)','(quote)','(dquote)'
 if(n){for(var i=0;i<arr.length;i++){val=strreplace(arb[i],arr[i],val);}}//decode
 else{for(var i=0;i<arr.length;i++){val=strreplace(arr[i],arb[i],val);}}
 return val;}

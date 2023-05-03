@@ -10,25 +10,24 @@ if($r)foreach($r as $k=>$v)
 return $ret;}
 
 #export
-static function json_prep($r,$ra){$ret=[];
+static function json_prep($r,$ra){$rt=[];
 header('Content-Type: application/json');
 if($r)foreach($r as $k=>$v){$re=[];
 	foreach($v as $ka=>$va){
-		if($ka=='content' && !isset($ra['conn']))$va=conn::read($va,'3','','nl');
-		elseif($ka=='image' && $va){$va=host().'/img/'.pop::art_img($va);}//$ka='lead_image_url';
+		if($ka=='content')$va=($ra['conn']??'')?$va:conn::read($va,'3','','nl');
+		elseif($ka=='image' && $va){$va=host().'/img/'.pop::art_img($va);//$ka='lead_image_url';
+			$re['catalog-images']=$v['image'];}
 		elseif($ka=='url-explicit')$va=host().'/art/'.$va;
-		elseif($ka=='url'){$re[$ka]=host().'/'.$k; $ka='source';}
+		elseif($ka=='url'){$va=host().'/'.$k; $ka='source';}
 		elseif($ka=='lang' && !$va)$va=ses('lng');
-		if($ka!='admin')$re[$ka]=utf8enc($va);}
-	$ret[$k]=$re;}
-return $ret;}
+		$re[$ka]=$va;}
+	$rt[$k]=$re;}
+return $rt;}
 
 static function dump($ra,$o=''){
 if($ra)$r=self::datas($ra);
-$r=self::official_cols($r);
-if($o=='conn')$ret=$r['msg'];
-if($o=='json'){$r=self::json_prep($r,$ra);//JSON_HEX_QUOT
-	$ret=json_encode($r,JSON_HEX_TAG);}//echo json_last_error_msg();
+$r=self::official_cols($r); $ret='';
+if($o=='json'){$r=self::json_prep($r,$ra); $ret=json_encode($r,JSON_HEX_TAG);}//echo json_last_error_msg();
 if($o=='sql')$ret=sql::atmra(array_keys(current($r)),1).' values '.sql::atmrb($r,1);
 return $ret;}
 
@@ -188,7 +187,7 @@ for($i=0;$i<$nb;$i++)if($rb[$i]==$n)$kb=$i;
 for($i=0;$i<$nb;$i++){$k=$rb[$i]; $v=$r[$k];
 	if($i<3 or $i==$nb-1 or ($i>$kb-4 && $i<$kb+4)){
 	$c=active($n,$k); $dt=date('Y',timeago($k));
-	$ret.=lj($c,$j.'dig:'.ajx($k),$k>360&&$k!='all'?$dt:$v,att($dt)).' ';}}
+	$ret.=lj($c,$j.'dig:'.ajx($k),$k>360&&$k!='all'?$dt:$v,att($dt)).'';}}
 return btn('nbp',$ret);}
 
 //pages
@@ -212,7 +211,7 @@ if(rstr(53)){$lg=$ra['lg']??''; $lng=ses('lng');
 	if($lg==$lng){$c='active'; $lgb='';} else{$c=''; $lgb=$lng;}
 	$ret.=lj($c,$j.'pg:'.$pg.',prw:'.$prw.',lg:'.$lgb,flag($lng)).' ';}//reset rq_nb
 if(isset($rp))foreach($rp as $i=>$v)
-	$ret.=lj($i==$pg?'active':'',$j.'pg:'.$i,$i).' ';
+	$ret.=lj($i==$pg?'active':'',$j.'pg:'.$i,$i).'';
 if($ret)return btn('nbp',$ret);}
 
 #titles
@@ -292,7 +291,7 @@ if($md=$ra['media']??'')$ra['preview']='conn'.$md;
 else $ra['preview']=art::slct_media($ra['preview']??'');
 $ra['nl']=$ra['nl']??get('nl');
 if(!($ra['ti']??''))$ra['ti']=self::tit($ra);
-if($ra['id']??''){$ra['nodig']=1; $ra['preview']=3; $ra['noheader']=1; $ra['template']='read';}
+if($ra['id']??'' && !$ra['json']??''){$ra['nodig']=1; $ra['preview']=3; $ra['noheader']=1; $ra['template']='read';}
 $ret=self::callr($ra);
 if($ra['noheader']??'')return $ret;
 $nbpg=self::head($ra);

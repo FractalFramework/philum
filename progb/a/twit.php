@@ -164,7 +164,7 @@ return divd('edt'.$p,$bt.$ret);}
 //write
 static function send($p,$o,$prm){
 $p=$prm[0]??$p; $t=self::init($o?$o:1);
-$q=$t->update(($p));//utf8enc_b
+$q=$t->update(html_entity_decode($p));
 if(isset($q['errors'][0]['message'])){self::$er=1; return btn('txtyl',$q['errors'][0]['message']);}
 return divc('txtalert',nms(34).' '.nms(79));}
 
