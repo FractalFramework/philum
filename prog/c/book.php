@@ -11,7 +11,7 @@ static function css(){
 return '
 .book{height:calc(100vh - 70px);}
 .book .panel{text-align:left; border-style:solid; border-width:1px; padding:0px; margin:10px 0 0; border-radius:2px; box-shadow:0px 0px 4px #_7 inset; height:calc(100vh - 190px);}
-.book blockquote{background:gray;}
+.book blockquote{background:rgba(0,0,0,.4);}
 .book a{text-decoration:none;}
 .book a .philum{color:white;}
 .book a:hover .philum{color:white;}

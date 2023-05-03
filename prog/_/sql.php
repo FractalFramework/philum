@@ -54,12 +54,12 @@ if($ob)self::reflush($b,1);}
 //req
 static function format($rq,$p){$rt=[];
 if($p=='q')return $rq;//res
-if($p=='r')return self::qrr($rq);//array
-if($p=='a')return self::qra($rq);//assoc
-if($p=='w')return self::qrw($rq);//row
-if($p=='v'){$r=self::qrw($rq); return $r[0]??'';}
-if($p=='ar'){$rb=[]; while($r=self::qra($rq))$rb[]=$r; return $rb;}
-while($r=self::qrw($rq))if($r[0])switch($p){
+elseif($p=='r')return self::qrr($rq);//array
+elseif($p=='a')return self::qra($rq);//assoc
+elseif($p=='w')return self::qrw($rq);//row
+elseif($p=='v'){$r=self::qrw($rq); return $r[0]??'';}
+elseif($p=='ar'){$rb=[]; while($r=self::qra($rq))$rb[]=$r; return $rb;}
+while($r=self::qrw($rq))if($r)switch($p){
 	case('k'):$rt[$r[0]]=($rt[$r[0]]??0)+1; break;//radd($rt,$r[0])
 	case('rv'):$rt[]=$r[0]; break;//r
 	case('kv'):$rt[$r[0]]=$r[1]??''; break;

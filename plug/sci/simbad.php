@@ -29,13 +29,13 @@ if(strpos($v[0],$t)!==false)$rb[$t]=$v[1];
 if($k==2){$p=explode(' ',$v[1]);
 	if($k==2)$t='ICRS'; if($k==3)$t='FK4';
 	$rb['ICRS AD']=$p[0].'h'.$p[1].'m'.$p[2].'s';
-	$rb['ICRS DC']=$p[3].'°'.$p[4].'"'.$p[5]."'";}
+	$rb['ICRS DC']=$p[3].'Â°'.$p[4].'"'.$p[5]."'";}
 if($k==3){$p=explode(' ',$v[1]);
 	$rb['FK4 AD']=$p[0].'h'.$p[1].'m'.$p[2].'s';
-	$rb['FK4 DC']=$p[3].'°'.$p[4].'"'.$p[5]."'";}
+	$rb['FK4 DC']=$p[3].'Â°'.$p[4].'"'.$p[5]."'";}
 if($k==4){$p=explode(' ',$v[1]);
-	$rb['degAD']=$p[0].'°';
-	$rb['degDC']=$p[1].'°';}
+	$rb['degAD']=$p[0].'Â°';
+	$rb['degDC']=$p[1].'Â°';}
 $t='Proper motions mas/yr';
 if(strpos($v[0],$t)!==false){
 	$p=explode(' ',$v[1]);
@@ -53,7 +53,7 @@ return $rb;}
 
 static function getxt($el,$ret=''){$attr=''; $at='class';
 if(!isset($el->tagName)){$el0=$el->parentNode;
-	if($el0->hasAttribute($at)!=null)$attr=$el0->getAttribute($at); $tg=$el0->tagName; //echo $tg.', '.$attr.' ; ';
+	if($el0->hasAttribute($at)!=null)$attr=$el0->getAttribute($at); $tg=$el0->tagName;
 	if($tg!='div')//$attr!='info-tooltip' && 
 	return $ret.$el->textContent;}
 $el=$el->firstChild;
@@ -77,6 +77,10 @@ $rt=self::detect_table($r[3]);
 $rt=self::cleanup($rt);
 $rd=self::detect_table($r[8]);
 $rd=self::find_names($rd);
+$rd=self::detect_table($r[9]); $rd=self::find_names($rd);
+if(!$rd){$rd=self::detect_table($r[10]); $rd=self::find_names($rd);}
+if(!$rd){$rd=self::detect_table($r[11]); $rd=self::find_names($rd);}
+if(!$rd){$rd=self::detect_table($r[12]); $rd=self::find_names($rd);}
 if($rd)$rt+=$rd;
 return $rt;}
 
@@ -90,7 +94,7 @@ return $bt.divd('smbd',$ret);}
 
 static function callr($p){//enquiries
 $p=str_replace(' ','',$p);
-if(!$p)return ['00h00m',"00°00'",'0'];
+if(!$p)return ['00h00m',"00Â°00'",'0'];
 $u=self::url($p);
 $r=self::build($u);
 return [$r['ICRS AD'],$r['ICRS DC'],$r['Distance (LY)']];}

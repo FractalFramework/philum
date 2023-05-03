@@ -151,16 +151,19 @@ else{//partial and complete dumps, not gziped
 	$u=$srv.'/call/transport/'.$p.'/'.($o=='up'?$o:$maxid); $d=get_file($u);//build
 	$f='_backup/'.$p.'.dump'; $u=$srv.'/'.$f;
 	if(is_file($f))unlink($f); if(!is_file($f)){$e='wget -P '.$dr.'/_backup '.$u; exc($e);}
+	if(!is_file($f)){$d=curl_get_contents($u); 
+		if(strpos($d,'404 Not Found'))$res=' - already updated';
+		elseif($d)write_file($f,$d);}
+	//if(!is_file($f))copy($u,$f);
 	if(is_file($f)){$o=='d'?'ssh':'rq';// -t '.qd($p).'
 		if($o=='ssh'){$e='mysql -u '.$usr.' -p'.$ps.' '.$db.' < '.$dr.'/'.$f; exc($e);}
-		else{$d=file_get_contents($srv.'/'.$f);
-			//$d=utf8enc($d); $d=str_replace(['§','|'],'|',$d);
-			if($d)qr($d);}
-	$res=$maxid==$dist_maxid?'ok':$maxid.'->'.$dist_maxid;}
+		else{$d=file_get_contents($u); $u; if($d)qr($d,0);}
+		$res=$maxid==$dist_maxid?'ok':$maxid.'->'.$dist_maxid;}
+	else $res='not uploaded'.$res;
 	//exc('rm '.$dr.'/'.$f);
 	//todo: del local and distant
 }
-return $p.'-'.$o.':'.$res.br();}
+return divb($p.'-'.$o.':'.$res,'frame-blue');}
 
 static function utf8(){$r=self::tables();
 foreach($r as $k=>$v)
@@ -194,7 +197,7 @@ $a='contents'; $b='critical'; $c='datas'; $d='dump';
 $ra=self::tables();
 $r[$a][]=select(['id'=>'db'],$ra,'vv','art');
 if(!auth(7))return;
-$r[$a][]=lj('popbt',$j.'call_db_3','update recents');
+$r[$a][]=lj('popbt',$j.'build_db_3','update recents');
 $r[$a][]=lj('popsav',$j.'call_db_3__up','update all');
 $r[$d][]=lj('popsav',$j.'build__3__d','dump');
 $r[$d][]=lj('popdel',$j.'build__3__json','dump via json');

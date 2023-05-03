@@ -515,7 +515,7 @@ $mnu.=br(); $b=$b=='unclassed'?'':$b;
 $pk=substr($o,0,3); $pv=substr($o,3); if($pv)$pp[$pk]=$pv; else $pp=[];
 //rech
 $srch=input('srchfnt',$pp['rch']??'',8,'search');
-$srch.=' '.bj('popbt','popup|sty,ffcall|x|1,'.$b.','.$c.','.$o.'|srchfnt','ok').' ';
+$srch.=lj('popbt','popup_sty,ffcall_srchfnt_x_1_'.$b.'_'.$c.'_'.$o,'ok').' ';
 $srch.=lj('popbt','popup_fontface__x_1_all','x');
 //tri
 $rc=[]; foreach($r as $k=>$v){

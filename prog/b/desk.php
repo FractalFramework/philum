@@ -14,13 +14,13 @@ case('module'):$ret='popup_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]); break
 case('modin'):$ret='content_mod,callmod__3_'.ajx($v[3]); break;//alias of module in desk
 case('modpop'):$ret='popup_mod,callmod__3_'.ajx($v[3]); break;//alias of module in desk
 case('page'):$ret='page_mod,playcontext__3_'.ajx($v[3]); break;//from desk(use $v[2])
-case('img'):$ret='popup_usg,popim__3_users/'.ajx($v[3]).'___autosize'; break;
+case('img'):$ret='popup_usg,popim__3_users/'.ajx($v[3]).'___autowidth'; break;
 case('file'):$ret=self::reader($v[3]); break;
 case('finder'):$ret='popup_finder,home___'.$v[3].'_'.$v[4]; break;
 case('admin'):$ret='popup_admin___'.$v[2].'_'.$v[3].'_'.$v[4]; break;
 case('msql'):$ret='popup_msqa,msqlp___'.$v[2].'_'.$v[3].($v[4]?'*'.$v[4]:''); break;
-//case('iframe'):$ret='popup_usg,iframe___'.ajx($v[3]).'___autosize'; break;
-case('link'):$ret='popup_usg,iframe___'.ajx($v[3]).'___autosize'; break;//bubs::apps
+//case('iframe'):$ret='popup_usg,iframe___'.ajx($v[3]).'___autowidth'; break;
+case('link'):$ret='popup_usg,iframe___'.ajx($v[3]).'___autowidth'; break;//bubs::apps
 case('url'):$ret='socket_ret__url_'.ajx($v[3]); break;//host().//$v[2]=blank
 case('app'):[$a,$m]=expl(',',$v[2]);
 	$ret='popup_'.$a.','.($m?$m:'home').'__3_'.ajx($v[3]).'_'.ajx($v[4]);break;
@@ -77,7 +77,7 @@ return lj('',$j,pictxt($r[7],$r[0]));}
 
 static function reader($f){$xt=xtb($f); $fj=ajx($f);//finder_reader
 if($xt=='.mp3')return 'popup_usg,audio___'.$fj;
-if(strpos('.jpg.png.gif',$xt)!==false)return 'popup_usg,popim___users/'.$fj.'___autosize';
+if(strpos('.jpg.png.gif',$xt)!==false)return 'popup_usg,popim___users/'.$fj.'___autowidth';
 return 'popup_finder,reader___'.$fj.'_';}
 
 static function array_merge_p($r,$rb){if($rb)$kb=array_keys_r($rb,0,'k');

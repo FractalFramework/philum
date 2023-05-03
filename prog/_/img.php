@@ -71,15 +71,15 @@ if(!$ex)sqlsav('qdg',[$id,$im,$dc,0],0,1);//,fsize('img/'.$f)
 //else sqlup('qdg',['ib'=>$id,'im'=>$im,'dc'=>$dc,'no'=>0],$ex);
 }
 
-static function mdf($id,$a,$b){
+static function mdf($id,$a,$b){if(!auth(4))return;
 $ex=sql('id','qdg','v',['ib'=>$id,'im'=>$a]);
 if($ex)sqlup('qdg',['im'=>$b],$ex);}
 
-static function rm($id,$im){
+static function rm($id,$im){if(!auth(4))return;
 $ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
 if($ex)sqlup('qdg',['no'=>1],$ex);}
 
-static function del($id,$im){
+static function del($id,$im){if(!auth(5))return;
 $ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
 if($ex)sql::del('qdg',$ex);
 conn::replaceinmsg($id,'['.$im.']','');

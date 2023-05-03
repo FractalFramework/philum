@@ -377,8 +377,8 @@ foreach($r as $k=>$v){if(isset($v['r'])){
 		$sh.=blj('',$k.'fidel','finder,del___'.ajx($url).'_'.$k,self::pic('delete')).' ';}
 	$ret.=divc('',$ico.$op.$sh.$lk);}}
 $dir='../'.struntil($furl,'/');
-if($mp3)$rt=lj('','popupmk,jukebox___'.$dir.'_autosize',picto('play'));
-if($jpg)$rt=lj('','popup_mk,gallery___'.$dir.'_autosize',picto('play'));
+if($mp3)$rt=lj('','popupmk,jukebox___'.$dir.'_autowidth',picto('play'));
+if($jpg)$rt=lj('','popup_mk,gallery___'.$dir.'_autowidth',picto('play'));
 return $rt.$ret;}
 
 static function flap($r,$p,$rb){$o=self::mkprm($rb,'alone',5);

@@ -268,8 +268,8 @@ function conn_ref(){return array_keys(msql_read('system','connectors_all',''));}
 #ajax
 function ajx($v,$p=''){#dont edit!
 $r=['*','_','(star)']; $a=$p?1:0; $b=$p?0:1; $c=$p?0:2; $d=$p?2:0;
-$ra=[$r[$a],$r[$b],'_','&','+',"'",'"'];//,':','#','’','“','”','/'
-$rb=[$r[$c],$r[$d],'(und)','(and)','(add)','(quote)','(dquote)'];//,'(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)'
+$ra=[$r[$a],$r[$b],'_','&','+'];//,':','#','’','“','”','/',"'",'"'
+$rb=[$r[$c],$r[$d],'(und)','(and)','(add)'];//,'(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)','(quote)','(dquote)'
 if($v)$v=$p?str_replace($rb,$ra,$v):str_replace($ra,$rb,$v);
 return $v;}
 

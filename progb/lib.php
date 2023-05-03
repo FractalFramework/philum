@@ -452,10 +452,10 @@ if($na==$nb)$rt=array_combine($ra,$rb); else er('ra:'.$na.',rb:'.$nb); return $r
 function array_merge_cols($r1,$r2){foreach($r1 as $k=>$v)$r1[$k]=[$v,$r2[$k]??'']; return $r1;}
 //str
 function strprm($d,$n=0,$s='/'){$r=explode($s,$d??''); return $r[$n]??'';}
-function strto($v,$s){$p=strpos($v??'',$s); return $p!==false?substr($v,0,$p):$v;}
-function struntil($v,$s){$p=strrpos($v??'',$s); return $p!==false?substr($v,0,$p):$v;}
-function strfrom($v,$s){$p=strpos($v??'',$s); return $p!==false?substr($v,$p+strlen($s)):$v;}
-function strend($v,$s){$p=strrpos($v??'',$s); return $p!==false?substr($v,$p+strlen($s)):$v;}
+function strto($v,$s){$p=mb_strpos($v??'',$s); return $p!==false?mb_substr($v,0,$p):$v;}
+function struntil($v,$s){$p=mb_strrpos($v??'',$s); return $p!==false?mb_substr($v,0,$p):$v;}
+function strfrom($v,$s){$p=mb_strpos($v??'',$s); return $p!==false?mb_substr($v,$p+mb_strlen($s)):$v;}
+function strend($v,$s){$p=mb_strrpos($v??'',$s); return $p!==false?mb_substr($v,$p+mb_strlen($s)):$v;}
 function strfirst($d,$r){$q=[];
 foreach($r as $v){$n=mb_strpos($d,$v); if($n!==false)$q[]=$n;} if($q)return min($q);}
 function nearest($d,$s){$r=str_split($s); $n=strfirst($d,$r); return $n?$n:mb_strlen($d);}
@@ -537,16 +537,17 @@ function nchar($o,$n){$ret=''; for($i=0;$i<$o;$i++){$ret.=$n;}return $ret;}
 function count_r($r){$n=0;
 if($r)foreach($r as $k=>$v){if(is_array($v))$n+=count_r($v); else $n++;} return $n;}
 
-function xt($d,$o=0){$d=strtolower($d??'');
-$b=strrpos($d,'.'); if($b)$d=substr($d,$b+$o);
-$b=strpos($d,'?'); if($b)$d=substr($d,0,$b);
-$b=strpos($d,'#'); if($b)$d=substr($d,0,$b);
-$b=strpos($d,'|'); if($b)$d=substr($d,0,$b);
-$b=strpos($d,' '); if($b)$d=substr($d,0,$b);
+function xt($d,$o=0){if(!$d)return;
+$d=mb_strtolower($d);
+$b=mb_strrpos($d,'.'); if($b)$d=mb_substr($d,$b+$o);
+$b=mb_strpos($d,'?'); if($b)$d=mb_substr($d,0,$b);
+$b=mb_strpos($d,'#'); if($b)$d=mb_substr($d,0,$b);
+$b=mb_strpos($d,'|'); if($b)$d=mb_substr($d,0,$b);
+$b=mb_strpos($d,' '); if($b)$d=mb_substr($d,0,$b);
 if(strlen($d)<7)return $d;}
 function xtb($d,$o=0){return substr(strtolower(strrchr($d??'','.')),$o);}
 function is_img($d){$d=xt($d); if(!$d)return; $r=['.jpg','.png','.gif','.jpeg','.webp'];
-for($i=0;$i<5;$i++)if(strpos($d,$r[$i])!==false)return $r[$i];}
+for($i=0;$i<5;$i++)if(mb_strpos($d,$r[$i])!==false)return $r[$i];}
 function is_http($d){if(substr($d,0,4)=='http' or substr($d,0,2)=='//')return true;}
 
 //vars
@@ -569,10 +570,9 @@ function is255($d){return strlen($d)>255?substr($d,0,255):($d??'');}
 //function is255mb($d){return mb_strlen($d)>255?mb_substr($d,0,255):($d??'');}
 
 //gets
-function gets(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=urldecode($v);}
-function getsb(){$g=$_GET; foreach($g as $k=>$v)ses::$r['get'][$k]=utf8dec(urldecode($v));}
+function gets(){$r=$_GET; foreach($r as $k=>$v)ses::$r['get'][$k]=urldecode($v); return ses::$r['get']??[];}
+function posts(){$r=$_POST??[]; foreach($r as $k=>$v)ses::$r['post'][$k]=delr($v); return ses::$r['post']??[];}
 function get($k,$v=''){return !empty(ses::$r['get'][$k])?ses::$r['get'][$k]:ses::$r['get'][$k]=$v;}
-//function get($k,$v=''){return ses::$r['get'][$k]??(ses::$r['get'][$k]=$v);}
 function geta($k,$v){return ses::$r['get'][$k]=$v;}//assign
 function getb($k,$v=''){return ses::$r['get'][$k]??ses::$r['get'][$k]=$v;}
 function getz($k){ses::$r['get'][$k]='';}
@@ -610,8 +610,8 @@ function nohttp($f){if($f)return str_replace(['http://','https://','www.'],'',$f
 function domain($f){$f=nohttp($f); $p=strpos($f??'','/'); return $p?substr($f,0,$p):$f;}//preplink
 function httproot($f){$f=domain($f); $f=substr($f,0,strrpos($f,'.')); return $f;}
 function findroot($u){$r=explode('/',$u); $r=array_slice($r,0,3); if($r)return implode('/',$r);}
-function utmsrc($f){if(!$f)return;
-if($n=strpos($f,'?fbclid')){$nb=strpos($f,'&',$n); $e=$nb!==false?'?'.substr($f,$nb+1):''; $f=substr($f,0,$n).$e;}
+function utmsrc($f){if(!$f)return; if($n=strpos($f,'?fbclid')){
+$nb=mb_strpos($f,'&',$n); $e=$nb!==false?'?'.mb_substr($f,$nb+1):''; $f=mb_substr($f,0,$n).$e;}
 return strto($f,'?utm_');}
 function host(){return 'http://'.$_SERVER['HTTP_HOST'];}
 function hostname(){$ip=$_SERVER['REMOTE_ADDR']??'';
@@ -794,7 +794,7 @@ return $rb;}
 #tools
 function genpswd($nb=8){$v='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$^§:()[]{}°+-/*';
 $r=str_split($v); $n=count($r); $ret=''; for($i=0;$i<$nb;$i++)$ret.=$r[rand(0,$n)]; return $ret;}
-function exc($d){if(auth(6))return shell_exec(($d));}////system//shell_exec//escapeshellcmd
+function exc($d){if(auth(6))return shell_exec(($d));}//system//escapeshellcmd
 function excdir(){$dr=__DIR__; $r=explode('/',$dr); return '/'.$r[1].'/'.$r[2];}
 function excget($u,$f){$e='wget -P '.excdir().'/'.$u.' '.$f; exc($e);}
 
@@ -815,6 +815,7 @@ function chrono($d=''){static $s; $ret=microtime(true)-($s?$s:$_SERVER['REQUEST_
 if($d)return btn('small',$d.':'.round($ret,5));}
 function window($d){return div(atb('contenteditable','true').ats('overflow:auto; height:300px;'),$d);}
 function eco($d,$o=''){if(is_array($d))$d='<pre>'.print_r($d,true).'</pre>';
+elseif(is_object($d))$d=var_dump($d,true);
 $ret=textarea('',str::htmlentities_b($d),44,12); if($o)return $ret; elseif(auth(6))echo $ret.br();}
 function verbose($r){echo implode(br(),$r).hr();}
 function funcs(){pr(get_defined_functions());}
