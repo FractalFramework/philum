@@ -78,7 +78,6 @@ if(!$d){$d=get_file($f); if($d)$r=json_decode($d,true); if(!is_array($r)){$d='';
 	if($d && $d!='null'){json::add('','meteo',[$insee,$day,$d]);
 	msql::modif('',nod('meteo_1'),[$day,$d],'row','',$insee);}}
 else $r=json_decode($d,true);
-//$r=utf_r($r,1);
 if($r)$ret=self::render($r,$f);
 else $ret=lj('','mto_meteo,build___75101_1','-');
 return divb($ret,'panel','mto');}

@@ -106,10 +106,10 @@ return divtable($rc);}
 
 static function pdfdoc($da,$nl='',$pw=640){
 [$p,$o]=prepdlink($da); $p=goodroot($p);
-if(is_img($o))$im=conn::place_image($o,'',$nl,$pw,''); else $im='';
+if(is_img($o))$im=conn::place_image($o,$nl,$pw,'',''); else $im='';
 if($nl)return lkt('',$p,$im?$im:$o);
 $lk=lkt('',$p,$o?$o:picto('pdf'));
-return lj('','popup_mk,pdfreader__xr_'.ajx($p).'_'.ajx($o).'__autowidth',$im?$im:picto('pdf')).' '.$lk;}
+return lj('','popup_mk,pdfreader__xr_'.ajx($p).'_3__autowidth',$im?$im:picto('pdf')).' '.$lk;}
 
 static function pdfplayer($d,$s=''){if(!$s)$s=get('sz');
 return obj($d,'application/pdf',$s?'width:920px; height:640px;':'');}
@@ -319,7 +319,7 @@ if($r && $rep)foreach($r as $k=>$v){$i++; $bit[$k]=$v[$rep];}
 elseif($r && $op){foreach($r as $k=>$v){$i++; $bit[$k]=$v;}}
 $output='/imgc/'.ses('qd').'_'.ses('read').'_graph_'.$n.'.png';
 img::graphics($output,$pw,140,$bit,getclrs('',7),'yes');///
-if(get('read'))return image($output,'','" style="border:0;')."\n";}
+if(get('read'))return image($output,'','',ats('border:0'))."\n";}
 
 static function microread($d){[$nod,$tmp]=cprm($d);
 return msqlvue::call($nod,$tmp);}
@@ -419,7 +419,7 @@ if($_SESSION[$mp]>=$nb)$_SESSION[$mp]=0;
 if($_SESSION[$mp]<0)$_SESSION[$mp]=$nb-1;
 if(!$src)$dir=jcim($r[$_SESSION[$mp]]); else $dir=$src;
 if(!isset($r[$_SESSION[$mp]]))return 1;
-$im=$dir.$r[$_SESSION[$mp]]; $img=image($im,$pw,'');
+$im=$dir.$r[$_SESSION[$mp]]; $img=image($im,$pw);
 if(is_file($im))[$w,$h]=getimagesize($im);
 if($w>$pw)$ret=ljb('','SaveBf',ajx($im).'_'.($w).'_'.($h),$img);
 else $ret=$img;

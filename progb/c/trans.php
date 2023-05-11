@@ -69,7 +69,7 @@ static function read($txt,$from='',$to='',$format='off'){
 $r=self::build($txt,$from,$to,$format);
 $ret=$r['text'];
 $ret=self::correct($ret);
-return ($ret);}//utf8dec_b
+return ($ret);}
 
 //com
 static function com($ref,$d,$to='',$from='',$z=''){

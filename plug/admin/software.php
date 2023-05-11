@@ -78,8 +78,8 @@ return [$rc,$rd,$re];}
 
 static function archive($u){//u:calling server
 $f=http($u).'/'.json::url('srv','upd');
-$d=file_get_contents($f);
-$r=json_decode($d,true);
+$r=$_POST;//json
+if(!$r){$d=file_get_contents($f); $r=json_decode($d,true);}
 if($r)$r=array_merge($r[0],$r[1]);
 $f='_backup/upd.tar.gz';//work file
 return tar::files($f,$r);}
@@ -94,7 +94,9 @@ if($rb)$rc=self::compare($ra,$rb);
 if($rc)foreach($rc[2] as $k=>$v)unlink($v);//old files
 json::write('srv','upd',$rc);//needed files
 $f=upsrv().'/call/software,archive/'.nohttp(host());//distant will build archive
-$fa=file_get_contents($f); $fb='_backup/upd.tar.gz'; copy(upsrv().'/'.$fa,$fb);
+if(ses::$local)$fa=curl_get_contents($f,json_encode($rc),1);
+else $fa=file_get_contents($f);
+$fb='_backup/upd.tar.gz'; copy(upsrv().'/'.$fa,$fb);
 tar::untar($fb,'');//install files
 return divd('updb',self::state($p).self::rapport($rc).self::tabler($rc));}
 

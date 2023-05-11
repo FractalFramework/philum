@@ -11,7 +11,7 @@ if($dom)$r=$dom->getElementsByTagName($tg); //pr($r);
 if($r->length==0)return 'no result';
 if($r)foreach($r as $k=>$v){$attr=domattr($v,$b);//$v->getAttribute($b)//$v->nodeValue
 	if($attr==$a)$ret=$v->getAttribute($g);}
-return utf8dec_b($ret);}
+return $ret;}
 
 static function build($p,$o=''){$u=domain(trim($p)); //echo $u;
 $d=get_file($p); $r=dom($d); $ret=''; //$ret=eco($d,1); //pr($r);

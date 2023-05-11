@@ -39,14 +39,12 @@ if(strpos($lnk,'feedproxy'))$lnk=self::feedproxy($lnk);
 //if(substr($lnk,0,1)=='/')$lnk=http(domain($f)).$lnk;
 if(!$dat){$dc=$v->children('http://purl.org/dc/elements/1.1/'); $dat=$dc->date;}
 //if($v->content)$txt=$v->content; elseif($v->description)$txt=$v->description; else $txt=$v->summary;//content
-//if(is_utf($va))$va=utf8dec_b($va); if($txt)$txt=($txt);
 $ret[]=[$va,$lnk,$dat,$txt];}//utfenc
 return $ret;}
 
 static function feedproxy($f){
 if(substr($f,0,2)=='//')$f='http:'.$f; $d=get_file($f);
 $enc=between(strtolower($d),'charset=','"','');
-//if(strtolower($enc)=='utf-8')$d=utf8dec_b($d);
 $s='<meta property="og:url" content="'; if(strpos($d,$s))return between($d,$s,'"');
 $s="<link rel='canonical' href='"; if(strpos($d,$s))return between($d,$s,"'");}
 
@@ -79,7 +77,7 @@ return $ret;}
 static function rssin_xml($f){self::$mth=2;
 $rss=self::load_xml($f); $ret=[];
 if($rss)foreach($rss as $k=>$v){[$va,$lnk,$dat,$txt]=$v; 
-	if($dat)$dat=rss_date($dat); //$va=utf8dec_b($va);
+	if($dat)$dat=rss_date($dat);
 	$ret[]=[$va,$lnk,$dat,$txt];}
 return $ret;}
 
@@ -117,7 +115,7 @@ switch($mth){
 		if(!$r)$r=self::rssin_old($f);//3
 	break;}
 if($r)foreach($r as $k=>$v){[$suj,$lnk,$dat,$txt]=arr($v,4);
-	$suj=trim(str::del_n(strip_tags($suj)));//$suj=utf8dec_b($suj); 
+	$suj=trim(str::del_n(strip_tags($suj)));
 	$suj=str::clean_title($suj); $lnk=utmsrc($lnk); 
 	//if(strpos($lnk,'feedproxy'))$lnk=self::feedproxy($lnk);
 	//if(strpos($lnk,'spip.'))$lnk=strto($lnk,'spip.').strend($lnk,'/spip');

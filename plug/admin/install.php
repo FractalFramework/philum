@@ -1,10 +1,7 @@
 <?php //philum_install
 class install{
 static function db($qd=''){if(!$qd)$qd=ses('qd');// && 1==2
-if(ses::$enc=='utf-8'){$charset='utf8mb4'; $langset='utf8mb4_unicode_ci';}
-else{$charset='latin1'; $langset='latin1_general_ci';}
-$collate='collate '.$langset;
-//$instructions='ENGINE=MyISAM '.$collate.' DEFAULT CHARSET='.$charset.';';
+$charset='utf8mb4'; $langset='utf8mb4_unicode_ci'; $collate='collate '.$langset;
 $instructions='ENGINE=InnoDB '.$collate.' DEFAULT CHARSET='.$charset.';';
 $ret["art"]='
 CREATE TABLE IF NOT EXISTS `'.$qd.'_art` (

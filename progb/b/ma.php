@@ -38,6 +38,11 @@ static function rqt($id,$n=''){
 $r=['day'=>0,'frm'=>1,'suj'=>2,'img'=>3,'nod'=>4,'tag'=>5,'lu'=>6,'name'=>7,'host'=>8,'mail'=>9,'ib'=>10,'lu'=>11]; if(!is_numeric($n))$n=$r[$n]; $r=$_SESSION['rqt'][$id]??[];
 if($id)return $r[$n]??'';}
 
+static function rqtb($id,$n=''){
+$d=self::rqt($id,$n);
+if(!$d)$d=sql($n,'qda','v',$id);
+return $d;}
+
 static function find_id($id){if($id=='last')return self::lastid();
 elseif(!is_numeric($id))return self::id_of_suj($id); else return $id;}
 static function lastid($bs){if($bs=='qda')$sq['>=id']=self::lastartid();

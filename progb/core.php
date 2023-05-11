@@ -3,9 +3,10 @@
 //class core{static function com($a,$b,$c,$d){return $a($b,$c,$d);}}
 
 #store
-class ses{static $r=[]; static $adm=[]; static $st=[]; static $er=[];
+class ses{static $r=[]; static $s=[]; static $adm=[]; static $st=[]; static $er=[];
 static $urlsrc=''; static $loader=''; static $enc=''; static $local=0; static $n=0; static $nb=0;
 static function adm($k){return self::$adm[$k]??'';}
+static function s($k,$v=''){return self::$s[$k]??(self::$s[$k]=$v);}
 static function k($k,$v){return self::$r[$k]=$v;}
 static function r($k){return self::$r[$k]??'';}
 static function z($k){unset(self::$r[$k]);}
@@ -172,7 +173,7 @@ function root($d=''){return (is_dir('plug')?'':'/').$d;}//used by rss
 function htac($d){return prms('htacc')?'/'.$d.'/':'/?'.$d.'=';}
 function htacc($d){return prms('htacc')?'/':'/?'.$d.'=';}//read/id
 function urlread($d){return prms('htacc')?'/'.$d:'/?read='.$d;}//read
-function upsrv(){$srv=prms('srvup'); return $srv?http($srv):'http://philum.fr';}
+function upsrv(){$srv=prms('srvup'); if(!$srv)$srv=prms('srvmirror'); return $srv?http($srv):'http://philum.fr';}
 function srvmir(){return http(prms('srvmirror'));}
 function subdomain($v){if(prms('sbdm')){
 $r=explode('.',$_SERVER['HTTP_HOST']); $n=count($r);
@@ -232,17 +233,49 @@ function getclrs($k='',$n=''){$k=$k?$k:ses('prmd'); $r=sesr('clrs',$k);
 if(!$r)$r=boot::define_clr(); if($r)return $n?$r[$n]:$r;}
 function setclrs($d,$k=''){$prmd=$k?$k:ses('prmd'); $_SESSION['clrs'][$prmd]=$d;}
 
-#sessions
-function rstr($n){return ($_SESSION['rstr'][$n]??1)?0:1;}
-function auth($n){return ($_SESSION['auth']??'')>=$n?true:false;}
+#ses
+//function auth($n){return ($_SESSION['auth']??'')>=$n?true:false;}
+//function rstr($n){return ($_SESSION['rstr'][$n]??1)?0:1;}
 function prms($n){return $_SESSION['prms'][$n]??'';}
 function prma($n){return $_SESSION['prma'][$n]??'';}
 function prmb($n){return $_SESSION['prmb'][$n]??'';}
 function nms($d){return $_SESSION['nms'][$d]??$d;}
+function mn($n){return $_SESSION['mn'][$n]??'';}
+function db($k){return $_SESSION[$k]??'';}
+//
+function auth($n){return (ses::$s['auth']??'')>=$n?true:false;}
+function rstr($n){return (ses::$s['rstr'][$n]??1)?0:1;}
+//function prms($n){return (ses::$s['prms'][$n]??1)?0:1;}
+//function prma($n){return (ses::$s['prma'][$n]??1)?0:1;}
+//function prmb($n){return (ses::$s['prmb'][$n]??1)?0:1;}
+//function nms($n){return (ses::$s['prmb'][$n]??1)?0:1;}
+//function mn($n){return (ses::$s['mn'][$n]??1)?0:1;}
+//function db($n){return ses::$s['db'][$n]??'';}
+//function qd($d){return ses::$s['qd'].'_'.$d;}
 function nmx($r){$rb=[]; foreach($r as $k=>$v)$rb[]=nms($v); return implode(' ',$rb);}
 function yesnoses($d){return $_SESSION[$d]=$_SESSION[$d]==1?0:1;}
 function nbof($n,$i){if(!$n)return nms(11)."&nbsp;".nms($i); else return $n.' '.($n>1?nms($i+1):nms($i));}
 function plurial($n,$i){return $n>1?nms($i+1):nms($i);}
+
+function define_ses(){
+ses::$s['auth']=$_SESSION['auth'];
+ses::$s['rstr']=$_SESSION['rstr'];
+ses::$s['prms']=$_SESSION['prms'];
+ses::$s['prma']=$_SESSION['prma'];
+ses::$s['prmb']=$_SESSION['prmb'];
+ses::$s['nms']=$_SESSION['nms'];
+ses::$s['mn']=$_SESSION['mn'];
+$qd=$_SESSION['qd']; ses::$s['qd']=$qd;
+$r=sqldb::$rt; foreach($r as $k=>$v)ses::$s['db'][$k]=$qd.'_'.$v;}
+
+function afc($a,$m){if(!$m)$a='ajax';
+$r=method_exists('ath',$a)?ath::$a():[];
+$a=$r[$m]??ses('auth'); //if($a=='secure')return security();
+if(!auth($a))return 'no';}
+
+function security(){
+$ip=sql('id','qdu','v',['name'=>ses('qb')]);
+if(auth(6) && cookie('iq')==$ip)return true;}
 
 //lang
 function setlng($p){if($p && $p!='all')return $p; $lg=$_SESSION['lng']; return $lg?$lg:prmb(25);}
@@ -332,8 +365,18 @@ function getconn($d){$p=$d; $c=''; $s=mb_strrpos($d,':');
 if($s!==false){$p=mb_substr($d,0,$s); $c=mb_substr($d,$s);}
 $xt=strtolower(strrchr($p,'.')); return [$p,$c,$xt];}
 
+function poc($d){$p=''; $o=''; $c=''; $n=strrpos($d,'|'); $nb=strrpos($d,':');//p|o:c
+if($n!==false && $nb>$n){$p=substr($d,0,$n); $o=substr($d,$n+1,$nb-$n-1); $c=substr($d,$nb);
+if($o=='http'||$o=='https'){$o.=$c; $c='';}}
+elseif($n!==false && $nb!==false){$p=substr($d,0,$nb); $o=substr($d,$nb+1,$n-$nb-1); $c=substr($d,$nb);
+if($p=='http'||$p=='https'){$p=substr($d,0,$n); $o=substr($d,$n+1); $c='';}}
+elseif($n===false && $nb!==false){$p=substr($d,0,$nb); $o=''; $c=substr($d,$nb);
+if($p=='http'||$p=='https'){$p.=$c; $c='';}}
+elseif($n===false && $nb===false){$p=$d; $o=''; $c='';}
+return [$p,$o,$c];}
+
 #vacuum
-function vacurl($f){$f=nohttp($f); return normalize($f);}// $f=strend($f,'/');
+function vacurl($f){$f=nohttp($f); return normalize($f);}
 function vacses($f,$k='',$v=''){$u=vacurl($f);//v,t,d(data),c(cat),u(url),p(parent),b(brut)
 if($v=='x' && $r=sesr('vac',$u)){sesrz('vac',$u); return $r[$k]??'';}
 elseif($v){sesrr('vac',$u,[$k=>$v]); $_SESSION['vac'][$u]['u']=$f;}//pre_clean
@@ -366,6 +409,7 @@ function cachevs($id,$n,$v,$o=''){
 if(isset($_SESSION['rqt'][$id]) && is_array($_SESSION['rqt'][$id])){$_SESSION['rqt'][$id][$n]=$v;
 if($o)msql::modif('',nod('cache'),$v,'val',$n,$id);}}
 function opcache($d){if(!ses::$local)opcache_invalidate($d);}
+function rm($f){if(!is_dir($f) && auth(6)){unlink($f); json::add('','rmim',[$f=>hostname()]);}}
 
 function alert($d){if(ses('dev'))Head::add('jscode',sj('popup_alert___'.ajx($d))); geta('er',$d);}
 function patch_replace($bs,$in,$wh,$repl){$rq=sql('id',$bs,'q',$in.'="'.$wh.'"');

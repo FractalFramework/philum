@@ -21,14 +21,14 @@ if(!empty($defs[2])){
 	else $ti=str::embed_detect($d,$defs[2],$defs[3]);
 	$ti=str::del_n($ti); $ti=strip_tags(trim($ti??''));}
 if(!empty($defs[0])){
-	//if(strpos($defs[0],':')!==false)$tx=dom_detect($d,$defs[0]);
+	//if(strpos($defs[0],':')!==false)$tx=dom::detect($d,$defs[0]);
 	if(strpos($defs[2],':')!==false)$rec=dom::extract($dom,$defs[0]);
 	elseif(empty($defs[1]))$tx=conv::html_detect($d,$defs[0]);
 	else $tx=str::embed_detect($d,$defs[0],$defs[1]); $tx=strip_tags($tx??'');}
 return [$ti,$tx];}
 
 static function metas($u,$d=''){
-if(!$d)$d=vaccum_ses(http($u),''); $d=utf2ascii($d);//eco($d);
+if(!$d)$d=vaccum_ses(http($u),''); //$d=utf2ascii($d);
 if(!$d)return ['','','']; $dom=dom($d); $ti=''; $tx='';
 [$ti,$tx]=self::metas2($u,$d,$dom);
 if(!$ti)$ti=dom::extract($dom,'title:property:meta');
@@ -45,19 +45,20 @@ if(!$im)$im=dom::extract($dom,'og(ddot)image:itemprop:meta');
 if(!$im)$im=dom::extract($dom,'thumbnailUrl:itemprop:link:href');
 if(strpos($u,'youtube')!==false)$im=self::imgyt($u);
 $tx=str::clean_br($tx);
-return [$ti,etc($tx),$im];}
+return [$ti,($tx),$im];}//etc
 
-static function read($u,$o='',$id=0){$k=nohttp(utmsrc($u));
-$r=sql('tit,txt,img,ib,id','qdw','w','url="'.$k.'" limit 1',0);
+static function read($u,$o='',$id=0){
+$u=nohttp(utmsrc($u)); if(strpos($u,'&t='))$u=struntil($u,'&t');
+$r=sql('tit,txt,img,ib,id','qdw','w',['url'=>$u,'_limit'=>'1'],0);
 if(!$r or $o==1){$ra=$r?$r:[];
-	[$ti,$tx,$im]=self::metas($k);
+	[$ti,$tx,$im]=self::metas($u);
 	if(!$ti && ($ra[0]??''))$ti=$ra[0];
 	if(!$im && strpos($u,'youtube')!==false)$im=self::imgyt($u);
-	if(!$ti && rstr(133) && substr($u,0,7)=='youtube')$r=self::kit($k,$id);
+	if(!$ti && rstr(133) && substr($u,0,7)=='youtube')$r=self::kit($u,$id);
 	if($ti)$ti=strip_tags($ti); if($tx)$tx=strip_tags($tx);
 	//json::add('','web'.mkday(),[$ti,$tx,$im,$id,mkday('','Ymd:His')]);
-	if($ra && $ti)sqlup('qdw',['tit'=>$ti,'txt'=>$tx,'img'=>$im],['url'=>$k],0,1);
-	elseif(!$ra)sqlsav('qdw',['ib'=>$id,'url'=>$k,'tit'=>$ti,'txt'=>$tx,'img'=>$im],0,1);
+	if($ra && $ti)sqlup('qdw',['tit'=>$ti,'txt'=>$tx,'img'=>$im],['url'=>$u],0,1);
+	elseif(!$ra)sqlsav('qdw',['ib'=>$id,'url'=>$u,'tit'=>$ti,'txt'=>$tx,'img'=>$im],0,1);
 	if($ti)$r=[$ti,$tx,$im,$id];}
 if(!$r)$r=['','','',$id];
 return $r;}
@@ -74,14 +75,14 @@ $r=json_decode($d,true);
 $r[0]=$r[0]??'';
 $r[1]=$r[1]??'';
 $r[2]=$r[2]??'';
-return utf_r($r,1);}
+return $r;}
 
-static function resav($u,$o,$r){$k=nohttp(utmsrc($u));
+static function resav($u,$o,$r){$u=nohttp(utmsrc($u));
 if($o)$r=self::read($u,$o);
 if($u){[$ti,$tx,$im,$ib]=arr($r,4);
-	$ex=sql('id','qdw','v',['url'=>$k],0);
+	$ex=sql('id','qdw','v',['url'=>$u],0);
 	$rs=['ib'=>$ib,'tit'=>($ti),'txt'=>($tx),'img'=>$im];
-	if($ex)sqlup('qdw',$rs,['url'=>$k],0,1);
+	if($ex)sqlup('qdw',$rs,['url'=>$u],0,1);
 	else sqlsav('qdw',$rs,0,1);}
 if(strpos($u,'youtube.com')!==false)return video::any(strfrom($u,'='),$ib,3);
 return self::com($u);}
@@ -96,8 +97,8 @@ $ret.=input('edtim',$r[2]).'img'.br();
 $ret.=input('edtid',$r[3]?$r[3]:($id?$id:0)).'ib';
 return $ret;}
 
-static function del($u,$d){$k=nohttp(utmsrc($u)); //echo $k;
-$ex=sql('id','qdw','v','url="'.$k.'"'); if($ex)sql::del('qdw',$ex);
+static function del($u,$d){$u=nohttp(utmsrc($u));
+$ex=sql('id','qdw','v',['url'=>$u]); if($ex)sql::del('qdw',$ex);
 return 'deleted';}
 
 static function wmenu($p,$rid,$id){
@@ -137,8 +138,7 @@ static function erasex($p,$o,$prm=[]){
 $p=$prm[0]??'plug'; //$p='twimg';
 $nbd=360; $ret='';//twid,media,quote_id
 $r=sql('id,url','qdw','kv','(url like "%'.$p.'%" or txt like "%'.$p.'%" or tit like "%'.$p.'%")');
-if($r)foreach($r as $k=>$v)//$ret.=self::call($v);
-sql::del('qdw',$k);
+if($r)foreach($r as $k=>$v)sql::del('qdw',$k);//$ret.=self::call($v);
 echo count($r);
 return $ret;}
 

@@ -369,8 +369,8 @@ if($p)return api::build($r,$ra);}
 
 static function bridge($p,$t){
 ses::$urlsrc=$p='http://'.$p.'/'.ajx($t,1);
-$rea=conv::vacuum($p,''); $po['suj']=$rea[0];
-$po['msg']=conn::read($rea[1],3,'');
+[$t,$d]=conv::vacuum($p,''); $po['suj']=$t;
+$po['msg']=conn::read($d,3,'');
 $po['source']=picto('link').' '.art::pub_link($p);
 return art::template($po,'');}
 

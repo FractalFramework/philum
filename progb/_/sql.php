@@ -7,12 +7,10 @@ function __construct($r){if(!self::$qr)self::dbq($r);}
 
 static function dbq($r){
 self::$qr=new mysqli($r[0],$r[1],$r[2],$r[3]); self::$db=$r[3];
-$enc=$r[4]??'utf-8'; $char=$enc=='utf-8'?'utf8mb4':'latin1';
-self::$qr->query('set names '.$char);
-self::$qr->query('set character set '.$char);}
+self::$qr->query('set names utf8mb4');
+self::$qr->query('set character set utf8mb4');}
 
 //job
-static function qd($d){return ses('qd').'_'.$d;}
 static function connect(){require(boot::cnc());}
 static function sqlclose(){mysqli_close(self::$qr);}
 static function qrr($r){return mysqli_fetch_array($r);}
@@ -71,6 +69,7 @@ while($r=self::qrw($rq))if($r)switch($p){
 	case('kvv'):$rt[$r[0]]=[$r[1],$r[2]]; break;
 	case('kkr'):$rt[$r[0]][$r[1]][]=$r[2]; break;
 	case('krr'):$rt[$r[0]][]=$r; break;
+	case('kx'):$rt[$r[0]]=explode('/',$r[1]); break;
 	case('index'):$rt[$r[0]]=$r; break;
 	default:$rt[]=$r; break;}
 return $rt;}
@@ -168,5 +167,15 @@ static function rollback($b){$bb='z_'.ses($b); $b2=$b.'z'; ses($b2,$bb);
 if(self::ex($b2) && auth(6))self::qr('drop table '.ses($b)); else return;
 self::qr('create table '.ses($b).' like '.$bb); self::qr('insert into '.ses($b).' select * from '.$bb); return $bb;}
 static function cols($b){return self::call('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from INFORMATION_SCHEMA.COLUMNS where table_name="'.ses($b).'"','rr');}
+
+static function replace($b,$c,$a,$ab){
+return qr('update '.ses($b).' set '.$c.'=REPLACE('.$c.',"'.$a.'","'.ab.'");');}
+
+static function optimize($db){$b=ses($db); 
+self::qr('rename table '.$b.' to '.$b.'a;');
+self::qr('create table '.$b.' like '.$b.'a');
+self::qr('insert into '.$b.' select * from '.$b.'a');
+if(self::ex($db))self::qr('drop table '.$b.'a;');
+}
 
 }?>

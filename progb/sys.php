@@ -5,7 +5,7 @@ if(!ses('qb') or get('hub') or get('refresh') or get('log')){$cache='ok'; boot::
 if(get('dev')){$_SESSION['dev']='b'; relod('/reload');}
 if(get('module')=='Home')geta('module','');//old htaccess
 if($cache)boot::init();
-if(ses('dev'))error_report();
+//if(ses('dev'))error_report();
 if($log=get('log'))boot::log_mods($log);
 if(!ses('USE'))boot::define_use();
 $cache=boot::deductions($cache);
@@ -15,6 +15,7 @@ if(!ses('iqa'))boot::define_iq();
 if(!rstr(22))boot::block_crawls();
 #env
 boot::define_auth();
+define_ses();
 $cache=boot::time_system($cache);
 boot::seslng();
 #rqt
@@ -56,7 +57,7 @@ elseif(ses::$r['raed']??''){$meta['title']=ses::$r['raed']; $meta['descript']=se
 	$meta['img']=$host.'/img/'.ses::r('imgrel');}
 else{$mn=ses('mn'); $meta['title']=$mn[ses('qb')]??'';
 	$meta['descript']=$_SESSION['qbin']['dscrp'];}
-$cst=ses('dev')?'?'.randid():'';
+$cst=('dev')?'?'.randid():'';//ses
 if($adm or $msq)$meta['css']='_admin';
 else $meta['css']=boot::define_design();
 boot::verif_update();

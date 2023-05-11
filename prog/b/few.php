@@ -51,11 +51,10 @@ return divc('txtcadr',picto('lock').' '.nms(137).' : '.inputj('artpswd','',$j).l
 #seesrc
 static function seesrc($f){
 $bt=lj('','popup_few,seesrc2__3_'.ajx($f),pictit('file-html','code')).' ';
-[$title,$ret,$d,$defid,$defs]=conv::vacuum($f); $d=self::progcode($d);
+[$title,$ret,$d]=conv::vacuum($f); $d=self::progcode($d);
 return $bt.tagc('code','console',$d);}
 
-static function seesrc2($f){$d=get_file($f); 
-//$enc=detect_enc($d); if($enc=='UTF-8')$d=utf8dec_b($d);
+static function seesrc2($f){$d=get_file($f);
 $d=self::progcode($d);
 return tagc('code','console',$d);}
 

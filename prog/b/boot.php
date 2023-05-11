@@ -86,7 +86,7 @@ return $pm;}
 static function define_config(){$qb=ses('qb');
 $qbn=sql('mail,config,dscrp','qdu','a',['name'=>$qb]);
 $rst=msql::col('',$qb.'_rstr',0,1); if(!$rst)$rst=msql::col('system','default_rstr',0,1);
-$_SESSION['rstr']=arr($rst,150);
+$_SESSION['rstr']=arr($rst,160);
 $_SESSION['prmb']=self::prmb_defaults($qbn['config']??'');
 $qbin['adminmail']=$qbn['mail']??'';
 $qbin['dscrp']=$qbn['dscrp']??'';
@@ -276,7 +276,7 @@ elseif(is_numeric($n))return 'public_design_'.$n;}
 
 #users
 //log
-static function log_mods($log){
+static function log_mods($log){//eco($log);
 $use=ses('USE'); $ret='';
 switch($log){
 case('on'): $usr=post('user','login');

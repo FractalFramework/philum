@@ -24,7 +24,7 @@ if($r)foreach(self::$dfb as $k=>$v)if($v){$rz=opt($r[$v],':',4);
 if($ra)$vr=$q->getElementsByTagName($ra['channel'][2]); //pr($vr);
 if($vr)foreach($vr as $k=>$v){
 	foreach($r as $ka=>$va){//pr($v);
-		//$rb[$k][$ka]=utf8dec_b(utf8dec_b(self::find($v,$va)));
+		//$rb[$k][$ka]=self::find($v,$va);
 		$rb[$k][$ka]=$va?dom::extract($v,$va):'';}} //pr($rb);
 if($rb)foreach($rb as $k=>$v)if($v['title']){$rt='';
 	//foreach($v as $ka=>$va)$rt.=tagb($ka,$va);

@@ -224,6 +224,11 @@ return divc('list',$ret);}
 static function putses($k,$v){
 if($k!='auth' && $k!='USE')return $_SESSION[$k]=$v;}
 
+static function setlng($g1){
+$ret=usg::putses('lang',$g1);
+ses('lng',$g1!='all'?$g1:prmb(25));
+return $ret;}
+
 static function cookprefs($p){
 $r=['iq'=>ses('iq')];
 $ex=sql('id','qdk','v',$r);

@@ -64,11 +64,12 @@ $ret.=lj('','admsql_msqa,find_msqsr__'.ajx($dr).'_'.ajx($nd),picto('ok'));
 return $ret;}
 
 static function find($dr,$nd,$prm){$sr=$prm[0]??'';
-$r=msql::read_b($dr,$nd,'',1); $ret='';
+$r=msql::read_b($dr,$nd,'',1); $rt=[];
 if(!is_array($r) or !$sr)return;
-foreach($r as $k=>$v)if(strpos($k,$sr)!==false)$ret[$k]=$v;
-	else foreach($v as $ka=>$va)if(strpos($va,$sr)!==false)$ret[$k]=$v;
-return !$ret?'no result':self::draw_table($ret,self::sesm('murl'),'');}
+foreach($r as $k=>$v)
+	if(strpos($k,$sr)!==false)$rt[$k]=$v;
+	else foreach($v as $ka=>$va)if(strpos($va,$sr)!==false)$rt[$k]=$v;
+return !$rt?'no result':self::draw_table($rt,self::sesm('murl'),'');}
 
 static function msqcall($g1,$g2,$g3,$g4){$ret='';
 $r=msql::row($g1,$g2,$g3,1); $v=$r[$g4]??($r[0]??'');
@@ -109,7 +110,8 @@ if(is_array($r))foreach($r as $k=>$v){$td=''; $i++;
 	if($i>=$min && $i<$max && is_array($v))
 		foreach($v as $ka=>$va)$td.=tagc('td',$csb,$va);
 	if($td)$tr.=tagb('tr',$td);}
-return divd('msqpg',$bt.scroll($r,tag('table',[],$tr),500).$bt);}
+$ret=tag('table',[],$tr); //$ret=scroll($r,$ret,500);
+return divd('msqpg',$bt.$ret.$bt);}
 
 static function draw_table($r,$murl,$adm=''){//adm=saving
 [$dr,$nd,$n]=self::murlvars($murl); $jurl=ajx($murl); $def=get('def'); $i=0; $rh=[];
@@ -183,8 +185,6 @@ static function mdfcolbt($va,$k,$ka,$murl,$rid){//randid().
 if(!trim($va)==='')$va='-'; $j=ajx($murl).'_'.ajx($k).'_'.ajx($ka);//.$id
 return '<a onclick="'.sj($rid.'_msqledit_'.$rid.'__'.$j).'">'.($va).'</a>';}
 
-static function editmsql_defcons(){return 'line:1|line:last|line:title|del:|linewith:|boldline:1|linenolink:1|del-link:|striplink:|delconn:s|replconn-pre-q|stripconn|deltables|delqmark|delblocks|cleanmail|png2jpg|since:|to:|-??|???';}
-
 static function msqlmdf($g1,$g2,$g3,$g4,$prm){
 [$dr,$nd,$n]=self::murlvars($g1); $d=$prm[0]; $d=deln($d); $d=delbr($d,"\n");//$d=delr($d);
 msql::modif($dr,$nd,trim(strip_tags($d)),'shot',$g3,$g2);
@@ -223,8 +223,9 @@ if(isset($ra))$r=$r[$va]; elseif($key)$r=msql::read_b($dir,$node,$key);
 if(is_array($r)){$i=0; $kys[]='k'.$rid;//keys to shift from array
 	foreach($r as $k=>$v){$kb=self::normaliz($idn.$k); $kys[]=$kb; $rhk=$rh[$k]??''; $i++;
 		if(substr($node,-7)=='defcons'){
-			if($rhk=='post-treat')$opt=br().jump_btns($kb,self::editmsql_defcons(),'|'); else $opt=''; 
-			if($rhk=='last-update')$v=date('ymdHi',time());}
+			if($rhk=='post-treat')$opt=br().jump_btns($kb,conv::ptvars(),'|'); else $opt=''; 
+			//if($rhk=='last-update')$opt=ljb('txtbox','jumpvalue',[$kb,date('ymd',time())],date('ymd',time()));
+			if($rhk=='last-update'){$opt=btn('txtx',$v); $v=date('ymd',time());}}
 		else $opt=self::slct($idn,$k,$dir.'/'.$node.'-'.($i-1));//slct
 		if($rhk=='icon')$opt.=' '.lj('txtx','popup_admx,sbmpct___'.$kb,'pictos');
 		//elseif($rhk=='condition')$opt.=' '.jump_btns($kb,'menu|desk|boot|home|user',' ');
@@ -396,12 +397,12 @@ if(strpos($d,'msql/')!==false){$r=explode('/',$d); $n=count($r)-1; $nod=$r[$n]; 
 else{[$a,$b]=split_one('/',$d,1); return msql::read($a,$b,'','',$rh);}}
 
 //json
-static function edtjson($r){if($r)return json_encode($r);}//$r=utf_r($r);
+static function edtjson($r){if($r)return json_encode($r);}
 
 static function import_json($d){$r=json_decode($d,true);
 if(isset($r[0])){$rh['_']=$r[0]; unset($r[0]); $r=$rh+$r;}
 if(isset($r['_menus_'])){$rh['_']=$r['_menus_']; unset($r['_menus_']); $r=$rh+$r;}//old
-return utf_r($r,1);}
+return $r;}
 
 static function import_json_lk($f){
 if(substr($f,0,4)=='http')$d=get_file($f);
@@ -570,7 +571,7 @@ if(strpos($it,'¬')===false)$r=explode("\n",$it); else $r=explode('¬',$it);
 foreach($r as $k=>$v)if(trim($v) && $v!='//'){$ra=explode('|',$v);
 	if(is_array($ra)){$rb=[]; 
 		foreach($ra as $ka=>$va){
-			$va=str_replace([':BAR:',':LINE:'],['|','¬'],$va);
+			$va=str_replace([':bar:',':line:'],['|','¬'],$va);
 			$rb[]=trim($va);} $ra=$rb;}
 	if($aid=='ok')$ret[$k+1]=$ra;
 	else{$ret[]=$ra;}} //$va=$ra[0]??$k; unset($ra[0]); $va

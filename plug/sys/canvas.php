@@ -33,7 +33,7 @@ $d=str_replace("\n",' ',$d);
 return iframe('/app/canvas/'.$d.'/'.$id.'&fz=420-300',440);}
 
 static function edit($d,$id){
-$d=str_replace(' ',"\n",$d); //$d=utf8dec_b($d);
+$d=str_replace(' ',"\n",$d);
 $ret.=lj('popbt','graph'.$id.'_canvas,iframe_graphjs__'.$id,'see').br();
 $ret.=textarea('',$d,50,16,['id'=>'graphjs']);
 return $ret;}

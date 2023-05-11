@@ -11,9 +11,9 @@ function p($r){print_r($r);}
 function n(){return "\n";}
 function br(){return "<br />";}
 function hr(){return "<hr />";}
-function sep(){return '&nbsp;';}
-function sti(){return '&#8239';}
-function thin(){return '&#8201;';}
+function sep(){return "&nbsp;";}
+function sti(){return "&#8239";}
+function thin(){return "&#8201;";}
 function atb($d,$v){return $v?' '.$d.'="'.$v.'"':'';}
 function atc($d){return $d?' class="'.$d.'"':'';}
 function atd($d){return $d?' id="'.$d.'"':'';}
@@ -295,24 +295,26 @@ $r=['http'=>['method'=>'GET','header'=>$head,'ignore_errors'=>1,'request_fulluri
 $context=stream_context_create($r);
 if(is_url($f))return file_get_contents($f,false,$context);}
 
-function curl_get_contents($f,$post=''){
+function curl_get_contents($f,$post='',$json=0){
 $c=curl_init(); curl_setopt($c,CURLOPT_URL,$f); $er='';
-curl_setopt($c,CURLOPT_HTTPHEADER,[]);
+curl_setopt($c,CURLOPT_HTTPHEADER,$json?['accept: application/json','content-type: application/json']:[]);
+if(is_array($post))$post=http_build_query($post);
 if($post){curl_setopt($c,CURLOPT_POST,TRUE); curl_setopt($c,CURLOPT_POSTFIELDS,$post);}
 curl_setopt($c,CURLOPT_USERAGENT,$_SERVER['HTTP_USER_AGENT']);
 curl_setopt($c,CURLOPT_RETURNTRANSFER,1); curl_setopt($c,CURLOPT_FOLLOWLOCATION,1);
 curl_setopt($c,CURLOPT_SSL_VERIFYPEER,0); curl_setopt($c,CURLOPT_SSL_VERIFYHOST,0);
 curl_setopt($c,CURLOPT_REFERER,host()); curl_setopt($c,CURLOPT_CONNECTTIMEOUT,2);
+curl_setopt($c,CURLOPT_ENCODING,'UTF-8'); $enc=curl_getinfo($c,CURLINFO_CONTENT_TYPE);
 $ret=curl_exec($c); if($ret===false)$er=curl_errno($c);
 curl_close($c); if(!$er)return $ret;}
 
 #dom
 function dom($d){
-$dom=new DomDocument('2.0','UTF-8');//
+$dom=new DomDocument();//'2.0','UTF-8'
 $dom->validateOnParse=true;
 $dom->preserveWhiteSpace=true;//false
 libxml_use_internal_errors(true);
-if($d)$dom->loadHtml($d,LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD);
+if($d)$dom->loadHtml($d,LIBXML_HTML_NODEFDTD);//LIBXML_HTML_NOIMPLIED|
 return $dom;}
 
 function fdom($f,$o=''){$ret=''; //if(!urlcheck($f))return 'no';
@@ -348,20 +350,16 @@ JSON_ERROR_SYNTAX=>4,//'Erreur de syntaxe ; JSON malformé'
 JSON_ERROR_UTF8=>5,//'Caractères UTF-8 malformés, erreur encodage'
 default=>6};}//'Erreur inconnue'
 
-/*function json_enc($r){$r=utf_r($r);
-return json_encode($r);}//JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP|JSON_UNESCAPED_UNICODE*/
-
 function mkjson($r,$o=''){
-$rb=utf_r($r,0);//,ses::$enc=='utf-8'?1:0
-$rt=json_encode($rb,JSON_HEX_TAG);
+//$rb=utf_r($r);
+$rt=json_encode($r,JSON_HEX_TAG);
 $e=json_error(); if($e)$rt=json_encode(array_combine(array_keys($r),array_fill(0,count($r),$e)));
 return $rt;}
 
-function utf_r($r,$o=''){$rt=[];
-if($o==1 && ses::$enc=='utf-8')return $r;
+function utf_r($r){$rt=[];
 if(is_array($r))foreach($r as $k=>$v){
 	$kb=$o?utf8dec($k):toutf8($k); $k=$kb?$kb:$k;
-	if(is_array($v))$rt[$k]=utf_r($v,$o);
+	if(is_array($v))$rt[$k]=utf_r($v);
 	else $rt[$k]=$o?utf8dec($v):toutf8($v);}
 return $rt;}
 
@@ -419,16 +417,17 @@ function he2utf($d){return mb_convert_encoding($d,'UTF-8','HTML-ENTITIES');}
 function utf2he($d){return mb_convert_encoding($d,'HTML-ENTITIES','UTF-8');}
 function toutf8($d){$enc=detect_enc($d); return $enc=='UTF-8'?$d:mb_convert_encoding($d,'UTF-8',$enc);}
 function noutf8($d){$enc=detect_enc($d); return $enc!='UTF-8'?$d:mb_convert_encoding($d,'UTF-8',$enc);}
-function ascii2iso($d){htmlentities($d??''); $d=iconv('ASCII','ISO-8859-1',$d);
+function ascii2iso($d){$d=htmlentities($d??''); $d=iconv('ASCII','ISO-8859-1',$d);
 return html_entity_decode($d);}//mysql2utf8
 function utf2ascii($d){$d=$d??''; $d=htmlentities($d,ENT_QUOTES,'UTF-8'); $d=utf8dec2($d);
 return html_entity_decode($d);}//htmlspecialchars_decode//$d=ascii2iso($d);//
 //function utf8enc_b($d){$d=$d??''; $d=he2utf($d); return html_entity_decode($d);}//lated used for web output
-function utf8dec_b($d){$d=utf2ascii($d); return str::html_entity_decode_b($d);}//most used//normalize quotes
+function utf8dec_b($d){$d=utf2ascii($d); return str::html_entity_decode_b($d);}//normalize quotes
+function utf8dec_c($d){$d=html_entity_decode($d); return utf8dec($d);}//
 function detect_enc($d){return mb_detect_encoding($d,'UTF-8,ISO-8859-1',true);}
-function is_utf($d){return strpos($d,'Ã')||strpos($d,'â€')||strpos($d,'Ð')||strpos($d,'ã');}
-function urlutf($u){return urlencode(utf8enc($u));}//str::urlenc()
-function utf($d){return $d; ses::$enc=='utf-8'?utf8enc($d):$d;}
+//function is_utf($d){return mb_detect_encoding($d,'UTF-8,ISO-8859-1',true)=='UTF-8'?1:'';}
+function is_utf($d){return $d?strpos($d,'Ã')||strpos($d,'©')||strpos($d,'®')||strpos($d,'¨')||strpos($d,'¢'):'';}
+function urlutf($u){return urlencode(utf8enc($u));}
 
 #strings
 function eradic_acc($d){
@@ -466,7 +465,7 @@ function split_right($s,$v,$n=''){if($n)$p=mb_strrpos($v,$s); else $p=mb_strpos(
 if($p!==false)return [mb_substr($v,0,$p),mb_substr($v,$p+1)]; else return ['',$v];}
 function between($d,$a,$b,$na='',$nb='',$o=''){$pa=$na?mb_strrpos($d,$a):mb_strpos($d,$a);
 if($pa!==false){$pa+=mb_strlen($a); $pb=$nb?mb_strrpos($d,$b,$pa):mb_strpos($d,$b,$pa);
-	if($pb!==false)return mb_substr($d,$pa,$pb-$pa); elseif($o)return mb_substr($d,$pa);}}
+	if($pb!==false)return mb_substr($d,$pa,$pb-$pa); elseif($o)return mb_substr($d,$pa); else return '';}}
 function segment($d,$a,$b){return between($d,$a,$b,0,0,1);}
 function strin($d,$a,$b){return between($d,$a,$b,0,0,1);}
 function isnum($d){return preg_replace("/[^0-9]/",'',$d);}
@@ -543,7 +542,7 @@ $b=mb_strrpos($d,'.'); if($b)$d=mb_substr($d,$b+$o);
 $b=mb_strpos($d,'?'); if($b)$d=mb_substr($d,0,$b);
 $b=mb_strpos($d,'#'); if($b)$d=mb_substr($d,0,$b);
 $b=mb_strpos($d,'|'); if($b)$d=mb_substr($d,0,$b);
-$b=mb_strpos($d,' '); if($b)$d=mb_substr($d,0,$b);
+//$b=mb_strpos($d,' '); if($b)$d=mb_substr($d,0,$b);
 if(strlen($d)<7)return $d;}
 function xtb($d,$o=0){return substr(strtolower(strrchr($d??'','.')),$o);}
 function is_img($d){$d=xt($d); if(!$d)return; $r=['.jpg','.png','.gif','.jpeg','.webp'];
@@ -610,9 +609,8 @@ function nohttp($f){if($f)return str_replace(['http://','https://','www.'],'',$f
 function domain($f){$f=nohttp($f); $p=strpos($f??'','/'); return $p?substr($f,0,$p):$f;}//preplink
 function httproot($f){$f=domain($f); $f=substr($f,0,strrpos($f,'.')); return $f;}
 function findroot($u){$r=explode('/',$u); $r=array_slice($r,0,3); if($r)return implode('/',$r);}
-function utmsrc($f){if(!$f)return; if($n=strpos($f,'?fbclid')){
-$nb=mb_strpos($f,'&',$n); $e=$nb!==false?'?'.mb_substr($f,$nb+1):''; $f=mb_substr($f,0,$n).$e;}
-return strto($f,'?utm_');}
+function utmsrc($f){if(!$f)return; $r=['?fbclid','&fbclid','?utm','&utm'];
+foreach($r as $k=>$v)if($n=strpos($f,$v))$f=strto($f,$v); return $f;}
 function host(){return 'http://'.$_SERVER['HTTP_HOST'];}
 function hostname(){$ip=$_SERVER['REMOTE_ADDR']??'';
 if(strstr($ip,' ')){$r=explode(' ',$ip); return $r[0];} else return gethostbyaddr($ip);}
@@ -695,10 +693,10 @@ function obj($d,$t,$s=''){return tag('object',['data'=>$d,'type'=>$t,'style'=>$s
 function audio($d,$id='',$t=''){[$f,$t]=cprm($d); $bt=btn('small',mk::download($d));
 return '<audio controls><source src="'.$f.'" type="audio/mpeg"></audio>'.$bt;}
 function video($d,$w='',$h='',$o=''){
-[$d,$t]=cprm($d); $d=goodroot($d); $ty='type="video/'.substr(xtb($d),1).'"';
+[$d,$t]=cprm($d); $d=goodroot($d); $ty='type="video/'.xtb($d,1).'"';
 if($t)return lj('','popup_usg,video___'.ajx($d),pictxt('movie',$t!=1?$t:strend($d,'/')));
 //if(!urlcheck($d))return lkt('',$d,pictxt('movie'),domain($d));
-if(strpos($d,'.mp4'))$xt='mp4'; else $xt=substr(xt($d),1); if($o)$h.=' poster="'.$o.'"';
+if(strpos($d,'.mp4'))$xt='mp4'; else $xt=xtb($d,1); if($o)$h.=' poster="'.$o.'"';
 if($w)$w.='px'; else $w='100%'; if($h)$h=' height="'.$h.'px"'; else $h=' height="440px"';
 return '<video src="'.$d.'" width="'.$w.'"'.$h.$ty.' controls autobuffer></video>';}//loop
 
@@ -710,7 +708,8 @@ elseif($hy>$hx && $s){$yb=($ho-($h*$hx))/2; $ho=$ho/($hy/$hx);}//reduce_h
 elseif($hy<$hx && $s){$xb=($wo-($w*$hy))/2; $wo=$wo/($hx/$hy);}//reduce_w
 elseif($hy<$hx){$xb=($wo-($w*$hy))/2; $wo=$wo/($hx/$hy);}//adapt_h (no_crop)
 elseif($hy && $hx){$xb=0; $ho=$ho/($hy/$hx);}//adapt_w
-return [round($w),round($h),round($wo),round($ho),round($xb),round($yb)];}
+$r=[$w,$h,$wo,$ho,$xb,$yb]; foreach($r as $k=>$v)if($v)$r[$k]=round($v);
+return $r;}
 
 function make_mini($in,$out,$w,$h,$s){
 if(!is_file($in) && substr($in,0,4)!='http')return;

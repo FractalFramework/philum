@@ -56,13 +56,11 @@ if(!auth(6))return btn('txtalert','need auth>6');
 $j=$rid.'_exec,run_codarea_2';
 $f='_datas/exec/'.date('ymd').'.php'; mkdir_r($f);
 if(!$p && is_file($f)){$p=read_file($f); if($p)$p=substr($p,6);}
-$bt=lj('',$j,picto('ok')).' ';
-$bt.=lj('txtx','popup_exec,lib','lib').' ';
-$bt.=lj('txtx','popup_exec,fast','fast').' ';
+$bt=togbub('exec,lib','','lib').' ';
+$bt.=togbub('exec,fast','','fast').' ';
 //$bt.=select($r,'');
 $bt.=msqbt('system','program_core').' ';
-//$bt.=lj('txtx',"exec","x").' ';
-$bt.=lj('popsav',$j,'exec').br();
+$bt.=lj('popsav',$j,'exec');
 $ret=jscode(self::js());
 $sj=atjr('SaveJtim',[$j,1000]); //$onk=atjr('autocomp','codarea');
 $ret.=textarea('codarea',$p?$p:'$ret=\'hello\';',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);

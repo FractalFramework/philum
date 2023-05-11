@@ -4,7 +4,7 @@ static $o='';
 
 static function official_cols($r){$ret=[];
 $r1=['id','ib','day','mail','frm','suj','img','nod','thm','name','lu','re','host','msg','lg'];
-$r2=['id','parent','time','url','category','title','image','hub','url-explicit','admin','views','priority','length','content','lang'];
+$r2=['id','parent','time','source','category','title','image','hub','url-explicit','admin','views','priority','length','content','lang'];
 if($r)foreach($r as $k=>$v)
 	foreach($v as $ka=>$va){$kb=in_array_b($ka,$r1); $ka=$r2[$kb]; $ret[$k][$ka]=$va;}
 return $ret;}
@@ -15,10 +15,10 @@ header('Content-Type: application/json');
 if($r)foreach($r as $k=>$v){$re=[];
 	foreach($v as $ka=>$va){
 		if($ka=='content')$va=($ra['conn']??'')?$va:conn::read($va,'3','','nl');
-		elseif($ka=='image' && $va){$va=host().'/img/'.pop::art_img($va);//$ka='lead_image_url';
-			$re['catalog-images']=$v['image'];}
+		elseif($ka=='image' && $va){$va=host().'/img/'.pop::art_img($va);
+			$re['catalog-images']=$v['image'];}//$ka='lead_image_url';
 		elseif($ka=='url-explicit')$va=host().'/art/'.$va;
-		elseif($ka=='url'){$va=host().'/'.$k; $ka='source';}
+		elseif($ka=='source'){$re['url']=host().'/'.$k;}
 		elseif($ka=='lang' && !$va)$va=ses('lng');
 		$re[$ka]=$va;}
 	$rt[$k]=$re;}
@@ -392,10 +392,10 @@ $ra['order']=prmb(9); $ra['nbyp']=prmb(6); $ra['page']=get('page');
 return $ra;}
 
 static function tag_ci($d){return $d=str::protect_url($d,1);
-return sql('tag','qdt','v','tag collate latin1_swedish_ci="'.$d.'"');}
+return sql('tag','qdt','v',['tag'=>$d]);}
 
 static function tag_id($d){
-return sql('cat,tag','qdt','w','id="'.$d.'"');}
+return sql('cat,tag','qdt','w',['id'=>$d]);}
 
 static function detect_uget($d=''){$ut=explode(' ',$d.' '.prmb(18));
 if($ut)foreach($ut as $k=>$v){$vb=eradic_acc($v); if($g=get($vb))

@@ -6,12 +6,12 @@ static $rid='dk';
 #desktop
 //ajax,art,file,finder,admin,msql,iframe,link,url,bub//plugfunc,,plug,plup,link,appin,ajxlnk,mod
 static function read($v){$ret='';switch($v[1]){//p/t/d/o/c/h/tp/br
-case('art'):$ret='popup_popart__3_'.$v[3].'_3_'.$v[4]; break;
+case('art'):$ret='content_popart__3_'.$v[3].'_3_'.$v[4]; break;
 case('ajax'):$ret=$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''); break;
 case('popup'):$ret='popup_'.$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''); break;
 case('desktop'):$ret='popup_desk,deskroot__3_'.$v[2].'_'.$v[3].'_'.$v[4]; break;//type
-case('module'):$ret='popup_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]); break;
-case('modin'):$ret='content_mod,callmod__3_'.ajx($v[3]); break;//alias of module in desk
+case('module'):$ret='content_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]); break;
+case('modin'):$ret='content_mod,callmod__3_'.ajx($v[3]); break;//alias of module not in desk
 case('modpop'):$ret='popup_mod,callmod__3_'.ajx($v[3]); break;//alias of module in desk
 case('page'):$ret='page_mod,playcontext__3_'.ajx($v[3]); break;//from desk(use $v[2])
 case('img'):$ret='popup_usg,popim__3_users/'.ajx($v[3]).'___autowidth'; break;

@@ -1,6 +1,6 @@
 <?php 
 class _{
-static $a='model';
+static $a=__CLASS__;
 static $cb='mdl';
 
 function __construct(){self::$cb=randid();}

@@ -207,10 +207,10 @@ $ret=lj('','txtarea_mc,wygok_edt'.$id.'_23_'.$id,picto('save2')).' '; $rid=$g2?$
 if(rstr(13))$d=embed_p($d); if(!$d)$d="\n";
 return divedit($rid,'editarea justy','max-width:720px','',nl2br($d));}
 
-static function wygoff($id,$o,$prm){$p1=$prm[0]??''; $ret=edit::bt($id);
+static function wygoff($id,$o,$prm=[]){$p1=$prm[0]??''; $ret=edit::bt($id);
 $ret.=divd('txarea',txarea1(usg::html2conn($p1))); return $ret;}
 
-static function wygok($id,$o,$prm){$p1=$prm[0]??'';
+static function wygok($id,$o,$prm=[]){$p1=$prm[0]??'';
 return usg::html2conn($p1);}
 
 /*static function wyg_preview(){
@@ -218,6 +218,15 @@ $j='popup_sav,batchpreview_inpsit';
 $bt=inputj('inpsit',$p,$j);
 $bt.=lj('popbt',$j,picto('ok'));
 return $bt;}*/
+
+static function repairhttp($p){
+return str_replace(['https ://','//'],'https://',$p);}
+
+static function stripvk($p){
+return str_replace('https://vk.com/away.php?to=','',$p);}
+
+static function striputm($d){
+return codeline::parse($d,'striputm','correct');}
 
 #connedit
 static function filters($va,$opt,$prm){
@@ -244,6 +253,9 @@ elseif($va=='revert')$rt=sql('msg','qdm','v',ses('read'));
 elseif($va=='postreat')$rt=conv::post_treat($d,$va,$opt);
 elseif($va=='delh')$rt=str_replace([':h1',':h2',':h3',':h4',':h5'],':h',$d);
 elseif($va=='inclusive')$rt=str::clean_inclusive($d);
+elseif($va=='repairhttp')$rt=self::repairhttp($d);
+elseif($va=='stripvk')$rt=self::stripvk($d);
+elseif($va=='striputm')$rt=self::striputm($d);
 elseif($va=='citai')$rt=mk::citations($d,'i');
 elseif($va=='citaq')$rt=mk::citations($d,'q');
 return txarea1($rt);}
@@ -262,17 +274,17 @@ return $ret;}
 
 static function add_anchors($d){
 for($i=200;$i>0;$i--){
-$types=['[['.$i.':nh]]','(['.$i.':nh])','['.$i.':nh]','[['.$i.':nh]:e]','[['.$i.':nb]]','(['.$i.':nb])','['.$i.':nb]','[['.$i.']:b]','[['.$i.']:i]','[['.$i.']]','['.$i.'.]','['.$i.']','['.$i.':e]'];//'|'.$i.'|'
-$d=str_replace($types,'('.$i.') ',$d);
-$types=["\n".$i.'.',"\n".$i];
-$d=str_replace($types,"\n".'('.$i.') ',$d);}
-for($i=200;$i>0;$i--){
-	$nd='('.$i.')'; $m1=strpos($d,$nd); $m2=strrpos($d,$nd);
+$r=['[['.$i.':nh]]','[['.$i.']:nh]','(['.$i.':nh])','[['.$i.':nh]:e]','[['.$i.':e]:nh]','['.$i.':nh]','[['.$i.':nb]]','[['.$i.']:nb]','(['.$i.':nb])','['.$i.':nb]','[['.$i.']:b]','[['.$i.']:i]','[['.$i.']]','['.$i.'.]','['.$i.']','['.$i.':e]','['.$i.',:e]'];//'|'.$i.'|'
+$d=str_replace($r,'('.$i.')',$d);
+$r=["\n".$i.'.',"\n".$i];
+$d=str_replace($r,"\n".'('.$i.') ',$d);}
+for($i=200;$i>0;$i--){$nd='('.$i.')';
+	$m1=strpos($d,$nd); $m2=strrpos($d,$nd);
 	if($m1 && $m2 && $m1!=$m2){
 		$end=str_replace($nd,'(['.$i.':nb])',substr($d,$m2));
 		$d=str_replace($nd,'(['.$i.':nh])',substr($d,0,$m2)).$end;}
-	if($m1 && $m2 && $m1==$m2){
-		$d=str_replace($nd,'(['.$i.':nh])',substr($d,0,$m2));}}
+	elseif($m1 && $m2 && $m1==$m2){
+		$d=str_replace($nd,'(['.$i.':nh])',$d);}}
 $r=explode(':numlist]',$d); $n=count($r);
 if($n>1){$d='';
 for($i=0;$i<$n;$i++)

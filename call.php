@@ -1,11 +1,12 @@
 <?php 
 session_start();
-$b=$_SESSION['dev']??$_SESSION['dev']='';
+$b=$_SESSION['dev']??($_SESSION['dev']='');
 ini_set('display_errors',$b?1:0); error_reporting($b?E_ALL:6135);
 require('prog'.$b.'/lib.php');
 require('prog'.$b.'/core.php');
+define_ses();
 require(boot::cnc());
-gets();
+gets(); //posts();
 if(rstr(22))boot::block_crawls();//crawl
 if(!isset($_SESSION['dayx']))boot::reboot();
 #RewriteRule ^call/([^/]+)/([^/]+)/([^/]+)$ /call.php?a=$1&p=$2&o=$3 [L]

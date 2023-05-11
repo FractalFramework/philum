@@ -72,13 +72,13 @@ $admail=$_SESSION['qbin']['adminmail']; $head='';
 $dest=$dest?$dest:$admail; $from=$from?$from:$admail;
 $rh=['Mime-Version'=>'1.0','Content-Type'=>'text/html; charset="'.ses::$enc.'"','X-Priority'=>'1','From'=>$from,'To'=>$dest,'Cc'=>'','Bcc'=>'','Reply-To'=>$from,'X-Mailer'=>'PHP/'.phpversion(),'Date'=>date('D, j M Y H:i:s')];
 foreach($rh as $k=>$v)$head.=$k.': '.$v.$n;
-if(mail($dest,utf($suj),utf($msg),$head))return btn('txtyl','mail_sent_to: '.$dest); 
+if(mail($dest,$suj,$msg,$head))return btn('txtyl','mail_sent_to: '.$dest); 
 else return btn('txtyl','not_sent');}
 
 static function send_txt($dest,$suj,$v,$from,$url){$n="\r\n"; $v=wordwrap($v,70,$n);
 $suj=str::html_entity_decode_b($suj); $head='From:'.$from.$n;
 $msg=$v.$n.$n.prep_host(ses('qb')).$url;
-if(mail($dest,utf($suj),utf($msg),$head)){return btn('txtyl','mail_sent_to: '.$dest);}}
+if(mail($dest,$suj,$msg,$head))return btn('txtyl','mail_sent_to: '.$dest);}
 
 static function send_mail($format,$to,$suj,$msg,$from,$url){
 if($format=='html'){self::send_html($to,$suj,$msg,$from,$url);}

@@ -363,6 +363,7 @@ if(ok && ok.value==1)audio();}
 
 //utils
 function ajx(val,n){
+if(!val || val=='undefined' || val>0)return val;
 var arr=['_','*','&','+','_'];//'?',':','#','’','“','”','/',"'",'"'
 var arb=['(und)','(star)','(and)','(add)','*'];//,'(qmark)','(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)','(quote)','(dquote)'
 if(n){for(var i=0;i<arr.length;i++){val=strreplace(arb[i],arr[i],val);}}//decode

@@ -254,9 +254,9 @@ if(k==110){ajaxcall('popup','bubs,root',['call','addart'],['txtarea'],'focus:add
 //addEvent(document,'keypress',function(){cmd(event)});
 
 //toggles
-function SaveBc(val){var dn=val.split("_");//artopen
+function SaveBc(val){var dn=val.split('_');//artopen
 var op=active('toggleart'+dn[1]); if(op)var nb=3; else var nb=dn[2];
-ajaxcall(dn[0]+dn[1],dn[0],[dn[1],nb,undefine(dn[4])],[],2);}
+ajaxcall(dn[0]+dn[1],'art',[dn[1],nb,undefine(dn[4])],[],2);}
 
 function active(id,ob,a){if(id)ob=getbyid(id); var op=ob.className;
 if(op.indexOf('active')==-1 && !a){ob.classList.add("active"); return 1;}
@@ -653,8 +653,8 @@ for(var i=0;i<files.length;i++){//1
 	fd.append("upfile"+id,file,filename);
 	//waitmsg(id+'up');
 	if(filename)upload_progress(id);
-	var gets='sav,uploadsav_'+id+'_'+type+'_'+opt;
-	new AJAX(jurl()+gets,id+'up',jo,fd);}}
+	var gets=jurl()+'&app=sav,uploadsav&g0='+id+'&g1='+type+'&g3='+opt;
+	new AJAX(gets,id+'up',jo,fd);}}
 
 function cancelupload(rid){clearTimeout(xb); uploaded=0; jumphtml(rid+'prg','');}
 

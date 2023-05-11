@@ -145,10 +145,7 @@ return $ret;}
 static function test_xml($f){
 $f='http://www.tlaxcala-int.org/rss_lg.asp?lg_rss=fr';
 $d=get_file($f);
-echo $enc=between(strtolower($d),'encoding="','"');
-if(strtolower($enc)=='utf-8')$d=utf8dec_b($d);
-//echo substr_count($d,'<').'-'.substr_count($d,'>');
-eco($d,1);
+//$enc=between(strtolower($d),'encoding="','"');
 $r=simplexml_load_string($d);
 $xml=explode("\n",$f);
 if(!$r){
@@ -243,7 +240,6 @@ $r=sqldb::def($b);
 sqlop::install($b.'2',$r,1);
 echo 'install,';
 $r=sql('*',$db,'ar',[]);
-//$r=utf_r($r); //pr($r);
 sql::sav2($db2,$r,0);
 //sql::qr('insert into '.qd($b2).' select * from '.qd($b));
 echo 'save2,';

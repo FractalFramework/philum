@@ -76,22 +76,17 @@ $ic=mime($c,'cube'); $t=pictxt($ic,$ob?$ob:$c); if($ob==1)$t=picto('url');
 $u='/app/'.$c; if($p){$u.='/'.$p; if($o)$u.='/'.$o;} if($nl)return lkt('',$u,$t); if(!$ob)$ob='conn';
 return lj('','popup_conn,parser__3_['.ajx($p.($o?'|'.$o:'').':'.$c).']_3_test',$t).' '.lkt('',$u,picto('chain'));}
 
-static function orimg($im,$id,$o){
-$dc=conn::original_img($im,$id);
-if(!$dc)return picto('img2');
-if($o)return lkt('',$dc,picto('img2'));
-return image($dc);}
-
 static function figure($d,$pw,$nl,$id=''){
-if(rstr(142) && !auth(6))return self::orimg($d,$id,0);
-if(rstr(143))return self::orimg($d,$id,1);
+if(rstr(142) && !auth(6))return conn::orimg($d,$id,0);
+if(rstr(143))return conn::orimg($d,$id,1);
 [$im,$t]=cprm($d); $img=''; $pre=jcim($im,$nl); $ret='';
 if(is_img($pre.$im) && strpos($im,'<')===false){
 	if(is_file($pre.$im)){[$w,$h]=getimagesize($pre.$im); $img=img($pre.$im);
 		if($w>$pw && !$nl)$ret=ljb('','SaveBf',ajx($im).'_'.$w.'_'.$h.'_'.$id,$img);
 		else $ret=image($pre.$im);
 		if(auth(6) && rstr(121) && !$nl)$ret=conn::rzim($ret,$im,$pre.$im,$id,$w,$h);}
-	else{$im=conn::recup_image($im); $pre=jcim($im,$nl); if($im)$ret=img($pre.$im);}}
+	elseif($id!='test'){$im=conn::recup_image($im,$id); $pre=jcim($im,$nl); if($im)$ret=img($pre.$im);}
+	elseif($im)$ret=img($pre.$im);}
 else $ret=$im;
 return tagb('figure',$ret.tagb('figcaption',$t));}
 
@@ -174,7 +169,7 @@ else return $da;}
 static function getmp4($d,$id,$o=1){if($o)$d=self::vacuum_media($d,$id); return video($d);}
 static function getmp3($d,$id,$o=1){if($o)$d=self::vacuum_media($d,$id); return audio($d);}
 static function getimg($d,$id,$m,$nl,$pw){$im=conn::get_image($d,$id,$m);
-return conn::place_image($im,$m,$nl,$pw,$id);}
+return conn::place_image($im,$m,$pw,$id,$nl);}
 static function getxif($d){$d=gcim($d); $r=imgexif($d); return img('/'.$d).tabler($r);}
 static function imgdata($d){[$d,$xt]=cprm($d); if(!$xt)$xt='jpeg';
 return img('data:image/'.$xt.';base64,'.base64_encode($d));}

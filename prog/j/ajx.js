@@ -124,19 +124,19 @@ for(i=0;i<preload.arguments.length;i++){images[i]=new Image();
 
 //jr
 function jx(v){return strreplace('*','_',v);}
-function jr(ra){var rb=[]; for(var k in ra)rb.push('g'+k+'='+ra[k]); return rb;}
+function jr(ra){var rb=[]; for(var k in ra)if(ra[k])rb.push('g'+k+'='+ra[k]); return rb;}
 function jrb(ra){var rb=[]; for(var k in ra)rb.push(ajx(ra[k],1)); return rb;}
 function jrc(ra){var rb=jr(ra); if(rb)return '&'+rb.join('&');}
 
 function jurl(){return '/ajax.php?app=';}
 
 //dn2=posts
-function ajaxcall(tg,app,ra,prm,tp){
+function ajaxcall(tg,app,ra,prm,tp){pr(ra);
 var fd=''; var get=jx(app); ra=jrb(ra);
+if(tp=='u')updateurl(ra[0],tg+'_'+app+'___'+ra[0]+'_'+ra[1]);
 if(prm){var fd=new FormData();
 for(var i in prm)fd.append(i,prm[i]);}
-//for(var i in ra)fd.append('g'+i,ra[i]);
-get+=jrc(ra);
+if(prm[0]=='1')for(var i in ra)fd.append('g'+i,ra[i]); else get+=jrc(ra);
 new AJAX(jurl()+get+'&tg='+tg,tg,tp,fd);}
 
 function mkprm(dn2,dn3){var prm=[]; var dna=dn2.split(','); var vl='';
@@ -179,7 +179,7 @@ if(dn[0]=='popup'||dn[0]=='pagup')pp='&'+dn[0]+'==';
 else if(dn[0].indexOf(',')!=-1)tp='json';
 else if(dn[2]){var dn2=dn[2].split(','); tp=dn2[0]; var tx=dn2[1];}
 //if(dn[3]!=undefined)g=dn[3];
-if(dn[3]){prm=dn[3].split(','); for(i=0;i<prm.length;i++)fd.append('p'+i,prm[i]);}
+if(dn[3]){prm=dn[3].split(','); for(i=0;i<prm.length;i++)fd.append(i,prm[i]);}
 if(dn[4]){prm=dn[4].split(','); for(i=0;i<prm.length;i++)fd.append(prm[i],capture(prm[i]));}
 new AJAX('/ajax.php?_a='+dn[1],dn[0],tp,fd);//+'&_g='+g
 if(tx=='x')Close('popup');
@@ -435,7 +435,7 @@ else if(dn[3]=='exs')var tp='1'; else if(dn[3]!='pop'|'x'|'xx'|'xd'|'tg')var tp=
 //var dn3=dn[3].split(','); for(i=0;i<dn3.length;i++){if(dn3[i]==''}
 if(dn[0]=='pop'){dn[0]='pop'+curid; var tp=12;}
 else if(dn[0].indexOf(',')!=-1){tp='json'; dn[3]=tp;}
-if(dn[2])prm=mkprm(dn[2],dn[3]);
+if(dn[2])prm=mkprm(dn[2],dn[3]);//k,head
 for(i=4;i<ns;i++)get.push(dn[i]);
 if(dn[7]=='autosize'||dn[1]=='msql'){opt+='&sz='+innerW()+'-'+innerH(); get[7]='';}//todo:in place of i
 if(dn[7]=='autowidth'){opt+='&sz='+(document.body.offsetWidth); get[7]='';}
@@ -516,7 +516,7 @@ var ob=getbyid(id); if(ob!=null)var src=ob.value;
 if((!src||src.length<2)&& src!='1')return;
 if(src!=old){if(!old)return SearchT(id); else return;}
 if(src){inform_field(id,(id=='srchb'?'ada':''));
-	ajaxcall('popup','search,home',[src],3);}}
+	ajaxcall('popup','search,home',[],[src],3);}}
 
 function SearchT(id){var ob=getbyid(id);
 if(ob!=null)var old=(ob.value); else var old='';
@@ -524,11 +524,11 @@ setTimeout(function(){Search(old,id)},1000);}
 
 //edit
 function editart(id){var ob=getbyid('art'+id);
-ajaxcall('art'+id+',edt'+id+',adt'+id+',adt2'+id,'mc,wygopn',[id],['json'],x);
+ajaxcall('art'+id+',edt'+id+',adt'+id+',adt2'+id,'mc,wygopn',[id],[],'json');
 ob.contentEditable='true'; ob.designMode='on'; ob.focus();}
 
 function saveart(id){var ob=getbyid('art'+id); getbyid('edt'+id).innerHTML='';
-ajaxcall('art'+id+',edt'+id+',adt'+id+',adt2'+id,'mc,wygsav',[id],['json'],'');
+ajaxcall('art'+id+',edt'+id+',adt'+id+',adt2'+id,'mc,wygsav',[id],[ob.innerHTML],'json');
 ob.contentEditable='false'; ob.designMode='off';}
 
 function sjtimb(old,id,j){

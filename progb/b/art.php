@@ -141,7 +141,7 @@ $r=[2=>'s1',3=>'s2',4=>'s3',5=>'stars'];
 return isset($r[$d])?picto($r[$d],16):'';}
 
 static function titles($id,$r,$rear,$nbtrk,$prw,$nl,$nb,$rb){//$rb:id,suj,css,msg
-$rst=$_SESSION['rstr']; $USE=ses('USE'); $ib=$r['ib']; $ro=$r['o'];
+$rst=$_SESSION['rstr']; $USE=ses('USE'); $ib=$r['ib']; $ro=$r['o']; if(!$rb)return [];
 $rf=self::favs($id);//todo:come from pecho_arts and api
 $read=ses('read'); $page=get('page'); $http=$nl?host():'';
 //actions
@@ -279,7 +279,7 @@ if(!$rst[12])$ret.=btj(picto('print'),'window.print()').' ';
 if(self::rstopt($rst[106],$ro['bckp']))$ret.=self::bckp_edit($id,$prw);
 return $ret;}
 
-static function rstopt($n,$d){//echo $n.'-'.$d.'_';
+static function rstopt($n,$d){
 if($d=='false')$d='';
 if($n && $d=='true')return true;
 if(!$n && !$d)return true;}
@@ -381,7 +381,7 @@ return $d;}
 static function tometa($d){//$d=strip_tags($d);
 $d=codeline::parse($d,'','delconn'); $d=deln(trim($d),' '); $d=delsp($d); $lgh=mb_strlen($d);
 if($lgh>200)$n=mb_strpos($d,'.',200); else $n=$lgh; $d=mb_substr($d,0,$n+1);
-ses::$r['descr']=stripslashes(utf8dec($d));}
+ses::$r['descr']=stripslashes($d);}
 
 static function make_thumb_css($im){
 if(!file_exists('imgc/'.$im) or ses('rebuild_img')){
@@ -400,10 +400,9 @@ $ret=lj('','popup_popart__3_'.$id.'_3',$ret);
 return $ret;}
 
 static function preview($d,$id,$l=''){
-if(strlen($l)<15)if(strpos($d,':import')){
-	$d=sql('d','qdm','v','id="'.substr($d,1,strpos($d,']')).'"');}
+if(strlen($l)<15 && strpos($d,':import')){[$p,$o,$c]=poc($d); $d=sql('d','qdm','v',['id'=>$p]);}
 if(rstr(34)){$d=codeline::parse($d,'b i u h c l h1 h2 h3 h4 list numlist','corrfast');
-	$d=codeline::parse($d,'color','corrfastb');//bkgclr
+	$d=codeline::parse($d,'color','corrfastb');
 	$d=codeline::parse($d,'stripvideo','correct');}
 if(rstr(64))$d=codeline::parse($d,'figure q twitter fluid table plug msql','stripconn');//thumb
 if(rstr(117)){$d=codeline::parse($d,'striplink','correct');
@@ -421,11 +420,11 @@ if(rstr(21)){if($prw>1)$ath=$r['o']['authlevel'];
 	if($ath && $ath!='all' && $ath>$_SESSION['auth'])return few::restricted_area($ath);}
 if($psw=$r['o']['password']??''){if(ses('psw'.$id)!=$psw)return few::restricted_pswd($id);}
 if(isset($r['frm']) && substr($r['frm'],0,1)=='_' && $_SESSION['auth']<3)$msg=few::restricted_area(6);
-elseif(($id==$read && $prw==3) or $prw==3 or $prw=='rch'){
+elseif($prw==3 or $prw=='rch'){//($id==$read && $prw==3) or 
 	if($r['o']['plan'])$msg=self::hmarks($msg);
 	sql::qr('update '.ses('qda').' set lu=lu+1 where id="'.$id.'"');
 	//json::add('','art'.mkday(),[mkday('','His'),$id,ses('iq')]);
-	if(!$nl)self::tometa($msg);
+	if(!$nl && $prw!='rch')self::tometa($msg);
 	$msg=conn::read($msg,$prw,$id,$nl);}
 elseif($prw==1)$msg='';
 elseif(substr($prw,0,4)=='conn'){$cn=substr($prw,4);
@@ -477,7 +476,7 @@ foreach($r as $k=>$v){$pos=$k; $nd+=1; //$len=strlen($v);
 	$ret.=divc('trkmsg',$reta.''.$bt.''.$retb);}
 return $ret;}
 
-static function prepare_rech($id,$msg,$out){
+static function prepare_rech($id,$msg,$out){if(!$msg)return;
 $rch=search::good_rech(get('search')); $nbp=0; $ret=''; ses::$n=0;
 if(get('bool')){$r=explode(' ',trim($rch)); $nbp=count($r);}
 if(strpos($rch,'|')){$r=explode('|',$rch); $nbp=count($r);}

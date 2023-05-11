@@ -56,8 +56,7 @@ foreach($rss as $k=>$v){$key=$v[0]; array_shift($v);
 	if($key)$re[$key]=$v;}
 if($n){$max=max($n);
 foreach($re as $k=>$v)for($i=0;$i<$max;$i++){
-	if(ses::$enc=='utf-8')$ret[$k][$i]=(val($v,$i));//utf8enc_b
-	else $ret[$k][$i]=(val($v,$i));}//$keys[$i]
+	$ret[$k][$i]=$v[$i]??'';}//$keys[$i]
 return $ret;}}
 
 static function build($p,$o){

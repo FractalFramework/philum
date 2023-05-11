@@ -110,12 +110,13 @@ elseif($o)$j='popup_video,call___'.ajx($d).'_'.$p.'_640';
 else $j=$rid.'_video,call___'.ajx($d).'_'.$p.'_640';
 $t=$o&&$o!='1'?$o:($ti);
 if($p=='youtube' or $p=='vimeo')$ic=$p; else $ic='video';
-$lk=lkt('',http($u),$t);
+$lk=lkt('',http($u),$t).' ';
 if($im && ((!$o && $m>2) or $m=='vd'))$ic=image($im); else $ic=picto($ic,28);
 $bt=lj('',$j,$ic).'&#8239;';
 //if($tx)$lk.=' '.pop::bubble_note($tx,picto('lys')).' ';//toggle_note//togbth//togbt//pop::toggle_div($tx,1)
-if($tx)$lk.=' '.togbub('video,txt',ajx($d).'_'.$id,picto('lys')).' ';
-if(auth(4))$lk.=lj('','popup_web,redit___'.ajx($u).'_'.$rid.'_'.$id,picto('editxt'));
+if($tx)$lk.=togbub('video,txt',ajx($d).'_'.$id,picto('bubble'));
+//if(auth(4))$lk.=lj('','popup_web,redit___'.ajx($u).'_'.$rid.'_'.$id,picto('editxt'));
+if(auth(4))$lk.=togbub('web,redit',ajx($u).'_'.$rid.'_'.$id,picto('editxt'));
 if($m=='vd')$ret=div(atc('video').atd($rid),$bt).$lk;
 elseif($o)$ret=span(att($ti).atd($rid),$bt.$lk);
 elseif($m<3 or $m=='noimages')$ret=btd($rid,$bt.$lk);
@@ -137,10 +138,10 @@ static function call($d,$p,$w){
 return self::reader($d,$p,$w,'','');}
 
 static function player($d){
-[$d,$o]=expl('|',$d);
+[$p,$o]=cprm($d);
 if($o)return self::lk($d);
-$p=self::providers($d); $w=prma('content')-80;
-return self::reader($d,$p,$w,'','');}
+$pv=self::providers($p); $w=prma('content')-80;
+return self::reader($p,$pv,$w,'','');}
 
 static function reader($d,$p,$w,$h,$id){
 if($id){$w='100%'; $h=($h?$h-10:320).'px';}

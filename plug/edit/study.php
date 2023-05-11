@@ -3,7 +3,6 @@ class study{
 static function sav($p,$o,$prm=[]){
 [$nod,$row,$col]=explode('-',$p);
 $ret=$prm[0]??''; $d=deln($ret);  $d=delbr($d,"\n"); //$d=delr($d);
-//eco($d,1);//$ret=utf8dec_b($ret);
 msql::modif('',nod('study_'.$nod),$d,'shot',trim($col),trim($row));
 return $ret;}
 

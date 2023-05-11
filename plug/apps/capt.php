@@ -43,7 +43,7 @@ foreach($r as $v){$ret.=$v->nodeValue;}
 return $ret;}*/
 
 static function read($f){
-$d=file_get_contents($f); //$d=utf8dec_b($d);
+$d=file_get_contents($f);
 $d=html_detect($d,'<div id="liste">');
 $http=http(domain($f));
 $dom=new DomDocument;
@@ -58,7 +58,7 @@ foreach($dom->getElementsByTagName('a') as $k=>$v){//p($v);
 		$ra[]=$u;
 		$rf[]=self::read2($u);}}//if($k<10)
 foreach($dom->getElementsByTagName('span') as $k=>$v){
-	if($v->getAttribute('class')=='lien')$rb[]=utf8dec_b(trim($v->nodeValue));}
+	if($v->getAttribute('class')=='lien')$rb[]=trim($v->nodeValue);}
 foreach($dom->getElementsByTagName('div') as $k=>$v){
 	if($v->getAttribute('class')=='resultat'){
 		$vb=$v->getElementsByTagName('p')->item(1)->nodeValue;
@@ -73,7 +73,7 @@ for($i=0;$i<$n;$i++){
 return $rd;}
 
 static function read2($f){
-$d=file_get_contents($f); //$d=utf8dec_b($d);
+$d=file_get_contents($f);
 $d=html_detect($d,'<div id="renseignement" class="Card frame table">');
 //$http=http(domain($f));
 $dom=new DomDocument;
@@ -81,8 +81,8 @@ $dom->validateOnParse=true;
 libxml_use_internal_errors(true);
 $dom->loadHtml($d);//pr($dom);
 foreach($dom->getElementsByTagName('tr') as $k=>$v){//pr($v);
-	$col=utf8dec_b(trim($v->childNodes[0]->nodeValue));
-	$val=utf8dec_b(trim($v->childNodes[2]->nodeValue));
+	$col=trim($v->childNodes[0]->nodeValue);
+	$val=trim($v->childNodes[2]->nodeValue);
 	if($col=='Statut' or $col=='Adresse (RCS)' or $col=='Code postal' or $col=='Ville' or $col=='Forme juridique' or $col=='Capital social' or $col=='Date création entreprise' or $col=='Chiffre d\'affaires')$rb[$col]=$val;}
 $n=count($rb);
 //pr($rb);

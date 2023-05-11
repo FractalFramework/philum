@@ -56,10 +56,10 @@ $ret=self::read($p);
 return $bt.divd('crn',$ret);}
 
 static function card($p){
-$t=twit::init(); $q=$t->show($p); //pr($q);
+$t=twit::init(); $q=$t->show($p);
 unset($q['entities']);
 $q['withheld_in_countries']=implode(',',$q['withheld_in_countries']);
-$q['description']=($q['description']);//utf8dec_b
+$q['description']=($q['description']);
 $q['location']=($q['location']);
 $q['name']=utf2ascii($q['name']);
 $q['status-created_at']=$q['status']['created_at']??'';

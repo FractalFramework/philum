@@ -18,8 +18,8 @@ $r=sql::call('select '.$cols.' from '.($b).' where id>"'.$id.'"','ar',0);
 if($o==1){$deb='update `'.($b).'` set ';
 	if($r)foreach($r as $k=>$v)$rb[]=$deb.self::atmrak($v).' where id="'.$v['id'].'";'.n();}
 else{$deb='INSERT INTO `'.($b).'` ('.$cols.') VALUES ';
-	if($r)foreach($r as $k=>$v)$rb[]=self::atmra($v);}//pr($rb);
-if($rb){if($o==1)$ret=implode("\n",$rb); else $ret=$deb.implode(",\n",$rb).' ON DUPLICATE KEY UPDATE;';}
+	if($r)foreach($r as $k=>$v)$rb[]=self::atmra($v);}//pr($rb);// on duplicate key update id=id
+if($rb){if($o==1)$ret=implode("\n",$rb); else $ret=$deb.implode(",\n",$rb).';';}
 //if($o)return $ret;
 $f='_backup/'.$db.'.dump';//_from_'.$id.'
 if(is_file($f))unlink($f); //eco($ret);

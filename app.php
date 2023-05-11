@@ -2,9 +2,10 @@
 #philum/app
 session_start();
 ini_set('display_errors',1); error_reporting(E_ALL);
-$b=$_SESSION['dev']??$_SESSION['dev']='';
+$b=$_SESSION['dev']??($_SESSION['dev']='');
 require('prog'.$b.'/lib.php');
 require('prog'.$b.'/core.php');
+define_ses();
 require(boot::cnc());
 gets();
 if(!isset($_SESSION['qb']))boot::reboot();

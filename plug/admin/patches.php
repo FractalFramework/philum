@@ -24,7 +24,6 @@ $rb=[];
 foreach($ra as $k=>$v){$d=$v;
 $d=html_entity_decode($d,ENT_QUOTES,'UTF-8');
 $d=str::html_entity_decode_b($d);
-//$d=utf8dec($d);
 ///$d=ascii2iso($v);
 $rb[$k]=$d;
 sqlup('qda',['suj'=>$d],['id'=>$k],0);

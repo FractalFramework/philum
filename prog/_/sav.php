@@ -15,24 +15,23 @@ if(!$name or $name==nms(38)){self::$er.='miss:name;';}//alert('empty_name $name'
 if($mail=='mail' or $mail=='url'){$mail='';$urlsrc='';}
 if($d){$d=nl2br($d); $d=str_replace(['<br />','<br/>','<br>','<BR>'],"\n",$d);}
 if(!$d && $urlsrc)[$suj,$d]=conv::vacuum($mail,$suj);
-$d=str::html_entity_decode_b($d); $d=str::embed_links($d);
-//if(ses::$enc!='utf-8')$d=str::decode_unicode($d);
-$d=str::clean_br_lite($d); $d=str::clean_punct($d);
+//$d=str::html_entity_decode_b($d); $d=str::embed_links($d);
+//$d=str::clean_br_lite($d); $d=str::clean_punct($d);
 if($pdat)$pdt=strtotime($pdat); else $pdt=$dayx;
 if(empty($suj))$suj='forbidden title';
-if(empty($d)){self::$er='miss::msg;';}//alert('msg forbidden'); 
-if(!self::$er){
+if(empty($d))self::$er='miss::msg;';//alert('msg forbidden'); 
+if(!self::$er){$d=html_entity_decode($d);
 	$sz=mb_strlen($d); $img=''; $thm=str::hardurl($suj);//if(rstr(38))
 	if(rstr(129))$lg=trans::detect($suj); if($lg==ses('lng'))$lg='';
 	$rw=[$ib,$name,$mail,$pdt,$qb,$frm,$suj,$re,0,$img,$thm,$sz,$lg];
 	$nid=sqlsav('qda',$rw,0); if($nid)sql::savi('qdm',[$nid,$d],0);}
 //if($nid && $USE!=$qb && $_SESSION['auth']<6){mail($_SESSION['qbin']['adminmail'],'new article: '.stripslashes($suj),host().'/'.$nid.',auth_level: '.$_SESSION['auth']."\n",'From: '.$USE);}
 vacses($urlsrc,'u','x');
-if($nid){$rc=[$pdt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$urlsrc,$ib,$re,$lg];
-	$rc[3]=pop::art_img($img);
+if($nid){$rc=[$pdt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$urlsrc,$ib,$re,$lg]; $rc[3]=pop::art_img($img);
 	if(!isset($_SESSION['rqt'][$nid]))$_SESSION['rqt'][$nid]=$rc; 
 	msql::modif('',nod('cache'),$rc,'one','',$nid);
-	$d=codeline::parse($d,$nid,'savimg');
+	codeline::parse($d,$nid,'savimg');
+	if(rstr(147))codeline::png2jpg($nid);
 	geta('read',$nid); boot::deductions($nid,''); self::$r=[];}
 $_SESSION['dayx']=time(); $_SESSION['daya']=ses('dayx');
 return $nid;}
@@ -57,15 +56,20 @@ $_SESSION['daya']=ses('dayx');
 return $nid;}
 
 static function modif_art($id,$d){$qdm=$_SESSION['qdm']; if(!auth(3))return; //$d=delr($d);
-if(ses::$enc!='utf-8')$d=str::clean_acc($d);
 $d=str::stupid_acc($d);
+$d=str::clean_br($d);
 $d=str::embed_links($d);
-if(ses::$enc!='utf-8')$d=str::decode_unicode($d);
 $d=codeline::parse($d,$id,'savimg');
 $d=str::clean_br_lite($d);
+$d=str::clean_acc($d);
 $d=str::clean_punct($d);
-$d=str::repair_tags($d);//if(rstr(70))$d=conn::art_retape($d,$id);
+//$d=str::html_entity_decode_b($d);
+//if(rstr(70))$d=conn::art_retape($d,$id);
+//$d=str::unicode_decode($d);
+$d=str::repair_tags($d);
+//$d=html_entity_decode($d);
 if(is_numeric($id))sqlup('qdm',['msg'=>$d],$id);
+if(rstr(147))codeline::png2jpg($id);
 $sz=mb_strlen($d??''); sql::upd('qda',['host'=>$sz],$id); cachevs($id,8,$sz);
 return stripslashes($d??'');}
 
@@ -237,12 +241,11 @@ return $ret;}
 
 #savart
 static function addurlsav($f,$va,$pub,$ib){if(!$f)return;//SaveIec
-ses::$urlsrc=$f; self::$r['name']=$_SESSION['USE']; $_SESSION['frm']=$va;
+ses::$urlsrc=$f; self::$r['name']=ses('USE'); $_SESSION['frm']=$va;//self::$r['frm']
 if(substr($f,0,4)!='http' && $f)$f='http://'.$f;
 //[$defid,$r]=conv::verif_defcon($f); if($f)$auv=video::detect($f); //if(rstr(10))
 self::$r['ib']=$ib; self::$r['pub']=$pub; $nid=self::save_art(); $ret=$nid;
 if(!$nid)$ret=popup(edit::artform($f,self::$er),'Article'); else geta('read',$nid);
-if(rstr(147))codeline::png2jpg($nid);
 return $ret;}
 
 static function addfromlist($p,$o,$prm=[]){
@@ -263,24 +266,24 @@ $f=trim($f); $f=utmsrc($f); $f=http($f); ses::$urlsrc=$f;
 return [$t,$d,$ud];}
 
 static function websav($id,$f){
+if(!auth(6))return;
 [$t,$d]=self::webread($f);
 $sq=['suj'=>$t,'mail'=>$f,'img'=>'','thm'=>str::hardurl($t)];//if(rstr(38))
 sqlup('qda',$sq,$id);
 self::modif_art($id,$d); cachevs($id,2,$t);
-if(rstr(147))codeline::png2jpg($id);
 vacses($f,'t','x');
 return $d;}
 
 static function art_mirror($id,$prw){
 $u=srvmir().'/apicom/id:'.$id.',json:1,conn:1'; $d=read_file($u);
 $r=json_decode($d,true); $r=$r[$id]??[];
-if($r){$t=$r['title']; $d=$r['content']; $imgs=$r['catalog-images']; $ib=$r['parent']; $re=$r['priority'];
+if($r){$t=$r['title']; $d=$r['content']; $imgs=$r['catalog-images']??''; $ib=$r['parent']; $re=$r['priority'];
 $sq=['suj'=>$t,'mail'=>$r['source'],'img'=>$imgs,'thm'=>str::hardurl($t),'ib'=>$ib,'re'=>$re];
-sqlup('qda',$sq,$id); self::modif_art($id,$d);}
+sqlup('qda',$sq,$id); sqlup('qdm',['msg'=>$d],$id);}//self::modif_art($id,$d);
 return art::playd($id,$prw,'');}
 
 static function reimport($id,$prw=1,$prm=[]){
-$u=sql('mail','qda','v',$id); $u=$prm[0]??$u;
+$u=$prm[0]??sql('mail','qda','v',$id);
 self::allimgdel($id);
 if(auth(4))$ret=self::websav($id,$u);
 return art::playd($id,$prw,'');}
@@ -312,6 +315,24 @@ $u=$prm[0]??$g1; $id=$g2?$g2:ses('read');
 $im=conn::get_image($u,$id);
 if($im)return '['.$im.']';}
 
+//catalog-img
+static function rollbackim($id,$im,$o=''){
+if(!is_file('img/'.$im))$im=img::restore($im,$id);
+if($o)return self::placeim($id);
+return $im;}
+
+static function restoreim($id){$rt=[];
+$im=sql('img','qda','v',$id); $r=explode('/',$im);
+$rb=sql('im,dc','qdg','kv',['ib'=>$id]);
+foreach($r as $k=>$v)if($v && !is_numeric($v))$rt[]=self::rollbackim($id,$v); else $rt[]=$v;
+return implode('/',$rt);}
+
+static function reimportim($id,$o=''){
+$u=sql('mail','qda','v',$id);
+[$t,$d]=conv::vacuum($u,''); vacses($u,'t','x');
+$d=codeline::parse($d,$id,'importim');
+if($o)return art::playd($id,$o,'');}
+
 static function recenseim($id,$imx=''){
 $msg=sql('msg','qdm','v',$id); $r=[]; $rb=[]; $re=[]; $ret='';
 $ims=codeline::parse($msg,$id,'extractimg'); //echo $ims.'--';
@@ -331,29 +352,36 @@ $ims=sql('img','qda','v',$id); $r=explode('/',$ims);
 if($r)foreach($r as $v)if(is_file('img/'.$v)){[$w,$h]=getimagesize('img/'.$v); $rb[$w]=$v;}
 if(isset($rb)){krsort($rb); return '/'.implode('/',$rb);}}
 
-static function allimgdel($id){
+static function allimgdel($id){if(!auth(6))return;
 $ims=sql('img','qda','v',$id); $r=explode('/',$ims);
-if(auth(5))foreach($r as $k=>$v){img::rm($id,$v); 
-	if(is_file('img/'.$v))unlink('img/'.$v); if(is_file('imgc/'.$v))unlink('imgc/'.$v);}
-sql::upd('qda',['img'=>''],$id);}
+if($r)foreach($r as $k=>$v){img::rm($id,$v); unset($r[$k]); 
+	if(is_file('img/'.$v))rm('img/'.$v); if(is_file('imgc/'.$v))rm('imgc/'.$v);}
+sql::upd('qda',['img'=>implode('/',$r)],$id);}
 
-static function placeimdel($id,$x){
-$ims=sql('img','qda','v',$id); $r=explode('/',$ims);
-if(auth(5) && $x){img::rm($id,$x); 
-	if(is_file('img/'.$x))unlink('img/'.$x); if(is_file('imgc/'.$x))unlink('imgc/'.$x);
-	if($k=in_array_b($x,$r))unset($r[$k]); 
-	$ims=implode('/',$r); if(is_numeric($ims))$ims='';
-	sql::upd('qda',['img'=>$ims],$id); conn::replaceinmsg($id,'['.$x.']','');
-	$rb[0]=self::placeim($id); $rb[1]=$ims; return $rb;}}
+static function placeimdel($id,$x){if(!auth(6) or !$x)return;
+$ims=sql('img','qda','v',$id); $r=explode('/',$ims); img::rm($id,$x); 
+if(is_file('img/'.$x))rm('img/'.$x); if(is_file('imgc/'.$x))rm('imgc/'.$x);
+if($k=in_array_b($x,$r))unset($r[$k]); 
+$ims=implode('/',$r); if(is_numeric($ims))$ims='';
+sql::upd('qda',['img'=>$ims],$id); conn::replaceinmsg($id,'['.$x.']','');
+$rb[0]=self::placeim($id); $rb[1]=$ims; return $rb;}
 
 static function placeim($id){$ret='';
 $ims=sql('img','qda','v',$id); $r=explode('/',$ims);
+$ra=sql('im,id','qdg','kv',['ib'=>$id]);
 if($r)foreach($r as $k=>$v)if(is_img($v)){$bt='';
 	$im=make_mini('img/'.$v,'imgc/'.$v,'','',$_SESSION['rstr'][16]);
-	if($im)$bt=ljb('','insert','['.$v.']',image($im,'72',att($v)));
-	if(auth(6))$bt.=lj('popdel','pim'.$id.',img'.$id.'_sav,placeimdel__json_'.$id.'_'.ajx($v),'del:'.between($v,'_','.',1));
-	$ret.=divb($bt,'inblock');}
-return scroll($r,$ret,12,320,320);}
+	if($im)$bt=ljb('','insert','['.$v.']',image($im,'72','',att($v))); else $bt=picto('img2',24);
+	$bt.=btn('txtx',$v);
+	if(is_file('img/'.$v))[$w,$h]=getimagesize('img/'.$v); else [$w,$h]=['',''];
+	if($w)$bt.=ljb('popbt','SaveBf',ajx($v).'_'.$w.'_'.$h.'_'.$id,picto('popup'));
+	else $bt.=btn('popbt grey',picto('popup'));
+	if(auth(5)){
+		if(!isset($ra[$v]))$bt.=btn('popsav grey',pictit('pull','unknown source'));
+		else $bt.=lj('popsav','pim'.$id.'_sav,rollbackim___'.$id.'_'.ajx($v).'_1',pictit('pull','restore'));}
+	if(auth(6))$bt.=lj('popdel','pim'.$id.',img'.$id.'_sav,placeimdel__json_'.$id.'_'.ajx($v),picto('del'));
+	$ret.=divb($bt,'');}
+return scroll($r,$ret,12,'',240);}
 
 static function placeimtrk($f,$id){$ret=''; $fb=img::thumbname($f,72,72);
 $im=make_mini('img/'.$f,$fb,'','',1);

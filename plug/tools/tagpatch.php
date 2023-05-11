@@ -29,7 +29,6 @@ $ret=$p.':'.sql('count(id)','qdt','v','').'-'.sql('count(id)','qdta','v','');
 return $ret;}
 
 static function u($p,$o,$prm=[]){//$p='type';
-$p=utf8dec_b($p);
 $r=sql('ib,msg','qdd','kv','val="'.$p.'"');//id>'.$p.' limit 10000
 foreach($r as $k=>$v){$r[$k]=trimr($v);
 	foreach($r[$k] as $ka=>$va){if($va){$ra[$va]+=1; $rb[$k][]=$va;}}}

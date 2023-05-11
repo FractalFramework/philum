@@ -191,10 +191,11 @@ self::$rp=['rech'=>$rech,'dig'=>$n,'bool'=>$b,'ord'=>$o,'titles'=>$t,'seg'=>$sg,
 $vrf=($rech.$n.$b.$o.$t.$sg.$cat.$tag.$lim.$lng.$pri.$len); ses::$r['seg']=$sg;
 if(!isset($_SESSION['recache']))$_SESSION['recache'][$vrf]=[];
 $maxid=ma::lastart();
-//if(is_float($rech))echo $rech=(string) $rech; 
-if(!is_numeric($rech) && strlen($rech>7))$isdate=strtotime($rech);
+//if(is_float($rech))echo $rech=(string) $rech;
+if(!is_numeric($rech) && strlen($rech)>7)$isdate=strtotime($rech);
 if($rech=='1'){$id=$maxid; $load[$id]=1; return popart($id);}
 //if(is_numeric($rech) && $rech<=$maxid)return art::playb($rech,3);
+if(is_http($rech)){$id=sql('id','qda','v',['mail'=>$rech]); if($id)return popart($id);}
 elseif($rech && strpos($rech,',') && strpos($rech,':')){
 	$ra=explode_k($rech,',',':');
 	foreach($ra as $k=>$v)//{//inform motor

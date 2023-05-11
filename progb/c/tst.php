@@ -3,6 +3,17 @@ class tst{
 static $a='tst';
 static $cb='ts';
 
+static function auth1($n){return ($_SESSION['auth']??'')>=$n?true:false;}
+static function auth2($n){return (ses::$s['auth']??'')>=$n?true:false;}
+
+static function build2($p,$o){
+chrono();
+for($i=0;$i<100000;$i++)self::auth1(6);
+$ret=divb(chrono(1));
+for($i=0;$i<100000;$i++)self::auth2(6);
+$ret.=divb(chrono(2));
+return $ret;}
+
 static function build($p,$o){
 Head::add('http-equiv',['refresh','1']);
 sesz('tst');
@@ -12,7 +23,7 @@ return $ret;}
 
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$p;
-$ret=self::build($p,$o);
+$ret=self::build2($p,$o);
 return $ret;}
 
 static function menu($p,$o){$bid='inp';

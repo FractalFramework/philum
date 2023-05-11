@@ -360,7 +360,7 @@ if($rc[$cond?$cond:'menu']??'' or !$v[5]){$t=$v[0];
 		elseif($v[1]=='bub')$rb[$t]=popbub($v[2],$v[3],$ico.$t,'c',1);//d
 		elseif($v[1]=='arts')$rb[$t]=popbub('','arts',$ico.$t,'d',0);
 		elseif($v[1]=='mod')$rb[$t]=mod::callmod($v[3]);
-		elseif($v[1]=='modbt')$rb[$t]=mod::btmod($v[3].',t:'.$t);
+		elseif($v[1]=='modbt')$rb[$t]=mod::btmod($v[3].',t:'.$t);//,bt:1
 		else{$j=desk::read($v); $rb[$t]=ljbub($ico.$t,'',sj($j));}}}}
 if($rb)$ret=implode('',$rb);
 //if($d=='arts')//$ret=desk::pane_icons($rb,'icones');

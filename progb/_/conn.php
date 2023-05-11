@@ -1,6 +1,6 @@
 <?php //}//dev
-
 class conn{
+static $nl='';
 #syntax_system
 static function parser($msg,$m='',$id='',$nl=''){
 $deb='';$mid='';$end=''; if(!$msg)return'';//
@@ -25,6 +25,7 @@ return $deb.$mid.$end;}
 
 static function read($d,$m='',$id='',$nl=''){$r13=rstr(13);
 //if(strpos($d,'<'))$ret=retape_html($d);
+self::$nl=$nl;
 if(!$r13)$d=self::connbr($d);
 $d=self::parser($d,$m,$id,$nl);
 if($r13)$d=embed_p($d);
@@ -59,11 +60,11 @@ static function replaceinimg($id,$a,$b){
 $d=sql('img','qda','v',$id); $d=str_replace($a,$b,$d);
 sql::upd('qda',['img'=>$d],$id);}
 
-static function add_im_img($nnw,$id){
+static function add_im_img($nmw,$id){
 if(!$id)$id=ses('read'); if(!$id or $id=='test')return;
-$nnw=str_replace(['users/','img/'],'',$nnw);
-$d=sql('img','qda','v','id="'.$id.'"');
-if(strpos($d,$nnw)===false)sql::upd('qda',['img'=>$d.'/'.$nnw],$id);}
+$nmw=str_replace(['users/','img/'],'',$nmw);
+$d=sql('img','qda','v',['id'=>$id]);
+if(strpos($d,$nmw)===false)sql::upd('qda',['img'=>$d.'/'.$nmw],$id);}
 
 static function replaceinmsg($id,$a,$b,$c=''){
 $d=sql('msg','qdm','v',$id); if($c)$d=str_replace($a.':'.$c,$b,$d); $d=str_replace($a,$b,$d);
@@ -78,41 +79,50 @@ static function autothumb($f){
 if(is_file($f)){[$w,$h]=getimagesize($f);
 make_mini($f,$f,$w,$h,0);}}
 
+static function png2jpg($a,$id){
+$d=img::png2jpg($a,$id); return self::place_image($d,3,920,$id,'');}
+
+static function webp2jpg($a,$id){
+$d=img::webp2jpg($a,$id); return self::place_image($d,3,920,$id,'');}
+
 static function b64img($d,$id,$m=''){if(!$id)return; $da=$d;
 if(substr($d,0,22)=='data:image/png;base64,'){$d=substr($d,22);$xt='.png';}
 if(substr($d,0,23)=='data:image/jpeg;base64,'){$d=substr($d,23);$xt='.jpg';}
 $f=ses('qb').'_'.$id.'_'.substr(md5($d),0,6).'.jpg'; write_file('img/'.$f,base64_decode($d));
-[$w]=getimagesize('img/'.$f); if(!$w){unlink('img/'.$f); self::add_im_msg($id,$da,'','b64'); return;}
+[$w]=getimagesize('img/'.$f); if(!$w){rm('img/'.$f); self::add_im_msg($id,$da,'','b64'); return;}
 if($id!='test'){self::add_im_img($f,$id); self::add_im_msg($id,$da,$f,'b64'); img::save($id,$f,'b64');}
 return $f;}
 
-static function recup_image($im){$srv=prms('srvimg');
-if($srv && substr($im,0,4)!='http')$er=@copy($srv.'/img/'.$im,'img/'.$im);
+static function orimg($im,$id,$o){
+$dc=img::original($im,$id);
+if(!$dc)return picto('img2');
+if($o)return lkt('',$dc,picto('img2'));
+return image($dc);}
+
+static function recup_image($im,$id='',$m=''){
+$srv=prms('srvimg'); if(!$im)return '';
+if(rstr(151))return img::restore($im,$id);//restore original
+elseif($srv && substr($im,0,4)!='http')$er=@copy($srv.'/img/'.$im,'img/'.$im);
 elseif(is_file('imgx/'.$im)){rename('imgx/'.$im,'img/'.$im);} //self::add_im_img($da,$id);
 elseif($srv)return $im=http($srv).'/img/'.$im;
 return $im;}
 
-static function original_img($im,$id=''){
-if($id)$w=['ib'=>$id]; $w['im']=$im;
-return sql('dc','qdg','v',$w);}
-
 static function rzim($ret,$da,$dca,$id,$w,$h){
 $sz=fsize($dca); $xt=xtb($da); $bt='';
 $did=strend(strto($da,'.'),'_');
-//if($xt=='.png')return img::png2jpg($a,$id);
 if($sz>1000){
 	$bt.=btn('txtred',$w.'px/'.$h.'px - '.$sz.'ko');
 	//$bt.=lj('txtyl',$did.'_img,rewrite__3_'.ajx($da),'rewrite');//resolve exef
 	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_0_'.$id,'reduce to 940|940');
-	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50%');
-	$bt.=lj('popdel',$did.'_img,restore__3_'.ajx($da).'_'.$id,'restore');}
+	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50%');}
 elseif($w>1000)$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1','reduce by 50% ('.$w.'px '.$sz.'Ko)');
-if($xt=='.png' && $sz>200)$bt.=lj('txtyl',$did.'_img,png2jpg__3_'.ajx($da).'_'.$id,'png2jpg-'.$sz);
-if($xt=='.webp')$bt.=lj('txtyl',$did.'_img,webp2jpg__3_'.ajx($da).'_'.$id,'webp2jpg-'.$sz);
+elseif(!$w)$bt.=lj('popdel',$did.'_img,restoreim__3_'.ajx($da).'_'.$id.'_1','restore');
+if($xt=='.png' && $sz>200)$bt.=lj('txtyl',$did.'_conn,png2jpg__3_'.ajx($da).'_'.$id,'png2jpg-'.$sz);
+if($xt=='.webp')$bt.=lj('txtyl',$did.'_conn,webp2jpg__3_'.ajx($da).'_'.$id,'webp2jpg-'.$sz);
 if($bt)$ret=divd($did,$ret.$bt); return $ret;}
 
 static function get_image($da,$id,$m=''){
-if($m=='noimages')return; if(rstr(40) && substr($da,0,4)=='http')return $da;
+if($m=='noimages' or !$da)return; if(rstr(40) && substr($da,0,4)=='http')return $da;
 $xt=xt($da); $qb=$_SESSION['qb']; if($id=='test')return $da; $b64='';
 if(strpos($da,';base64,'))return self::b64img($da,$id,$m);
 if(!$xt or $xt=='.php' or $xt=='.jpeg')$xt='.jpg'; $ok='';// or $xt=='.webp'
@@ -120,52 +130,54 @@ if(forbidden_img($da)===false)return;//rev
 if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($da),0,6).$xt;//soon, del qb
 	if(get('randim'))$nmw=$qb.'_'.$id.'_'.substr(md5(rand(0,100000)),0,6).$xt;//
 	if($m=='trk' && is_file('img/'.$nmw))return $nmw;//keep original name
-	else{$dc=$da;
-		if(strpos($dc,'&#x')){
+	else{
+		if(strpos($da,'Capture-'))$da=str_replace("'","’",$da);//%E2%80%99
+		/*if(strpos($dc,'&#x')){
 			$dc=mb_decode_numericentity($dc,[0x0,0x2FFFF,0,0xFFFF],'UTF-8');
-			$dc=utf8dec_b($dc); $dc=str::html_entity_decode_b($dc);}
-		$dcb=preg_replace('/-[0-9]+x[0-9]+/','',$dc);
-		if($dcb!=$dc && is_file($dcb))$dc=$dcb;
+			$dc=utf8dec_b($dc); $dc=str::html_entity_decode_b($dc);}*/
+		$dcb=preg_replace('/-[0-9]+x[0-9]+/','',$da); if($dcb!=$da && is_file($dcb))$da=$dcb;//
+		$dc=($da);//urlencode
 		if(strpos($dc,' '))$dc=urlencode($dc);
 		if(!$ok){$d=curl_get_contents($dc);
 			if($d && strlen($d)>1000 && strpos($d,'Forbidden')===false){// && strpos($d,'<')===false
 				$er=write_file('img/'.$nmw,$d); $ok=1;
 				if(is_zip('img/'.$nmw))gz2im('img/'.$nmw);}//ziped img
 			if(!$ok)$ok=@copy($dc,'img/'.$nmw);}}
-	if($ok && is_file('img/'.$nmw)){
-		[$w,$h,$ty]=getimagesize('img/'.$nmw);//not with webp
-		if(!$w && $xt='.webp')$w=fsize('img/'.$nmw,1);
-		if(!$w){unlink('img/'.$nmw); return $da;}
-		else{self::add_im_img($nmw,$id); self::add_im_msg($id,$da,$nmw); img::save($id,$nmw,$da);
-			if(strpos($da,'cdni.rt.com'))self::autothumb('img/'.$nmw);}
-		return $nmw;}
+	if($ok && is_file('img/'.$nmw)){$w='';
+		if($xt=='.png')$nmw=img::png2jpg($nmw,$id);
+		elseif($xt=='.webp')$nmw=img::webp2jpg($nmw,$id);
+		if($nmw)[$w,$h,$ty]=getimagesize('img/'.$nmw);//not with webp
+		if(!$w)$w=fsize('img/'.$nmw,1);
+		if($w){self::add_im_img($nmw,$id); self::add_im_msg($id,$da,$nmw);
+			if(strpos($da,'cdni.rt.com'))self::autothumb('img/'.$nmw);
+			img::save($id,$nmw,$dc); return $nmw;}
+		else{rm('img/'.$nmw); return $da;}}
 	else return;}
 else return $da;}
 
-static function place_image($da,$m,$nl,$pw='',$id=''){
+static function place_image($da,$m,$pw='',$id='',$nl=''){
 if(!$pw)$pw=$_SESSION['prma']['content'];
 $pwb=round($pw*0.5); $br=''; $w=''; $p['id']='';//rez
 if($m=='noimages')return ' ';
-if(rstr(142))return pop::orimg($da,$id,0);//distant original
-if(rstr(143))return pop::orimg($da,$id,1);//link to distant
+if(rstr(142))return self::orimg($da,$id,0);//distant original
+if(rstr(143))return self::orimg($da,$id,1);//link to distant
 if(substr($da??'',0,4)=='http'){//if(eradic_acc($da)==$da)
-	if(strpos($da,'Capture-'))$da=str_replace("d'",'d%E2%80%99',$da);//['d?',]
-	if(strpos($da,' '))$da=urlencode($da);
-	//$ok=joinable($da); if($ok)[$w,$h]=arr(@getimagesize($da),2); if($w>$pw)$w=$pw;
-	return image($da,'');}//."\n\n"
+	if(strpos($da,'Capture-'))$da=str_replace("'","’",$da);//%E2%80%99
+	return image($da);}
 else $pre=jcim($da);//,1
-$dca=$pre.$da; $http=''; $com=''; $p['style']=''; $w=''; $h='';
+$dca=$pre.$da; $http=''; $p['style']=''; $w=''; $h='';
 if($nl){$http=host().''; $dca=str_replace('../','',$dca);}
-if(is_file($dca))[$w,$h]=getimagesize($dca); else{$w=''; $h=''; $da=self::recup_image($da);}
+if(is_file($dca))[$w,$h]=getimagesize($dca);
+if(!$w){$da=self::recup_image($da,$id,$m);}
+if(!$da)return picto('img2');
 if(!$w && !$pre){$dca=$da; $w=$pwb;}
 if(rstr(17))$pwb/=2;
-//if(rstr(9) && !$com && $w<$pwb)$p['style']='float:left; margin-right:10px;';
+//if(rstr(9) && $w<$pwb)$p['style']='float:left; margin-right:10px;';
 //if($w && $w<$pwb)$p['style'].=' width:'.$w.'px;';
 $p['src']=$http.'/'.$dca; //if(!rstr(9) && $h>40)$br="\n\n";
 $p['title']=ses::adm('alert');
 $ret='<img'.attr($p).' />';//image()
-if($nl)return $ret;//.$br
-if($w>$pw && $pw && !$com)$ret=ljb('','SaveBf',ajx($da).'_'.$w.'_'.$h.'_'.$id,$ret).$br;
+if($w>$pw && $pw && !$nl)$ret=ljb('','SaveBf',ajx($da).'_'.$w.'_'.$h.'_'.$id,$ret).$br;
 if(auth(6) && rstr(121) && !$nl)$ret=self::rzim($ret,$da,$dca,$id,$w,$h);
 return $ret;}//.$br
 
@@ -391,17 +403,17 @@ elseif($xt=='.mp4'||$xt=='.ogg'||$xt=='.webm'){$t=$o?$o:$p;//.h264
 		elseif($o)return lkt('',goodroot($p),$o);
 		else return pop::getmp4($da,$id,rstr(145));}}
 //links
-$res=self::connlk($da,$id,$m,$nl,$pw); if($res=='-')return; if($res)return $res;
-$cn=substr($c,1); //echo $cn.'-';
+$res=self::connlk($da,$id,$m,$pw,$nl); if($res=='-')return; if($res)return $res;
+$cn=substr($c,1);
 if(method_exists($cn,'call') && isset($cn::$conn)){[$p,$o]=cprm($d); return $cn::call($p,$o);}
 //if($cn){$ret=codeline::mod_basic($cn,$d); if($ret)return $ret;}
 return '['.$da.']';}
 
-static function connlk($da,$id,$m,$nl,$pw){
+static function connlk($da,$id,$m,$pw,$nl){
 $par=strpos($da,'|'); $http=strpos($da,'http'); $html=strpos($da,'<');
 if(is_img($da) && $par===false){// && $html===false
 	if(substr($da,0,4)=='http' && $id)$da=conn::get_image($da,$id,$m);
-	return conn::place_image($da,$m,$nl,$pw,$id);}
+	return conn::place_image($da,$m,$pw,$id,$nl);}
 if(($par or $http!==false) && $html===false){//secure double hooks
 	[$p,$o]=cprm($da);
 	if(is_img($p)){//image|text
@@ -415,7 +427,7 @@ if(($par or $http!==false) && $html===false){//secure double hooks
 	elseif(is_img($o)){//link|image
 		//if(strpos($o,'<img')!==false)$o=between($o,'src="/img/','"');//str::prop_detect($o,'src')
 		if(substr($o,0,4)=='http')$o=conn::get_image($o,$id,$m);
-		if(substr($p,0,4)=='http')return lk($p,conn::place_image($o,$m,$nl,$pw,$id));
+		if(substr($p,0,4)=='http')return lkt('',$p,conn::place_image($o,$m,$pw,$id,1));
 		elseif(is_numeric($p))return mk::popim($o,pictxt('img',urlread($p)),$id);
 		else return $o;}
 	elseif(strpos($p,'.pdf')!==false)return mk::pdfdoc($da,$nl,$pw);

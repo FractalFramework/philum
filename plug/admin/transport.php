@@ -117,7 +117,7 @@ return $ret;}
 //local
 static function build($p,$o,$prm=[]){
 $p=$prm[0]??$p; if(!auth(7))return;
-[$usr,$db,$ps,$dr]=self::srv(1); $res=''; $root=__DIR__;
+[$usr,$db,$ps,$dr]=self::srv(1); $res=''; $root=__DIR__; $ok=1;
 $srv=prms('srvimg'); if(!$srv)return 'srvimg is not set';
 if($o=='all'){$dt=date('ymd');
 	$u=$srv.'/call/transport/1/d'; $fa=get_file($u);//build
@@ -144,7 +144,7 @@ elseif($o=='json'){//dj
 	$f='_backup/'.$p.'.json'; $u=$srv.'/'.$f;
 	//if(is_file($f))unlink($f); 
 	if(!is_file($f)){$e='wget -P '.$dr.'/_backup '.$u; exc($e);}
-	if($d=get_file($u))$r=json_decode($d,true); $er=json_error(); $r=utf_r($r,1);
+	if($d=get_file($u))$r=json_decode($d,true); $er=json_error(); //$r=utf_r($r,1);
 	if($d && !$er){$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b); sql::sav2($b,$r,1,0); $res=$b.':renoved';}}
 else{//partial and complete dumps, not gziped
 	//$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b);
@@ -157,13 +157,13 @@ else{//partial and complete dumps, not gziped
 	//if(!is_file($f))copy($u,$f);
 	if(is_file($f)){$o=='d'?'ssh':'rq';// -t '.qd($p).'
 		if($o=='ssh'){$e='mysql -u '.$usr.' -p'.$ps.' '.$db.' < '.$dr.'/'.$f; exc($e);}
-		else{$d=file_get_contents($u); $u; if($d)qr($d,0);}
+		else{$d=file_get_contents($u); if($d)qr($d,0);}//$d=utf8enc($d); eco($d);
 		$res=$maxid==$dist_maxid?'ok':$maxid.'->'.$dist_maxid;}
-	else $res='not uploaded'.$res;
+	else{$res='not uploaded'.$res; $ok=0;}
 	//exc('rm '.$dr.'/'.$f);
 	//todo: del local and distant
 }
-return divb($p.'-'.$o.':'.$res,'frame-blue');}
+return divb($p.'-'.$o.':'.$res,$ok?'frame-blue':'frame-red');}
 
 static function utf8(){$r=self::tables();
 foreach($r as $k=>$v)

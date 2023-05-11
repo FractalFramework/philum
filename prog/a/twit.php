@@ -148,7 +148,7 @@ return $rb;}
 //edit
 static function edtsav($p,$o,$ra){
 $rz=self::r(); $cls=implode(',',array_keys($rz));
-$rb=sql($cls,'qdtw','a','twid="'.$p.'"'); $rk=array_keys($rb); $r=array_combine($rk,$ra);
+$rb=sql($cls,'qdtw','a',['twid'=>$p]); $rk=array_keys($rb); $r=array_combine($rk,$ra);
 foreach($rz as $k=>$v)if(substr($v,-3)=='int' && !$r[$k])$r[$k]=0;
 if($ra)sqlup('qdtw',$r,['twid'=>$p]);
 return self::cache($p,$o,2);}

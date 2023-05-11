@@ -298,6 +298,7 @@ if($lin)foreach($lin as $k=>$v){
 	$css=$v[0]==$vrf&&$v[2]?'active':'';
 	if($v[1]=='j')$re[]=lj($css,$v[2],$v[3]);
 	elseif($v[1]=='SaveJc')$re[]=ljb($css,$v[1],$v[2],$v[3]);
+	elseif($o=='content')$re[]=lj('','content_api___'.$v[1].':'.ajx($v[2]),$v[3]);
 	elseif($o=='popapi')$re[]=lj('','popup_api___'.$v[1].':'.ajx($v[2]),$v[3]);
 	elseif($o=='popmod')$re[]=lj('','popup_mod,callmod___m:'.ajx($v[1]).',p:'.ajx($v[2]),$v[3]);
 	else{

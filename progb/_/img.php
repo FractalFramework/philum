@@ -1,13 +1,20 @@
-<?php //a/img
+<?php 
 class img{
-static $a=__CLASS__;
 
 static function install(){sqldb::install('img');}
 
+static function original($im,$id){
+if($id)$w=['ib'=>$id]; $w['im']=$im;
+return sql('dc','qdg','v',$w);}
+
 static function restore($im,$id){
-$dc=sql('dc','qdg','v',['ib'=>$id,'im'=>$im]);
-if($dc)$dc=conn::get_image($dc,$id,3);
-if($dc)return conn::place_image($dc,3,'',920,$id);}
+$dc=self::original($im,$id);
+if($dc)return conn::get_image($dc,$id,3);}
+
+static function restoreim($a,$id){
+$b=self::restore($a,$id); if(!$b)return;
+if($b && $b!=$a){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);}
+return conn::place_image($b,3,920,$id,'');}
 
 static function rewrite($d){$im='img/'.$d;
 [$w,$h,$ty]=getimagesize($im);
@@ -25,7 +32,7 @@ static function reduce($d,$o,$id=''){$im='img/'.$d;
 if($o){$w=$wo/2; $h=$ho/2;}
 else [$w,$h]=self::sz($wo,$ho,940,940);
 make_mini($im,$im,$w,$h,''); opcache($im);
-return conn::place_image($d.'?'.$w,3,'',920,$id);}
+return conn::place_image($d.'?'.$w,3,920,$id,'');}
 
 static function png2jpg($a,$id){
 $b=str_replace('.png','.jpg',$a);
@@ -35,15 +42,14 @@ if(!is_file($in))return;
 $img=imagecreatetruecolor($w,$h);
 $c=imagecolorallocate($img,255,255,255); imagefill($img,0,0,$c);
 $im=@imagecreatefrompng($in);
-imagecopyresampled($img,$im,0,0,0,0,$w,$h,$w,$h);
+if($im)imagecopyresampled($img,$im,0,0,0,0,$w,$h,$w,$h);
 imagejpeg($img,$out,100);
 if($id){$sz1=fsize($in); $sz2=fsize($out);//abort if jpg is larger
 	if($sz1>$sz2){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
 		self::mdf($id,$a,$b); meta::putincache($id);
-		unlink($in); $res=$b; ses::$adm['alert']='png destroyed ('.$sz1.'=>'.$sz2.') ';}
-	else{unlink($out); $res=$a; ses::$adm['alert']='png kept ('.$sz1.'<='.$sz2.') ';}}
-//return img($out.'?'.randid()).fsize($out);
-return conn::place_image($res,3,'',920,$id);}
+		rm($in); $res=$b; ses::$adm['alert']='png destroyed ('.$sz1.'=>'.$sz2.') ';}
+	else{rm($out); $res=$a; ses::$adm['alert']='png kept ('.$sz1.'<='.$sz2.') ';}}
+return $res;}//'?'.randid()
 
 static function webp2jpg($a,$id){
 $b=str_replace('.jpeg','.jpg',$a);
@@ -53,8 +59,8 @@ $im=@imagecreatefromwebp($in);
 imagejpeg($im,$out,90);
 imagedestroy($im);
 if($id){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
-	self::mdf($id,$a,$b); if($b!=$a)unlink($in);}
-return conn::place_image($b,3,'',920,$id);}
+	self::mdf($id,$a,$b); if($b!=$a)rm($in);}
+return $b;}
 
 static function batch($p=1,$l=10000){//self::install();
 $min=$p*$l; $max=$min+$l; $rc=[];
@@ -65,26 +71,26 @@ foreach($r as $k=>$v){$rb=explode('/',$v);
 		$rc[]=[$k,$v,fsize('img/'.$v),'',0];}}//self::save($k,$v,'');
 return $rc;}
 
-static function save($id,$im,$dc){//self::install();
+static function save($id,$im,$dc){
 $ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
-if(!$ex)sqlsav('qdg',[$id,$im,$dc,0],0,1);//,fsize('img/'.$f)
-//else sqlup('qdg',['ib'=>$id,'im'=>$im,'dc'=>$dc,'no'=>0],$ex);
-}
+if(!$ex)return sqlsav('qdg',[$id,$im,$dc,0],0);
+elseif($dc)sqlup('qdg',['ib'=>$id,'im'=>$im,'dc'=>$dc,'no'=>0],$ex);
+return $dc;}
 
-static function mdf($id,$a,$b){if(!auth(4))return;
+static function mdf($id,$a,$b){if(!auth(6))return;
 $ex=sql('id','qdg','v',['ib'=>$id,'im'=>$a]);
 if($ex)sqlup('qdg',['im'=>$b],$ex);}
 
-static function rm($id,$im){if(!auth(4))return;
+static function rm($id,$im){if(!auth(6))return;
 $ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
 if($ex)sqlup('qdg',['no'=>1],$ex);}
 
-static function del($id,$im){if(!auth(5))return;
+static function del($id,$im){if(!auth(6))return;
 $ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
 if($ex)sql::del('qdg',$ex);
 conn::replaceinmsg($id,'['.$im.']','');
 conn::replaceinimg($id,'/'.$im,'');
-unlink('img'.$im); unlink('imgc'.$im);}
+rm('img'.$im); rm('imgc'.$im);}
 
 #thumbs
 static function thumbname($d,$w,$h){

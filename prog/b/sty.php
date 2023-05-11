@@ -345,29 +345,31 @@ elseif($v[2])$ra['elements'].=$ret;}}
 return divs('min-width:440px',tabs($ra,'css'.$edit));}
 
 static function saveclr($p){$qb=ses('qb'); $tosave=$p[0];
-$ndd=$_SESSION['desgn']?$_SESSION['desgn']:$_SESSION['prmd'];
-$ndc=$_SESSION['clrset']?$_SESSION['clrset']:$_SESSION['prmd'];
+$ndd=ses('desgn',ses('prmd'));
+$ndc=ses('clrset',ses('prmd'));
 $nod=$qb.'_design_'.$ndd; $f_c=$qb.'_clrset_'.$ndc;
-if(!$_SESSION['desgn'])$f_css_temp='css/'.$qb.'_design_'.$ndd.'.css';
+if(!ses('desgn'))$f_css_temp='css/'.$qb.'_design_'.$ndd.'.css';
 else $f_css_temp='css/'.$qb.'_design_dev_'.$ndd.'.css';
 $defs=msql::read_b('design',$nod,'',1);
 $tosave=str_replace('/','_',$tosave);
 if(substr($tosave,-1)=='_')$tosave=substr($tosave,0,-1);
 setclrs(opt($tosave,'_',9));
-if($_SESSION["auth"]>=6)self::save_clr($f_c);
+if(auth(6))self::save_clr($f_c);
 self::build_css($f_css_temp,$defs);
 return btn('popdel','saved');}
 
 #ajax
 static function clrpckr_layout(){$var='';
 $rc=getclrs(); $nb=$rc?count($rc):7;
-for($i=1;$i<=$nb;$i++)$var.='$("#colorpickerField'.$i.'").ColorPicker({
-onSubmit: function(hsb,hex,rgb,el){$(el).val(hex); $(el).ColorPickerHide();
-$("#colorpick'.$i.' div").css("backgroundColor","#"+hex); SaveClr(10);},
-onBeforeShow: function(){ $(this).ColorPickerSetColor(this.value);},
-onShow: function(colpkr){ $(colpkr).fadeIn(200); return false;},
-onHide: function(colpkr){ $(colpkr).fadeOut(200); return false;}})';
-$ret='(function($){var initLayout=function(){'.$var.'}; EYE.register(initLayout,"init");})(jQuery)';
+for($i=1;$i<=$nb;$i++)$var.='
+$("#colorpickerField'.$i.'").ColorPicker({
+	onSubmit: function(hsb,hex,rgb,el){$(el).val(hex); $(el).ColorPickerHide();
+	$("#colorpick'.$i.' div").css("backgroundColor","#"+hex); SaveClr(10);},
+	onBeforeShow: function(){ $(this).ColorPickerSetColor(this.value);},
+	onShow: function(colpkr){ $(colpkr).fadeIn(200); return false;},
+	onHide: function(colpkr){ $(colpkr).fadeOut(200); return false;}})';
+$ret='(function($){var initLayout=function(){'.$var.'};
+EYE.register(initLayout,"init");})(jQuery)';
 $ret.='
 function SaveClr(nb){var clrs="/"; for(i=1;i<=nb;i++){
 var va=document.getElementById("colorpickerField"+i).value; clrs+=va+"/";}
