@@ -653,7 +653,7 @@ return $ret;}
 
 static function fastmenus($o,$m){$ret='';
 $r=self::authmenus(); $tg=$o?'popup':'admcnt';//'modules','templates'
-if(!$m)$rm=['console','desktop','rstr','config','css','tags','Microsql','articles','api','pictography','finder','connectors','stats','software','twit','apps','txt','pad','exec','test','members'];
+if(!$m)$rm=['console','desktop','rstr','config','css','tags','Microsql','articles','api','images','pictography','finder','connectors','stats','software','twit','apps','txt','pad','exec','test','members'];
 else $rm=['nodes','newsletter','banner','favicon','dev','backup','htaccess','links','rssurl','mail','password','descrption','icons','authes','avatar','messages'];
 foreach($rm as $v){$j='admin___'.ajx($v);//'sty,home__head__'//
 	if($v=='css' && !$o)$j='admin__url_css_1';
@@ -744,6 +744,7 @@ case('finder'):$ret=finder::home($qb,'disk'); break;
 case('backup'):$ret=self::backup('',''); break;
 case('software'):$ret=software::home('=',''); break;
 //case('update_notes'):$ret=adm_update_notes('',1); break;
+case('images'):$ret=adimg::home('',''); break;
 case('pictography'):$ret=pictography::home('',''); break;
 case('api'):$ret=apicom::home('',1); break;}
 if($admin && !$ret && $auth>=$curauth)if(method_exists($admin,'home'))$ret=$admin::home('','');

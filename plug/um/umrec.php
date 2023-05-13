@@ -111,7 +111,7 @@ if($mode=='tags'){if($rtg)foreach($rtg as $k=>$v)$rb['tagr'][$v[1]][]=$id;}
 $nfo=isset($rtg[0][1])?$rtg[0][1]:'';//classtags info
 if($nfo!='favoris' && $nfo!='retweet')[$idb,$idy,$lgb,$nm]=self::track($id,$lang);//idy
 else $idy=$idb=$lgb=$nm='';
-$n=substr_count($idy,':u');
+$n=$idy?substr_count($idy,':u'):0;
 if($nfo=='favoris')$from='@'.between($msg,'twitter.com/','/status');
 elseif(!$from && $nm)$from=$nm;
 //if($lang!='all' && $idb){}// && $lg!=$lang

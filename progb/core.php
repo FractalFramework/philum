@@ -234,8 +234,8 @@ if(!$r)$r=boot::define_clr(); if($r)return $n?$r[$n]:$r;}
 function setclrs($d,$k=''){$prmd=$k?$k:ses('prmd'); $_SESSION['clrs'][$prmd]=$d;}
 
 #ses
-//function auth($n){return ($_SESSION['auth']??'')>=$n?true:false;}
-//function rstr($n){return ($_SESSION['rstr'][$n]??1)?0:1;}
+function auth($n){return ($_SESSION['auth']??'')>=$n?true:false;}
+function rstr($n){return ($_SESSION['rstr'][$n]??1)?0:1;}
 function prms($n){return $_SESSION['prms'][$n]??'';}
 function prma($n){return $_SESSION['prma'][$n]??'';}
 function prmb($n){return $_SESSION['prmb'][$n]??'';}
@@ -243,8 +243,8 @@ function nms($d){return $_SESSION['nms'][$d]??$d;}
 function mn($n){return $_SESSION['mn'][$n]??'';}
 function db($k){return $_SESSION[$k]??'';}
 //
-function auth($n){return (ses::$s['auth']??'')>=$n?true:false;}
-function rstr($n){return (ses::$s['rstr'][$n]??1)?0:1;}
+//function auth($n){return (ses::$s['auth']??'')>=$n?true:false;}
+//function rstr($n){return (ses::$s['rstr'][$n]??1)?0:1;}
 //function prms($n){return (ses::$s['prms'][$n]??1)?0:1;}
 //function prma($n){return (ses::$s['prma'][$n]??1)?0:1;}
 //function prmb($n){return (ses::$s['prmb'][$n]??1)?0:1;}

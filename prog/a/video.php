@@ -76,6 +76,7 @@ if($p=='youtube')$u='https://img.youtube.com/vi/'.$id.'/hqdefault.jpg';
 return $u;}
 
 static function img($d,$id,$im){
+if(strpos($d,'|'))$d=strto($d,'|');
 $f=ses('qb').'_'.$id.'_'.$d.'.jpg';
 //$f=ses('qb').'_'.$id.'_'.substr(md5($f),0,6).'.jpg';//cafouil-img
 if(!is_file('img/'.$f) or ses('rebuild_img')){

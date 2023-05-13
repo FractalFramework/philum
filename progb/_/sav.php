@@ -328,16 +328,17 @@ foreach($r as $k=>$v)if($v && !is_numeric($v))$rt[]=self::rollbackim($id,$v); el
 return implode('/',$rt);}
 
 static function reimportim($id,$o=''){
-$u=sql('mail','qda','v',$id);
-[$t,$d]=conv::vacuum($u,''); vacses($u,'t','x');
+$u=sql('mail','qda','v',$id); ses::$urlsrc=$u;
+[$t,$d]=conv::vacuum($u,''); vacses($u,'t','x'); //eco($d);
 $d=codeline::parse($d,$id,'importim');
-if($o)return art::playd($id,$o,'');}
+if($o)return art::playd($id,$o,'');
+return $d;}
 
 static function recenseim($id,$imx=''){
 $msg=sql('msg','qdm','v',$id); $r=[]; $rb=[]; $re=[]; $ret='';
 $ims=codeline::parse($msg,$id,'extractimg'); //echo $ims.'--';
 if($ims){$ra=explode('/',$ims); foreach($ra as $k=>$v)$re[$v]=$v;}
-if(!$imx)$imx=sql('img','qda','v',$id); if($imx)$r=explode('/',$imx);
+if(!$imx)$imx=sql('img','qda','v',$id); if($imx)$r=explode('/',$imx); if(is_numeric($r[0]))unset($r[0]);
 if($r)foreach($r as $k=>$v)$rb[$v]=$v;//im in msg
 if($rb)foreach($rb as $k=>$v)if($v && !is_numeric($v)){$w=1;//del bad img
 	if(!is_file('img/'.$v))unset($rb[$k]);
@@ -347,10 +348,10 @@ if($re)foreach($re as $k=>$v)if($v){//add forgotten img
 if($rb)$ret=implode('/',$rb); //sql::upd('qda',['img'=>$ret],$id);
 return '/'.$ret;}
 
-static function orderim($id){
-$ims=sql('img','qda','v',$id); $r=explode('/',$ims); 
-if($r)foreach($r as $v)if(is_file('img/'.$v)){[$w,$h]=getimagesize('img/'.$v); $rb[$w]=$v;}
-if(isset($rb)){krsort($rb); return '/'.implode('/',$rb);}}
+static function orderim($id){//pop::art_img
+$ims=sql('img','qda','v',$id); $r=explode('/',$ims); if(is_numeric($r[0])){$n=$r[0]; unset($r[0]);}
+if($r)foreach($r as $k=>$v)if(is_file('img/'.$v)){[$w,$h]=getimagesize('img/'.$v); $rb[$w]=$k;}
+if(isset($rb)){krsort($rb); $d=current($rb).'/'.implode('/',$r); sql::upd('qda',['img'=>$d],$id); return $d;}}
 
 static function allimgdel($id){if(!auth(6))return;
 $ims=sql('img','qda','v',$id); $r=explode('/',$ims);
@@ -369,11 +370,11 @@ $rb[0]=self::placeim($id); $rb[1]=$ims; return $rb;}
 static function placeim($id){$ret='';
 $ims=sql('img','qda','v',$id); $r=explode('/',$ims);
 $ra=sql('im,id','qdg','kv',['ib'=>$id]);
-if($r)foreach($r as $k=>$v)if(is_img($v)){$bt='';
-	$im=make_mini('img/'.$v,'imgc/'.$v,'','',$_SESSION['rstr'][16]);
-	if($im)$bt=ljb('','insert','['.$v.']',image($im,'72','',att($v))); else $bt=picto('img2',24);
-	$bt.=btn('txtx',$v);
-	if(is_file('img/'.$v))[$w,$h]=getimagesize('img/'.$v); else [$w,$h]=['',''];
+if($r)foreach($r as $k=>$v)if(is_img($v)){$bt=''; $f='img/'.$v;
+	$im=make_mini($f,'imgc/'.$v,'','',$_SESSION['rstr'][16]);
+	if($im)$bt=ljb('','insert','['.$v.']',image($im,'72','',att(fwidth($f,1)))); else $bt=picto('img2',24);
+	$bt.=btn('txtx',$k.'. '.strfrom($v,'_'));
+	if(is_file($f))[$w,$h]=getimagesize($f); else [$w,$h]=['',''];
 	if($w)$bt.=ljb('popbt','SaveBf',ajx($v).'_'.$w.'_'.$h.'_'.$id,picto('popup'));
 	else $bt.=btn('popbt grey',picto('popup'));
 	if(auth(5)){

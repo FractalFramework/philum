@@ -20,13 +20,13 @@ foreach($main as $k=>$v){if($k>$lst or !$lst){$i++;
 	$ret.=tagb('item',$xml)."\n";}}
 return str_replace(htmlentities("&nbsp;"),' ',$ret);}
 
-static function stream($nod,$lst){//pr($_GET);
+static function stream($nod,$lst){
 $nod=self::protect($nod,1);
 [$dr,$nod]=split_right('/',$nod,1);
 $r=msql::read($dr,$nod,'');
 $dscrp=$r?self::flux_xml($r,$lst):''; $host=$_SERVER['HTTP_HOST'];
 //header('Content-Type: text/xml');
-$xml='<'.'?xml version="1.0" encoding="utf-8" ?'.'>'."\n";//iso-8859-1
+$xml='<?xml version="1.0" encoding="utf-8" ?>'."\n";
 $xml.='<rss version="2.0">'."\n"; 
 $xml.='<channel>'."\n"; 
 $xml.='<title>http://'.$host.'/msql/'.$nod.'</title>'."\n";

@@ -7,7 +7,7 @@ $r=["_"=>['name','description'],
 "5"=>['mode preview','affiche un article en mode \'preview\' (pub2)'],
 "6"=>['publicateur','qui a publié l\'article'],
 "7"=>['date','affiche la date dans les pubs'],
-"8"=>['mode ajax','ouvre les pubs d\'articles dans une popup'],
+"8"=>['mode ajax','privilégie les liens ajax (modules, pubs, navigation)'],
 "9"=>['float img','option de détourage des images par défaut'],
 "10"=>['auto parent','le nouvel article est apparenté à celui qui est en cours de lecture'],
 "11"=>['aussitôt publié','le nouvel article est directement publié'],
@@ -141,7 +141,7 @@ tente d\'abord d\'utiliser un template personnalisé, puis un template public, a
 "133"=>['videolooker','cherche les infos de la vidéo via l\'api'],
 "134"=>['ibarts','ordre des articles enfants'],
 "135"=>['surlignages','active le surlignage de notes, faits et citations (pour éditeur uniquement)'],
-"136"=>['op-pagup','ouvre l\'article n pagup'],
+"136"=>['op-pagup','popup en mode concentration'],
 "137"=>['headings','réduit h1,h2,h3,h4,h5 à :h'],
 "138"=>['fullscreen','bascule l\'article en plein-écran'],
 "139"=>['notbigimg','réduit les grosses images'],
@@ -153,4 +153,8 @@ tente d\'abord d\'utiliser un template personnalisé, puis un template public, a
 "145"=>['save videos','les connecteurs [mp4, mp3, webm, m4a, ogg] ommettent enregistrement, normalement occasionné par l\'usage des extensions associés.
 Si la rstr est désactivée, c\'est le contraire : seuls les url converties en connecteur (.mp4 => :mp4) occasionnent un enregistrement'],
 "146"=>['deskhome','limite la portée du desktop à la home'],
-"147"=>['png2jpg','tente de convertir les png en jpg si c\'est avantageux']];
+"147"=>['png2jpg','tente de convertir les png en jpg si c\'est avantageux'],
+"148"=>['webp2jpg','convertit les webp en jpg'],
+"149"=>['hurl','lien du titre en mode hurl (utilise le href comme un js)'],
+"150"=>['clusters','familles de tags'],
+"151"=>['restoreim','restaure img d\'origine si absente']];

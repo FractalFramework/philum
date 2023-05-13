@@ -162,10 +162,10 @@ if($o)$o=hidden('opt'.$id,$o);//send this val to uploadsav(id,typ,val)
 return '<form id="upl'.$id.'" action="" style="display:inline-block" method="POST" onchange="upload(\''.$id.'\')" accept-charset="utf-8"><label class="uplabel btn"><input type="file" id="upfile'.$id.'" name="upfile'.$id.'" multiple />'.hidden('typ'.$id,$typ).$o.picto('upload').'</label></form>'.btd($id.'up','').btd($id.'prg','');}
 
 //select
-function select($ra,$r,$kv='',$h='',$j=''){$ret=''; $pr=[];
+function select($ra,$r,$kv='',$h='',$j='',$o=''){$ret=''; $pr=[];
 if(is_string($ra))$ra=['id'=>$ra];
 if($j)$ra['onchange']=sj($j.'\'+this.value+\'');
-//$ret.=tag('option',$pr+['value'=>''],'Select...');
+if($o)$ret=tag('option',$pr+['value'=>''],'Select...');
 if($r)foreach($r as $k=>$v){
 	if($kv=='vv')$k=$v; elseif($kv=='kk')$v=$k;
 	if($k==$h)$pr['selected']='selected'; else $pr=[];
@@ -622,7 +622,7 @@ function recup_fileinfo($doc){if(is_file($doc))
 return date('ymd',filemtime($doc)).'-'.round(filesize($doc)/1024).'Ko';}
 function ftime($f,$d=''){if(is_file($f))return date($d?$d:'ymd.Hi',filemtime($f));}
 function fsize($f,$o=''){if(is_file($f))return round(filesize($f)/1024,1).($o?' Ko':'');}
-function fwidth($f){if(is_file($f))return getimagesize($f);}
+function fwidth($f,$o=''){$r=is_file($f)?getimagesize($f):[0,0]; return $o?implode('/',arr($r,2)):$r;}
 function frdate($d){$r=['','janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']; return $r[$d];}
 function localdate($d){$r=explode('/',date('d/m/Y',$d)); $r[1]=frdate(intval($r[1]));
 return implode(' ',$r);}

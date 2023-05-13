@@ -32,13 +32,13 @@ static function reduce($d,$o,$id=''){$im='img/'.$d;
 if($o){$w=$wo/2; $h=$ho/2;}
 else [$w,$h]=self::sz($wo,$ho,940,940);
 make_mini($im,$im,$w,$h,''); opcache($im);
-return conn::place_image($d.'?'.$w,3,920,$id,'');}
+if($id)return conn::place_image($d.'?'.$w,3,920,$id,'');}
 
 static function png2jpg($a,$id){
 $b=str_replace('.png','.jpg',$a);
 $in='img/'.$a; $out='img/'.$b;
 if(!is_file($in))return;
-[$w,$h,$ty]=getimagesize($in); if(!$w)return;
+[$w,$h,$ty]=getimagesize($in); if(!$w)return $a;
 $img=imagecreatetruecolor($w,$h);
 $c=imagecolorallocate($img,255,255,255); imagefill($img,0,0,$c);
 $im=@imagecreatefrompng($in);
@@ -56,6 +56,7 @@ $b=str_replace('.jpeg','.jpg',$a);
 $b=str_replace('.webp','.jpg',$b);
 $in='img/'.$a; $out='img/'.$b;
 $im=@imagecreatefromwebp($in);
+if(!$im)return $a;
 imagejpeg($im,$out,90);
 imagedestroy($im);
 if($id){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
@@ -73,9 +74,9 @@ return $rc;}
 
 static function save($id,$im,$dc){
 $ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
-if(!$ex)return sqlsav('qdg',[$id,$im,$dc,0],0);
+if(!$ex)return $ex=sqlsav('qdg',[$id,$im,$dc,0],0);
 elseif($dc)sqlup('qdg',['ib'=>$id,'im'=>$im,'dc'=>$dc,'no'=>0],$ex);
-return $dc;}
+return $im;}
 
 static function mdf($id,$a,$b){if(!auth(6))return;
 $ex=sql('id','qdg','v',['ib'=>$id,'im'=>$a]);

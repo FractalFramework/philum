@@ -1,7 +1,6 @@
 <?php
 class mkbook{
 static $a=__CLASS__;
-//static $enc='iso-8859-1';
 static $enc='UTF-8';
 
 static function enc($d){

@@ -41,7 +41,7 @@ if($in!==false){
 		$end=self::parse($end,$op,$g);}
 	else $end=substr($msg,$in+1);}
 else $end=$msg;
-if($g=='extractimg')return $mid.$end;
+if($g=='extractimg' or $g=='importim')return $mid.$end;
 return $deb.$mid.$end;}//clean_nb
 
 static function read($d){

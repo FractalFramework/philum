@@ -139,20 +139,27 @@ $r=sql('frm','qda','k',['%mail'=>$fd,'_order'=>'id desc','_limit'=>'100']); if(!
 arsort($r); $rt=array_keys($r);
 return $rt;}
 
+static function select($id,$lk){
+$r=ses('line'); $lnj=ajx($lk); $ret='';
+$j='socket_sav,addurlsav__7_'.$lnj.'_';
+foreach($r as $k=>$v)$ret.=lj('',$j.ajx($k).'_1',catpic($k,20));
+return $ret;}
+
 static function call($kn,$u){//rssin
 [$kn,$mth]=expl('-',$kn,2); chrono();
 [$f,$o]=prepdlink($u); $f=http($f); $i=0; $ret=''; //$mth=2;
 $r=self::load($f,$mth); $nb=count($r); //$ret=hidden('addop',1);
-$ru=self::usedcat($f);
+//$ru=self::usedcat($f);
 foreach($r as $k=>$v){$btc=''; [$va,$lnk,$dat,$id,$txt]=$v; $i++;
-	if($id)$btc.=ma::popart($id).' '; $lnj=ajx($lnk);
+	if($id)$btc.=ma::popart($id); $lnj=ajx($lnk);
 	$btc.=lj('','popup_sav,batchpreview__3_'.$lnj,picto('view'));//,att(htmlentities($txt))
+	//if(auth(4))$btc.=select(['id'=>$kn.$k],$ru,'vv','','socket_sav,addfromlist_'.$kn.$k.'_7_'.$lnj.'_');
+	if(auth(4) && !$id)$btc.=togbub('rssin,select',$kn.$k.'_'.$lnj,picto('category'));
+	$btc.=lkt('',$lnk,picto('url')); $btc.=btn('txtsmall',$dat);
 	if(auth(4) && !$id){$mem=vacses($lnk,'b')?'ok':picto('add');
-		$btc.=ljp(atd('ars'.$i),'ars'.$i.'_sav,batch___'.$lnj.'_p',$mem);
-		$btc.=select(['id'=>$kn.$k],$ru,'vv','','socket_sav,addfromlist_'.$kn.$k.'_7_'.$lnj.'_');}
+		$btc.=ljp(atd('ars'.$i),'ars'.$i.'_sav,batch___'.$lnj.'_p',$mem);}
 	if(!$id)$btc.=lj('','popup_search,home__3_'.ajx($va).'_',picto('search'));
-$btc.=lkt('',$lnk,picto('url')); $btc.=btn('txtsmall',$dat);
-if($va)$ret.=divc('',$btc.' '.$va);}//$id?'hide':
+	if($va)$ret.=divc('',$btc.' '.$va);}//$id?'hide':
 $ret=scroll($nb,$ret,22,'');
 $bt=self::lk($kn,$u,$f);
 return $bt.tagc('ul','panel',$ret);}

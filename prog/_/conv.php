@@ -73,10 +73,8 @@ return ['',['','','','','','']];}
 #transductor
 static function call($d,$h=''){
 $h=$h?$h:rstr(137);
-//if(strpos($d,'&#x'))$d=utf8dec(html_entity_decode($d)); eco($d); 
 $d=str::clean_html($d);
 $d=str::br_rules($d);
-//if(strpos($d,'\x'))$d=html_entity_decode($d);
 $d=self::interpret_html($d,'',$h);
 $d=str::post_treat_repair($d);
 $d=str::embed_links($d);
@@ -231,7 +229,7 @@ elseif($src){$src=trim($src);
 		elseif(strpos($src,'mailto:')!==false)$mid='['.substr($src,7).']';
 		elseif($srcim && is_img($txt))$mid='['.$rot.$src.'|'.$txt.']';
 		elseif($txt && $src && $txt==$src)$mid='['.$rot.$src.']';
-		elseif($txt && $src && strpos(str_replace('...','',$txt),$src))$mid='['.$rot.$src.']';
+		elseif($txt && $src && strpos($src,str_replace('...','',$txt)))$mid='['.$rot.$src.']';
 		elseif($rot.$src!=$txt){
 			if($srcim){
 				if(!is_img($txt) && $txt!='https')$mid='['.$rot.$src.($txt?'|'.$txt:'').']';
@@ -532,7 +530,6 @@ $aa_in=self::ecart($v,$aa,$ab);//<...>
 	$aa_end=strpos($aa_in,' ');
 	if($aa_end!==false){$aa_bal=substr($aa_in,0,$aa_end);}
 	else $aa_bal=$aa_in;}
-//else $before=$v;
 $ba=strpos($v,'</'.$aa_bal,$ab); $bb=strpos($v,'>',$ba);//bb_bal
 if($ba!==false && $bb!==false && $aa_bal && $bb>$ba){
 	$ba=self::recursearch($v,$ab,$ba,$aa_bal);
@@ -551,7 +548,7 @@ if($aa_bal=='head' or $aa_bal=='style')$bal='';// or $aa_bal=='script'
 if(strpos($bal,'<')!==false)$bal=self::interpret_html($bal,$X,$h);//100909
 if($X!='ok'){//else interdit l'imbrication
 	if($aa_bal=='pagespeed_iframe')$aa_bal='iframe';//patch
-	$ret=self::bal_conv($aa_bal,$aa_in,$bb_bal,$bal,$h); //echo($ret[1]).n();
+	$ret=self::bal_conv($aa_bal,$aa_in,$bb_bal,$bal,$h);
 	if($ret[1]==$bal)$bal=self::bal_conv_style($bal,$aa_in);
 	else $bal=$ret[1];
 	$taga.=$ret[0]; $tagb.=$ret[2];}

@@ -147,7 +147,7 @@ $ret.=br();
 if(rstr(38)){
 	$ret.=pictit('url','url').inputb('url'.$id,$url,'36','','255');
 	$ret.=lj('poph','url'.$id.'_meta,hardurlsuj__4_'.$id,pictit('upload','update'));}
-$ret.=self::editfrm($id,$frm);//$tags
+$ret.=self::catedit($id,$frm);//$tags
 $ret.=self::art_options($id,$lg).' ';//art_options
 $rao=ses('art_options');
 foreach($rao as $k=>$v)if($v!='lang')$dn[]=$v;//by meta_all
@@ -158,19 +158,23 @@ ses::$r['popw']=640;
 return divs('min-width:440px; padding:0 4px;',$sav.$ret);}
 
 //edit frm
-static function editfrm($id,$frm,$prm=[]){
-if($prm){sql::upd('qda',['frm'=>$frm],$id); cachevs($id,1,$frm,1);}
-$picto=toggle('','slctfrm'.$id.'_meta,slctfrm___'.$id.'_'.ajx($frm),picto('category',''));
-$inp=input('frm1'.$id,$frm,'24');
-$ret=$picto.$inp.divd('slctfrm'.$id,'');
-if($prm)return $ret; return divb($ret,'','frm'.$id);}
+static function catsav($id,$frm,$prm=[]){
+if(auth(4)){sql::upd('qda',['frm'=>$frm],$id); cachevs($id,1,$frm,1);}
+return self::catedit($id,$frm);}
 
-static function slctfrm($id,$frm,$prm=[]){$res=$prm[0]??''; $w='';
+static function catslct($id,$frm){$w='';
 if(rstr(3))$w='AND day>"'.timeago("360").'"'; $ret='';
 $r=sql('distinct(frm)','qda','k','nod="'.ses('qb').'" and substring(frm,1,1)!="_" '.$w.' order by frm');
+//$r=ses('line');
 if($r)foreach($r as $k=>$v)
-	$ret.=lj('','frm'.$id.'_meta,editfrm_frm1'.$id.'__'.$id.'_'.ajx($k),$k).' ';
+	$ret.=lj('','frm'.$id.'_meta,catsav_frm1'.$id.'__'.$id.'_'.ajx($k),catpic($k,20)).' ';
 return divc('nbp',$ret);}
+
+static function catedit($id,$frm){
+$ret=toggle('','catslct'.$id.'_meta,catslct___'.$id.'_'.ajx($frm),picto('category',''));
+$ret.=input('frm1'.$id,$frm,'24');
+$ret.=divd('catslct'.$id,'');
+return divb($ret,'','frm'.$id);}
 
 static function hardurlsuj($id){
 $suj=ma::suj_of_id($id); return str::hardurl($suj);}

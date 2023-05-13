@@ -155,4 +155,6 @@ Si la rstr est désactivée, c\'est le contraire : seuls les url converties en c
 "146"=>['deskhome','limite la portée du desktop à la home'],
 "147"=>['png2jpg','tente de convertir les png en jpg si c\'est avantageux'],
 "148"=>['webp2jpg','convertit les webp en jpg'],
-"149"=>['hurl','lien du titre en mode hurl (utilise le href comme un js)']];
+"149"=>['hurl','lien du titre en mode hurl (utilise le href comme un js)'],
+"150"=>['clusters','familles de tags'],
+"151"=>['restoreim','restaure img d\'origine si absente']];

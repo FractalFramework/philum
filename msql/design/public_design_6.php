@@ -1,4 +1,4 @@
-<?php //msql/default_css_2
+<?php //msql/public_design_6
 $r=["1"=>['','','@font-face','','','','font-family: \'newsnet\'; src: url(\'/fonts/newsnet.woff2\') format(\'woff2\'), url(\'/fonts/newsnet.woff\') format(\'woff\'), url(\'/fonts/newsnet.svg#nn\') format(\'svg\');'],
 "2"=>['','','a','||','||','||',''],
 "3"=>['','','body','8||','6||','||','font-family:sans-serif;'],

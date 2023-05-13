@@ -227,17 +227,17 @@ case('length'):$rb[$v]=self::length($r['host']); break;
 case('artlang'):$rb[$v]=self::lang_rel_arts($id,$r['lg'],$r['o'],$rst[101],$rst[115]); break;
 case('lang1'):$rb['lang'][]=self::lang_art($id,$r['lg']); break;
 case('lastup'):$rb['lang'][]=btn('txtsmall',nms(118).' '.mkday($d,1)); break;
-case('open1'):$rb['open'][]=lj('','popup_usg,editbrut___'.$id,picto('conn')); break;
-case('open2'):$rb['open'][]=lj('','pagup_book,read__css_'.$id.'__1',picto('book')); break;
+//case('open1'):$rb['open'][]=lj('','popup_usg,editbrut___'.$id,picto('conn')); break;
+//case('open2'):$rb['open'][]=lj('','pagup_book,read__css_'.$id.'__1',picto('book')); break;
 case('open3'):$rb['open'][]=ljb('','toggleFullscreen',$id,picto('fscreen-op')); break;
 case('open4'):$rb['open'][]=lh('art/'.$r['thm'],picto('chain')); break;
-case('open5'):$rb['open'][]=lj('','popup_mk,plan___'.$id.'_3__1',picto('organigram'),att('Plan')); break;
+case('open5'):$rb['open'][]=lj('','popup_mk,plan___'.$id.'_3__1',picto('numlist'),att('Plan')); break;
 case('open6'):$rb['open'][]=ma::popart($id); break;
 case('open7'):$rb['open'][]=self::opnart($id,$prw,0); break;
 case('open8'):$rb['open'][]=self::opnart($id,2,1); break;
 case('open9'):$rb['open'][]=self::opnart($id,$prw,0,get('search')); break;
 case('words0'):$rb['words'][]=lj('','popup_sav,batchpreview__3_'.ajx($mail),picto('window')); break;
-case('words1'):$rb['words'][]=togbub('mod,artmod',$id,picto('related')); break;
+case('words1'):$rb['words'][]=togbub('mod,artmod',$id,picto('organigram')); break;//related
 case('words2'):$rb['words'][]=ljtog('',$j1,$j2,picto('discussion'),att(nms(167))); break;
 case('words3'):$rb['words'][]=ljtog('','art'.$id.'_mk,xltags___'.$id.'_all',$j2,picto('highlight'),att(nms(190))); break;
 case('words4'):$rb['words'][]=togbub('searched,look',$id,picto('search'),'',att(nms(177))); break;
@@ -246,17 +246,18 @@ case('words6'):$rb['words'][]=togbub('mod,callmod','m:cluster*tags,p;'.$id,picto
 case('words7'):$rb['words'][]=togbub('mod,callmod','m:same*tags,p:'.$id,picto('folder-tags'),'',att(nms(187))); break;
 case('words8'):$rb['words'][]=lj('','popup_mod,callmod___m:folders*varts,p:'.ajx($vr).',t:'.ajx($vr).',d:icons',picto('virtual'),att($vr)); break;
 case('social1'):$rb['social'][]=asciinb($ro['authlevel']); break;
-case('social2'):$rb['social'][]=self::social($id,$r['suj'],$ro,$rf,$prw); break;
+//case('social2'):$rb['social'][]=self::social($id,$r['suj'],$ro,$rf,$prw); break;
+case('social2'):$rb['social'][]=togbub('art,socialin',$id.'_'.$prw,picto('share'),'',att('social')); break;
 case('social3'):$rb['social'][]=togbub('meta,editag',$id.'_utag_tag',picto('diez'),'',att('usertags')); break;}
 $rb['sty']='';
 //compile
-$rd=['lang','open','words','social'];
+$rd=['lang','words','social','open'];
 foreach($rd as $k=>$v)$rb[$v]=isset($rb[$v])?implode(' ',$rb[$v]):'';
 return $rb;}
 
 static function social($id,$suj='',$ro=[],$rf=[],$prw=''){
 if(!$ro){$ro=self::metart($id); $rf=self::favs($id); $suj=sql('suj','qda','v',$id);}
-$root=host().urlread($id); $rst=arr($_SESSION['rstr'],140); $ret='';
+$root=host().urlread($id); $rst=arr($_SESSION['rstr'],160); $ret='';
 $rsoc=[44=>'http://www.facebook.com/sharer.php?u='.$root,45=>'http://twitter.com/intent/tweet?url='.$root.'&text='.($suj),46=>'http://wd.sharethis.com/api/sharer.php?destination=stumbleupon&url='.$root];
 if(!$rst[100] && auth(6))$ret.=togbub('tlex,share',$id,picto('tlex')).' ';//,'color:gray'
 if(!$rst[99] && auth(6))$ret.=togbub('twit,share',$id,picto('tw')).' ';//,'color:gray'
@@ -277,6 +278,15 @@ if(self::rstopt($rst[71],$ro['artstat']))$ret.=lj('','popup_stats,graph___nbp_'.
 if(!$rst[47])$ret.=togbub('mails,sendart',$id,picto('mail')).' ';
 if(!$rst[12])$ret.=btj(picto('print'),'window.print()').' ';
 if(self::rstopt($rst[106],$ro['bckp']))$ret.=self::bckp_edit($id,$prw);
+return $ret;}
+
+static function socialin($id,$prw){
+$r=sql('ib,name,mail,day,nod,frm,suj,re,lu,img,thm,host,lg','qda','a',$id); if(!$r)return;
+//$msg=sql('msg','qdm','v',$id); //$rear=self::ib_arts_nb($id)+1; $otp=ma::read_idy($id,'ASC');
+$ro=self::metart($id); $rf=self::favs($id); $suj=$r['suj'];
+$ret=self::social($id,$suj,$ro,$rf,3);
+if(rstr(58))$ret.=lj('','popup_usg,editbrut___'.$id,picto('conn'));
+if(rstr(141) && $r['host']>1000)$ret.=lj('','pagup_book,read__css_'.$id.'__1',picto('book'));
 return $ret;}
 
 static function rstopt($n,$d){

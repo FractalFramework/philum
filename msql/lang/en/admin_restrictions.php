@@ -151,4 +151,6 @@ If the rstr is disabled, it is the opposite: only urls converted into connectors
 "146"=>['deskhome','limit the desktop to the home'],
 "147"=>['png2jpg','try to convert png\'s to jpg\'s if it is advantageous'],
 "148"=>['webp2jpg','convert webp to jpg'],
-"149"=>['hurl','title link in hurl mode (uses the href as a js)']];
+"149"=>['hurl','title link in hurl mode (uses the href as a js)'],
+"150"=>['clusters','groups of tags'],
+"151"=>['restoreim','restore original img if deleted']];

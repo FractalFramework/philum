@@ -115,7 +115,7 @@ if($sz>1000){
 	//$bt.=lj('txtyl',$did.'_img,rewrite__3_'.ajx($da),'rewrite');//resolve exef
 	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_0_'.$id,'reduce to 940|940');
 	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50%');}
-elseif($w>1000)$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1','reduce by 50% ('.$w.'px '.$sz.'Ko)');
+elseif($w>1000)$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50% ('.$w.'px '.$sz.'Ko)');
 elseif(!$w)$bt.=lj('popdel',$did.'_img,restoreim__3_'.ajx($da).'_'.$id.'_1','restore');
 if($xt=='.png' && $sz>200)$bt.=lj('txtyl',$did.'_conn,png2jpg__3_'.ajx($da).'_'.$id,'png2jpg-'.$sz);
 if($xt=='.webp')$bt.=lj('txtyl',$did.'_conn,webp2jpg__3_'.ajx($da).'_'.$id,'webp2jpg-'.$sz);
@@ -126,12 +126,12 @@ if($m=='noimages' or !$da)return; if(rstr(40) && substr($da,0,4)=='http')return 
 $xt=xt($da); $qb=$_SESSION['qb']; if($id=='test')return $da; $b64='';
 if(strpos($da,';base64,'))return self::b64img($da,$id,$m);
 if(!$xt or $xt=='.php' or $xt=='.jpeg')$xt='.jpg'; $ok='';// or $xt=='.webp'
-if(forbidden_img($da)===false)return;//rev
+//if(forbidden_img($da)===false)return;//rev
 if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($da),0,6).$xt;//soon, del qb
 	if(get('randim'))$nmw=$qb.'_'.$id.'_'.substr(md5(rand(0,100000)),0,6).$xt;//
 	if($m=='trk' && is_file('img/'.$nmw))return $nmw;//keep original name
 	else{
-		if(strpos($da,'Capture-'))$da=str_replace("'","’",$da);//%E2%80%99
+		if(strpos($da,'Capture-'))$da=str_replace("'","%E2%80%99",$da);//’
 		/*if(strpos($dc,'&#x')){
 			$dc=mb_decode_numericentity($dc,[0x0,0x2FFFF,0,0xFFFF],'UTF-8');
 			$dc=utf8dec_b($dc); $dc=str::html_entity_decode_b($dc);}*/
@@ -141,15 +141,16 @@ if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($da),0,6).$xt;//soon, del qb
 		if(!$ok){$d=curl_get_contents($dc);
 			if($d && strlen($d)>1000 && strpos($d,'Forbidden')===false){// && strpos($d,'<')===false
 				$er=write_file('img/'.$nmw,$d); $ok=1;
-				if(is_zip('img/'.$nmw))gz2im('img/'.$nmw);}//ziped img
+				if(is_zip('img/'.$nmw))gz2im('img/'.$nmw);}
 			if(!$ok)$ok=@copy($dc,'img/'.$nmw);}}
 	if($ok && is_file('img/'.$nmw)){$w='';
 		if($xt=='.png')$nmw=img::png2jpg($nmw,$id);
 		elseif($xt=='.webp')$nmw=img::webp2jpg($nmw,$id);
 		if($nmw)[$w,$h,$ty]=getimagesize('img/'.$nmw);//not with webp
-		if(!$w)$w=fsize('img/'.$nmw,1);
-		if($w){self::add_im_img($nmw,$id); self::add_im_msg($id,$da,$nmw);
+		$sz=fsize('img/'.$nmw,1);
+		if($w or $sz){self::add_im_img($nmw,$id); self::add_im_msg($id,$da,$nmw);
 			if(strpos($da,'cdni.rt.com'))self::autothumb('img/'.$nmw);
+			if(rstr(152) && $w>1280)img::reduce($nmw,0);
 			img::save($id,$nmw,$dc); return $nmw;}
 		else{rm('img/'.$nmw); return $da;}}
 	else return;}

@@ -171,10 +171,13 @@ foreach($ra as $k=>$v){$a=''; $b='';
 	if(substr($v,-1)==','){$b=','; $v=substr($v,0,-1);}
 	if(substr($v,-1)==')'){$b=')'.$b; $v=substr($v,0,-1);}
 	if(substr($v,0,2)=='//' && strpos($v,'.'))$r[]='[http:'.$v.']';
-	elseif(substr($v,0,4)=='http' && strpos($v,'[')===false){
-		if(is_img($v) && strlen($v)>4)$r[]='['.$v.']';
-		else $r[]='['.$v.']';}
-	//elseif(strpos($v,'@')!==false && strpos($v,']')===false)$r[]='['.$v.']';
+	elseif(substr($v,0,4)=='http'){
+		if(strpos($v,'[')===false && strpos($v,']')===false){
+			if(is_img($v) && strlen($v)>4)$r[]='['.$v.']'; else $r[]='['.$v.']';}
+		elseif(strpos($v,'[')===false){$n=strrpos($v,':');
+			if($n!==false)$r[]='['.substr($v,0,$n).']'.substr($v,$n);}}
+	/*elseif(substr($v,1,4)=='http'){$n=strpos($v,'[');
+		$r[]=substr($v,0,$n).'['.substr($v,$n).']';}*/
 	else $r[]=$a.$v.$b;}
 $d=implode(' ',$r);
 $d=str_replace([' µµ ','µµ'],"\n",$d);
@@ -244,7 +247,7 @@ return preg_replace('/( ){2,}/',' ',$ret);}
 
 static function clean_lines($d){if(!$d)return '';
 $r=explode("\n",$d);
-foreach($r as $v)$rb[]=trim($v,"  ");
+foreach($r as $v)$rb[]=trim($v," &nbsp; ");
 return implode("\n",$r);}
 
 static function clean_prespace($d){if(!$d)return '';
@@ -320,7 +323,7 @@ foreach($r as $k=>$v){
 	$d=str_replace('[.'.$v.']','.',$d);
 	$d=str_replace($v.']]',']'.$v.']',$d);
 	$d=str_replace("\n".$v.']',$v.']'."\n",$d);}
-if(rstr(9))$d=str_replace(".jpg]\n",'.jpg]',$d);
+if(rstr(9))$d=str_replace(".jpg]\n",'.jpg] ',$d);
 return $d;}
 
 #transductor
@@ -347,7 +350,7 @@ $d=self::clean_acc($d);
 $d=self::clean_tables($d);
 $d=self::clean_punct($d);
 $d=self::clean_punct_b($d);
-$d=self::specialspace($d);
+$d=self::clean_spaces($d);
 $d=str::clean_br($d);
 $d=delsp($d);
 return $d;}

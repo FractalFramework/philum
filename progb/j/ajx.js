@@ -1,5 +1,5 @@
 //ajax
-var wait=0; var reloadart=100; var x=0; var th=''; var gj;
+var wait=0; var reloadart=100; var x=0; var xb=0; var th=''; var gj;
 var clp=[]; var enc=''; var pos=0; var xch; var get={};
 if(typeof fixpop==='undefined')var fixpop=0;
 if(typeof fulpop==='undefined')var fulpop=0;
@@ -14,7 +14,7 @@ var m_This=this;
 this.m_Request.onreadystatechange=function(){m_This.handleResponse();}
 //setTimeout(function(){AJAX.m_Request.abort(); delete AJAX.m_Request;},20000);
 this.m_Request.open('POST',this.url,true);
-if(post)this.m_Request.upload.addEventListener('progress',progressHandler,false);
+if(post && xb)this.m_Request.upload.addEventListener('progress',progressHandler,false);
 this.m_Request.send(post instanceof FormData?post:null);}
 
 AJAX.prototype.url=undefined;
@@ -93,6 +93,7 @@ if(this.m_Request.readyState==4){wait=0;
 		else if(act==25)setTimeout(function(){poprepos()},500);
 		else if(act==26)audio();
 		else if(act==27)audioif(tg);
+		if(xb)clearTimeout(xb);
 		//if(this.onDraw!=undefined)this.onDraw();
 	return res;}
 	else{
@@ -131,12 +132,12 @@ function jrc(ra){var rb=jr(ra); if(rb)return '&'+rb.join('&');}
 function jurl(){return '/ajax.php?app=';}
 
 //dn2=posts
-function ajaxcall(tg,app,ra,prm,tp){pr(ra);
+function ajaxcall(tg,app,ra,prm,tp){
 var fd=''; var get=jx(app); ra=jrb(ra);
 if(tp=='u')updateurl(ra[0],tg+'_'+app+'___'+ra[0]+'_'+ra[1]);
 if(prm){var fd=new FormData();
 for(var i in prm)fd.append(i,prm[i]);}
-if(prm[0]=='1')for(var i in ra)fd.append('g'+i,ra[i]); else get+=jrc(ra);
+if(prm[0]=='g')for(var i in ra)fd.append('g'+i,ra[i]); else get+=jrc(ra);
 new AJAX(jurl()+get+'&tg='+tg,tg,tp,fd);}
 
 function mkprm(dn2,dn3){var prm=[]; var dna=dn2.split(','); var vl='';
@@ -209,11 +210,12 @@ return vl;}
 
 function waitmsg(div){var popw=getbyid('popw');
 if(div && div!='popup' && div!='socket')var dv=getbyid(div);
-var loadn='<a onclick="Hide(\'popw\');">Loading...</a>';//t
+var loadn='<a onclick="Hide(\'popw\'); clearTimeout(xb);" id="loading">Loading...</a>';//'+uploaded+'
 if(dv!=undefined){dv.innerHTML=loadn;} else{popw.innerHTML=loadn;
 popw.style.display='block'; popw.style.position='fixed'; popw.className='loading';
 var l=(innerW()-100)/2; var t=((innerH()-10)/2)-16; colorwheel('popw');
 popw.style.left=l+'px'; popw.style.top=t+'px'; popw.style.zIndex=popz;}}
+//xb=setTimeout(function(){waitmsg(div)},100);
 
 function poph(popu,pageup,thin){if(popu==null)return;
 popu.style.maxHeight=''; var adjust=60;
