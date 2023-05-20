@@ -473,7 +473,7 @@ return divd($tg,$ret);}
 static function find_quotes($d,$id,$s,$pad,$l2){static $dc=0;//decal because of previous results
 $d=htmlentities($d);
 $d=str_replace("&laquo;",'|',$d); $d=str_replace("&raquo;",'|',$d); $d=str_replace("&nbsp;",' ',$d);
-$d=html_entity_decode($d); //$pad=str::clean_punct($pad);
+$d=html_entity_decode($d); //$pad=str::add_nbsp($pad);
 $l=mb_strlen($pad); $s2=0; if($dc)$s+=$dc*$l2;//lenght to add
 $s2=mb_strpos($d,$pad,$s); if(!$s2)$s2=mb_strpos($d,$pad,$s); if(!$s2)$s2=mb_strpos($d,$pad);
 if($s2){$d1=mb_substr($d,0,$s2); $d2=mb_substr($d,$s2,$l); $d3=mb_substr($d,$s2+$l);}

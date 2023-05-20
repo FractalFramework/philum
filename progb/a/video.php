@@ -113,7 +113,7 @@ $t=$o&&$o!='1'?$o:($ti);
 if($p=='youtube' or $p=='vimeo')$ic=$p; else $ic='video';
 $lk=lkt('',http($u),$t).' ';
 if($im && ((!$o && $m>2) or $m=='vd'))$ic=image($im); else $ic=picto($ic,28);
-$bt=lj('',$j,$ic).'&#8239;';
+$bt=lj('',$j,$ic).sti();
 //if($tx)$lk.=' '.pop::bubble_note($tx,picto('lys')).' ';//toggle_note//togbth//togbt//pop::toggle_div($tx,1)
 if($tx)$lk.=togbub('video,txt',ajx($d).'_'.$id,picto('bubble'));
 //if(auth(4))$lk.=lj('','popup_web,redit___'.ajx($u).'_'.$rid.'_'.$id,picto('editxt'));

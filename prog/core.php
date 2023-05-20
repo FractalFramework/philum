@@ -268,9 +268,13 @@ ses::$s['mn']=$_SESSION['mn'];
 $qd=$_SESSION['qd']; ses::$s['qd']=$qd;
 $r=sqldb::$rt; foreach($r as $k=>$v)ses::$s['db'][$k]=$qd.'_'.$v;}
 
-function afc($a,$m){if(!$m)$a='ajax';
+/*function afc0($a,$m){if(!$m)$a='ajax';
 $r=method_exists('ath',$a)?ath::$a():[];
 $a=$r[$m]??ses('auth'); //if($a=='secure')return security();
+if(!auth($a))return 'no';}*/
+
+function afc($a,$m){if(!$m)$a='ajax';
+$r=ath::$r[$a]??[]; $a=$r[$m]??ses('auth');
 if(!auth($a))return 'no';}
 
 function security(){
@@ -312,6 +316,7 @@ function ajxr($res,$n=''){$r=explode('_',$res); $n=$n?$n:count($r);
 for($i=0;$i<$n;$i++)$ret[]=isset($r[$i])?ajxg($r[$i]):''; return $ret;}
 function ajxp($res,$p,$o){$r=ajxr($res);return [$r[0]??$p,$r[1]??$o];}//obs
 function prmp($r,$p,$o,$ob=''){return [$r[0]??$p,$r[1]??$o,$r[2]??$ob];}
+function prmg($r,$p,$o,$ob=''){return [$r['g0']??$p,$r['g1']??$o,$r['g2']??$ob];}
 
 #btns
 function preplink($u){$u=nohttp($u); $pos=strpos($u,'/',1);
@@ -321,10 +326,10 @@ if(!$o or $o==$p)$o=domain($p); return [$p,$o];}
 function flags(){$r=msql::read('system','edition_flags_8','',1);
 foreach($r as $k=>$v)$ret[$v[2]]=$v[1]; return $ret;}
 function flag($d){$r=sesmk('flags','',0); return $r[$d]??$d;}
-function svg($f,$w='',$h=''){return '<img src="'.$f.'.svg" width="'.$w.'" height="'.($h?$h:$w).'" />';}
+function svg($f,$w='',$h=''){return taga('img',['src'=>$f.'.svg','width'=>$w,'height'=>$h?$h:$w]);}
 function picto($d,$s=''){if(is_numeric($s))$s='font-size:'.$s.'px;';
 return span(atc('philum ic-'.$d).ats($s),'');}
-function pictxt($p,$t='',$s=''){return picto($p,$s).($t?'&#8201;'.$t:'');}
+function pictxt($p,$t='',$s=''){return picto($p,$s).($t?'&#8239;'.$t:'');}
 function pictit($p,$t,$s=''){return span(att($t),picto($p,$s));}
 function picto2($d,$o=''){return picto(mime($d,$o));}
 function catpic($d,$s=32){return pictxt(sesr('catpic',$d),$d,$s);}

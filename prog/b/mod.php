@@ -188,7 +188,7 @@ case('link'):$ret=md::modlk($p,$t,$o); break;
 case('app_popup'):Head::add('jscode',sj(desk::read(explode(',',$p)))); break;
 case('overcats'):return mkbub(bubs::root('overcat','zero'),'inline','1'); break;
 case('MenuBub'):return mkbub(bubs::root('menubub','zero',$p),'inline','1'); break;
-case('timetravel'):return md::timetravel_m($p,$o); break;
+case('timetravel'):return md::timetravel($p,$o); break;
 case('submenus'):return md::bubble_menus($p,$o); break;
 case('taxonomy'):$ret=md::mod_taxonomy($p,$o); break;
 case('folders'):$load=md::supertriad_ask($p,$o); $prw=$o; $obj=63; break;//rstr(5)?2:1

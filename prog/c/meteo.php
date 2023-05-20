@@ -34,11 +34,11 @@ $ri=[9889=>'orage',10052=>'neige',128166=>'bruine',9748=>'pluie',9925=>'nuage',1
 foreach($ri as $k=>$v)if(stripos($nm,$v)!==false)$ic='&#'.$k.';';
 return $ic;}
 
-static function render($r,$f){$ret=''; //pr($r);
+static function render($r,$f){$ret=''; if(!$r)return;
 $ra=['temperature','wind_speed','windgust_speed','rainfall','solar_radiation','barometer','outside_humidity','windchill'];
 foreach($ra as $k=>$v)$ra[$v]=$r[$v][0]??'';
 $tmp=$ra['temperature']; if(!$tmp)$tmp=$r['temp2m']??'';
-$n=$r['weather']; //$rw=[0,0,0,0];
+$n=$r['weather']??''; //$rw=[0,0,0,0];
 $rw=msql::find('','public_weather_4',$n?$n:1); [$n,$nm,$pc,$as]=arr($rw,4);
 $weather=$as?$as:picto($pc);
 //$weather=self::weather($r);
@@ -63,8 +63,8 @@ if($tmp<0)$ic='degree0'; else $ic='degree'.(substr($tmp,0,1)+1); $ret.=picto($ic
 $ret.=picto('barometer').round((int)$baro).btn('small','hPa').' ';
 $ret.=picto('humidity').$ra['outside_humidity'].btn('small','%').' ';//'&#128167; '.
 $ret.='&uarr;'.$r['sunrise'].' '.'&darr;'.$r['sunset'];//10548//10549//.' ('.$diffday.' min)'//
-$ma=($r['moon_age'])/6; $mx=60; $mi=$mx/8;//&#127761;->&#127768;
-for($i=0;$i<8;$i++)if($ma<$i)$mn=$i; $mo=127761+$mn; //$ret.='&#'.$mo.';';
+//$ma=($r['moon_age'])/6; $mx=60; $mi=$mx/8;//&#127761;->&#127768;
+//for($i=0;$i<8;$i++)if($ma<$i)$mn=$i; $mo=127761+$mn; //$ret.='&#'.$mo.';';
 //$phases=[1=>127761,127762,127763,127764,127765,127766,127767,127768,127761];
 return $ret;}
 

@@ -162,7 +162,8 @@ function jumpvalue(id,v,o){getbyid(id).value=ajx(v,1); if(o)Close('popup');}
 function jumphtml(id,v){getbyid(id).innerHTML=v;}
 function transvalue(id,to){var tx=getbyid(id).value; getbyid(to).value=tx;}
 function transhtml(id,to){var tx=getbyid(id).innerHTML; getbyid(to).innerHTML=tx;}
-function insert_value(to,id){insert_b(getbyid(id).value,to);}
+function addval(id,va,o='|'){var ob=getbyid(id); ob.value+=(ob.value?o:'')+va;}
+function insertval(id,to){insert_b(getbyid(id).value,to);}
 function strcount(id){var ob=getbyid(id).value; var to=getbyid('strcount'); to.innerHTML=ob.length;}
 function execom(d){var u=null; if(d=='createLink')u=prompt('Url'); document.execCommand(d,false,u);}
 function execom2(d){document.execCommand('formatBlock',false,'<'+d+'>'); getbyid('wygs').value='no';}

@@ -46,7 +46,7 @@ if($im)imagecopyresampled($img,$im,0,0,0,0,$w,$h,$w,$h);
 imagejpeg($img,$out,100);
 if($id){$sz1=fsize($in); $sz2=fsize($out);//abort if jpg is larger
 	if($sz1>$sz2){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
-		self::mdf($id,$a,$b); meta::putincache($id);
+		self::mdf($id,$a,$b); boot::cacheart($id);
 		rm($in); $res=$b; ses::$adm['alert']='png destroyed ('.$sz1.'=>'.$sz2.') ';}
 	else{rm($out); $res=$a; ses::$adm['alert']='png kept ('.$sz1.'<='.$sz2.') ';}}
 return $res;}//'?'.randid()

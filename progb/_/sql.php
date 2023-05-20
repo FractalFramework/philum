@@ -23,10 +23,10 @@ return $d=='NULL'||$d=='NOW('||$d=='PASS'?$v:'"'.self::qres($v).'"';}//!num
 static function atmr($r){foreach($r as $k=>$v)$ret[]=self::atm($v); return $ret;}
 static function atmrk($r){foreach($r as $k=>$v)$rt[]=$k.'='.self::atm($v); return $rt;}
 static function atmra($r,$o=''){$rb=self::atmr($r); $d=$o?'NULL,':'';
-if($rb)return '('.$d.implode(',',$rb).')';}
-static function atmrb($r,$o=''){foreach($r as $k=>$v)$rb[]=self::atmra($v,$o); return implode(',',$rb);}
-static function atmrak($r,$o=''){$rb=self::atmrk($r); if($rb)return implode(',',$rb);}
-static function qr($sql,$o=0){if($o)echo $sql; $rq=self::$qr->query($sql);//$rq=mysqli_query(self::$qr,$sql);
+if($rb)return '('.$d.join(',',$rb).')';}
+static function atmrb($r,$o=''){$rb=[]; foreach($r as $k=>$v)$rb[]=self::atmra($v,$o); return join(',',$rb);}
+static function atmrak($r,$o=''){$rb=self::atmrk($r); if($rb)return join(',',$rb);}
+static function qr($sql,$o=0){if($o)echo $sql; $rq=self::$qr->query($sql);
 if($o){if(mysqli_connect_errno())pr(mysqli_connect_error());} return $rq;}
 static function qrid($sql,$o=''){self::qr($sql,$o); return mysqli_insert_id(self::$qr);}
 
@@ -36,7 +36,7 @@ if($vrf){$r=sqldb::vrfr($r,$b); if(sqldb::$er)return;}
 return self::qrid('insert into '.ses($b).' values '.self::atmra($r,1),$o);}
 static function savi($b,$r,$o='',$vrf=''){if($vrf)$r=sqldb::vrfr($r,$b);//with ai
 return self::qrid('insert into '.ses($b).' values '.self::atmra($r,0),$o);}
-static function sav2($b,$r,$ai=0,$o=''){//multiples
+static function sav2($b,$r,$ai=1,$o=''){//multiples
 return self::qrid('insert into '.ses($b).' values '.self::atmrb($r,$ai),$o);}
 static function upd($b,$r,$q,$o='',$vrf=''){if($vrf)$r=sqldb::vrfr($r,$b);//sqlup
 self::qr('update '.ses($b).' set '.self::atmrak($r).' '.self::where($q),$o);}
@@ -66,6 +66,7 @@ while($r=self::qrw($rq))if($r)switch($p){
 	case('kr'):$rt[$r[0]][]=$r[1]; break;
 	case('kkv'):$rt[$r[0]][$r[1]]=$r[2]; break;
 	case('kkk'):$rt[$r[0]][$r[1]][$r[2]]+=1; break;
+	case('kkkv'):$rt[$r[0]][$r[1]][$r[2]]=$r[3]; break;
 	case('kvv'):$rt[$r[0]]=[$r[1],$r[2]]; break;
 	case('kkr'):$rt[$r[0]][$r[1]][]=$r[2]; break;
 	case('krr'):$rt[$r[0]][]=$r; break;
@@ -97,6 +98,7 @@ if($q)foreach($q as $k=>$v){
 	elseif($c1=='(')$rb[]=$k1.' in ('.implode(',',self::atmr($v)).')';
 	elseif($c1==')')$rb[]=$k1.' not in ('.implode(',',self::atmr($v)).')';
 	elseif($c1=='#')$rb[]='date_format('.$k1.',"%y%m%d")='.self::qres($v);
+	elseif($c1=='-')$rb[]='substring('.$k1.',1,1)!="'.$v.'"';
 	elseif(is_array($v))$rb[]=$k.' ('.implode(',',self::atmr($v)).')';
 	//elseif(is_array($v))$rb+=self::where($v,1);
 	elseif(substr($v??'',0,9)=='substring')$rb[]=$v;

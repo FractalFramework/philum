@@ -7,7 +7,6 @@ static function valid($p){$r=str_split(md5($p)); $n=0; $rb=[];
 if($r)foreach($r as $k=>$v)if(is_numeric($v) && count($rb)<7)$rb[]=$v; return implode('',$rb);}
 
 static function del($p,$o){
-if(!auth(6))return;
 $b='proposal'; $nod=nod($b); $nodb=nod($b.'_'.$p);
 unlink(msql::url('',$nodb));
 msql::modif('',$nod,$p,'del');

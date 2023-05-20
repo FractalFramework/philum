@@ -3,7 +3,7 @@ class sqldb{
 static $r=[];
 static $er=false;
 static $rb=[];
-static $rt=['qdy'=>'_sys','qda'=>'art','qdm'=>'txt','qdd'=>'data','qdu'=>'user','qdi'=>'trk','qdb'=>'mbr','qdp'=>'ips','qdv'=>'live','qdv2'=>'live2','qds'=>'stat','qdt'=>'meta','qdta'=>'meta_art','qdtc'=>'meta_clust','qdf'=>'favs','qdsr'=>'search','qdsra'=>'search_art','ynd'=>'yandex','qdw'=>'web','qdtw'=>'twit','qdg'=>'img','qdc'=>'cat','qdk'=>'iqs','umt'=>'umtwits','qdh'=>'hub','dicoen'=>'dicoen','dicofr'=>'dicofr','dicoum'=>'dicoum'];//,'qdt-en'=>'meta_en','qdtm'=>'meta_mul','qdl'=>'clust','qdla'=>'clust_art'
+static $rt=['qda'=>'art','qdm'=>'txt','qdd'=>'data','qdu'=>'user','qdi'=>'trk','qdg'=>'img','qdf'=>'favs','qdc'=>'cat','qdh'=>'hub','qdb'=>'mbr','qdt'=>'meta','qdta'=>'meta_art','qdtc'=>'meta_clust','qdsr'=>'search','qdsra'=>'search_art','ynd'=>'yandex','qdw'=>'web','qdtw'=>'twit','qdp'=>'ips','qdv'=>'live','qdv2'=>'live2','qds'=>'stat','qdk'=>'iqs','qdy'=>'_sys','qdya'=>'_prog','qdyar'=>'_progr','qdyb'=>'_plug','umt'=>'umtwits','dicoen'=>'dicoen','dicofr'=>'dicofr','dicoum'=>'dicoum'];//,'qdt-en'=>'meta_en','qdtm'=>'meta_mul','qdl'=>'clust','qdla'=>'clust_art'
 static $ty=['ai','aib','int','bint','sint','var','svar','mvar','bvar','var2','var11','text','long','time','psw'];
 
 function construct(){self::$r=self::defs();}
@@ -39,7 +39,10 @@ $r['img']=['id'=>'ai','ib'=>'int','im'=>'var','dc'=>'var','no'=>'int1'];
 $r['yandex']=['id'=>'ai','ref'=>'var11','txt'=>'text','lang'=>'var2'];
 $r['web']=['id'=>'ai','ib'=>'int','url'=>'var','tit'=>'var','txt'=>'text','img'=>'var'];
 $r['twit']=['id'=>'ai','ib'=>'bint','twid'=>'bint','name'=>'var','screen_name'=>'var','user_id'=>'bint','date'=>'int10','text'=>'text','media'=>'lvar','mentions'=>'var','reply_id'=>'bint','reply_name'=>'var','favs'=>'int','retweets'=>'int','followers'=>'int','friends'=>'int','quote_id'=>'bint','quote_name'=>'var','rewteeted'=>'bint','lang'=>'var3'];
-$r['sys']=['id'=>'ai','name'=>'var','page'=>'var','maj'=>'int10','func'=>'var'];
+$r['_sys']=['id'=>'ai','name'=>'var','page'=>'var','maj'=>'int10','func'=>'var'];
+$r['_prog']=['id'=>'ai','page'=>'var','func'=>'var','vars'=>'var','code'=>'text','uses'=>'int'];
+$r['_progr']=['id'=>'ai','parent'=>'var','child'=>'var'];
+$r['_plug']=['id'=>'ai','page'=>'var','func'=>'var','vars'=>'var','code'=>'text','uses'=>'int'];
 //umm
 if($u){}
 $r['dicoen']=['id'=>'ai','mot'=>'svar'];
@@ -57,7 +60,7 @@ static function db($q){return self::$rt[$q]??'';}
 static function tn($q){return qd(self::$rt[$q]??'');}
 
 static function def($b){
-if(!self::$r)self::$r=self::defs();
+if(!self::$r)self::$r=self::defs(); 
 return self::$r[$b]??[];}
 
 static function vrf($d,$c,$b){

@@ -54,11 +54,6 @@ $sq['inner'][]='natural join '.$qdm;
 $r=explode('|',$d); foreach($r as $k=>$v)$sq['and'][]=$qdm.'.msg NOT LIKE "%'.$v.'%"';
 return $sq;}
 
-static function sql_tags_inner(){
-$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda');
-return 'inner join '.$qdta.' on '.$qda.'.id='.$qdta.'.idart
-inner join '.$qdt.' on '.$qdt.'.id='.$qdta.'.idtag ';}
-
 static function sql_date($date){$qda=ses('qda');
 [$y,$m,$d]=expl('-',$date,3); $dtr=[]; $dyr=[];
 if($y)$dtr[]=strlen($y)==4?'%Y':'%y'; if($m)$dtr[]='%m'; if($d)$dtr[]='%d'; $dt=implode('-',$dtr);
@@ -68,13 +63,45 @@ $ret='date_format(date_add("1970-01-01 00:00:00",INTERVAL '.$qda.'.day second),"
 //DATE_ADD('1970-01-01 00:00:00',INTERVAL '.ses('qda').'.day SECOND
 return $ret;}
 
-static function sql_tags($tags,$cat){$r=explode('|',$tags);//accept negative -tags//!
+/*static function sql_tags_inner(){
+$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda');
+return 'inner join '.$qdta.' on '.$qda.'.id='.$qdta.'.idart
+inner join '.$qdt.' on '.$qdt.'.id='.$qdta.'.idtag ';}*/
+
+/*static function sql_tags($tags,$cat){$r=explode('|',$tags);//accept negative -tags//!
 $qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda'); $ret=''; $rb=[]; $rc=[]; $rd=[]; $sc='';
 if($cat=='utag')$ret.='cat>0 and '; elseif($cat)$sc='cat="'.$cat.'" and ';//$cat=ses('iq')
 foreach($r as $k=>$v){$cl=is_numeric($v)?$qdt.'.id':'tag';
 	if(substr($v,0,1)=='-')$rc[]=$cl.'!="'.substr($v,1).'"'; else $rb[]=$cl.'="'.$v.'"';}
 if($rc)$ret.='('.implode(' and ',$rc).')'; if($rc && $rb)$ret.=' and '; if($rb)$ret.=$sc;
-if($rb)$ret.='('.implode(' or ',$rb).')';
+if($rb)$ret.='('.implode(' or ',$rb).')'; if($rb)$ret.='';
+return $ret;}*/
+
+static function sql_tags_inner(){$n=self::$i++;
+$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda');
+return 'inner join '.$qdta.' pm'.$n.' on '.$qda.'.id=pm'.$n.'.idart
+inner join '.$qdt.' m'.$n.' on m'.$n.'.id=pm'.$n.'.idtag ';}
+
+static function sql_tags_additive($tags,$cat){$r=explode('|',$tags);
+$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda'); $rb=[];
+$ret='inner join '.$qdta.' pm on '.$qda.'.id=pm.idart
+inner join '.$qdt.' m on m.id=pm.idtag and ';
+if($cat=='utag')$ret.='cat>0 and '; elseif($cat)$sc='cat="'.$cat.'" and ';//$cat=ses('iq')
+foreach($r as $k=>$v){$cl=is_numeric($v)?'m.id':'m.tag';
+	if(substr($v,0,1)=='-')$rc[]=$cl.'!="'.substr($v,1).'"'; else $rb[]=$cl.'="'.$v.'"';}
+if($rc)$ret.='('.implode(' and ',$rc).')'; if($rc && $rb)$ret.=' and '; if($rb)$ret.=$sc;
+if($rb)$ret.='('.implode(' or ',$rb).')'; if($rb)$ret.='';
+return $ret;}
+
+static $i=0;
+static function sql_tags_combinative($tags,$cat){$r=explode('|',$tags);
+$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda'); $ret='';
+foreach($r as $k=>$v){$i=self::$i++;
+	$ret.=' inner join '.$qdta.' pm'.$i.' on '.$qda.'.id=pm'.$i.'.idart
+inner join '.$qdt.' m'.$i.' on m'.$i.'.id=pm'.$i.'.idtag ';
+	if($cat=='utag')$ret.='and m'.$i.'.cat>0'; elseif($cat)$ret.='and m'.$i.'.cat="'.$cat.'" ';//$cat=ses('iq')
+	if(substr($v,0,1)=='-')$tg='!="'.substr($v,1).'"'; else $tg='="'.$v.'"';
+	if(is_numeric($v))$ret.='and m'.$i.'.id'.$tg; else $ret.='and m'.$i.'.tag'.$tg;}
 return $ret;}
 
 static function sql_lang($lg,$sq){if($lg=='all')return $sq;
@@ -93,7 +120,7 @@ static function comp($v){$d=substr($v,0,1);
 if($d=='>' or $d=='<')return $d.'"'.substr($v,1).'"';}
 
 #sql
-static function mksql($r){$qda=ses('qda'); $in=''; $gr=''; $rtg=[];
+static function mksql($r){$qda=ses('qda'); $in=''; $gr='';
 $p=valk($r,['count','select','json','sql','cat','nocat','nochilds','priority','notpublished','owner','hub','minday','maxday','from','until','mintime','maxtime','mindid','maxid','source','parent','nbchars','id','minid','lang','lg','search','search_whole','fullsearch','avoid','title','folder','related','relatedby','cmd','group','order','file','page','nbyp','idlist','media','catid','poll','cluster','date','msg','classtag','famous']);
 if($p['count'])$sq['slct'][]='count('.$qda.'.id)';
 elseif($p['select'])$sq['slct'][]=$p['select'];
@@ -138,18 +165,16 @@ if($p['poll']){$qdf=ses('qdf'); $sq['slct'][]='poll as nb'; $p['order']='nb';
 	if($p['poll']=='all')$wp=''; else $wp='and type="'.$p['poll'].'"';
 	$sq['inner'][]='inner join '.$qdf.' on '.$qda.'.id='.$qdf.'.ib '.$wp;}
 if($p['cluster']){$rt=sql::inner('tag','qdt','qdtc','idtag','rv',['word'=>$p['cluster']]);
-	$rtg[]=self::sql_tags(implode('|',$rt),'');}
+	$sq['inner'][]=self::sql_tags_additive(implode('|',$rt),'');}
 if($p['famous']??''){$rt=sql::inner('tag,count(tag) as n','qdt','qdta','idtag','kv',['cat'=>$p['famous'],'_group'=>'tag','_order'=>'n desc','_limit'=>'100']);
-	$rtg[]=self::sql_tags(implode('|',array_keys($rt)),'');}
+	$sq['inner'][]=self::sql_tags_additive(implode('|',array_keys($rt)),'');}
 if($p['classtag']){$sq['inner'][]=self::sql_tags_inner(); $sq['slct'][]='tag';
 	$sq['and'][]='cat="'.$p['classtag'].'"';}
 if($p['lg']){$ynd=ses('ynd'); $sq['slct'][]='txt';
 	$sq['inner'][]='inner join '.$ynd.' on ref=concat(\'art\','.$qda.'.id) and lang="'.$p['lg'].'"';}
 $ut=explode(' ','utag tag '.prmb(18)); $ut[]=ses('iq'); $n=count($ut);
 for($i=0;$i<$n;$i++)if($ut[$i]){$tags=$r[$ut[$i]]??'';
-	if($tags)$rtg[]=self::sql_tags($tags,$ut[$i]);}
-if($rtg){$sq['inner'][]=self::sql_tags_inner().' and (('.implode(') or (',$rtg).'))';
-	$sq['slct'][]='tag';}//$p['group']=1;
+	if($tags)$sq['inner'][]=self::sql_tags_combinative($tags,$ut[$i]);}
 if($p['cmd']=='tracks'){$qdi=ses('qdi'); //$sq['slct']=[$qda.'.id'];//todo:use datas
 	$sq['inner'][]='inner join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id';}
 if($md=$p['media']){$qdm=ses('qdm');
@@ -285,7 +310,7 @@ $ra=self::defaults_rq($ra,$rb);
 if($ra)return self::callr($ra);}
 
 #load //from url
-static function load($ra){
+static function load($ra){//pr($ra);
 $ra['rid']=$ra['rid']??randid('load');
 if($md=$ra['media']??'')$ra['preview']='conn'.$md;
 else $ra['preview']=art::slct_media($ra['preview']??'');
@@ -345,7 +370,7 @@ if($to){$ord=strtolower($ra['order']??prmb(9));
 	elseif($ord=='id asc')$ra['minid']=$to;}
 if($ra['until']??'')$ra['nodig']=1;// or $ra['maxtime']??''
 if(empty($ra['hub']) && !rstr(105))$ra['hub']=ses('qb');
-if(!empty($ra['maxtime'])){$ra['nbdays']=30; $ra['mintime']=$ra['maxtime']-(84600*30);}
+if(!empty($ra['maxtime'])){$ra['nbdays']=30; $ra['mintime']=$ra['maxtime']-(84600*30); $dig='';}
 //$ra['maxday']=daysfrom($ra['maxtime']); $ra['maxtime']='';
 if($ra['dig']??''){$dig=$ra['dig']; unset($ra['dig']);}
 if($dig){$ra['nbarts']='';
@@ -414,8 +439,8 @@ elseif($d=$rb['parent']){$ra['parent']=$d; $ra['ti']='parent';}
 elseif($d=$rb['rubtag']){$ra['tag']=str::protect_url($d,1); $ra['cat']=ses('frm'); $ra['ti']='tag';}
 elseif($d=$rb['tagid']){[$cat,$tag]=$d; $ra[$cat]=$tag; $ra['ti']=$cat;}
 elseif($d=$rb['utag']){$ra['utag']=self::tag_ci($d); $ra['ti']='utag';}
+elseif(get('timetravel')){$ra['maxtime']=ses('daya'); $ra['dig']='';}
 elseif($gt=self::detect_uget()){$ra[$gt[2]]=self::tag_ci($gt[1]); $ra['ti']=$gt[2];}
-elseif(ses::adm('timetravel'))$ra['maxtime']=ses('daya');
 else return;
 $ra['lang']=ses('lang'); if(!isset($ra['t']))$ra['t']=$d;
 $dig=self::resetdig($g['dig']??'');

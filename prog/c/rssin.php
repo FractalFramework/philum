@@ -90,12 +90,12 @@ if($rss)foreach($rss as $k=>$v){
 return $ret;}
 
 //load
-static function recognize_article($f,$d,$alx){$d=str::clean_title($d);
+static function recognize_article($f,$d,$alx){
 if(is_string($f) && isset($alx[$f]))return $alx[$f]; 
 elseif(isset($alx[$d]))return $alx[$d];
 elseif(isset($alx[substr($f??'',7)]))return $alx[substr($f,7)];
-$id=sql('id','qda','v','nod="'.ses('qb').'" and mail="'.$f.'" LIMIT 1');
-if(!$id)$id=sql('id','qda','v','nod="'.ses('qb').'" and suj like "%'.$d.'%" LIMIT 1');
+$id=sql('id','qda','v',['nod'=>ses('qb'),'mail'=>$f,'_limit'=>'1']);
+if(!$id)$id=sql('id','qda','v',['nod'=>ses('qb'),'%suj'=>$d,'_limit'=>'1']);
 return $id;}
 
 static function alx(){//already_exists, suj&url
@@ -145,7 +145,8 @@ $j='socket_sav,addurlsav__7_'.$lnj.'_';
 foreach($r as $k=>$v)$ret.=lj('',$j.ajx($k).'_1',catpic($k,20));
 return $ret;}
 
-static function call($kn,$u){//rssin
+static function call($kn,$u,$prm=[]){//rssin
+[$kn,$u]=prmg($prm,$kn,$u);
 [$kn,$mth]=expl('-',$kn,2); chrono();
 [$f,$o]=prepdlink($u); $f=http($f); $i=0; $ret=''; //$mth=2;
 $r=self::load($f,$mth); $nb=count($r); //$ret=hidden('addop',1);
@@ -179,7 +180,7 @@ $r=msql::read('',nod($p),'',1); $bt=''; $ro=[];
 if($r)foreach($r as $k=>$v){$v3=isset($v[3])?$v[3]:''; $ro[]=$v3;
 	if($o && $o==$v3)$d=self::call($k,$v[0]); else $d='';
 	if($d)$c=' active'; else $c='';
-	if(isset($v[0]))$ret[$v[2]][]=toggle($c,'rsj'.$k.'_rssin,call___'.$k.'_'.ajx($v[0]),$v[1]??preplink($v[0])).' '.btd('rsj'.$k,$d).br();}
+	if(isset($v[0]))$ret[$v[2]][]=toggle($c,'rsj'.$k.'_rssin,call__g_'.$k.'_'.ajx($v[0]),$v[1]??preplink($v[0])).' '.btd('rsj'.$k,$d).br();}
 if(auth(6) && $ro)$bt=self::menu($p,max($ro));
 $ret=tabs($ret,'rss','nbp');
 if($o)return $ret;

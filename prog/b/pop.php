@@ -1,8 +1,7 @@
 <?php //popular constructors
 class pop{
-
 #admin
-static function m_system(){$auth=$_SESSION['auth']; $id=ses('read');
+static function m_system($st){$auth=$_SESSION['auth']; $id=ses('read');
 $rst=ses('rstr'); $top=!$rst[69]?'':'d'; $hv=1;
 $ra=[0=>prmb(8),1=>'loading',2=>'admin',3=>'desktop',4=>'download',5=>'search',6=>'articles',7=>'add',8=>'link',9=>'language',10=>'time',11=>'circle-full',12=>'circle-empty',13=>'list',14=>'user',15=>'menu',16=>'circle-half']; 
 foreach($ra as $k=>$v)$ico[$k]=picto($v);
@@ -26,8 +25,10 @@ if($auth>2){
 if(!$rst[81])$ret['favs']=llj('','popup_favs,home',picto('bookmark2'));//favs
 if(!$rst[80])$ret['arts']=popbub('','arts',$ico[6],$top,$hv);//arts
 if(!$rst[82])$ret['lang']=popbub('lang','lang',$ico[9],$top,$hv);//lang
-if(abs(ses('dayx')-ses('daya'))>86400 or !$rst[84])//back_in_time
-	$ret['time']=popbub('timetravel','',$ico[10],$top,$hv);//archives
+if(abs(ses('dayx')-ses('daya'))>86400 or !$rst[84]){//back_in_time
+	$ret['timetravel']=popbub('timetravel','',$ico[10],$top,$hv);//archives
+	$ret['timeout']=lkc('popsav','/reload',nmx([82,199]).' '.date('Y',ses('daya')));}
+if($des=ses('desgn'))$ret['design']=lj('popbt','socket;sty,actions;;url;exit_design','design:'.$des);
 if(!$rst[48]){if($top)$nm=' '.btn('small',ses('USE'));//usr
 	$ret['user']=popbub('user','',$ico[14],$top,$hv);}//user on prm1=app user, on prm2=bubfast
 if($id && !$rst[89])$ret['seek']=popbub('seek','',$ico[13],$top,$hv);//metas
@@ -41,17 +42,21 @@ if($id && auth(6)){
 $dev=ses('dev'); $ic=$dev=='b'?$ico[11]:($dev=='c'?$ico[16]:$ico[12]);
 if(auth(6) or $dev)$ret['dev']=popbub('dev','dev',$ic,$top,$hv);//dev
 $ret['fixit']=span(atd('fixtit').atc('etc'),' ');
-ses::$adm+=$ret;}
+$chrono=round(microtime(1)-$st,3); 
+if(ses('dev'))$ret['chrono']=btn('popbt',$chrono);
+//if(ses::r('tst'))$ret['chrono'].=divb(play_r(ses::r['tst']),'small');
+return $ret;}
 
 //poplinks
-static function popadmin(){
+static function popadmin($st){
+$r=self::m_system($st); if(ses::$adm)$r+=ses::$adm;
 $top=rstr(69)?'':'d'; $ret=''; $rta=''; $rtb='';
 if(get('admin')){$top='d';
 	$hom=popbub('adhome','',picto('phi2'),$top,1);
 	$rta=$hom.adm::menus();}
 elseif(get('msql')){$top='d'; $rta=msqa::menusj('');}
-else foreach(ses::$adm as $k=>$v){
-	if(strstr('cache design hub alert log chrono srch timetravel',$k))$rtb.=btn('popbt',$v).' '; 
+else foreach($r as $k=>$v){
+	if(strstr('cache design hub alert log chrono srch timeout',$k))$rtb.=btn('',$v).' '; 
 	elseif($k=='er')$rtb.=btn('popdel',implode(';',$v)).' '; 
 	else $rta.=$v;}
 $css=$top?'inline':''; ses::$adm=[];
@@ -140,7 +145,7 @@ else $j='_conn,read_'.$d.'['.$id.']';
 return toggle('',$rid.$j,$t?$t:nms(25)).' '.btd($rid,'');}
 
 static function btart($d){[$id,$t]=split_one('|',$d);//conn
-if(substr($d,0,4)=='http')$j='popup_mc,api*read__3_'.ajx($id).'_1';
+if(substr($d,0,4)=='http')$j='popup;mc,api_read;;3;'.ajx($id).';1';
 else $j='popup_popart__3_'.$id.'_3'; $t=$t?$t:ma::suj_of_id($id);
 return lj('popbt',$j,pictxt('articles',!$t&&$d?preplink($d):$t));}
 

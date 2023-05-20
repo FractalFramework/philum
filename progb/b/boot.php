@@ -16,8 +16,7 @@ if(!$qd){if(!$prms[0])$qd='pub'; else $qd=$prms[0];}//master_of_puppets
 if($qdb=get('qd')){$bqd=sqb('id',$qdb.'_user','v','limit 1');//master_node
 	if(!$bqd && !post('create_hub') && !post('create_node'))$qd=$prms[0]; else $qd=$qdb;}
 $_SESSION['qd']=$qd;
-$r=sqldb::$rt;//defs
-foreach($r as $k=>$v)$_SESSION[$k]=$qd.'_'.$v;
+$r=sqldb::$rt; foreach($r as $k=>$v)$_SESSION[$k]=$qd.'_'.$v;//defs
 $prms['htacc']=$prms[1]=='yes'?1:'';
 $prms['create_hub']=$prms[2]=='yes'?'on':'off';
 $prms['default_hub']=$aqb?$aqb:($prms[3]?$prms[3]:'');//1
@@ -115,7 +114,7 @@ if((!$snbj or $cache=='ok') && !$gnbj){
 	if(is_numeric($prmb16))$_SESSION['nbj']=$prmb16;}
 if(!ses('daya') or date('d',$_SESSION['daya'])==date('d',$_SESSION['dayx']) or $cache=='ok')
 	$_SESSION['daya']=$_SESSION['dayx'];
-if($gtim=get('timetravel')){$_SESSION['daya']=inpday($gtim); $cache='ok';}
+if($gtim=get('timetravel')){$_SESSION['daya']=inpday($gtim);}// $cache='ok';
 if($_SESSION['nbj'])$_SESSION['dayb']=timeago($_SESSION['nbj']);
 return $cache;}
 
@@ -365,6 +364,10 @@ if(($lastart && !isset($main[$lastart])) or $x){
 	$ok='cache reloaded'; msql::save('',$nod,$rh+$ret); $_SESSION['rqt']=$ret;}
 elseif($main)$_SESSION['rqt']=$main;
 return lk('/reload/'.ses('qb'),'reload');}
+
+static function cacheart($id){//cachevs($id,11,$v,1);
+$r=sql('day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg','qda','w',$id); $r[3]=pop::art_img($r[3]);
+msql::modif('',nod('cache'),$r,'one','',$id); $_SESSION['rqt'][$id]=$r;}
 
 static function define_cats_rqt(){$ret=[];
 if(rstr(3)){$r=$_SESSION['rqt']??[];

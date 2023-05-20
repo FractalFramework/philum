@@ -233,7 +233,7 @@ static function filters($va,$opt,$prm){
 $rt=''; [$d,$rep,$by]=arr($prm,3); //$d=delr($d);
 if($va=='cleanbr')$rt=str::clean_br($d);
 elseif($va=='cleanmail')$rt=str::cleanmail($d);
-elseif($va=='cleanpunct')$rt=str::clean_punct($d,2);
+elseif($va=='cleanpunct')$rt=str::clean_punctuation($d,2);
 elseif($va=='cleanpdf')$rt=self::clean_pdf($d);
 elseif($va=='striplink')$rt=codeline::parse($d,'striplink','correct');
 elseif($va=='converthtml'){$rt=conv::call(nl2br($d)); $rt=str::post_treat_repair($rt);}
@@ -261,7 +261,10 @@ elseif($va=='citaq')$rt=mk::citations($d,'q');
 return txarea1($rt);}
 
 //str
-static function add_lines($d){return str::clean_br(str_replace(['. ',".\n"],".\n\n",$d));}
+static function add_lines($d){
+$d=str_replace(['. ',".\n"],".\n\n",$d);
+$d=str_replace("\n-","\n\n-",$d);
+return str::clean_br($d);}
 static function clean_pdf($d){$d=str::cleanmail($d); $d=str::clean_br($d); $d=self::add_lines($d); return $d;}
 
 static function add_comments($d){$r=explode("\n",$d); $ret='';

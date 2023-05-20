@@ -62,8 +62,8 @@ return $ret;}
 
 //time
 static function timetravel(){$r=pop::timetravel(); $travel=date('Y',ses('daya'));
-$ret[]=[date('Y'),'link','','/reload','','','','logout'];//nms(83)
-foreach($r as $k=>$v)$ret[]=[$k,'link','',art::target_date($v),'','','',$travel==$k?'clock':'hour'];
+$ret[]=[date('Y'),'link','','/reload','','','','time'];//nms(83)
+foreach($r as $k=>$v)$ret[]=[$k,'link','',art::target_date($v),'','','',$travel==$k?'fluxcapacitor':'hour'];
 return $ret;}
 
 //arts
@@ -359,6 +359,7 @@ if($rc[$cond?$cond:'menu']??'' or !$v[5]){$t=$v[0];
 		elseif($v[1]=='js')$rb[$t]=ljbub($ico.$t,'',atj($v[2],$v[3]));
 		elseif($v[1]=='bub')$rb[$t]=popbub($v[2],$v[3],$ico.$t,'c',1);//d
 		elseif($v[1]=='arts')$rb[$t]=popbub('','arts',$ico.$t,'d',0);
+		elseif($v[1]=='art')$rb[$t]=lh($v[3],$ico.$t);
 		elseif($v[1]=='mod')$rb[$t]=mod::callmod($v[3]);
 		elseif($v[1]=='modbt')$rb[$t]=mod::btmod($v[3].',t:'.$t);//,bt:1
 		else{$j=desk::read($v); $rb[$t]=ljbub($ico.$t,'',sj($j));}}}}
@@ -390,29 +391,30 @@ case('user'):return self::adm_user_fast(); break;
 case('exec'):return self::exec($d); break;
 case('hubs'):$r=self::hubs_fast(); break;
 case('bub'):$r=self::slct($d); break;}
-switch($d){
-case('home'):$r=self::r_apps_home(0); break;
-case('adhome'):$r=self::r_apps_home(1); break;
-case('admin'):$r=self::adm_admin($dir); break;
-case('admn'):$r=self::adm_admn($dir); break;
-case('desk'):$r=desk::datas(); break;
-case('arts'):$r=self::adm_arts($dir); break;
-case('seek'):$r=self::seek(); break;
-case('seektag'):$r=self::seek_tag($dir); break;
-case('seekart'):$r=self::seek_art($dir); break;
-//case('mods'):$r=self::adm_mods($dir); break;
-case('msql'):$r=self::msql_dir($dir); break;
-case('admsq'):$r=self::admsq($dir); break;
-//case('admsqb'):$r=self::admsq_b($dir); break;
-case('table'):$r=msql::read('',nod($dir),'',1); break;
-case('lang'):$r=self::langs(); break;
-case('timetravel'):$r=self::timetravel(); break;
-case('dev'):$r=self::dev(); break;
-case('user'):$r=self::adm_user(); break;
-//case('plug'):$r=self::plug($dir); break;
-case('overcat'):$r=self::overcats($dir); break;
-case('menubub'):$r=self::menubub($dir,$n); break;
-case('bubses'):$r=$_SESSION['bubses']; break;}
+$r=match($d){
+'home'=>self::r_apps_home(0),
+'adhome'=>self::r_apps_home(1),
+'admin'=>self::adm_admin($dir),
+'admn'=>self::adm_admn($dir),
+'desk'=>desk::datas(),
+'arts'=>self::adm_arts($dir),
+'seek'=>self::seek(),
+'seektag'=>self::seek_tag($dir),
+'seekart'=>self::seek_art($dir),
+//'mods'=>self::adm_mods($dir),
+'msql'=>self::msql_dir($dir),
+'admsq'=>self::admsq($dir),
+//'admsqb'=>self::admsq_b($dir),
+'table'=>msql::read('',nod($dir),'',1),
+'lang'=>self::langs(),
+'timetravel'=>self::timetravel(),
+'dev'=>self::dev(),
+'user'=>self::adm_user(),
+//'plug'=>self::plug($dir),
+'overcat'=>self::overcats($dir),
+'menubub'=>self::menubub($dir,$n),
+'bubses'=>$_SESSION['bubses'],
+default=>[]};
 return self::apps($r,$d,$dir,'');}
 }
 ?>

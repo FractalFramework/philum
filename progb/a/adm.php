@@ -575,9 +575,8 @@ elseif($o=='totag')return self::cat2tag($p);
 if($cat)sqlup('qda',['frm'=>$cat],['nod'=>ses('qb'),'frm'=>$p]);
 return self::adm_categories();}
 
-static function edit_cats($cat){//maintainance::fixtag();
-if(!auth(5))return; $ret='';
-$j='edtcat_adm,admcat*ops_oldcat__'.ajx($cat).'_';
+static function edit_cats($cat){$ret='';//maintainance::fixtag();
+$j='edtcat;adm,admcat_ops;oldcat;;'.ajx($cat).';';
 if($cat){//champs
 	$ret=btn('txtcadr',$cat);
 	$ret.=inputb('oldcat',$cat,15,'',255);

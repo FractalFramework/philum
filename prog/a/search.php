@@ -49,7 +49,7 @@ $rg=sql('cat','qdt','rv','tag="'.$rech.'"');
 if($rg)foreach($rg as $k=>$v)$rt1.=lj('popbt','popup_api__3_'.$v.':'.ajx($rech),self::pictag($v),att($v));
 if($cac)$rt1.=blj('popbt','srcac','search,rech___'.$vrf,picto('del'),att('del cache'));
 if($rech && strpos($rech,','))$api='search:'.$rech; else $api='search:'.$rech.',cat:'.str_replace('+','|',$cat).',tag:'.str_replace('+','|',$tag);
-$rt1.=toggle('txtx','apicom_apicom,search___'.ajx($api).'_'.$rid,pictxt('atom','Api')).' ';
+$rt1.=toggle('txtx','apicom_apicom,build___'.ajx($api).'_'.$rid,pictxt('atom','Api')).' ';
 if($load)$rt1.=btn('txtnoir',nbof(count($load),1));//if(auth(6))$rt1.=nbof(array_sum_r($load),16);
 $ret=div('',$rt1);
 //2
@@ -60,10 +60,13 @@ $bt.=checkact('srseg',$seg,nms(180)).' ';
 $rt2=btn('nbp',$bt);
 $rt2.=slct_cases('srlng','lang',$lng,1,nms(162)).' ';//
 $rt2.=slct_cases('srcat','cat',$cat,1,nms(9)).' ';//chkslct_j
-$rt2.=slct_cases('srtag','tag',$tag,'','tag').' ';//prm4=catag; 0=all
-$rt2.=hlpbt('search_cases').' ';
-$rt2.=select_j('limit','-|1|2|3|4|5|10|20|50',$lim,'1',$lim?$lim:'limit').' ';
-$rt2.=select_j('srlen','-|10|20|30|60|more',$len,'1',$len?$len:'length').' ';
+//$rt2.=slct_cases('srtag','tag',$tag,'','tag').' ';//prm4=catag; 0=all
+$rt2.=hidden('srtag','');//hidden('srcat','').
+//$tgs=prmb(18); $ru=explode(' ',$tgs);
+//foreach($ru as $k=>$v)$rt2.=slct_cases('srtag'.$k,$v,$tag,'',$v);
+//$rt2.=hlpbt('search_cases').' ';
+$rt2.=select_j('limit','-|1|2|3|4|5|10|20|50',$lim,'1',$lim?$lim:nms(199)).' ';
+$rt2.=select_j('srlen','-|10|20|30|60|more',$len,'1',$len?$len:nms(200)).' ';
 $rt2.=slct_cases('srpri','pri',$pri,'','stars').' ';
 if(auth(4))$rt2.=togbub('meta,tagall*slct',ajx($vrf).'_'.ajx($rech),picto('paste')).' ';
 if(auth(4))$rt2.=lj('','popup_searched,home__3_'.ajx($rech),picto('enquiry'));
@@ -192,10 +195,10 @@ $vrf=($rech.$n.$b.$o.$t.$sg.$cat.$tag.$lim.$lng.$pri.$len); ses::$r['seg']=$sg;
 if(!isset($_SESSION['recache']))$_SESSION['recache'][$vrf]=[];
 $maxid=ma::lastart();
 //if(is_float($rech))echo $rech=(string) $rech;
-if(!is_numeric($rech) && strlen($rech)>7)$isdate=strtotime($rech);
+if($rech && !is_numeric($rech) && strlen($rech)>7)$isdate=strtotime($rech);
 if($rech=='1'){$id=$maxid; $load[$id]=1; return popart($id);}
 //if(is_numeric($rech) && $rech<=$maxid)return art::playb($rech,3);
-if(is_http($rech)){$id=sql('id','qda','v',['mail'=>$rech]); if($id)return popart($id);}
+if($rech && is_http($rech)){$id=sql('id','qda','v',['mail'=>$rech]); if($id)return popart($id);}
 elseif($rech && strpos($rech,',') && strpos($rech,':')){
 	$ra=explode_k($rech,',',':');
 	foreach($ra as $k=>$v)//{//inform motor

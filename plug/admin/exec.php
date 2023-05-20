@@ -30,7 +30,7 @@ foreach($rb as $k=>$v)
 	$ret.=ljb('','insert_b',[$v[0].'('.$v[1].');','codarea'],$v[0].'('.$v[1].')');
 return divc('list',$ret);}
 
-static function fast(){$ref=['function done(){}','{}','[]','if()','foreach($r as $k=>$v)','$ret=;','strpos($d,\'x\')!==false','return $ret;','.br()','echo \'ee\';',"\r"]; $ret='';
+static function fast(){$ref=['function done(){}','{}','[]','if()','foreach($r as $k=>$v)','$ret=\'\';','strpos($d,\'x\')!==false','return $ret;','.br()','echo \'ee\';',"\r"]; $ret='';
 foreach($ref as $k=>$v)$ret.=ljb('txtx','insert',[$v,'codarea'],$v);
 return divc('list',$ret);}
 
@@ -63,7 +63,7 @@ $bt.=msqbt('system','program_core').' ';
 $bt.=lj('popsav',$j,'exec');
 $ret=jscode(self::js());
 $sj=atjr('SaveJtim',[$j,1000]); //$onk=atjr('autocomp','codarea');
-$ret.=textarea('codarea',$p?$p:'$ret=\'hello\';',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);
+$ret.=textarea('codarea',$p?$p:'$d=\'hello\';',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);
 return $bt.div(atc('grid-pad').ats('min-width:640px'),divc('col1',$ret).div(atd($rid).atc('col2 scroll'),''));}
 }
 ?>

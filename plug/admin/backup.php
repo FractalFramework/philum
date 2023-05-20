@@ -54,7 +54,7 @@ static function restore($d){//import
 exc($d);}
 
 static function home($p,$o,$y=''){
-if(!$p){connect(); $p=sql::$db;} if(!$p)return;
+if(!$p){$p=sql::$db;} if(!$p)return;//connect(); 
 $o='1';//gz
 [$usr,$db,$ps,$dr]=transport::srv(1); $base=$p;//$db //echo $ps;
 //exc('mkdir '.$dr.'/backup');

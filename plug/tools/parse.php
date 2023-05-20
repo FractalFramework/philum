@@ -80,7 +80,6 @@ foreach($items as $k=>$v){
 		foreach($v as $ka=>$va){$i++;//elems
 			if(is_array($va))foreach($va as $vb){//pr($vb);
 				$d=@$vb['content'];
-				//$d=decode_unicode($d);
 				//$d=html_entity_decode($d);
 				//$d=utflatindecode($d);
 				$rb[$i][@$vb['balise']]=$d;}}}

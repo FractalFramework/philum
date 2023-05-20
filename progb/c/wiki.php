@@ -10,7 +10,7 @@ return $d;}
 
 static function build($p,$o){ses::$urlsrc=$p;
 [$t,$d]=conv::vacuum($p); $d=str::clean_html($d,1); $d=str::embed_links($d);
-$d=str::clean_br_lite($d); $d=str::clean_punct($d); $d=conn::read($d,'noimages','');
+$d=str::clean_br_lite($d); $d=str::add_nbsp($d); $d=conn::read($d,'noimages','');
 //if($o)$d=str::kmax($d,10000);
 //if(strpos($d,'<big>'))$mx='<big>'; elseif(strpos($d,'<h2>'))$mx='<h2>';
 if($o)$d=strto($d,'<big>');

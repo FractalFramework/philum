@@ -99,7 +99,7 @@ foreach($rt as $k=>$v)$rn[$v]=$k+1;
 return $rn;}
 
 static function tags($id,$o='',$lg=''){
-$r=ma::art_tags($id); if(!$r)return; $sep="&#8239;"; $ret=[];
+$r=ma::art_tags($id); if(!$r)return; $sep=sti(); $ret=[];
 $ica=explode(' ',prmb(18)); $ico=explode(' ',prmb(19)); if($lg)$rn=self::tagn();
 if(count($ica)==count($ico))
 $rico=['tag'=>'tag']+array_combine($ica,$ico); $rico['utag']='like';
@@ -119,7 +119,7 @@ $ra=sql('id,word,count(idtag) as nb','qdtc','',['idtag in'=>$rb,'_group'=>'word'
 //foreach($ra as $k=>$v)$rc[$k]=$v[2]; $m=floor((max($rc))/2);//if($v[2]>=$m)
 if(count($ra)>4)$ra=array_slice($ra,0,4);
 foreach($ra as $k=>$v)$rt[]=lj('','popup_api__3_cluster:'.ajx($v[1]).',t:Cluster of '.$v[1],$v[1]);
-if($rt)return picto('social',16)."&#8239;".implode(' ',$rt).' '.hlpbt('clusters');}
+if($rt)return picto('social',16).sti().implode(' ',$rt).' '.hlpbt('clusters');}
 
 static function back($id,$ib,$frm,$rst43){
 $read=ses('read'); $u='cat/'.$frm; $t=picto('before');
@@ -411,11 +411,13 @@ return $ret;}
 
 static function preview($d,$id,$l=''){
 if(strlen($l)<15 && strpos($d,':import')){[$p,$o,$c]=poc($d); $d=sql('d','qdm','v',['id'=>$p]);}
-if(rstr(34)){$d=codeline::parse($d,'b i u h c l h1 h2 h3 h4 list numlist','corrfast');
+if(rstr(34)){
+	$d=codeline::parse($d,'b i u h c l h1 h2 h3 h4 list numlist figure','corrfast');
+	$d=codeline::parse($d,'striplink','correct');
 	$d=codeline::parse($d,'color','corrfastb');
 	$d=codeline::parse($d,'stripvideo','correct');}
 if(rstr(64))$d=codeline::parse($d,'figure q twitter fluid table plug msql','stripconn');//thumb
-if(rstr(117)){$d=codeline::parse($d,'striplink','correct');
+if(rstr(117)){
 	$d=codeline::parse($d,'stripimg','correct');
 	$d=self::firstlines($d);}
 else $d=str::kmax($d);

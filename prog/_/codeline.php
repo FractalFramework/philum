@@ -275,7 +275,7 @@ static function corrfast($da,$op){
 $r=explode(' ',$op); $n=count($r);
 for($i=0;$i<$n;$i++)if($c==$r[$i]){
 	$hk=strrpos($d,']'); $pa=strrpos($d,'|');
-	if($pa>$hk)return substr($d,0,$pa);
+	if($pa>$hk)return $c!='figure'?substr($d,0,$pa):'';
 	elseif($hk!==false)return $d;
 	else return $d;}
 return '['.$da.']';}

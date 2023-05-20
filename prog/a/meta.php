@@ -7,10 +7,6 @@ if($vrf && !$d)sql::del('qdd',$vrf);
 elseif(!$vrf && $d)sqlsav('qdd',[$id,$val,$d]);
 elseif($msb!=$d)sql::upd('qdd',['msg'=>$d],$vrf);}
 
-static function putincache($id){//cachevs($id,11,$v,1);
-$r=sql('day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg','qda','w',$id); $r[3]=pop::art_img($r[3]);
-msql::modif('',nod('cache'),$r,'one','',$id); $_SESSION['rqt'][$id]=$r;}
-
 static function titsav($id,$m,$prm=[]){//pr($prm);
 $ra=['ib'=>'ib','frm1'=>'frm','suj'=>'suj','url'=>'thm','img'=>'img','src'=>'mail','author'=>'name','hub'=>'nod'];
 foreach($ra as $k=>$v){$va=$prm[$k.$id]??'';
@@ -20,7 +16,7 @@ foreach($ra as $k=>$v){$va=$prm[$k.$id]??'';
 	elseif($v=='name' && !$va)$va=ses('qb');
 	elseif($v=='nod' && !$va)$va=ses('qb');
 	$sq[$v]=$va?trim($va):$va;}
-sqlup('qda',$sq,$id,0); self::putincache($id);
+sqlup('qda',$sq,$id,0); boot::cacheart($id);
 $r=ses('art_options'); $rst=ses('rstr');
 $ra=sql('val,msg','qdd','kv',['ib'=>$id]);//known
 $rd=valk($ra,$r);//waited
@@ -49,11 +45,6 @@ if($r)foreach($r as $k=>$v){$val=$rd[$v]; $gv=$prm[$v.$id]??'';
 	if($gv==$vrf && $val)$gv='';//erase if not usefull
 	if($gv!=$val)self::utag_sav($id,$v,$gv);}
 return art::playd($id,$m);}//$gv &&
-
-/*static function same_suj($suj){
-$r=sql('id','qda','k',['suj'=>$suj,'nod'=>ses('qb'),'_order'=>'id DESC']);
-foreach($r as $k=>$v){if($k!=ses('read'))$ret.=lk('/?read='.$k,$k).' ';}
-if($ret)return btn('txtsmall','with_same_title: '.$ret);}*/
 
 static function priorsav($v,$id){
 if($v=='trash')sql::upd('qda',['frm'=>'_trash'],$id);
@@ -111,7 +102,7 @@ $ret.=lj($css,'popup_tracks,form___'.$id,picto('forum'));
 //if(auth(6) && $src)$ret.=lj($css,$id.'_sav,recapart___'.$id,picto('update'),att('backup+reimport'));
 //$ret.=toggle($css,'cbk'.$id.'_sav,reimportedt___'.$id.'_'.$m,picto('rollback'));
 $ret.=toggle($css,'cbk'.$id.'_translate,home___'.$id,picto('translate'));
-//$ret.=toggle($css,'cbk'.$id.'_translate,repair___'.$id,picto('tools'));//missing qdm
+$ret.=toggle($css,'cbk'.$id.'_translate,repair___'.$id,picto('tools'));//missing qdm
 //$ret.=toggle($css,'cbk'.$id.'_mails,sendart___'.$id,picto('mail'),'',att('send'));
 $ret.=toggle($css,'cbk'.$id.'_few,exportation___'.$id.'_'.ses('qb'),picto('export'));
 //$ret.=lj($css,'art'.$id.'few,importation___'.$id.'_'.$m,picto('cycle'),att(':import'));
@@ -122,7 +113,7 @@ $ret.=toggle($css,'cbk'.$id.'_meta,editday___'.$id,picto('time'));
 if($_SERVER['HTTP_HOST']=='oumo.fr')
 	$ret.=lj($css,'suj'.$id.'_umrenum,last__4_'.ajx($frm).'_'.$id,picto('bb'),att('Oay'));
 if(prms('srvmirror'))
-$ret.=lj($css,$id.'_sav,art*mirror___'.$id.'_'.$m,picto('symetry-v'),att('mirror'));
+$ret.=lj($css,$id.';sav,art_mirror;;;'.$id.';'.$m,picto('symetry-v'),att('mirror'));
 $ret.=lj($css,$id.'_meta,addfoot___'.$id.'_'.$m,picto('anchor'),att('add anchors'));
 $ret.=lj($css,$id.'_meta,png2jpg___'.$id.'_'.$m,picto('gallery'),att('png2jpg'));
 //$ret.=lj($css,'popup_meta,artopt___'.$id.'_'.$m,picto('folder-tags'),att('metas'));
@@ -162,13 +153,16 @@ static function catsav($id,$frm,$prm=[]){
 if(auth(4)){sql::upd('qda',['frm'=>$frm],$id); cachevs($id,1,$frm,1);}
 return self::catedit($id,$frm);}
 
-static function catslct($id,$frm){$w='';
-if(rstr(3))$w='AND day>"'.timeago("360").'"'; $ret='';
-$r=sql('distinct(frm)','qda','k','nod="'.ses('qb').'" and substring(frm,1,1)!="_" '.$w.' order by frm');
-//$r=ses('line');
+static function catslctm($id,$frm,$r=[]){$ret='';
+if(!$r)$r=sql('distinct(frm)','qda','k',['nod'=>ses('qb'),'-frm'=>'_','>day'=>timeago('360'),'_order'=>'frm']);
 if($r)foreach($r as $k=>$v)
-	$ret.=lj('','frm'.$id.'_meta,catsav_frm1'.$id.'__'.$id.'_'.ajx($k),catpic($k,20)).' ';
-return divc('nbp',$ret);}
+	$ret.=lj('','frm'.$id.'_meta,catsav_frm1'.$id.'__'.$id.'_'.ajx($k),catpic($k,20));
+return $ret;}
+
+static function catslct($id,$frm){
+$r=ses('line'); $ret=self::catslctm($id,$frm,$r);
+$ret.=lj('','ctslc'.$id.'_meta,catslctm___'.$id.'_'.ajx($frm),picto('plus'));
+return divb($ret,'nbp','ctslc'.$id);}
 
 static function catedit($id,$frm){
 $ret=toggle('','catslct'.$id.'_meta,catslct___'.$id.'_'.ajx($frm),picto('category',''));
@@ -689,7 +683,7 @@ $rt=self::catag(); $ro=self::pctag(); $ra=array_merge_cols($rt,$ro); $rh=['class
 if($p==1)msql::modif('',nod('tags'),$ra,'arr',$rh);
 foreach($ra as $k=>$v)$ra[$k][1]=pictxt($v[1],$v[1]);
 $ret=tabler($ra,$rh);
-$ret.=lj('popbt',$rid.'_meta,admin*tags___classes_1','config2msql');//patch
+$ret.=lj('popbt',$rid.';meta,admin_tags;;;classes;1','config2msql');//patch
 $ret.=msqbt('',nod('tags'));
 $ret.=hlpbt('tag_pictos');
 return $ret;}
@@ -717,7 +711,7 @@ if($re){$rt=[];
 	foreach($re as $k=>$v)if($v)$rt[$k]=trans::read($v,ses('lng'),$lg,'xml');
 	$ret.=lj('popbt','tgtom_meta,cleanuptag___'.ajx($cat).'_'.$lg,'cleanup').' ';
 	$ret.=lj('popbt','tgtom_meta,addcsv_addcsv__'.ajx($nod).'_'.$lg,'inject').' ';
-	$ret.=lj('popbt','popup_msqa,editors___users/'.ajx($nod).'_import*csv','open csv').br();
+	$ret.=lj('popbt','popup;msqa,editors;;;users/'.ajx($nod).';import_csv','open csv').br();
 	$ret.=tagb('h2',nms(153)).textarea('addcsv',implode_k($rt,n(),'#'));}
 return divd('tg2msq',$ret).divd('tgtom','');}
 

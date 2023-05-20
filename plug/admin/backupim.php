@@ -234,7 +234,6 @@ for($i=0;$i<$n;$i++){$f=self::f($i);
 return $ret;}
 
 static function home($p,$o){$rid='plg'.randid();
-if(!auth(6))return;
 $bt=self::menu($p,$o,$rid);
 //rmdir_r('imgd/'); mkdir_r('imgd/');
 //echo tar::extract(img8.tar','imgd/');

@@ -49,7 +49,7 @@ elseif($d=='base64')$ret=$enc?base64_encode($txt):base64_decode($txt);
 elseif($d=='htmlentities')$ret=$enc?htmlentities($txt,ENT_QUOTES,'utf-8',false):html_entity_decode($txt);
 elseif($d=='url')$ret=$enc?urlencode($txt):urldecode($txt);
 elseif($d=='ajx')$ret=ajx($txt,$enc?0:1);
-elseif($d=='unescape')$ret=$enc?$ret:str::decode_unicode($txt,"");
+elseif($d=='unescape')$ret=$enc?$ret:str::decode_nonutf8($txt);//unicode_decode
 elseif($d=='ascii'){if($enc)$ret=self::ascii_encode($txt); else $ret=self::ascii_decode($txt);}
 elseif($d=='binary')$ret=$enc?self::ascii2bin($txt):self::bin2ascii($txt);
 elseif($d=='bin/dec')$ret=$enc?decbin($txt):bindec($txt);

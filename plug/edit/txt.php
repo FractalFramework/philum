@@ -46,7 +46,7 @@ case('cleanmail'):$ret=str::cleanmail($d); break;
 case('cleanbr'):$ret=str::clean_br($d); break;
 case('deln'):$ret=str::del_n($d); break;
 case('striplink'):$ret=codeline::parse($d,'striplink','correct'); break;
-case('cleanpunct'):$ret=str::clean_punct($d); break;
+case('cleanpunct'):$ret=str::clean_punctuation($d); break;
 case('addlines'):$ret=mc::add_lines($d); break;
 case('txt2array'):$ret=buildtable::call($d); break;
 case('dump2array'):$ret=buildtable::jb($d); break;
@@ -103,21 +103,21 @@ return $ret;}
 
 static function home($d,$tx){$nd=self::log(); $msg='';
 if($d)$ra=msql::read('',$nd.'_txt_'.$d,'');
-if($d && is_array($ra)){$msg=stripslashes(valr($ra,1,1)); $msg=str::html_entity_decode_b($msg);}
+if($d && is_array($ra)){$msg=stripslashes(valr($ra,1,1));} //$msg=str::html_entity_decode_b($msg);
 if($d && !$ra && $nd)msql::modif('users',$nd.'_txt_'.$d,['title',''],'one','',1);
 $ret=self::paste($d).' ';
 if($d)$ret.=input('tit',stripslashes(valr($ra,1,0))).' ';
 $ret.=self::btn($d,$nd,$tx).br();
 $ret.=div('',edit::bt(''));//ats('width:630px;')
 $ret.=div('',self::btact('',''));
-$s='width:100%; min-height:360px; padding:4px 8px; margin-top:2px;';
-$edt=divc('col1',textarea('txtarea',$msg,44,4,['style'=>$s]));
+$edt=divc('col1',textarea('txtarea',$msg,44,4,['class'=>'txar']));
 $edt.=div(atc('col2 tab'),div(atd('wyswyg'),''));
 $ret.=divc('grid-pad',$edt);
 $ret.=divd('bck','');
-Head::add('csscode','
-.tab{font-size:large; padding:6px; border:1px dotted silver; max-height:320px; word-wrap:break-word; overflow-y:auto;}
-.grid-pad{grid-template-columns:auto 40%;}');
+$css='.tab{font-size:large; padding:6px; border:1px dotted silver; max-height:320px; word-wrap:break-word; overflow-y:auto;}
+.txar{width:100%; min-height:360px; padding:4px 8px; margin-top:2px;}
+.grid-pad{grid-template-columns:auto 50%;}';
+$ret.=csscode($css); //Head::add('csscode',$css);
 $ret.=jscode('document.getElementById(\'txtarea\').innerHTML=localStorage[\'m1\']');//Head::add('
 return btd('plgtxt',$ret);}
 

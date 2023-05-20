@@ -40,6 +40,13 @@ $r=msql::row('',$_SESSION['sppnod'],$k,1); //p($r);
 unset($r['projet']); unset($r['poll']);
 return on2cols($r,500,5);}
 
+static function call2($p,$o,$prm=[]){
+if($o=='del')$r[0]=self::del($p);
+elseif($o=='sav')$r[0]=self::sav($p,$prm);
+else $r[0]=self::poll($p,$o);
+$r[1]=self::table($p);
+return $r;}
+
 static function del($d){
 msql::modif('',$_SESSION['sppnod'],$d,'del');
 return btn('txtred',$k.' deleted');}
@@ -49,16 +56,16 @@ $dfb[msql::$m]=['projet','poll']; $ret='';
 $r=msql::read('',$_SESSION['sppnod'],'',1);//p($r);
 if($r){$ra=array_keys_r($r,1); arsort($ra);
 foreach($ra as $k=>$v){
-$bt=ljb('txtbox','SaveJb',['ob'.$k.'_superpoll,poll___'.$k.'_0',$rid.'_superpoll,table'],'-').' ';
-$bt.=btn('txtred" id="ob'.$k,($r[$k][1]?$r[$k][1]:0));
-$bt.=ljb('txtbox','SaveJb',['ob'.$k.'_superpoll,poll___'.$k.'_1',$rid.'_superpoll,table'],'+').' ';
-if(auth(4))$bt.=ljb('txtbox','SaveJb',['res_superpoll,del_'.$k,$rid.'_superpoll,table'],'x').' ';
+$bt=lj('txtbox','ob'.$k.','.$rid.'_superpoll,poll___'.$k.'_0','-').' ';
+$bt.=span('',$r[$k][1]??0,'txtred','ob'.$k);
+$bt.=lj('txtbox','ob'.$k.','.$rid.'_superpoll,poll___'.$k.'_1','+').' ';
+if(auth(4))$bt.=lj('txtbox','res,'.$rid.'_superpoll,poll___'.$k.'_del','x').' ';
 $ret.=divc('txtcadr',divc('imgr',$bt).$r[$k][0]);}}
 return $ret;}
 
 static function add($rid){
 $ret=textarea('p1','',40,1);
-$ret.=ljb('txtbox','SaveJb',['add_superpoll,sav_p1_xd_'.$rid,'res_superpoll,table'],'save').' ';
+$ret.=lj('txtbox','add,'.$rid.'_superpoll,call2_p1_xd_'.$rid.'_sav','save').' ';
 //$ret.=lj('txtyl','add_plug','x').br().br();//icon('close')
 return $ret;}
 

@@ -22,32 +22,22 @@ boot::seslng();
 if($cache)boot::cache_arts($cache);
 if($cache)boot::define_cats_rqt();
 #Home
-//if(!ses('frm'))geta('module','Home');
 //condition
-$adm=get('admin'); $msq=get('msql');
 boot::define_condition();
-pop::m_system();
 //design
 if($cache)boot::define_clr();
-if(ses('desgn'))sty::exitbt();
 //mods
 $p1=ses('prmb1'); if($p1 && $p1!=prmb(1))ses::$adm['alert']='mod:'.prmb(1);
-//back_in_time
-if(abs(ses('dayx')-ses('daya'))>86400){ses::$adm=[];
-	ses::$adm['timetravel']=lkc('','/reload',nms(82).' '.date('Y',ses('daya')));}
 #eye
 if(!ses('stsys'))eye();
 #structure
 $out=[];
-if($adm)$out['content']=adm::home();
-elseif($msq)$out['content']=msqa::home();
+if($adm=get('admin'))$out['content']=adm::home();
+elseif($msq=get('msql'))$out['content']=msqa::home();
 elseif(rstr(85) && (!rstr(146) or $_SESSION['cond'][0]=='home'))$out['content']=boot::deskpage();
 else $out=mod::blocks();
 #admin
-$chrono=round(microtime(1)-$stime,3); 
-if(ses('dev'))ses::$adm['chrono']=btn('small',$chrono);
-//if(ses::r('tst'))ses::$adm['chrono'].=divb(play_r(ses::r['tst']),'small');
-if(!rstr(98) or auth(4))$madmin=pop::popadmin();
+if(!rstr(98) or auth(4))$madmin=pop::popadmin($stime);
 #meta
 $host=host();
 $meta['favicon']='favicon.ico';
@@ -57,7 +47,7 @@ elseif(ses::$r['raed']??''){$meta['title']=ses::$r['raed']; $meta['descript']=se
 	$meta['img']=$host.'/img/'.ses::r('imgrel');}
 else{$mn=ses('mn'); $meta['title']=$mn[ses('qb')]??'';
 	$meta['descript']=$_SESSION['qbin']['dscrp'];}
-$cst=('dev')?'?'.randid():'';//ses
+$cst=ses('dev')?'?'.randid():'';//
 if($adm or $msq)$meta['css']='_admin';
 else $meta['css']=boot::define_design();
 boot::verif_update();

@@ -137,7 +137,7 @@ var fd=''; var get=jx(app); ra=jrb(ra);
 if(tp=='u')updateurl(ra[0],tg+'_'+app+'___'+ra[0]+'_'+ra[1]);
 if(prm){var fd=new FormData();
 for(var i in prm)fd.append(i,prm[i]);}
-if(prm[0]=='g')for(var i in ra)fd.append('g'+i,ra[i]); else get+=jrc(ra);
+if(tp=='g')for(var i in ra)fd.append('g'+i,ra[i]); else get+=jrc(ra);
 new AJAX(jurl()+get+'&tg='+tg,tg,tp,fd);}
 
 function mkprm(dn2,dn3){var prm=[]; var dna=dn2.split(','); var vl='';
@@ -415,8 +415,6 @@ var e=infixed(div); if(e){var poc=get_dim(e);
 autoscroll(bub); clpop('','pub'+id);}
 
 //SaveJ
-function SaveJb(a,b){SaveJ(a); //var t=typeof laps==='undefined'?500:laps;
-setTimeout(function(){SaveJ(b)},laps||1000);}
 function SaveJc(val){var dn=val.split(';');
 for(i=0;i<dn.length;i++)if(dn[i])setTimeout('SaveJ("'+dn[i]+'")',100*i);}
 function revert(){getbyid('txtarea').value=localStorage['revert'];}
@@ -428,8 +426,8 @@ xc=setTimeout(function(){closebub(e)},10000);}//close bub
 //SaveJ
 //var urlbar={burl:''};
 function SaveJ(val){//target_app,mth_[post1,post2]_indic_v1_v2_v3_v4//_[multival]
-var opt=''; var res=''; var tp=''; var pp=''; laps=0; nt=0; na=0; var prm=[]; var get=[];
-dn=val.split('_'); var ns=8; dn2=''; dn8=''; if(dn[2]==undefined)dn[2]='';
+var opt=''; var tp=''; var prm=[]; var get=[];
+if(val.indexOf(';')!=-1)var dn=val.split(';'); else var dn=val.split('_'); if(dn[2]==undefined)dn[2]='';
 if(dn[3]=='3x'||dn[3]=='3xx'||dn[3]=='4x'||dn[3]=='5x'){var tp=dn[3].substr(0,1); dn[3]=dn[3].substr(1);}
 else if(dn[3]=='14x'){var tp='after'; dn[3]='x';}//trksav
 else if(dn[3]=='14xk'){var tp='after'; dn[3]='xk';}//close trkdsk
@@ -438,7 +436,7 @@ else if(dn[3]=='exs')var tp='1'; else if(dn[3]!='pop'|'x'|'xx'|'xd'|'tg')var tp=
 if(dn[0]=='pop'){dn[0]='pop'+curid; var tp=12;}
 else if(dn[0].indexOf(',')!=-1){tp='json'; dn[3]=tp;}
 if(dn[2])prm=mkprm(dn[2],dn[3]);//k,head
-for(i=4;i<ns;i++)get.push(dn[i]);
+for(i=4;i<8;i++)get.push(dn[i]);
 if(dn[7]=='autosize'||dn[1]=='msql'){opt+='&sz='+innerW()+'-'+innerH(); get[7]='';}//todo:in place of i
 if(dn[7]=='autowidth'){opt+='&sz='+(document.body.offsetWidth); get[7]='';}
 ajaxcall(dn[0],dn[1]+opt,get,prm,tp);

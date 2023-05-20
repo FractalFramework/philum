@@ -5,28 +5,30 @@ static $rid='dk';
 
 #desktop
 //ajax,art,file,finder,admin,msql,iframe,link,url,bub//plugfunc,,plug,plup,link,appin,ajxlnk,mod
-static function read($v){$ret='';switch($v[1]){//p/t/d/o/c/h/tp/br
-case('art'):$ret='content_popart__3_'.$v[3].'_3_'.$v[4]; break;
-case('ajax'):$ret=$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''); break;
-case('popup'):$ret='popup_'.$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''); break;
-case('desktop'):$ret='popup_desk,deskroot__3_'.$v[2].'_'.$v[3].'_'.$v[4]; break;//type
-case('module'):$ret='content_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]); break;
-case('modin'):$ret='content_mod,callmod__3_'.ajx($v[3]); break;//alias of module not in desk
-case('modpop'):$ret='popup_mod,callmod__3_'.ajx($v[3]); break;//alias of module in desk
-case('page'):$ret='page_mod,playcontext__3_'.ajx($v[3]); break;//from desk(use $v[2])
-case('img'):$ret='popup_usg,popim__3_users/'.ajx($v[3]).'___autowidth'; break;
-case('file'):$ret=self::reader($v[3]); break;
-case('finder'):$ret='popup_finder,home___'.$v[3].'_'.$v[4]; break;
-case('admin'):$ret='popup_admin___'.$v[2].'_'.$v[3].'_'.$v[4]; break;
-case('msql'):$ret='popup_msqa,msqlp___'.$v[2].'_'.$v[3].($v[4]?'*'.$v[4]:''); break;
-//case('iframe'):$ret='popup_usg,iframe___'.ajx($v[3]).'___autowidth'; break;
-case('link'):$ret='popup_usg,iframe___'.ajx($v[3]).'___autowidth'; break;//bubs::apps
-case('url'):$ret='socket_ret__url_'.ajx($v[3]); break;//host().//$v[2]=blank
-case('app'):[$a,$m]=expl(',',$v[2]);
-	$ret='popup_'.$a.','.($m?$m:'home').'__3_'.ajx($v[3]).'_'.ajx($v[4]);break;
-case('appjs'):$ret='popup_'.$v[2].',home__js_'.ajx($v[3]).'_'.ajx($v[4]);break;
-case('api'):$ret='popup_api,callj__3_'.ajx($v[3]); break;
-case('bub'):$ret='bubble_bubs,root__d'.randid().'_'.$v[2].'_'.$v[3]; break;}//loos mod
+static function read($v){$ret='';
+if($v[1]=='app'){[$a,$m]=expl(',',$v[2]);
+	return 'popup_'.$a.','.($m?$m:'home').'__3_'.ajx($v[3]).'_'.ajx($v[4]);}
+return match($v[1]){//p/t/d/o/c/h/tp/br
+'art'=>'content_popart__3_'.$v[3].'_3_'.$v[4],
+'ajax'=>$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
+'popup'=>'popup_'.$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
+'desktop'=>'popup_desk,deskroot__3_'.$v[2].'_'.$v[3].'_'.$v[4],//type
+'module'=>'content_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]),
+'modin'=>'content_mod,callmod__3_'.ajx($v[3]),//alias of module not in desk
+'modpop'=>'popup_mod,callmod__3_'.ajx($v[3]),//alias of module in desk
+'page'=>'page_mod,playcontext__3_'.ajx($v[3]),//from desk(use $v[2])
+'img'=>'popup_usg,popim__3_users/'.ajx($v[3]).'___autowidth',
+'file'=>self::reader($v[3]),
+'finder'=>'popup_finder,home___'.$v[3].'_'.$v[4],
+'admin'=>'popup_admin___'.$v[2].'_'.$v[3].'_'.$v[4],
+'msql'=>'popup_msqa,msqlp___'.$v[2].'_'.$v[3].($v[4]?'*'.$v[4]:''),
+//'iframe'=>'popup_usg,iframe___'.ajx($v[3]).'___autowidth',
+'link'=>'popup_usg,iframe___'.ajx($v[3]).'___autowidth',//bubs::apps
+'url'=>'socket_ret__url_'.ajx($v[3]),//host().//$v[2]=blank
+'appjs'=>'popup_'.$v[2].',home__js_'.ajx($v[3]).'_'.ajx($v[4]),
+'api'=>'popup_api,callj__3_'.ajx($v[3]),
+'bub'=>'bubble_bubs,root__d'.randid().'_'.$v[2].'_'.$v[3],//loos mod
+default=>''};
 return $ret;}
 
 //if($r)$r=virtual_array($r,$o); //$r=select_subarray($p,$r,$o);
@@ -251,13 +253,6 @@ if($r)return implode(';',$r);}
 static function deskoff($g1,$g2){geta($g1,$g2);
 $ret=implode('',mod::blocks());
 return [$ret,''];}
-
-/*static function mod_lin($r){$rt=[];
-foreach($r as $k=>$v){$j=self::read($v);
-	if($v[1]=='module')$v[1]='modin';
-	$ico=$v[7]?picto($v[7],'').'&nbsp;':''; $t=$v[0];
-	$rt[]=ljbub($ico.$t,'',sj($j));}
-return implode('',$rt);}*/
 
 static function call($id){
 $r=msql::row('',nod('apps'),$id); $ra[$id]=$r;

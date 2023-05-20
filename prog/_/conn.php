@@ -417,16 +417,10 @@ if(is_img($da) && $par===false){// && $html===false
 	return conn::place_image($da,$m,$pw,$id,$nl);}
 if(($par or $http!==false) && $html===false){//secure double hooks
 	[$p,$o]=cprm($da);
-	if(is_img($p)){//image|text
-		//restore conn from html, if lk|im (disactivatedf in conv)
-		//if(strpos($p,'<img')!==false)$p=between($p,'src="/img/','"');
-		//if(substr($p,0,4)=='http')$p=conn::get_image($p,$id,$m);
+	if(is_img($p)){//img|txt
 		if(is_img($o))return mk::popim($p,image(goodroot($o)),$id);//mini
-		//return pop::figure($p.'|'.$o,$pw,$nl,$id);
-		if(is_http($o))return lkt('',$o,img(goodroot($p)));
 		return mk::popim($p,pictxt('img',$o),$id);}
-	elseif(is_img($o)){//link|image
-		//if(strpos($o,'<img')!==false)$o=between($o,'src="/img/','"');//str::prop_detect($o,'src')
+	elseif(is_img($o)){//link|img
 		if(substr($o,0,4)=='http')$o=conn::get_image($o,$id,$m);
 		if(substr($p,0,4)=='http')return lkt('',$p,conn::place_image($o,$m,$pw,$id,1));
 		elseif(is_numeric($p))return mk::popim($o,pictxt('img',urlread($p)),$id);
@@ -437,15 +431,22 @@ if(($par or $http!==false) && $html===false){//secure double hooks
 	elseif(strpos($p,':iframe')){if($nl)return struntil($p,':iframe');
 		return lj('','popup_conn,parser___['.ajx($p).']_3_test',pictxt('window',$o));}
 	elseif(substr($p,0,4)=='http')return rstr(111)&&!$nl?mk::webview($da,$id):lka($p,$o);
-	/*elseif(strpos($p,':')){if($nl)return struntil($p,':'); $ic=mime(strend($p,':'),'window');//if isconn
-		return lj('','popup_conn,parser___['.ajx($p).']_3_test',pictxt($ic,$o));}*/
 	elseif(substr($p,0,1)=='/')return lkt('',$p,$o);
 	elseif(strpos($p,'/'))return lkt('',goodroot($p),$o);
-	//elseif(strpos($p,'@'))return lkt('',$p,$o?$o:domain($p));
 	elseif(is_numeric($p) && strpos($o,':')===false)return ma::jread('',$p,$o);}
+elseif($par){[$p,$o]=cprm($da);
+	if(is_img($p) && is_img($o))return mk::popim($p,image(goodroot($o)),$id);//mini
+	elseif(is_img($p)){//img|txt
+		if(is_http($o))return lkt('',$o,img(goodroot($p)));
+		return mk::popim($p,pictxt('img',$o,16),$id);}
+	elseif(is_img($o)){//link|img
+		if(substr($p,0,4)=='http')return lkt('',$p,conn::place_image($o,$m,$pw,$id,1));
+		elseif(is_numeric($p))return mk::popim($o,pictxt('img',urlread($p)),$id);
+		else return lkt('',$o,img(goodroot($p)));}
+	else return lkt('',$p,$o);}
 elseif(substr($da,0,1)=='@' && $tw=substr($da,1))return pop::poptwit($da,'ban',$nl);
 elseif(substr($da,0,1)=='#' && $tw=substr($da,1))return pop::poptwit($da,'search',$nl);
-//elseif(strpos($da,'@'))return str_replace('@',picto('arobase'),$da);
+elseif(strpos($da,'@') && !$par)return str_replace('@',picto('arobase'),$da);
 }//avoid plugs
 
 }

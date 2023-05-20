@@ -77,7 +77,7 @@ $d=str::clean_html($d);
 $d=str::br_rules($d);
 $d=self::interpret_html($d,'',$h);
 $d=str::post_treat_repair($d);
-$d=str::embed_links($d);
+//$d=str::embed_links($d);
 return $d;}
 
 static function vacuum_upsrv($f){
@@ -229,12 +229,13 @@ elseif($src){$src=trim($src);
 		elseif(strpos($src,'mailto:')!==false)$mid='['.substr($src,7).']';
 		elseif($srcim && is_img($txt))$mid='['.$rot.$src.'|'.$txt.']';
 		elseif($txt && $src && $txt==$src)$mid='['.$rot.$src.']';
-		elseif($txt && $src && strpos($src,str_replace('...','',$txt)))$mid='['.$rot.$src.']';
 		elseif($rot.$src!=$txt){
 			if($srcim){
 				if(!is_img($txt) && $txt!='https')$mid='['.$rot.$src.($txt?'|'.$txt:'').']';
 				else $mid='['.$rot.$src.'|'.$txt.']';}
 			//elseif(domain($txt)==domain($rot.$src))$mid='['.$rot.$src.'] ';//kill img§src
+			elseif($src && is_http($txt) && strpos($rot.$src,substr($txt,0,-4))!==false)$mid='['.$rot.$src.']';
+			//elseif(strpos($rot.$src,domain($txt))!==false)$mid='['.$rot.$src.'] ';//
 			else $mid='['.$rot.$src.'|'.$txt.']';}
 		else $mid='['.$rot.$src.'] '.$txb;}
 	else $mid='['.$rot.$src.'] '.$txb;}

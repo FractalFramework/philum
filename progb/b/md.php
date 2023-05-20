@@ -47,7 +47,7 @@ static function friend_art($o){$id=ses('read');
 if($id){$id=ma::id_of_suj($id); $in=ma::read_msg($id,1,'');}
 if(is_numeric($id))return divc($o,$in);}
 
-static function timetravel_m(){$r=pop::timetravel();
+static function timetravel(){$r=pop::timetravel(); pr($r);
 $travel=date('Y',ses('daya')); $ret='';
 foreach($r as $k=>$v){$c=$k==$travel?'active':''; $ic=$travel==$k?'clock':'hour'; $yr=date('Y',$v);
 	$ret.=lj('','content_api___maxtime:'.$v.',t:'.$yr,pictxt($ic,$yr));}
@@ -67,7 +67,7 @@ else{
 	if($tg)$j='pagup_popart__x_'; elseif($o)$j='popup_popart__x_'; else $j='content_mod,playmod__u_read_';
 	$ret=!$k1?btn('hide',$ta):lj('',$j.$k1,$ta);
 	$ret.=!$k2?btn('hide',$tb):lj('',$j.$k2,$tb);}
-if(!$o)return btn('nbp right',$ret);
+if(!$o)return btn('btpic right',$ret);
 return $ret;}
 
 static function login_btn($p,$o){$t=$p!=1?$p:""; 

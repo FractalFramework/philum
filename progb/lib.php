@@ -13,7 +13,7 @@ function br(){return "<br />";}
 function hr(){return "<hr />";}
 function sep(){return "&nbsp;";}
 function sti(){return "&#8239";}
-function thin(){return "&#8201;";}
+function thin(){return "&thinsp;";}
 function atb($d,$v){return $v?' '.$d.'="'.$v.'"':'';}
 function atc($d){return $d?' class="'.$d.'"':'';}
 function atd($d){return $d?' id="'.$d.'"':'';}
@@ -276,9 +276,8 @@ while(($r=fgetcsv($h,'',"\t"))!==false){$nb=count($r);
 for($i=0;$i<$nb;$i++)$rb[$k][]=$r[$i]; $k++;} fclose($h);}
 return $rb;}
 
-function csvfile($f,$r,$t='',$z=''){
-$t=$t?pictxt('file-data',$t):pictit('file-data','csv:'.$f);
-$f='_datas/csv/'.$f.'.csv'; mkdir_r($f); if(!is_file($f) or $z)writecsv($f,$r);
+function csvfile($f,$r,$t=''){$t=pictxt('file-data',$t?$t:$f);
+$f='_datas/csv/'.$f.'.csv'; mkdir_r($f); writecsv($f,$r);
 return lk('/'.$f,$t);}
 
 function joinable($d){$ok=@fopen($d,'r'); if($ok){fclose($ok); return true;}}
@@ -428,6 +427,7 @@ function detect_enc($d){return mb_detect_encoding($d,'UTF-8,ISO-8859-1',true);}
 //function is_utf($d){return mb_detect_encoding($d,'UTF-8,ISO-8859-1',true)=='UTF-8'?1:'';}
 function is_utf($d){return $d?strpos($d,'Ã')||strpos($d,'©')||strpos($d,'®')||strpos($d,'¨')||strpos($d,'¢'):'';}
 function urlutf($u){return urlencode(utf8enc($u));}
+function hed($d){if($d)return html_entity_decode($d);}
 
 #strings
 function eradic_acc($d){
@@ -524,6 +524,7 @@ function implode_keys($r,$a=''){$rb=array_keys($r); if($rb)return implode($a,$rb
 function delbr($d,$o=''){return str_replace(['<br />','<br/>','<br>'],$o,$d??'');}
 function deln($d,$o=''){return str_replace("\n",$o,$d??'');}
 function delr($d,$o=''){return str_replace("\r",$o,$d??'');}
+function delt($d,$o=''){return str_replace("\t",$o,$d??'');}
 function delnl($d){return preg_replace('/(\n){2,}/',"\n\n",$d??'');}
 function delsp($d){return preg_replace('/( ){2,}/',' ',$d??'');}
 function delnbsp($d){return str_replace("&nbsp;",' ',$d??'');}
@@ -630,8 +631,7 @@ function ts2time($t){$nd=date('z',$t); $nh=date('H',$t)*60*60; $nm=date('i',$t)*
 return $nd*84600+$nh+$nm+$ns;}
 
 #dates
-function mkday($d='',$p=''){if($p==1)$p=$_SESSION['prmb'][17];
-return date($p?$p:'ymd',is_numeric($d)?$d:time());}
+function mkday($d='',$p=''){if($p==1)$p=prmb(17); return date($p?$p:'ymd',is_numeric($d)?$d:time());}
 function timeago($d){$dy=ses('daya'); $day=$dy?$dy:ses('dayx'); $m=is_numeric($d)?$d:0;
 return $day-(86400*$m);}
 function calctime($d){return ses('dayx')-86400*(is_numeric($d)?$d:1);}

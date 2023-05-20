@@ -172,7 +172,7 @@ $j=sj('sts_statsee,call___'.$p.'_'.$o);
 return jscode(temporize('sttimer',$j,3000));}
 
 static function statsee($p,$o){
-$rid='sts'; if(!auth(6))return; $o=$o?$o:100;
+$rid='sts'; $o=$o?$o:100;
 $p=sqb('id','qdv','v','order by id desc limit 1');
 $j=sj($rid.'_statsee,call___'.$p.'_'.$o);
 Head::add('jscode',temporize('sttimer',$j,3000));

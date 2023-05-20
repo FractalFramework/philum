@@ -64,7 +64,7 @@ static function photo($im,$dim,$sz,$id){
 $img=goodroot($im); [$w,$h]=self::bestdim($dim,$sz,$img,1);
 if(!$id)[$hub,$id,$nm]=expl('_',$im,3);
 $bt=lj('','pagup_usg,overim__x_'.ajx($im).'_'.$dim.'_'.$sz.'_'.$id,picto('fullscreen'));
-if($id)$bt.=self::photosbt($im,$sz,$id,'popup_usg,photo__x_');
+if(is_numeric($id))$bt.=self::photosbt($im,$sz,$id,'popup_usg,photo__x_');
 ses::$r['popm']=$bt; ses::$r['popw']=$w; ses::$r['popt']=sql('dc','qdg','v','im="'.$im.'"');
 $s='overflow:auto; width:auto; height:auto;';
 return div(ats($s),image($img,'auto','100%'));}
@@ -168,6 +168,7 @@ switch($d){case('parent'):$r=sav::newartparent(); break;
 	case('cat'):$r=ses('line'); if($r)array_unshift($r,''); if($r)ksort($r); break;
 	case('tag'):$cat=$o=='utag'?ses('iq'):$o; $nbd=rstr(3)&&!is_numeric($o)?60:ma::maxdays();
 		$r=ma::tags_list_nb($cat,$nbd); if($r)ksort($r); break;//'tag'=>1
+	case('lang'): $r=explode(' ',prmb(26)); $r=array_combine($r,$r); break;
 	case('pri'):$r=[1=>0,2=>1,3=>2,4=>3,5=>4]; break;
 	case('vfld'):$r=sql('msg','qdd','k','val="folder"'); $cl=0; break;
 	case('lang'):$r=array_flip(explode(' ',prmb(26))); $cl=0; break;
@@ -200,7 +201,7 @@ if(is_array($r))foreach($r as $k=>$v){$c=active($k,$vrf); $k=addslashes($k);
 	if(is_array($v) or is_numeric($v))$v=$k; $v=stripslashes($v);
 	if(strpos($d,'|')===false)$t=$k?$k:$d; elseif($k)$t=$k; elseif($vrf)$t=$vrf; else $t='';
 	if($t=='-')$t='...';
-	if($v && $d=='tag')$ret.=ljb($c,'jumpvalue',[$id,ajx($t),''],$v);
+	if($v && ($d=='tag' or $d=='lang'))$ret.=ljb($c,'addval',[$id,ajx($t),'|'],$v);//
 	elseif($v)$ret.=ljb($c,'hidslct',[$id,$k,ajx($t),$o],$v);}
 if($o>=2)$ret.=self::dropmenuform($id,$id,$vrf,'bt',$o);
 //$ret=scroll($r,$ret,40,'');
@@ -238,11 +239,11 @@ if($p==1)cookie('iq',$r['iq']); //if($use=ses('USE'))cookie('use',$use);
 if($ex)ses('iqa',$p);}
 
 #convhtml
-static function html2conn($ret){ses::$urlsrc=host().'/';
-$ret=str::decode_unicode($ret); $ret=str::embed_links($ret); $ret=conv::call($ret);
-$ret=str::html_entity_decode_b($ret); $ret=html_entity_decode($ret); $ret=str::clean_prespace($ret);
-$ret=str_replace(['[img/','[users/'],'',$ret);
-return $ret;}
+static function html2conn($d){ses::$urlsrc=host().'/';
+$d=conv::call($d);//$d=str::embed_links($d);
+//$d=str::html_entity_decode_b($d); $d=html_entity_decode($d); $d=str::clean_prespace($d);
+$d=str_replace(['[img/','[users/'],'',$d);
+return $d;}
 
 static function conn2($g1){$d=sql('msg','qdm','v',$g1); 
 $d=conn::read($d,'',$g1,1); return str_replace('</p>',"</p>\n",$d);}

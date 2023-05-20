@@ -49,7 +49,7 @@ return $rb;}
 
 //tools
 static function correct($d){
-$ra=[":j]",':p]',':vidéo]',':efecto','[///img/',':centro]',':non]',':not]'];
+$ra=[":j]",':p]',':vidÃ©o]',':efecto','[///img/',':centro]',':non]',':not]'];
 $rb=[':i]',':q]',':video]','effect','[',':center]',':no]',':no]'];
 return str_replace($ra,$rb,$d);}
 
@@ -97,7 +97,7 @@ static function resav($ref,$setlg,$prm){$ret=$prm[0];
 self::update($ret,$ref,$lg);
 return self::call($ref,$setlg);}
 
-static function redit($ref,$setlg){$id=substr($ref,3); if(!auth(6))return;
+static function redit($ref,$setlg){$id=substr($ref,3);
 [$lg,$from]=explode('-',$setlg); if($lg=='all')$lg=$from;
 $txt=sql('txt','ynd','v',['ref'=>$ref,'lang'=>$lg],0);
 //$ret=lj('','ynd'.$ref.'_trans,call__1_'.$ref.'_'.$setlg,picto('kleft')).' ';
@@ -107,7 +107,6 @@ return $ret;}
 
 #redo
 static function redo($ref,$setlg,$o='',$edt='',$um=''){
-//if(!auth(6))return;
 static $i; $i++; $ret=''; $retb='';
 [$to,$from]=expl('-',$setlg); $lg='';
 if(!$to)$to=ses('lng');//$to=setlng($to);

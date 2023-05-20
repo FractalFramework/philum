@@ -106,9 +106,6 @@ case('displaycss'):return nl2br(read_file($fcss)); break;
 case('displaycsstmp'):return nl2br(read_file($ftmp)); break;}
 return btn('txtyl',$p.' '.$fcss.': ok');}
 
-static function exitbt(){
-ses::$adm['design']=lj('popbt','socket_sty,actions__url_exit*design','design:'.ses('desgn'));}
-
 //cssactbt('atpos','ok','self',$k,'','sdx'.$k);
 static function cssactbt($p,$t,$x='',$o='',$tt='',$id=''){if($tt)$tt='" title="'.$tt;
 if($p=='exit_design')$c='popsav'; elseif($p=='save')$c='popsav';

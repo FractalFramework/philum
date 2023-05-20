@@ -18,7 +18,7 @@ return $ret;}
 
 static function call($id,$o,$prm=[]){$p=$prm[0]??'';
 if($id=='kbv'){$ret=input('kbv',$p);}
-//$ret.=ljb('popw','insert_value',[$id,'kbv'],'ok');
+//$ret.=ljb('popw','insertval',['kbv',$id],'ok');
 $ret=divd('kbd',self::build($id,$o,$p));
 return $ret;}
 

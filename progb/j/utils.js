@@ -669,7 +669,7 @@ function apijumptoarea(d,id){var res=[]; var ok=0;
 var p=d.substr(3); var o=getbyid(d); var k=o.id; var v=o.value;
 var content=getbyid(id);
 var r=(content.value).split(',');
-for(i=0;i<r.length;i++){var kv=r[i].split(':'); //if(r[i]=='undefined')r[i]='';
+if(r)for(i=0;i<r.length;i++){var kv=r[i].split(':'); //if(r[i]=='undefined')r[i]='';
 	if(kv[0]==p){if(v)res.push(p+':'+v); var ok=1;} else if(r[i])res.push(r[i]);}
 if(!ok && v)res.push(p+':'+v);
 var ret=res.join(','); if(ret!=undefined)content.value=ret;}
