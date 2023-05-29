@@ -47,10 +47,10 @@ elseif(ses::$r['raed']??''){$meta['title']=ses::$r['raed']; $meta['descript']=se
 	$meta['img']=$host.'/img/'.ses::r('imgrel');}
 else{$mn=ses('mn'); $meta['title']=$mn[ses('qb')]??'';
 	$meta['descript']=$_SESSION['qbin']['dscrp'];}
-$cst=ses('dev')?'?'.randid():'';//
+$cst=('dev')?'?'.randid():'';//ses
 if($adm or $msq)$meta['css']='_admin';
 else $meta['css']=boot::define_design();
 boot::verif_update();
 if(get('flow') or rstr(39))$flow=1; else $flow=0;
-//alert(play_r(ses::r('spl')));
+//alert(playr(ses::r('spl')));
 ?>

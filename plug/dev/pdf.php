@@ -25,7 +25,7 @@ return $ret;}}
 static function arts_menus($dya,$dyb){$cs='txtblc';
 $ret.=divc('txtcadr','build_pdf_book').br();
 $dya=$dya?$dya:time(); $dyb=$dyb?$dyb:0;
-$sq='nod="'.$_SESSION['qb'].'" and day<'.$dya.' and day>'.$dyb.' AND re="1"';
+$sq='nod="'.ses('qb').'" and day<'.$dya.' and day>'.$dyb.' AND re="1"';
 $rq=sql::com('id,frm,thm,day','qda',$sq);
 while($data=sql::qrr($rq)){
 	$dt['cat'][ajx($data['frm'],'')]+=1;

@@ -160,7 +160,7 @@ static function tag_mod($p,$o,$d){$nbj=ses('nbj'); if($nbj==7 or $nbj=='auto')$n
 $p=$p?$p:'tag'; $r=ma::tags_list($p,$nbj); $d=$d?$d:'lines'; $lin=[];//tags_list_nb
 if($r)foreach($r as $k=>$va){if($o=='nb')$ka=$k.' ('.$va.')'; else $ka=$k;
 	if($dig=get('dig'))$k.='/'.$dig;
-	$lin[]=[get(eradic_acc($p)),$p,$k,$ka];}
+	$lin[]=[get(str::eradic_acc($p)),$p,$k,$ka];}
 return $lin;}
 
 static function cluster_mod($p,$o,$d){$nbj=ses('nbj');
@@ -184,11 +184,11 @@ $ret.=lj('popbt','popup_api__3_'.$p.':'.$k,$k."&nbsp".'('.$fa.')',ats('font-size
 return $ret;}
 
 static function last_tags($p,$o){$p=$p?$p:10;
-$ord='order by '.ses('qdt').'.id desc limit '.$p;
+$ord='order by '.db('qdt').'.id desc limit '.$p;
 if($o!='nb')$r=sqb('tag,cat','qdt','',$ord);
 else $r=sql::inner('tag,cat,count(idart)','qdt','qdta','idtag','','group by idtag '.$ord);
 if($r)foreach($r as $k=>$v){if($o=='nb')$n=' ('.$v[2].')';
-	$lin[]=[get(eradic_acc($v[1])),$v[1],$v[0],$v[0]];}//eradic_acc()
+	$lin[]=[get(str::eradic_acc($v[1])),$v[1],$v[0],$v[0]];}
 return $lin;}
 
 //todo:unify
@@ -226,11 +226,11 @@ static function most_read($dyb,$mx=''){
 $dayb=$dyb?timeago($dyb):$_SESSION['dayb']; $mx=$mx?$mx:50;
 return sql('id,lu','qda','kv','nod="'.ses('qb').'" and re>="1" and day>'.$dayb.' order by cast(lu as integer) desc limit '.$mx);}//unsigned integer
 
-static function most_polled($p,$o){$qda=ses('qda'); if(!$o)$o=200;
+static function most_polled($p,$o){$qda=db('qda'); if(!$o)$o=200;
 $r=sql::inner($qda.'.id,count(poll) as nb','qda','qdf','ib','kv','order by cast(nb as integer) desc limit '.$o);
 return $r;}
 
-static function score_datas($p,$o){$qda=ses('qda'); if(!$o)$o=200;
+static function score_datas($p,$o){$qda=db('qda'); if(!$o)$o=200;
 $r=sql::inner($qda.'.id,msg','qda','qdd','ib','kv',['val'=>$p,'_order'=>'cast(msg as integer) desc','_limit'=>$o]);
 return $r;}
 
@@ -268,7 +268,7 @@ if($load)$ret=self::home_plan($load);
 if($rb)return md::title($load,'Gallery',61).$ret;}
 
 static function trkarts($p,$t,$d,$o,$rch=''){//see also api cmd:tracks
-$qda=ses('qda'); $qdi=ses('qdi'); $pg=$o?$o:1; $tri=$d==1?$qdi:$qda;
+$qda=db('qda'); $qdi=db('qdi'); $pg=$o?$o:1; $tri=$d==1?$qdi:$qda;
 $p=get('dig',$p); $p=is_numeric($p)?$p:ses('nbj'); if(!$p)$p=30; $np=time_prev($p);
 if($rch)$w=' and msg like "%'.$rch.'%"';
 else{$w=' and '.$tri.'.day>'.timeago($p); if($p!=7 && $p!=1)$w.=' and '.$tri.'.day<'.timeago($np);}
@@ -323,7 +323,7 @@ $frmline=ma::tri_rqb($frm,'frm','frm');
 return $frmline[$frm];}
 
 static function see_also($r,$p,$d='',$o='',$tp=''){
-foreach($r as $kb=>$pb){$t=lk(htac(eradic_acc($p)).$kb,$kb);
+foreach($r as $kb=>$pb){$t=lk(htac(str::eradic_acc($p)).$kb,$kb);
 	if($pb)$rc[$kb]=mod::mod_load($pb,$t,$d,$o,0,'',$tp,'','');}
 if(count($rc)>1)$ret=tabs($rc,randid('mod')); else $ret=$rc[$kb];
 return $ret;}

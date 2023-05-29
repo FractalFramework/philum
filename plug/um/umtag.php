@@ -1,8 +1,7 @@
 <?php //ummtag from umoay
 class umtag{
 static function req_arts_y($p){
-$qda=$_SESSION['qda']; $qdm=$_SESSION['qdm'];
-$qdt=$_SESSION['qdt']; $qdta=$_SESSION['qdta'];
+$qda=db('qda'); $qdm=db('qdm'); $qdt=db('qdt'); $qdta=db('qdta');
 $wh=$qda.'.frm="'.implode('" or '.$qda.'.frm="',explode(',',$p)).'"';
 $sql='select distinct '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,'.$qdm.'.msg,'.$qda.'.frm,'.$qda.'.thm,'.$qda.'.mail from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day DESC';
 return sql::call($sql,'');}

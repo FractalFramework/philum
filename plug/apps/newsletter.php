@@ -25,9 +25,9 @@ $ret=str_replace('href="/','href="'.$here.'/',$ret);
 return $ret;}
 
 static function batch($p,$o,$rs=[]){$here=host();
-$un=helps('newsletter_uns'); $url=htacc('hub').$_SESSION['qb']; 
+$un=helps('newsletter_uns'); $url=htacc('hub').ses('qb'); 
 $from=$_SESSION['qbin']['adminmail']; $ret=self::read();
-$suj=$rs[0]?$rs[0]:$_SESSION['qb'].' '.mkday('',1);
+$suj=$rs[0]?$rs[0]:ses('qb').' '.mkday('',1);
 if($rs[1])$r=nl_mklist(); else $r=mails::datas();
 if($r)foreach($r as $k=>$to){$i++;
 	$uns=lkc('txtx',$here.'/app/mailist/uns/'.$k,$un).br();
@@ -35,7 +35,7 @@ if($r)foreach($r as $k=>$to){$i++;
 return helps('newsletter_ok').' ('.$i.')';}
 
 static function prep(){
-$suj=$_SESSION['qb'].' '.mkday('',1);
+$suj=ses('qb').' '.mkday('',1);
 $ret=input('suj',$suj,'40').br();
 $ret.=textarea('dpl',mails::datas(1),40,10,['size'=>'40','maxlength'=>'10000']).br();
 $ret.=lj('popsav','nws_newsletter,batch_suj,dpl','ok');

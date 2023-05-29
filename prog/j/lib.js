@@ -293,7 +293,7 @@ var s=s>5?5:s; var eh=s?s*h:h; if(eh>ch)e.style.height=eh;}
 
 //forms
 function checkbox(id,t,j){var bt=getbyid(id); var n=bt.value==1?0:1; if(j)SaveJ(j);
-bt.value=n; SaveJ('bt'+id+'_usg,togno___'+n+'_'+ajx(t));}
+bt.value=n; SaveJ('bt'+id+'_usg,valid___'+n+'_'+ajx(t));}
 function checkact(id){getbyid(id).value=active('bt'+id);}
 
 function checkEnter(){var e=event;
@@ -361,6 +361,15 @@ audio.play();}
 function audioif(id){
 var ok=getbyid('dong');
 if(ok && ok.value==1)audio();}
+
+//li
+function act(ob,a){var op=ob.className;
+if(op.indexOf('active')==-1 && !a){ob.classList.add("active"); return 1;}
+else{ob.classList.remove("active"); return 0;}}
+
+function liul(el){var a=act(el);
+var ul=el.nextSibling;
+ul.className=a?'on':'off';}
 
 //utils
 function ajx(val,n){

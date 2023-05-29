@@ -1,8 +1,24 @@
 <?php 
 class str{
+
+#strings
+static function eradic_acc($d){
+$a=['À','Á','Â','Ã','Ä','Å','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý','à','á','â','ã','ä','å','ç','è','é','ê','ë','ì','í','î','ï','ð','ò','ó','ô','õ','ö','ù','ú','û','ü','ý','ÿ'];
+$b=['A','A','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y'];	
+return str_replace($a,$b,$d);}
+
+static function normalize_alpha($d,$o=''){if(!$d)return;
+$r=[' ','-','&nbsp;',"'",'"','/',',',';',':','|','§','%','&','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','«','»']; if($o)unset($r[$o]); return str_replace($r,'',$d);}
+
+static function normalize_ext($d){if(!$d)return;
+return str_replace(['.JPG','.JPEG','.jpeg','.GIF','.PNG'],['.jpg','.jpg','.jpg','.gif','.png'],$d);}
+
+static function normalize($d,$o=''){if(!$d)return;
+$d=self::normalize_alpha($d,$o); $d=self::normalize_ext($d); $d=self::eradic_acc($d); return $d;}
+
 #filters
 static function hardurl($d){
-$d=eradic_acc($d); $d=mb_strtolower($d); $d=str_replace("&nbsp;",' ',$d);
+$d=self::eradic_acc($d); $d=mb_strtolower($d); $d=str_replace("&nbsp;",' ',$d); $d=hed($d);
 $r=['/','«','»',',','.',';',':','!','?','|','§','%','&','$','#','_','+','=','\n','\\','~','(',')','[',']','{','}'];
 $d=str_replace($r,'',$d);
 $d=str_replace([' ',"'",'"'],'-',trim($d));
@@ -38,7 +54,7 @@ $r=explode('&#x',$d);
 foreach($r as $k=>$v){
 	if($k>0){$n=strpos($v,';'); $va=substr($v,0,$n); $ret.='&#'.hexdec($va).';'.substr($v,$n+1);}
 	else $ret.=$v;}
-return ($ret);}//html_entity_decode
+return ($ret);}//hed
 
 static function utflatindecode($d){return $d;//if(!$d)
 $a=["%u201C","%u201D","%u2019","%u2026","%u0153","%u20AC","%u2013","%u2022"];
@@ -129,7 +145,7 @@ static function stripconn($d){
 return codeline::parse($d,'','delconn');}
 
 static function clean_html($d,$o=''){
-//$d=html_entity_decode($d);//create infinite loop
+//$d=hed($d);//create infinite loop
 //$d=htmlspecialchars_decode($d);//create infinite loop
 $d=self::html_entity_decode_b($d);
 $d=self::clean_spaces($d);
@@ -152,7 +168,7 @@ return $d;}
 static function clean_title($d){
 if(!$d)return; $nb=sep();//&#8201;
 //$d=htmlentities($d);//provoque erreur qui bloque save, sous utf8
-$d=html_entity_decode($d);//add spaces
+$d=hed($d);//add spaces
 $d=self::html_entity_decode_b($d);
 $d=delnbsp($d);
 $d=deln($d);
@@ -228,7 +244,7 @@ return str_replace($ra,$rb,$d);}
 
 static function trim($d,$o=''){
 if($o)$d=self::clean_whitespaces($d);
-return trim($d);}//&nbsp;//kill &
+return trim($d,'  ');}//&nbsp;//kill &
 
 static function del_n($d,$s=' '){$d=self::clean_prespace($d); if(!$d)return '';
 $ret=str_replace(["\r","\n",'<br>','<br/>','<br />','</br>'],$s,$d);
@@ -259,7 +275,7 @@ return delsp($d);}
 
 static function clean_whitespaces($d){if(!$d)return;
 $r=[' ',"&nbsp;","&#160;","&#xA0;","&thinsp;","&#8201;","&ensp;","&#8194","&emsp;","&#8195;","&#8192;","&#8193;","&#8200;","&#8239;","\t"];//&#3647;//bitcoin
-foreach($r as $k=>$v)$d=str_replace([html_entity_decode($v),$v],' ',$d);
+foreach($r as $k=>$v)$d=str_replace([hed($v),$v],' ',$d);
 return $d;}
 
 static function clean_prespace($d){if(!$d)return '';
@@ -374,6 +390,7 @@ $d=self::add_nbsp($d);
 $d=self::clean_br($d);
 $d=self::clean_lines($d);
 $d=self::embed_links($d);
+$d=delnl($d);
 $d=delsp($d);
 return $d;}
 }

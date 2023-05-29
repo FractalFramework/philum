@@ -109,6 +109,7 @@ else if(wait==0){wait=1;//wait
 
 AJAX.prototype.handleAbort=function(){this.m_Request.abort(); delete this.m_Request;}
 
+function aj(tg,app,v){ajaxcall(tg,app,[v],[],'2'); return false;}
 function sj(o){SaveJ(o.dataset.j); th=o; return false;}
 function hj(o){var com=o.href; var r=com.split('/'); r=undefiner(r,5); var diez;//unused
 	if(r[3].indexOf('#')!=-1){var rd=r[3].split('#'); r[3]=rd[0]; var diez='#'+rd[1];}
@@ -187,7 +188,7 @@ if(tx=='x')Close('popup');
 else if(tx=='xc')clpop();//autoclose togbub
 else if(tx=='xb')cltog(dn[2].split(',')[1]);//close tog
 else if(tx=='xx')x=setTimeout(function(){Close('popup')},2500);
-else if(tx=='xd')x=setTimeout(function(){falseClose(dn[0])},1500);
+else if(tx=='xd')x=setTimeout(function(){falseClose(dn[0])},2000);
 else if(tx=='xr')x=setTimeout(function(){poprepos()},1000);
 else if(tx=='xs')exs=[];//artlive2()
 //else if(tx=='xu')updateurl(dn[1].split(',')[0],val);
@@ -404,7 +405,7 @@ var div=getbyid('bt'+id); var pid='pop'+popnb; var pos=get_dim(div);
 div.style.position='relative';//parent need to be relative
 var bub=document.createElement('div'); bub.innerHTML=res; bub.style.zIndex=popz;
 bub.className='popup'; bub.style.position='absolute';
-bub.style.minWidth='320px'; bub.style.maxWidth='480px'; bub.style.lineHeight='normal';
+bub.style.minWidth='270px'; bub.style.maxWidth='480px'; bub.style.lineHeight='normal';
 bub.style.padding='4px'; bub.style.marginRight='4px'; bub.id='pub'+id;
 div.appendChild(bub); bub.style.left=(0-pos.x)+'px';//to measure width
 var pob=get_dim(bub); var mxw=innerW();
@@ -437,7 +438,7 @@ if(dn[0]=='pop'){dn[0]='pop'+curid; var tp=12;}
 else if(dn[0].indexOf(',')!=-1){tp='json'; dn[3]=tp;}
 if(dn[2])prm=mkprm(dn[2],dn[3]);//k,head
 for(i=4;i<8;i++)get.push(dn[i]);
-if(dn[7]=='autosize'||dn[1]=='msql'){opt+='&sz='+innerW()+'-'+innerH(); get[7]='';}//todo:in place of i
+if(dn[7]=='autosize'){opt+='&sz='+innerW()+'-'+innerH(); get[7]='';}//todo:in place of i
 if(dn[7]=='autowidth'){opt+='&sz='+(document.body.offsetWidth); get[7]='';}
 ajaxcall(dn[0],dn[1]+opt,get,prm,tp);
 if(dn[3]=='pop')Close('popup');

@@ -343,7 +343,7 @@ static function unicodeslct($p,$id){
 $r=msql::read('system','edition_ascii_10',$p,1);
 $ret=divb($r[0],'tit'); $a=hexdec($r[1]); $b=hexdec($r[2]);
 for($i=$a;$i<=$b;$i++){$va='&#'.$i.'; ';
-$ret.=btj($va,atjr('insert',[$va,$id]),'ascii','',$i).' ';}
+$ret.=btj($va,atjr('insert',[$va,$id]),'ascii','').' ';}
 return $ret;}
 
 static function unicode($p,$id){

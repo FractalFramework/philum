@@ -15,7 +15,7 @@ if(substr($v,-3)=='mp3' or !$v){$ret=str_replace('users/','',$d); $ret=divd('rd'
 return $ret;}
 
 static function select(){
-$r=walk_dir('users/'.$_SESSION['qb'],'funcmp3');
+$r=walk_dir('users/'.ses('qb'),'funcmp3');
 if($r)return self::r($r);}
 
 static function build($dr,$nod){$dr='users/'.ajx($dr,1);
@@ -46,11 +46,11 @@ return divb(audio($r[1][1],$rid),'nbp',$rid).$add.$ret;}
 
 static function edit($nod,$dr,$md,$id=''){
 $id=$id?$id:ses('read'); $ret=''; $edit=''; $datas=[]; $ky='';
-$nd='radio'.$id; if(!$nod)$nod=$_SESSION['qb'].'_'.$nd;
+$nd='radio'.$id; if(!$nod)$nod=nod($nd);
 $nodb=str_replace('_','*',$nod);
 if($dr)$ret.=self::build($dr,$nod);
 $r=msql_read('radio',$nod,''); 
-$ret.=msqbt('radio',$_SESSION['qb'].'_'.$nd);
+$ret.=msqbt('radio',nod($nd));
 if(isset($r[$md])){foreach($r[$md] as $k=>$v){$ky.=$md.'.'.$k.'|';
 	$edit.=input($md.'.'.$k,$v).btn('txtsmall',$r[msql::$m][$k]).br();}
 	$edit.=lj('popbt','popup_radio,edit___'.$nodb.'__'.$k.'__'.$ky,'save');}

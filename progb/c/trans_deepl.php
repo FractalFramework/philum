@@ -9,7 +9,7 @@ $key='9e00d743-da37-8466-8e8d-18940eeeaf88:fx';//221126
 $prm.='&auth_key='.$key;
 //$prm.='&text='.rawurlencode($txt);
 $mode=$mode?$mode:'translate';//
-$u='https://api-free.deepl.com/v2/translate?'.$prm;
+$u='https://api-free.deepl.com/v2/translate?'.$prm;//
 $ret=trans::post($u,$txt);
 $r=json_decode($ret,true); //pr($r);
 if(isset($r['message'])){echo $r['message']; $r=['text'=>$txt];}

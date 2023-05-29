@@ -11,7 +11,7 @@ static function menu($d,$id){$ret=hidden('cka','m'.$d);
 $r=[1=>'old','clipboard','article','draft','notes','memo','keep','job','ideas'];
 foreach($r as $k=>$v){$c=$k==$d?'active':'';
 	$ret.=ljb($c,'mem_storage',$id.'_m'.$k.'_1_1_ckb'.$k.'_memnu',$k,atd('ckb'.$k)).' ';}
-return span(atd('memnu').atc('nbp'),$ret);}
+return spn($ret,'nbp','memnu');}
 
 //$ret.=ljb($c,'mem_storage',$id.'_'.$i.'_1_1_ckb',$i);
 //$ret.=lj($c,'np_pad,home__2_'.$i,$i+1);

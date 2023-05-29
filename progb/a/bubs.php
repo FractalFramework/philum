@@ -9,7 +9,7 @@ static function addart_btn(){//sav::newartcat
 $p=['onclick'=>'SaveIeb()','oncontextmenu'=>'SaveIeb()','onchange'=>'SaveIeb()','onpaste'=>'SaveIeb()'];
 $t=inputb('addsrc','',43,'url',256,$p);
 $t.=lj('','popup_edit,artform',picto('add',14));
-return span(atc('search').atd('adb'),$t);}
+return spn($t,'search','adb');}
 
 //ucom
 static function ucom_btn(){//obs
@@ -41,7 +41,7 @@ return $ret;}
 static function dev(){$ret=[];
 if(auth(4) or ses('dev')){
 	$ret[]=['dev','ajax','socket','dev__self_b','','','dev','circle-full'];
-	$ret[]=['dev2','ajax','socket','dev__self_c','','','dev','circle-half'];
+	if(rstr(153))$ret[]=['dev2','ajax','socket','dev__self_c','','','dev','circle-half'];
 	$ret[]=['prod','ajax','socket','dev__self_','','','dev','circle-empty'];}
 if(auth(6)){
 	if(rstr(99))$ret[]=['twitletter','ajax','popup','tweetfeed,batch__3','','','dev','tw2'];
@@ -140,7 +140,7 @@ return $ret;}
 
 static function msql_dir($cat){
 $qb=ses('qb'); $prfx=strprm($cat,1); $tabl=strprm($cat,2); switch($prfx){
-case($qb):$dir='users'; $nod=$_SESSION['qb']; break;
+case($qb):$dir='users'; $nod=ses('qb'); break;
 case('public'):$dir='users'; $nod='public'; break;
 case('design'):$dir='design'; $nod=$qb; break;
 //case('gallery'):$dir='gallery'; $nod=$qb; break;

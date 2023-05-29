@@ -13,14 +13,14 @@ return sql('id','qda','v','frm in ("'.$w.'") order by day desc limit 1');}
 
 static function req_arts_y($p,$pg,$cat){$nbp=prmb(6);
 if($pg!='all' && is_numeric($pg))$limit='limit '.(($pg-1)*20).',20'; else $limit='';//limit 10
-$qda=ses('qda'); $qdm=ses('qdm'); $qdi=ses('qdi');
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi');
 $wh=$qda.'.frm in ("'.self::cats($p).'") and '.$qda.'.re>1';
 $sql='select '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,'.$qdm.'.msg,'.$qda.'.mail,lg,'.$qda.'.re from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day desc '.$limit;
 return sql::call($sql,'',0);}
 
 static function req_arts_y2($p,$pg,$lg=''){$nbp=prmb(6);
 if($pg!='all' && is_numeric($pg))$limit='limit '.(($pg-1)*20).',20'; else $limit='';//limit 10
-$qda=ses('qda'); $qdm=ses('qdm'); $qdi=ses('qdi'); $ynd=ses('ynd');
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $ynd=ses('ynd');
 if($lg=='all')$lg='(case '.$qda.'.lg when \'\' then \'fr\' else '.$qda.'.lg end)'; else $lg='"'.$lg.'"';
 $in='inner join '.$ynd.' on ref=concat(\'art\','.$qda.'.id) and lang='.$lg.'';
 //$in2='inner join pub_trk on pub_trk.ib=pub_art.id ';
@@ -29,12 +29,12 @@ $sql='select '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,txt as msg,'.$qda.'.mail,lg,'
 return sql::call($sql,'',0);}
 
 static function req_art_id($id){$nbp=prmb(6);
-$qda=ses('qda'); $qdm=ses('qdm'); $qdi=ses('qdi');
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi');
 $sql='select '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,'.$qdm.'.msg,'.$qda.'.mail,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$qda.'.id='.$id.' and re>1 order by day asc';
 return sql::call($sql,'r','0');}
 
 static function req_arts_tag($id){
-$qdt=$_SESSION['qdt']; $qdta=$_SESSION['qdta'];
+$qdt=db('qdt'); $qdta=db('qdta');
 $sql='select tag from '.$qdt.' inner join '.$qdta.' on '.$qdt.'.id='.$qdta.'.idart
 where '.$qdta.'.idart="'.$id.'" and re>1';
 return sql::call($sql,'');}
@@ -78,7 +78,7 @@ $ret.=lj('all'==$pg?'active':'','umrec_umrec,callj__3_'.ajx($p).'_all',nms(100))
 return divc('nbp',$ret);}}//btn('small','page ').
 
 static function tglist($r){$ret='';
-//$r=ma::artags('cat,tag','and '.ses('qda').'.id='.$id.' order by '.ses('qdta').'.id','kk');
+//$r=ma::artags('cat,tag','and '.db('qda').'.id='.$id.' order by '.db('qdta').'.id','kk');
 //$r=ma::art_tags($id,'vv');
 if($r)foreach($r as $k=>$v)$ret.=lj('','popup_api__3_'.ajx($v[0]).':'.ajx($v[1]),$v[1]).' ';
 return btn('nbp',$ret);}

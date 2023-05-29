@@ -90,7 +90,7 @@ $d=sql('msg','qdm','v',$id); $d=mc::add_anchors($d);
 if($d)sql::upd('qdm',['msg'=>$d],$id);
 return art::playd($id,$m);}
 
-static function titedt($id,$m){$css='poph'; $ret='';
+static function titedt($id,$m,$rch){$css='poph'; $ret='';
 $ra=sql('ib,day,name,nod,mail,suj,frm,img,thm,re,lg','qda','r',$id);
 [$ib,$day,$name,$hub,$src,$suj,$frm,$img,$url,$re,$lg]=$ra; if(!$lg)$lg=ses('lng');
 if(rstr(38))$ret.=btn('txtsmall2','#'.$id).' ';
@@ -102,9 +102,9 @@ $ret.=lj($css,'popup_tracks,form___'.$id,picto('forum'));
 //if(auth(6) && $src)$ret.=lj($css,$id.'_sav,recapart___'.$id,picto('update'),att('backup+reimport'));
 //$ret.=toggle($css,'cbk'.$id.'_sav,reimportedt___'.$id.'_'.$m,picto('rollback'));
 $ret.=toggle($css,'cbk'.$id.'_translate,home___'.$id,picto('translate'));
-$ret.=toggle($css,'cbk'.$id.'_translate,repair___'.$id,picto('tools'));//missing qdm
+//$ret.=toggle($css,'cbk'.$id.'_translate,repair___'.$id,picto('tools'));//missing qdm
 //$ret.=toggle($css,'cbk'.$id.'_mails,sendart___'.$id,picto('mail'),'',att('send'));
-$ret.=toggle($css,'cbk'.$id.'_few,exportation___'.$id.'_'.ses('qb'),picto('export'));
+//$ret.=toggle($css,'cbk'.$id.'_few,exportation___'.$id.'_'.ses('qb'),picto('export'));
 //$ret.=lj($css,'art'.$id.'few,importation___'.$id.'_'.$m,picto('cycle'),att(':import'));
 //$ret.='['.css.';popup_meta,titedt___'.$id.'_'.$m.';[detach:picto]:lj]';
 //$rb[]=['f'=>'lj','p1'=>$css,'p2'=>'popup_meta,titedt___'.$id.'_'.$m,'p3'=>'[detach:picto]'];
@@ -144,7 +144,7 @@ $rao=ses('art_options');
 foreach($rao as $k=>$v)if($v!='lang')$dn[]=$v;//by meta_all
 $r=explode(' ',prmb(26)); if($r)foreach($r as $k=>$v)$dn[]='lang'.$v;//lang
 foreach($dn as $k=>$v)$dn[$k]=$v.$id;//add id
-$sav=lj('popsav',$id.'_meta,titsav_'.implode(',',$dn).'_k_'.$id.'_'.$m,picto('valid')).' ';
+$sav=lj('popsav',$id.'_meta,titsav_'.implode(',',$dn).'_k_'.$id.'_'.$m.'_'.ajx($rch),picto('valid')).' ';
 ses::$r['popw']=640;
 return divs('min-width:440px; padding:0 4px;',$sav.$ret);}
 
@@ -222,7 +222,7 @@ static function art_options($id,$lg){$ret='';
 $r=ses('art_options'); $lgs=explode(' ',prmb(26));
 $ra=sql('val,msg','qdd','kv',['ib'=>$id]); $rst=ses('rstr');
 $rd=valk($ra,$r);
-if($r)foreach($r as $k=>$v){$val=$rd[$v]; $hlp=''; $sid=normalize($v).$id;
+if($r)foreach($r as $k=>$v){$val=$rd[$v]; $hlp=''; $sid=str::normalize($v).$id;
 	if($v=='folder'){$rid='s'.$sid; $ret.=picto('virtual'); $hlp=btd($rid,'');
 	$ret.=toggle('poph',$rid.'_meta,virtualfolder___'.$id.'_folder',nms(73));}
 	if($v=='related'){$ret.=picto('file-chain').btn('poph',nms(138)); $hlp=hlpbt('meta_related');}
@@ -292,7 +292,7 @@ $cats=self::catag(); $ro=self::pctag();
 $t=divc('txtcadr',nms(47)); $ret='';
 $d=self::prep_msg($id); $ra=self::each_words($d); arsort($ra);
 foreach($cats as $k=>$v){[$r,$re]=self::matchtags($id,$v,2,$d,$ra); $rt='';
-	if($r){$rta=picto($ro[$k],24).' '; $tg=eradic_acc($v);
+	if($r){$rta=picto($ro[$k],24).' '; $tg=str::eradic_acc($v);
 	foreach($r as $ka=>$va){$n=isset($re[$ka])?' ('.$re[$ka].')':'';
 		if($ka)$rt.=lj('','popup_api___'.$tg.':'.$va,$ka.$n).' ';}
 	if($rt)$ret.=divc('nbp',$rta.$rt);}}
@@ -339,7 +339,7 @@ if(!$idartag && $idart && $idtag)
 return $idartag;}
 
 static function add_tag_btn($r,$idart,$cat,$curtag='',$re=[]){
-$rid=normalize($cat).$idart; $ret=''; $n=0;
+$rid=str::normalize($cat).$idart; $ret=''; $n=0;
 if($curtag)$ret=lj('txtx',$rid.'_meta,addtag___0_'.$idart.'_'.$cat.'_'.ajx($curtag),$curtag).' ';
 if($r)foreach($r as $idtag=>$tag){
 	$j=$rid.'_meta,addtag___'.$idtag.'_'.$idart.'_'.$cat;
@@ -351,7 +351,7 @@ if($n>2)$ret.=lj('small',$rid.'_meta,filltags___'.$idart.'_'.ajx($cat).'_3','3')
 return divc('nbp','&#10010; '.$ret);}
 
 static function del_tag_btn($r,$idart,$cat){
-$rid=normalize($cat).$idart; $ret='';
+$rid=str::normalize($cat).$idart; $ret='';
 if($r)foreach($r as $idtag=>$tag){
 	$j=$rid.'_meta,deltag___'.$idtag.'_'.$idart.'_'.$cat;
 	$ret.=lj('nbp',$j,'&#10006;&nbsp;'.$tag).' ';}
@@ -372,7 +372,7 @@ return self::del_tag_btn($r,$idart,$cat);}
 //del tag
 static function deltag($idtag,$idart,$cat,$action=''){
 if(!self::tag_auth($cat))return;
-$rid=normalize($cat).$idart; $ret=' '; $x='';
+$rid=str::normalize($cat).$idart; $ret=' '; $x='';
 if($action=='remove')$x=self::rmtag($idtag);
 $idartag=self::idartag($idart,$idtag);
 if($idartag)sql::del('qdta',$idartag);
@@ -408,7 +408,7 @@ return $ret;}
 
 #editor
 static function read_tags($idart,$cat){//tag_arts
-return sql::inner('idtag,tag','qdt','qdta','idtag','kv',['cat'=>$cat,'idart'=>$idart,'_order'=>ses('qdta').'.id asc']);}
+return sql::inner('idtag,tag','qdt','qdta','idtag','kv',['cat'=>$cat,'idart'=>$idart,'_order'=>db('qdta').'.id asc']);}
 
 static function tag_auth($cat){
 if(auth(4) or $cat==ses('iq'))return true;}
@@ -417,7 +417,7 @@ if(auth(4) or $cat==ses('iq'))return true;}
 static function editag($id,$cat,$ico){
 if($cat=='utag'){$auto=hlpbt('usertags'); $cat=ses('iq');}
 if(!self::tag_auth($cat))return;
-$rid=normalize($cat).$id;
+$rid=str::normalize($cat).$id;
 $picto=lj('','slct'.$rid.'_meta,alltags__3_'.$id.'_'.ajx($cat),picto($ico,'min-width:22px;'));
 $auto=lj('','slct'.$rid.'_meta,matchtags___'.$id.'_'.ajx($cat),ascii(9660)).' ';
 $r=self::read_tags($id,$cat);
@@ -427,8 +427,8 @@ if(is_numeric($cat)){
 	$inp=input('inp'.$id,'',12,$rj).hlpbt('usertags');}
 return divc('',$picto.$inp.$auto.btd($rid,$ret).divd('slct'.$rid,''));}
 
-static function metall($id,$m){$ret='';
-$bt=lj('popsav',$id.'_art,playd___'.$id.'_'.$m,picto('valid')).' ';
+static function metall($id,$m,$rch){$ret='';
+$bt=lj('popsav',$id.'_art,playd___'.$id.'_'.$m.'_'.ajx($rch),picto('valid')).' ';
 $re=sql('re','qda','v',$id);
 $bt.=btd('rdbt'.$id,self::prior_edit($re,$id)).br();//priority
 $rc=self::catag(); $ro=self::pctag(); $r=array_combine($rc,$ro);
@@ -436,9 +436,9 @@ foreach($r as $cat=>$ro)if($cat)$ret.=self::editag($id,$cat,$ro);
 $j=atjr('autocomp',[$id,'tag '.prmb(18)]); $rj=['onkeyup'=>$j,'onclick'=>$j];
 $bt.=lj('','popup_meta,metall___'.$id.'_'.$m,picto('popup')).' ';
 $bt.=inputb('inp'.$id,nms(24),12,1,255,$rj);
-$rj=[]; foreach($rc as $k=>$v)$rj[]='slct'.normalize($v).$id; 
+$rj=[]; foreach($rc as $k=>$v)$rj[]='slct'.str::normalize($v).$id; 
 $bt.=lj('',implode(',',$rj).'_meta,matchall__json_'.$id,picto('enquiry'));
-$rj=[]; foreach($rc as $k=>$v)$rj[]=normalize($v).$id; 
+$rj=[]; foreach($rc as $k=>$v)$rj[]=str::normalize($v).$id; 
 $bt.=lj('',implode(',',$rj).'_meta,delalltags__json_'.$id,picto('del'));
 $bt.=toggle('','cls'.$id.'_clusters,viewart___'.$id,picto('network')).divd('cls'.$id,'');
 $ret.=divd('lng'.$id,self::langslct($id));
@@ -468,7 +468,7 @@ static function prep_msg($id){
 $suj=sql('suj','qda','v',$id);
 $d=sql('msg','qdm','v',$id); $d=html_entity_decode($suj."\n".$d);
 if(strpos($d,':import') or strpos($d,':read'))$d=strip_tags(conn::read($d,$id,3));
-else $d=str::stripconn($d); $d=strtolower(eradic_acc($d)); $d=deln($d,' ');
+else $d=str::stripconn($d); $d=strtolower(str::eradic_acc($d)); $d=deln($d,' ');
 $d=str_replace("&nbsp;",' ',$d);
 return $d;}
 
@@ -484,7 +484,7 @@ if($lg=='fr'){$rbb=msql::kn('',nod('syn_'.$n),1,0); if($rbb)$rb+=$rbb;}//synonym
 if($o==2)$rx=[]; else{$rx=self::read_tags($idart,$cat); $rx=array_flip($rx);}//existing
 if($rx)$rb=array_diff_key($rb,$rx);//del exs
 if($rb)$rd=array_intersect_key($rb,$ra); $rdb=array_flip($rd);//detected
-if($rb)foreach($rb as $k=>$v){$vb=strtolower(eradic_acc($k));
+if($rb)foreach($rb as $k=>$v){$vb=strtolower(str::eradic_acc($k));
 	if(!isset($rdb[$v]))if(preg_match("/\b".$vb."\b/i",$d)){// && strpos($d,$vb)!==false
 		$rd[$k]=$v; $rn=str::detect_words($d,$vb,1); $re[$k]=count($rn);}}
 $rdb=array_flip($rd);
@@ -495,16 +495,16 @@ return self::add_tag_btn($rdb,$idart,$cat,'',$re);}
 
 static function matchall($id,$va=''){$cats=self::catag(); $rt=[];
 $d=self::prep_msg($id); $ra=self::each_words($d); arsort($ra);
-foreach($cats as $k=>$v)$rt['slct'.normalize($v).$id]=self::matchtags($id,$v,'',$d,$ra);
+foreach($cats as $k=>$v)$rt['slct'.str::normalize($v).$id]=self::matchtags($id,$v,'',$d,$ra);
 return $rt;}
 
 /**/static function matchall_r($id,$va=''){$cats=self::catag(); $rt=[];
 $d=self::prep_msg($id); $ra=self::each_words($d); arsort($ra);
-foreach($cats as $k=>$v)$rt[normalize($v)]=self::matchtags($id,$v,1,$d,$ra);
+foreach($cats as $k=>$v)$rt[str::normalize($v)]=self::matchtags($id,$v,1,$d,$ra);
 return $rt;}
 
 static function filltags($id,$cat,$n=''){
-$rid=normalize($cat).$id; $ret='';
+$rid=str::normalize($cat).$id; $ret='';
 $d=self::prep_msg($id); $ra=self::each_words($d); arsort($ra);
 [$r,$re]=self::matchtags($id,$cat,1,$d,$ra);
 foreach($r as $tag=>$idtag)if(($re[$tag]??0)>=$n)
@@ -513,7 +513,7 @@ $r=self::read_tags($id,$cat);
 return self::del_tag_btn($r,$id,$cat);}
 
 static function delalltags($id){$cats=self::catag(); $rt=[]; if(!auth(4))return;
-foreach($cats as $k=>$cat){$r=self::read_tags($id,$cat); $kb=normalize($cat).$id;
+foreach($cats as $k=>$cat){$r=self::read_tags($id,$cat); $kb=str::normalize($cat).$id;
 	foreach($r as $idtag=>$tag){$idartag=self::idartag($id,$idtag); sql::del('qdta',$idartag);}
 $rt[$kb]='';}
 return $rt;}

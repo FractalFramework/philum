@@ -11,16 +11,16 @@ return 'ok';}
 
 //20
 function patch_iqs(){
-ses('qdk','pub_iqs');
+db('qdk','pub_iqs');
 $ra=install::db(); $sql=$ra['iqs']; if($sql)qr($sql);
 return 'ok';}
 
 function patch_qdt(){
-//qr('ALTER TABLE `'.ses('qdw').'` CHANGE `typ` `ib` INT(11) NOT NULL;');
+//qr('ALTER TABLE `'.db('qdw').'` CHANGE `typ` `ib` INT(11) NOT NULL;');
 return 'ok';}
 
 function patch_web(){
-qr('ALTER TABLE `'.ses('qdw').'` CHANGE `typ` `ib` INT(11) NOT NULL;');
+qr('ALTER TABLE `'.db('qdw').'` CHANGE `typ` `ib` INT(11) NOT NULL;');
 return 'ok';}
 
 //translate members to new table mbr
@@ -38,7 +38,7 @@ $ok=ses('ok'); if($ok)return;
 //ib,iq,type,poll
 qr('ALTER TABLE `pub_poll` ADD `type` VARCHAR(11) NOT NULL AFTER `iq`',1);
 qr(' RENAME TABLE `pub_poll` TO `pub_favs`;',1);//qdpl=>qdf
-ses('qdf','pub_favs');
+db('qdf','pub_favs');
 $r=sql('ib,val,msg','qdd','','val="agree" and msg!="false" and msg!="true" and msg!="1"');
 foreach($r as $k=>$v){[$ib,$val,$msg]=$v; $rb=[$ib,$msg,$val,1];
 if($ib<10000000 && $msg)$nid=sqlsav('qdf',$rb);}
@@ -84,11 +84,11 @@ unlink('_datas/'.$v);
 
 //180406
 function patch_lg(){
-qr('ALTER TABLE '.$_SESSION['qda'].'` ADD `lg` VARCHAR(2) NOT NULL;',1);
+qr('ALTER TABLE '.db('qda').'` ADD `lg` VARCHAR(2) NOT NULL;',1);
 $r=sql('ib,msg','qdd','kv','val="lang"');
 if($r)foreach($r as $k=>$v)sql::upd('qda',['lg'=>$v],$k);
-qr('update '.$_SESSION['qda'].' set lg="fr" where lg=""');
-qr('delete from '.$_SESSION['qdd'].' where val="lang"'); sql::reflush('qdd',1);}
+qr('update '.db('qda').' set lg="fr" where lg=""');
+qr('delete from '.db('qdd').' where val="lang"'); sql::reflush('qdd',1);}
 
 //160606
 function patch_tracks(){
@@ -101,7 +101,7 @@ $sql='ALTER TABLE '.$qdk.' DROP lu, DROP img, DROP thm;'; qr($sql);
 
 //160215
 function patch_qdd(){
-//qr('ALTER TABLE `'.ses('qdd').'` DROP `qb`;');
+//qr('ALTER TABLE `'.db('qdd').'` DROP `qb`;');
 $r=sql('*','qdlk','','poll=1'); p($r);
 //foreach($r as $k=>$v)sql::sav('qdd',[$v[1],'fav',$v[2]]);
 }
@@ -116,7 +116,7 @@ foreach($r as $k=>$v){$rb=explode(' ',$v);
 //160101
 function patch_tags(){
 $table["_meta"]='
-CREATE TABLE IF NOT EXISTS `'.ses('qd').'_meta` (
+CREATE TABLE IF NOT EXISTS `'.db('qd').'_meta` (
   `id` int(7) NOT NULL AUTO_INCREMENT,
   `cat` varchar(255) collate latin1_general_ci NOT NULL,
   `tag` varchar(255) collate latin1_general_ci NOT NULL,
@@ -124,11 +124,11 @@ CREATE TABLE IF NOT EXISTS `'.ses('qd').'_meta` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;';
 /*
 $table["_meta-id"]='
-ALTER TABLE `'.ses('qd').'_meta`
+ALTER TABLE `'.db('qd').'_meta`
 ADD PRIMARY KEY (`id`);';*/
 
 $table["_meta_art"]='
-CREATE TABLE IF NOT EXISTS `'.ses('qd').'_meta_art` (
+CREATE TABLE IF NOT EXISTS `'.db('qd').'_meta_art` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `idart` int(7) NOT NULL,
   `idtag` int(11) NOT NULL,
@@ -136,23 +136,23 @@ CREATE TABLE IF NOT EXISTS `'.ses('qd').'_meta_art` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;';
 /*
 $table["_meta_art-id"]='
-ALTER TABLE `'.ses('qd').'_meta_art`
+ALTER TABLE `'.db('qd').'_meta_art`
 ADD PRIMARY KEY (`id`);';*/
 
 foreach($table as $k=>$sql){
 	$req=mysqli_query($sql) or die(mysqli_error()); 
-	$ret.=divc('',ses('qd').''.$k.': created');}
+	$ret.=divc('',db('qd').''.$k.': created');}
 
 $ret.=lka('/app/tagpatch/','Apply patch to fill the new databases (click on each links)');
 return $ret;}
 
 //150521
 function patch_passwd(){echo 'ok';
-qr('ALTER TABLE '.$_SESSION['qdu'].' CHANGE `pass` `pass` VARCHAR( 41 ) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "";');
+qr('ALTER TABLE '.db('qdu').' CHANGE `pass` `pass` VARCHAR( 41 ) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "";');
 $r=sql('id,pass','qdu','kv',''); 
 foreach($r as $k=>$v)//echo $v.br();
 if(strlen($v)<30)
-qr('UPDATE '.$_SESSION['qdu'].' SET pass=PASSWORD("'.$v.'") WHERE id='.$k);
+qr('UPDATE '.db('qdu').' SET pass=PASSWORD("'.$v.'") WHERE id='.$k);
 }
 
 //141110
@@ -199,7 +199,7 @@ return $ret;}
 
 //130602
 function patch_userart(){
-qr('ALTER TABLE `'.ses('qdu').'` CHANGE `menus` `menus` SMALLINT(10) NULL ');
+qr('ALTER TABLE `'.db('qdu').'` CHANGE `menus` `menus` SMALLINT(10) NULL ');
 $r=sql('name','qdu','',''); //p($r);
 foreach($r as $k=>$v){
 	[$id,$day]=sql('id,day','qda','r','suj="'.$v.'" AND frm="user" LIMIT 1');
@@ -214,23 +214,23 @@ foreach($r as $k=>$v){sql::del('qda',$k); sql::del('qdm',$k);}}
 function patch_sql(){
 //qda
 $r=array('day day INT(10) NOT NULL','ib ib INT(7) NOT NULL','name name TINYTEXT CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL','mail mail TINYTEXT CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL','re re ENUM("0","1","2","3","4") NOT NULL','lu lu INT(7) NOT NULL','host host MEDIUMINT(7) NOT NULL');//'frm frm TINYTEXT CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL',
-foreach($r as $k=>$v){qr('ALTER TABLE '.ses('qda').' CHANGE '.$v.';');
+foreach($r as $k=>$v){qr('ALTER TABLE '.db('qda').' CHANGE '.$v.';');
 $ret.='qda'.$v.br();}
 //qdi
 $r=array('ib ib INT(7) NOT NULL','day day INT(10) NOT NULL','re re INT(7) NOT NULL','lu lu INT(7) NOT NULL','re re ENUM("0","1","2","3","4") NOT NULL');
-foreach($r as $k=>$v){qr('ALTER TABLE '.ses('qdi').' CHANGE '.$v.';');
+foreach($r as $k=>$v){qr('ALTER TABLE '.db('qdi').' CHANGE '.$v.';');
 $ret.='qdi'.$v.br();}
 //qdd
 $r=array('ib ib INT(7) NOT NULL','day day INT(10) NOT NULL');
-foreach($r as $k=>$v){qr('ALTER TABLE '.ses('qdd').' CHANGE '.$v.';');
+foreach($r as $k=>$v){qr('ALTER TABLE '.db('qdd').' CHANGE '.$v.';');
 $ret.='qdd'.$v.br();}
 //qds
 $r=array('day day INT(7) NOT NULL','nbu nbu INT(10) NOT NULL','nbv nbv INT(10) NOT NULL');
-foreach($r as $k=>$v){qr('ALTER TABLE '.ses('qds').' CHANGE '.$v.';');
+foreach($r as $k=>$v){qr('ALTER TABLE '.db('qds').' CHANGE '.$v.';');
 $ret.='qde'.$v.br();}
 //qde
 $r=array('iq iq INT(7) NOT NULL','nb nb INT(10) NOT NULL');
-foreach($r as $k=>$v){qr('ALTER TABLE '.ses('qde').' CHANGE '.$v.';');
+foreach($r as $k=>$v){qr('ALTER TABLE '.db('qde').' CHANGE '.$v.';');
 $ret.='qde'.$v.br();}
 echo $ret.btn('txtalert','patch d\'optimisation des tables appliqué avec succès');}
 
@@ -243,7 +243,7 @@ return btn('txtyl',lkc('txtx','/?admin=htaccess','admin/htaccess'));}*/
 
 //111215
 /*function patch_art_priority_2(){
-$rq=res("id,thm",$_SESSION['qda']); //.' WHERE nod="'.$_SESSION['qb'].'"'
+$rq=res("id,thm",db('qda')); //.' WHERE nod="'.ses('qb').'"'
 while($data=sql::qrr($rq)){$prm=''; $dthm=$data['thm'];
 //$dthm=str_replace(array('Stay','Une'),array(2,1),$dthm);
 $dthm=str_replace(array('***','**','*'),array(3,2,1),$dthm);
@@ -255,17 +255,17 @@ if(strpos($dthm,'1')!==false){
 	$thm=str_replace(array(', 1','1'),'',$dthm); $prm=2;}
 	if($prm){$nb++; //echo $id.':'.$thm.'_'.$prm.br();
 	//sql::upd('qda',['thm'=>$thm],$data['id']); sql::upd('qda',['re'=>$prm],$data['id']);
-	qr('UPDATE '.$_SESSION['qda'].' SET thm="'.$thm.'", re="'.$prm.'" WHERE id="'.$data['id'].'" LIMIT 1');}}
+	qr('UPDATE '.db('qda').' SET thm="'.$thm.'", re="'.$prm.'" WHERE id="'.$data['id'].'" LIMIT 1');}}
 echo $nb.' modifs';}*/
 
 //111210
 /*function patch_art_priority(){
-$rq=res("id,thm",$_SESSION['qda'].' WHERE nod="'.$_SESSION['qb'].'"');
+$rq=res("id,thm",db('qda').' WHERE nod="'.ses('qb').'"');
 while($data=sql::qrr($rq)){$thm='';
 	if(strpos($data['thm'],'Une')!==false){$thm=str_replace('Une','*',$data['thm']);}
 	if(strpos($data['thm'],'Stay')!==false){$thm=str_replace('Stay','**',$data['thm']);}
 	if($thm){$nb++; //echo $thm.'_';
-	sql::upd('qda',['thm'=>$thm],$data['id'],$_SESSION['qb']);}}
+	sql::upd('qda',['thm'=>$thm],$data['id'],ses('qb'));}}
 echo $nb.' modifs';}*/
 
 //110614

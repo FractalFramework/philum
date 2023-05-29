@@ -256,7 +256,7 @@ if(k==110){ajaxcall('popup','bubs,root',['call','addart'],['txtarea'],'focus:add
 //toggles
 function SaveBc(val){var dn=val.split('_');//artopen
 var op=active('toggleart'+dn[1]); if(op)var nb=3; else var nb=dn[2];
-ajaxcall(dn[0]+dn[1],'art',[dn[1],nb,undefine(dn[4])],[],2);}
+ajaxcall(dn[0]+dn[1],'art,playc',[dn[1],nb,undefine(dn[4])],[],2);}
 
 function active(id,ob,a){if(id)ob=getbyid(id); var op=ob.className;
 if(op.indexOf('active')==-1 && !a){ob.classList.add("active"); return 1;}

@@ -104,8 +104,7 @@ $srv=prms('srvimg'); if(!$im)return '';
 if(rstr(151))return img::restore($im,$id);//restore original
 elseif($srv && substr($im,0,4)!='http')$er=@copy($srv.'/img/'.$im,'img/'.$im);
 elseif(is_file('imgx/'.$im)){rename('imgx/'.$im,'img/'.$im);} //self::add_im_img($da,$id);
-elseif($srv)return $im=http($srv).'/img/'.$im;
-return $im;}
+elseif($srv)return $im=http($srv).'/img/'.$im;}
 
 static function rzim($ret,$da,$dca,$id,$w,$h){
 $sz=fsize($dca); $xt=xtb($da); $bt='';
@@ -116,14 +115,15 @@ if($sz>1000){
 	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_0_'.$id,'reduce to 940|940');
 	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50%');}
 elseif($w>1000)$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50% ('.$w.'px '.$sz.'Ko)');
-elseif(!$w)$bt.=lj('popdel',$did.'_img,restoreim__3_'.ajx($da).'_'.$id.'_1','restore');
+elseif(!$w){$ex=img::original($da,$id);
+	if($ex)$bt.=lj('popdel',$did.'_img,restoreim__3_'.ajx($da).'_'.$id.'_1','restore');}
 if($xt=='.png' && $sz>200)$bt.=lj('txtyl',$did.'_conn,png2jpg__3_'.ajx($da).'_'.$id,'png2jpg-'.$sz);
-if($xt=='.webp')$bt.=lj('txtyl',$did.'_conn,webp2jpg__3_'.ajx($da).'_'.$id,'webp2jpg-'.$sz);
+if($xt=='.webp' && $sz>200)$bt.=lj('txtyl',$did.'_conn,webp2jpg__3_'.ajx($da).'_'.$id,'webp2jpg-'.$sz);
 if($bt)$ret=divd($did,$ret.$bt); return $ret;}
 
 static function get_image($da,$id,$m=''){
 if($m=='noimages' or !$da)return; if(rstr(40) && substr($da,0,4)=='http')return $da;
-$xt=xt($da); $qb=$_SESSION['qb']; if($id=='test')return $da; $b64='';
+$xt=xt($da); $qb=ses('qb'); if($id=='test')return $da; $b64='';
 if(strpos($da,';base64,'))return self::b64img($da,$id,$m);
 if(!$xt or $xt=='.php' or $xt=='.jpeg')$xt='.jpg'; $ok='';// or $xt=='.webp'
 //if(forbidden_img($da)===false)return;//rev
@@ -162,7 +162,7 @@ $pwb=round($pw*0.5); $br=''; $w=''; $p['id']='';//rez
 if($m=='noimages')return ' ';
 if(rstr(142))return self::orimg($da,$id,0);//distant original
 if(rstr(143))return self::orimg($da,$id,1);//link to distant
-if(substr($da??'',0,4)=='http'){//if(eradic_acc($da)==$da)
+if(substr($da??'',0,4)=='http'){//if(str::eradic_acc($da)==$da)
 	if(strpos($da,'Capture-'))$da=str_replace("'","’",$da);//%E2%80%99
 	return image($da);}
 else $pre=jcim($da);//,1

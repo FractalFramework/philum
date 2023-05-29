@@ -35,7 +35,7 @@ return '<form name="chat'.$p.'" action="javascript:'.sj($j).'">'.$d.'</form>';
 return $ret;}
 
 static function home($p,$msg,$prm=[]){
-$p=$p?normalize($p):'public'; ses('muse',$pr[0]??ses('USE'));
+$p=$p?str::normalize($p):'public'; ses('muse',$pr[0]??ses('USE'));
 return self::form($p,$msg).divd('cht'.$p,self::read($p));}
 
 }

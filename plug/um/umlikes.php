@@ -1,7 +1,7 @@
 <?php //umlikes
 class umlikes{
 static function build($p,$o){
-$qda=ses('qda'); $qdm=ses('qdm'); $qdi=ses('qdi'); $qdta=ses('qdta');
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $qdta=db('qdta');
 $idtag=sql('id','qdt','v',['tag'=>'favoris']);
 if($p=='All')$p='Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa';
 $wh=$qda.'.frm in ("'.implode('","',explode(',',$p)).'")';

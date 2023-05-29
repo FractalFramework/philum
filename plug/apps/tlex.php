@@ -23,7 +23,7 @@ $r=msql::read('',ses('qb').'_tlex','',1);
 if($r)foreach($r as $k=>$v)
 	$ret.=lj('popbt',$rid.'_tlex,post_twpost___'.$k,$v[0]).' ';
 else $ret.=helps('tlex');
-$ret.=span(atd('strcount').atc('txtsmall'),'');
+$ret.=spn('','txtsmall','strcount');
 return divd($rid,$ret);}
 
 static function home($p,$o){

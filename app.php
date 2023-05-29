@@ -23,7 +23,7 @@ return $ret;}
 #--render
 if(rstr(22))boot::block_crawls();//crawl
 $_SESSION['onload']=''; $content='';
-$a=get('a'); $p=get('p'); $o=get('o'); $enc=ses::$enc;
+$a=get('a'); $p=get('p'); $o=get('o'); $enc=ses::$enc; $cst=ses('dev')?'?'.randid():'';
 if(substr($a,-1)=='/')$a=substr($a,0,-1); if(substr($p,-1)=='/')$p=substr($p,0,-1);
 Head::add('tag',['title',$a?$a:'plugin']);
 Head::add('meta',['http-equiv','Content-Type','text/html; charset='.$enc]);
@@ -33,7 +33,7 @@ Head::add('meta',['name','viewport','user-scalable=yes, initial-scale=1, minimum
 Head::add('meta',['name','apple-mobile-web-app-capable','yes']);
 Head::add('meta',['name','mobile-web-app-capable','yes']);
 Head::add('meta',['name','generator','philum_'.ses('philum')]);
-Head::add('csslink','/css/_global.css');
+Head::add('csslink','/css/_global.css'.$cst);
 Head::add('csslink','/css/_pictos.css');
 Head::add('csslink','/css/_glyphs.css');
 Head::add('csslink','/css/_ascii.css');
@@ -43,10 +43,10 @@ Head::add('csslink','/css/_oomo.css');
 //Head::add('csslink','/css/_classic.css');
 if($_SESSION['prmb'][5])$nod=nod('auto');
 else $nod=ses('qb').'_design_'.ses('prmd');
-Head::add('csslink','/css/'.boot::define_design().'.css');
-Head::add('jslink','/progb/j/lib.js');
-Head::add('jslink','/progb/j/ajx.js');
-Head::add('jslink','/progb/j/utils.js');
+Head::add('csslink','/css/'.boot::define_design().'.css'.$cst);
+Head::add('jslink','/progb/j/lib.js'.$cst);
+Head::add('jslink','/progb/j/ajx.js'.$cst);
+Head::add('jslink','/progb/j/utils.js'.$cst);
 Head::add('jscode','flow="0"; enc="'.ses::$enc.'";');
 Head::add('jscode',ses('jscode'));
 if($a)$content=load_app($a,$p,$o);

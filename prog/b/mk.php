@@ -162,7 +162,7 @@ static function nb($d,$id,$nl){
 if(!$nl)return lk(urlread($id).'#nh'.$d,$d,atn('nb'.$d).atc('note'));
 else return '<a href="#nh'.$d.'" id="nb'.$d.'">'.$d.'</a>';}
 
-static function nbdwnl($f){$f=normalize($f);
+static function nbdwnl($f){$f=str::normalize($f);
 if(strrpos($f,"/")!==false)$f=substr($f,strrpos($f,"/")+1);
 if(strrpos($f,".")!==false)$f=substr($f,0,strrpos($f,"."));
 $f='_datas/dl/'.nod($f).'.txt'; mkdir_r($f);
@@ -317,7 +317,7 @@ if($bs){$nd=$nd?$nd:ses('qb');}else{$nd=ses('qb'); $bs=$d;}
 $r=msql::goodtable($da); $menu=$r[msql::$m]; unset($r[msql::$m]);
 if($r && $rep)foreach($r as $k=>$v){$i++; $bit[$k]=$v[$rep];}
 elseif($r && $op){foreach($r as $k=>$v){$i++; $bit[$k]=$v;}}
-$output='/imgc/'.ses('qd').'_'.ses('read').'_graph_'.$n.'.png';
+$output='/imgc/'.db('qd').'_'.ses('read').'_graph_'.$n.'.png';
 img::graphics($output,$pw,140,$bit,getclrs('',7),'yes');///
 if(get('read'))return image($output,'','',ats('border:0'))."\n";}
 
@@ -450,7 +450,7 @@ return lj('','popup_mod,callmod__3_'.ajx($d),picto('get'));}
 //$d='date=date,choix1/choix2=list,entr|e1,entr|e2,message=text,image=upload,mail=mail,ok=button';
 static function form($d,$tg,$p=''){
 $prod=explode(',',$d); $n=count($prod); $ret=''; $ia=0;
-for($i=0;$i<$n;$i++){[$val,$type]=explode('=',$prod[$i]); $vb=normalize($val);
+for($i=0;$i<$n;$i++){[$val,$type]=explode('=',$prod[$i]); $vb=str::normalize($val);
 if($type=='check'){$chk='chk'.($ia++); $hn[]=$chk;} elseif($type!='button')$hn[]=$vb;
 switch($type){
 	case('text'):$ret.=textarea($vb,'',44,8);break;

@@ -14,14 +14,14 @@ flush();//Envoie le buffer
 readfile($f);}
 
 static function eye($f){
-$nod=$_SESSION['qb'].'_downloads';
+$nod=ses('qb').'_downloads';
 $dy=date('ymdhi',time()); $r=[$f,hostname()]; 
-if($_SESSION['qb'])msql::modif('',$nod,$r,'row',['file','ip'],$dy);}
+if(ses('qb'))msql::modif('',$nod,$r,'row',['file','ip'],$dy);}
 
 static function rednm($d){
 if(strrpos($d,'/')!==false)$d=substr($d,strrpos($d,'/')+1);
 //if(strrpos($d,'.')!==false)$d=substr($d,0,strpos($d,'.'));
-return normalize($d);}
+return str::normalize($d);}
 
 static function home($p,$o){
 $dir='_datas/dl/'; $f=base64_decode($p);

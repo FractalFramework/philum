@@ -41,10 +41,10 @@ if($id && auth(6)){
 	$ret['edit']=li($tag).li($tit).li($edt).tag('li',['id'=>'adt2'.$id],$edt2);}//.$trk
 $dev=ses('dev'); $ic=$dev=='b'?$ico[11]:($dev=='c'?$ico[16]:$ico[12]);
 if(auth(6) or $dev)$ret['dev']=popbub('dev','dev',$ic,$top,$hv);//dev
-$ret['fixit']=span(atd('fixtit').atc('etc'),' ');
+$ret['fixit']=spn(' ','etc','fixtit');
 $chrono=round(microtime(1)-$st,3); 
 if(ses('dev'))$ret['chrono']=btn('popbt',$chrono);
-//if(ses::r('tst'))$ret['chrono'].=divb(play_r(ses::r['tst']),'small');
+//if(ses::r('tst'))$ret['chrono'].=divb(playr(ses::r['tst']),'small');
 return $ret;}
 
 //poplinks
@@ -131,7 +131,7 @@ return togbub2($rid,$v,$t,'','',1);}
 
 static function toggle_note($d,$t='',$nl=''){
 [$v,$tb]=cprm($d); $rid=rid($d); $t=$t?$t:$tb;
-$div=span(atd($rid).atc('twit panel').ats('display:none;'),$v);
+$div=spn($v,'twit panel',$rid,'display:none;');
 if($nl)return '['.$t.': '.$v.']';
 return ljb('','toggle_block',$rid,$t?$t:'(*)',atd('bt'.$rid)).$div;}
 
@@ -162,7 +162,7 @@ return lj('popbt',$p,$o);}
 static function vacuum_media($da,$id){
 if(substr($da,0,4)!='http')return $da;
 [$d,$t]=split_one('|',$da,1);
-$xt=xt($d); $qb=$_SESSION['qb']; $nmw=$d; $dc='';
+$xt=xt($d); $qb=ses('qb'); $nmw=$d; $dc='';
 if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($d),0,6).$xt; $dc=$d; $dc=str::urlenc($dc);}
 if(!is_file('video/'.$nmw) && $dc){@copy($dc,'video/'.$nmw);}//conn::replaceinmsg($id,$d,$nmw,'vid');
 if(is_file('video/'.$nmw)){$sz=fsize('video/'.$nmw);

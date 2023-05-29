@@ -6,43 +6,67 @@ static $cb='fnc';
 static $dr='progb';
 static $r=[];
 static $n=0;
+static $ka=1;
 static $save=1;
 static $rb=[];//counts
 static $rc=[];//funcs
 static $rd=[];//tree
 static $rr=[];//prep
 
-#see
-static function iter($ka){$rt=[];
+#descent
+static function iter2($ka){$rt=[];
 if(isset(self::$rr[$ka])){$r=self::$rr[$ka]; unset(self::$rr[$ka]);} else return 1;
 foreach($r as $k=>$v)if($k!=$ka)$rt[$k]=self::iter($k);
 return $rt;}
 
-static function see(){$rt=[];
-$r=sqb('child,parent','qdyar','kk',''); //pr($r);
+static function see2($p){$rt=[];
+$sq=$p?['child'=>$p]:[];
+$r=sql('parent,child','qdyar','kk',$sq); //pr($r);
 self::$rr=$r;
-foreach($r as $k=>$v)$rt[$k]=self::iter($k); pr($rt);
-return;}
+foreach($r as $k=>$v)$rt[$k]=self::iter2($k); //pr($rt);
+return tree($rt,2,1);}
 
-static function carto(){$rw=[];
-$r=sqb('distinct(dir)','qdya','rv',''); $rk=array_flip($r); //pr($rk);
-$r=sqb('dir,func','qdya','kk',''); //pr($r);
-foreach($r as $k=>$v)foreach($v as $ka=>$va)$rw[$ka]=$rk[$k]; //pr($rw); //moodularity_class
+#see
+static function iter($ka){$rt=[]; if($ka==self::$ka)return 'iterated'; self::$ka=$ka;
+if(isset(self::$rr[$ka])){$r=self::$rr[$ka]; unset(self::$rr[$ka]);} else return 1;//
+foreach($r as $k=>$v)if($k!=$ka)$rt[$k]=self::iter($k);
+return $rt;}
+
+static function see($p){$rt=[];
+$sq=$p?['parent'=>$p]:[];
+$r=sql('child,parent','qdyar','kk',$sq); //pr($r);
+self::$rr=$r;
+foreach($r as $k=>$v)$rt[$k]=self::iter($k); //pr($rt);
+return tree($rt,1,1);}
+
+static function vue(){$rm=[]; $rw=[]; $rd=[]; $rn=[];
+//$r=sqb('distinct(dir)','qdya','rv',''); $rk=array_flip($r); //pr($rk);
+//$r=sqb('dir,func','qdya','kk',''); //pr($r);
+//foreach($r as $k=>$v)foreach($v as $ka=>$va)$rm[$ka]=$rk[$k]; //pr($rm); //moodularity_class
+$r=sqb('page,func as nb','qdya','k','order by nb desc');
+arsort($r); $rk=array_keys($r); $rk=array_flip($rk); //pr($rk);//classes ordered by popularity
+$r=sqb('dir,page,func,uses','qdya','',''); //pr($r);
+foreach($r as $k=>$v){$kb=($v[0]!='/'?$v[1].'::':'').$v[2];
+	$rm[$kb]=$rk[$v[1]];//moodularity_class2
+	$rw[$kb]=$v[3];}//weight
+//pr($rm);
+//pr($rw); 
 $r=sqb('parent,child','qdyar','kk',''); //pr($r);
 $ra[]=['Id','Label','timeset','modularity_class']; $i=0; $rd=[];
 $rb[]=['Source','Target','Type','Id','Label','Timeset','Weight'];
-foreach($r as $k=>$v){$rd[$k]=$i++; foreach($v as $ka=>$va){$rd[$ka]=$i++; $rn[$ka][]=1;}} //id,weight
-foreach($rd as $k=>$v)$ra[]=[$v,$k,'',$rw[strend($k,'::')]]; //pr($ra);
+foreach($r as $k=>$v){$rd[$k]=$i++; foreach($v as $ka=>$va){$rd[$ka]=$i++; $rn[$ka][]=1;}} //pr($rd); //id,weight
+foreach($rd as $k=>$v)$ra[]=[$v,$k,'',$rm[$k]]; //pr($ra);
 foreach($r as $k=>$v){
-	foreach($v as $ka=>$va)$rb[]=[$rd[$k],$rd[$ka],'undirected','','','',count($rn[$ka])];} //pr($rb);
+	foreach($v as $ka=>$va)$rb[]=[$rd[$k],$rd[$ka],'undirected','','','',$rw[$k]];} //pr($rb); count($rn[$k])
 $ret=csvfile('funcs',$ra);
 $ret.=csvfile('funcs_r',$rb);
+$ret.=tabler($ra).tabler($rb);
 return $ret;}
 
 #tree
 static function save2($r){$db='qdyar';
 sql::trunc($db); $rt=[];
-$rh=['child','parent'];
+$rh=['parent','child'];
 foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[]=[$k,$va]; //pr($rt);
 if($rt)sql::sav2($db,$rt,1);}
 
@@ -51,18 +75,18 @@ foreach($r as $k=>$v){[$a,$b]=$v; $fa=$a?$a.'::'.$b:$b;//searched
 	if(!isset($rb[$fa]))$rt[]=$fa;}
 return $rt;}
 
-static function find($d,$fc){$rt=[];
-$r=['.','=','{','(','[',' ',"\n"];
+static function find($d,$fc){
+$r=['.','=','{','(',')','[',' ',"\n"];//}
 foreach($r as $k=>$v)
 	if(strpos($d,$v.$fc.'(')!==false)return true;
 return false;}
 
 static function arbo($r){$rt=[];
-foreach($r as $ka=>$va){[$a,$b]=$va;
-	$fa=($a?$a.'::':'').$b;//child
-	foreach($r as $k=>$v){[$a2,$b2,$d]=$v;
-		$fb=($a2?$a2.'::':'').$b2;//parent
-		$fc=($a?($a==$a2?'self':$a).'::':'').$b;//searched
+foreach($r as $k=>$v){[$a,$b,$d]=$v;
+	$fa=($a?$a.'::':'').$b;//parent
+	foreach($r as $ka=>$va){[$a2,$b2]=$va;
+		$fb=($a2?$a2.'::':'').$b2;//child
+		$fc=($a2?($a2==$a?'self':$a2).'::':'').$b2;//searched
 		$ex=self::find($d,$fc);
 		if($ex)$rt[$fa][]=$fb;}}//&& $fb!=$fa//iteratives
 return $rt;}
@@ -76,7 +100,8 @@ $rt=self::arbo($rb); pr($rt);
 if(self::$save)self::save2($rt);
 //foreach($rr as $k=>$v)foreach($v as $ka=>$va)
 //	if(isset($rt[$ka]))$ry[$k][$ka]=self::iter($ka); pr($ry);
-return ;}//$rt
+if(self::$save)$ret=self::state($o);
+return $ret;}
 
 ##prog/plug
 
@@ -107,6 +132,7 @@ static function find_func($d,$fc){
 $p=strpos($d,'function '.$fc.'('); //echo $fc.' ';
 $d=substr($d,$p);
 $vars=between($d,'(',')');
+$p=str_replace(["'{'","'}'"],['(ac1)','(ac2)'],$d);
 $p=strpos($d,'{');
 $d=substr($d,$p);
 $n=strlen($d); $a=0; $b=0;
@@ -116,6 +142,7 @@ $func=substr($d,1,$n-1); //eco($func);
 //$func=html_entity_decode($func);
 $func=utf8enc($func);
 $func=trim($func);
+$p=str_replace(['(ac1)','(ac2)'],["'{'","'}'"],$d);
 return [$vars,$func];}
 
 #list
@@ -175,7 +202,7 @@ return $rt;}
 static function rapport($r,$p){
 return tabler($r[$p],'',1);}
 
-static function build($p,$o){self::$save=0;
+static function build($p,$o){
 $r=explore(self::$dr); //pr($r);
 $ra=self::capture($r); $rb=[]; $rc=[]; $rd=[]; $ret=''; //pr($ra); //dr/page=>func
 $rb=self::funcount($ra); //pr($rb); //dr/page=>func=>dr/page=>nb
@@ -183,26 +210,34 @@ $rc=self::funclist($rb,0); //pr($rc); //page=>func=>content
 $rd=self::functree($rc); //pr($rd);
 //$re=self::funcsee($rd); //pr($re);
 if($p)$ret=self::rapport($rd,$p);
-if(self::$save)$ret='saved';
+if(self::$save)$ret=self::state($o);
 return $ret;}
 
+static function state($d){
+$na=sql('count(id)','qdya','v','');
+$nb=sql('count(id)','qdyar','v','');
+$nc=sql('count(id)','qdyb','v','');
+$ret='action:'.$d.', prog:'.$na.', progr:'.$nb.', plug:'.$nc;
+return divb($ret,'frame-blue');}
+
 static function call($p,$o,$prm=[]){
-$p=$prm[0]??$p; if($o)self::$dr=$o; echo btn('txtyl',$o);
-if(auth(6))self::$save=1;
+$p=$prm[0]??$p; if($o)self::$dr=$o; if($p)self::$save=0;
 if($o=='see')$ret=self::see($p,$o);
 elseif($o=='tree')$ret=self::tree($p,$o);
-elseif($o=='cart')$ret=self::carto();
+elseif($o=='vue')$ret=self::vue($p);
+elseif($o=='see2')$ret=self::see2($p);
 else $ret=self::build($p,$o);
 return $ret;}
 
 static function menu($p,$o){
 $j='fnc_funcs,call_inpp_3_';
 $ret=inputj('inpp',$p,$j);
-$ret.=lj('popbt',$j,'prog').' ';
-$ret.=lj('popbt',$j.'_plug','plug').' ';
-$ret.=lj('popbt',$j.'_tree','tree').' ';
-$ret.=lj('popbt',$j.'_cart','carto').' ';
+$ret.=lj('popsav',$j.'_progb','prog').' ';
+$ret.=lj('popsav',$j.'_plug','plug').' ';
+$ret.=lj('popsav',$j.'_tree','tree').' ';
+$ret.=lj('popbt',$j.'_vue','datas').' ';
 $ret.=lj('popbt',$j.'_see','see').' ';
+$ret.=lj('popbt',$j.'_see2','see2').' ';
 return $ret;}
 
 static function install(){
@@ -212,13 +247,13 @@ static function install(){
 }
 
 static function home($p,$o){
-ses('qdya','_prog');
-ses('qdyar','_progr');
-ses('qdyb','_plug');
-if(auth(6))self::$save=1;
+db('qdya','_prog');
+db('qdyar','_progr');
+db('qdyb','_plug');
+if(!auth(6))self::$save=0;
 //self::install();
 $bt=self::menu($p,$o);
-$ret='';//::call($p,$o);
+$ret=self::state($o);
 return $bt.divd('fnc',$ret);}
 }
 ?>

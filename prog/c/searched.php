@@ -24,7 +24,7 @@ static function save_results($id,$ra,$rb=[]){
 if(!is_numeric($id))$id=self::id_word($id); $r=[];
 if(!$rb)$rb=sql('art','qdsra','rv','ib='.$id);
 if(!$rb)$r=$ra; else foreach($ra as $k=>$v)if(!in_array($v[1],$rb))$r[]=$v;//new results of search
-if($r)return sql::qrid('insert into '.qd('search_art').' values '.sql::atmrb($r,1));}
+if($r)return sql::qrid('insert into '.db('qdsra').' values '.sql::atmrb($r,1));}
 
 //search and add results
 static function add($p,$n){//if(!rstr(3))self::save($p);
@@ -39,7 +39,7 @@ return $ret;}
 
 //search
 static function build($id,$p,$min,$max,$not=''){
-$qda=ses('qda'); $qdm=ses('qdm'); $qds=ses('qdsra');
+$qda=db('qda'); $qdm=db('qdm'); $qds=db('qdsra');
 $wh=$not?'and '.$qda.'.id not in ('.$not.')':'';
 //$nb='FLOOR((LENGTH('.$qdm.'.msg)-LENGTH(REPLACE('.$qdm.'.msg,"'.$rch.'","")))/(LENGTH("'.$rch.'")))';//,'.$nb.' as nb from
 //$ret=sql::call($sql,'',0);//auth(6)?1:

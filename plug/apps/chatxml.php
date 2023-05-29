@@ -79,7 +79,7 @@ $msg=conn::read($msg,'','');
 return divc('track',$ml.$bt.$erz.br().nl2br(stripslashes($msg)));}}
 
 static function home($p,$msg='',$prm=[]){if(!$p)return self::canal('public');
-$p=normalize($p); ses('muse',$prm[0]??ses('USE')); self::ses($p,'0');
+$p=str::normalize($p); ses('muse',$prm[0]??ses('USE')); self::ses($p,'0');
 [$r,$r1]=self::data($p); $form=self::form($p); $head=self::head($p,$r1);
 $sty=atd('chtx'.$p).ats('width:344px;');
 return $head.$form.scroll($r,div($sty,self::read($p,$r)),5,362,'calc(100vh - 230px)');}

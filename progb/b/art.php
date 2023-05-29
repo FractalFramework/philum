@@ -19,6 +19,7 @@ return $tmp;}
 static function template($p,$tpl){
 if(!$tpl)$tpl=prma('template');
 $tmp=sesmk2('art','tmpu',$tpl,1);
+//echo $tpl;
 if($tpl=='read' && rstr(88))$tmp=$tmp?$tmp:cltmp::read();
 elseif($tpl=='art')$tmp=rstr(55)?$tmp:cltmp::art();
 elseif($tpl=='pubart')$tmp=rstr(55)?$tmp:cltmp::pubart();
@@ -27,7 +28,8 @@ elseif($tpl=='pubart_b')$tmp=rstr(55)?$tmp:cltmp::pubart_b();
 elseif($tpl=='titles')$tmp=rstr(65)?$tmp:cltmp::titles();
 elseif($tpl=='tracks')$tmp=rstr(66)?$tmp:cltmp::tracks();
 elseif($tpl=='book')$tmp=rstr(67)?$tmp:cltmp::book();
-if(!$tmp){if(!empty($_SESSION['simplified']))$tmp=cltmp::simple(); 
+if(!$tmp){
+	if(!empty($_SESSION['simplified']))$tmp=cltmp::simple(); 
 	elseif(rstr(88))$tmp=cltmp::cat();
 	else $tmp=cltmp::art();}
 //return vue::build($tmp,$p);
@@ -109,9 +111,9 @@ if($r)foreach($rico as $cat=>$ico){$rt=[]; if(is_numeric($cat))$cat='utag';
 			foreach($rb as $k=>$v)if(in_array($k,$r[$cat]))$rc[$v]=$k; if($rc)$r[$cat]=$rc;}
 		foreach($r[$cat] as $ka=>$va)
 		$rt[$ka]=lj('','popup_api__3_'.$cat.':'.$va.',t:'.ajx($ka),$ka);}
-	if($rt)$ret[$cat]=picto($ico,16).$sep.implode(' ',$rt);}
-if(rstr(150))$ret['clusters']=self::clusters($id,$r);
-if($ret)return $o?$ret:implode(br(),$ret);}
+	if($rt)$ret[$cat]=divb(picto($ico,16).$sep.implode(' ',$rt));}
+if(rstr(150))$ret['clusters']=divb(self::clusters($id,$r));
+if($ret)return $o?$ret:join('',$ret);}
 
 static function clusters($id,$r){$rt=[]; $rb=[]; $rc=[];
 foreach($r as $cat=>$v)$rb=array_merge($rb,array_values($v));
@@ -119,19 +121,15 @@ $ra=sql('id,word,count(idtag) as nb','qdtc','',['idtag in'=>$rb,'_group'=>'word'
 //foreach($ra as $k=>$v)$rc[$k]=$v[2]; $m=floor((max($rc))/2);//if($v[2]>=$m)
 if(count($ra)>4)$ra=array_slice($ra,0,4);
 foreach($ra as $k=>$v)$rt[]=lj('','popup_api__3_cluster:'.ajx($v[1]).',t:Cluster of '.$v[1],$v[1]);
-if($rt)return picto('social',16).sti().implode(' ',$rt).' '.hlpbt('clusters');}
+if($rt)return hlpbt('clusters','social').sti().implode(' ',$rt);}
 
-static function back($id,$ib,$frm,$rst43){
-$read=ses('read'); $u='cat/'.$frm; $t=picto('before');
-if($read){$ibb=ma::ib_of_id($ib);
-	if($id!=$read){
-		if(!$rst43)$t=catpict($frm,36);
-		if(is_numeric($ibb) && $ibb)$u=$ibb;}//.'#'.$ib
-		//else $u.='#'.$id;
-	elseif($ib>0)$u=$ib;//.'#'.$id
-	else{$t=!$rst43?catpict($frm):picto('left');}}// $u.='#'.$id;
-elseif(!$rst43)$t=catpict($frm,36); else $t=btn('txtbox',$frm);
-return lh($u,$t);}
+static function back($id,$ib){$read=get('read'); $u='';
+if($ib && $read && $id!=$read){$ibb=ma::ib_of_id($ib);
+	if($ibb && is_numeric($ibb))return lh($ibb,picto('topo'));}}
+
+static function backcat($frm,$rst43){
+$t=!$rst43?catpict($frm,36):btn('txtbox',$frm);//rstr pictocat
+if($frm!=get('frm'))return lh('cat/'.$frm,$t);}
 
 static function opnart($id,$prw,$o,$rch=''){$c=$o?'active':'';//art_read_c
 return ljb($c,'SaveBc','art_'.$id.'_'.$prw.'_'.$o.'_'.ajx($rch),picto('kdown'),atd('toggleart'.$id));}
@@ -158,6 +156,7 @@ $rc[]='artlang';//translate
 if(!$rst[19])$rc[]='img1';//$rst[93]
 if(!$rst[68] && $r['img'] && strpos($r['img'],'/'))$rc[]='btim';//gallery
 if(!$rst[31])$rc[]='back';
+if(!$rst[43])$rc[]='cat';
 if(!$rst[6] && $r['name'] && $r['name']!=ses('qb'))$rc[]='author';
 if(!$rst[23] && $r['re']>1)$rc[]='priority';
 if(!$rst[24]){$day=mkday($r['day'],1); $rc[]=!$rst[54]?'date2':'date1';}
@@ -209,7 +208,8 @@ case('date1'):$rb['date']=lh(self::target_date($r['day']),$day); break;
 case('date2'):$rb['date']=$day; break;
 case('img1'):$rb[$v]=pop::art_img($r['img'],$id); break;
 case('priority'):$rb[$v]=self::priority_hands($r['re']); break;
-case('back'):$rb[$v]=self::back($id,$ib,$r['frm'],$rst[43]); break;
+case('back'):$rb[$v]=self::back($id,$ib); break;
+case('cat'):$rb[$v]=self::backcat($r['frm'],$rst[43]); break;
 case('artedit'):$rb[$v]=divb('','sticky','edt'.$id); break;//diveditbt
 case('btim'):$rb[$v]=lj('','popup_sav,art*gallery___'.$id.'_gallery',picto('img')); break;
 case('author'):$rb[$v]=lj('','popup_api___owner:'.ajx($r['name']),'@'.$r['name']); break;
@@ -220,7 +220,7 @@ case('source'):$rb[$v]=self::pub_link($mail); break;
 case('search'):$rb[$v]=nbof($nb,19); break;
 case('nbarts'):$rb[$v]=lj('','popup_api___parent:'.$id,nbof($rear,1)); break;
 case('tracks'):$rb[$v]=lj('','popup_usg,trkplay___'.$id,picto('forum',16).$nbtk); break;
-case('parent'):$rb[$v]=lh('/'.$ib,pictxt('topo',$sujb)).' '.ma::popart($ib); break;
+case('parent'):$rb[$v]=ma::popart($ib).' '.lh('/'.$ib,$sujb); break;
 case('opt'):$rb[$v]=btn('txtsmall2',picto('view',16).' '.$r['lu']); break;
 case('float'):$rb[$v]=mod::callmod('m:ARTMOD'); break;
 case('length'):$rb[$v]=self::length($r['host']); break;
@@ -434,7 +434,7 @@ if($psw=$r['o']['password']??''){if(ses('psw'.$id)!=$psw)return few::restricted_
 if(isset($r['frm']) && substr($r['frm'],0,1)=='_' && $_SESSION['auth']<3)$msg=few::restricted_area(6);
 elseif($prw==3 or $prw=='rch'){//($id==$read && $prw==3) or 
 	if($r['o']['plan'])$msg=self::hmarks($msg);
-	sql::qr('update '.ses('qda').' set lu=lu+1 where id="'.$id.'"');
+	sql::qr('update '.db('qda').' set lu=lu+1 where id="'.$id.'"');
 	//json::add('','art'.mkday(),[mkday('','His'),$id,ses('iq')]);
 	if(!$nl && $prw!='rch')self::tometa($msg);
 	$msg=conn::read($msg,$prw,$id,$nl);}
@@ -468,7 +468,7 @@ foreach($r as $k=>$v){$pos=$k; $ba=0; $bb=0; $nb+=1; //$sz=strlen($v);
 	$part=substr($msg,$pos,$sz); $repl=$part;
 	$deb=substr($msg,$nd,$pos-$nd); $end=substr($msg,$pos+$sz);
 	$ba+=substr_count($deb,'<a'); $bb+=substr_count($deb,'</a');
-	if($ba==$bb)$repl='<a name="'.$nb.'"></a>'.span(atd('look'.$nb).atc('stabilo'),$part);
+	if($ba==$bb)$repl='<a name="'.$nb.'"></a>'.spn($part,'stabilo','look'.$nb);
 	else $repl=$part;
 	$ret.=$deb.$repl; $nd=$pos+$sz;}
 return $ret.$end;}
@@ -517,6 +517,7 @@ $r['o']=self::metart($id);
 $tp=$tp?$tp:($r['o']['template']??'');
 $out['id']=$id; $out['suj']=$r['suj'];
 if($r['re']==0)$out['css']='hide'; else $out['css']='';
+if($prw==1 or $prw=='rch')$tp='simple';
 if($prw==2)$out['thumb']=self::prepare_thumb($r['img'],$id,$nl);
 if($prw=='rch')$out=self::prepare_rech($id,$msg,$out);
 elseif($msg){$out['msg']=self::prepare_msg($id,$msg,$r,$prw,$nl);
@@ -566,10 +567,10 @@ $ret=art::build($id,$r,$msg,$prw,$tp,$nl,$nb);
 if($prw==3)$ret.=art::ib_arts($id,$prw);//affiliates
 return $ret;}
 
-static function playc($id,$prw,$rch){//4ajax: only_content
+static function playc($id,$prw,$rch){//from metas
 if($prw>2)$_SESSION['read']=$id; else $_SESSION['read']='';
 $r=art::art_datas($id); $r['o']=art::metart($id);//$prw=art::slct_media($prw);
-if(rstr(5) or $prw>2)$msg=sql('msg','qdm','v','id="'.$id.'"');
+if($prw>=2)$msg=sql('msg','qdm','v',$id);//rstr(5) or 
 if($prw==3 && $rch)ses::$r['look']=$rch;
 if($prw=='rch' && !$rch)$prw=2;//close after contradict rch
 if($prw=='rch' && $rch){get('search',$rch); $out=art::prepare_rech($id,$msg,[]); $ret=$out['msg'];}
@@ -577,30 +578,33 @@ else $ret=art::prepare_msg($id,$msg,$r,$prw); $ret.=divc('clear','');
 if(rstr(35))$ret=scroll(strlen($ret),$ret,1000,'','400',$id);//navig($id).
 return $ret;}
 
-static function playq($id,$pos,$r35,$quot=''){//quotes
-$_SESSION['read']=$id; $r=art::art_datas($id); $r['o']=art::metart($id);
-$msg=sql('msg','qdm','v','id="'.$id.'"');
-$msg=mk::apply_quote2($msg,$id,$pos,$r35,$quot);
-$ret=art::prepare_msg($id,$msg,$r,3); $ret.=divc('clear','');
-return $ret;}
-
 static function playd($id,$prw,$tp='',$nl=''){//4ajax: reload inside
 if($id=='last')$id=ma::lastart(); elseif(!is_numeric($id))$id=ma::id_of_suj($id);
-if($prw>2){geta('read',$id); $tp=$tp?$tp:'read';}//$prw=art::slct_media($prw);
-if($prw=='rch')$prw=2;
+geta('read',$id); 
+if($prw==1)$tp='simple';
+elseif($prw=='rch' && !$tp)$prw=2;
+elseif($prw=='rch' && $tp){ses::$r['look']=$tp; get('search',$tp); $tp='simple';}
+elseif($prw==3)$tp=$tp?$tp:'read';//$prw=art::slct_media($prw);
 $r=art::art_datas($id); if(!$r)return;
 $r['o']=art::metart($id);
 $tp=$tp?$tp:$r['o']['template']; $msg='';
-if((rstr(5) or $prw>2) && $r['re'])$msg=sql('msg','qdm','v','id="'.$id.'"');// or auth(4)
+if(($prw>=2) && $r['re'])$msg=sql('msg','qdm','v',$id);//rstr(5) or 
 $out['id']=$id; $out['suj']=$r['suj']; if(!$r['suj'])return 'not_exists';
 $out['cat']=$r['frm'];
 if(rstr(19))$out['img1']=pop::art_img($r['img'],$id);
 if($prw==2)$out['thumb']=art::prepare_thumb($r['img'],$id,$nl);
 $rear=art::ib_arts_nb($id)+1; $otp=ma::read_idy($id,'ASC');//tracks
 $out=art::titles($id,$r,$rear,$otp,$prw,$nl,'',$out);
-//if($prw=='rch')$out=self::prepare_rech($id,$msg,$out); else
+if($prw=='rch' && $tp)$out=self::prepare_rech($id,$msg,$out); else
 if($msg)$out['msg']=art::prepare_msg($id,$msg,$r,$prw,$nl);
 $ret=art::template($out,$tp); //$ret=vue::build($tp,$out);
+return $ret;}
+
+static function playq($id,$pos,$r35,$quot=''){//quotes
+$_SESSION['read']=$id; $r=art::art_datas($id); $r['o']=art::metart($id);
+$msg=sql('msg','qdm','v','id="'.$id.'"');
+$msg=mk::apply_quote2($msg,$id,$pos,$r35,$quot);
+$ret=art::prepare_msg($id,$msg,$r,3); $ret.=divc('clear','');
 return $ret;}
 
 static function playt($id,$otp,$tp=''){//tracks

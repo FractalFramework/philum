@@ -6,28 +6,28 @@ $dt='date_format(time,"%m%d") as day'; $tm='to_days(now())-to_days(time)<='.$n.'
 switch($d){
 case('nbv'):$gr=''; //if($b)$gr=', group_concat(id) as ids';
 $ret='select '.$dt.',count(id) as nbv'.$gr.'
-from '.ses('qdv').' where qb="'.ses('qbd').'" and '.$tm.' group by day'; break;
+from '.db('qdv').' where qb="'.ses('qbd').'" and '.$tm.' group by day'; break;
 case('nbu'): $ret='select '.$dt.',count(distinct(iq)) as nbu
-from '.ses('qdv').' where qb="'.ses('qbd').'" and '.$tm.' group by day'; break;
-case('nbutot'): $ret='select count(distinct(iq)) as nbu from '.ses('qdv').' where qb="'.ses('qbd').'" and '.$tm.''; break;
-case('nbutot2'): $ret='select count(distinct(iq)) as nbu from '.ses('qdv2').' where qb="'.ses('qbd').'" and '.$tm.''; break;
-case('nbuv'): $ret='select qb,date_format(time,"%y%m%d") as day,count(distinct(iq)) as nbu,count(id) as nbv from '.ses('qdv').' where qb>0 and date_format(time,"%y%m%d")>"'.$n.'" and date_format(time,"%y%m%d")<"'.date('ymd').'" group by day,qb'; break;
+from '.db('qdv').' where qb="'.ses('qbd').'" and '.$tm.' group by day'; break;
+case('nbutot'): $ret='select count(distinct(iq)) as nbu from '.db('qdv').' where qb="'.ses('qbd').'" and '.$tm.''; break;
+case('nbutot2'): $ret='select count(distinct(iq)) as nbu from '.db('qdv2').' where qb="'.ses('qbd').'" and '.$tm.''; break;
+case('nbuv'): $ret='select qb,date_format(time,"%y%m%d") as day,count(distinct(iq)) as nbu,count(id) as nbv from '.db('qdv').' where qb>0 and date_format(time,"%y%m%d")>"'.$n.'" and date_format(time,"%y%m%d")<"'.date('ymd').'" group by day,qb'; break;
 case('nbp'):if($n)$wh='and page like "%read='.$n.'%"';
 $ret='select '.$dt.', count(id) as nbv 
-from '.ses('qdv').' where qb='.ses('qbd').' '.$wh.' group by day'; break;
+from '.db('qdv').' where qb='.ses('qbd').' '.$wh.' group by day'; break;
 case('nbp2'):if($n)$wh='and page like "%read='.$n.'%"';
 $ret='select '.$dt.', count(id) as nbv
-from '.ses('qdv2').' where qb='.ses('qbd').' '.$wh.' group by day'; break;
+from '.db('qdv2').' where qb='.ses('qbd').' '.$wh.' group by day'; break;
 case('nbp3'):$ret='select count(id) as nbv,substring(page,5) as idart
-from '.ses('qdv2').' where idart>0 group by idart'; break;//nbvues
+from '.db('qdv2').' where idart>0 group by idart'; break;//nbvues
 case('nbpu'):if($n)$wh='and page like "%read='.$n.'%"';
 $ret='select '.$dt.', count(distinct(iq)) as nbu 
-from '.ses('qdv').' where qb='.ses('qbd').' '.$wh.' group by day'; break;//88674
+from '.db('qdv').' where qb='.ses('qbd').' '.$wh.' group by day'; break;//88674
 case('nbpu2'):if($n)$wh='and page like "%read='.$n.'%"';
 $ret='select '.$dt.', count(distinct(iq)) as nbu 
-from '.ses('qdv2').' where qb='.ses('qbd').' '.$wh.' group by day'; break;
+from '.db('qdv2').' where qb='.ses('qbd').' '.$wh.' group by day'; break;
 case('nbf'):$ret='select '.$dt.', count(id) as nbv
-from '.ses('qdv').' where iq='.$n.' group by day'; break;}//187925
+from '.db('qdv').' where iq='.$n.' group by day'; break;}//187925
 return $ret;}
 
 static function datas($c,$n){
@@ -93,10 +93,10 @@ if($r)return self::graph_mk($r,$w,$h).div('',$t);}
 //list
 static function list_sql($c,$n){
 $dt='date_format(time,"%m%d") as day';
-if($c=='nbv'||$c=='nbu')return 'select page, '.($c=='nbv'?'count('.ses('qdv').'.id)':'count(distinct(iq))').' as nbv, group_concat(iq) as iqs from '.ses('qdv').' where qb='.ses('qbd').' and to_days(now())-to_days(time)<='.$n.' and page like "%read=%" group by page order by nbv desc limit 100';
-elseif($c=='nbp')return 'select date_format('.ses('qdv').'.time,"%y%m%d%h%i") as day, iq, ip, count('.ses('qdv').'.id) from '.ses('qdv').' inner join '.ses('qdp').' on '.ses('qdp').'.id=iq
+if($c=='nbv'||$c=='nbu')return 'select page, '.($c=='nbv'?'count('.db('qdv').'.id)':'count(distinct(iq))').' as nbv, group_concat(iq) as iqs from '.db('qdv').' where qb='.ses('qbd').' and to_days(now())-to_days(time)<='.$n.' and page like "%read=%" group by page order by nbv desc limit 100';
+elseif($c=='nbp')return 'select date_format('.db('qdv').'.time,"%y%m%d%h%i") as day, iq, ip, count('.db('qdv').'.id) from '.db('qdv').' inner join '.db('qdp').' on '.db('qdp').'.id=iq
 where qb="'.ses('qbd').'" and page like "%read='.$n.'%" group by iq order by day desc';
-elseif($c=='nbf')return 'select page, date_format('.ses('qdv').'.time,"%y%m%d%h%i") as day, count(id) from '.ses('qdv').' where qb="'.ses('qbd').'" and iq="'.$n.'" group by page order by day desc';}
+elseif($c=='nbf')return 'select page, date_format('.db('qdv').'.time,"%y%m%d%h%i") as day, count(id) from '.db('qdv').' where qb="'.ses('qbd').'" and iq="'.$n.'" group by page order by day desc';}
 
 static function statlist($c,$n){
 $j='popup_stats,statlist___'; $ret=''; //echo $c.'-'.$n;
@@ -136,15 +136,15 @@ if($r){
 
 //freespace
 static function lightlive(){
-//$db=install::db(ses('qd'));
+//$db=install::db(db('qd'));
 //if(!$db['live'])return 'er';
 //if(!$db['live2']){$sql=str_replace('_live','_live2',$db['live']); qr($sql);}
 $tim=timeago(30); $day=date('Y-m-d H:i:s',$tim);
 $lastid=sql('id','qdv','v','time>"'.$day.'" order by id limit 1');
 if(is_numeric($lastid)){
-sql::qrid('insert into '.ses('qdv2').' select * from '.ses('qdv').' where id<'.$lastid);
-qr('delete from '.ses('qdv').' where id<"'.$lastid.'"'); sql::reflush('qdv');}
-return ses('qdv').' was cleaned from id '.$lastid;}
+sql::qrid('insert into '.db('qdv2').' select * from '.db('qdv').' where id<'.$lastid);
+qr('delete from '.db('qdv').' where id<"'.$lastid.'"'); sql::reflush('qdv');}
+return db('qdv').' was cleaned from id '.$lastid;}
 
 //com
 static function board($c,$n,$prm){//p($rs);

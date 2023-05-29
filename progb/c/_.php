@@ -5,6 +5,8 @@ static $cb='mdl';
 
 function __construct(){self::$cb=randid();}
 
+static function js($p,$o){return '';}
+
 static function build($p,$o){
 $ret=$p.'-'.$o;
 return $ret;}
@@ -21,6 +23,7 @@ $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){
+Head::add('jscode',self::js());
 $bt=self::menu($p,$o);
 $ret=self::call($p,$o);
 return $bt.divd(self::$cb,$ret);}

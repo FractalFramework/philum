@@ -70,7 +70,7 @@ return $o?$f:lk($f,$f);}
 static function call($p,$o,$prm=[]){
 $length=self::$length; chrono();
 $min=$p*$length; $max=$min+$length;
-ses('qda','pub_art'); $rc=[];
+db('qda','pub_art'); $rc=[];
 $rq=sql::com('id,img','qda',['>id'=>$min,'<id'=>$max]);
 while($r=sql::qrw($rq)){$d=$r[1];
 	//$d=sav::recenseim($r[0]); //echo $d;

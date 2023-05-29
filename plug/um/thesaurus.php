@@ -63,8 +63,8 @@ $ret=inputj('inpths',$p,$j).' '.lj('',$j,picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid='thd';
-ses('qdvoc',qd('umvoc'));
-ses('qdvoc_b',qd('umvoc_arts'));
+db('qdvoc',qd('umvoc'));
+db('qdvoc_b',qd('umvoc_arts'));
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 return $bt.divd($rid,$ret);}

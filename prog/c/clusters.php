@@ -61,12 +61,12 @@ foreach($r as $k=>$v)$ret.=lj('',$j.ajx($v),$v).' ';
 return divc('nbp',$ret);}
 
 static function tags_list_nb($cat,$nbday=30){
-$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda');
+$qdt=db('qdt'); $qdta=db('qdta'); $qda=db('qda');
 $w='inner join '.$qda.' on '.$qda.'.id='.$qdta.'.idart ';
 return self::artags('tag,count(idart) as c',$wh,'kv',0);}
 
 static function clustags($cat,$nbj=30,$limit=200){
-$qdt=ses('qdt'); $qda=ses('qda'); $qdta=ses('qdta'); $qdtc=ses('qdtc');
+$qdt=db('qdt'); $qda=db('qda'); $qdta=db('qdta'); $qdtc=db('qdtc');
 $sql='select tag,'.$qdt.'.id as idtag,'.$qdtc.'.id as idclust,word,count('.$qdta.'.idart) as c from '.$qdt.'
 inner join '.$qdta.' on '.$qdt.'.id='.$qdta.'.idtag
 inner join '.$qda.' on '.$qda.'.id='.$qdta.'.idart
@@ -172,7 +172,7 @@ $r=['id'=>'ai','idtag'=>'int','word'=>'var'];//,'ind'=>'2var'
 sqlop::install($b,$r,1);}
 
 static function home($p,$o){
-ses('qdtc','pub_meta_clust');
+db('qdtc','pub_meta_clust');
 $rid='clst'; $ret=''; $bt='';
 //sqldb::install('meta_clust');
 if(auth(6))$bt=self::menu($p,$o,$rid);

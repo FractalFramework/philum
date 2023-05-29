@@ -58,8 +58,8 @@ for($i=0;$i<$n;$i++)$ret.=lj('',$rid.'_umwords,liaisons___'.$i,$i).' ';
 return divc('nbp',$ret);}
 
 static function home($p,$o){$rid='plg'.randid();
-ses('qdvoc',qd('umvoc'));
-ses('qdvoc_b',qd('umvoc_arts'));
+db('qdvoc',qd('umvoc'));
+db('qdvoc_b',qd('umvoc_arts'));
 $bt=self::menu($p,$o,$rid);
 return $bt.divd($rid,'');}
 }

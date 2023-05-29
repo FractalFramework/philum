@@ -35,7 +35,7 @@ static function save($suj,$o,$prm=[]){
 [$msg,$answ]=arr($prm); $site='http://philum.fr';//$srv=upsrv()
 if(!is_numeric($answ))$answ='';
 $msg=str_replace(array(' ',"\n","&"),array(':space:',':line:','(and)'),$msg);
-$go='host='.$_SERVER['HTTP_HOST'].'&hub='.$_SESSION['qb'].'&msg='.$msg.'&suj='.$suj.'&answ='.$answ.'&admail='.$_SESSION['qbin']['adminmail'];
+$go='host='.$_SERVER['HTTP_HOST'].'&hub='.ses('qb').'&msg='.$msg.'&suj='.$suj.'&answ='.$answ.'&admail='.$_SESSION['qbin']['adminmail'];
 read_file($site.'/call/microsql/tickets/philum?'.$go);}
 
 static function call($id,$o,$prm){

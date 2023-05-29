@@ -4,7 +4,7 @@ class few{
 #transports
 //export
 static function exportation($id,$node,$frm,$sub){
-$USE=$_SESSION['USE']; $mn=$_SESSION['mn']; $qb=$_SESSION['qb']; $dy=$_SESSION['dayb'];
+$USE=ses('USE'); $mn=$_SESSION['mn']; $qb=ses('qb'); $dy=$_SESSION['dayb'];
 $j='exp'.$id.'_few,exportation___'; $ret=''; $rte='';
 if($frm)$ret.=lj('popbt',$j.$id.'_'.$node,picto('left')).' ';
 if($node!=$qb && $mn)$ret.=slctmnuj($mn,$j.$id.'_',$qb,' ','k');

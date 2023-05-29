@@ -9,11 +9,11 @@ foreach($r as $k=>$v){if($v)$ret.=lkc($v==$slct?'txtnoir':'txtx',$url.$v,$v).br(
 return $ret;}
 
 static function lnk($r,$nurl,$vf,$cs1,$cs2,$kv){
-$nurl=str_replace('/msql/','',$nurl); $ret='';
+$nurl=str_replace('/msql/','',$nurl); $ret=''; $qb=ses('qb');
 foreach($r as $k=>$v){
 	if($kv=='k')$v=$k; elseif($kv=='v')$k=$v;
 	$lk=str_replace('#',$k,$nurl); $cs=$vf==$k?$cs1:$cs2; 
-	if($k==$_SESSION['qb'] && $vf!=$k)$cs='txtblc';
+	if($k==$qb && $vf!=$k)$cs='txtblc';
 	if($v=='lang' && strpos($lk,'lang')!==false)$lk=str_replace('lang','lang/'.prmb(25),$lk);
 	if($v)$ret.=lj($cs,'msqdiv_msqa,home___'.ajx($lk),$v).' ';}
 return $ret;}
@@ -52,7 +52,7 @@ if($t)$ret.=popbub('admsq',$b.$bdr.'/'.$p.'/'.$t,$tn,$top,1);
 return $ret;}
 
 #callbacks
-static function normaliz($v){$v=normalize($v);
+static function normaliz($v){$v=str::normalize($v);
 return str_replace(['-','_'],'',$v);}
 
 static function prevnext($r,$d){$lk=self::sesm('lk'); $r=msql::prevnext($r,$d);
@@ -128,7 +128,7 @@ if($r)foreach($r as $k=>$v){$ra=[]; $i++;
 		$ks=lj('','admsql_msqa,msqlops___'.$jurl.'_sort'.$so.'_*','keys');
 		array_unshift($ra,$ks);}
 	elseif(is_array($ra))if(auth(4)){if(get('del'))$open=$del.$open;
-		foreach($ra as $ka=>$va){$rid=normalize('msqedt'.$k.'-'.$ka);
+		foreach($ra as $ka=>$va){$rid=str::normalize('msqedt'.$k.'-'.$ka);
 			$ra[$ka]=divd($rid,self::mdfcolbt(trim($va),$k,$ka,$murl,$rid));
 			if($rh && $rh[$ka]=='picto')$ra[$ka.'pc']=picto($va);}
 		array_unshift($ra,$open);}
@@ -166,7 +166,7 @@ static function editable($nod,$r=[]){
 $defs=$r?$r:msql::read_b($dir,$node,'');
 if($defs)return self::draw_table($defs,$nod,1);}
 
-static function meditksav($murl,$key,$prm=[]){$rid=normalize($murl);
+static function meditksav($murl,$key,$prm=[]){$rid=str::normalize($murl);
 if($prm){[$dr,$nod]=self::node_decompil($murl); $d=$prm[0]??''; $r=msql::read_b($dr,$nod);
 foreach($r as $k=>$v)if($k==$key)$ret[$d]=$v; else $ret[$k]=$v; msql::save($dr,$nod,$ret);}
 $mx=strlen($key)>24?24:strlen($key); $ret=input($rid,$d?$d:$key,$mx);
@@ -175,7 +175,7 @@ return divd('edt'.$rid,$ret);}
 
 #msqledit
 static function mdfcol($murl,$k,$ka,$prm){$v=$prm[0]??''; $rid=randid('mdt');
-[$dr,$nd,$n]=self::murlvars($murl); $id=normalize('msqedt'.$k.'-'.$ka);
+[$dr,$nd,$n]=self::murlvars($murl); $id=str::normalize('msqedt'.$k.'-'.$ka);
 $v=msql::val($dr,$nd,$k,$ka); $va=self::displaydata($v); if($va===null)$va='-'; $va=nl2br($va);
 $j=$id.'_msqlmodif_'.$rid.'__'.ajx($murl).'_'.ajx($k).'_'.ajx($ka).'_'.$id;
 return divarea($rid,$va,'','',sj($j),1);
@@ -191,7 +191,7 @@ msql::modif($dr,$nd,trim(strip_tags($d)),'shot',$g3,$g2);
 return self::mdfcolbt(nl2br(self::cutat($d)),$g2,$g3,$g1,$g4);}
 
 static function mopen($g1,$g2,$g3,$g4){
-if($g4)$g4='_'.$g4; [$w,$h]=arv(expl('-',get('sz')),[720,480]); ses::$r['popw']=$w;
+if($g4)$g4='_'.$g4; [$w,$h]=arv(expl('-',get('sz')),[980,640]); ses::$r['popw']=$w;
 $u=($g1=='lang'?$g1.'/'.prmb(25):$g1).'/'.$g2.($g3?'_'.$g3.$g4:'');//return self::home($u);
 return iframe('/msql/'.$u,$w-20,$h-40);}
 
@@ -201,7 +201,7 @@ $p=['style'=>'height:'.(($s?$s:1)*$h).'px;','onkeyup'=>'goodheight(this,'.($n).'
 return textarea($k,$v,$n,'1',$p);}
 
 static function editmsql($nod,$va,$o,$ob){
-$qb=$_SESSION['qb']; $tg=$ob?'socket':'admsql'; $rid=randid();
+$qb=ses('qb'); $tg=$ob?'socket':'admsql'; $rid=randid();
 [$dir,$node]=self::node_decompil($nod); $nodb=ajx($nod); $pn=''; $rc=[]; $kb='';
 $r=msql::read_b($dir,$node); $h=isset($r[msql::$m])?1:0; if($r)$rh=$h?$r[msql::$m]:current($r);
 if($r)$nxtk=msql::nextentry($r); $idn=randid();
@@ -266,7 +266,7 @@ $table=$table?$table:'table';
 $idt=msql::findlast($dr,$hub,$table);
 $ret=input('dir',$dr,8);
 if(auth(5))$ret.=input('hub',$hub,8);
-elseif($hub!=$_SESSION['USE'])return btn('txtyl','forbidden');
+elseif($hub!=ses('USE'))return btn('txtyl','forbidden');
 else $ret.=hidden('prfx',$hub);
 $ret.=input('nod',$table,8);
 $ret.=input('ver',$idt,4).' ';
@@ -452,19 +452,20 @@ for($i=0;$i<$nb;$i++){$ret[msql::$m][]='val'.$i;}
 if($ret && $r)return $ret+$r;
 else return $r;}
 
-static function permut($r,$mu){[$a,$b]=explode('/',$mu);
+static function permut($r,$mu){
+[$a,$b]=explode('/',$mu); $rt=[];
 if($a!==false && $b!==false && $r){
-foreach($r as $k=>$v){$obj=$v[$a]; $v[$a]=$v[$b]; $v[$b]=$obj; $ret[$k]=$v;}}
-return $ret;}
+foreach($r as $k=>$v){$obj=$v[$a]; $v[$a]=$v[$b]; $v[$b]=$obj; $rt[$k]=$v;}}
+return $rt;}
 
-static function addcol($r){
+static function addcol($r){$rt=[];
 if(!isset($r[msql::$m]))$r[msql::$m]=msql::menus($r);
-foreach($r as $k=>$v){$v[]=$k==msql::$m?'col'.(count($v)+1):''; $ret[$k]=$v;}
-return $ret;}
+foreach($r as $k=>$v){$v[]=$k==msql::$m?'col'.(count($v)+1):''; $rt[$k]=$v;}
+return $rt;}
 
-static function delcol($r,$n){$col=$n; 
-foreach($r as $k=>$v){if($n=='=')$col=count($v)-1; unset($v[$col]); $ret[$k]=$v;}
-return $ret;}
+static function delcol($r,$n){$col=$n; $rt=[];
+foreach($r as $k=>$v){if($n=='=')$col=count($v)-1; unset($v[$col]); $rt[$k]=$v;}
+return $rt;}
 
 static function sort_table($r,$n,$y=''){$y=$y?yesnoses('sort'):'';
 if(isset($r[msql::$m])){$ret[msql::$m]=$r[msql::$m]; unset($r[msql::$m]);}

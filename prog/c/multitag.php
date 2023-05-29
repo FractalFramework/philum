@@ -32,7 +32,7 @@ sqlop::install($b,$r,0);}
 
 static function home($p,$o){
 $rid=randid(self::$a); $ret='';
-ses('qdtm','pub_meta_mul');
+db('qdtm','pub_meta_mul');
 //sqldb::install('meta_mul');
 $bt=self::menu($p,$o,$rid);
 if($p)$ret=self::build($p,$o);

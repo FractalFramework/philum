@@ -8,7 +8,7 @@ if($ca>$cb){$nb=$ca-$cb; $t='"]"';}
 elseif($ca<$cb){$nb=$cb-$ca; $t='"["';}
 if(isset($nb))return btn('txtyl',$nb.$t.'missing');}
 
-static function urledt($id){$b=rstr(18)?'public':$_SESSION['qb'];
+static function urledt($id){$b=rstr(18)?'public':ses('qb');
 $u=is_numeric($id)?ma::rqtb($id,'mail'):$id; [$k]=conv::verif_defcon($u);
 return lj('','popup_msqa,editmsql___users/'.$b.'*defcons_'.ajx($k).'_'.ajx($u),picto('config'));}
 

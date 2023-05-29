@@ -5,8 +5,8 @@ class ma{
 static function popart($id,$t=''){
 if($t==1)$t=self::suj_of_id($id); $t=pictxt('articles',$t);
 if(!rstr(8))return lkc('',htacc($id),$t);
-if(rstr(136))return lj('','pagup_popart__3_'.$id.'_3',$t);
-else return lj('','popup_popart__3_'.$id.'_3',$t);}//pagup
+$tg=rstr(136)?'pagup':'popup';
+return lj('',$tg.'_popart__3_'.$id.'_3',$t);}
 
 static function find_art_link($d){
 if(is_numeric($d))$wh='id="'.$d.'"'; else $wh='suj="'.$d.'"';
@@ -65,7 +65,7 @@ if($ib && is_numeric($ib) && $ib!=$id)return $ib;}//!='/'&&!='last'
 static function id_of_ib($ib){
 return sql('id','qda','k','ib="'.$ib.'" and re>="1" and substring(frm,1,1)!="_"');}// limit 1
 static function suj_of_id($id){$suj=self::rqt($id,'suj'); if($suj)return $suj;
-$suj=sql('suj','qda','v','id="'.$id.'"'); if(is_string($suj))return $suj;}
+$suj=sql('suj','qda','v',$id); if(is_string($suj))return $suj;}
 static function related_arts($id){$d=sql('msg','qdd','v',['ib'=>$id,'val'=>'related']);
 return $d?explode(' ',$d):[];}
 static function data_val($v,$id,$val,$m=''){$sq=$id?['ib'=>$id]:[];
@@ -128,7 +128,7 @@ return $ret;}
 
 //tags
 static function artags($slct,$wh,$how,$z=''){
-$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda');
+$qdt=db('qdt'); $qdta=db('qdta'); $qda=db('qda');
 $sql='select '.$slct.' from '.$qdt.'
 inner join '.$qdta.' on '.$qdt.'.id='.$qdta.'.idtag
 inner join '.$qda.' on '.$qda.'.id='.$qdta.'.idart
@@ -136,7 +136,7 @@ inner join '.$qda.' on '.$qda.'.id='.$qdta.'.idart
 return sql::call($sql,$how,$z);}
 
 static function art_tags($id,$o=''){
-$wh='where '.ses('qda').'.id='.$id.' order by '.ses('qdta').'.id';
+$wh='where '.db('qda').'.id='.$id.' order by '.db('qdta').'.id';
 return self::artags('cat,tag,idtag',$wh,$o?$o:'kkv');}
 
 static function tag_arts($tag,$cat='',$nbday='',$pday=''){
@@ -144,7 +144,7 @@ $wh='where tag="'.$tag.'"';
 if($cat)$wh.=' and cat="'.$cat.'"';
 if($nbday)$wh.=' and day>"'.timeago($nbday).'"';
 if($pday)$wh.=' and day<"'.timeago($pday).'"';
-if(prmb(9))$wh.=' order by '.ses('qda').'.'.prmb(9);
+if(prmb(9))$wh.=' order by '.db('qda').'.'.prmb(9);
 return self::artags('idart',$wh,'k');}
 
 static function tags_list($cat,$nbday='',$rub=''){$w='';
@@ -163,7 +163,7 @@ if($r)foreach($r as $k=>$v){[$over,$cat]=split_right('/',$v,1); $rb[$cat]=$over;
 return $rb;}
 
 /**/static function famous($cat){
-$wh='where '.ses('qdt').'.cat='.$cat.' group by tag order by n desc limit 100';
+$wh='where '.db('qdt').'.cat='.$cat.' group by tag order by n desc limit 100';
 return self::artags('tag,count(tag) as n',$wh,'kv');}
 
 static function folderowner($id){

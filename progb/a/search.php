@@ -13,7 +13,7 @@ static function dropmenu($r,$id,$d,$j){$i=0; $rt='';
 foreach($r as $k=>$v){$jx=atjr('jumpvalue',[$id,$k]).' ';
 	$jx.=atjr('active_list',['div'.$id,$i,'active','']).' '.$j; $i++;
 	$rt.=btj($v,$jx,active($d,$k)).' ';}
-$ret=span(atd('div'.$id).atc('nbp'),$rt).hidden($id,$d);
+$ret=spn($rt,'nbp','div'.$id).hidden($id,$d);
 return $ret;}
 
 static function dig($n,$rid){$r=pop::define_digr(); $nprev=time_prev($n);
@@ -45,7 +45,7 @@ $rj=['onkeyup'=>atj('checksearch',$rid)];
 $rt1=btn('search',inputb($rid,$rech,32,'',150,$rj)).' ';
 //$rmd=explode(' ','word tag '.prmb(18)); if(auth(6))$rt1.=select(['id'=>'mode'],$rmd);
 $rt1.=ljb('popsav','Search2',$rid,picto('search').' '.nms(24)).' '.hlpbt('search').' ';
-$rg=sql('cat','qdt','rv','tag="'.$rech.'"');
+$rg=sql('cat','qdt','rv',['tag'=>$rech]);
 if($rg)foreach($rg as $k=>$v)$rt1.=lj('popbt','popup_api__3_'.$v.':'.ajx($rech),self::pictag($v),att($v));
 if($cac)$rt1.=blj('popbt','srcac','search,rech___'.$vrf,picto('del'),att('del cache'));
 if($rech && strpos($rech,','))$api='search:'.$rech; else $api='search:'.$rech.',cat:'.str_replace('+','|',$cat).',tag:'.str_replace('+','|',$tag);
@@ -89,7 +89,7 @@ static function except_words($d){$r=['de','des','du','dans','le','les','la','un'
 if(!in_array($d,$r))return true;}
 
 static function tag($tag,$catag){
-$qda=ses('qda'); $qdta=ses('qdta'); $rtag=explode('~',$tag); $rta=[]; $rtb=[]; $tg='';
+$qda=db('qda'); $qdta=db('qdta'); $rtag=explode('~',$tag); $rta=[]; $rtb=[]; $tg='';
 foreach($rtag as $v){$ad=substr($v,0,1);
 	if($ad=='+')$rta[]=substr($v,1); elseif($ad=='-')$rtb[]=substr($v,1);}
 if($rta){$w=['tag in'=>$rta];
@@ -101,7 +101,7 @@ if($rtb){$w=['tag in'=>$rtb];
 return ' inner join '.$qdta.' on '.$qda.'.id='.$qdta.'.idart '.$tg;}
 
 static function adds($tag,$col){$sq=[]; $rta=[]; $rtb=[];
-$qda=ses('qda'); $r=explode('~',$tag); $lgs=prmb(25);
+$qda=db('qda'); $r=explode('~',$tag); $lgs=prmb(25);
 foreach($r as $v){$ad=substr($v,0,1); $slg=substr($v,1);
 	if($ad=='+'){$rta[]=$slg; if($slg==$lgs)$rta[]='';}
 	elseif($ad=='-'){$rtb[]=$slg; if($slg==$lgs)$rtb[]='';}}
@@ -112,7 +112,7 @@ return $sq;}
 static function call($rch,$days=''){$rp=self::$rp;
 [$rech,$dig,$bol,$ord,$tit,$seg,$pag,$cat,$tag,$lim,$lng,$pri,$len]=arb(self::$rp);
 $tit=$tit?1:0; //if($tag=='tag')$tag='';
-$qb=ses('qb'); $qda=ses('qda'); $qdm=ses('qdm'); $qdt=ses('qdt'); $qdta=ses('qdta');
+$qb=ses('qb'); $qda=db('qda'); $qdm=db('qdm'); $qdt=db('qdt'); $qdta=db('qdta');
 //sql
 $fr='k';//filter
 $ft='';//fulltext//score:1->11//bool:nb of verified words
@@ -121,7 +121,7 @@ $ft='';//fulltext//score:1->11//bool:nb of verified words
 if(rstr(3)){$days=$days?$days:ses('nbj'); $sq['daymin']='day>'.timeago($days);}
 $daya=time_prev($days); $daya=$daya?timeago($daya):ses('daya');
 $sq['daymax']='day<'.$daya;
-$sqnd['suj']='suj LIKE "%'.$rch.'%" ';
+$sqnd['suj']='suj like "%'.$rch.'%" ';
 $sq['nod']='nod="'.$qb.'"';
 $sq['frm']='substring(frm,1,1)!="_"';
 $sq['re']='re>0';
@@ -130,7 +130,7 @@ if(!$tit && $rch){
 	$sqin['msg']='natural join '.$qdm;
 	if($ft)$sqnd['msg']=$ft;
 	elseif($seg)$sqnd['msg']=$qdm.'.msg REGEXP "[[:<:]]'.$rch.'[[:>:]]"';
-	else $sqnd['msg']=$qdm.'.msg LIKE "%'.$rch.'%" ';}
+	else $sqnd['msg']=$qdm.'.msg like "%'.$rch.'%" ';}
 if($cat){
 	$rcat=explode('~',$cat); $rca=[]; $rcb=[];
 	foreach($rcat as $v){$ad=substr($v,0,1);
@@ -166,7 +166,7 @@ return $ret;}
 
 static function rechday($d){
 $first=sql('day','qda','v','day>"'.$d.'" limit 1');
-$ret=sql::call('select '.ses('qda').'.id from '.ses('qda').' where nod="'.ses('qb').'" and substring(frm,1,1)!="_" and day<="'.$first.'" order by day desc limit 200','k',0);//auth(6)?1:
+$ret=sql::call('select '.db('qda').'.id from '.db('qda').' where nod="'.ses('qb').'" and substring(frm,1,1)!="_" and day<="'.$first.'" order by day desc limit 200','k',0);//auth(6)?1:
 return $ret;}
 
 static function array_intersect_c($r){$rt=[]; $rb=[]; $mx=1;
@@ -189,7 +189,7 @@ static function home($d0,$n0,$prm=[]){chrono(); $load=[]; $ret='';
 [$d,$n,$b,$o,$t,$sg,$pg,$cat,$tag,$lim,$lng,$pri,$len]=arr($prm,13); $d=$d?$d:$d0; $n=$n?$n:$n0;
 $rech=self::good_rech($d); $pg=$pg?$pg:1; if(!$n)$n=ses('nbj'); $cac=''; $nb=0;
 if($lim=='-')$lim=''; if($lng=='-')$lng=''; if($pri=='-')$pri=''; if($len=='-')$len='';
-geta('search',$rech); geta('page',$pg);
+geta('search',$rech); geta('page',$pg); ses('rech',$rech);
 self::$rp=['rech'=>$rech,'dig'=>$n,'bool'=>$b,'ord'=>$o,'titles'=>$t,'seg'=>$sg,'page'=>$pg,'cat'=>$cat,'tag'=>$tag,'lim'=>$lim,'lng'=>$lng,'pri'=>$pri,'len'=>$len];
 $vrf=($rech.$n.$b.$o.$t.$sg.$cat.$tag.$lim.$lng.$pri.$len); ses::$r['seg']=$sg;
 if(!isset($_SESSION['recache']))$_SESSION['recache'][$vrf]=[];
@@ -215,7 +215,7 @@ elseif($b){//=='x'
 	$parts=explode(' ',$rech); $cp=count($parts);
 	foreach($parts as $v)if($v)$ra[]=self::call(trim($v),$n);
 	$load=self::array_intersect_d($ra);}
-elseif($rech && $vrf==normalize($rech.$n,1) && !ses('rstr62') && !is_numeric($rech))
+elseif($rech && $vrf==str::normalize($rech.$n,1) && !ses('rstr62') && !is_numeric($rech))
 	$load=searched::add($rech,$n);
 else $load=self::call($rech,$n);
 if(is_numeric($rech) && strpos($rech,'.')===false && $rech<=$maxid)$load[abs($rech)]=1;
@@ -224,7 +224,7 @@ if($load && !is_array($load))$load=[];
 if($load){$_SESSION['load']=$load; $_SESSION['recache'][$vrf]=$load; $nb=count($load);}
 if($pg>ceil($nb/$_SESSION['prmb'][6]) or ses('oldig')!=$n)geta('page',1);
 if(isset($load[0]))unset($load[0]); if(isset($load[1]))unset($load[1]);
-if($load)$res=ma::output_arts($load,'rch','art');
+if($load)$res=ma::output_arts($load,'rch','simple');
 $ret=self::titles($vrf,$nb,$cac);
 $ret.=divd('apicom','');
 ses::$r['popm']=chrono('search'); $_SESSION['oldig']=$n;

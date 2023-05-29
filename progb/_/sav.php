@@ -39,7 +39,7 @@ $_SESSION['dayx']=time(); $_SESSION['daya']=ses('dayx');
 return $nid;}
 
 static function saveart_url($u){$cat=vacses($u,'c'); if(!auth(4))return;
-$qda=ses('qda'); $qdm=ses('qdm'); $qb=$name=ses('qb'); 
+$qda=db('qda'); $qdm=db('qdm'); $qb=$name=ses('qb'); 
 $pdt=ses('dayx'); $frm=$cat?$cat:'public'; $re=rstr(11)?1:0;
 ses::$urlsrc=$u; [$suj,$d]=conv::vacuum($u,''); $ib='0'; $lg='';
 //$d=str::embed_links($d); $d=str::clean_br_lite($d); $d=str::add_nbsp($d);
@@ -57,7 +57,8 @@ $_SESSION['rqt'][$nid]=[$pdt,stripslashes($frm),stripslashes($suj),$img,$qb,'','
 $_SESSION['daya']=ses('dayx');
 return $nid;}
 
-static function modif_art($id,$d){$qdm=$_SESSION['qdm']; if(!auth(3))return;
+static function modif_art($id,$d){
+$qdm=db('qdm'); if(!auth(3))return;
 //$d=delr($d);
 //if(rstr(70))$d=conn::art_retape($d,$id);
 //$d=str::html_entity_decode_b($d);
@@ -115,8 +116,7 @@ if(!auth(6))return;
 [$t,$d]=self::webread($f);
 $sq=['suj'=>$t,'mail'=>$f,'img'=>'','thm'=>str::hardurl($t)];//if(rstr(38))
 sqlup('qda',$sq,$id);
-self::modif_art($id,$d); cachevs($id,2,$t);
-//vacses($f,'t','x');
+self::modif_art($id,$d); cachevs($id,2,$t); vacses($f,'t','x');
 return $d;}
 
 static function art_mirror($id,$prw){
@@ -192,7 +192,7 @@ if($rb)foreach($rb as $k=>$v)if($v && !is_numeric($v)){$w=1;//del bad img
 if($re)foreach($re as $k=>$v)if($v){//add forgotten img
 	if(!isset($rb[$v]) && is_file('img/'.$v))$rb[$v]=$v;}
 if($rb)$ret=implode('/',$rb); if($id)sql::upd('qda',['img'=>$ret],$id);
-return '/'.$ret;}
+return self::orderim($id);}
 
 static function orderim($id){$rb=[];//pop::art_img
 $ims=sql('img','qda','v',$id); $r=explode('/',$ims); $rt=[]; $i=0;
@@ -212,6 +212,7 @@ if(is_file('img/'.$x))rm('img/'.$x); if(is_file('imgc/'.$x))rm('imgc/'.$x);
 if($k=in_array_b($x,$r))unset($r[$k]); 
 $ims=implode('/',$r); if(is_numeric($ims))$ims='';
 sql::upd('qda',['img'=>$ims],$id); conn::replaceinmsg($id,'['.$x.']','');
+self::orderim($id);
 $rb[0]=self::placeim($id); $rb[1]=$ims; return $rb;}
 
 static function placeim($id){$ret='';
@@ -380,7 +381,7 @@ return $ret;}
 static function uploadsav($id,$type,$dsk){$rid='upfile'.$id;
 $f=$_FILES[$rid]['name']; $f_tmp=$_FILES[$rid]['tmp_name'];
 if(!$f)return 'no file uploaded '; $er=''; $rep=''; $w='';
-$f=normalize($f); $xt=xt($f); $qb=ses('qb'); if(!auth(4))return;
+$f=str::normalize($f); $xt=xt($f); $qb=ses('qb'); if(!auth(4))return;
 $goodxt='.mp4.m4a.mov.mpg.mp3.mkv.mid.wav.jpg.png.gif.pdf.txt.docx.rar.zip.tar.gz.svg.webp.webm.ods.odt';
 $goodxt.=$_SESSION['prmb'][23];
 if(stristr($goodxt,$xt)===false)$er=$xt.'=forbidden; authorized='.$goodxt.br();

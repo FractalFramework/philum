@@ -24,11 +24,11 @@ echo $suj.br();
 return $ret;}
 
 static function patchlg(){$op=0;
-if($op==1)qr('ALTER TABLE '.$_SESSION['qda'].' ADD `lg` VARCHAR(2) NOT NULL;');
+if($op==1)qr('ALTER TABLE '.db('qda').' ADD `lg` VARCHAR(2) NOT NULL;');
 if($op==2)$r=sql('ib,msg','qdd','kv','val="lang"'); pr($r);
 if($r)foreach($r as $k=>$v)sql::upd('qda',['lg'=>$v],$k);
-if($op==3)qr('update '.$_SESSION['qda'].' set lg="fr" where lg=""');
-if($op==4)qr('delete from '.$_SESSION['qdd'].' where val="lang"'); sql::reflush('qdd',1);}
+if($op==3)qr('update '.$db('qda').' set lg="fr" where lg=""');
+if($op==4)qr('delete from '.db('qdd').' where val="lang"'); sql::reflush('qdd',1);}
 
 //
 static function import_content($id){

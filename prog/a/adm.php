@@ -331,7 +331,7 @@ $ret.=input('qd','node').' '.lj('','qdnd_adm,nodes_qd',picto('ok')).br();
 $r=sql::tables(sql::$db); $rb=[];
 if(is_array($r) && auth(7)){
 foreach($r as $v)$rb[]=strprm($v,0,'_'); $rb=array_flip($rb);
-if($rb)foreach($rb as $k=>$v)if($k)$ret.=lkc(active($k,$_SESSION['qd']),'/?qd='.$k,$k).br();}
+if($rb)foreach($rb as $k=>$v)if($k)$ret.=lkc(active($k,db('qd')),'/?qd='.$k,$k).br();}
 if(get('node')=='install'){$_SESSION['first']=1; $ret.=install::home($qdb);}
 return $ret;}
 
@@ -665,7 +665,7 @@ return $ret.btd('admnu','');}
 
 static function home($nohead=''){
 if(!$_SESSION['dayx'])boot::reboot();
-$qb=ses('qb'); $qda=ses('qda'); $qdu=ses('qdu'); $usr=ses('USE'); $auth=ses('auth'); $hubname='';
+$qb=ses('qb'); $qda=db('qda'); $qdu=db('qdu'); $usr=ses('USE'); $auth=ses('auth'); $hubname='';
 $alert=''; $head=''; $tit=''; $ret='';
 //reboot after quit cssedit
 $admin=get('admin'); if(!$admin)$admin='console';
@@ -773,6 +773,6 @@ elseif(method_exists($d,'home'))$ret=$d::home($va,$opt);
 else return self::home('nohead');
 $v=voc($d,'admin_authes');
 $t=divc('txtit',lk('/admin/'.$d,$v));
-return divd('admcnt',$t.$ret);}
+return $t.divd('admcnt',$ret);}
 }
 ?>

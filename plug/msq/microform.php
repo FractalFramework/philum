@@ -12,7 +12,7 @@ static function tab(){}
 
 static function mr($d){$r=explode(',',$d);$n=count($r);
 for($i=0;$i<$n;$i++){
-	[$v,$type]=opt($r[$i],'='); $vb=normalize($v); 
+	[$v,$type]=opt($r[$i],'='); $vb=str::normalize($v); 
 	if($type!='button')$rb[]=$vb;}
 //$rb[]='day';
 return $rb;}

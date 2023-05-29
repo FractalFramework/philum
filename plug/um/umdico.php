@@ -43,8 +43,8 @@ if($rb)msql::modif('','ummo_umvoc_1',$rc,'arr','','');
 return 1;}
 
 static function home($p,$o){
-ses('qdvoc',qd('umvoc'));
-ses('qdvoc_b',qd('umvoc_arts'));
+db('qdvoc',qd('umvoc'));
+db('qdvoc_b',qd('umvoc_arts'));
 //if(auth(6))$p=self::update();//import defs from dicoum and update ref
 $ret=self::build($p);
 $ret.=msqbt('','ummo_umvoc_1','').' ';

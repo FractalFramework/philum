@@ -138,7 +138,7 @@ if($o=='z' && auth(7)){sql::drop(self::ts_db($p));//$b=self::pub($p); qr('drop t
 	$res=$p.':z';}
 elseif($o=='zz' && auth(7)){$r=self::tables();//reinstal tables
 	foreach($r as $k=>$v)sql::drop(self::ts_db($v));//qr('drop table '.self::pub($v));
-	return sqldb::batchinstall();}//install::home(ses('qd'))
+	return sqldb::batchinstall();}//install::home(db('qd'))
 elseif($o=='json'){//dj
 	$u=$srv.'/call/transport/'.$p.'/dj'; $d=get_file($u); //echo $u.';;';//build?? //.($o?$o:$maxid)
 	$f='_backup/'.$p.'.json'; $u=$srv.'/'.$f;

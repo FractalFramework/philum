@@ -20,8 +20,7 @@ case('new_from'):$tbn=msql::findlast('design',$qb,'design');
 	$_SESSION['desgn']=$_SESSION['clrset']=$tbn;
 	$nod=$qb.'_design_'.$tbn; $noc=$qb.'_clrset_'.$tbn;
 	msql::modif('','public_design',self::dsnam_arr(self::desname($qb,$desgn)),'one','',$tbn);
-	self::build_css('css/'.$qb.'_design_dev_'.$tbn.'.css',$defs); 
-	return '/admin/css&design='.$tbn; break;
+	self::build_css('css/'.$qb.'_design_dev_'.$tbn.'.css',$defs); break;//return '/admin/css&design='.$tbn; 
 case('make_public'):if($o)$tbn=$desgn;
 	else $tbn=msql::findlast('design','public','design');
 	msql::save($bd,'public_design_'.$tbn,$defs);
@@ -69,8 +68,7 @@ case('inject_global'):$defsc=self::css_default(); unset($defsc[msql::$m]);
 case('reset_this'):$defsc=self::css_default(); $ecb=self::find_value($defsc,$defs[$o]);
 	if($ecb){$defs[$o]=$defsc[$ecb]; msql::save($bd,$nod,$defs);
 	self::build_css($ftmp,$defs);} break;
-case('open_design'):$_SESSION['desgn']=$o; $_SESSION['clrset']=$o;
-	return '/admin/css&design='.$o; break;
+case('open_design'):$_SESSION['desgn']=$o; $_SESSION['clrset']=$o; break;//return '/admin/css&design='.$o;
 case('herit_design'):[$qbb,$nbd]=explode('_',$o);
 	$defs=msql::read_b('design',$qbb.'_design_'.$nbd,'','',$defsb);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
@@ -104,17 +102,23 @@ case('exit_design'):sesz('desgn'); $_SESSION['clrset']=''; ses::$adm['design']='
 	boot::define_mods(); boot::define_condition(); boot::define_clr(); return '/admin'; break;
 case('displaycss'):return nl2br(read_file($fcss)); break;
 case('displaycsstmp'):return nl2br(read_file($ftmp)); break;}
-return btn('txtyl',$p.' '.$fcss.': ok');}
+//if(in_array($p,['save','make_public','make_default','make_global','displaycss','displaycsstmp']))
+if(get('tg')=='alertmsg')return btn('popdel',$p.' '.$fcss.': ok');
+return self::home(0);}
 
 //cssactbt('atpos','ok','self',$k,'','sdx'.$k);
-static function cssactbt($p,$t,$x='',$o='',$tt='',$id=''){if($tt)$tt='" title="'.$tt;
+static function cssactbt($p,$t,$x='',$o='',$tt='',$id=''){
 if($p=='exit_design')$c='popsav'; elseif($p=='save')$c='popsav';
 elseif($p=='erase')$c='txtyl'; else $c='txtx';
-if($x=='self' or $x=='url')$tg='socket';
-else{$tg='popup'; if($p!='displaycss' && $p!='displaycsstmp')$x='xx';}
-return lj($c.$tt,$tg.'_sty,actions_'.$id.'_'.$x.'_'.ajx($p).'_'.ajx($o),$t);}
+//if($x=='self' or $x=='url')$tg='socket';
+//else{$tg='popup'; if($p!='displaycss' && $p!='displaycsstmp')$x='xx';}
+if($x=='self' or $x=='url')$tg='admcnt'; else $tg='alertmsg';
+if($p=='displaycss' or $p=='displaycsstmp')$tg='popup';
+$x=$tg=='alertmsg'?'xd':'';
+if($p=='exit_design')$x='url';
+return lj($c,$tg.'_sty,actions_'.$id.'_'.$x.'_'.ajx($p).'_'.ajx($o),$t,att($tt));}//
 
-static function home($on=''){self::clrpckr_js();//if($on)
+static function home($on=''){if($on)self::clrpckr_js();//
 $qb=ses('qb'); $lh=sesmk2('adm','csslang'); $defs='';
 $defsb=['div','class','element','color','bkg','border','free'];
 $numb=sesb('desgn',$_SESSION['prmd']);
@@ -134,59 +138,60 @@ if(!$defs)$defs=msql::read_b('design',$nod,'',1,$defsb);//good_nb
 unset($defs[0]); $defs=self::reorder_keys($defs);
 if(!is_file($ftmp))self::build_css($ftmp,$defs);
 #body
-$ret=lkc('txtcadr','/admin/css',$nod).' ';
-$ret.=self::dsnamedt($qb,$desgn,[]);
-$ret.=hlpbt('design').' ';
-$ret.=msqbt('design',$qb.'_design_'.$desgn).' ';
-$ret.=self::cssactbt('exit_design',pictxt('logout',nms(112)),'url','','');//'','','');
-if(prmb(5))$ret.=picto('alert').helps('prmb5').' ';
-$ret.=hlpbt('designcond');
-$ret.=br();
-$ret.=lj('txtbox','popup_sty,chargesets','design:'.$desgn.'/clrset:'.$clrset).' ';
-$ret.=self::cssactbt('backup','backup','self','','');//'','',''
+$rt[]=lkc('txtcadr','/admin/css',$nod).' ';
+$rt[]=self::dsnamedt($qb,$desgn,[]);
+$rt[]=hlpbt('design').' ';
+$rt[]=msqbt('design',$qb.'_design_'.$desgn).' ';
+$rt[]=self::cssactbt('exit_design',pictxt('logout',nms(112)),'url','','');//'','','');
+if(prmb(5))$rt[]=picto('alert').helps('prmb5').' ';
+$rt[]=hlpbt('designcond');
+$ret=divb(implode('',$rt)); $rt=[];
+$rt[]=lj('txtbox','popup_sty,chargesets','design:'.$desgn.'/clrset:'.$clrset).' ';
+$rt[]=self::cssactbt('backup','backup','self','','');//'','',''
 if(is_file(msql::url('design',$nod))){
-	$ret.=self::cssactbt('restore_design',nms(95).' design','self','');
-	$ret.=self::cssactbt('restore_clrset',nms(95).' clr','self','');}
+	$rt[]=self::cssactbt('restore_design',nms(95).' design','self','');
+	$rt[]=self::cssactbt('restore_clrset',nms(95).' clr','self','');}
 if($_SESSION['prmd']!=$_SESSION['desgn'])
-	$ret.=self::cssactbt('test_design','test design '.$desgn,'self','');
+	$rt[]=self::cssactbt('test_design','test design '.$desgn,'self','');
 if($_SESSION['desgn']!=$_SESSION['prma']['design'])
-	$ret.=self::cssactbt('apply',nms(66).' (mods:'.prmb(1).'-'.$_SESSION['prma']['design'].')','self','sav');
-$ret.=self::cssactbt('save',nms(27),'','','');
-//$ret.=self::cssactbt('build_css',nms(93),'','');//rebuild
-$ret.=br();
-$ret.=self::cssactbt('new_from',nms(44),'url','');//url
-$ret.=self::cssactbt('empty_design',nms(46),'self','');
-$ret.=self::cssactbt('invert_clr',nms(115),'self','');
-$ret.=self::cssactbt('make_public',$lh[4],'','');//make_public
-$ret.=self::cssactbt('make_public',$lh[5],'','1');//inform_public
+	$rt[]=self::cssactbt('apply',nms(66).' (mods:'.prmb(1).'-'.$_SESSION['prma']['design'].')','self','sav');
+$rt[]=self::cssactbt('save',nms(27),'','','').' ';
+$rt[]=spn('','','alertmsg');
+//$rt[]=self::cssactbt('build_css',nms(93),'','');//rebuild
+$ret.=divb(implode('',$rt)); $rt=[];
+$rt[]=self::cssactbt('new_from',nms(44),'url','');//url
+$rt[]=self::cssactbt('empty_design',nms(46),'self','');
+$rt[]=self::cssactbt('invert_clr',nms(115),'self','');
+$rt[]=self::cssactbt('make_public',$lh[4],'','');//make_public
+$rt[]=self::cssactbt('make_public',$lh[5],'','1');//inform_public
 if($_SESSION['auth']>5){$r=msql::row('',$qb.'_design',$desgn); 
 	$desgname=!empty($r[0])?$r[0]:$r['name']??'';
 	if($desgname=='admin')$make='make_admin';
 	elseif($desgname=='global')$make='make_global';
 	else $make='make_default';
-	$ret.=self::cssactbt($make,$make,'','','');}
-$ret.=br();
-$ret.=self::cssactbt('reset_default',nms(96).' design','self','');
-$ret.=self::cssactbt('reset_clr',nms(96).' clr','self','');
-$ret.=self::cssactbt('reset_global','global design','self','');
-$ret.=self::cssactbt('public_clr','global clr','self','1');
-$ret.=self::cssactbt('public_design','classic design','self','2');
-$ret.=self::cssactbt('public_clr','classic clr','self','2');
-$ret.=self::cssactbt('null_design','null','self','');
-$ret.=self::cssactbt('null_clr','clr','self','2');
-$ret.=lj('txtx','popup_fontface___1','@font-face');
-$ret.=br();
-$ret.=self::cssactbt('append',nms(92).' defaults','self','');
-$ret.=self::cssactbt('append_global',nms(92).' global','self','');
-$ret.=self::cssactbt('inject_global',$lh[9],'self','');
-$ret.=self::cssactbt('displaycss',$lh[10],'3','');
-$ret.=self::cssactbt('displaycsstmp',$lh[11],'3','');
-$ret.=lj('txtx','popup_sty,chargeclr','clrset').' ';
-$ret.=btn('txtx',count($defs).' '.nms(117)).' ';
-$ret.=btn('txtx',mkday(filemtime(msql::url('design',$nod)))).' ';
-$ret.=br().br();
-$ret.=self::clrset_edit().br();//colors
-if($defs)$ret.=self::design_edit($defs,$defsb,'',1).br().br();
+	$rt[]=self::cssactbt($make,$make,'','','');}
+$ret.=divb(implode('',$rt)); $rt=[];
+$rt[]=self::cssactbt('reset_default',nms(96).' design','self','');
+$rt[]=self::cssactbt('reset_clr',nms(96).' clr','self','');
+$rt[]=self::cssactbt('reset_global','global design','self','');
+$rt[]=self::cssactbt('public_clr','global clr','self','1');
+$rt[]=self::cssactbt('public_design','classic design','self','2');
+$rt[]=self::cssactbt('public_clr','classic clr','self','2');
+$rt[]=self::cssactbt('null_design','null','self','');
+$rt[]=self::cssactbt('null_clr','clr','self','2');
+$rt[]=lj('txtx','popup_fontface___1','@font-face');
+$ret.=divb(implode('',$rt)); $rt=[];
+$rt[]=self::cssactbt('append',nms(92).' defaults','self','');
+$rt[]=self::cssactbt('append_global',nms(92).' global','self','');
+$rt[]=self::cssactbt('inject_global',$lh[9],'self','');
+$rt[]=self::cssactbt('displaycss',$lh[10],'3','');
+$rt[]=self::cssactbt('displaycsstmp',$lh[11],'3','');
+$rt[]=lj('txtx','popup_sty,chargeclr','clrset').' ';
+$rt[]=btn('txtx',count($defs).' '.nms(117)).' ';
+$rt[]=btn('txtx',mkday(filemtime(msql::url('design',$nod)))).' ';
+$ret.=divb(implode('',$rt)).br();
+$ret.=divb(self::clrset_edit()).br();//colors
+if($defs)$ret.=self::design_edit($defs,$defsb,'',1).br();
 return $ret;}
 
 #builders
@@ -272,7 +277,7 @@ if($k>0){$sty='"style="color:#'.invert_color($v,1).'; background-color:#'.$v.'; 
 if(!$v)$v='none'; $ret.=btn($sty,'__').' ';}}
 return $ret;}
 
-static function chargesets(){$qb=$_SESSION['qb'];
+static function chargesets(){$qb=ses('qb');
 $r=explore('msql/design/','files',1); asort($r);
 if($r){foreach($r as $k=>$v){$v=substr($v,0,-4); [$nd,$dr,$nb,$sv]=opt($v,'_',4);
 	if($sv!='sav' && $nd && is_numeric($nb) && ($nd==$qb or ($nd=='public' or $_SESSION['auth']>6)))
@@ -324,10 +329,10 @@ elseif($clrb==2)$clr=msql_read('system','default_clr_2','');
 else $clr=getclrs();
 $s='float:left; text-align:left; margin:1px; width:';
 if($k)$ret=toggle($csa.$css,'css'.$k.'_sty,editcss___'.$k,$t,'',ats($s.'190px;'));
-else $ret=span(atc($csa).ats($s.'190px;'),$t);
-for($i=3;$i<6;$i++)$ret.=span(atc($csa).ats($s.'50px;'),self::petit_clr($p[$i]??'-',$clr));
+else $ret=spn($t,$csa,'',$s.'190px;');
+for($i=3;$i<6;$i++)$ret.=spn(self::petit_clr($p[$i]??'-',$clr),$csa,'',$s.'50px;');
 if($op){$pb=isset($p[6])?etc(str_replace('; ',';'.br(),stripslashes($p[6])),1000):'-';
-$ret.=span(atc($csa).ats($s.'250px;'),$pb);}
+$ret.=spn($pb,$csa,'',$s.'250px;');}
 return divc('clear',$ret);}
 
 static function design_edit($r,$defsb,$edit,$op){
@@ -423,7 +428,7 @@ return $ret;}
 static function savcss($k,$c,$prm=[]){//facil_css//stylsav
 $ndd=$_SESSION['desgn']?$_SESSION['desgn']:$_SESSION['prmd'];
 $bd='design'; $nod=nod('design_'.$ndd); $v=$prm[0];
-if($_SESSION['desgn'])$nodb=$_SESSION['qb'].'_design_dev_'.$ndd; else $nodb=$nod;
+if($_SESSION['desgn'])$nodb=ses('qb').'_design_dev_'.$ndd; else $nodb=$nod;
 $defs=msql::read_b('design',$nod);
 if($c==1)$defs=self::save_css_clr($defs,$k,$prm);//clr
 elseif($c==2)$defs=self::save_css_bkg($defs,$k,$v);//img
@@ -619,7 +624,7 @@ $kr=getclrs(); $n=$kr?count($kr):0; $ret='';//pr($r);
 for($i=0;$i<=3;$i++){$ri=$r[$i]??'';
 	$clrn=$ri=='undefined'||!$ri?'0':$ri; $nid=$i+1;
 	$kl=isset($kr[$clrn])?$kr[$clrn]:'';
-	$ret.=span(atc('cell').atd('bt'.$p.$nid),self::setclr($kl,$clrn,$p.$nid));}
+	$ret.=spn(self::setclr($kl,$clrn,$p.$nid),'cell','bt'.$p.$nid);}
 return $ret;}
 
 static function facil_colors($defs,$k,$url){
@@ -696,7 +701,7 @@ return $defs;}
 
 static function save_img_b($spe){
 $fich=$_FILES['fichier']['name'];
-$fich=normalize($fich);
+$fich=str::normalize($fich);
 if(!$fich)return "empty";
 if(stristr(".jpg.png.gif",substr($fich,-4))!==false)
 return '/imgb/usr/'.ses('qb').'_css_'.$fich;}

@@ -28,6 +28,7 @@ $ret=''; if(auth(6))$ret=msqbt($g1,$g2,$g3).' '; if($rt)$ret.=nl2br(stripslashes
 ses::$r['popm']=$g2.' '.$g3.' '.$g4; return $ret;}
 static function yesno($g1,$g2){return offon($g1,$g2);}
 static function togno($g1,$g2){return togon($g1,$g2);}
+static function valid($g1,$g2){return valid($g1,$g2);}
 
 static function fbcall($u){
 $d=curl_get_contents($u); $d=($d);

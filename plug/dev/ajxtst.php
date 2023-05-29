@@ -6,7 +6,7 @@ $r=sql('id,ib,url,tit,txt,img','qdw','','');
 foreach($r as $k=>$v){
 	$r[$k][3]=ascii2iso($v[3]);
 	$r[$k][4]=ascii2iso($v[4]);}
-ses('qdw2','pub_web_b');
+db('qdw2','pub_web_b');
 //sqlsav2('qdw2',$r);
 return $r[40][3];
 }

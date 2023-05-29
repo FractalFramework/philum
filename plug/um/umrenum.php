@@ -9,12 +9,12 @@ $time=strtotime($q['created_at']);
 return $time;}
 
 static function req_arts_y($p){
-$qda=ses('qda'); $qdm=ses('qdm'); $qdi=ses('qdi');
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi');
 $wh=$qda.'.frm="'.implode('" or '.$qda.'.frm="',explode(',',$p)).'"';
 $sql='select distinct '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,'.$qda.'.mail,'.$qdm.'.msg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' and re>0 group by id order by day ASC';
 return sql::call($sql,'','');}
 
-static function req_arts_yb($p){$qda=ses('qda'); $w=sql::atmra(explode(',',$p));
+static function req_arts_yb($p){$qda=db('qda'); $w=sql::atmra(explode(',',$p));
 $sql='select id,day,suj,mail from '.$qda.' where frm in '.$w.' and re>0 order by day ASC';
 return sql::call($sql,'','');}
 

@@ -101,7 +101,7 @@ $ret.=lj('',$rid.'_oldhubs,call_inp',picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid=randid('plg');
-ses('qdaa','pub_art_a');
+db('qdaa','pub_art_a');
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 //$bt.=msqbt('',nod('oldhubs'));

@@ -55,7 +55,7 @@ $msg=str::htmlentities_b($msg); $msg=usg::html2conn(nl2br($msg),1);
 if(is_numeric($id) or substr($id,0,4)=='wall')$local=1; else $local=0;
 if(!is_numeric($id)){$ib=$id; $id=0;}//$to=frm
 if(!$msg)return;// btn('popdel','bruuu! '.helps('empty_msg'));
-$qb=$_SESSION['qb']; $base=$_SESSION['qdi'];
+$qb=ses('qb'); $base=db('qdi');
 //if(rstr(129))$lg=trans::detect('','',$msg);
 $use=cookie('use'); if(!$use && $name){cookie('use',$name); cookie('mail',$mail);}
 if(!rstr(2) or auth(4))$re=1; else $re=0;

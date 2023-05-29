@@ -96,10 +96,10 @@ if($id){sql::upd('thesaurus',['idart'=>$id],$k);}}
 return count($r);}
 
 static function home($p,$o){$rid='plg'.randid();
-ses('thesaurus','thesaurus'); $ret='';
-ses('qdvoc',qd('umvoc'));
-ses('qdvoc_b',qd('umvoc_arts'));
-ses('qdvoc_b1',qd('umvoc_arts_a'));
+db('thesaurus','thesaurus'); $ret='';
+db('qdvoc',qd('umvoc'));
+db('qdvoc_b',qd('umvoc_arts'));
+db('qdvoc_b1',qd('umvoc_arts_a'));
 $bt=self::menu($p,$o,$rid);
 //self::repair($p,$o);
 //echo self::count();

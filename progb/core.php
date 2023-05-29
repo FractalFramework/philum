@@ -106,7 +106,7 @@ return llj('',$j,$v,'bb'.$id,$o);}
 function panup($d,$j,$v,$c){$id=randid();
 if($d=='call' or $c)$id=($c?$c:'c').$id; $j='panup_bubs,root__'.$id.'_'.$d.'_'.$j;
 return llj('',$j,$v,'bb'.$id,'');}
-function togbub($ja,$j,$v,$c='',$o='',$a=''){$id=rid($ja.$j.$v);//bub from j
+function togbub($ja,$j,$v,$c='',$o='',$a=''){$id=randid();//bub from j
 return btd('bt'.$id,ljb($c,'togglebub',$ja.'__'.$id.'_'.$j,$v,$o,$a));}//.'_1'
 function togbub2($id,$v,$t,$c='',$o='',$a=''){//full js
 return btd('bt'.$id,ljb($c,'togglebub2',$id,$t,$o,$a)).span(atd($id).ats('display:none;'),$v);}
@@ -139,6 +139,7 @@ return '<li><a'.ath($lk).atd($id).atk($oc.' closebub(this);').atmo($ov).$tg.'>'.
 
 function offon($d,$t=''){return pictxt($d?'true':'false',$t,'color:#'.($d?'428a4a':'853d3d').';');}
 function togon($d,$t=''){return pictxt($d?'switch-on':'switch-off',$t,$d?'color:#428a4a;':'');}
+function valid($d,$t=''){return pictxt($d?'check-valid':'check-empty',$t);}
 function order($d,$t=''){return pictxt($d?'arrow-top':'arrow-down',$t);}
 
 #slct
@@ -217,6 +218,51 @@ if(substr($u,0,4)!='http'){
 	if($src)$u=$src.$u;}//'http://'.domain($src)
 return $u;}
 
+#tables
+function tabler($r,$head='',$keys='',$frame=''){$i=0; $td=''; $tr='';
+if(is_array($head)){array_unshift($r,$head); $head=1;}
+if(is_array($r))foreach($r as $k=>$v){$td=''; $i++; $tag=$i==1&&$head?'th':'td';
+	if($keys)$td.=tagb($tag,$k);
+	if(is_array($v))foreach($v as $ka=>$va)$td.=tagb($tag,$va);
+	else $td.=tagb($tag,$k).tagb($tag,$v);
+	if($td)$tr.=tagb('tr',$td);}//ats('valign','top')
+$ret=tagb('table',tagb('tbody',$tr));
+if($frame)$ret=divs('width:100%; height:'.($frame>1?$frame:400).'px; overflow:auto; scrollbar-width:thin;',$ret);
+return $ret;}
+
+function divtable($r,$h=''){$cr='display:table-row;'; $ret=''; $i=0;
+$cc='display:table-cell; vertical-align:middle; padding:2px; '; $cs='';
+if(is_array($r))foreach($r as $k=>$v){$td=''; $i++;
+	if($h)$cs=$i==1?'background:rgba(255,255,255,0.4);':'';
+	if(is_array($v))foreach($v as $ka=>$va)$td.=bts($cc.$cs,$va);
+	if($td)$ret.=bts($cr,$td);}
+return divc('small',$ret);}
+
+function rdiv($r){$rt=[];
+foreach($r as $k=>$v)$rt[]=divb($v);
+return implode('',$rt);}
+
+function playr($r,$c='',$o=''){$ret='';
+if(is_array($r))foreach($r as $k=>$v){
+	if(is_array($v))$ret.=li(ljb($c?'active':'','liul','this',$k).playr($v,$c,$o));
+	else $ret.=li($o?$k.': '.$v:$v);}
+return ul($ret,$c?'on':'off');}
+
+function tree($r,$c='',$o=''){
+return divb(playr($r,$c,$o),'topology');}
+
+//tabs
+function tabs($r,$ud='',$c=''){
+if(!$r)return; $b=0; $menu=''; $divs='';
+static $i; $i++; $id='tab'.$ud.'-'.$i; $ra=array_keys($r);
+$ib=ses('tbmd'.$id); if(!$ib)$ib=1; $sp=btn('txtac',' ');
+foreach($r as $k=>$v){$b++; if(is_array($v))$v=join('',$v);
+	$dsp=$b==$ib?'block':'none'; $cs=$b==$ib?'txtaa':'txtab';
+	$menu.=ljb($cs,'toggle_tab',[$id,$b],$k).$sp;
+	if(is_array($v))$v=divc('list',onxcols($v,3,''));//implode(' ',$v);
+	$divs.=div(atd('div'.$id.$b).ats('display:'.$dsp).atc($c),$v);}
+return divb($menu,'','mnuab'.$id,'margin-bottom:4px').$divs;}
+
 #conn
 function embed_p($d){
 $d=str_replace("\n\n</","</",$d); $r=explode("\n\n",$d); $ret='';
@@ -233,6 +279,17 @@ function getclrs($k='',$n=''){$k=$k?$k:ses('prmd'); $r=sesr('clrs',$k);
 if(!$r)$r=boot::define_clr(); if($r)return $n?$r[$n]:$r;}
 function setclrs($d,$k=''){$prmd=$k?$k:ses('prmd'); $_SESSION['clrs'][$prmd]=$d;}
 
+#mysql
+function qd($d){return db('qd').'_'.$d;}
+function db($k,$v=''){return $v?$_SESSION['db'][$k]=$v:$_SESSION['db'][$k]??'';}
+function connect(){require(boot::cnc());}
+function sqlclose(){mysqli_close(sql::$qr);}
+function qr($sql,$o=''){return sql::qr($sql,$o);}
+function sqlsav($b,$r,$o='',$vrf=''){return sql::sav($b,$r,$o,$vrf);}
+function sqlup($b,$r,$q,$o='',$vrf=''){return sql::upd($b,$r,$q,$o,$vrf);}
+function sql($d,$b,$p,$q,$z=''){return sql::read($d,$b,$p,$q,$z);}
+function sqb($d,$b,$p,$q,$z=''){return sql::read2($d,$b,$p,$q,$z);}
+
 #ses
 function auth($n){return ($_SESSION['auth']??'')>=$n?true:false;}
 function rstr($n){return ($_SESSION['rstr'][$n]??1)?0:1;}
@@ -241,7 +298,6 @@ function prma($n){return $_SESSION['prma'][$n]??'';}
 function prmb($n){return $_SESSION['prmb'][$n]??'';}
 function nms($d){return $_SESSION['nms'][$d]??$d;}
 function mn($n){return $_SESSION['mn'][$n]??'';}
-function db($k){return $_SESSION[$k]??'';}
 //
 //function auth($n){return (ses::$s['auth']??'')>=$n?true:false;}
 //function rstr($n){return (ses::$s['rstr'][$n]??1)?0:1;}
@@ -258,14 +314,14 @@ function nbof($n,$i){if(!$n)return nms(11)."&nbsp;".nms($i); else return $n.' '.
 function plurial($n,$i){return $n>1?nms($i+1):nms($i);}
 
 function define_ses(){
-ses::$s['auth']=$_SESSION['auth'];
-ses::$s['rstr']=$_SESSION['rstr'];
-ses::$s['prms']=$_SESSION['prms'];
-ses::$s['prma']=$_SESSION['prma'];
-ses::$s['prmb']=$_SESSION['prmb'];
-ses::$s['nms']=$_SESSION['nms'];
-ses::$s['mn']=$_SESSION['mn'];
-$qd=$_SESSION['qd']; ses::$s['qd']=$qd;
+ses::$s['auth']=ses('auth');
+ses::$s['rstr']=ses('rstr');
+ses::$s['prms']=ses('prms');
+ses::$s['prma']=ses('prma');
+ses::$s['prmb']=ses('prmb');
+ses::$s['nms']=ses('nms');
+ses::$s['mn']=ses('mn');
+$qd=db('qd'); ses::$s['qd']=$qd;
 $r=sqldb::$rt; foreach($r as $k=>$v)ses::$s['db'][$k]=$qd.'_'.$v;}
 
 /*function afc0($a,$m){if(!$m)$a='ajax';
@@ -290,6 +346,7 @@ function voc($d,$b='helps_voc'){$r=sesmk('msqlang',$b,0); return $r[$d][0]??$d;}
 function msqlang($d){return msql::read('lang',$d,0,1);}
 function usrconn(){return msql::kv('',nod('connectors_1'));}
 function scanplug(){return explore('plug','dirs',1);}
+function emoj(){return msql::kv('system','edition_pictos_4','',1);}
 
 //mimes
 function msqmimes(){return msql::kv('system','edition_mimes');}
@@ -327,8 +384,7 @@ function flags(){$r=msql::read('system','edition_flags_8','',1);
 foreach($r as $k=>$v)$ret[$v[2]]=$v[1]; return $ret;}
 function flag($d){$r=sesmk('flags','',0); return $r[$d]??$d;}
 function svg($f,$w='',$h=''){return taga('img',['src'=>$f.'.svg','width'=>$w,'height'=>$h?$h:$w]);}
-function picto($d,$s=''){if(is_numeric($s))$s='font-size:'.$s.'px;';
-return span(atc('philum ic-'.$d).ats($s),'');}
+function picto($d,$s=''){if(is_numeric($s))$s='font-size:'.$s.'px;'; return spn('','philum ic-'.$d,'',$s);}
 function pictxt($p,$t='',$s=''){return picto($p,$s).($t?'&#8239;'.$t:'');}
 function pictit($p,$t,$s=''){return span(att($t),picto($p,$s));}
 function picto2($d,$o=''){return picto(mime($d,$o));}
@@ -340,6 +396,7 @@ function oomo($d,$s='',$t=''){if(is_numeric($s))$s='font-size:'.$s.'px;';
 return span(atc('oomo oo-'.$d).ats($s).att($t),'');}
 function fa($d,$s='',$t=''){if(is_numeric($s))$s='font-size:'.$s.'px;';
 return span(atc('fa fa-'.$d).ats($s).att($t),'');}
+function emoji($k,$s){$r=sesmk('emoj'); return $r[$k]??spn('','philum ic-'.$k,'',$s?'font-size:'.$s.'px;':'');}
 function imgico($f,$sz='',$t=''){if(!$sz)$sz=4;
 return taga('img',['src'=>$f,'style'=>'vertical-align:-'.$sz.'px; border:0;','title'=>$t]);}
 function uicon($d,$p,$o=''){return $o.'/imgb/icons/'.($p?$p:'system/philum/16/').'/'.$d.'.png';}
@@ -381,7 +438,7 @@ elseif($n===false && $nb===false){$p=$d; $o=''; $c='';}
 return [$p,$o,$c];}
 
 #vacuum
-function vacurl($f){$f=nohttp($f); return normalize($f);}
+function vacurl($f){$f=nohttp($f); return str::normalize($f);}
 function vacses($f,$k='',$v=''){$u=vacurl($f);//v,t,d(data),c(cat),u(url),p(parent),b(brut)
 if($v=='x' && $r=sesr('vac',$u)){sesrz('vac',$u); return $r[$k]??'';}
 elseif($v){sesrr('vac',$u,[$k=>$v]); $_SESSION['vac'][$u]['u']=$f;}//pre_clean

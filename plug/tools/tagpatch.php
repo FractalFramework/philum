@@ -2,8 +2,8 @@
 class tagpatch{
 
 static function erase_unused_datas(){
-qr('ALTER TABLE '.ses('qdd').' DROP day, DROP cat;'); $ret.='datas deleted';
-qr('UPDATE '.ses('qda').' SET thm=""'); $ret.='old tags deleted';
+qr('ALTER TABLE '.db('qdd').' DROP day, DROP cat;'); $ret.='datas deleted';
+qr('UPDATE '.db('qda').' SET thm=""'); $ret.='old tags deleted';
 return $ret;}
 
 static function call($p,$o,$prm=[]){$p=$p?$p:0;
@@ -47,9 +47,9 @@ $ret=$p.':'.sql('count(id)','qdt','v','').'-'.sql('count(id)','qdta','v','');
 return $ret;}
 
 static function define_interm3(){
-$sql='select cat,tag,idart from '.ses('qdt').' 
-inner join '.ses('qdta').' on '.ses('qdt').'.id='.ses('qdta').'.idtag
-inner join '.ses('qda').' on '.ses('qda').'.id='.ses('qdta').'.idart
+$sql='select cat,tag,idart from '.db('qdt').' 
+inner join '.db('qdta').' on '.db('qdt').'.id='.db('qdta').'.idtag
+inner join '.db('qda').' on '.db('qda').'.id='.db('qdta').'.idart
 where day>'.timeago(7).'';
 $r=sql::call($sql,'kkk');//
 foreach($r as $k=>$v){
@@ -61,7 +61,7 @@ return $r;}
 //patch tags
 static function home($p,$o){$rid='plg'.randid(); return;
 $bt=btn('popsav','Transfert datas to the new tables').br();
-ses('qdt','pub_meta'); ses('qdta','pub_meta_art'); ses('qdtag','pub_tag');
+db('qdt','pub_meta'); db('qdta','pub_meta_art'); db('qdtag','pub_tag');
 $n=12;//echo $n=ceil(ma::lastid('qda')/10000);
 for($i=0;$i<$n;$i++)$bt.=lj('txtbox',$rid.'_tagpatch,call___'.($i*10000),$i);//jb
 //patch user_tags

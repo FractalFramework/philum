@@ -14,7 +14,7 @@ return $ret;}
 static function del_old($da){
 $r=self::scrut_dirb('_datas/rss'); mkdir_r('_datas/rss/');
 if($r)foreach($r as $k=>$v){[$q,$d]=explode('_',$k); $xt=substr($k,-3);
-if($q=='data/rss/'.$_SESSION['qb'] && $d<$da && $xt=='xml')unlink($k);}}
+if($q=='data/rss/'.ses('qb') && $d<$da && $xt=='xml')unlink($k);}}
 
 static function parsetxt($d){
 $d=str_replace(['&','<','>',"&nbsp;"],['&amp;','&lt;','&gt;',' '],$d); //$d=parse($d);
@@ -85,7 +85,7 @@ $r=msql::read_b('',nod('cache'),'',1); //$nb_arts=count($r);
 $lastid=ma::lastid('qda'); $last_art=$r[$lastid];
 $newest=key($r); $oldest=array_pop($r);
 $nb_days=round((time()-$oldest[0])/86400);
-//$f='_datas/rss/'.$_SESSION['qb'].'_'.$newest.'_'.$prw.'.xml';
+//$f='_datas/rss/'.nod($newest.'_'.$prw).'.xml';
 $f='_datas/rss/'.ses('qb').'.xml'; mkdir_r($f);
 if(is_file($f) && !$rebuild && $cache)$ret=read_file($f);
 else{$ret=self::build($r,$prw); write_file($f,$ret);}//self::del_old($newest);

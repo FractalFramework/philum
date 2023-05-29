@@ -123,9 +123,9 @@ static function slctj($d){$rid='bt'.randid(); $bt=btn('popbt','select...');
 return togbub('umvoc,slctjr',$d.'_'.$rid,$bt);}
 
 static function home($p,$o){
-ses('qdvoc',qd('umvoc'));
-ses('qdvoc_b',qd('umvoc_arts'));
-ses('dico','dicoum');
+db('qdvoc',qd('umvoc'));
+db('qdvoc_b',qd('umvoc_arts'));
+db('dico','dicoum');
 $ret=self::slctj($p).' ';
 //$ret.=lj('','usrch___4',picto('del')).' ';
 $j='ucbk_umvoc,search_usrch,udsnd__'.ajx($p);

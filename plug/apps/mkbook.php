@@ -81,7 +81,7 @@ else return 'no results';}
 static function req($p,$lg='',$pg=0){
 //sql::setutf8();
 //Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa
-$qda=ses('qda'); $qdm=ses('qdm'); $wh='nod="'.ses('qb').'"';
+$qda=db('qda'); $qdm=db('qdm'); $wh='nod="'.ses('qb').'"';
 $ra=explode(',',$p); foreach($ra as $k=>$v)if(is_numeric($v))$r1[]=$v; else $r2[]=$v;
 if(isset($r1))$wh.=' and '.$qda.'.id in ("'.implode('","',$r1).'")';
 if(isset($r2))$wh.=' and '.$qda.'.frm in ("'.implode('","',$r2).'")';
@@ -91,7 +91,7 @@ $sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$
 return sql::call($sql,'',0);}
 
 static function req2($p,$lg=''){//***
-$qda=ses('qda'); $qdm=ses('qdm'); $wh='nod="'.ses('qb').'"';
+$qda=db('qda'); $qdm=db('qdm'); $wh='nod="'.ses('qb').'"';
 $wh.=' and '.$qda.'.re>3 and day>'.calctime(365);
 if($lg)$wh.=' and lg="'.$lg.'"';
 $sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day asc '.$limit;//collate utf8
@@ -99,19 +99,19 @@ return sql::call($sql,'',0);}
 
 static function req3($p){//favs
 $r=sql('ib','qdf','rv','type="'.$p.'" and iq="'.ses('iq').'"');
-$qda=ses('qda'); $qdm=ses('qdm'); $wh=$qda.'.id in("'.implode('","',$r).'")';
+$qda=db('qda'); $qdm=db('qdm'); $wh=$qda.'.id in("'.implode('","',$r).'")';
 $sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh;
 return sql::call($sql,'',0);}
 
 static function req4($p){//art
-$qda=ses('qda'); $qdm=ses('qdm'); $wh=$qda.'.id="'.$p.'"';
+$qda=db('qda'); $qdm=db('qdm'); $wh=$qda.'.id="'.$p.'"';
 $sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh;
 return sql::call($sql,'',0);}
 
 static function req5($p,$t){
 $ra=explode_k($p,',',':'); $r=[]; $rb=[]; $t=$ra['ti']??$t;
 $ra=api::defaults_rq($ra); //p($ra);
-$ra['preview']=3; $t=$ra['ti']??($ra['t']??''); //if($t)$t=normalize($t);
+$ra['preview']=3; $t=$ra['ti']??($ra['t']??''); //if($t)$t=str::normalize($t);
 if($ra)$r=api::datas($ra); //pr($r);
 if($r)foreach($r as $k=>$v)$rb[]=[$v['id'],$v['day'],$v['suj'],$v['txt']??($v['msg']??''),$v['lg']];
 return [$t,$rb];}

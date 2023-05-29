@@ -9,8 +9,8 @@ static function inject(){$ret='';
 $ra=msql::read('server','edition_typos','');
 if($ra)$vra=array_keys_r($ra,0,'k');
 $r=msql::read('','public_addfonts',''); if($r){$vr=array_shift($r);}
-$dir='fonts/'; $diru='users/'.$_SESSION['qb'].'/fonts/'; if(!is_dir($diru))mkdir($diru);
-if($r)foreach($r as $k=>$v){$font=normalize($v[0]); 
+$dir='fonts/'; $diru='users/'.ses('qb').'/fonts/'; if(!is_dir($diru))mkdir($diru);
+if($r)foreach($r as $k=>$v){$font=str::normalize($v[0]); 
 	if(!$vra[$font]){$rb=[$font,'','','','']; 
 		for($i=1;$i<count($v);$i++){$f=$font.'.'.$vr[$i]; $rc[]=$dir.$f; 
 			$ret.=self::copy($v[$i],$dir.$f).br();}//u

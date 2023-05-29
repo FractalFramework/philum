@@ -87,7 +87,7 @@ else{self::send_txt($to,$suj,$msg,$from,$url);}}
 static function send_user_mail($id,$lgtxt){//send_to_author
 $sender=$_SESSION['qbin']["adminmail"];
 [$kem,$suj]=sql('name,suj','qda','r','id="'.$id.'"');
-if($kem!=$_SESSION['USE']){
+if($kem!=ses('USE')){
 $nmsg=helps($lgtxt);//.br().br().$suj
 	$kmail=sql('mail','qdu','v','name="'.$kem.'"');
 	if($kmail!=$_SESSION['qbin']["adminmail"])

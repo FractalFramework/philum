@@ -358,7 +358,7 @@ static function pub_art($id,$tpl=''){$rst=$_SESSION['rstr'];
 $ra=ma::pecho_arts($id); if(!$ra)return;
 [$day,$frm,$suj,$amg,$nod,$thm,$lu,$name,$nbc,$src,$ib,$re,$lg]=arr($ra,13);
 $rt['url']=urlread($id); $rt['suj']=$suj;
-$rt['jurl']='content_mod,playmod__u_read_'.$id;
+$rt['jurl']=(rstr(85)?'popup':'content').'_mod,playmod__u_read_'.$id;
 $rt['purl']=(rstr(136)?'pagup':'popup').'_popart__3_'.$id.'_3';
 if($rst[32]!=1 && $amg)$rt['img1']=pop::art_img($amg,$id);
 if($rst[36]!=1){$rt['back']=art::back($id,$ib,$frm,0); $rt['cat']=$frm;}
@@ -378,7 +378,7 @@ if($ret)return divc('panel',$ret)."\n";}}
 static function m_publist($r,$tp){$ret='';
 if(is_array($r))foreach($r as $k=>$v){
 	$p['url']=urlread($k); $p['suj']=ma::suj_of_id($k); $p['id']=$k;
-	$p['jurl']='content_mod,playmod__u_read_'.$k;
+	$p['jurl']=(rstr(85)?'popup':'content').'_mod,playmod__u_read_'.$k;
 	$p['purl']=(rstr(136)?'pagup':'popup').'_popart__3_'.$k.'_3';
 	$ret.=art::template($p,$tp);}
 return divc('list',$ret);}

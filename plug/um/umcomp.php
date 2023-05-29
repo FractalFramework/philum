@@ -2,7 +2,7 @@
 class umcomp{
 static function req_artrk($p){//relations art-trk
 if($p=='All')$p='Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa';
-$qda=ses('qda'); $qdm=ses('qdm'); $qdi=ses('qdi');
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi');
 $sql='select '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,lg,'.$qdi.'.id as idb from '.$qda.'
 inner join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id 
 where '.$qda.'.frm in ("'.implode('","',explode(',',$p)).'")
@@ -12,7 +12,7 @@ return $r;}
 
 static function req_yndart($p,$lg){//relation art-ynd
 if($p=='All')$p='Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa';
-$qda=ses('qda'); $qdm=ses('qdm'); $qdi=ses('qdi'); $ynd=ses('ynd');
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $ynd=ses('ynd');
 $sql='select '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,lg,'.$ynd.'.txt from '.$qda.' 
 inner join '.$ynd.' on substring('.$ynd.'.ref,1,3)="art" and substring('.$ynd.'.ref,4)='.$qda.'.id and '.$ynd.'.lang="'.$lg.'" where '.$qda.'.frm in ("'.implode('","',explode(',',$p)).'") 
 order by '.$qda.'.day asc';
@@ -21,7 +21,7 @@ return $r;}
 
 static function req_yndtrk($p,$lg){//relation trk-ynd
 if($p=='All')$p='Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa';
-$qda=ses('qda'); $qdm=ses('qdm'); $qdi=ses('qdi'); $ynd=ses('ynd');
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $ynd=ses('ynd');
 $sql='select '.$qda.'.id,'.$qdi.'.id as idb,'.$ynd.'.txt as trk from '.$qda.'
 inner join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id 
 inner join '.$ynd.' on substring('.$ynd.'.ref,1,3)="trk" and substring('.$ynd.'.ref,4)='.$qdi.'.id and '.$ynd.'.lang="'.$lg.'" where '.$qda.'.frm in ("'.implode('","',explode(',',$p)).'")

@@ -68,7 +68,7 @@ static function content($p){
 $suj=ma::suj_of_id($p); $suj=html_entity_decode($suj);//str_replace("&nbsp;",' ',$suj);
 $author=sql::inner('tag','qdt','qdta','idtag','v',['cat'=>'auteurs','idart'=>$p]);
 [$cat,$source]=sql('frm,mail','qda','w',$p);
-$tag=$author?$author:($source?httproot($source):$cat); //$tag=ucwords(normalize($tag));//http_root
+$tag=$author?$author:($source?httproot($source):$cat); //$tag=ucwords(str::normalize($tag));//http_root
 //$utagr=sql::inner('tag','qdt','qdta','idtag','v','cat>0 and idart="'.$p.'"');
 //if($utagr)$tag=implode(' #',$utagr);
 $suj='['.$tag.'] '.$suj;
@@ -84,7 +84,7 @@ $pr=['onclick'=>$j,'onkeypress'=>$j,'class'=>'console','id'=>'twpost','cols'=>50
 $ret=tag('textarea',$pr,$ret).br();
 $r=self::apikeys(); if($r)foreach($r as $i=>$nm)
 	$ret.=lj('popbt',$rid.'_twit,send_twpost___'.$i,pictxt('send',$nm)).' ';//send
-$ret.=span(atd('strcount').atc('txtsmall'),'');
+$ret.=spn('','txtsmall','strcount');
 return divd($rid,$ret);}
 
 static function botshare($p,$o=4){//build mini before

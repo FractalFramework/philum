@@ -9,14 +9,14 @@ foreach($r as $v)unset($_SESSION[$v]);}
 
 #master_cnfg//qd
 static function master_params(){$f=self::cnf();
-$qd=ses('qd'); $aqb=ses('aqb'); $subd=ses('subd');
+$qd=db('qd'); $aqb=ses('aqb'); $subd=ses('subd');
 $d=is_file($f)?read_file($f):''; $prms=expl('#',$d,16);
 //else self::restore_mprm($f);
 if(!$qd){if(!$prms[0])$qd='pub'; else $qd=$prms[0];}//master_of_puppets
 if($qdb=get('qd')){$bqd=sqb('id',$qdb.'_user','v','limit 1');//master_node
 	if(!$bqd && !post('create_hub') && !post('create_node'))$qd=$prms[0]; else $qd=$qdb;}
-$_SESSION['qd']=$qd;
-$r=sqldb::$rt; foreach($r as $k=>$v)$_SESSION[$k]=$qd.'_'.$v;//defs
+$_SESSION['db']['qd']=$qd;
+$r=sqldb::$rt; foreach($r as $k=>$v)$_SESSION['db'][$k]=$qd.'_'.$v;//defs
 $prms['htacc']=$prms[1]=='yes'?1:'';
 $prms['create_hub']=$prms[2]=='yes'?'on':'off';
 $prms['default_hub']=$aqb?$aqb:($prms[3]?$prms[3]:'');//1
@@ -57,18 +57,18 @@ if($use && !isset($_SESSION['mn'][$use])){
 static function define_subdomain(){
 $r=explode('.',$_SERVER['HTTP_HOST']);
 if($r[2]){$aqb=$r[0]!='www'?$r[0]:$r[1]; 
-if($aqb!=$_SESSION['qb'])geta('hub',$aqb);}}
+if($aqb!=ses('qb'))geta('hub',$aqb);}}
 
 static function define_qb(){$hub=get('hub');
 $r=ses('mn'); $defo=prms('default_hub'); //if(!$hub)$hub=$defo;
 if($hub && $hub!='=' && isset($_SESSION['mn'][$hub])){$aqb=$hub; $qbd=$_SESSION['mnd'][$hub];}
 elseif($defo && !ses('qb'))[$qbd,$aqb]=arr(sql('id,name,hub','qdu','r',['name'=>$defo]),2);
 if(isset($aqb)){$_SESSION['qb']=$aqb; $_SESSION['qbd']=$qbd;}
-if(!ses('qbd') && ses('qb'))$_SESSION['qbd']=sql('id','qdu','v','name="'.$_SESSION['qb'].'"');}
+if(!ses('qbd') && ses('qb'))$_SESSION['qbd']=sql('id','qdu','v',['name'=>ses('qb')]);}
 
 static function prmb_defaults($cnfg){
 $pm=opt($cnfg,'#',28);
-//if(!$pm[0])$pm[0]=$_SESSION['qb'];//hub
+//if(!$pm[0])$pm[0]=ses('qb');//hub
 if(!$pm[1] or !is_numeric($pm[1]))$pm[1]='1';//mods
 if(!$pm[3])$pm[3]=400;//kmax
 if(!$pm[6])$pm[6]=20;//nb_arts_by_page
@@ -109,7 +109,7 @@ self::define_closed_hub();}
 static function time_system($cache){$prmb16=prmb(16); $gnbj=get('nbj'); $snbj=ses('nbj');
 if($gnbj){$_SESSION['nbj']=$gnbj; $cache='ok';}
 if((!$snbj or $cache=='ok') && !$gnbj){
-	if(rstr(3) or $prmb16=='auto')$_SESSION['nbj']=self::dayslength($_SESSION['qb'],50);
+	if(rstr(3) or $prmb16=='auto')$_SESSION['nbj']=self::dayslength(ses('qb'),50);
 	else{$_SESSION['dayb']=0; $_SESSION['nbj']='';}
 	if(is_numeric($prmb16))$_SESSION['nbj']=$prmb16;}
 if(!ses('daya') or date('d',$_SESSION['daya'])==date('d',$_SESSION['dayx']) or $cache=='ok')
@@ -134,7 +134,7 @@ return $_SESSION['lang'];}
 
 #current
 static function deductions($cache=''){$qb=ses('qb'); $rs=['',''];
-$qda=ses('qda'); $read=get('read'); $art=get('art'); $mod=get('module'); $ctx=get('context');
+$qda=db('qda'); $read=get('read'); $art=get('art'); $mod=get('module'); $ctx=get('context');
 $_SESSION['read']=''; $_SESSION['frm']='';
 if(!is_numeric($read) && $read)$art=$read;
 if($art){$read=ma::id_of_urlsuj($art); if($read)geta('read',$read);}
@@ -216,7 +216,7 @@ if($o)$_SESSION['cond']=$r; else return $r;}
 static function select_mods($d=''){
 if($d){$_SESSION['prmb1']=prmb(1); $_SESSION['prmb'][1]=$d;}
 elseif($_SESSION['prmb1']){$_SESSION['prmb'][1]=$_SESSION['prmb1']; $_SESSION['prmb1']='';}
-self::reset_mjx(); $_SESSION['modsnod']=$_SESSION['qb'].'_mods_'.prmb(1); 
+self::reset_mjx(); $_SESSION['modsnod']=nod('mods_'.prmb(1)); 
 self::define_mods(); self::define_condition();}
 
 #context
@@ -287,8 +287,8 @@ case('reboot'): $r=['qd','qb','USE','uid','iq','dev']; $rb=[];
 	foreach($r as $v)$rb[$v]=ses($v); $_SESSION=$rb; boot::init(); relod('/'); break;
 case('create_hub'): $_POST['create_hub']=ses('qb'); 
 	$ret=login::call(ses('qb'),'pass',''); break;
-case('off'): $qd=$_SESSION['qd']; $dev=$_SESSION['dev']; session_destroy();
-	$_SESSION['qd']=$qd; $_SESSION['dev']=$dev; relod('/?qd='.$qd); break;
+case('off'): $qd=db('qd'); $dev=$_SESSION['dev']; session_destroy();
+	$_SESSION['db']['qd']=$qd; $_SESSION['dev']=$dev; relod('/?qd='.$qd); break;
 case('down'): session_destroy(); relod('/'); break;}
 if($ret)alert($ret);}
 
@@ -299,7 +299,7 @@ static function ismbr($d){return sql('auth','qdb','v',['hub'=>ses('qb'),'name'=>
 static function define_auth(){$use=ses('USE');
 if(!ses('master'))$_SESSION['master']=sql('name','qdu','v',['name'=>prms('default_hub')]);
 if($use){if($use==$_SESSION['master'])$auth=7;
-	elseif($use==$_SESSION['qb'])$auth=6;
+	elseif($use==ses('qb'))$auth=6;
 	elseif($ath=self::ismbr($use))$auth=$ath;
 	else $auth=1;}
 else $auth=0;

@@ -36,7 +36,7 @@ $ret.=self::callr($ra); $f='_datas/html/'.str::hardurl($ra['file']).'.html'; $re
 write_file($f,$ret); return lkt('popw','/'.$f,pictxt('url',$ra['file']));}
 
 #sys
-static function search($d,$sq,$sg=''){$qda=ses('qda'); $qdm=ses('qdm');
+static function search($d,$sq,$sg=''){$qda=db('qda'); $qdm=db('qdm');
 $sq['inner'][]='natural join '.$qdm;
 $r=explode('|',$d); $seg=$sg?ses::$r['seg']=1:'';
 foreach($r as $k=>$v)
@@ -44,32 +44,32 @@ foreach($r as $k=>$v)
 	else $sq['and'][]=$qdm.'.msg LIKE "%'.($seg?' '.$v.' ':$v).'%"';
 return $sq;}
 
-static function search2($d,$sq){$qdm=ses('qdm');
+static function search2($d,$sq){$qdm=db('qdm');
 $a='MATCH (msg) AGAINST ("'.str_replace('|',' ',$d).'" IN BOOLEAN MODE)';
 $sq['slct'][]=$a.' as nb'; $sq['and'][]=$a;
 return $sq;}
 
-static function avoid($d,$sq){$qda=ses('qda'); $qdm=ses('qdm');
+static function avoid($d,$sq){$qda=db('qda'); $qdm=db('qdm');
 $sq['inner'][]='natural join '.$qdm;
 $r=explode('|',$d); foreach($r as $k=>$v)$sq['and'][]=$qdm.'.msg NOT LIKE "%'.$v.'%"';
 return $sq;}
 
-static function sql_date($date){$qda=ses('qda');
+static function sql_date($date){$qda=db('qda');
 [$y,$m,$d]=expl('-',$date,3); $dtr=[]; $dyr=[];
 if($y)$dtr[]=strlen($y)==4?'%Y':'%y'; if($m)$dtr[]='%m'; if($d)$dtr[]='%d'; $dt=implode('-',$dtr);
 if($y)$dyr[]=$y; if($m)$dyr[]=$m; if($d)$dyr[]=$d; $dy=implode('-',$dyr);
 //echo $ret='date_format(from_unixtime('.$qda.'.day),"'.$dt.'")="'.$dy.'"';
 $ret='date_format(date_add("1970-01-01 00:00:00",INTERVAL '.$qda.'.day second),"'.$dt.'")="'.$dy.'"';//neg
-//DATE_ADD('1970-01-01 00:00:00',INTERVAL '.ses('qda').'.day SECOND
+//DATE_ADD('1970-01-01 00:00:00',INTERVAL '.db('qda').'.day SECOND
 return $ret;}
 
 /*static function sql_tags_inner(){
-$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda');
+$qdt=db('qdt'); $qdta=db('qdta'); $qda=db('qda');
 return 'inner join '.$qdta.' on '.$qda.'.id='.$qdta.'.idart
 inner join '.$qdt.' on '.$qdt.'.id='.$qdta.'.idtag ';}*/
 
 /*static function sql_tags($tags,$cat){$r=explode('|',$tags);//accept negative -tags//!
-$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda'); $ret=''; $rb=[]; $rc=[]; $rd=[]; $sc='';
+$qdt=db('qdt'); $qdta=db('qdta'); $qda=db('qda'); $ret=''; $rb=[]; $rc=[]; $rd=[]; $sc='';
 if($cat=='utag')$ret.='cat>0 and '; elseif($cat)$sc='cat="'.$cat.'" and ';//$cat=ses('iq')
 foreach($r as $k=>$v){$cl=is_numeric($v)?$qdt.'.id':'tag';
 	if(substr($v,0,1)=='-')$rc[]=$cl.'!="'.substr($v,1).'"'; else $rb[]=$cl.'="'.$v.'"';}
@@ -78,12 +78,12 @@ if($rb)$ret.='('.implode(' or ',$rb).')'; if($rb)$ret.='';
 return $ret;}*/
 
 static function sql_tags_inner(){$n=self::$i++;
-$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda');
+$qdt=db('qdt'); $qdta=db('qdta'); $qda=db('qda');
 return 'inner join '.$qdta.' pm'.$n.' on '.$qda.'.id=pm'.$n.'.idart
 inner join '.$qdt.' m'.$n.' on m'.$n.'.id=pm'.$n.'.idtag ';}
 
 static function sql_tags_additive($tags,$cat){$r=explode('|',$tags);
-$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda'); $rb=[];
+$qdt=db('qdt'); $qdta=db('qdta'); $qda=db('qda'); $rb=[];
 $ret='inner join '.$qdta.' pm on '.$qda.'.id=pm.idart
 inner join '.$qdt.' m on m.id=pm.idtag and ';
 if($cat=='utag')$ret.='cat>0 and '; elseif($cat)$sc='cat="'.$cat.'" and ';//$cat=ses('iq')
@@ -95,7 +95,7 @@ return $ret;}
 
 static $i=0;
 static function sql_tags_combinative($tags,$cat){$r=explode('|',$tags);
-$qdt=ses('qdt'); $qdta=ses('qdta'); $qda=ses('qda'); $ret='';
+$qdt=db('qdt'); $qdta=db('qdta'); $qda=db('qda'); $ret='';
 foreach($r as $k=>$v){$i=self::$i++;
 	$ret.=' inner join '.$qdta.' pm'.$i.' on '.$qda.'.id=pm'.$i.'.idart
 inner join '.$qdt.' m'.$i.' on m'.$i.'.id=pm'.$i.'.idtag ';
@@ -104,8 +104,8 @@ inner join '.$qdt.' m'.$i.' on m'.$i.'.id=pm'.$i.'.idtag ';
 	if(is_numeric($v))$ret.='and m'.$i.'.id'.$tg; else $ret.='and m'.$i.'.tag'.$tg;}
 return $ret;}
 
-static function sql_lang($lg,$sq){if($lg=='all')return $sq;
-$qda=$_SESSION['qda'];
+static function sql_lang($lg,$sq){
+if($lg=='all')return $sq; $qda=db('qda');
 if(strpos($lg,'|'))$lg=str_replace('|','","',$lg);
 $sq['and'][]=$qda.'.lg in ("'.$lg.'")';
 return $sq;}
@@ -120,14 +120,14 @@ static function comp($v){$d=substr($v,0,1);
 if($d=='>' or $d=='<')return $d.'"'.substr($v,1).'"';}
 
 #sql
-static function mksql($r){$qda=ses('qda'); $in=''; $gr='';
+static function mksql($r){$qda=db('qda'); $in=''; $gr='';
 $p=valk($r,['count','select','json','sql','cat','nocat','nochilds','priority','notpublished','owner','hub','minday','maxday','from','until','mintime','maxtime','mindid','maxid','source','parent','nbchars','id','minid','lang','lg','search','search_whole','fullsearch','avoid','title','folder','related','relatedby','cmd','group','order','file','page','nbyp','idlist','media','catid','poll','cluster','date','msg','classtag','famous']);
 if($p['count'])$sq['slct'][]='count('.$qda.'.id)';
 elseif($p['select'])$sq['slct'][]=$p['select'];
 elseif($p['idlist'])$sq['slct'][]=$qda.'.id';
 else $sq['slct'][]=$qda.'.id,'.$qda.'.ib,'.$qda.'.day,'.$qda.'.mail,'.$qda.'.frm,'.$qda.'.suj,'.$qda.'.img,'.$qda.'.nod,'.$qda.'.thm,'.$qda.'.name,'.$qda.'.lu,'.$qda.'.re,'.$qda.'.host,'.$qda.'.lg';
 if($p['json'] or $p['sql'] or $p['msg'])$sq['slct'][]='msg';
-//if($p['catid']){$qdc=ses('qdc'); $sq['inner'][]='inner join '.$qdc.' on '.$qdc.'.id='.$qda.'.frm and '.$qda.'.frm="'.$p['catid'].'"';}
+//if($p['catid']){$qdc=db('qdc'); $sq['inner'][]='inner join '.$qdc.' on '.$qdc.'.id='.$qda.'.frm and '.$qda.'.frm="'.$p['catid'].'"';}
 if($p['cat'])$sq['and'][]=$qda.'.frm'.self::sql_in($p['cat']);
 //else $sq['and'][]='substring('.$qda.'.frm,1,1)!="_"';
 else $sq['and'][]=$qda.'.frm not in ("_system","_trash")';
@@ -139,7 +139,7 @@ if($p['notpublished']){if(auth(6))$sq['re'][]=$qda.'.re="0"';
 if($p['owner'])$sq['and'][]='name="'.$p['owner'].'"';
 //if($p['owner'])$sq['inner'][]=sql('id','qdu','v',['name'=>$p['owner']]);
 if($p['hub'])$sq['and'][]=$qda.'.nod="'.$p['hub'].'"'; //else $sq['and'][]=$qda.'.nod="'.ses('qb').'"';
-//if($p['hub']){$qdu=ses('qdu'); $sq['inner'][]='inner join '.$qdu.' on '.$qdu.'.id='.$qda.'.nod';}
+//if($p['hub']){$qdu=db('qdu'); $sq['inner'][]='inner join '.$qdu.' on '.$qdu.'.id='.$qda.'.nod';}
 if($p['minday'])$sq['and'][]=$qda.'.day>"'.timeago($p['minday']).'"';
 elseif($p['from'])$sq['and'][]=$qda.'.day>"'.strtotime($p['from']).'"';
 elseif($p['mintime'])$sq['and'][]=$qda.'.day>"'.$p['mintime'].'"';
@@ -158,10 +158,10 @@ if($p['search'])$sq=self::search($p['search'],$sq,$p['search_whole']);
 if($p['fullsearch'])$sq=self::search2($p['search'],$sq);
 if($p['avoid'])$sq=self::avoid($p['avoid'],$sq);
 if($p['title'])$sq['and'][]='suj LIKE "%'.$p['title'].'%"';
-if($p['folder']){$qdd=ses('qdd'); $sq['inner'][]='inner join '.$qdd.' on '.$qda.'.id='.$qdd.'.ib and val="folder" and '.$qdd.'.msg="'.$p['folder'].'"';}
-if($p['related']){$qdd=ses('qdd'); $sq['inner'][]='inner join '.$qdd.' on '.$qda.'.id='.$qdd.'.ib and val="related" and '.$qdd.'.ib="'.$p['related'].'"';}
-if($p['relatedby']){$qdd=ses('qdd'); $sq['inner'][]='inner join '.$qdd.' on '.$qda.'.id='.$qdd.'.ib and val="related" and '.$qdd.'.msg like "%'.$p['relatedby'].'%"';}
-if($p['poll']){$qdf=ses('qdf'); $sq['slct'][]='poll as nb'; $p['order']='nb';
+if($p['folder']){$qdd=db('qdd'); $sq['inner'][]='inner join '.$qdd.' on '.$qda.'.id='.$qdd.'.ib and val="folder" and '.$qdd.'.msg="'.$p['folder'].'"';}
+if($p['related']){$qdd=db('qdd'); $sq['inner'][]='inner join '.$qdd.' on '.$qda.'.id='.$qdd.'.ib and val="related" and '.$qdd.'.ib="'.$p['related'].'"';}
+if($p['relatedby']){$qdd=db('qdd'); $sq['inner'][]='inner join '.$qdd.' on '.$qda.'.id='.$qdd.'.ib and val="related" and '.$qdd.'.msg like "%'.$p['relatedby'].'%"';}
+if($p['poll']){$qdf=db('qdf'); $sq['slct'][]='poll as nb'; $p['order']='nb';
 	if($p['poll']=='all')$wp=''; else $wp='and type="'.$p['poll'].'"';
 	$sq['inner'][]='inner join '.$qdf.' on '.$qda.'.id='.$qdf.'.ib '.$wp;}
 if($p['cluster']){$rt=sql::inner('tag','qdt','qdtc','idtag','rv',['word'=>$p['cluster']]);
@@ -175,13 +175,13 @@ if($p['lg']){$ynd=ses('ynd'); $sq['slct'][]='txt';
 $ut=explode(' ','utag tag '.prmb(18)); $ut[]=ses('iq'); $n=count($ut);
 for($i=0;$i<$n;$i++)if($ut[$i]){$tags=$r[$ut[$i]]??'';
 	if($tags)$sq['inner'][]=self::sql_tags_combinative($tags,$ut[$i]);}
-if($p['cmd']=='tracks'){$qdi=ses('qdi'); //$sq['slct']=[$qda.'.id'];//todo:use datas
+if($p['cmd']=='tracks'){$qdi=db('qdi'); //$sq['slct']=[$qda.'.id'];//todo:use datas
 	$sq['inner'][]='inner join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id';}
-if($md=$p['media']){$qdm=ses('qdm');
+if($md=$p['media']){$qdm=db('qdm');
 	if($md=='mp3')$md='.'.$md; elseif($md=='img')$md='.jpg'; else $md=':'.$md.']';
 	$sq['inner'][]='natural join '.$qdm;
 	$sq['and'][]='msg like "%'.$md.'%"';}
-if(($p['json'] or $p['sql'] or $p['msg']) && !$p['search']){$qdm=ses('qdm');
+if(($p['json'] or $p['sql'] or $p['msg']) && !$p['search']){$qdm=db('qdm');
 	//$sq['inner'][]='natural join '.$qdm;//not works
 	$sq['inner'][]='inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id';}
 if($p['group'])$sq['ord'][]='group by '.$qda.'.id';
@@ -251,7 +251,7 @@ if($t && !empty($ra[$t])){$ti=$ra['t']??$ra[$t];//used for num tags
 	if(is_numeric($ti))$ti=sql('tag','qdt','v',['id'=>$ti]);
 	if(!empty($ra['minday']) && $ra['minday']>7)$dpg='/'.$ra['minday'];
 	if($ra['page']>1)$dpg.='/page/'.$ra['page'];
-	$lk=eradic_acc($t).'/'.str::protect_url($ra[$t]).$dpg;//eradic_acc
+	$lk=str::eradic_acc($t).'/'.str::protect_url($ra[$t]).$dpg;//eradic_acc
 	$ret.=$pic.lka($lk,tagb('h3',$ti.$nboc)).' ';}
 elseif(!empty($ra['t']))$ret.=divd('titles',tagb('h3',$ra['t'].$nboc));
 $ret.=lj('popbt','popup_api,com_hid'.$ra['rid'],nbof($ra['nbarts'],1)).'';
@@ -355,7 +355,7 @@ return self::load($ra);}
 
 static function tracks($t){//tracks
 $ra=self::arts_rq('',ses('nbj'));
-//$ra['select']=ses('qda').'.id,'.ses('qdi').'.re';
+//$ra['select']=db('qda').'.id,'.db('qdi').'.re';
 $ra['cmd']='tracks'; $ra['preview']=1; $ra['t']=$t;
 //$ra['seesql']=1; p($ra);
 return self::load($ra);}
@@ -423,7 +423,7 @@ static function tag_id($d){
 return sql('cat,tag','qdt','w',['id'=>$d]);}
 
 static function detect_uget($d=''){$ut=explode(' ',$d.' '.prmb(18));
-if($ut)foreach($ut as $k=>$v){$vb=eradic_acc($v); if($g=get($vb))
+if($ut)foreach($ut as $k=>$v){$vb=str::eradic_acc($v); if($g=get($vb))
 	return [$vb,urldecode($g),urldecode($v)];}}
 
 //mod-articles
@@ -481,7 +481,7 @@ return self::mod_row_prw($r,$ra);}
 
 static function mod($p){
 $ra=explode_k($p,',',':');
-$ra=self::defaults_rq($ra); $ra['select']=ses('qda').'.id,re';
+$ra=self::defaults_rq($ra); $ra['select']=db('qda').'.id,re';
 if($ra['verbose']??'')p($ra);
 if($ra)$sql=self::mksql($ra);
 if($ra['sql']??'')echo $sql;

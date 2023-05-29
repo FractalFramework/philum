@@ -386,7 +386,7 @@ $ret=self::sconn_html($p,$o,$c);
 if(!$ret)$ret=match($c){
 //elements
 ':tag'=>tagb($p,$o),
-':span'=>$p?span($o,$p):'',
+':span'=>$p?spn($p,$o):'',
 ':css'=>$p?btn($o,$p):'',
 ':div'=>$p?div($o,$p):'',
 ':divc'=>$p?divc($o,$p):'',

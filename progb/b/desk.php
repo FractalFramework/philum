@@ -8,12 +8,13 @@ static $rid='dk';
 static function read($v){$ret='';
 if($v[1]=='app'){[$a,$m]=expl(',',$v[2]);
 	return 'popup_'.$a.','.($m?$m:'home').'__3_'.ajx($v[3]).'_'.ajx($v[4]);}
+$tg=rstr(85)?'popup':'content';
 return match($v[1]){//p/t/d/o/c/h/tp/br
-'art'=>'content_popart__3_'.$v[3].'_3_'.$v[4],
+'art'=>$tg.'_popart__3_'.$v[3].'_3_'.$v[4],
 'ajax'=>$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
 'popup'=>'popup_'.$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
 'desktop'=>'popup_desk,deskroot__3_'.$v[2].'_'.$v[3].'_'.$v[4],//type
-'module'=>'content_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]),
+'module'=>$tg.'_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]),
 'modin'=>'content_mod,callmod__3_'.ajx($v[3]),//alias of module not in desk
 'modpop'=>'popup_mod,callmod__3_'.ajx($v[3]),//alias of module in desk
 'page'=>'page_mod,playcontext__3_'.ajx($v[3]),//from desk(use $v[2])

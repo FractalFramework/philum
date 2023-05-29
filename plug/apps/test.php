@@ -13,7 +13,7 @@ $rh=msql::read_b('lang','admin_modules','',1);
 $rb=msql::read_b('',nod('test_1')); $ret=[];
 $t=divc('txtcadr',count($r).' modules');
 foreach($r as $k=>$v){
-	$rid=normalize('prm'.$k); $j='popup_test,playmod_'.$rid.'_3_'.ajx($k);
+	$rid=str::normalize('prm'.$k); $j='popup_test,playmod_'.$rid.'_3_'.ajx($k);
 	$ret[]=[$k,$rh[$k][0],inputj($rid,valr($rb,$k,0),$j),lj('',$j,picto('ok'))];}
 return $t.tabler($ret);}
 
@@ -28,7 +28,7 @@ $rh=msql::read_b('lang','connectors_all','',1);
 $rb=msql::read_b('',nod('test_2')); $i=0;
 foreach($r as $k=>$v)if(substr($k,0,1)!=':' && !$v[1]){$tst=valr($rb,$k,0); $i++;
 	if(!$tst)$tst=between($rh[$k][0],'[',':'); 
-	$rid=normalize('prm'.$k); $j='popup_test,playconn_'.$rid.'__'.ajx($k);
+	$rid=str::normalize('prm'.$k); $j='popup_test,playconn_'.$rid.'__'.ajx($k);
 	$ret[]=[$k,$rh[$k][0],inputj($rid,$tst,$j),lj('',$j,picto('ok'))];}
 $t=divc('txtcadr',$i.' connectors');
 return $t.tabler($ret);}

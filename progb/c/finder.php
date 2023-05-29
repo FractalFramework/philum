@@ -1,9 +1,9 @@
 <?php 
 class finder{
 //utils
-static function normalize($n){//let the "/"
+static function str::normalize($n){//let the "/"
 $n=str_replace([" ","'",'"',"?","ï¿½",",",";",":","!","%","&","$","#","_","+","!","\n","\r","\0","[\]","~","(",")","[","]",'{','}',"§","|"],"",($n));
-return eradic_acc($n);}
+return str::eradic_acc($n);}
 
 static function mkprm($r,$d='',$n='',$ar=''){
 if(!is_array($r))$r=opt('','/',7);//$d?
@@ -23,14 +23,14 @@ if($r[0]=='shared' or $r[0]==''){if(auth(4)){
 	$ret.=self::mnu($r,$p,'virtual',2,1).self::mnu($r,$p,'real',2).' | ';}}
 //elseif($r[3]=='list' or $r[3]=='')
 //	$ret.=self::mnu($r,$p,'normal',4,1).self::mnu($r,$p,'recursive',4).' | ';
-if(auth(4))$ret.=self::mnu($r,'','shared',0,1).self::mnu($r,$_SESSION['qb'],'disk',0).' | ';
+if(auth(4))$ret.=self::mnu($r,'','shared',0,1).self::mnu($r,ses('qb'),'disk',0).' | ';
 $ret.=self::mnu($r,$p,'flap',3,1).self::mnu($r,$p,'icons',3); $ret.=' | ';
 //$ret.=self::mnu($r,$p,'panel',3).self::mnu($r,$p,'list',3);
 //$ret.=self::mnu($r,$p,'pictos',6,1,1).self::mnu($r,$p,'mini',6,'',1).' | ';
 if($r[0]=='shared' or $r[0]==''){if(auth(4)){
 	if($r[1]=='global')$ret.=self::mnu($r,$p,'update',5);
 	if($r[1]=='global')$ret.=msqbt('server','shared_files');
-	elseif($r[1]!='distant')$ret.=msqbt('',$_SESSION['qb'].'_shared');}}
+	elseif($r[1]!='distant')$ret.=msqbt('',nod('shared'));}}
 return $ret;}
 
 static function nms($d){
@@ -135,16 +135,16 @@ return $ret?br().br().$ret:'';}
 static function fparent($p,$id,$t,$sc=''){
 if($sc)$p=struntil($p,'/'); $j=ajx($p); $o=$_SESSION['fio'];
 if(strprm($o)=='shared')$p=$id; elseif(strpos($p,'/')===false){
-	$p='fndr'; $_SESSION['fio']=self::mkprm($o,'',5);} else $p=normalize($p); 
+	$p='fndr'; $_SESSION['fio']=self::mkprm($o,'',5);} else $p=str::normalize($p); 
 if(strprm($o,1)=='distant')return btn('txtyl',$t);
 return lj('txtyl',$p.'_finder,home___'.$j.'_auto',$t);}
 
 static function rename($d,$id,$prm=[]){
-$dr='users/'; $res=$prm?self::normalize($prm[0]):''; $not='';
+$dr='users/'; $res=$prm?self::str::normalize($prm[0]):''; $not='';
 if(!$res){$j=$id.'firnm_finder,rename_'.$id.'frnm__'.ajx($d).'_'.$id;
 	$ret=input($id.'frnm',$d).' '.lj('popsav',$j,'ok');}
 elseif(auth(3)){mkdir_r($dr.$res); $ra=explode('/',$res);
-	if($ra[0]==$_SESSION['qb']){$ok=rename($dr.$d,$dr.$res);//chmod($dr.$res,0775); 
+	if($ra[0]==ses('qb')){$ok=rename($dr.$d,$dr.$res);//chmod($dr.$res,0775); 
 		if($ok)self::share_rename($res,$d);} else $not='not_';
 	$ret=self::fparent($d,$id.'firnm',$not.'saved',1);}
 return $ret;}
@@ -180,7 +180,7 @@ return self::flapf($dr,'disk/////alone/');}
 static function newdir($d,$id,$prm){$dr='users/'; $res=$prm[0]??'';//!is_dir($d)?'../'
 if(!$res){$j=$id.'finew_finder,newdir_fnew__'.$d.'_'.$id.'__'.$id;
 $ret=input($id.'fnew',$d.'/new').' '.lj('popsav',$j,'ok');}//chmod($dr.$d,0777);
-elseif(strprm($res,0)==$_SESSION['qb']){mkdir_r($dr.$res);
+elseif(strprm($res,0)==ses('qb')){mkdir_r($dr.$res);
 $ret=self::fparent($d,$id.'finew','ok');} else $ret=btn('txtyl','forbidden');
 return $ret;}
 
@@ -193,11 +193,11 @@ walk_dir($j,"removef"); rmdir($j);
 return self::fparent($d,$id.'fidld','deleted',1);}
 
 static function download($d,$id,$prm){$dr='users/'; $drd=self::droot();
-if(!$prm){$nnm=$_SESSION['qb'].'/downoalds/'.strend($d,'/');
+if(!$prm){$nnm=ses('qb').'/downoalds/'.strend($d,'/');
 	$j=$id.'fidwn_finder,download_'.$id.'fdwn__'.ajx($d).'_'.$id;
 	$ret=btn('txtsmall','target:').input($id.'fdwn',$nnm).' '.lj('txtbox',$j,'ok');}
 elseif(auth(3)){$res=$prm[0]??''; $ra=explode('/',$res);
-	if($ra[0]==$_SESSION['qb']){mkdir_r($dr.$res); copy($drd.$d,$dr.$res);} 
+	if($ra[0]==ses('qb')){mkdir_r($dr.$res); copy($drd.$d,$dr.$res);} 
 	else $not='not_'; $ret=self::fparent($d,$id.'fidwn',$not.'saved',1);}
 return $ret;}
 
@@ -239,7 +239,7 @@ if($xt && is_file($f)){
 	case('.pdf'):$ret.=lj('','popup_mk,pdfplayer___'.ajx(host().'/'.$f),self::pic('pdf',32)); break;}}
 return self::finfo($d,$id,$f,$dj).br().$ret;}
 
-static function dirinfo($d,$o){$id='fed'.normalize($d); $s=strpos($d,'/'); $ret='';
+static function dirinfo($d,$o){$id='fed'.str::normalize($d); $s=strpos($d,'/'); $ret='';
 //$ret=btn('popbt',pictxt('folder2',$d)).' ';
 if($s)$ret.=blj('',$id.'firnm','finder,rename___'.ajx($d).'_'.$id,self::pic('rename')).' ';
 $ret.=blj('',$id.'finew','finder,newdir___'.ajx($d).'_'.$id,self::pic('new')).' ';
@@ -262,7 +262,7 @@ return mc::assistant($id,'SaveJ',$j,'http://','');}
 //render
 static function data($r,$p,$rb){
 if(!$r)return [['f'=>'empty']]; if($p)$p.='/'; //ksort($r);
-foreach($r as $k=>$v){$rc=[]; $rc['id']=normalize($p.$k); $rc['pid']=normalize($p);
+foreach($r as $k=>$v){$rc=[]; $rc['id']=str::normalize($p.$k); $rc['pid']=str::normalize($p);
 if(!is_numeric($k) or is_array($v)){$rc['r']=1; $rc['f']=$k; $nf=count($v); $nbd=0;
 	if(is_array($v)){foreach($v as $ka=>$va){if(!is_numeric($ka))$nbd++;}}
 	$rc['nbd']=$nbd; $rc['opt']=btn('txtsmall2','('.$nf.')');//nbof(,51)
@@ -320,7 +320,7 @@ return divc('',$ret);}
 
 static function recursive($r,$p,$rb){
 $o=self::mkprm($rb,'alone',5); $ret='';
-foreach($r as $k=>$v){$id=normalize($p.$k);
+foreach($r as $k=>$v){$id=str::normalize($p.$k);
 	$lk=toggle('',$id.'_finder,home___'.ajx($p.'/'.$k).'_'.$o,$k);
 	if(is_array($v))$rte=self::recursive($v,$p.'/'.$k,$rb); else $rte='';
 		$div=div(atc('fisub').atd($id),$rte);
@@ -333,7 +333,7 @@ foreach($r as $k=>$v){if(isset($v['j'])){
 	$ico=$v['img']??''; if(!$ico)$ico=mimes($v['typ'],'','32');
 	//$ico=isset($v['typ'])?$im:'';
 	$conn=$v['conn']??'';
-	//$div=span(atc('').atd($v['id']),'');
+	//$div=spn('','',$v['id']);
 	//if($v['r'])$lk=toggle('icones','popup_finder,home___'.$v['j'].$o,$ico.br().$v['f']);
 	if($v['r'])$lk=lj('icones','popup_finder,home___'.$v['j'].$o,$ico.br().$v['f']);
 	else $lk=ljb('icones','insert',$conn,$ico.br().$v['f']).' ';
@@ -371,7 +371,7 @@ foreach($r as $k=>$v){if(isset($v['r'])){
 	if($xt=='.mp3')$mp3=1; if($xt=='.jpg')$jpg=1; 
 	$lk=lj('','popup_finder,reader___'.$j.$dist,etc($f,40)).' ';
 	if(!auth(4))$sh=lkc('','app/download/'.base64_encode($furl),self::pic('download'));
-	elseif($prop==$_SESSION['qb']){
+	elseif($prop==ses('qb')){
 		$sh=self::info_shared($url,randid());//share
 		$sh.=blj('',$k.'firnm','finder,rename___'.ajx($url).'_'.$k,self::pic('rename')).' ';
 		$sh.=blj('',$k.'fidel','finder,del___'.ajx($url).'_'.$k,self::pic('delete')).' ';}
@@ -409,7 +409,7 @@ if(strprm($o)=='shared')$o=self::mkprm(explode('/',$o),'',4);
 if($o)$_SESSION['fio']=$o; $_SESSION['fip']=$p; $rb=opt($o,'/',7);
 if($rb[1]!='distant' && strpos($p,'.')!==false)$p='';//good_p//not for distant and .
 if($rb[0]=='disk' && $rb[3]!='icon'){$rb[1]='';
-	if(!$p && !auth(6))$p=$_SESSION['qb']?$_SESSION['qb']:'dev';}
+	if(!$p && !auth(6))$p=ses('qb');}//,'dev'
 $ra=explode('/',$p);
 $_SESSION['droot']=$rb[1]=='distant'?'http://'.$ra[0].'/'.$jc:$jc;
 if($rb[5]=='update'){self::shared_files(); self::distrib_share(); $rb[5]='';}

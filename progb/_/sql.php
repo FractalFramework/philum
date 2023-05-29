@@ -33,20 +33,20 @@ static function qrid($sql,$o=''){self::qr($sql,$o); return mysqli_insert_id(self
 //act
 static function sav($b,$r,$o='',$vrf=''){
 if($vrf){$r=sqldb::vrfr($r,$b); if(sqldb::$er)return;}
-return self::qrid('insert into '.ses($b).' values '.self::atmra($r,1),$o);}
+return self::qrid('insert into '.db($b).' values '.self::atmra($r,1),$o);}
 static function savi($b,$r,$o='',$vrf=''){if($vrf)$r=sqldb::vrfr($r,$b);//with ai
-return self::qrid('insert into '.ses($b).' values '.self::atmra($r,0),$o);}
+return self::qrid('insert into '.db($b).' values '.self::atmra($r,0),$o);}
 static function sav2($b,$r,$ai=1,$o=''){//multiples
-return self::qrid('insert into '.ses($b).' values '.self::atmrb($r,$ai),$o);}
+return self::qrid('insert into '.db($b).' values '.self::atmrb($r,$ai),$o);}
 static function upd($b,$r,$q,$o='',$vrf=''){if($vrf)$r=sqldb::vrfr($r,$b);//sqlup
-self::qr('update '.ses($b).' set '.self::atmrak($r).' '.self::where($q),$o);}
+self::qr('update '.db($b).' set '.self::atmrak($r).' '.self::where($q),$o);}
 static function savup($b,$r,$o=''){$ex=self::read('id',$b,'v',$r,$o);
 if($ex)return self::upd($b,$r,$ex,$o); else return self::sav($b,$r,$o);}
 static function del($b,$q,$o='',$ob=''){
-self::qr('delete from '.ses($b).' '.self::where($q).' limit 1',$o);
+self::qr('delete from '.db($b).' '.self::where($q).' limit 1',$o);
 if($ob)self::reflush($b,1);}
 static function del2($b,$q,$o='',$ob=''){if(!auth(6))return;
-self::qr('delete from '.ses($b).' '.self::where($q),$o);
+self::qr('delete from '.db($b).' '.self::where($q),$o);
 if($ob)self::reflush($b,1);}
 
 //req
@@ -113,36 +113,36 @@ if($rb)$ret=implode(' and ',$rb); else return $w;
 if($ret)return 'where '.$ret.$w;}
 
 static function read($d,$b,$p,$q,$z=''){//sql
-$sql='select '.$d.' from '.$_SESSION[$b].' '.self::where($q);
+$sql='select '.$d.' from '.db($b).' '.self::where($q);
 if($z)echo $sql; $rq=self::qr($sql); $ret=$p=='v'?'':[];
 if($rq){$ret=self::format($rq,$p); self::qrf($rq);}
 return $ret;}
 
 static function read2($d,$b,$p,$q,$z=''){//no where//sqb
-$sql='select '.$d.' from '.ses($b).' '.$q;
+$sql='select '.$d.' from '.db($b).' '.$q;
 if($z)echo $sql; $rq=self::qr($sql); $ret=$p=='v'?'':[];
 if($rq){$ret=self::format($rq,$p); self::qrf($rq);}
 return $ret;}
 
 static function com($d,$b,$q=[],$z=''){//sqr
-$sql='select '.$d.' from '.ses($b).' '.self::where($q);
+$sql='select '.$d.' from '.db($b).' '.self::where($q);
 return self::qr($sql,$z);}
 
 static function call($sql,$p='',$z=''){$rq=self::qr($sql,$z);
 if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq); return $ret;}}
 
 static function inner($d,$b1,$b2,$k2,$p,$q,$z=''){
-if($d==$k2)$d=ses($b2).'.'.$d;
-$sql='select '.$d.' from '.ses($b1).' inner join '.ses($b2).'
-on '.ses($b1).'.id='.ses($b2).'.'.$k2.' '.self::where($q);
+if($d==$k2)$d=db($b2).'.'.$d;
+$sql='select '.$d.' from '.db($b1).' inner join '.db($b2).'
+on '.db($b1).'.id='.db($b2).'.'.$k2.' '.self::where($q);
 $rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
 if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
 return $ret;}
 
 static function inner2($d,$b1,$b2,$k2,$b3,$k3,$p,$q,$z=''){
-$sql='select '.$d.' from '.ses($b1).' 
-inner join '.ses($b2).'on '.ses($b1).'.id='.ses($b2).'.'.$k2.'
-inner join '.ses($b3).'on '.ses($b2).'.id='.ses($b3).'.'.$k3.' '.self::where($q);
+$sql='select '.$d.' from '.db($b1).' 
+inner join '.db($b2).'on '.db($b1).'.id='.db($b2).'.'.$k2.'
+inner join '.db($b3).'on '.db($b2).'.id='.db($b3).'.'.$k3.' '.self::where($q);
 $rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
 if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
 return $ret;}
@@ -151,29 +151,29 @@ return $ret;}
 static function setutf8(){self::$qr->query('set names utf8mb4');}
 static function setlatin(){self::$qr->query('set names latin1');}
 static function tables($db){return self::call('show tables from '.$db,'rv');}
-static function resetdb($b,$n=1){self::qr('alter table '.ses($b).' auto_increment='.$n);}
-static function drop($b){if(auth(6)){self::backup($b); self::qr('drop table '.ses($b));}}
-static function trunc($b){if(auth(6)){self::backup($b); self::qr('truncate '.ses($b)); self::resetdb($b);}}
-static function ex($b,$z=''){$rq=self::qr('show tables like "'.ses($b).'"',$z); return mysqli_num_rows($rq)>0;}
-static function reflush($b,$o=''){self::qr('alter table '.ses($b).' order by id');
+static function resetdb($b,$n=1){self::qr('alter table '.db($b).' auto_increment='.$n);}
+static function drop($b){if(auth(6)){self::backup($b); self::qr('drop table '.db($b));}}
+static function trunc($b){if(auth(6)){self::backup($b); self::qr('truncate '.db($b)); self::resetdb($b);}}
+static function ex($b,$z=''){$rq=self::qr('show tables like "'.db($b).'"',$z); return mysqli_num_rows($rq)>0;}
+static function reflush($b,$o=''){self::qr('alter table '.db($b).' order by id');
 if($o){$n=ma::lastid($b); if($n)self::resetdb($b,$n+1);}}
-static function tuples($b,$c){return self::call('select count(*) as tuples, '.$c.' from '.ses($b).' group by '.$c.' having count(*)>1 order by tuples desc','w');}
-static function doublons($b,$c){$b=ses($b); return self::call('SELECT COUNT(*) AS nbr_doublon, '.$c.' FROM '.$b.' GROUP BY '.$c.' HAVING COUNT(*)>1','w');}
-static function killdoublons($b,$c){$b=ses($b); if(auth(6))return self::call('DELETE t1 FROM '.$b.' AS t1, '.$b.' AS t2 WHERE t1.id > t2.id AND t1.'.$c.' = t2.'.$c.'','w');}
-static function maintenance($k,$v,$b1,$b2){return self::read2($k.','.$v,$b1,'kv','p1 left outer join '.ses($b2).' p2 on p2.id=p1.'.$k.' where p2.id is null group by '.$k,1);}//maintenance('idtag','tag','qdta','qdt');
-static function backup($b,$o=''){$bb='z_'.ses($b).$o; $b2=$b.'z'; ses($b2,$bb);
+static function tuples($b,$c){return self::call('select count(*) as tuples, '.$c.' from '.db($b).' group by '.$c.' having count(*)>1 order by tuples desc','w');}
+static function doublons($b,$c){$b=db($b); return self::call('SELECT COUNT(*) AS nbr_doublon, '.$c.' FROM '.$b.' GROUP BY '.$c.' HAVING COUNT(*)>1','w');}
+static function killdoublons($b,$c){$b=db($b); if(auth(6))return self::call('DELETE t1 FROM '.$b.' AS t1, '.$b.' AS t2 WHERE t1.id > t2.id AND t1.'.$c.' = t2.'.$c.'','w');}
+static function maintenance($k,$v,$b1,$b2){return self::read2($k.','.$v,$b1,'kv','p1 left outer join '.db($b2).' p2 on p2.id=p1.'.$k.' where p2.id is null group by '.$k,1);}//maintenance('idtag','tag','qdta','qdt');
+static function backup($b,$o=''){$bb='z_'.db($b).$o; $b2=$b.'z'; db($b2,$bb);
 if(self::ex($b2))self::qr('drop table '.$bb);
-self::qr('create table '.$bb.' like '.ses($b));
-self::qr('insert into '.$bb.' select * from '.ses($b)); return $bb;}
-static function rollback($b){$bb='z_'.ses($b); $b2=$b.'z'; ses($b2,$bb);
-if(self::ex($b2) && auth(6))self::qr('drop table '.ses($b)); else return;
-self::qr('create table '.ses($b).' like '.$bb); self::qr('insert into '.ses($b).' select * from '.$bb); return $bb;}
-static function cols($b){return self::call('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from INFORMATION_SCHEMA.COLUMNS where table_name="'.ses($b).'"','rr');}
+self::qr('create table '.$bb.' like '.db($b));
+self::qr('insert into '.$bb.' select * from '.db($b)); return $bb;}
+static function rollback($b){$bb='z_'.db($b); $b2=$b.'z'; db($b2,$bb);
+if(self::ex($b2) && auth(6))self::qr('drop table '.db($b)); else return;
+self::qr('create table '.db($b).' like '.$bb); self::qr('insert into '.db($b).' select * from '.$bb); return $bb;}
+static function cols($b){return self::call('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from INFORMATION_SCHEMA.COLUMNS where table_name="'.db($b).'"','rr');}
 
 static function replace($b,$c,$a,$ab){
-return qr('update '.ses($b).' set '.$c.'=REPLACE('.$c.',"'.$a.'","'.ab.'");');}
+return qr('update '.db($b).' set '.$c.'=REPLACE('.$c.',"'.$a.'","'.ab.'");');}
 
-static function optimize($db){$b=ses($db); 
+static function optimize($db){$b=db($db); 
 self::qr('rename table '.$b.' to '.$b.'a;');
 self::qr('create table '.$b.' like '.$b.'a');
 self::qr('insert into '.$b.' select * from '.$b.'a');

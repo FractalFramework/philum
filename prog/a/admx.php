@@ -391,18 +391,19 @@ $_SESSION['rstr'][$slct]=$restrict;
 if($_SESSION['rstr'][63]==1)$_SESSION['negcss']=0;
 self::backup_rstr('save');}
 
-static function showparamscat($r,$h){$ron=1;$fon=0; $j='lang_admin*restrictions_';
-foreach($r as $k=>$v){
-//$hlp=bubble('txtsmall2','usg,popmsqt',$j.$k.'_description',$k);
-$hlp=togbub('usg,popmsqt',$j.$k.'_description',$k,'txtsmall2');
-$t=$h[$k][0]??$v; if(rstr($k)){$n=1; $c='';} else {$n=0; $c='active';}
-$ret[]=togon($n).' '.btn('',lj('','rstr_admx,showparams___'.$k.'_'.$n,$t)).$hlp.br();}
-return divc('nbp cols',implode('',$ret));
-return divc('nbp',self::colonize($ret,3,'','',550));}
-
 static function colonize($re,$prm,$id,$cls,$w='',$b=''){$b=$b?'div':'ul';
 $w=$w?$w:cw()-10; $ret=onxcols($re,$prm,$w); $p=atd($id).atc($cls);
 return tag($b,$p,$ret).divc('clear','');}
+
+static function showparamscat($r,$h){
+$j='lang_admin*restrictions_';
+foreach($r as $k=>$v){
+//$hlp=bubble('txtsmall2','usg,popmsqt',$j.$k.'_description',$k);
+$hlp=togbub('usg,popmsqt',$j.$k.'_description',$k,'txtsmall2');
+$t=$h[$k][0]??$v; if(rstr($k)){$n=1; $c='';} else{$n=0; $c='active';}
+$ret[]=valid($n).' '.btn('',lj('','rstr_admx,showparams___'.$k.'_'.$n,$t)).$hlp.br();}
+return divc('nbp cols',implode('',$ret));
+return divc('nbp',self::colonize($ret,3,'','',550));}
 
 static function showparams($slct,$restrict){$rb=[];
 $r=msql::prep('system','admin_restrictions');
@@ -410,6 +411,20 @@ $h=msql::read('lang','admin_restrictions');
 if($slct && auth(6))self::modifparams($slct,$restrict);
 foreach($r as $k=>$v)$rb[$k]=self::showparamscat($v,$h); ksort($rb);
 return tabs($rb,'rst');}
+/**/
+static function mdfrstr($p,$n){$rt=[];
+if($p && auth(6))self::modifparams($p,$n);
+return valid($n);}
+
+/**/static function showparams0(){$rb=[];
+$r=msql::prep('system','admin_restrictions');
+$h=msql::read('lang','admin_restrictions');
+foreach($r as $k=>$v)foreach($v as $ka=>$va){
+	$hlp=togbub('usg,popmsqt','lang_admin*restrictions_'.$ka.'_description',$ka,'txtsmall');
+	$t=$h[$ka][0]??$v; if(rstr($ka))$n=1; else $n=0;
+	$rb[$k][$ka]=divb(btd('rstr'.$ka,valid($n)).' '.btn('',lj('','rstr'.$ka.'_admx,mdfrstr___'.$ka.'_'.$n,$t)).$hlp);}
+foreach($rb as $k=>$v)$rt[]=tagb('h2',$k).divb(implode($v),'nbp');
+return divc('cols',implode('',$rt));}
 
 static function getrstr($b){
 if($b=='defaults')$_SESSION['rstr']=self::defaults_rstr(0);

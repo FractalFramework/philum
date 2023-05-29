@@ -10,7 +10,7 @@ return $rb;}
 
 static function build($ra,$cat){$limit='limit 10000';
 //$r=msql::read_b('',nod(self::$a.'_1'));//p($r);
-$qda=ses('qda'); $add=ses('qdd'); $qdf=ses('qdf'); $qdt=ses('qdt'); $qdta=ses('qdta');
+$qda=db('qda'); $add=db('qdd'); $qdf=db('qdf'); $qdt=db('qdt'); $qdta=db('qdta');
 foreach($ra as $k=>$v){switch($k){
 //case('cat'):$r[$k]=sql('id','qdk','kv','frm="'.$v.'"'); break;
 case('jdapoll'):$r[$k]=sql('ib,msg','qdd','kv','val="jdapoll" order by cast(msg as unsigned integer) desc '.$limit); break;
@@ -88,7 +88,7 @@ arsort($rd);
 
 #render
 //$ret=tabler($rc);
-$f='scores_'.normalize(strfrom($cat,') ')).'_'.implode('-',$ra);
+$f='scores_'.str::normalize(strfrom($cat,') ')).'_'.implode('-',$ra);
 $rav=[]; foreach(self::$r as $k=>$v)$rav[$v]=$ra[$k];//french cols
 $rb=[]; $rb[]=['config',implode_k($rav,',','=')]; $rb[]=['id','rating'];
 foreach($rd as $k=>$v)$rb[]=[$k,$v];

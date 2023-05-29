@@ -44,7 +44,7 @@ return $ret;}
 static function save_funcs_all($j,$k,$v,$i){//dr,file.php,1,nb
 self::save_funcs($j.'/'.$k,strto($k,'.'));}
 
-static function sql_init($t){$db=install::db(ses('qd'));
+static function sql_init($t){$db=install::db(db('qd'));
 if($db['_'.$t])qr($db['_'.$t]);}
 
 static function savefunc(){//save_all
@@ -157,7 +157,7 @@ if(!$r)return 'null';
 foreach($r as $k=>$v)$rb[]=self::ffunc_row($v); $n=count($rb);
 return btn('txtcadr','static function '.$p.'() '.$n.' '.plurial($n,19).'').tabler($rb,'txtblc');}
 
-static function home($dr,$f,$fc=''){ses('qdy','_sys');
+static function home($dr,$f,$fc=''){db('qdy','_sys');
 if($dr=='param')$dr=$f=''; $ret=''; $res='';
 if(!$f && $fc)$f=sql::call('select page from _sys where name="'.$fc.'"','v');
 if(strpos($f,'.')===false && $f)$f.='.php'; if($fc=='all')$fc='';
