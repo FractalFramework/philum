@@ -20,10 +20,10 @@ return sql::call($sql,'',0);}
 
 static function req_arts_y2($p,$pg,$lg=''){$nbp=prmb(6);
 if($pg!='all' && is_numeric($pg))$limit='limit '.(($pg-1)*20).',20'; else $limit='';//limit 10
-$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $ynd=ses('ynd');
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $trn=ses('trn');
 if($lg=='all')$lg='(case '.$qda.'.lg when \'\' then \'fr\' else '.$qda.'.lg end)'; else $lg='"'.$lg.'"';
-$in='inner join '.$ynd.' on ref=concat(\'art\','.$qda.'.id) and lang='.$lg.'';
-//$in2='inner join pub_trk on pub_trk.ib=pub_art.id ';
+$in='inner join '.$trn.' on ref=concat(\'art\','.$qda.'.id) and lang='.$lg.'';
+//$in2='inner join trk on trk.ib=art.id ';
 $wh=$qda.'.frm in ("'.self::cats($p).'") and '.$qda.'.re>1';
 $sql='select '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,txt as msg,'.$qda.'.mail,lg,'.$qda.'.re from '.$qda.' '.$in.' where '.$wh.' group by '.$qda.'.id order by day desc '.$limit.'';
 return sql::call($sql,'',0);}
@@ -60,7 +60,7 @@ static function umrec_twit_init(){
 sqlop::install('umtwits',self::umtwits_r(),0);}
 
 static function twit_mem($id){
-ses('umt','pub_umtwits');
+sesr('db','umt','umtwits');
 $ex=sql('id','umt','v',['twid'=>isbint($id)],0);
 if($id && !$ex){$ra=self::umtwits_r(); $rb=[]; $nid='';
 	$cl=implode(',',array_keys($ra));
@@ -90,7 +90,7 @@ static function playtx($id){$d=sql('msg','qdm','v',$id);
 return trans::convert($d,$id);}
 
 static function btredit($ref,$to,$from){$ret=''; if(auth(6) && $to!='all'){
-$ret=lj('','ynd'.$ref.'_trans,redo___'.$ref.'_'.$to.'-'.$from.'-1',picto('refresh')).' ';
+$ret=lj('','trn'.$ref.'_trans,redo___'.$ref.'_'.$to.'-'.$from.'-1',picto('refresh')).' ';
 $ret.=lj('','popup_trans,redit___'.$ref.'_'.$to.'-'.$from.'-1',picto('edit'));}
 return $ret;}
 
@@ -132,7 +132,7 @@ elseif($from && !$idy && $nfo!='favoris' && $nfo!='retweet'){
 if($nfo=='favoris'){$rb['opt']='Favoris'; $rb['player']=$from;}
 elseif($nfo=='retweet'){$rb['opt']='Retweet'; $rb['player']=$from;}
 elseif($nfo=='status')$rb['opt']='Statut du';
-elseif($from)$rb['opt']='Réponse';
+elseif($from)$rb['opt']='RÃ©ponse';
 else $rb['opt']='Message';
 $rb['btrk']=$rb['source']?self::btredit('trk'.$idb,$lang,$lg):'';
 $rb['btxt']=self::btredit('art'.$id,$lang,$lgb);
@@ -207,7 +207,7 @@ if($o=='brut')$tmp=self::temp_brut();//self::temp_vue
 else $tmp=self::template();//list
 if($q2)$r=self::req_arts_y2($p,$pg,$lang); else//
 $r=self::req_arts_y($p,$pg,$lang); //if(auth(6))pr($r);
-if($o=='table')$rc[]=['ID','Date','Question','Réponse','tags'];
+if($o=='table')$rc[]=['ID','Date','Question','RÃ©ponse','tags'];
 //geta('nl',1);
 if($o=='brut' or $o=='table')$save=1; else $save='';
 if($r)foreach($r as $k=>$v){
@@ -280,13 +280,13 @@ $p=$prm[0]??$p;
 $lg=sesb('umrlg',ses('lang')?ses('lang'):'all');//set lang for thread
 //timelang($lg);//setlocale
 if(strpos($p,',')){$r=explode(',',$p); $lang=ses('umrlg');
-	$rc[]=['ID','Date','Question','Réponse','tags'];
+	$rc[]=['ID','Date','Question','RÃ©ponse','tags'];
 	foreach($r as $k=>$v){if(!is_numeric($v))$v=ma::id_of_urlsuj('['.$v.']');
 		$r=self::req_art_id($v); [$id,$day,$suj,$msg,$lk,$lg]=$r;
 		$rb=self::datas($r,$lang,$o);
 		$rc[$day]=[segment($rb['suj'],'[',']'),$rb['day'],$rb['tracks']??'',$rb['msg'],$rb['tag']];}
 	return $ret=tabler($rc,'1','');}
-if(!is_numeric($p) && $p!='All' && $o!='table'){//passage délicat qui évite d'envoyer un id à call()
+if(!is_numeric($p) && $p!='All' && $o!='table'){//passage dÃ©licat qui Ã©vite d'envoyer un id Ã  call()
 	$pb=ma::id_of_urlsuj('['.$p.']');
 	if(is_numeric($pb))$p=$pb;}//when opt
 if($opt=get('opt'))return divd('umrec'.$p,self::call($opt,$lg,''));
@@ -341,12 +341,12 @@ return btn('nbp',$ret);}
 
 static function home($p,$o){$rid='umrec';
 if(!$p)$bt=self::search($p,ses('umrlg'),'umrec'); else $bt='';
-ses('umt','pub_umtwits');
+sesr('db','umt','umtwits');
 //self::twit_init();
 //if(auth(6))$bt.=self::menu($p,$o,$rid);
 if(!$p)$bt.=self::lng($p,$o,$rid);
 $c=$p?'popup':''; $c='';
-if($p)$ret=self::callint($p,$o,'');
+if($p)$ret=self::callint($p,$o,[]);
 else{
 	if(!$p && !$o){$p='All'; $o='list';}
 	$ret=self::callj($p,$o);}

@@ -47,7 +47,7 @@ msql::modif('',nod('carbin'),[$ret],'one','',$id);
 return $ret;}
 
 static function bindatas($p,$o){
-$r=sql::inner('pub_art.id,msg','qda','qdm','id','kv',['frm in'=>['ES-D','ES-E'],'_order'=>'id asc']);
+$r=sql::inner('art.id,msg','qda','qdm','id','kv',['frm in'=>['ES-D','ES-E'],'_order'=>'id asc']);
 foreach($r as $k=>$v)self::art2bin($k,$v);
 return 'ok: '.implode(' ',array_keys($r));}
 

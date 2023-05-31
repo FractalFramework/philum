@@ -1,5 +1,5 @@
 <?php //html
-class htlm{
+class html{
 static function build($p,$o){
 return $p;}
 
@@ -16,7 +16,7 @@ return $ret;}
 
 static function home($p,$o){$rid='plg'.randid();
 $ret=self::menu($p,$o,$rid);
-return $ret.divd($rid,html_j($p,$o));}
+return $ret.divd($rid,self::call($p,$o));}
 //$ret.=msqbt('',ses('qb').'_html').' ';
 }
 ?>

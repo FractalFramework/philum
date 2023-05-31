@@ -7,6 +7,13 @@ $d=str_replace('_menus_','_',$d);
 file_put_contents($f,$d);
 return $f;}*/
 
+#noqd
+static function noqd(){
+$r=sqldb::$rt; //pr($r);
+foreach($r as $k=>$v)
+sql::qr('RENAME TABLE `nfo0`.`pub_'.$v.'` TO `nfo0`.`'.$v.'`;',1);
+sql::qr(' RENAME TABLE `yandex` TO `trans`; ');}
+
 #mysql
 static function dbsplitters(){
 if(!auth(6))return;
@@ -17,7 +24,7 @@ qr('UPDATE `pub_trk` SET `msg`=REPLACE(msg,"§","|");');
 static function dbutf($p){return;
 if(!auth(6))return;
 //$r=sqldb::$rt;
-//foreach($r as $k=>$v)$qb=qd($v);
+//foreach($r as $k=>$v)$qb=$v;
 $ra=sql::read2('id,suj','qda','kv','limit 0,100)');
 //$ra=sql::read2('id,msg','qdm','kv','where msg LIKE "%&#%" order by id limit 1');
 $rb=[];
@@ -110,7 +117,7 @@ return implode(' ',$r);}
 
 static function menu($p){
 $ret=inputb('fto',$p,18,'directory');
-$rok=[0,1,3,4,6];
+$rok=[11];//0,1,3,4,6,
 $rt[0]='msql: ';
 $rt[1]=lj('popbt','fut_patches,call_fto_3_utf','msqutf');
 $rt[2]=lj('popbt','fut_patches,call_fto_3_headers','headers');
@@ -122,6 +129,7 @@ $rt[7]=lj('popbt','fut_patches,call2_fto_3_cats','create_cats');
 $rt[8]=lj('popbt','fut_patches,call2_fto_3_catarts','art_cats');
 $rt[9]=lj('popbt','fut_patches,call2_fto_3_hubs','hubs');
 $rt[10]=lj('popbt','fut_patches,call2_fto_3_hubarts','art_hubs');
+$rt[11]=lj('popbt','fut_patches,call2__3_noqd','noqd');
 foreach($rok as $v)$ret.=$rt[$v];
 return $ret;}
 

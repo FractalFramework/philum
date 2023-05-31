@@ -201,7 +201,7 @@ $p=['style'=>'height:'.(($s?$s:1)*$h).'px;','onkeyup'=>'goodheight(this,'.($n).'
 return textarea($k,$v,$n,'1',$p);}
 
 static function editmsql($nod,$va,$o,$ob){
-$qb=ses('qb'); $tg=$ob?'socket':'admsql'; $rid=randid();
+$qb=ses('qb'); $tg=$ob?'socket':'admsql'; $rid=randid(); $rh=[];
 [$dir,$node]=self::node_decompil($nod); $nodb=ajx($nod); $pn=''; $rc=[]; $kb='';
 $r=msql::read_b($dir,$node); $h=isset($r[msql::$m])?1:0; if($r)$rh=$h?$r[msql::$m]:current($r);
 if($r)$nxtk=msql::nextentry($r); $idn=randid();
@@ -313,6 +313,8 @@ if($md=='inject_defs2')$d=str_replace('<?php ','',msql::dump($r,$nod));
 if($md=='import_conn')$d=self::edtconn($r);//use "|" for cells and "¬" for lines
 if($md=='import_csv')$d=self::mkcsv($r);
 if($md=='import_json')$d=self::edtjson($r);
+if($md=='export_mysql')$d=self::export_mysql($dr,$nod);
+if($md=='backup_msql')return self::backup_msql();
 //if($prm[0]??'')$d.="\n".delbr($prm[0],"\n");//addcsv
 $ret=textarea($md,$d??'',60,10);
 $ret.=lj('','admsql_msqlops_'.ajx($md).'__'.ajx($p).'_'.ajx($md),picto('ok'));
@@ -609,9 +611,11 @@ static function inject_defs($ra,$d){if(!$d)return $ra;
 $f='_datas/defs/r.php'; mkdir_r($f); write_file($f,'<?php '.$d); require($f);
 return $r;}
 
+static function export_mysql($dr,$nod){}//todo
+
 static function backup_msql(){if(!auth(7))return;
-$f='_backup/msql/'.date('ymd',time()).'.tar.gz'; //unlink($f);
-$r=tar::scan('msql'); //p($r);
+$f='_backup/msql/'.date('ymd',time()).'.tar.gz';
+$r=tar::scan('msql');
 if(auth(6))tar::folder($f,$r);
 if(is_file($f))return lkt('txtyl',$f,$f); else return 'brrrr';}
 
@@ -675,10 +679,10 @@ return $ra;}
 
 static function opbt($d,$jurl,$lh,$o=''){$a=$o?'popup':'admsql';//msql_opsup
 $rl=$d=='del_file'||$d=='del_backup'?'url':'';
-return lj('txtx',$a.'_msqlops__'.$rl.'_'.$jurl.'_'.ajx($d).'__'.$o,$lh[0]??'',att($lh[1]??'')).' ';}
+return lj('',$a.'_msqlops__'.$rl.'_'.$jurl.'_'.ajx($d).'__'.$o,$lh[0]??'',att($lh[1]??''));}
 
 static function opedt($d,$jurl,$lh,$o=''){$a=$o?'popup':'admsql';//msql_opsup
-return lj('txtx','popup_msqa,editors___'.$jurl.'_'.ajx($d),$lh[0]??'',att($lh[1]??'')).' ';}
+return lj('','popup_msqa,editors___'.$jurl.'_'.ajx($d),$lh[0]??'',att($lh[1]??''));}
 
 #ok, go
 static function home($cmd='',$pg=''){
@@ -710,105 +714,95 @@ if(get('sav'))msql::save($dir?$dir:$base,$node.'_sav',$defs);
 $lh=sesmk('msqlang','helps_msql',0);
 if(!$lh){$rl=msql::read('system','helps_msql'); foreach($rl as $k=>$v)$lh[]=[$v,$v];}
 if(!$lh)for($i=0;$i<50;$i++)$lh[]=['',''];//null
-$lkb=$lk.'&';
-$jurl=ajx($murl);
+$jurl=ajx($murl); $rt=[];
 #-menus
 if(!$def && auth(6)){
-	$ret['menus']=self::menus($ra); $ret['fls']='';
-	if(auth(4))$ret['fls']=lj('txtblc','popup_msqa,creatable___'.$jurl,$lh[9][0]).' ';
+	$ret['menus']=self::menus($ra);
+	if(auth(4))$rt[]=lj('active','popup_msqa,creatable___'.$jurl,$lh[9][0]);
 	if($table && $authorized && $hub && $is_file){//$defs && 
-		$ret['fls'].=self::opbt('backup',$jurl,$lh[2]).' ';//sav==
+		$rt[]=self::opbt('backup',$jurl,$lh[2]);//sav==
 		if(is_file($basename.'_sav.php')){
-			$ret['fls'].=self::opbt('restore',$jurl,$lh[3]).' ';
-			$ret['fls'].=self::opbt('del_backup',$jurl,$lh[30],1);}
-		$ret['fls'].=self::opbt('import_defs',$jurl,$lh[5],1).' ';
-		$ret['fls'].=self::opbt('import_keys',$jurl,$lh[17],1).' ';
-		$ret['fls'].=self::opbt('merge_defs',$jurl,$lh[6],1).' ';
-		$ret['fls'].=self::opbt('append_update',$jurl,$lh[7],1).' ';
-		$ret['fls'].=self::opbt('append_values',$jurl,$lh[8],1).' ';}
+			$rt[]=self::opbt('restore',$jurl,$lh[3]);
+			$rt[]=self::opbt('del_backup',$jurl,$lh[30],1);}
+		$rt[]=self::opbt('import_defs',$jurl,$lh[5],1);
+		$rt[]=self::opbt('import_keys',$jurl,$lh[17],1);
+		$rt[]=self::opbt('merge_defs',$jurl,$lh[6],1);
+		$rt[]=self::opbt('append_update',$jurl,$lh[7],1);
+		$rt[]=self::opbt('append_values',$jurl,$lh[8],1);}
 	//if(isset($files[$hub]) && $hub==ses('USE'))
 	if($ath && $table && $hub && $is_file){
-		$ret['fls'].=self::opbt('rename_table',$jurl,$lh[31],1);
-		$ret['fls'].=self::opbt('duplicate_table',$jurl,$lh[32],1);
-		$ret['fls'].=self::opbt('trunc_table',$jurl,$lh[10]).' ';
-		$ret['fls'].=self::opbt('del_file',$jurl,$lh[11]).' ';
+		$rt[]=self::opbt('rename_table',$jurl,$lh[31],1);
+		$rt[]=self::opbt('duplicate_table',$jurl,$lh[32],1);
+		$rt[]=self::opbt('trunc_table',$jurl,$lh[10]);
+		$rt[]=self::opbt('del_file',$jurl,$lh[11]);
 		if(!$defs or isset($defs[0]))
-			$ret['fls'].=self::opbt('repair',$jurl,$lh[12]).' ';}
+			$rt[]=self::opbt('repair',$jurl,$lh[12]);}
 		if(auth(6)){//($base=='system' or $hub=='public') && 
-			$ret['fls'].=self::opbt('renove',$jurl,['renove','import from '.prms('srvmirror')]);
-			$ret['fls'].=self::opbt('resav',$jurl,['resav','resav']);}
-	if($ret['fls'])$ret['fls'].=br();
+			$rt[]=self::opbt('renove',$jurl,['renove','import from '.prms('srvmirror')]);
+			$rt[]=self::opbt('resav',$jurl,['resav','resav']);}
+	if($rt)$ret['l1']=divc('menu',join(' ',$rt)); $rt=[];
 	#-util
-	$ret['utl']='';
 	if($table && $authorized && $hub && $is_file){
-		$ret['utl']=lj('txtblc','popup_msqa,editmsql___'.$jurl.'_*',$lh[1][0]).' ';
-		$ret['utl'].=self::opbt('reset_menus',$jurl,$lh[22]);
-		$ret['utl'].=self::opbt('del_menus',$jurl,$lh[23]);
-		$ret['utl'].=self::opbt('add_keys',$jurl,$lh[24]);
-		$ret['utl'].=self::opbt('del_keys',$jurl,$lh[25]);
-		$ret['utl'].=self::opbt('add_col',$jurl,$lh[14]);
-		$ret['utl'].=self::opbt('del_col',$jurl,$lh[15],1);
+		$rt[]=lj('active','popup_msqa,editmsql___'.$jurl.'_*',$lh[1][0]);
+		$rt[]=self::opbt('reset_menus',$jurl,$lh[22]);
+		$rt[]=self::opbt('del_menus',$jurl,$lh[23]);
+		$rt[]=self::opbt('add_keys',$jurl,$lh[24]);
+		$rt[]=self::opbt('del_keys',$jurl,$lh[25]);
+		$rt[]=self::opbt('add_col',$jurl,$lh[14]);
+		$rt[]=self::opbt('del_col',$jurl,$lh[15],1);
 		if($is_file && auth(6)){
-			$ret['utl'].=self::opbt('repair_cols',$jurl,$lh[13]).' ';
-			$ret['utl'].=self::opbt('repair_enc',$jurl,['patch_enc','to utf8']);
-			$ret['utl'].=self::opbt('patch_m',$jurl,['patch_m','patch_menu']);
-			//$ret['utl'].=self::opbt('patch_s',$jurl,['patch_s','patch_splitter']);
+			$rt[]=self::opbt('repair_cols',$jurl,$lh[13]);
+			$rt[]=self::opbt('repair_enc',$jurl,['patch_enc','to utf8']);//37
+			//$rt[]=self::opbt('patch_m',$jurl,['patch_m','patch_menu']);
+			//$rt[]=self::opbt('patch_s',$jurl,['patch_s','patch_splitter']);
 			}
-		$ret['utl'].=self::opbt('compare',$jurl,$lh[29],1);
-		$ret['utl'].=self::opbt('intersect',$jurl,$lh[33],1);
-		$ret['utl'].=self::opbt('addition',$jurl,['addition',''],1);
-		$ret['utl'].=self::opbt('average',$jurl,['average',''],1);
-		//$ret['utl'].=self::opbt('connexions',$jurl,['connexions','connexions'],1);
-		$ret['utl'].=self::opbt('friends',$jurl,['friends','friends'],1);
-		$ret['utl'].=br();
+		$rt[]=self::opbt('compare',$jurl,$lh[29],1);
+		$rt[]=self::opbt('intersect',$jurl,$lh[33],1);
+		$rt[]=self::opbt('addition',$jurl,$lh[44],1);
+		$rt[]=self::opbt('average',$jurl,$lh[45],1);
+		//$rt[]=self::opbt('connexions',$jurl,$lh[47],1);
+		$rt[]=self::opbt('friends',$jurl,$lh[46],1);
+		$ret['l2']=divc('menu',join(' ',$rt)); $rt=[];
 		if($base!='system' && is_file(self::sesm('root').'system/'.$node.'.php'))
-			$ret['utl'].=self::opbt('update',$jurl,$lh[26]);
-		$ret['utl'].=self::opbt('sort_table',$jurl,$lh[19],1);
+			$rt[]=self::opbt('update',$jurl,$lh[26]);
+		$rt[]=self::opbt('sort_table',$jurl,$lh[19],1);
 		if($table!='restrictions' && $table!='params')
-			$ret['utl'].=self::opbt('reorder',$jurl,$lh[20]);
-		$ret['utl'].=self::opbt('permut',$jurl,$lh[21],1);
-		$ret['utl'].=self::opedt('import_conn',$jurl,$lh[16],1);
-		$ret['utl'].=self::opedt('inject_defs',$jurl,$lh[18],1);
-		$ret['utl'].=self::opedt('inject_defs2',$jurl,$lh[18],1);
-		$ret['utl'].=self::opedt('import_csv',$jurl,['csv',''],1);
-		$ret['utl'].=self::opedt('import_json',$jurl,['json',''],1);
-		$ret['utl'].=self::opbt('import_jsonlk',$jurl,['json_link',''],1);
-		$ret['utl'].=self::opbt('export_csv',$jurl,['export_csv',''],1);
-		if(auth(6))$ret['utl'].=self::opedt('export_mysql',$jurl,['mysql',''],1);
-		$ret['utl'].=lj('txtx','popup_msql___lang_helps_msql','?');}
-	#-fieldset
-	if($ret['fls'].$ret['utl'])
-		$ret['utils']=divc('menu',$ret['fls'].$ret['utl']); $ret['fls']=$ret['utl']='';
-	//if($ret['nfo'])$ret['nfo'].=br();
-}//called
+			$rt[]=self::opbt('reorder',$jurl,$lh[20]);
+		$rt[]=self::opbt('permut',$jurl,$lh[21],1);
+		$rt[]=self::opedt('import_conn',$jurl,$lh[16],1);
+		$rt[]=self::opedt('inject_defs',$jurl,$lh[18],1);
+		$rt[]=self::opedt('inject_defs2',$jurl,['$r',''],1);
+		$rt[]=self::opedt('import_json',$jurl,$lh[38],1);
+		$rt[]=self::opbt('import_jsonlk',$jurl,$lh[39],1);
+		$rt[]=self::opedt('import_csv',$jurl,$lh[40],1);
+		$rt[]=self::opbt('export_csv',$jurl,$lh[41],1);
+		if(auth(6))$rt[]=self::opedt('export_mysql',$jurl,$lh[42],1);
+		$rt[]=lj('txtx','popup_msql___lang_helps_msql','?');
+		if(auth(6))$rt[]=self::opedt('backup_msql',$jurl,$lh[43],1);}
+	if($rt)$ret['l3']=divc('menu',join(' ',$rt)); $rt=[];}
 #-infos
-$ret['nfo']='';
 if($table && $is_file){
-	$ret['nfo']=lkc('popbt',$lk,pictxt('msql',$murl)).' ';
+	$rt[]=lkc('popbt',$lk,pictxt('msql',$murl));
 	if($authorized)//add
-		$ret['nfo'].=lj('popbt','popup_msqa,editmsql___'.$jurl.'_add',pictit('add',$lh[28][0])).' ';
-	$ret['nfo'].=lj('txtx','admsql,editable___'.$jurl,picto('refresh')).' ';
+		$rt[]=lj('popbt','popup_msqa,editmsql___'.$jurl.'_add',pictit('add',$lh[28][0]));
+	$rt[]=lj('txtx','admsql,editable___'.$jurl,picto('refresh'));
 	$wcon='['.$murl.($def?':'.$def:'').':msql]';
-	$ret['nfo'].=lj('popbt','popup_usg,txt___'.ajx($wcon).'_console',pictit('conn','connector'));
-	//$ret['nfo'].=lkt('popbt',host().'/msql/'.$murl,pictit('link','web url'));
-	$ret['nfo'].=lkt('popbt','/call/microxml,stream/'.str_replace('/','|',$murl),pictit('rss','xml'));
-	$ret['nfo'].=lkt('popbt','/call/msqj/'.str_replace('/','|',$murl),pictit('emission','json')).' - ';
+	$rt[]=lj('popbt','popup_usg,txt___'.ajx($wcon).'_console',pictit('conn','connector'));
+	//$rt[]=lkt('popbt',host().'/msql/'.$murl,pictit('link','web url'));
+	$rt[]=lkt('popbt','/call/microxml,stream/'.str_replace('/','|',$murl),pictit('rss','xml'));
+	$rt[]=lkt('popbt','/call/msqj/'.str_replace('/','|',$murl),pictit('emission','json')).' - ';
 	if(is_array($defs))$n=count($defs); else $n=0; if(isset($defs[msql::$m]))$n-=1;
-	$ret['nfo'].=btn('txtsmall2',$n.' '.plurial($n,116)).' - ';
-	if($is_file)$ret['nfo'].=btn('txtsmall2',fsize($basename.'.php',1)).' - ';
-	$ret['nfo'].=btn('txtsmall2',ftime($basename.'.php')).' ';
-	$ret['nfo'].=self::search($murl);}
-if($ret['nfo'])$ret['nfo']=divc('menu',$ret['nfo']);
-
-#see_table
+	$rt[]=btn('txtsmall2',$n.plurial($n,116)).' - ';
+	if($is_file)$rt[]=btn('txtsmall2',fsize($basename.'.php',1)).' - ';
+	$rt[]=btn('txtsmall2',ftime($basename.'.php'));
+	$rt[]=self::search($murl);
+	if($rt)$ret['l4']=divc('menu',join(' ',$rt)); $rt=[];}
+#render
 if($defs && !get('def')){
 $out=divd('admsql',self::draw_table($defs,$murl,''));
 $ret[]=$out.br();}
 else $ret[]=divd('admsql','');
-
-if($ath)$ret[]=lkc('txtx',$lkb.'backup_msql==','backup').' ';
-if(get('backup_msql'))$ret[]=self::backup_msql();
-return divd('msqdiv',implode('',$ret));}//end msql_adm
+return divd('msqdiv',implode('',$ret));}
 
 }
 ?>

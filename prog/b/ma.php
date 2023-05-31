@@ -65,7 +65,7 @@ if($ib && is_numeric($ib) && $ib!=$id)return $ib;}//!='/'&&!='last'
 static function id_of_ib($ib){
 return sql('id','qda','k','ib="'.$ib.'" and re>="1" and substring(frm,1,1)!="_"');}// limit 1
 static function suj_of_id($id){$suj=self::rqt($id,'suj'); if($suj)return $suj;
-$suj=sql('suj','qda','v','id="'.$id.'"'); if(is_string($suj))return $suj;}
+$suj=sql('suj','qda','v',$id); if(is_string($suj))return $suj;}
 static function related_arts($id){$d=sql('msg','qdd','v',['ib'=>$id,'val'=>'related']);
 return $d?explode(' ',$d):[];}
 static function data_val($v,$id,$val,$m=''){$sq=$id?['ib'=>$id]:[];

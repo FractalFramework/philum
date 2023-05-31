@@ -77,7 +77,7 @@ return $ret;}
 
 static function recapauthor($id){
 $d=sql('mail','qda','v',$id); $p=strend($d,'/');
-$nm=sql::call('select screen_name from pub_umtwits where twid='.$p,'v');
+$nm=sql::call('select screen_name from umtwits where twid='.$p,'v');
 if(!$nm){$q=twit::read($p); $r=twit::datas($q); $nm=$r['screen_name'];}
 return $nm;}
 
@@ -156,7 +156,7 @@ return self::catedit($id,$frm);}
 static function catslctm($id,$frm,$r=[]){$ret='';
 if(!$r)$r=sql('distinct(frm)','qda','k',['nod'=>ses('qb'),'-frm'=>'_','>day'=>timeago('360'),'_order'=>'frm']);
 if($r)foreach($r as $k=>$v)
-	$ret.=lj('','frm'.$id.'_meta,catsav_frm1'.$id.'__'.$id.'_'.ajx($k),catpic($k,20));
+	$ret.=lj('','frm'.$id.'_meta,catsav_frm1'.$id.'__'.$id.'_'.ajx($k),$k).' ';//§catpic($k,20)
 return $ret;}
 
 static function catslct($id,$frm){

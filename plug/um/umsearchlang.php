@@ -1,7 +1,7 @@
 <?php 
 class umsearchlang{
 static function build($p,$o){
-$r=sql('ref,lang','ynd','kv','txt like "%'.$p.'%"');
+$r=sql('ref,lang','trn','kv','txt like "%'.$p.'%"');
 return $r;}
 
 static function call($p,$o,$prm=[]){
@@ -12,11 +12,10 @@ if($r)foreach($r as $k=>$v)if(substr($k,0,3)=='art')$rb[substr($k,3)]=$v;
 //if($rb)$ret=ma::output_arts($rb,'','art'); else $ret='nothing';
 $cats=umrec::$cats;
 if($rb)foreach($rb as $k=>$v){
-	$frm=sql('frm','qda','v','id='.$k);
+	$frm=sql('frm','qda','v',$k);
 	if(in_array($frm,$cats))
 		//$ret.=umcom::home($k,'');
-		$ret.=divd('umrec'.$k,umrec::call($k,''));
-}
+		$ret.=divd('umrec'.$k,umrec::call($k,''));}
 return $ret?$ret:'nothing';}
 
 static function menu($p,$o,$rid){

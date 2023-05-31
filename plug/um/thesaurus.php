@@ -47,9 +47,9 @@ return self::liaisons('',$p);}
 
 static function glossary($p,$o,$prm=[]){
 $p=$prm[0]??$p; $ret=''; $ps=soundex($p);//search likes
-$r=sql::call('select voc from pub_umvoc where SOUNDEX(voc)="'.$ps.'";','rv');
+$r=sql::call('select voc from umvoc where SOUNDEX(voc)="'.$ps.'";','rv');
 //$a='MATCH (voc) AGAINST ("'.$p.'")';//IN BOOLEAN MODE
-//$r=sql::call('select voc from pub_umvoc where '.$a.'','rv',1); pr($r);
+//$r=sql::call('select voc from umvoc where '.$a.'','rv',1); pr($r);
 $r=umvoc::levenstein($p,$r);
 if($r)foreach($r as $k=>$v)$ret.=lj('','popup_umvoc,segments___'.$v,$v);
 if(!$ret)$ret=btn('txtcadr',$p.': '.nms(11).' '.nms(16));
@@ -63,8 +63,8 @@ $ret=inputj('inpths',$p,$j).' '.lj('',$j,picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid='thd';
-db('qdvoc',qd('umvoc'));
-db('qdvoc_b',qd('umvoc_arts'));
+sesr('db','qdvoc','umvoc');
+sesr('db','qdvoc_b','umvoc_arts');
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 return $bt.divd($rid,$ret);}

@@ -10,28 +10,28 @@ order by '.$qda.'.day asc,'.$qdi.'.id desc';
 $r=sql::call($sql,'index',0); //pr($r);
 return $r;}
 
-static function req_yndart($p,$lg){//relation art-ynd
+static function req_trnart($p,$lg){//relation art-trn
 if($p=='All')$p='Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa';
-$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $ynd=ses('ynd');
-$sql='select '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,lg,'.$ynd.'.txt from '.$qda.' 
-inner join '.$ynd.' on substring('.$ynd.'.ref,1,3)="art" and substring('.$ynd.'.ref,4)='.$qda.'.id and '.$ynd.'.lang="'.$lg.'" where '.$qda.'.frm in ("'.implode('","',explode(',',$p)).'") 
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $trn=ses('trn');
+$sql='select '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,lg,'.$trn.'.txt from '.$qda.' 
+inner join '.$trn.' on substring('.$trn.'.ref,1,3)="art" and substring('.$trn.'.ref,4)='.$qda.'.id and '.$trn.'.lang="'.$lg.'" where '.$qda.'.frm in ("'.implode('","',explode(',',$p)).'") 
 order by '.$qda.'.day asc';
 $r=sql::call($sql,'index',0); //pr($r);
 return $r;}
 
-static function req_yndtrk($p,$lg){//relation trk-ynd
+static function req_trntrk($p,$lg){//relation trk-trn
 if($p=='All')$p='Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa';
-$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $ynd=ses('ynd');
-$sql='select '.$qda.'.id,'.$qdi.'.id as idb,'.$ynd.'.txt as trk from '.$qda.'
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $trn=ses('trn');
+$sql='select '.$qda.'.id,'.$qdi.'.id as idb,'.$trn.'.txt as trk from '.$qda.'
 inner join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id 
-inner join '.$ynd.' on substring('.$ynd.'.ref,1,3)="trk" and substring('.$ynd.'.ref,4)='.$qdi.'.id and '.$ynd.'.lang="'.$lg.'" where '.$qda.'.frm in ("'.implode('","',explode(',',$p)).'")
+inner join '.$trn.' on substring('.$trn.'.ref,1,3)="trk" and substring('.$trn.'.ref,4)='.$qdi.'.id and '.$trn.'.lang="'.$lg.'" where '.$qda.'.frm in ("'.implode('","',explode(',',$p)).'")
 order by '.$qda.'.day asc,'.$qdi.'.id desc';
 $r=sql::call($sql,'index',0); //pr($r);
 return $r;}
 
 static function compile($p,$lg){
-$ra=self::req_yndart($p,$lg); //pr($ra); //id,day,suj,lg,txt
-$rb=self::req_yndtrk($p,$lg); //pr($rb); //id,idb,trk
+$ra=self::req_trnart($p,$lg); //pr($ra); //id,day,suj,lg,txt
+$rb=self::req_trntrk($p,$lg); //pr($rb); //id,idb,trk
 if($ra)foreach($ra as $k=>$v)$ra[$k][]=$rb[$k][2]??''; //pr($ra);
 //$ret=tabler($r); //$id,$day,$suj,$msg,$lk,$lng
 return $ra;}

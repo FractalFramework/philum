@@ -25,14 +25,13 @@ $ret.=lj('','clst_multitag,view__',picto('view')).' ';
 return $ret;}
 
 static function install($b){
-//ses($b,qd($b));//name of table
 //1=drop table on change $r !
 $r=['id'=>'ai','idart'=>'int','tg'=>'var','lg'=>'var2'];
 sqlop::install($b,$r,0);}
 
 static function home($p,$o){
 $rid=randid(self::$a); $ret='';
-db('qdtm','pub_meta_mul');
+sesr('db','qdtm','meta_mul');
 //sqldb::install('meta_mul');
 $bt=self::menu($p,$o,$rid);
 if($p)$ret=self::build($p,$o);

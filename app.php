@@ -46,7 +46,7 @@ else $nod=ses('qb').'_design_'.ses('prmd');
 Head::add('csslink','/css/'.boot::define_design().'.css'.$cst);
 Head::add('jslink','/progb/j/lib.js'.$cst);
 Head::add('jslink','/progb/j/ajx.js'.$cst);
-Head::add('jslink','/progb/j/utils.js'.$cst);
+Head::add('jslink','/progb/j/core.js'.$cst);//core
 Head::add('jscode','flow="0"; enc="'.ses::$enc.'";');
 Head::add('jscode',ses('jscode'));
 if($a)$content=load_app($a,$p,$o);

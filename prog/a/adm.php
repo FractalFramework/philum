@@ -427,8 +427,8 @@ static function backup($p,$o,$prm=[]){
 if(!auth(6))return; $qb=ses('qb');
 [$id,$db]=arr($prm,2); $bt=''; $ret='';
 if($id && $p!=1)return backup::build($db,$id);
-if($db)$id=sql::call('select id from '.qd($db).' order by id DESC limit 1','v');
-$rdb=['art','txt','trk','meta','meta_art','search','search_art','poll','twit','user','web','yandex'];
+if($db)$id=sql::call('select id from '.$db.' order by id DESC limit 1','v');
+$rdb=['art','txt','trk','meta','meta_art','search','search_art','poll','twit','user','web','trans'];
 $bt=select(['id'=>'db'],$rdb,'vv','art').lj('txtbox','bckp_adm,backup_fid,db__1','select');
 if($db)return input('fid',$id).lj('popsav','bckp_adm,backup_fid,db','export');
 return $bt.divd('bckp','');}

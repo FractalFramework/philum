@@ -1,7 +1,7 @@
 <?php 
 class sqlop{static private $b; static private $t; static public $ret;
 function __construct($b){self::$b=$b; self::$t=ses($b);}
-static function table($b){ses($b,qd($b)); self::$b=$b; self::$t=ses($b);}
+static function table($b){self::$b=$b; self::$t=ses($b);}
 static function read($d,$p,$q,$bug=''){self::$ret=sql($d,self::$b,$p,$q,$bug);}
 static function reflush(){self::$ret=sql::reflush(self::$b);}
 static function insert($r){self::$ret=sql::sav(self::$b,$r);}
@@ -9,7 +9,7 @@ static function update($col,$val,$wh,$row){self::$ret=sql::upd(self::$b,[$col=>$
 static function sqldel($id){sql::del(self::$b,$id);} 
 static function show(){self::$ret=sql::call('show columns from '.self::$t,'kv');}
 static function trunc(){if(auth(6))qr('truncate '.self::$t);}
-static function drop(){if(auth(6))qr('drop table '.self::$t);}
+//static function drop(){if(auth(6))qr('drop table '.self::$t);}
 static function save($r){sql::sav(self::$b,$r);}
 
 static function modif($r,$act,$n,$ra,$nb=''){switch($act){
@@ -34,22 +34,24 @@ foreach($defs as $k=>$v)foreach($v as $ka=>$va){
 	elseif($ty=='text')$ra[$ka]=$ty;}
 $rb=array_combine($index,$ra); //p($rb);
 $ret=self::create_table($b,$rb,0);
-//$nid=sql::qrid('insert into '.qd($b).' values '.sql::atmrb($defs,1));
-foreach($defs as $k=>$v)$nid=sql::qrid('insert into '.qd($b).' (id,'.implode(',',$index).') values ('.$k.','.implode(',',sql::atmr($v)).')');//' on duplicate key update '.$index[0].'='.sql::atm($v[0])
+//$nid=sql::qrid('insert into '.$b.' values '.sql::atmrb($defs,1));
+foreach($defs as $k=>$v)$nid=sql::qrid('insert into '.$b.' (id,'.implode(',',$index).') values ('.$k.','.implode(',',sql::atmr($v)).')');//' on duplicate key update '.$index[0].'='.sql::atm($v[0])
 return $nid?'created':'error';}
 
-static function read_cols($b){$rb=[];
-$rq=qr('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from INFORMATION_SCHEMA.COLUMNS where table_name="'.sql::$db.'.'.qd($b).'"',0);
+static function read_cols($b,$z=''){$rb=[];
+$rq=qr('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH
+from INFORMATION_SCHEMA.COLUMNS where table_name="'.sql::$db.'.'.$b.'"',$z);
 //$qb=in_array_b($b,sqldb::$rt); $rq=sql::cols($qb);
 while($r=sql::qra($rq)){
 	$type=$r['DATA_TYPE']; $sz=$r['CHARACTER_MAXIMUM_LENGTH']; $nm=$r['COLUMN_NAME'];
-	if($nm=='id')$type=$sz==7?'ai':'aib';
+	if($nm=='id')$type=$sz>7?'aib':'ai';
 	elseif($type=='int'){if($sz==2)$type='2int'; elseif($sz==7)$type='sint'; else $type='int';}
 	elseif($type=='varchar'){
 		if($sz==2)$type='2var'; elseif($sz<25)$type='svar'; elseif($sz>1000)$type='bvar'; else $type='var';}
 	elseif($type=='longtext')$type='long';
 	elseif($type=='mediumtext')$type='text';
 	elseif($type=='tinytext')$type='text';
+	elseif($type=='timestamp')$type='time';
 	elseif($type=='bigint')$type='bint';
 	//elseif($type=='decimal')$type='dec';
 	elseif($type=='double')$type='double';
@@ -58,12 +60,12 @@ while($r=sql::qra($rq)){
 	$rb[$r['COLUMN_NAME']]=$type;}
 return $rb;}
 
-static function trigger($b,$ra){$db=qd($b); $qb=sqldb::qb($b);
-$rb=self::read_cols($b); $rnew=[]; $rold=[];
+static function trigger($db,$ra){$qb=sqldb::qb($db);
+$rb=self::read_cols($db); $rnew=[]; $rold=[];
 if(isset($rb['id']))unset($rb['id']); if(isset($rb['up']))unset($rb['up']);	
 if($rb){$rnew=array_diff_assoc($ra,$rb); $rold=array_diff_assoc($rb,$ra);}//old
 if($rnew or $rold){//pr([$rnew,$rold]);
-	$bb=sql::backup($qb,date('ymdHis')); self::drop();
+	$bb=sql::drop($qb);
 	$rtwo=array_intersect_assoc($ra,$rb);//common
 	$rak=array_keys($ra); $rav=array_values($ra);
 	$rnk=array_keys($rnew); $rnv=array_values($rnew); $nn=count($rnk);
@@ -101,21 +103,20 @@ foreach($r as $k=>$v)
 	elseif(strpos($v,'/'))$ret.='`'.$k.'` enum(\''.implode("','",explode('/',$v)).'\'),';
 return $ret;}
 
-static function create_table($b,$r,$o=''){if(!is_array($r))return;
-if($b=='_sys')$db=$b; else $db=qd($b); $ret='';
-$charset='utf8mb4_unicode_ci';
+static function create_table($b,$r,$o=''){
+if(!is_array($r))return;
 //if($o)$r=['id'=>'ai']+$r;
-$sql='create table if not exists `'.$db.'`(
+$sql='create table if not exists `'.$b.'`(
   '.self::create_cols($r).'
   PRIMARY KEY (`id`)'.(isset($r['key'])?', '.$r['key']:'').'
-) ENGINE=InnoDB collate '.$charset.';';
+) ENGINE=InnoDB collate utf8mb4_unicode_ci;';
 $req=qr($sql,0);
-if($req)return $db.':ok'; else return 'er';}
+if($req)return $b.':ok'; else return 'er';}
 
-static function install($b,$r,$up=''){$ret='';
-$ra=self::read_cols($b);
+static function install($b,$r,$up=''){$ret='';//real dbname
+$ra=self::read_cols($b,0);
 if($up && $ra && $ra!=$r){$sql=self::trigger($b,$r); if($sql)qr($sql,1);}
-elseif(!$ra && $up)$ret=self::create_table($b,$r,1);
+elseif(!$ra)$ret=self::create_table($b,$r,0);// && $up
 return $ret;}
 
 static function home($p,$o){

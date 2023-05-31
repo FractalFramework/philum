@@ -15,13 +15,13 @@ return sql('id','qdvoc','v','voc="'.$v.'"');}
 
 static function sav($r){
 if($r)foreach($r as $k=>$v)if(!self::ex($v[1]))$rb[]=$v;
-$nid=sql::qrid('insert into '.qd('umvoc').' values '.sql::atmrb($rb,1));
+$nid=sql::qrid('insert into umvoc values '.sql::atmrb($rb,1));
 return $nid;}
 
 static function build($p,$o){$ratio=50; $min=$p*$ratio;
-if($o)$wh='and pub_art.id='.$o;
+if($o)$wh='and art.id='.$o;
 else $wh='limit '.$limit=$min.', '.($min+$ratio);
-$r=sql::inner('pub_art.id,msg','qda','qdm','id','kv','nod="ummo" '.$wh);
+$r=sql::inner('art.id,msg','qda','qdm','id','kv','nod="ummo" '.$wh);
 if($r)foreach($r as $k=>$v){
 	$v=str_replace("'",' ',$v); //$v=str_replace('-',' ',$v);
 	$rb=str_word_count($v,2);
@@ -58,8 +58,8 @@ for($i=0;$i<$n;$i++)$ret.=lj('',$rid.'_umwords,liaisons___'.$i,$i).' ';
 return divc('nbp',$ret);}
 
 static function home($p,$o){$rid='plg'.randid();
-db('qdvoc',qd('umvoc'));
-db('qdvoc_b',qd('umvoc_arts'));
+sesr('db','qdvoc','umvoc');
+sesr('db','qdvoc_b','umvoc_arts');
 $bt=self::menu($p,$o,$rid);
 return $bt.divd($rid,'');}
 }

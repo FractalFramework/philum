@@ -61,7 +61,7 @@ return $r;}
 //patch tags
 static function home($p,$o){$rid='plg'.randid(); return;
 $bt=btn('popsav','Transfert datas to the new tables').br();
-db('qdt','pub_meta'); db('qdta','pub_meta_art'); db('qdtag','pub_tag');
+sesr('db','qdt','meta'); sesr('db','qdta','meta_art'); sesr('db','qdtag','tag');
 $n=12;//echo $n=ceil(ma::lastid('qda')/10000);
 for($i=0;$i<$n;$i++)$bt.=lj('txtbox',$rid.'_tagpatch,call___'.($i*10000),$i);//jb
 //patch user_tags

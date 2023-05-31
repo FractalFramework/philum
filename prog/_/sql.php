@@ -152,8 +152,8 @@ static function setutf8(){self::$qr->query('set names utf8mb4');}
 static function setlatin(){self::$qr->query('set names latin1');}
 static function tables($db){return self::call('show tables from '.$db,'rv');}
 static function resetdb($b,$n=1){self::qr('alter table '.db($b).' auto_increment='.$n);}
-static function drop($b){if(auth(6)){self::backup($b); self::qr('drop table '.db($b));}}
-static function trunc($b){if(auth(6)){self::backup($b); self::qr('truncate '.db($b)); self::resetdb($b);}}
+static function drop($b){if(auth(6)){$bb=self::backup($b); self::qr('drop table '.db($b)); return $bb;}}
+static function trunc($b){if(auth(6)){$bb=self::backup($b); self::qr('truncate '.db($b)); self::resetdb($b);}}
 static function ex($b,$z=''){$rq=self::qr('show tables like "'.db($b).'"',$z); return mysqli_num_rows($rq)>0;}
 static function reflush($b,$o=''){self::qr('alter table '.db($b).' order by id');
 if($o){$n=ma::lastid($b); if($n)self::resetdb($b,$n+1);}}
@@ -161,13 +161,14 @@ static function tuples($b,$c){return self::call('select count(*) as tuples, '.$c
 static function doublons($b,$c){$b=db($b); return self::call('SELECT COUNT(*) AS nbr_doublon, '.$c.' FROM '.$b.' GROUP BY '.$c.' HAVING COUNT(*)>1','w');}
 static function killdoublons($b,$c){$b=db($b); if(auth(6))return self::call('DELETE t1 FROM '.$b.' AS t1, '.$b.' AS t2 WHERE t1.id > t2.id AND t1.'.$c.' = t2.'.$c.'','w');}
 static function maintenance($k,$v,$b1,$b2){return self::read2($k.','.$v,$b1,'kv','p1 left outer join '.db($b2).' p2 on p2.id=p1.'.$k.' where p2.id is null group by '.$k,1);}//maintenance('idtag','tag','qdta','qdt');
-static function backup($b,$o=''){$bb='z_'.db($b).$o; $b2=$b.'z'; db($b2,$bb);
+static function backup($b,$o=''){$bb='z_'.db($b).$o; $b2=$b.'z'; sesr('db',$b2,$bb);
 if(self::ex($b2))self::qr('drop table '.$bb);
 self::qr('create table '.$bb.' like '.db($b));
 self::qr('insert into '.$bb.' select * from '.db($b)); return $bb;}
-static function rollback($b){$bb='z_'.db($b); $b2=$b.'z'; db($b2,$bb);
+static function rollback($b){$bb='z_'.db($b); $b2=$b.'z'; sesr('db',$b2,$bb);
 if(self::ex($b2) && auth(6))self::qr('drop table '.db($b)); else return;
 self::qr('create table '.db($b).' like '.$bb); self::qr('insert into '.db($b).' select * from '.$bb); return $bb;}
+static function rename($b,$bb){self::qr('rename table '.$b.' to '.$bb.';');}
 static function cols($b){return self::call('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from INFORMATION_SCHEMA.COLUMNS where table_name="'.db($b).'"','rr');}
 
 static function replace($b,$c,$a,$ab){

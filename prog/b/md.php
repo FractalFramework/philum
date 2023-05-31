@@ -65,7 +65,7 @@ $k2=sql('id','qda','v',$w2.' '.$w.' order by '.$col.' asc limit 1');
 if(!rstr(8)){$ret=lkc($k1?'':'hide',$htacc.$k1,$ta).''.lkc($k2?'':'hide',$htacc.$k2,$tb);}
 else{
 	if($tg)$j='pagup_popart__x_'; elseif($o)$j='popup_popart__x_'; else $j='content_mod,playmod__u_read_';
-	$ret=!$k1?btn('hide',$ta):lj('',$j.$k1,$ta).' ';
+	$ret=!$k1?btn('hide',$ta):lj('',$j.$k1,$ta);
 	$ret.=!$k2?btn('hide',$tb):lj('',$j.$k2,$tb);}
 if(!$o)return btn('btpic right',$ret);
 return $ret;}

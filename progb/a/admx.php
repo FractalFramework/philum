@@ -386,45 +386,44 @@ for($i=1;$i<=$max;$i++)$rc[$i]=!empty($r[$i])?[1]:[0];
 	else{$bs='users'; $nd=ses('qb');}
 msql::save($bs,$nd.'_rstr',$rc,['rstr']);}
 
-static function modifparams($slct,$restrict){
-$_SESSION['rstr'][$slct]=$restrict;
+static function modifparams($k,$n){
+$_SESSION['rstr'][$k]=$n; ses::$s['rstr'][$k]=$n;
 if($_SESSION['rstr'][63]==1)$_SESSION['negcss']=0;
 self::backup_rstr('save');}
 
-static function colonize($re,$prm,$id,$cls,$w='',$b=''){$b=$b?'div':'ul';
-$w=$w?$w:cw()-10; $ret=onxcols($re,$prm,$w); $p=atd($id).atc($cls);
-return tag($b,$p,$ret).divc('clear','');}
-
-static function showparamscat($r,$h){
+/*static function showparamscat($r,$h){
 $j='lang_admin*restrictions_';
 foreach($r as $k=>$v){
 //$hlp=bubble('txtsmall2','usg,popmsqt',$j.$k.'_description',$k);
 $hlp=togbub('usg,popmsqt',$j.$k.'_description',$k,'txtsmall2');
-$t=$h[$k][0]??$v; if(rstr($k)){$n=1; $c='';} else{$n=0; $c='active';}
+$t=$h[$k][0]??$v; if(rstr($k))$n=1; else $n=0;
 $ret[]=valid($n).' '.btn('',lj('','rstr_admx,showparams___'.$k.'_'.$n,$t)).$hlp.br();}
 return divc('nbp cols',implode('',$ret));
-return divc('nbp',self::colonize($ret,3,'','',550));}
+return divc('nbp',colonize($ret,3,'','',550));}
 
-static function showparams($slct,$restrict){$rb=[];
+static function showparams0($ik,$n){$rb=[];
 $r=msql::prep('system','admin_restrictions');
 $h=msql::read('lang','admin_restrictions');
-if($slct && auth(6))self::modifparams($slct,$restrict);
+if($ik && auth(6))self::modifparams($ik,$n);
 foreach($r as $k=>$v)$rb[$k]=self::showparamscat($v,$h); ksort($rb);
-return tabs($rb,'rst');}
-/**/
-static function mdfrstr($p,$n){$rt=[];
-if($p && auth(6))self::modifparams($p,$n);
-return valid($n);}
+return tabs($rb,'rst');}*/
 
-/**/static function showparams0(){$rb=[];
+/**/static function mdfrstr($ik,$n){$rt=[];
+if($ik && auth(6))self::modifparams($ik,$n);
+$r=msql::read('system','admin_restrictions');
+$h=msql::read('lang','admin_restrictions');
+$t=$h[$ik][0]??$r[$ik][0];
+return valid($n?0:1).' '.lj('','rstr'.$ik.'_admx,mdfrstr___'.$ik.'_'.($n?0:1),$t);}
+
+static function showparams(){$rb=[];
 $r=msql::prep('system','admin_restrictions');
 $h=msql::read('lang','admin_restrictions');
 foreach($r as $k=>$v)foreach($v as $ka=>$va){
 	$hlp=togbub('usg,popmsqt','lang_admin*restrictions_'.$ka.'_description',$ka,'txtsmall');
-	$t=$h[$ka][0]??$v; if(rstr($ka))$n=1; else $n=0;
-	$rb[$k][$ka]=divb(btd('rstr'.$ka,valid($n)).' '.btn('',lj('','rstr'.$ka.'_admx,mdfrstr___'.$ka.'_'.$n,$t)).$hlp);}
-foreach($rb as $k=>$v)$rt[]=tagb('h2',$k).divb(implode($v),'nbp');
-return divc('cols',implode('',$rt));}
+	$t=$h[$ka][0]??$v; $na=rstr($ka); $n=$na?1:0;
+	$rb[$k][$ka]=divb(btd('rstr'.$ka,valid($n).' '.lj('','rstr'.$ka.'_admx,mdfrstr___'.$ka.'_'.$na,$t)).$hlp,'nbp');}
+foreach($rb as $k=>$v)$rt[$k]=divb(implode($v),'cols');
+return tabs($rt,'rst');}
 
 static function getrstr($b){
 if($b=='defaults')$_SESSION['rstr']=self::defaults_rstr(0);
@@ -444,7 +443,7 @@ if($b!='=' && is_array($r))sql::upd('qdu',['rstr'=>implode('',$r)],['name'=>ses(
 
 static function restrictions(){
 $edt=divc('nbp',self::edit_rstr());
-$prm=self::showparams(get('slct'),get('restrict'),'');
+$prm=self::showparams('','');
 return $edt.divd('rstr',$prm);}
 
 //menuh

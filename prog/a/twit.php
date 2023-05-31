@@ -429,11 +429,11 @@ if(auth(6)){$ret.=lj('','popup_twit,call___'.$id.'_eco',picto('code'));
 	$ret.=lj('',$id.'_twit,call___'.$id.'_erz',picto('erase'));}
 $ref='twt'.substr($id,-8); $lng=ses('lng');
 //if($lg!=$lng)$ret.=lj('',$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,picto('translate'));
-if($lg!=$lng)$ret.=ljtog('','ynd'.$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,'ynd'.$ref.'_twit,playtxt___'.$id,picto('language'));
+if($lg!=$lng)$ret.=ljtog('','trn'.$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,'trn'.$ref.'_twit,playtxt___'.$id,picto('language'));
 //$ret.=lkt('',self::lk($nm,$id),picto('chain'));
 $ret.=lkt('','app/twit/'.$id,picto('url'));
 $ret=divc('nbp',$ret);
-$txt=divd('ynd'.$ref,str_replace('|','-',$txt));//nl2br
+$txt=divd('trn'.$ref,str_replace('|','-',$txt));//nl2br
 $rb=explode(' ',$med);
 $vid=strpos($med,'.mp4') || strpos($med,'.m3u8')?1:0;//noim if video
 if($rb)foreach($rb as $v)if($v){$v=trim($v);

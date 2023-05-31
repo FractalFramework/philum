@@ -166,13 +166,12 @@ $ret.=lj('','clst_clusters,cats_inpcl_3_',picto('category')).' ';
 return $ret;}
 
 static function install($b){
-//ses($b,qd($b));//name of table
 //sqldb::install('meta_clust');
 $r=['id'=>'ai','idtag'=>'int','word'=>'var'];//,'ind'=>'2var'
 sqlop::install($b,$r,1);}
 
 static function home($p,$o){
-db('qdtc','pub_meta_clust');
+sesr('db','qdtc','meta_clust');
 $rid='clst'; $ret=''; $bt='';
 //sqldb::install('meta_clust');
 if(auth(6))$bt=self::menu($p,$o,$rid);

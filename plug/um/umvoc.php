@@ -69,7 +69,7 @@ if($r)foreach($r as $k=>$v){
 return $ret;}
 
 static function glossary($p,$o){$ps=soundex($p);//search likes
-$r=sql::call('select voc from pub_umvoc where SOUNDEX(voc)="'.$ps.'";','rv');
+$r=sql::call('select voc from umvoc where SOUNDEX(voc)="'.$ps.'";','rv');
 $r=self::levenstein($p,$r); $ret='';
 if($r)foreach($r as $k=>$v)$ret.=lj('','popup_umvoc,segments___'.$v,$v);
 if(!$ret)$ret=btn('txtcadr',$p.': '.nms(11).' '.nms(16));
@@ -89,7 +89,7 @@ return $closest;}*/
 
 //search
 static function result($p,$r,$ka){$n=count($r);
-$t1='Recherche littérale'; $t2='Glossaire';
+$t1='Recherche littÃ©rale'; $t2='Glossaire';
 $search=lj('popbt','popup_search,home___'.ajx(strtolower($p)),pictxt('search',$t1)).' ';
 //$search.=lj('popbt','popup_umvoc,glossary___'.$p.'_'.$o,pictxt('view',$t2)).' ';
 $search.=lj('popbt','popup_bdvoc,home___'.ajx($p),pictxt('search','BD-voc')).' ';
@@ -123,14 +123,14 @@ static function slctj($d){$rid='bt'.randid(); $bt=btn('popbt','select...');
 return togbub('umvoc,slctjr',$d.'_'.$rid,$bt);}
 
 static function home($p,$o){
-db('qdvoc',qd('umvoc'));
-db('qdvoc_b',qd('umvoc_arts'));
-db('dico','dicoum');
+sesr('db','qdvoc','umvoc');
+sesr('db','qdvoc_b','umvoc_arts');
+sesr('db','dico','dicoum');
 $ret=self::slctj($p).' ';
 //$ret.=lj('','usrch___4',picto('del')).' ';
 $j='ucbk_umvoc,search_usrch,udsnd__'.ajx($p);
 $ret.=inputj('usrch',$p,$j).' ';
-$ret.=checkbox_j('udsnd',1,'soundex');//|chk
+$ret.=checkbox_j('udsnd',1,'soundex').' ';//|chk
 $ret.=lj('popsav',$j,'chercher').' ';
 $j='ucbk_umvoc,find_usrch,udsnd__'.ajx($p);
 $ret.=lj('popsav',$j,'trouver').' ';

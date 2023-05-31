@@ -71,6 +71,7 @@ $ret=lj('','popup_converts,home','converts');
 $ret.=lj('','popup_connectors,home','conn');
 $ret.=lj('','popup_sconn,home','sconn');
 $ret.=lj('','popup_vue,home','vue');
+$ret.=lj('','popup_html,home','html');
 if(auth(6))$ret.=lj('','popup_exec,home','exec');
 $ret.=toggle('','rpl_txt,repl','replace');
 $ret.=lj('','txtarea_converts,act__23_x','x').' ';

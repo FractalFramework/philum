@@ -170,8 +170,8 @@ if($p['famous']??''){$rt=sql::inner('tag,count(tag) as n','qdt','qdta','idtag','
 	$sq['inner'][]=self::sql_tags_additive(implode('|',array_keys($rt)),'');}
 if($p['classtag']){$sq['inner'][]=self::sql_tags_inner(); $sq['slct'][]='tag';
 	$sq['and'][]='cat="'.$p['classtag'].'"';}
-if($p['lg']){$ynd=ses('ynd'); $sq['slct'][]='txt';
-	$sq['inner'][]='inner join '.$ynd.' on ref=concat(\'art\','.$qda.'.id) and lang="'.$p['lg'].'"';}
+if($p['lg']){$trn=ses('trn'); $sq['slct'][]='txt';
+	$sq['inner'][]='inner join '.$trn.' on ref=concat(\'art\','.$qda.'.id) and lang="'.$p['lg'].'"';}
 $ut=explode(' ','utag tag '.prmb(18)); $ut[]=ses('iq'); $n=count($ut);
 for($i=0;$i<$n;$i++)if($ut[$i]){$tags=$r[$ut[$i]]??'';
 	if($tags)$sq['inner'][]=self::sql_tags_combinative($tags,$ut[$i]);}

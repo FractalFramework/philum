@@ -142,7 +142,7 @@ return $rt;}
 static function select($id,$lk){
 $r=ses('line'); $lnj=ajx($lk); $ret='';
 $j='socket_sav,addurlsav__7_'.$lnj.'_';
-foreach($r as $k=>$v)$ret.=lj('',$j.ajx($k).'_1',catpic($k,20));
+foreach($r as $k=>$v)$ret.=lj('',$j.ajx($k).'_1',$k).' ';//catpic($k,20)
 return $ret;}
 
 static function call($kn,$u,$prm=[]){//rssin

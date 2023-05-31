@@ -38,7 +38,7 @@ fixpop="'.ses('mobile').'"; fulpop="1"; enc="'.ses::$enc.'";
 state='.json_encode(ses::$st).';');
 $ret.=jslink('/prog'.$b.'/j/lib.js'.$cst);
 $ret.=jslink('/prog'.$b.'/j/ajx.js'.$cst);
-$ret.=jslink('/prog'.$b.'/j/utils.js'.$cst);
+$ret.=jslink('/prog'.$b.'/j/core.js'.$cst);
 if(ses('desgn'))$ret.=jslink('/js/live.js#css');
 $ret.=Head::get();
 $ret.='</head>'."\n";

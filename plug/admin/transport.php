@@ -2,18 +2,18 @@
 class transport{
 
 static function last($b){if(sql::ex(sqldb::qb($b)))
-return sql::call('select id from '.self::pub($b).' order by id desc limit 1','v');}
+return sql::call('select id from '.($b).' order by id desc limit 1','v');}
 
 static function dumpall(){
 $r=self::tables(); foreach($r as $k=>$v)backup::dump($v);}
 
-static function tables(){return ['art','cat','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','yandex','ips','live','live2','stat','_sys','cat','hub','mbr','img'];}//,'umvoc','umvoc_arts','umtwits','bdvoc','dicoen','dicofr','dicoum','hipparcos','gaia'
+static function tables(){return ['art','cat','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','live','live2','stat','_sys','cat','hub','mbr','img'];}//,'umvoc','umvoc_arts','umtwits','bdvoc','dicoen','dicofr','dicoum','hipparcos','gaia'
 
-static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','yandex','ips','live','live2','stat','cat','hub','mbr','img'];//,'umvoc','umvoc_arts','umtwits'
-if(in_array($b,$r))return qd($b); else return $b;}
+static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','live','live2','stat','cat','hub','mbr','img'];//,'umvoc','umvoc_arts','umtwits'
+if(in_array($b,$r))return $b;}// else return $b;
 
 static function db_r(){$r=sqldb::$rt;
-foreach($r as $k=>$v)$_SESSION[$k]='pub_'.$v;
+$_SESSION[$k]=$r;
 return array_flip($r);}
 
 static function ts_db($b){$r=self::db_r(); return $r[$b]??$b;}
@@ -155,7 +155,7 @@ else{//partial and complete dumps, not gziped
 		if(strpos($d,'404 Not Found'))$res=' - already updated';
 		elseif($d)write_file($f,$d);}
 	//if(!is_file($f))copy($u,$f);
-	if(is_file($f)){$o=='d'?'ssh':'rq';// -t '.qd($p).'
+	if(is_file($f)){$o=='d'?'ssh':'rq';// -t '.$p.'
 		if($o=='ssh'){$e='mysql -u '.$usr.' -p'.$ps.' '.$db.' < '.$dr.'/'.$f; exc($e);}
 		else{$d=file_get_contents($u); if($d)qr($d,0);}//$d=utf8enc($d); eco($d);
 		$res=$maxid==$dist_maxid?'ok':$maxid.'->'.$dist_maxid;}

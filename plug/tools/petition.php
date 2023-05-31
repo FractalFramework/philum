@@ -58,7 +58,7 @@ static function home($id,$p,$page=''){$p=$p?$p:10; $page=$page?$page:1;
 $keys=explode(',',self::hlp('entries').',host,valid');
 $defsb[msql::$m]=['name','mail','web','city','country','host','valid'];
 if(auth(6))$msq=msqbt('',ses('qb').'_petition_'.$id);
-$nod=qd('petition_'.$id);
+$nod=nod('petition_'.$id);
 $r=msql::read_b('',$nod,'','',$defsb);
 $ret=lj('txtbox','popup_petition,form___'.$id,self::hlp('sign')).$msq.br();
 if(get('confirm')){$ret.=self::confirm($r,$nod,$id); $r=msql::read('users',$nod);}

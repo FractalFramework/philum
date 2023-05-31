@@ -30,7 +30,7 @@ static function sav($p,$o,$r){
 $rb=sesmk('mysqli_profil'); $i=0;
 if($rb)foreach($rb as $k=>$v){$ra[$k]=$r[$i]; $i++;}
 $id=sql('id','profil','v','user="'.$r[0].'"');
-if($id)qr('update '.qd('profil').' set '.implode(',',sql::atmrk($ra,'')).' where user="'.$r[0].'" limit 1');
+if($id)qr('update profil set '.implode(',',sql::atmrk($ra,'')).' where user="'.$r[0].'" limit 1');
 else sql::sav('profil',$ra);
 return btn('txtyl','ok');}
 
@@ -57,7 +57,7 @@ return divc('form',$ret);}//on2cols($rb,700,5)
 static function mysqli_profil(){
 return ['user'=>'var','name'=>'var','com'=>'var','cp'=>'int','gps'=>'var','photo'=>'var','day'=>'int'];}
 
-static function profile_init($b){ses($b,qd($b));
+static function profile_init($b){
 sqlop::install($b,mysqli_profil(),0);}
 
 //load

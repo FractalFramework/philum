@@ -280,8 +280,7 @@ if(!$r)$r=boot::define_clr(); if($r)return $n?$r[$n]:$r;}
 function setclrs($d,$k=''){$prmd=$k?$k:ses('prmd'); $_SESSION['clrs'][$prmd]=$d;}
 
 #mysql
-function qd($d){return db('qd').'_'.$d;}
-function db($k,$v=''){return $v?$_SESSION['db'][$k]=$v:$_SESSION['db'][$k]??'';}
+function db($k){return $_SESSION['db'][$k]??'';}
 function connect(){require(boot::cnc());}
 function sqlclose(){mysqli_close(sql::$qr);}
 function qr($sql,$o=''){return sql::qr($sql,$o);}
@@ -291,6 +290,7 @@ function sql($d,$b,$p,$q,$z=''){return sql::read($d,$b,$p,$q,$z);}
 function sqb($d,$b,$p,$q,$z=''){return sql::read2($d,$b,$p,$q,$z);}
 
 #ses
+//function db($k){return ses::$s['db'][$k]??'';}
 function auth($n){return ($_SESSION['auth']??'')>=$n?true:false;}
 function rstr($n){return ($_SESSION['rstr'][$n]??1)?0:1;}
 function prms($n){return $_SESSION['prms'][$n]??'';}
@@ -307,7 +307,6 @@ function mn($n){return $_SESSION['mn'][$n]??'';}
 //function nms($n){return (ses::$s['prmb'][$n]??1)?0:1;}
 //function mn($n){return (ses::$s['mn'][$n]??1)?0:1;}
 //function db($n){return ses::$s['db'][$n]??'';}
-//function qd($d){return ses::$s['qd'].'_'.$d;}
 function nmx($r){$rb=[]; foreach($r as $k=>$v)$rb[]=nms($v); return implode(' ',$rb);}
 function yesnoses($d){return $_SESSION[$d]=$_SESSION[$d]==1?0:1;}
 function nbof($n,$i){if(!$n)return nms(11)."&nbsp;".nms($i); else return $n.' '.($n>1?nms($i+1):nms($i));}
@@ -316,13 +315,12 @@ function plurial($n,$i){return $n>1?nms($i+1):nms($i);}
 function define_ses(){
 ses::$s['auth']=ses('auth');
 ses::$s['rstr']=ses('rstr');
-ses::$s['prms']=ses('prms');
-ses::$s['prma']=ses('prma');
-ses::$s['prmb']=ses('prmb');
-ses::$s['nms']=ses('nms');
-ses::$s['mn']=ses('mn');
-$qd=db('qd'); ses::$s['qd']=$qd;
-$r=sqldb::$rt; foreach($r as $k=>$v)ses::$s['db'][$k]=$qd.'_'.$v;}
+//ses::$s['prms']=ses('prms');
+//ses::$s['prma']=ses('prma');
+//ses::$s['prmb']=ses('prmb');
+//ses::$s['nms']=ses('nms');
+//ses::$s['mn']=ses('mn');
+ses::$s['db']=sqldb::$rt;}
 
 /*function afc0($a,$m){if(!$m)$a='ajax';
 $r=method_exists('ath',$a)?ath::$a():[];

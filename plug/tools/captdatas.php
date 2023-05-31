@@ -32,7 +32,6 @@ $ret.=msqbt('',nod('captdatas'));
 return $ret;}
 
 static function install($b){
-ses($b,qd($b));//name of table
 //1=drop table on change $r !
 $r=['tit'=>'var','txt'=>'text','day'=>'int'];
 sqlop::install($b,$r,0);}

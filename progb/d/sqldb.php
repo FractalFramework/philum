@@ -3,7 +3,7 @@ class sqldb{
 static $r=[];
 static $er=false;
 static $rb=[];
-static $rt=['qda'=>'art','qdm'=>'txt','qdd'=>'data','qdu'=>'user','qdi'=>'trk','qdg'=>'img','qdf'=>'favs','qdc'=>'cat','qdh'=>'hub','qdb'=>'mbr','qdt'=>'meta','qdta'=>'meta_art','qdtc'=>'meta_clust','qdsr'=>'search','qdsra'=>'search_art','ynd'=>'yandex','qdw'=>'web','qdtw'=>'twit','qdp'=>'ips','qdv'=>'live','qdv2'=>'live2','qds'=>'stat','qdk'=>'iqs','qdy'=>'_sys','qdya'=>'_prog','qdyar'=>'_progr','qdyb'=>'_plug','umt'=>'umtwits','dicoen'=>'dicoen','dicofr'=>'dicofr','dicoum'=>'dicoum'];//,'qdt-en'=>'meta_en','qdtm'=>'meta_mul','qdl'=>'clust','qdla'=>'clust_art'
+static $rt=['qda'=>'art','qdm'=>'txt','qdd'=>'data','qdu'=>'user','qdi'=>'trk','qdg'=>'img','qdf'=>'favs','qdc'=>'cat','qdh'=>'hub','qdb'=>'mbr','qdt'=>'meta','qdta'=>'meta_art','qdtc'=>'meta_clust','qdsr'=>'search','qdsra'=>'search_art','trn'=>'trans','qdw'=>'web','qdtw'=>'twit','qdp'=>'ips','qdv'=>'live','qdv2'=>'live2','qds'=>'stat','qdk'=>'iqs','qdy'=>'_sys','qdya'=>'_prog','qdyar'=>'_progr','qdyb'=>'_plug','umt'=>'umtwits','dicoen'=>'dicoen','dicofr'=>'dicofr','dicoum'=>'dicoum','qdtm'=>'meta_mul','qdmb'=>'txb'];//,'qdt-en'=>'meta_en','qdl'=>'clust','qdla'=>'clust_art'
 static $ty=['ai','aib','int','bint','sint','var','svar','mvar','bvar','var2','var11','text','long','time','psw'];
 
 function construct(){self::$r=self::defs();}
@@ -11,6 +11,7 @@ function construct(){self::$r=self::defs();}
 static function defs(){$u=0;
 $r['art']=['id'=>'ai','ib'=>'int','name'=>'mvar','mail'=>'var','day'=>'int10','nod'=>'svar','frm'=>'var','suj'=>'var','re'=>'int','lu'=>'int','img'=>'text','thm'=>'bvar','host'=>'var','lg'=>'var2','key'=>'KEY `nod_frm` (`day`,`frm`), KEY `suj` (`suj`), KEY `nod_day` (`day`,`nod`)'];
 $r['txt']=['id'=>'ai','msg'=>'text'];
+$r['txb']=['id'=>'ai','ib'=>'int','msg'=>'text','date'=>'time'];
 $r['cat']=['id'=>'ai','cat'=>'var','pic'=>'svar','no'=>'enum(01)'];
 $r['hub']=['id'=>'ai','hub'=>'var','no'=>'enum(01)'];
 $r['trk']=['id'=>'ai','ib'=>'int','name'=>'var','mail'=>'var','day'=>'int10','nod'=>'var','frm'=>'svar','suj'=>'var','msg'=>'text','re'=>'int','host'=>'var','lg'=>'var2','key'=>'KEY `nod` (`nod`), KEY `suj_nod` (`suj`,`nod`), KEY `day_nod` (`day`,`nod`)'];
@@ -36,7 +37,7 @@ $r['search']=['id'=>'ai','word'=>'var'];
 $r['search_art']=['id'=>'ai','ib'=>'int','art'=>'int','nb'=>'int'];
 $r['mbr']=['id'=>'ai','name'=>'svar','hub'=>'svar','auth'=>'int'];
 $r['img']=['id'=>'ai','ib'=>'int','im'=>'var','dc'=>'var','no'=>'int1'];
-$r['yandex']=['id'=>'ai','ref'=>'var11','txt'=>'text','lang'=>'var2'];
+$r['trans']=['id'=>'ai','ref'=>'var11','txt'=>'text','lang'=>'var2'];
 $r['web']=['id'=>'ai','ib'=>'int','url'=>'var','tit'=>'var','txt'=>'text','img'=>'var'];
 $r['twit']=['id'=>'ai','ib'=>'bint','twid'=>'bint','name'=>'var','screen_name'=>'var','user_id'=>'bint','date'=>'int10','text'=>'text','media'=>'lvar','mentions'=>'var','reply_id'=>'bint','reply_name'=>'var','favs'=>'int','retweets'=>'int','followers'=>'int','friends'=>'int','quote_id'=>'bint','quote_name'=>'var','rewteeted'=>'bint','lang'=>'var3'];
 $r['_sys']=['id'=>'ai','name'=>'var','page'=>'var','maj'=>'int10','func'=>'var'];
@@ -57,7 +58,7 @@ return $r;}
 
 static function qb($b){return in_array_b($b,self::$rt);}
 static function db($q){return self::$rt[$q]??'';}
-static function tn($q){return qd(self::$rt[$q]??'');}
+static function tn($q){return self::$rt[$q]??'';}//
 
 static function def($b){
 if(!self::$r)self::$r=self::defs(); 
@@ -98,18 +99,6 @@ return $ret;}
 static function vrfr($r,$b){$rb=[]; $qb=self::$rt[$b]; self::$er='';
 if($r)foreach($r as $k=>$v)$rb[$k]=self::vrf($v,$k,$qb);
 return $rb;}
-
-//actions
-/*static function sav($b,$r,$o=''){
-return sqlsav($b,$r,$o,1);}*/
-
-/**/static function savk($b,$r,$o=''){
-$t=self::$rt[$b];
-self::$rb=self::def($t);
-$rk=self::$rb; unset($rk['id']); if(isset($rk['key']))unset($rk['key']);
-$rc=array_combine($rk,$r);
-$rd=self::vrfr($rc,$t);
-if(!self::$er)return sql::sav($b,$rd,$o);}
 
 //init
 static function install($b){

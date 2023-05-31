@@ -12,7 +12,7 @@ ksort($ret);
 //sql::sav2('qdcl',$ret);
 return $ret;}
 
-static function clic_stats($p){db('qdcl',qd('clics'));
+static function clic_stats($p){sesr('db','qdcl','clics');
 $r=sql('id,nb','qdcl','kv',''); //pr($r);
 if(!$r){
 	sqldb::install('clics'); //$db=install::db(db('qd')); qr($db['clics']);
@@ -24,7 +24,7 @@ pr($r);
 /*static function build_stats($p){
 //if($p)$r=sql::inner('id,day,lu','qda','qdv2','index','mail LIKE "%'.$p.'%"'); //pr($r);
 $sql='select '.db('qda').' ,day,lu from '.db('qda').' inner join '.db('qdv').'  
-on '.qd('qda').'.id like page '.$q;
+on '.db('qda').'.id like page '.$q;
 //$rq=qr($sql);
 pr($r);
 }*/

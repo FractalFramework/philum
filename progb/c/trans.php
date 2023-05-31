@@ -5,7 +5,8 @@ class trans{
 static $motor='deepl';
 
 static function getkey(){
-return msql::val('',nod('yandex'),1);}
+if(!ses('transkey'))ses('transkey',msql::val('',nod('trans'),self::$motor));
+return ses('transkey');}
 
 static function post($url,$post){$d=curl_init();
 curl_setopt($d,CURLOPT_URL,$url);
@@ -74,23 +75,23 @@ return ($ret);}
 //com
 static function com($ref,$d,$to='',$from='',$z=''){
 if(!$to)$to=ses('lng');//$to=setlng($to);
-$ex=sql('id','ynd','v',['ref'=>$ref,'lang'=>$to],'');
+$ex=sql('id','trn','v',['ref'=>$ref,'lang'=>$to],'');
 if(!$from)$from=self::detect('','',$d);
 if($from!=$to){
 	$b=self::read($d,$from,$to,'xml');
 	if($b){
 		if($ex)self::update($b,$ref,$to);
-		else sql::sav('ynd',[$ref,$b,$to]); $d=$b;}
-	else sql::sav('ynd',[$ref,$d,$to]);}//save original in new lang
+		else sql::sav('trn',[$ref,$b,$to]); $d=$b;}
+	else sql::sav('trn',[$ref,$d,$to]);}//save original in new lang
 return $d;}
 
 #edit
 static function update($d,$ref,$lg){
-//sqlup('ynd',['txt'=>sql::qres($d)],['ref'=>$ref,'lang'=>$lg]);
+//sqlup('trn',['txt'=>sql::qres($d)],['ref'=>$ref,'lang'=>$lg]);
 $q=['ref'=>$ref,'lang'=>$lg];
-$ex=sql('id','ynd','v',$q);
-if($ex)sqlup('ynd',['txt'=>$d],$ex);
-else sqlsav('ynd',['ref'=>$ref,'txt'=>$d,'lang'=>$lg]);}
+$ex=sql('id','trn','v',$q);
+if($ex)sqlup('trn',['txt'=>$d],$ex);
+else sqlsav('trn',['ref'=>$ref,'txt'=>$d,'lang'=>$lg]);}
 
 static function resav($ref,$setlg,$prm){$ret=$prm[0];
 [$lg,$from]=expl('-',$setlg); if($lg=='all')$lg=$from;
@@ -99,9 +100,9 @@ return self::call($ref,$setlg);}
 
 static function redit($ref,$setlg){$id=substr($ref,3);
 [$lg,$from]=explode('-',$setlg); if($lg=='all')$lg=$from;
-$txt=sql('txt','ynd','v',['ref'=>$ref,'lang'=>$lg],0);
-//$ret=lj('','ynd'.$ref.'_trans,call__1_'.$ref.'_'.$setlg,picto('kleft')).' ';
-$ret=lj('txtx','ynd'.$ref.'_trans,resav_rdt'.$ref.'__'.$ref.'_'.$setlg,pictxt('save',$lg)).' ';
+$txt=sql('txt','trn','v',['ref'=>$ref,'lang'=>$lg],0);
+//$ret=lj('','trn'.$ref.'_trans,call__1_'.$ref.'_'.$setlg,picto('kleft')).' ';
+$ret=lj('txtx','trn'.$ref.'_trans,resav_rdt'.$ref.'__'.$ref.'_'.$setlg,pictxt('save',$lg)).' ';
 $ret.=editarea('rdt'.$ref,$txt,72,16);
 return $ret;}
 
@@ -111,7 +112,7 @@ static $i; $i++; $ret=''; $retb='';
 [$to,$from]=expl('-',$setlg); $lg='';
 if(!$to)$to=ses('lng');//$to=setlng($to);
 $ind=substr($ref,0,3); $id=substr($ref,3);
-//[$ex,$exlg]=sql('txt,lg','ynd','r',['ref'=>$ref,'lang'=>$to]);
+//[$ex,$exlg]=sql('txt,lg','trn','r',['ref'=>$ref,'lang'=>$to]);
 //if(!$ret){}
 if($ind=='art'){$ret=sql('msg','qdm','v',$id); $lg=sql('lg','qda','v',$id);}
 elseif($ind=='trk')[$ret,$lg]=sql('msg,lg','qdi','w',$id);
@@ -124,7 +125,7 @@ elseif($lg!=$to){//eco($ret);
 	if(!$lg)$lg=self::detect('','',$ret);
 	if($lg!=$to)$retb=self::read($ret,$lg,$to,'html');
 	if($retb){$ret=$retb; self::update($ret,$ref,$to);}}
-elseif($o){$id=sql::sav('ynd',[$ref,$ret,$lg],0);}
+elseif($o){$id=sql::sav('trn',[$ref,$ret,$lg],0);}
 elseif($lg==$to)self::update($ret,$ref,$to);//restore original
 if($edt==2)return $ret;
 if($i>1)return $ret?self::convconn($ret,''):'error';
@@ -144,7 +145,7 @@ $d=str::clean_br(trim($d));
 return trim($d);}
 
 //menulg
-static function menulg($ref,$to,$from){$ret=''; $tg='ynd'.$ref; //$tg=$ref;
+static function menulg($ref,$to,$from){$ret=''; $tg='trn'.$ref; //$tg=$ref;
 $r=explode(' ',prmb(26)); $id=substr($ref,3); $go='suj'.$id.',art'.$id;
 $ret=lj(active($to,$from),$tg.'_trans,call___'.$ref.'_'.$from.'-'.$from,flag($from)).' &#8658; ';
 //$ret=lj(active($to,$from),$go.'_trans,artsuj__json_'.$id.'_'.$from.'-'.$from,flag($from)).' &#8658; ';
@@ -160,15 +161,15 @@ return divc('nbp',$ret);}
 static function call($ref,$setlg='',$edt=''){//edt:0=html,2=brut,1=sav
 [$to,$from,$nobt]=expl('-',$setlg,3); $bt=''; //if($to=='all')$to=$from;
 if(!$to)$to=ses('lng');//$to=setlng($to);
-$ret=sql('txt','ynd','v',['ref'=>$ref,'lang'=>$to]);
+$ret=sql('txt','trn','v',['ref'=>$ref,'lang'=>$to]);
 if(!$nobt)$bt=self::menulg($ref,$to,$from);
 //if(!$ret && $to==$from){$ret=self::redo($ref,$setlg,1,$edt);}//$bt='';//disactivated
-//if(!$ret)$ret=sql('txt','ynd','v',['ref'=>$ref,'lang'=>$from]);
+//if(!$ret)$ret=sql('txt','trn','v',['ref'=>$ref,'lang'=>$from]);
 if(!$ret)$ret=self::redo($ref,$setlg,1,$edt);//patch
 if($edt==2)return $ret;//txt brut
 if(!$edt)$ret=self::convconn($ret,'');
-//if($ret && $edt==1)return '['.$bt.$ret.'|ynd'.$ref.':divd]';
-return btd('ynd'.$ref,$bt.$ret);}
+//if($ret && $edt==1)return '['.$bt.$ret.'|trn'.$ref.':divd]';
+return btd('trn'.$ref,$bt.$ret);}
 
 static function artsuj($id,$setlg=''){
 $r[0]=self::call('suj'.$id,$setlg.'-1');
@@ -177,13 +178,13 @@ return $r;}
 
 static function play($ref,$lg){
 [$to,$from]=explode('-',$ref);
-$ret=sql('txt','ynd','v',['ref'=>$ref,'lang'=>$to]);
+$ret=sql('txt','trn','v',['ref'=>$ref,'lang'=>$to]);
 if(!$ret)$ret=self::redo($ret,$ref);
 return $ret;}
 
 #conn
 static function menuxt($ref,$to,$from){$ret='';
-$r=explode(' ',prmb(26)); //$r=sql('lang','ynd','rv',['ref'=>$ref]);
+$r=explode(' ',prmb(26)); //$r=sql('lang','trn','rv',['ref'=>$ref]);
 $ret=lj('',$ref.'_trans,playxt___'.$ref.'_'.$from.'-'.$from,flag($from)).' &#8658; ';
 if($r)foreach($r as $k=>$v)if($v!=$from)
 	$ret.=lj('',$ref.'_trans,playxt___'.$ref.'_'.$v.'-'.$from,flag($v)).' ';
@@ -214,16 +215,16 @@ return self::playxt($ref,$setlg,'');}
 static function playxt($ref,$setlg,$d=''){
 [$to,$from]=explode('-',$setlg); if(!$to)$to=ses('lng');
 if(!$d)$d=self::original('',$ref,$from);
-$ret=sql('txt','ynd','v',['ref'=>$ref,'lang'=>$to]);
+$ret=sql('txt','trn','v',['ref'=>$ref,'lang'=>$to]);
 if(!$ret){$ret=self::com($ref,$d,$to,$from,'');
-	if($ret)sql::sav('ynd',[$ref,$ret,$to]);}
+	if($ret)sql::sav('trn',[$ref,$ret,$to]);}
 $bt=self::menuxt($ref,$to,$from);
 $ret=self::convconn($ret);
 return $bt.$ret;}
 
 static function original($d,$ref,$lg,$o=''){
-$ret=sql('txt','ynd','v',['ref'=>$ref,'lang'=>$lg]);
-if(!$ret && $d)sql::sav('ynd',[$ref,self::convhtml($d),$lg]);
+$ret=sql('txt','trn','v',['ref'=>$ref,'lang'=>$lg]);
+if(!$ret && $d)sql::sav('trn',[$ref,self::convhtml($d),$lg]);
 if($o && $d)self::update(self::convhtml($d),$ref,$lg);
 return $ret;}
 
@@ -238,9 +239,9 @@ return divd($ref,$ret);}
 static function calltw($id,$setlg){
 [$to,$from,$o]=expl('-',$setlg,3);
 $ref='twt'.substr($id,-8);
-$ret=sql('txt','ynd','v',['ref'=>$ref,'lang'=>$to]); if(!$ret)$o=1;
+$ret=sql('txt','trn','v',['ref'=>$ref,'lang'=>$to]); if(!$ret)$o=1;
 if($o)$d=sql('text','qdtw','v',['twid'=>$id]);
-if($o==1){$ret=self::com($ref,$d,$to,$from); sql::sav('ynd',[$ref,$ret,$to]);}
+if($o==1){$ret=self::com($ref,$d,$to,$from); sql::sav('trn',[$ref,$ret,$to]);}
 elseif($o==2)$ret=$d;
 $j=$ref.'_trans,'; $bt='';
 //$bt=lj('',$j.'calltw__1_'.$id.'_'.$setlg.'-2',picto('before')).' ';
@@ -253,36 +254,36 @@ return $bt.$ret;}
 static function callum($ref,$setlg,$edt='',$ret=''){
 [$to,$from]=expl('-',$setlg); if($to=='all')$to=$from; $bt='';
 if(!$to)$to=ses('lng');//$to=setlng($to);
-if(!$ret)$ret=sql('txt','ynd','v',['ref'=>$ref,'lang'=>$to]);
+if(!$ret)$ret=sql('txt','trn','v',['ref'=>$ref,'lang'=>$to]);
 $bt='';//$bt=self::menulg($ref,$to,$from);
 //if(!$ret){$bt=''; $ret=self::redo($ref,$setlg,1,$edt);}//disactivated
-//if(!$ret)$ret=sql('txt','ynd','v',['ref'=>$ref,'lang'=>$from]);
+//if(!$ret)$ret=sql('txt','trn','v',['ref'=>$ref,'lang'=>$from]);
 if(!$ret)$ret=self::redo($ref,$setlg,1,$edt,1);//patch
 if(!$edt)$ret=self::convconn($ret,'');
 if($edt==2)return $ret;//txt brut
-if($ret)return divd('ynd'.$ref,$bt.$ret);}
+if($ret)return divd('trn'.$ref,$bt.$ret);}
 
 static function callin($p,$o,$prm=[]){
 [$txt,$to]=prmp($prm,$p,$o); //echo $txt.'-'.$to;
 //return self::call($txt,$setlg='',$edt='');
-return self::read($txt,'fr',$to,'plain');}
+return self::read($txt,'',$to,'plain');}
 
 static function menu($p){
 $rid=randid('yd');
 $ret=textarea('txt',$p);
-$ret.=select('lng',['en','es','fr','it'],'vv');
+$ret.=select('lng',['en','es','fr','it','de'],'vv');
 $ret.=lj('popbt',$rid.'_trans,callin_txt,lng_1',nms(153).' '.self::$motor);//translate
 $ret.=lj('popbt',$rid.'_trans,detect_txt_1','detection');
 $ret.=lj('popbt',$rid.'_trans,getlangs','langs');
 return $ret.divd($rid,'');}
 
-static function install(){//ses('ynd','pub_translation');//return;
+static function install(){
 sqlop::install('translation',['ref'=>'var11','txt'=>'text','lang'=>'var2'],0);}
 
 static function home($p,$o){$rid=randid('translation');
 //if($p=='install')self::install();
 $ret=self::menu($p,$o);
-$bt=msqbt('',nod('yandex_1'));
+$bt=msqbt('',nod(self::$motor));
 return $bt.divd($rid,$ret);}
 }
 ?>

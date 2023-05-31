@@ -50,7 +50,7 @@ if($db['_'.$t])qr($db['_'.$t]);}
 static function savefunc(){//save_all
 self::sql_init('sys');
 qr('TRUNCATE TABLE _sys');
-$r=['admin','ajax','api','art','bubs','finder','lib','pop','sav','spe','tri'];//,'ajx.js','utils.js'
+$r=['admin','ajax','api','art','bubs','finder','lib','pop','sav','spe','tri'];//,'ajx.js','core.js','lib.js'
 foreach($r as $v)self::save_funcs('progb/'.$v.'.php',$v);}
 
 static function savefunc_plug(){//save_all

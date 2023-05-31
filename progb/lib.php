@@ -1,6 +1,6 @@
 <?php 
-spl_autoload_register(function($a){$dr='prog'.$_SESSION['dev'].'/'; $r=['_','a','b','c'];
-for($i=0;$i<4;$i++)if(is_file($f=$dr.$r[$i].'/'.$a.'.php')){
+spl_autoload_register(function($a){$dr='prog'.$_SESSION['dev'].'/'; $r=['_','a','b','c','d'];
+for($i=0;$i<5;$i++)if(is_file($f=$dr.$r[$i].'/'.$a.'.php')){
 	require($f); ses::$r['spl'][]=$r[$i].'/'.$a; return;}
 $r=sesmk('scandir_b','plug',0);
 if($r)foreach($r as $v)if(is_file($f='plug/'.$v.'/'.$a.'.php')){
@@ -619,6 +619,10 @@ if($re)foreach($re as $k=>$v){$i++; if($i<=$mid)$r[$io].=$v;
 	if($io>1 && $i>$mid*($io-1) && $i<=$mid*$io)$r[$io].=$v;}
 for($i=1;$i<=$prm;$i++)$ret.=divs($css,$r[$i]??'');
 return $ret.divc('clear','');}
+
+/*function colonize($re,$prm,$id,$cls,$w='',$b=''){$b=$b?'div':'ul';
+$w=$w?$w:cw()-10; $ret=onxcols($re,$prm,$w); $p=atd($id).atc($cls);
+return tag($b,$p,$ret).divc('clear','');}*/
 
 #medias
 function iframe($d,$w='',$h=''){

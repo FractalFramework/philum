@@ -6,17 +6,15 @@ static function cnc(){return 'cnfg/'.str_replace('www.','',$_SERVER['HTTP_HOST']
 static function reset_mjx(){for($i=1;$i<12;$i++)$_SESSION['heremjx'.$i]='';}
 static function reset_ses(){self::reset_mjx(); $r=['mdc','modc','mods','mem','digr','icotag','recache','adminauthes','msqmimes','msqlang','negcss','delaytext','scanplug','simplified','connedit','lang','lng','flags','murl','prma','prms','prmb','prmb1','editbt'];
 foreach($r as $v)unset($_SESSION[$v]);}
+static function db(){return ['qda'=>'art','qdm'=>'txt','qdd'=>'data','qdu'=>'user','qdi'=>'trk','qdg'=>'img','qdf'=>'favs','qdc'=>'cat','qdh'=>'hub','qdb'=>'mbr','qdt'=>'meta','qdta'=>'meta_art','qdtc'=>'meta_clust','qdsr'=>'search','qdsra'=>'search_art','trn'=>'trans','qdw'=>'web','qdtw'=>'twit','qdp'=>'ips','qdv'=>'live','qdv2'=>'live2','qds'=>'stat','qdk'=>'iqs','qdy'=>'_sys','qdya'=>'_prog','qdyar'=>'_progr','qdyb'=>'_plug','umt'=>'umtwits','dicoen'=>'dicoen','dicofr'=>'dicofr','dicoum'=>'dicoum','qdmb'=>'txb'];}
 
 #master_cnfg//qd
-static function master_params(){$f=self::cnf();
-$qd=db('qd'); $aqb=ses('aqb'); $subd=ses('subd');
+static function master_params(){
+$aqb=ses('aqb'); $subd=ses('subd'); $f=self::cnf();
 $d=is_file($f)?read_file($f):''; $prms=expl('#',$d,16);
-//else self::restore_mprm($f);
-if(!$qd){if(!$prms[0])$qd='pub'; else $qd=$prms[0];}//master_of_puppets
-if($qdb=get('qd')){$bqd=sqb('id',$qdb.'_user','v','limit 1');//master_node
-	if(!$bqd && !post('create_hub') && !post('create_node'))$qd=$prms[0]; else $qd=$qdb;}
-$_SESSION['db']['qd']=$qd;
-$r=sqldb::$rt; foreach($r as $k=>$v)$_SESSION['db'][$k]=$qd.'_'.$v;//defs
+$_SESSION['db']=self::db();//sqldb::$rt
+//ses::$s['db']=sqldb::$rt;
+//$_SESSION['db']['qd']=$qd;
 $prms['htacc']=$prms[1]=='yes'?1:'';
 $prms['create_hub']=$prms[2]=='yes'?'on':'off';
 $prms['default_hub']=$aqb?$aqb:($prms[3]?$prms[3]:'');//1
@@ -53,11 +51,6 @@ static function define_closed_hub(){$use=ses('USE');
 if($use && !isset($_SESSION['mn'][$use])){
 	$v=sql('hub','qdu','v',['name'=>$use]);
 	if($v)$_SESSION['mn'][$use]=$v;}}
-
-static function define_subdomain(){
-$r=explode('.',$_SERVER['HTTP_HOST']);
-if($r[2]){$aqb=$r[0]!='www'?$r[0]:$r[1]; 
-if($aqb!=ses('qb'))geta('hub',$aqb);}}
 
 static function define_qb(){$hub=get('hub');
 $r=ses('mn'); $defo=prms('default_hub'); //if(!$hub)$hub=$defo;
@@ -295,7 +288,6 @@ if($ret)alert($ret);}
 //auth
 //0=no;1=read;2=tracks;3=propose;4=publish;5=edit;6=admin;7=host;
 static function ismbr($d){return sql('auth','qdb','v',['hub'=>ses('qb'),'name'=>$d]);}
-//static function members(){return sql('name,auth','qdb','kv','hub="'.ses('qb').'"');}
 static function define_auth(){$use=ses('USE');
 if(!ses('master'))$_SESSION['master']=sql('name','qdu','v',['name'=>prms('default_hub')]);
 if($use){if($use==$_SESSION['master'])$auth=7;
@@ -369,12 +361,12 @@ static function cacheart($id){//cachevs($id,11,$v,1);
 $r=sql('day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg','qda','w',$id); $r[3]=pop::art_img($r[3]);
 msql::modif('',nod('cache'),$r,'one','',$id); $_SESSION['rqt'][$id]=$r;}
 
-static function define_cats_rqt(){$ret=[];
+static function define_cats_rqt(){$rt=[];
 if(rstr(3)){$r=$_SESSION['rqt']??[];
-	if($r)foreach($r as $k=>$v)if($v[1] && $v[11])$ret[$v[1]]=radd($ret,$v[1]);} 
-//elseif(rstr(123))$ret=sql('cat,id','qdc','kv',['qb'=>ses('qb')]);
-else $ret=sql('distinct(frm)','qda','k','nod="'.ses('qb').'" and re>0 and substring(frm,1,1)!="_"');
-$_SESSION['line']=$ret;}
+	if($r)foreach($r as $k=>$v)if($v[1] && $v[11])$rt[$v[1]]=radd($rt,$v[1]); ksort($rt);} 
+//elseif(rstr(123))$rt=sql('cat,id','qdc','kv',['qb'=>ses('qb')]);
+else $rt=sql('distinct(frm)','qda','k','nod="'.ses('qb').'" and re>0 and substring(frm,1,1)!="_" order by frm');
+$_SESSION['line']=$rt;}
 
 #ignition
 static function init(){self::master_params(); $_SESSION['philum']=checkversion();
@@ -382,7 +374,6 @@ self::define_hubs(); self::define_qb(); self::define_config();}
 
 static function reboot(){self::reset_ses(); $_SESSION['dayx']=time();
 self::init(); self::define_use(); self::define_iq(); self::define_auth(); self::seslng(); self::time_system('ok'); self::cache_arts(); self::define_cats_rqt(); self::define_condition(); self::define_clr();}
-//$_SESSION['rstr']=msql::col('',nod('rstr'),0,1);
 
 static function rebuild(){$_SESSION['rqt']=[]; 
 return self::cache_arts(1); $_SESSION['dayx']=time();}

@@ -77,7 +77,7 @@ static function lang_art($id,$lg){
 if($lg && $lg!=ses('lng'))return ' '.flag($lg);}
 
 static function lang_art_others($id,$lg,$rb){$ret='';
-$r=explode(' ',prmb(26)); //$rb=sql('lang,id','ynd','kv','ref="art'.$id.'"');
+$r=explode(' ',prmb(26)); //$rb=sql('lang,id','trn','kv','ref="art'.$id.'"');
 foreach($r as $k=>$v)if($v!=$lg && isset($rb[$v]))
 	$ret.=lj('txtx','art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg,flag($v)).' ';
 return $ret;}
@@ -86,7 +86,7 @@ static function lang_rel_arts($id,$lg,$ro,$rst101,$rst115){
 $lng=ses('lng'); if(!$lg)$lg=$lng; $rb=[]; $ex=''; $ret='';
 if($ro && !$rst101)foreach($ro as $k=>$v)if(substr($k,0,4)=='lang'){//arts
 	$lga=substr($k,4); if($v && $lga!=$lg)$ret.=ma::popart($v).flag($lga).' '; $rb[$lga]=$v;}
-if($lg!=$lng && $lg)$ex=sql('lang,id','ynd','kv',['ref'=>'art'.$id]);//$ex=get('lang');
+if($lg!=$lng && $lg)$ex=sql('lang,id','trn','kv',['ref'=>'art'.$id]);//$ex=get('lang');
 $ja='art'.$id.'_trans,call___art'.$id.'_'.$lng.'-'.$lg; $jb='art'.$id.'_ma,read*msg___'.$id;
 if((!$rst115 && $ex && !isset($rb[$lng]))){$ic=$rt[$lng]??'';// or $ex
 	$rt=['fr'=>'&#127467;&#127479;','en'=>"&#127468;&#127463;",'es'=>'&#127466;&#127480;'];
@@ -129,7 +129,7 @@ if($ib && $read && $id!=$read){$ibb=ma::ib_of_id($ib);
 
 static function backcat($frm,$rst43){
 $t=!$rst43?catpict($frm,36):btn('txtbox',$frm);//rstr pictocat
-return lh('cat/'.$frm,$t);}
+if($frm!=get('frm'))return lh('cat/'.$frm,$t);}
 
 static function opnart($id,$prw,$o,$rch=''){$c=$o?'active':'';//art_read_c
 return ljb($c,'SaveBc','art_'.$id.'_'.$prw.'_'.$o.'_'.ajx($rch),picto('kdown'),atd('toggleart'.$id));}

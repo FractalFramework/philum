@@ -57,6 +57,10 @@ $_SESSION['rqt'][$nid]=[$pdt,stripslashes($frm),stripslashes($suj),$img,$qb,'','
 $_SESSION['daya']=ses('dayx');
 return $nid;}
 
+static function backart($id){
+$d=sql('msg','qdm','v',$id);
+if($d)sqlsav('qdmb',[$id,$d,mysqldate()]);}
+
 static function modif_art($id,$d){
 $qdm=db('qdm'); if(!auth(3))return;
 //$d=delr($d);
@@ -65,6 +69,7 @@ $qdm=db('qdm'); if(!auth(3))return;
 //$d=html_entity_decode($d);
 //$d=str::embed_links($d);
 //if(strpos($d,'\x'))
+if(rstr(154))self::backart($id);
 if($id)sqlup('qdm',['msg'=>$d],$id);
 if(rstr(147))codeline::png2jpg($id);
 $sz=mb_strlen($d??''); sql::upd('qda',['host'=>$sz],$id);

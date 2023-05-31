@@ -64,7 +64,6 @@ $ret.=lj('',$rid.'_xss,call__3_'.$k,$v).' ';
 return divc('list',$ret);}
 
 static function install($b){
-ses($b,qd($b));//name of table
 $r=['site'=>'var','tit'=>'var','img'=>'var','descr'=>'var','content'=>'var','footer'=>'var','day'=>'int'];
 sqlop::install($b,$r,0);}
 

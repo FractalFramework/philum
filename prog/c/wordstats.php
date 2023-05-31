@@ -17,6 +17,9 @@ static function last(){
 $rk=array_keys(ses('rqt')); //pr($rk);
 return array_pop($rk);}
 
+static function firstdate(){
+return sql('day','qda','v',['_limit'=>'1']);}
+
 //todo:vars in js
 static function build($p,$o){
 $lid=self::last(); if(is_numeric($p))$lid-=$p;
@@ -33,7 +36,7 @@ static function menu($p,$o){$bid='inp';
 $j=self::$cb.'_'.self::$a.',call_'.$bid.'_2__'.$o;
 //$ret=inputj($bid,$p,$j).lj('',$j,picto('ok'));
 $lid=self::last(); $parts=ceil($lid/self::$w);
-$ret=bar('wstbar',$v=0,$parts,$min=0,$lid,$js='wstcall',$s='240px');
+$ret=bar('wstbar',0,$parts,0,$lid,$js='wstcall',$s='240px');
 return $ret;}
 
 static function home($p,$o){

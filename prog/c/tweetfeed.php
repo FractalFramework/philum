@@ -3,7 +3,7 @@ class tweetfeed{
 
 static function tlex($minid){$ret='';
 $r=api::call2('priority:4,preview:1,idlist:1,order:id asc,noheader:1,minid:'.$minid);
-if($r)foreach($r as $k=>$v)$ret.=tlex::post(host().'/'.$k,1);
+if($r)foreach($r as $k=>$v)$ret.=divb(tlex::post(host().'/'.$k,1));
 return $ret;}
 
 static function read(){
@@ -18,13 +18,11 @@ if($r)foreach($r as $k=>$v){$rb=api::call2($v[1].$w);//p($rb);
 return $rc;}
 
 static function batch($p,$o,$prm=[]){
-$rok=[]; $vx=0;
-$f='_datas/twfeed.txt'; $minid=$prm[0]??read_file($f);
-if(!is_file($f))write_file($f,'');
-$r=self::build($minid);//p($r);
+$rok=[]; $vx=0; $minid=$prm[0]??''; $nod=nod('tweetfeed');
+$r=msql::read('',$nod,1,'',['lastid']); if(!$minid)$minid=$r[0]??''; //pr($r);
+$r=self::build($minid); //p($r);
 if($r)foreach($r as $k=>$v){$rok[]=$v.': '.twit::botshare($v,4); sleep(1);}//apikey:4
-if($r)$vx=max($r); if($vx>$minid && !twit::$er)write_file($f,$vx);
-//$ret=helps('tweetfeed_ok').' :: ';
+if($r)$vx=max($r); if($vx>$minid && !twit::$er)msql::modif('',$nod,$vx,'val',0,1);//write_file($f,$vx);
 $ret=divc('',count($r).' tweets have been sent');
 if($rok)$ret.=implode(br(),$rok);
 $ret.=self::tlex($minid);

@@ -28,7 +28,7 @@ $ret.=checkbox('chk','no','replies','');
 return $ret;}
 
 static function home($p,$o){$rid=randid('plg');
-ses('umt','pub_umtwits');
+sesr('db','umt','umtwits');
 $bt=self::menu($p,$o,$rid);
 //$ret=self::build($p,$o);
 return $bt.divd($rid,'');}

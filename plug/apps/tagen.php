@@ -1,7 +1,7 @@
 <?php 
 class tagen{
 static $a=__CLASS__;
-static $db='pub_metaen';
+static $db='metaen';
 static $default='';
 
 static function build($p,$o){
@@ -24,7 +24,6 @@ $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 
 static function install($b){
-//ses($b,qd($b));//name of table
 //1=drop table on change $r !
 $r=['tag'=>'var','cat'=>'var'];
 sqlop::install($b,$r,0);}

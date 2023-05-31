@@ -1,5 +1,8 @@
 <?php //patches
 
+//23
+//plug/admin/patches
+
 //22
 function patch_msql(){
 $r=explorer('msql');
@@ -11,7 +14,7 @@ return 'ok';}
 
 //20
 function patch_iqs(){
-db('qdk','pub_iqs');
+sesr('db','qdk','iqs');
 $ra=install::db(); $sql=$ra['iqs']; if($sql)qr($sql);
 return 'ok';}
 
@@ -36,9 +39,9 @@ foreach($r as $k=>$v){$rb=explode(',',$v);
 function patch_poll(){
 $ok=ses('ok'); if($ok)return;
 //ib,iq,type,poll
-qr('ALTER TABLE `pub_poll` ADD `type` VARCHAR(11) NOT NULL AFTER `iq`',1);
-qr(' RENAME TABLE `pub_poll` TO `pub_favs`;',1);//qdpl=>qdf
-db('qdf','pub_favs');
+qr('ALTER TABLE `poll` ADD `type` VARCHAR(11) NOT NULL AFTER `iq`',1);
+qr(' RENAME TABLE `poll` TO `favs`;',1);//qdpl=>qdf
+db('qdf','favs');
 $r=sql('ib,val,msg','qdd','','val="agree" and msg!="false" and msg!="true" and msg!="1"');
 foreach($r as $k=>$v){[$ib,$val,$msg]=$v; $rb=[$ib,$msg,$val,1];
 if($ib<10000000 && $msg)$nid=sqlsav('qdf',$rb);}
@@ -51,18 +54,18 @@ $r=sql('ib,val,msg','qdd','','val="fav" and msg!="false" and msg!="true" and msg
 foreach($r as $k=>$v){[$ib,$val,$msg]=$v; $rb=[$ib,$msg,$val,1];
 $nid=sqlsav('qdf',$rb);}
 
-qr('DELETE FROM `pub_data` WHERE val="agree" and msg!="false" and msg!="true" and msg!="1"');
-qr('DELETE FROM `pub_data` WHERE val="like" and msg!="false" and msg!="true" and msg!="1"');
-qr('DELETE FROM `pub_data` WHERE val="fav" and msg!="false" and msg!="true" and msg!="1"');
+qr('DELETE FROM `data` WHERE val="agree" and msg!="false" and msg!="true" and msg!="1"');
+qr('DELETE FROM `data` WHERE val="like" and msg!="false" and msg!="true" and msg!="1"');
+qr('DELETE FROM `data` WHERE val="fav" and msg!="false" and msg!="true" and msg!="1"');
 ses('ok',1);}
 
 function patch_trklg(){
 $ok=ses('ok'); if($ok)return;
-qr('ALTER TABLE `pub_trk` ADD `lg` VARCHAR(2) NOT NULL AFTER `host`');
-qr('UPDATE `pub_trk` SET lg=suj');
-qr('UPDATE `pub_trk` SET ib=frm');
-qr('UPDATE `pub_trk` SET suj=""');
-qr('UPDATE `pub_trk` SET frm="" where concat("",frm * 1) = frm');//del numbers only
+qr('ALTER TABLE `trk` ADD `lg` VARCHAR(2) NOT NULL AFTER `host`');
+qr('UPDATE `trk` SET lg=suj');
+qr('UPDATE `trk` SET ib=frm');
+qr('UPDATE `trk` SET suj=""');
+qr('UPDATE `trk` SET frm="" where concat("",frm * 1) = frm');//del numbers only
 ses('ok',1);}
 
 function qlerror($ret){
@@ -92,7 +95,7 @@ qr('delete from '.db('qdd').' where val="lang"'); sql::reflush('qdd',1);}
 
 //160606
 function patch_tracks(){
-$qdi=qd('idy'); $qdk=qd('tracks');
+$qdi=qb('idy'); $qdk='tracks';
 $sql='RENAME TABLE '.$qdi.' TO '.$qdk.';'; qr($sql);
 $sql='ALTER TABLE '.$qdk.' DROP lu, DROP img, DROP thm;'; qr($sql);
 //$sql='ALTER TABLE '.$qdk.' CHANGE `ib` `i.ib` INT(7) NOT NULL, CHANGE `name` `i.name` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `mail` `i.mail` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `day` `i.day` INT(10) NOT NULL, CHANGE `nod` `i.nod` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `frm` `i.frm` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `suj` `i.suj` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "0", CHANGE `msg` `i.msg` MEDIUMTEXT CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL, CHANGE `re` `i.re` ENUM("0","1","2","3","4") CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL, CHANGE `lu` `i.lu` INT(7) NOT NULL, CHANGE `img` `i.img` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `thm` `i.thm` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `host` `i.host` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "";';

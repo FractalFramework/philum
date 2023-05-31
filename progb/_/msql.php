@@ -59,8 +59,7 @@ return $rb;}
 
 static function include($f){}//verif integrity
 
-static function rollback($f){
-}
+static function rollback($f){}
 
 static function read($dr,$nod,$in='',$u='',$rh=[]){$f=self::url($dr,$nod);
 if(is_file($f))include $f; elseif($rh)$r=self::save($dr,$nod,[],$rh); $m=self::$m;
