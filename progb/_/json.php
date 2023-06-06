@@ -1,4 +1,4 @@
-<?php //a/json
+<?php 
 class json{
 var $dr,$nod,$f,$r;
 

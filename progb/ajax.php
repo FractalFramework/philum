@@ -15,18 +15,25 @@ $ret=''; $t=$app; [$a,$b]=expl(',',$app,2);
 $ret=afc($a,$b);
 
 function popup($d,$t){$s='';
-$w=ses::$r['popw']??cw(); if($w)$s='max-width:'.($w+36).'px;'; $t=ses::$r['popt']??$t;
+$t=ses::$r['popt']??$t;
+$id=ses::$r['id']??'';
+$w=ses::$r['popw']??cw(); if($w)$s='max-width:'.($w+36).'px;'; 
 //$w=ses::$r['popwm']??''; if($w)$s.=' min-width:'.$w.'px;';
 //$w=ses::$r['pophm']??''; if($w)$s.=' min-height:'.$w.'px;';
-$popb=ljb('','Close','popup',picto('close')).btj(picto('ktop'),'poprepos()').btj(picto('less'),'reduce()').ses::r('popm').' ';//btj(picto('fix'),'fixelem()').
-$popa=divb($popb.tagb('small',$t),'popa','popa');//.atmd('noslct(0);')
-return div(atc('popup').ats($s),$popa.div(atd('popu').atc('popu'),$d));}
+$bt=ljb('','Close','popup',picto('close'));
+$bt.=btj(picto('ktop'),'poprepos()');
+$bt.=btj(picto('less'),'reduce()');
+if($id)$bt.=btj(picto('input'),atj('dock',$id));
+//$bt.=btj(picto('fix'),'fixelem()');
+$bt.=ses::r('popm').' ';
+$bt.=tagb('small',$t);//.atmd('noslct(0);')
+return divb(divb($bt,'popa','popa').divb($d,'popu','popu'),'popup','',$s);}
 
 function pagup($d,$t){$t=ses::$r['popt']??$t; $w=ses::$r['popw']??cw(); $m=ses::r('popm');
-return divs('margin:auto; max-width:'.$w.'px;',div(atd('popa').atc('popa'),ljb('','Close','popup',picto('close')).$m.tagb('small',$t)).div(atd('popu'),$d));}
+return divb(divb(ljb('','Close','popup',picto('close')).$m.tagb('small',$t),'popa','popa').divb($d,'','popu'),'','','margin:auto; max-width:'.$w.'px;');}
 
 function tit($a,$b,$g1,$g2){$k=$a.'::'.$b;
-$r=['edit::artform'=>107,'art::trkone'=>65,'tracks::form'=>21,'meta::catslct'=>9,'usg::artmod'=>39,'mod::callmod'=>187,'mod::playmod'=>187,'conn::read2'=>65,'usg::trkplay'=>22,'tracks::redit'=>107,'sav::batchpreview'=>65,'deploy::home'=>28,'art::social'=>47,'mails::sendart'=>28,'desk::deskroot'=>196,'finder::home'=>197,'search::home'=>24,'microarts::home'=>$g1,'api'=>$g1,'app'=>$g1,'msql'=>$g2,'chkj'=>$g2,'jump'=>$g2,'lj'=>$g2];
+$r=['edit::call'=>107,'art::trkone'=>65,'tracks::form'=>21,'meta::catslct'=>9,'usg::artmod'=>39,'mod::callmod'=>187,'mod::playmod'=>187,'conn::read2'=>65,'usg::trkplay'=>22,'tracks::redit'=>107,'sav::batchpreview'=>65,'deploy::home'=>28,'art::social'=>47,'mails::sendart'=>28,'desk::deskroot'=>196,'finder::home'=>197,'search::home'=>24,'microarts::home'=>$g1,'api'=>$g1,'app'=>$g1,'msql'=>$g2,'chkj'=>$g2,'jump'=>$g2,'lj'=>$g2];
 if(isset($r[$k]))return nms($r[$k]);
 if($b=='home')return $a;
 return $k;}

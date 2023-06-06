@@ -16,19 +16,20 @@ static function er($v){return self::$er[]=$v;}}
 function popart($g1){eye(); $j='popart__x_'.$g1; $tg=get('tg')=='pagup'?1:0;
 //$is=ma::is_public($g1); if(!$is)return divc('frame-red',helps('not_published'));//nms(170)// && !auth(6)
 //ses::$r['curdiv']='content'; boot::deductions($g1,'');
-if($g1=='last')$g1=ma::lastart();
-if($tg)$p=lj('','popup_'.$j,pictxt('popup')); else $p=lj('','pagup_'.$j,pictxt('fullscreen'));
+if($g1=='last')$g1=ma::lastartid();
+if($tg)$p=lj('','popup_'.$j,pictxt('popup')); else $p=lj('','pagup_'.$j,pictxt('popup'));
 if(rstr(144))$p.=md::prevnext_art('arts',1,$g1,$tg);
-if(auth(6))$p.=lj('','popup_meta,metall___'.$g1.'_3',picto('tag',20)).lj('','popup_meta,titedt___'.$g1.'_3',picto('meta',20)).lj('','popup_edit,artform____'.$g1,picto('edit',20)).btj(picto('editor',20),atj('editart',$g1));
-$ret=art::playb($g1,3); $t=ses::r('suj'); //if(!$t)$t=ma::suj_of_id($g1);
-ses::$r['popt']=etc($t,70); ses::$r['popm']=$p; ses::$r['popw']=prma('content')+20; //ses::$r['popwm']=640;
+//if(auth(6))$p.=lj('','popup_meta,metall___'.$g1.'_3',picto('tag',20)).lj('','popup_meta,titedt___'.$g1.'_3',picto('meta',20)).lj('','popup_edit,call____'.$g1,picto('edit',20)).btj(picto('editor',20),atj('editart',$g1));
+$ret=art::playb($g1,3); $t=ses::r('suj');//if(!$t)$t=ma::suj_of_id($g1);
+ses::$r['popt']=etc($t,70); ses::$r['popm']=$p; ses::$r['popw']=prma('content');//+20 //ses::$r['popwm']=640;
+if(is_numeric($g1))ses::$r['id']=$g1;
 return $ret;}
 
 #common
 function search_btn($o=''){
 $id='srch'; $t=nms(24); $s=12; $j=atj('SearchT',$id);
 $ret=input($id,'',12,['type'=>'search','onclick'=>$j,'onkeyup'=>$j,'oncontextmenu'=>$j,'role'=>'search','placeholder'=>$t]);
-return $o?$ret:div(atc('search').atd('ada'),$ret);}
+return $o?$ret:divb($ret,'search','ada');}
 
 #edit
 function connbt($id,$o=''){$ret='';
@@ -112,10 +113,9 @@ function togbub2($id,$v,$t,$c='',$o='',$a=''){//full js
 return btd('bt'.$id,ljb($c,'togglebub2',$id,$t,$o,$a)).span(atd($id).ats('display:none;'),$v);}
 function togses_j($d,$t){$id=randid('tg'); $v=ses($d,$t);//unused
 return lj('',$id.'_togses___'.$d,btd($id,offon($v,$t)));}
-function bubjs($v,$t,$c=''){
-return '<a onmouseover="bubjs(this,1)" onmouseout="bubjs(this,0)" data-tx="'.$v.'"'.atc($c).'>'.$t.'</a>';}
-function bubj($j,$t,$c=''){return '<a onclick="sj(this)" data-j="popup_'.$j.'" onmouseover="bubj(this,1)" onmouseout="bubj(this,0)" data-ja="'.$j.'"'.atc($c).'>'.$t.'</a>';}
-function bubj2($tx,$j,$t,$c=''){return '<a onclick="sj(this)" data-j="popup_'.$j.'" onmouseover="bubjs(this,1)" onmouseout="bubjs(this,0)" data-tx="'.$tx.'"'.atc($c).'>'.$t.'</a>';}
+function bubjs($v,$t,$c=''){return tag('a',['onmouseover'=>'bubjs(this,1)','onmouseout'=>'bubjs(this,0)','data-tx'=>$v,'class'=>$c],$t);}
+function bubj($j,$t,$c=''){return tag('a',['onclick'=>'sj(this)','data-j'=>'popup_'.$j,'onmouseover'=>'bubj(this,1)','onmouseout'=>'bubj(this,0)','data-ja'=>$j,'class'=>$c],$t);}
+function bubj2($tx,$j,$t,$c=''){return tag('a',['onclick'=>'sj(this)','data-j'=>'popup_'.$j,'onmouseover'=>'bubj(this,1)','onmouseout'=>'bubj(this,0)','data-tx'=>$tx,'class'=>$c],$t);}
 function togbt($v,$t){$id=randid('tg'); $ret=ljb('','toggle_block',$id,$t,atd('bt'.$id));
 $ret.=divb($v,'',$id,'display:none;'); return $ret;}
 function togbth($v,$t){$id=randid('tg');
@@ -260,7 +260,7 @@ foreach($r as $k=>$v){$b++; if(is_array($v))$v=join('',$v);
 	$dsp=$b==$ib?'block':'none'; $cs=$b==$ib?'txtaa':'txtab';
 	$menu.=ljb($cs,'toggle_tab',[$id,$b],$k).$sp;
 	if(is_array($v))$v=divc('list',onxcols($v,3,''));//implode(' ',$v);
-	$divs.=div(atd('div'.$id.$b).ats('display:'.$dsp).atc($c),$v);}
+	$divs.=divb($v,$c,'div'.$id.$b,'display:'.$dsp);}
 return divb($menu,'','mnuab'.$id,'margin-bottom:4px').$divs;}
 
 #conn
@@ -320,7 +320,8 @@ ses::$s['rstr']=ses('rstr');
 //ses::$s['prmb']=ses('prmb');
 //ses::$s['nms']=ses('nms');
 //ses::$s['mn']=ses('mn');
-ses::$s['db']=sqldb::$rt;}
+//ses::$s['db']=ses('db');
+}
 
 /*function afc0($a,$m){if(!$m)$a='ajax';
 $r=method_exists('ath',$a)?ath::$a():[];
@@ -340,7 +341,6 @@ function setlng($p){if($p && $p!='all')return $p; $lg=$_SESSION['lng']; return $
 function voc($d,$b='helps_voc'){$r=sesmk('msqlang',$b,0); return $r[$d][0]??$d;}
 
 //sesmk
-//function catpic(){return msql::two('',nod('pictocat'),'',1);}
 function msqlang($d){return msql::read('lang',$d,0,1);}
 function usrconn(){return msql::kv('',nod('connectors_1'));}
 function scanplug(){return explore('plug','dirs',1);}
@@ -386,8 +386,10 @@ function picto($d,$s=''){if(is_numeric($s))$s='font-size:'.$s.'px;'; return spn(
 function pictxt($p,$t='',$s=''){return picto($p,$s).($t?'&#8239;'.$t:'');}
 function pictit($p,$t,$s=''){return span(att($t),picto($p,$s));}
 function picto2($d,$o=''){return picto(mime($d,$o));}
-function catpic($d,$s=32){return pictxt(sesr('catpic',$d),$d,$s);}
+function catpic($d,$s=32){return picto(sesr('catpic',$d),$s);}
 function catpict($d,$s=32){return pictit(sesr('catpic',$d),$d,$s);}
+function catemo($d,$s=32){return bts('font-size:'.$s.'px;',sesr('catemo',$d));}
+function catico($d,$s=''){return rstr(46)?catemo($d,$s):catpic($d,$s);}
 function glyph($d,$s='',$t=''){ if(is_numeric($s))$s='font-size:'.$s.'px;';
 return span(atc('glyph gl-'.$d).ats($s).att($t),'');}
 function oomo($d,$s='',$t=''){if(is_numeric($s))$s='font-size:'.$s.'px;';
@@ -428,6 +430,7 @@ $xt=strtolower(strrchr($p,'.')); return [$p,$c,$xt];}
 function poc($d){$p=''; $o=''; $c=''; $n=strrpos($d,'|'); $nb=strrpos($d,':');//p|o:c
 if($n!==false && $nb>$n){$p=substr($d,0,$n); $o=substr($d,$n+1,$nb-$n-1); $c=substr($d,$nb);
 if($o=='http'||$o=='https'){$o.=$c; $c='';}}
+elseif($n!==false && $nb<$n){$p=substr($d,0,$n); $o=substr($d,$n+1); $c='';}
 elseif($n!==false && $nb!==false){$p=substr($d,0,$nb); $o=substr($d,$nb+1,$n-$nb-1); $c=substr($d,$nb);
 if($p=='http'||$p=='https'){$p=substr($d,0,$n); $o=substr($d,$n+1); $c='';}}
 elseif($n===false && $nb!==false){$p=substr($d,0,$nb); $o=''; $c=substr($d,$nb);
@@ -465,9 +468,6 @@ function checkversion($n=1){return msql::val('system','program_version',$n);}
 function forbidden_img($nm){$r=explode(' ',prmb(21));
 if($r)foreach($r as $v)if($v && strpos($nm,$v)!==false)return false; return $nm;}
 function antipuces($v){if(forbidden_img($v)!==false && strpos($v,'puce')===false)return $v;}
-function cachevs($id,$n,$v,$o=''){
-if(isset($_SESSION['rqt'][$id]) && is_array($_SESSION['rqt'][$id])){$_SESSION['rqt'][$id][$n]=$v;
-if($o)msql::modif('',nod('cache'),$v,'val',$n,$id);}}
 function opcache($d){if(!ses::$local)opcache_invalidate($d);}
 function rm($f){if(!is_dir($f) && auth(6)){unlink($f); json::add('','rmim',[$f=>hostname()]);}}
 

@@ -111,11 +111,11 @@ $ra=['popart'=>'articles','msql'=>'server','desk,deskroot'=>'folder','usg,popim'
 if($j)$ica=strprm($j,1,'_'); if($ica=='popim')$ic=img::make_thumb_c(ajx(strprm($j,4,'_'),1),'50/38','ico');
 if($ica)return $ra[$ica]??'';}
 
-static function icoart($k,$v,$c){$ico='';
+static function icoart($k,$v,$c){$ico=''; $id='ic'.$k;
 if(is_numeric($k)){$v='popup_popart__3_'.$k; $ic=self::thumb($k); $k=ma::suj_of_id($k);}
 else $ic=self::desk_icon($k,$v);
-if($ic)$ico=strpos($ic,'<')!==false?btn('small',$ic):mimes($k,$ic,32);
-return ljp(att($k),$v,divc($c,$ico.' '.bts('display:block',$k)));}
+if($ic)$ico=strpos($ic,'<')!==false?btn('',$ic):mimes($k,$ic,32);
+return ljp(att($k).atd($id),$v,divc($c.' dicon',$ico.' '.spn(etc($k,70),'','','')));}
 
 static function pane_icons($r,$c){$ret='';
 if(is_array($r))foreach($r as $k=>$v)$ret.=self::icoart($k,$v,$c);
@@ -134,7 +134,7 @@ return $rc;}
 static function apps_arts($cnd,$cat,$p,$o){$rb=[];
 if($p)$r=api::mod_arts_row($p); elseif(rstr(3))$r=$_SESSION['rqt'];
 else $r=sql('id,day,frm','qda','kvv','nod="'.ses('qb').'" and re>0 and substring(frm,1,1)!="_" order by '.prmb(9));
-if(is_array($r))foreach($r as $k=>$v){[$day,$frm]=$p?ma::pecho_arts($k):$v;
+if(is_array($r))foreach($r as $k=>$v){[$day,$frm]=$p?ma::rqtart($k):$v;
 	if(($cat && $cat==$frm) or !$cat)$rb[]=[$k,'art','auto',$k,$cnd,'',$frm,'articles'];}
 return $rb;}
 
@@ -185,13 +185,14 @@ return $rb;}
 
 static function menubub($dr){//root,action,type,button,icon,auth
 $r=msql::read('users',nod('menubub_1'),'',1); $ret=[];
-if(!$_SESSION['line'])boot::reboot();
+//if(!$_SESSION['qb'])boot::reboot();
+$rc=sesmk2('boot','cats');
 if($r)foreach($r as $k=>$v){$bt=$v[3]?$v[3]:$v[1];
 	if($v[2]=='ajax')$ret[]=[$v[3],$v[2],$v[1],'','','',$v[0],$v[4],'',$v[5]];
 	elseif($v[2]=='module')$ret[]=[$v[3],$v[2],$v[1],'','','',$v[0],'','',$v[5]];
 	//elseif($v[2]=='plug')$ret[]=[$v[3],$v[2],$v[1],'','','',$v[0],$v[4],'',$v[5]];
 	elseif($v[2])$ret[]=[$v[3],$v[2],'',$v[1],'','',$v[0],$v[4],'',$v[5]];
-	elseif($_SESSION['line'][$v[1]])$ret[]=[$v[3],'desktop','arts',$v[1],'','',$v[0],$v[4],'',$v[5]];
+	elseif($rc[$v[1]])$ret[]=[$v[3],'desktop','arts',$v[1],'','',$v[0],$v[4],'',$v[5]];
 	elseif(is_numeric($v[1]))$ret[]=[$v[3],'art',$v[1],'','','',$v[0],$v[4],'',$v[5]];}
 return $ret;}
 

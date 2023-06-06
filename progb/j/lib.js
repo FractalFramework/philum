@@ -1,7 +1,7 @@
 //lib
 
 //states
-function updateurl(a,j,io,b){
+function updateurl(a,j,io,b){ pr(j);
 var dn=j.split("_");
 if(a=='read'){a='art'; var u='/'+dn[5];
 	setTimeout(function(){document.title=recuptit();},200);}
@@ -15,9 +15,9 @@ else var u='/'+dn[4]+(dn[5]?'/'+ajx(dn[5],1)+(dn[6]?'/'+ajx(dn[6],1):''):''); //
 var r={u:u,a:a,j:j,i:io,t:''};
 if(!b)window.history.pushState(r,a,u);// && r.j!=event.state.r.j
 if('scrollRestoration' in history)history.scrollRestoration='manual';
-scrolltoob('content',40);}
+scrolltoob('content',34);}
 
-function restorestate(st){if(!st)return;
+function restorestate(st){if(!st)return; pr(st);
 if(st.a=='menu')SaveBg(st.i,1);//abort update
 else if(st.a=='module' && st.j)SaveJ(st.j);
 else if(st.a=='art' && st.j){SaveJ(st.j); document.title=st.t;}//?st.t:recuptit()
@@ -191,6 +191,14 @@ if(ob=='block'||!ob){po.style.display='none'; nbw+=1; //pa.style.display='none';
 	var top=innerH()-(nbw*pp.offsetHeight); var left=0;}//pp.style.top=top+'px'; pp.style.left=left+'px';
 else{po.style.display='block'; nbw-=1;}}//setTimeout(function(){poprepos()},200);
 	//pp.style.left=pp.dataset.x+'px'; pp.style.top=pp.dataset.y+'px';
+
+function dock(id){
+var pp=getbyid('pop'+curid); var ex=0;
+var rd=getbyid('desktop').getElementsByTagName("a");
+for(i=0;i<rd.length;i++){var idb=rd[i].id; if(idb=='ic'+id)ex=1;}
+if(ex)Remove('ic'+id);
+else ajaxcall('desktop','desk,icoart',[id],[],'after');
+Close('popup');}
 
 function expand(){var po=getbyid('pop'+curid);
 var owa=po.style.width; var oha=po.style.height;
@@ -391,3 +399,14 @@ var arr=['=','~','è','é','ê','à','â','ô','ö','û','ü','ù','î','ï',' '
 var arb=['','','e','e','e','a','a','o','o','u','u','u','i','i','','','','','','','','','',''];
 for(var i=0;i<arr.length;i++)va=strreplace(arr[i],arb[i],va);
 return va;}
+
+function Close(val){
+if(val=='popup' && curid){
+	var pp=getbyid('popup');
+	var ppa=getbyid('pop'+curid); //alert(ppa.innerHTML);
+	//var ppa=pp.getElementById('pop'+curid); alert(ppa);
+	if(ppa)pp.removeChild(ppa); curid=0;}
+else if(val=='pop')falseClose('popup'); else if(val)falseClose(val);}
+function Remove(val){var e=getbyid(val); if(e){var a=e.parentNode; if(a)a.removeChild(e);}}
+function Hide(val){getbyid(val).style.display='none';}
+function falseClose(val){getbyid(val).innerHTML='';}

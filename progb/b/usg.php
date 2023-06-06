@@ -18,8 +18,7 @@ static function img($g1,$g2){return $ret=image($g1,$g2);}
 static function audio($g1,$g2){return $ret=audio($g1,$g2);}
 static function video($g1,$g2){return $ret=video($g1,$g2);}
 static function popim($g1){[$w,$h]=getimagesize($g1); return usg::photo($g1,$w,$h,get('sz'));}
-static function poptxt($g1){$s='display:block; min-width:440px;';
-return $ret=div(atc('twit').ats($s),sesr('delaytxt',$g1));}
+static function poptxt($g1){return divb(sesr('delaytxt',$g1),'twit','','display:block; min-width:440px;');}
 static function popfile($g1){return nl2br(str::cleanmail(read_file($g1)));}
 static function popread($g1){return ma::read_msg($g1,3);}
 static function popmsql($g1,$g2,$g3){$r=msql_read($g1,$g2,$g3,1); if($r)return divtable($r,1);}
@@ -89,12 +88,12 @@ return $ret.br();}
 
 static function videoboard($p,$c,$o){static $iv; $iv++; $ra=[]; 
 [$pa,$pb]=split_right('-',$p,0);
-if($pa=='priority')$pa=11; if($pa=='cat')$pa=1; if($pa=='tag')$pa=5; 
-if(!is_numeric($pa)){$pb=$p; $pa=5;} if($pb==1)$pb=ses('frm');
+$pa=match($pa){'priority'=>'re','cat'=>'frm','tag'=>'thm',default=>'tag'};
+if($pa=='thm')$pb=$p; elseif($pb==1)$pb=ses('frm');
 if(strpos($pb,'|')!==false){$rc=explode('|',$pb); $nc=count($rc);}
-if($nc>0){foreach($rc as $k=>$v){$rab=ma::tri_rqt((string)$v,$pa); if($rab)$ra=$rab;}}
-elseif($pb)$ra=ma::tri_rqt($pb,$pa); else $ra=$_SESSION['rqt'];
-if($ra){$ra=array_keys($ra); $min=min($ra);
+if($nc>0){foreach($rc as $k=>$v){$rab=ma::rqtcol($pa,$v); if($rab)$ra=$rab;}}
+elseif($pb)$ra=ma::rqtcol($pa,$pb); else $ra=rqtall('id','k');
+if($ra){$min=min($ra);
 $r=self::search_conn($ra,$min,':video'); $_SESSION['iv'.$iv]=$r;
 if($r)return divd('iv'.$iv,self::playvideo($iv,ses::r('curdiv'),0));}}
 
@@ -166,7 +165,7 @@ return divc('list',$ret);}
 //select_j
 static function slct_r($d,$o,$vrf=''){$cl=0; $r=[];
 switch($d){case('parent'):$r=sav::newartparent(); break;
-	case('cat'):$r=ses('line'); if($r)array_unshift($r,''); if($r)ksort($r); break;
+	case('cat'):$r=sesmk2('boot','cats'); if($r)array_unshift($r,''); if($r)ksort($r); break;
 	case('tag'):$cat=$o=='utag'?ses('iq'):$o; $nbd=rstr(3)&&!is_numeric($o)?60:ma::maxdays();
 		$r=ma::tags_list_nb($cat,$nbd); if($r)ksort($r); break;//'tag'=>1
 	case('lang'): $r=explode(' ',prmb(26)); $r=array_combine($r,$r); break;

@@ -99,8 +99,8 @@ $ret.='</tr></table>';
 return $ret;}
 
 static function archives($cyear){
-$first=ma::oldestart(); $ret='';
-//$last=ma::lastart();
+$first=ma::firstartrq(); $ret='';
+//$last=ma::lastartid();
 if(!$first)$first=0; 
 $first_year=date('y',$first); 
 $actual_year=date('y');

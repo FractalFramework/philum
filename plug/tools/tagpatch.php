@@ -62,7 +62,7 @@ return $r;}
 static function home($p,$o){$rid='plg'.randid(); return;
 $bt=btn('popsav','Transfert datas to the new tables').br();
 sesr('db','qdt','meta'); sesr('db','qdta','meta_art'); sesr('db','qdtag','tag');
-$n=12;//echo $n=ceil(ma::lastid('qda')/10000);
+$n=12;//echo $n=ceil(ma::lastartid()/10000);
 for($i=0;$i<$n;$i++)$bt.=lj('txtbox',$rid.'_tagpatch,call___'.($i*10000),$i);//jb
 //patch user_tags
 if(prmb(18)){$utags=explode(' ',prmb(18)); $ico=explode(' ',prmb(19));

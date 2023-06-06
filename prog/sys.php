@@ -20,7 +20,7 @@ $cache=boot::time_system($cache);
 boot::seslng();
 #rqt
 if($cache)boot::cache_arts($cache);
-if($cache)boot::define_cats_rqt();
+//if($cache)boot::cats();
 #Home
 //condition
 boot::define_condition();

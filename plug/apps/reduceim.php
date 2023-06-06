@@ -31,7 +31,7 @@ static function menu($p,$o,$rid){
 if(!$p)$p=self::$default; $inpid='inp'.$rid;
 $j=$rid.'_reduceim,call__3_';
 //$ret=inputj($inpid,$p,$j);
-$n=ceil(ma::lastid('qda')/self::$nb); $ret='';
+$n=ceil(ma::lastartid()/self::$nb); $ret='';
 for($i=0;$i<$n;$i++)$ret.=lj('txtx',$j.''.$i,$i).' ';
 //if(auth(6))$ret.=lj('txtred',$rid.'_reduceim,del__3_150000','x').' ';
 return $ret;}

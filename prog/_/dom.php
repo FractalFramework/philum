@@ -1,4 +1,4 @@
-<?php //a/model
+<?php 
 class dom{
 
 //domdel
@@ -90,6 +90,15 @@ foreach($r as $k=>$v){$attr=$v->getAttribute($at);
 		$ret.=$g?domattr($v,$g):$v->nodeValue;}
 if(is_utf($ret))$ret=utf8dec($ret);//??eco($ret);
 return ($ret);}
+
+static function extract_r($dom,$va){$rt=[];//all-in-one
+[$c,$at,$tg,$g]=opt($va,':',4); if(!$at)$at='class'; if(!$tg)$tg='div';//id,href,...
+if(!$g){if($tg=='img')$g='src'; elseif($tg=='meta')$g='content';}//props
+$r=$dom->getElementsByTagName($tg); $c=str_replace('(ddot)',':',$c);
+foreach($r as $k=>$v){$attr=$v->getAttribute($at); $rec=dom(''); $rec->formatOutput=true;
+	if($c==$attr or ($c && strpos($attr,$c)!==false) or !$c)
+		$rt[]=$g?domattr($v,$g):self::importnode($rec,$v,$tg)->saveHTML();}
+return $rt;}
 
 //href
 static function href($d){$lk=''; $va=''; $dom=dom($d);

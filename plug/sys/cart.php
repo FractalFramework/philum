@@ -28,7 +28,7 @@ $ar[]=["","réf","titre","prix","qté","sub_total","x"];//"ancien prix","remise",
 if($_SESSION['cart']){
 foreach($_SESSION['cart'] as $k=>$v){
 	$save.=$k.'='.$v.';'."\r";
-	[$day,$frm,$tit,$amg,$nod,$tag,$lu,$re,$host,$mail,$ib]=ma::pecho_arts($k);
+	[$day,$frm,$tit,$amg,$nod,$tag,$lu,$re,$host,$mail,$ib]=ma::rqtart($k);
 	[$prx,$ref,$stock]=self::prod($k);//,$reduc,$descript
 	$tit=lkc('txtcadr',urlread($k),$tit).''.br();
 	$img=minimg($amg,1).br();

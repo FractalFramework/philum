@@ -15,9 +15,11 @@ $ret.=inputj('plugn',$plg,$j,'plugin').' ';
 $ret.=lj('',$j,picto('ok'));
 $ret.=inputb('plugp',$p?$p:'param','',1).' ';
 $ret.=inputb('plugo',$o?$o:'option','',1).' ';
+$ret.=msqbt('system','program_plugs');
+$ret.=msqbt('system','program_apps');
 return $ret;}
 
-static function board(){
+static function plugs(){
 $ico=picto('editxt'); $dir='plug';
 $plug=msql::read('system','program_plugs','');
 $help=msql::read('lang','program_plugs','');
@@ -51,9 +53,15 @@ foreach($ra as $k=>$v){$rd=array_merge(array($rt),$v);
 	$rb[$k][]=tabler($rd,'txtcadr','');}
 return tabs($rb);}
 
+static function apps(){$rt=[];
+$r=msql::read('system','program_apps','',1);
+foreach($r as $k=>$v)$rt[]=[lj('','plg_'.$v[0].',home__3',$v[0],att($v[1])),$v[1]];
+return tabler($rt);}
+
 static function home($p,$o){
 $bt=self::menu($p,$o);
-$ret=self::board();
+//$ret=self::plugs();
+$ret=self::apps();
 return $bt.divd('plg',$ret);}
 }
 ?>

@@ -6,14 +6,12 @@ static function cnc(){return 'cnfg/'.str_replace('www.','',$_SERVER['HTTP_HOST']
 static function reset_mjx(){for($i=1;$i<12;$i++)$_SESSION['heremjx'.$i]='';}
 static function reset_ses(){self::reset_mjx(); $r=['mdc','modc','mods','mem','digr','icotag','recache','adminauthes','msqmimes','msqlang','negcss','delaytext','scanplug','simplified','connedit','lang','lng','flags','murl','prma','prms','prmb','prmb1','editbt'];
 foreach($r as $v)unset($_SESSION[$v]);}
-static function db(){return ['qda'=>'art','qdm'=>'txt','qdd'=>'data','qdu'=>'user','qdi'=>'trk','qdg'=>'img','qdf'=>'favs','qdc'=>'cat','qdh'=>'hub','qdb'=>'mbr','qdt'=>'meta','qdta'=>'meta_art','qdtc'=>'meta_clust','qdsr'=>'search','qdsra'=>'search_art','trn'=>'trans','qdw'=>'web','qdtw'=>'twit','qdp'=>'ips','qdv'=>'live','qdv2'=>'live2','qds'=>'stat','qdk'=>'iqs','qdy'=>'_sys','qdya'=>'_prog','qdyar'=>'_progr','qdyb'=>'_plug','umt'=>'umtwits','dicoen'=>'dicoen','dicofr'=>'dicofr','dicoum'=>'dicoum','qdmb'=>'txb'];}
 
 #master_cnfg//qd
 static function master_params(){
 $aqb=ses('aqb'); $subd=ses('subd'); $f=self::cnf();
 $d=is_file($f)?read_file($f):''; $prms=expl('#',$d,16);
-$_SESSION['db']=self::db();//sqldb::$rt
-//ses::$s['db']=sqldb::$rt;
+$_SESSION['db']=sqldb::$rt;
 //$_SESSION['db']['qd']=$qd;
 $prms['htacc']=$prms[1]=='yes'?1:'';
 $prms['create_hub']=$prms[2]=='yes'?'on':'off';
@@ -37,8 +35,8 @@ write_file($f,$d);}
 
 static function define_hubs(){
 $ret=[]; $rtb=[];
-$exists=sql('id','qdu','v',1);
-if(!$exists){$_SESSION['stsys']=1; $_SESSION['first']=1;
+$ex=sqb('id','qdu','v','limit 1');
+if(!$ex){$_SESSION['stsys']=1; $_SESSION['first']=1;
 	Head::add('jscode',sj('popup_login,form'));}
 $wh='active="1" ';//if(!auth(7))
 $req=sql::com('name,hub,id','qdu',$wh.'order by nbarts desc');
@@ -88,6 +86,7 @@ if($_SESSION['prmb'][5])self::auto_design();
 self::define_mods();
 $_SESSION['nms']=msql::col('lang','helps_nominations',0,1);
 if(rstr(112))$_SESSION['catpic']=msql::two('',nod('pictocat'),'',1);
+if(rstr(46))$_SESSION['catemo']=msql::kn('',nod('pictocat'),0,2);
 $_SESSION['art_options']=['related','folder','agenda','lang','template','authlevel','password','tracks','2cols','fav','like','poll','bckp','artstat','quote','lastup','plan','mood','agree'];
 $_SESSION['mobile']=mobile(); $_SESSION['switch']=''; $_SESSION['prma']=[];}
 
@@ -132,7 +131,7 @@ $_SESSION['read']=''; $_SESSION['frm']='';
 if(!is_numeric($read) && $read)$art=$read;
 if($art){$read=ma::id_of_urlsuj($art); if($read)geta('read',$read);}
 if(is_numeric($read)){
-	[$day,$frm,$raed,$img,$pb,$them,$lu,$re]=ma::pecho_arts($read);
+	[$day,$frm,$raed,$img,$pb,$them,$lu,$re]=ma::rqtart($read);
 	if($pb!=$qb){
 		if(rstr(96))return getz('read');//prison
 		if(rstr(105)){//interhub//self::define_qb();
@@ -142,7 +141,6 @@ if(is_numeric($read)){
 		$_SESSION['mem'][$read]=1; $rs=['art',$read];}
 	else{getz('read'); $rs=['context','home'];}}
 elseif($mod)$rs=['module',$mod];
-//elseif($_SESSION['line'][$read]??''){geta('frm',$read) $rs=['cat',$read];}
 elseif($cat=str::protect_url(get('cat'),1)){geta('frm',$cat); $rs=['cat',$cat];}
 //elseif($cid=get('catid')){geta('frm',$cid); $rs=['cat',$cid];}
 else $rs=['context','home'];
@@ -344,36 +342,26 @@ $ret=self::state();
 if($ret)Head::add('jscode',sj('popup_'.$ret));}
 
 #cache
-static function cache_arts($x=''){$lastart=''; $rtb=[]; $ret=[]; $main=[]; $nod=ses('qb').'_cache';
-if($x)msql::del('',$nod); else $main=msql::read_b('',$nod,'',1); //$_SESSION['rqt']=[];
-if($main){$last=current($main); $lastart=ma::lastart($last[0]);}
+static function cache_arts($x=''){$lastart=''; $rtb=[]; $ret=[]; $main=[]; $nod=nod('cache');
+if($x)msql::del('',$nod); else $main=msql::read_b('',$nod,'',1);
+if($main){$last=current($main); $lastart=$last?$last[0]:ma::lastartid();}
 if(($lastart && !isset($main[$lastart])) or $x){
 	$rh=[msql::$m=>['date','cat','title','img','hub','url','lu','author','length','src','ib','re','lg']];
-	$slct='id,day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg';
-	if(ses('dayb'))$wh=' and day>"'.ses('dayb').'"'; else $wh=' and day>"'.calctime(360).'"';
-	$r=sql::com($slct,'qda','nod="'.ses('qb').'"'.$wh.' and substring(frm,1,1)!="_" and re>"0" order by '.prmb(9));
-	if($r)while($rb=sql::qrw($r)){$k=array_shift($rb); $rb[3]=pop::art_img($rb[3]); $ret[$k]=$rb;}
+	$r=ma::rqtall();
+	if($r)foreach($r as $k=>$v){$ka=array_shift($v); $v[3]=pop::art_img($v[3]); $ret[$ka]=$v;}
 	$ok='cache reloaded'; msql::save('',$nod,$rh+$ret); $_SESSION['rqt']=$ret;}
 elseif($main)$_SESSION['rqt']=$main;
 return lk('/reload/'.ses('qb'),'reload');}
 
-static function cacheart($id){//cachevs($id,11,$v,1);
-$r=sql('day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg','qda','w',$id); $r[3]=pop::art_img($r[3]);
-msql::modif('',nod('cache'),$r,'one','',$id); $_SESSION['rqt'][$id]=$r;}
-
-static function define_cats_rqt(){$rt=[];
-if(rstr(3)){$r=$_SESSION['rqt']??[];
-	if($r)foreach($r as $k=>$v)if($v[1] && $v[11])$rt[$v[1]]=radd($rt,$v[1]); ksort($rt);} 
-//elseif(rstr(123))$rt=sql('cat,id','qdc','kv',['qb'=>ses('qb')]);
-else $rt=sql('distinct(frm)','qda','k','nod="'.ses('qb').'" and re>0 and substring(frm,1,1)!="_" order by frm');
-$_SESSION['line']=$rt;}
+static function cats(){
+return sql('distinct(frm)','qda','k','nod="'.ses('qb').'" and re>0 and substring(frm,1,1)!="_" order by frm');}
 
 #ignition
 static function init(){self::master_params(); $_SESSION['philum']=checkversion();
 self::define_hubs(); self::define_qb(); self::define_config();}
 
 static function reboot(){self::reset_ses(); $_SESSION['dayx']=time();
-self::init(); self::define_use(); self::define_iq(); self::define_auth(); self::seslng(); self::time_system('ok'); self::cache_arts(); self::define_cats_rqt(); self::define_condition(); self::define_clr();}
+self::init(); self::define_use(); self::define_iq(); self::define_auth(); self::seslng(); self::time_system('ok'); self::cache_arts(); self::define_condition(); self::define_clr();}//self::cats(); 
 
 static function rebuild(){$_SESSION['rqt']=[]; 
 return self::cache_arts(1); $_SESSION['dayx']=time();}

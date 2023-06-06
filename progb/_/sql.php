@@ -2,11 +2,12 @@
 class sql{
 static $db;
 static $qr;
+static $r;
 
 function __construct($r){if(!self::$qr)self::dbq($r);}
 
 static function dbq($r){
-self::$qr=new mysqli($r[0],$r[1],$r[2],$r[3]); self::$db=$r[3];
+self::$qr=new mysqli($r[0],$r[1],$r[2],$r[3]); self::$db=$r[3]; self::$r=$r;
 self::$qr->query('set names utf8mb4');
 self::$qr->query('set character set utf8mb4');}
 

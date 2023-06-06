@@ -61,8 +61,7 @@ if($o=='call'){//distant
 	ses('tilen',5000); backupim::rec($p,'');
 	$ret=backupim::call($p,1);	}
 elseif($o=='menu'){$r=scandir_b('img'); $nb=count($r);
-	if($_SESSION['rqt'])$n=key($_SESSION['rqt']);
-	$n=ceil($n/$l); $ret=''; //rmdir_r('backupphi');//not good
+	$lid=ma::lastartid(); $n=ceil($lid/$l); $ret=''; //rmdir_r('backupphi');//not good
 	for($i=0;$i<$n;$i++){$min=$i*$l; $max=$min+$l;
 		$f='_backup/imgqda_'.$min.'-'.$max.'.tar.gz'; $c=is_file($f)?'active':'';
 		$ret.=lj($c,$p.'_transport,img__3___'.$i,$i*$l).'-';

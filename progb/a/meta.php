@@ -16,7 +16,7 @@ foreach($ra as $k=>$v){$va=$prm[$k.$id]??'';
 	elseif($v=='name' && !$va)$va=ses('qb');
 	elseif($v=='nod' && !$va)$va=ses('qb');
 	$sq[$v]=$va?trim($va):$va;}
-sqlup('qda',$sq,$id,0); boot::cacheart($id);
+sqlup('qda',$sq,$id,0); ma::cacheart($id);
 $r=ses('art_options'); $rst=ses('rstr');
 $ra=sql('val,msg','qdd','kv',['ib'=>$id]);//known
 $rd=valk($ra,$r);//waited
@@ -49,7 +49,7 @@ return art::playd($id,$m);}//$gv &&
 static function priorsav($v,$id){
 if($v=='trash')sql::upd('qda',['frm'=>'_trash'],$id);
 //elseif($v=='del' && auth(6)){sql::upd('qda',['nod'=>'_trash'],$id); unset($_SESSION['rqt'][$id]);}
-else sql::upd('qda',['re'=>$v],$id); cachevs($id,11,$v,1);
+else sql::upd('qda',['re'=>$v],$id); ma::cachevs($id,11,$v,1);
 return self::prior_edit($v,$id);}
 
 static function prior_edit($va,$id){
@@ -66,7 +66,7 @@ foreach($r as $k=>$v){$js=sj($j.($k==$va?1:$k).'_'.$id);
 return btn('nbp',$ret);}
 
 static function editdaysav($id,$o,$prm){$d=$prm[0]??''; $day=strtotime($d);
-if($day && auth(5)){sql::upd('qda',['day'=>$day],$id); cachevs($id,0,$day,1);}
+if($day && auth(5)){sql::upd('qda',['day'=>$day],$id); ma::cachevs($id,0,$day,1);}
 return self::editday($id).btn('txtyl','saved');}
 
 static function editday($id){
@@ -150,18 +150,18 @@ return divs('min-width:440px; padding:0 4px;',$sav.$ret);}
 
 //edit frm
 static function catsav($id,$frm,$prm=[]){
-if(auth(4)){sql::upd('qda',['frm'=>$frm],$id); cachevs($id,1,$frm,1);}
+if(auth(4)){sql::upd('qda',['frm'=>$frm],$id); ma::cachevs($id,1,$frm,1);}
 return self::catedit($id,$frm);}
 
 static function catslctm($id,$frm,$r=[]){$ret='';
 if(!$r)$r=sql('distinct(frm)','qda','k',['nod'=>ses('qb'),'-frm'=>'_','>day'=>timeago('360'),'_order'=>'frm']);
 if($r)foreach($r as $k=>$v)
-	$ret.=lj('','frm'.$id.'_meta,catsav_frm1'.$id.'__'.$id.'_'.ajx($k),$k).' ';//§catpic($k,20)
+	$ret.=lj('','frm'.$id.'_meta,catsav_frm1'.$id.'__'.$id.'_'.ajx($k),$k).' ';//catpic($k,20).
 return $ret;}
 
 static function catslct($id,$frm){
-$r=ses('line'); $ret=self::catslctm($id,$frm,$r);
-$ret.=lj('','ctslc'.$id.'_meta,catslctm___'.$id.'_'.ajx($frm),picto('plus'));
+$r=sesmk2('boot','cats'); $ret=self::catslctm($id,$frm,$r);
+$ret.=lj('','ctslc'.$id.'_meta,catslctm___'.$id.'_'.ajx($frm),picto('plus',16));
 return divb($ret,'nbp','ctslc'.$id);}
 
 static function catedit($id,$frm){
@@ -177,7 +177,7 @@ $suj=ma::suj_of_id($id); return str::hardurl($suj);}
 static function langslct($id,$lg=''){$bt='';
 if($lg=='find'){$suj=sql('suj','qda','v',$id);
 	if(rstr(129))$lg=trans::detect('','',$suj); else $lg='';}
-if($lg){sql::upd('qda',['lg'=>$lg],$id); cachevs($id,12,$lg,1);}
+if($lg){sql::upd('qda',['lg'=>$lg],$id); ma::cachevs($id,12,$lg,1);}
 else $lg=sql('lg','qda','v',$id);
 if(!$lg)$lg=prmb(25); $r=explode(' ',prmb(26));
 foreach($r as $k=>$v){$c=active($v,$lg);

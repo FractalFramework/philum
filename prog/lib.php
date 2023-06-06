@@ -270,7 +270,7 @@ return $rb;}
 
 function csvfile($f,$r,$t=''){$t=pictxt('file-data',$t?$t:$f);
 $f='_datas/csv/'.$f.'.csv'; mkdir_r($f); writecsv($f,$r);
-return lk('/'.$f,$t);}
+return lkc('txtx','/'.$f,$t);}
 
 function joinable($d){$ok=@fopen($d,'r'); if($ok){fclose($ok); return true;}}
 function urlcheck($f){$r=@get_headers($f);
@@ -426,7 +426,8 @@ if($s)$r=array_slice($r,0,$s,true); return $r;}
 function array_keys_b($r){foreach($r as $k=>$v)$rb[]=$k; return $rb;}//if($k)
 function array_keys_r($r,$n,$o=''){$rb=[]; foreach($r as $k=>$v)if($v[$n]??'')$rb[$k]=$v[$n];
 return $o?array_flip($rb):$rb;}
-function array_col($r,$n=0){foreach($r as $k=>$v)if($v[$n])$rb[]=$v[$n]; return $rb;}
+//function array_col($r,$n=0){foreach($r as $k=>$v)if($v[$n]??'')$rb[]=$v[$n]; return $rb;}
+function array_column_k($r,$n){return array_combine(array_keys($r),array_column($r,$n));}
 function in_array_b($d,$r){if($r)foreach($r as $k=>$v)if($v==$d)return $k;}
 function in_array_k($d,$r){foreach($r as $k=>$v)if(isset($v[$d]))return true;}
 function in_array_p($d,$r){if($r)foreach($r as $k=>$v)if(strpos($d,$v)!==false)return 1;}
@@ -619,10 +620,6 @@ if($re)foreach($re as $k=>$v){$i++; if($i<=$mid)$r[$io].=$v;
 	if($io>1 && $i>$mid*($io-1) && $i<=$mid*$io)$r[$io].=$v;}
 for($i=1;$i<=$prm;$i++)$ret.=divs($css,$r[$i]??'');
 return $ret.divc('clear','');}
-
-/*function colonize($re,$prm,$id,$cls,$w='',$b=''){$b=$b?'div':'ul';
-$w=$w?$w:cw()-10; $ret=onxcols($re,$prm,$w); $p=atd($id).atc($cls);
-return tag($b,$p,$ret).divc('clear','');}*/
 
 #medias
 function iframe($d,$w='',$h=''){

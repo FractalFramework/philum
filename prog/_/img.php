@@ -9,12 +9,12 @@ return sql('dc','qdg','v',$w);}
 
 static function restore($im,$id){
 $dc=self::original($im,$id);
-if($dc)return conn::get_image($dc,$id,3);}
+if($dc)return conn::getimg($dc,$id,3);}
 
 static function restoreim($a,$id){
 $b=self::restore($a,$id); if(!$b)return;
 if($b && $b!=$a){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);}
-return conn::place_image($b,3,920,$id,'');}
+return conn::mkimg($b,3,920,$id,'');}
 
 static function rewrite($d){$im='img/'.$d;
 [$w,$h,$ty]=getimagesize($im);
@@ -32,7 +32,7 @@ static function reduce($d,$o,$id=''){$im='img/'.$d;
 if($o){$w=$wo/2; $h=$ho/2;}
 else [$w,$h]=self::sz($wo,$ho,940,940);
 make_mini($im,$im,$w,$h,''); opcache($im);
-if($id)return conn::place_image($d.'?'.$w,3,920,$id,'');}
+if($id)return conn::mkimg($d.'?'.$w,3,920,$id,'');}
 
 static function png2jpg($a,$id){
 $b=str_replace('.png','.jpg',$a);
@@ -46,7 +46,7 @@ if($im)imagecopyresampled($img,$im,0,0,0,0,$w,$h,$w,$h);
 imagejpeg($img,$out,100);
 if($id){$sz1=fsize($in); $sz2=fsize($out);//abort if jpg is larger
 	if($sz1>$sz2){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
-		self::mdf($id,$a,$b); boot::cacheart($id);
+		self::mdf($id,$a,$b); ma::cacheart($id);
 		rm($in); $res=$b; ses::$adm['alert']='png destroyed ('.$sz1.'=>'.$sz2.') ';}
 	else{rm($out); $res=$a; ses::$adm['alert']='png kept ('.$sz1.'<='.$sz2.') ';}}
 return $res;}//'?'.randid()
@@ -103,7 +103,7 @@ static function make_thumb($mg,$prm){$ida='img';
 if(!file_exists($ida.'/'.$mg))return; $preb='';
 if(substr($mg,0,4)!='http')$pre='imgc/'; else $pre='';
 	if($prm=='h')$rpm='height="36" class="imgl"';
-	elseif(is_numeric($prm))$rpm='title="'.ma::rqt($prm,'suj').'"';
+	elseif(is_numeric($prm))$rpm='title="'.ma::rqtv($prm,'suj').'"';
 	elseif($prm=='nl'){$rpm='class="imgl"'; $preb=host();}
 	elseif($prm=='hb')$rpm='height="32" class="imgl"';
 	elseif($prm=='no')$rpm='';

@@ -21,7 +21,7 @@ if($auth>1){
 if($auth>2){
 	if(!$rst[79])$ret['addurl']=popbub('call','addart',$ico[7],$top,$hv);
 	//if(!$rst[79])$ret['addurl']=llj('','bubble_sav,addart',$ico[7]);
-	else $ret['addart']=li(btj($ico[7],sj('popup_edit,artform').' closebub(this);'));}
+	else $ret['addart']=li(btj($ico[7],sj('popup_edit,call').' closebub(this);'));}
 if(!$rst[81])$ret['favs']=llj('','popup_favs,home',picto('bookmark2'));//favs
 if(!$rst[80])$ret['arts']=popbub('','arts',$ico[6],$top,$hv);//arts
 if(!$rst[82])$ret['lang']=popbub('lang','lang',$ico[9],$top,$hv);//lang
@@ -35,7 +35,7 @@ if($id && !$rst[89])$ret['seek']=popbub('seek','',$ico[13],$top,$hv);//metas
 if($id && auth(6)){
 	$tag=lj('','popup_meta,metall___'.$id.'_3',picto('tag'));
 	$tit=lj('','popup_meta,titedt___'.$id.'_3',picto('meta'));
-	$edt=lj('','popup_edit,artform____'.$id.'__autowidth',picto('edit'));
+	$edt=lj('','popup_edit,call____'.$id.'__autowidth',picto('edit'));
 	$edt2=btj(picto('editor'),atj('editart',$id));
 	//if(!$rst[1])$trk=li(lj('','popup_tracks,form___'.$id,picto('forum')));
 	$ret['edit']=li($tag).li($tit).li($edt).tag('li',['id'=>'adt2'.$id],$edt2);}//.$trk
@@ -173,8 +173,8 @@ else return $da;}
 
 static function getmp4($d,$id,$o=1){if($o)$d=self::vacuum_media($d,$id); return video($d);}
 static function getmp3($d,$id,$o=1){if($o)$d=self::vacuum_media($d,$id); return audio($d);}
-static function getimg($d,$id,$m,$nl,$pw){$im=conn::get_image($d,$id,$m);
-return conn::place_image($im,$m,$pw,$id,$nl);}
+static function getimg($d,$id,$m,$nl,$pw){$im=conn::getimg($d,$id,$m);
+return conn::mkimg($im,$m,$pw,$id,$nl);}
 static function getxif($d){$d=gcim($d); $r=imgexif($d); return img('/'.$d).tabler($r);}
 static function imgdata($d){[$d,$xt]=cprm($d); if(!$xt)$xt='jpeg';
 return img('data:image/'.$xt.';base64,'.base64_encode($d));}
@@ -223,8 +223,7 @@ return $ret;}
 static function columns($re,$o,$id='',$b=''){
 $ret=is_array($re)?implode('',$re):$re;
 if($o>10)$s='auto '.$o.'px;'; else $s=(is_numeric($o)?$o:3).' auto;';
-$sty='columns:'.$s.'; column-gap:16px:';
-return div(atd($id).atc('cols'.$b).ats($sty),$ret);}
+return divb($ret,'cols'.$b,$id,'columns:'.$s.'; column-gap:16px:');}
 
 #img
 static function art_img($d,$id='',$n=''){if(!$d)return;

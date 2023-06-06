@@ -9,7 +9,7 @@ elseif($ca<$cb){$nb=$cb-$ca; $t='"["';}
 if(isset($nb))return btn('txtyl',$nb.$t.'missing');}
 
 static function urledt($id){$b=rstr(18)?'public':ses('qb');
-$u=is_numeric($id)?ma::rqtb($id,'mail'):$id; [$k]=conv::verif_defcon($u);
+$u=is_numeric($id)?ma::rqtv($id,'mail'):$id; [$k]=conv::verif_defcon($u);
 return lj('','popup_msqa,editmsql___users/'.$b.'*defcons_'.ajx($k).'_'.ajx($u),picto('config'));}
 
 //menus
@@ -41,10 +41,10 @@ return divc('nbp',$ret.divd('scb',''));}
 
 static function com($f,$o,$prm=[]){$u=vacurl($f);
 $_SESSION['vac'][$u]['u']=$f; $_SESSION['vac'][$u]['b']=$prm[0];
-return self::artform($f,'');}
+return self::call($f,'');}
 
 //f
-static function artform($link,$id){ses::$r['curdiv']='content'; $ip=hostname();
+static function call($link,$id){ses::$r['curdiv']='content'; $ip=hostname();
 $USE=ses('USE'); $frm=ses('frm'); $suj=''; $msg=''; $alrt=''; $rid=randid('edt');
 if($USE)$us=$USE; else [$us,$ml]=sql('name,mail','qdi','r','host="'.$ip.'" order by id desc limit 1');
 if(!$frm)$frm='public';

@@ -188,7 +188,7 @@ static function imgc(){$r=scandir('imgc'); $f='_backup/imgc.tar';
 $ok=self::tar($f,$r); return lk($f);}
 
 static function db($p,$rid){$length=10000;
-$n=key($_SESSION['rqt']);
+$n=ma::lastartid();
 $n=ceil($n/$length); $min=$p*$length; $max=$min+$length; $ret='from '.$min.' to '.$max.': ';
 for($i=1;$i<$n;$i++)$ret.=lj('',$rid.'_backupim,db___'.$i.'_'.$rid,$i).' ';
 //$ret.=img::batch($p);
@@ -208,7 +208,7 @@ foreach($ra as $k=>$v){
 return 'ok:'.$i;}
 
 static function menu($p,$o,$rid){$length=self::$length; //self::patchmrc();
-if($_SESSION['rqt'])$n=key($_SESSION['rqt']);//j
+$n=ma::lastartid();
 //unlink('_backup/img_0-5000.tar');
 //mkdir_r('/imgb/cod');
 //$n=sesmk('backupim_nb','',''); $ret=$n.' images'.br();//ja

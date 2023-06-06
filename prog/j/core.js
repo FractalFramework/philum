@@ -325,7 +325,7 @@ var ob=getbyid('bt'+id);
 if(ob)var oc=ob.getElementsByTagName('a')[0];
 if(ob)var op=ob.parentNode.getElementsByTagName('span');
 var act=active('',oc);
-if(act==1)SaveJ('togbub_'+j); else Remove('pub'+id);
+if(act==1)ajaxcall('togbub',dn[0],[dn[3],dn[4],dn[5],dn[6]],[],dn[2]); else Remove('pub'+id);//SaveJ('togbub_'+j);
 for(i=0;i<op.length;i++){var pid=op[i].id;
 	if(pid && pid.substr(0,2)=='bt' && pid.substr(2)!=id){
 		var opa=op[i].getElementsByTagName("a"); if(opa[0])active('',opa[0],1);

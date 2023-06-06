@@ -80,7 +80,7 @@ if(this.m_Request.readyState==4){wait=0;
 		if(act==7){var read=getbyid('socket').value;
 			if(typeof(curid)!='undefined')Close('popup');
 			if(read>0)ajaxcall('popup','popart',[read,'3'],[],'3');
-			else ajaxcall('popup','edit,artform',[],[],'');}
+			else ajaxcall('popup','edit,call',[],[],'');}
 		else if(act==9){var read=getbyid('socket').value;
 			if(read>0)read='/'+read; if(read)window.location=read;}
 		//else if(act==12)popb(curid);
@@ -441,24 +441,27 @@ for(i=4;i<8;i++)get.push(dn[i]);
 if(dn[7]=='autosize'){opt+='&sz='+innerW()+'-'+innerH(); get[7]='';}//todo:in place of i
 if(dn[7]=='autowidth'){opt+='&sz='+(document.body.offsetWidth); get[7]='';}
 ajaxcall(dn[0],dn[1]+opt,get,prm,tp);
+rebound(dn);}
+
+function rebound(dn){
 if(dn[3]=='pop')Close('popup');
 else if(dn[3]=='y')window.location=dn[4];
 else if(dn[3]=='x')Close('popup');
 else if(dn[3]=='xb')cltog(dn[2]);//close tog
 else if(dn[3]=='xc')clpop();//autoclose togbub
+else if(dn[3]=='exs')exs=[];//artlive2()
+//else if(dn[3]=='u'){updateurl(dn[4],val.replace('_u_','__'));}
 else if(dn[3]=='jx'){Close('popup'); jumpvalue(dn[4],dn[5]);}
 else if(dn[3]=='xx')setTimeout(function(){Close('popup')},2000);
 else if(dn[3]=='xd')setTimeout(function(){falseClose(dn[0])},1000);
 else if(dn[3]=='xk')falseClose('trkdsk');//o.parentNode
 else if(dn[3]=='xr')setTimeout(function(){poprepos()},1000);
 else if(dn[3]=='tg'){var op=active(dn[2]); if(op==0)Close(dn[0]);}
-else if(dn[3]=='exs')exs=[];//artlive2()
-else if(dn[3]=='u'){updateurl(dn[4],val.replace('_u_','__'));}
+else if(dn[3]=='head'){var da=dn[1].split(','); ajaxcall('',da[0]+',head',[dn[4],dn[5]],[],'head');}
 else if(dn[3]=='js'){var da=dn[1].split(','); ajaxcall('',da[0]+',js',[dn[4],dn[5]],prm,17);}
 else if(dn[3]=='css'){var da=dn[1].split(','); ajaxcall('',da[0]+',css',[dn[4],dn[5]],[],16);}
 else if(dn[3]=='jsxr'){var da=dn[1].split(','); ajaxcall('',da[0]+',js',[dn[4],dn[5]],prm,17);
-	setTimeout(function(){poprepos()},1500);}
-else if(dn[3]=='head'){var da=dn[1].split(','); ajaxcall('',da[0]+',head',[dn[4],dn[5]],[],'head');}}
+	setTimeout(function(){poprepos()},1500);}}
 
 //tg,a,cmd,mid,ik,n
 function SaveBg(ia,b){
@@ -551,14 +554,3 @@ else for(i=0;i<vn.length;i++){var tg='slct'+normalize(vn[i])+id;
 function autocomp(id,cats){
 var old=getbyid('inp'+id).value; if(x)clearTimeout(x);
 x=setTimeout(function(){autocomp_call(old,id,cats)},500);}
-
-function Close(val){
-if(val=='popup' && curid){
-	var pp=getbyid('popup');
-	var ppa=getbyid('pop'+curid); //alert(ppa.innerHTML);
-	//var ppa=pp.getElementById('pop'+curid); alert(ppa);
-	if(ppa)pp.removeChild(ppa); curid=0;}
-else if(val=='pop')falseClose('popup'); else if(val)falseClose(val);}
-function Remove(val){var e=getbyid(val); if(e){var a=e.parentNode; if(a)a.removeChild(e);}}
-function Hide(val){getbyid(val).style.display='none';}
-function falseClose(val){getbyid(val).innerHTML='';}

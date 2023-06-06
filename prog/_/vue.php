@@ -1,4 +1,4 @@
-<?php //a/vue
+<?php //vue
 //build html from template of connectors with vars
 
 class vue{
