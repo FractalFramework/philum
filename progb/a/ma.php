@@ -25,8 +25,8 @@ elseif($m!='brut')$ret=conn::read($ret,$m,$id);
 return $ret;}
 
 static function lastart(){$r=msql::row('',nod('last'),1); if(!$r)$r=self::lastartrq(); return $r;}
-static function lastartid(){$r=sesmk2('ma','lastart'); return $r[0]??0;}
-static function lastartday(){$r=sesmk2('ma','lastart'); return $r[1]??0;}
+static function lastartid(){$r=self::lastart(); return $r[0]??0;}
+static function lastartday(){$r=self::lastart(); return $r[1]??0;}
 static function lastid($b){return sql('id',$b,'v',['_order'=>'id desc','_limit'=>'1']);}
 static function lastartrq(){
 return sql('id,day','qda','a',['nod'=>ses('qb'),'>re'=>'0','-frm'=>'_','_order'=>'id desc','_limit'=>'1']);}

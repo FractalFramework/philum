@@ -400,7 +400,7 @@ return $im;}
 static function prepare_thumb($d,$id,$nl){
 if($_SESSION['rstr'][30]=='1')return; $im=''; $pr='';
 if(rstr(93)){$mg=pop::art_img($d,$id); if($mg)$im=self::make_thumb_css($mg);
-	if($im)$ret=divb('','thumb','background-image:url(/imgc/'.$im.');');
+	if($im)$ret=divb('','thumb','','background-image:url(/imgc/'.$im.');');
 	else $ret=divc('thumb',' ');}
 else $ret=minimg($d,$pr,$nl);
 $ret=lj('','popup_popart__3_'.$id.'_3',$ret);

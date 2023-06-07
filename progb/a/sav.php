@@ -33,7 +33,7 @@ if($nid){$rc=[$dt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$urlsrc,$ib,$re,$lg];
 	msql::modif('',nod('cache'),$rc,'one','',$nid);
 	geta('read',$nid); boot::deductions($nid,''); self::$r=[];}
 $_SESSION['dayx']=$dt; $_SESSION['daya']=$dt;
-msql::modif('',nod('last'),[$nid,$dt],'one','',1);
+if($nid)msql::modif('',nod('last'),[$nid,$dt],'one','',1);
 return $nid;}
 
 static function saveart_url($u){$cat=vacses($u,'c'); if(!auth(4))return;
@@ -49,7 +49,7 @@ $d=codeline::parse($d,$nid,'savimg');
 $img=self::orderim($nid);
 //day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg
 $_SESSION['rqt'][$nid]=[$dt,stripslashes($frm),stripslashes($suj),$img,$qb,'','','',$sz,$u,$ib,$re,''];}
-msql::modif('',nod('last'),[$nid,$dt],'one','',1);
+if($nid)msql::modif('',nod('last'),[$nid,$dt],'one','',1);
 $_SESSION['daya']=ses('dayx');
 return $nid;}
 

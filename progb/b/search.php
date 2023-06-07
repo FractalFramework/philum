@@ -197,8 +197,9 @@ $maxid=ma::lastartid();
 //if(is_float($rech))echo $rech=(string) $rech;
 if($rech && !is_numeric($rech) && strlen($rech)>7)$isdate=strtotime($rech);
 if($rech=='1'){$id=$maxid; $load[$id]=1; return popart($id);}
-//if(is_numeric($rech) && $rech<=$maxid)return art::playb($rech,3);
 if($rech && is_http($rech)){$id=sql('id','qda','v',['mail'=>$rech]); if($id)return popart($id);}
+if(is_numeric($rech) && strpos($rech,'.')===false && $rech<=$maxid)$load[abs($rech)]=1;
+//if(is_numeric($rech) && $rech<=$maxid)return art::playb($rech,3);
 elseif($rech && strpos($rech,',') && strpos($rech,':')){
 	$ra=explode_k($rech,',',':');
 	foreach($ra as $k=>$v)//{//inform motor
@@ -218,7 +219,6 @@ elseif($b){//=='x'
 elseif($rech && $vrf==str::normalize($rech.$n,1) && !ses('rstr62') && !is_numeric($rech))
 	$load=searched::add($rech,$n);
 else $load=self::call($rech,$n);
-if(is_numeric($rech) && strpos($rech,'.')===false && $rech<=$maxid)$load[abs($rech)]=1;
 if($load && !is_array($load))$load=[];
 //if(!$load && $sg){self::$rp['seg']=1; $load=self::call($rech,$n);}//less fast
 if($load){$_SESSION['load']=$load; $_SESSION['recache'][$vrf]=$load; $nb=count($load);}

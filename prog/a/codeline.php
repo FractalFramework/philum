@@ -257,12 +257,12 @@ if($d=='http'||$d=='https')return $da;
 return $da;}
 
 #correctors
-/**/static function savimg0($da,$id){
+/*static function savimg0($da,$id){
 [$p,$o,$c]=poc($da); $p2=''; $o2='';
 if(substr($p,0,4)=='http' && is_img($p) && !$o)$p2=conn::getimg($p,$id);
 if(substr($o,0,4)=='http' && is_img($o))$o2=conn::getimg($o,$id);
 $ret=$p2?$p2:$p; if($o)$ret.='|'.($o2?$o2:$o); if($c)$ret.=$c;
-return '['.$ret.']';}
+return '['.$ret.']';}*/
 
 static function savimg($da,$id){
 [$d,$o]=prepdlink($da); [$p,$o]=cprm($d); $_SESSION['read']=$id;

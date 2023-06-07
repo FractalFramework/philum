@@ -17,11 +17,11 @@ function popart($g1){eye(); $j='popart__x_'.$g1; $tg=get('tg')=='pagup'?1:0;
 //$is=ma::is_public($g1); if(!$is)return divc('frame-red',helps('not_published'));//nms(170)// && !auth(6)
 //ses::$r['curdiv']='content'; boot::deductions($g1,'');
 if($g1=='last')$g1=ma::lastartid();
-if($tg)$p=lj('','popup_'.$j,pictxt('popup')); else $p=lj('','pagup_'.$j,pictxt('popup'));
-if(rstr(144))$p.=md::prevnext_art('arts',1,$g1,$tg);
-//if(auth(6))$p.=lj('','popup_meta,metall___'.$g1.'_3',picto('tag',20)).lj('','popup_meta,titedt___'.$g1.'_3',picto('meta',20)).lj('','popup_edit,call____'.$g1,picto('edit',20)).btj(picto('editor',20),atj('editart',$g1));
+if($tg)$bt=lj('','popup_'.$j,pictxt('popup')); else $bt=lj('','pagup_'.$j,pictxt('popup'));
+if(rstr(144))$bt.=md::prevnext_art('arts',1,$g1,$tg);
+if(auth(6))$bt.=lj('','popup_meta,metall___'.$g1.'_3',picto('tag',20)).lj('','popup_meta,titedt___'.$g1.'_3',picto('meta',20)).lj('','popup_edit,call____'.$g1,picto('edit',20)).btj(picto('editor',20),atj('editart',$g1));
 $ret=art::playb($g1,3); $t=ses::r('suj');//if(!$t)$t=ma::suj_of_id($g1);
-ses::$r['popt']=etc($t,70); ses::$r['popm']=$p; ses::$r['popw']=prma('content');//+20 //ses::$r['popwm']=640;
+ses::$r['popt']=etc($t,70); ses::$r['popm']=$bt; ses::$r['popw']=prma('content');//+20 //ses::$r['popwm']=640;
 if(is_numeric($g1))ses::$r['id']=$g1;
 return $ret;}
 
