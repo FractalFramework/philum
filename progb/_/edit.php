@@ -31,8 +31,8 @@ $ret.=lj('','popup_keyboard,call_txtarea',picto('keyboard',16));
 return $ret.divd('edtbt','');}
 
 static function bt($id){$ret='';
-$r=msql::read('system','connectors_basic','',1);
-$rh=msql::kv('lang','connectors_basic','',1);
+$r=sesmk('conns','',0);
+$rh=sesmk('connlg','',0);
 if(ses('USE'))$ret=self::props($id);//rid used for mc,conns
 foreach($r as $k=>$v){$txt=self::icon($k); $rid=''; if($k=='nl')$v[1]='\n';
 	if($v[0]=='embed'){if($v[1])$v[0]='embedslct'; else $v[1]=$k; $rid=randid();}
@@ -42,6 +42,8 @@ return divc('nbp',$ret.divd('scb',''));}
 static function com($f,$o,$prm=[]){$u=vacurl($f);
 $_SESSION['vac'][$u]['u']=$f; $_SESSION['vac'][$u]['b']=$prm[0];
 return self::call($f,'');}
+
+static function txarea($d,$id=''){return '<textarea id="txtarea" name="msg" class="console" style="margin:0; width:100%; min-width:640px; min-height:240px;">'.$d.'</textarea>';}
 
 //f
 static function call($link,$id){ses::$r['curdiv']='content'; $ip=hostname();
@@ -76,8 +78,10 @@ $btdt=ljb('','edtmode',[$rid,$id],picto('artedit'),'edtmd').' ';
 if($id)$btdt.=self::urledt($id);//defcon//sav::urledt($link)
 $ret=$sav.btd('bts'.$id,'').' '.$btdt;
 $ret.=implode('',$r);
-$btd=sesmk2('edit','bt',$id,0).$alrt;
-$btd.=divd('txarea',txarea1($msg));
+//$btd=sesmk2('edit','bt',$id,0);
+$btd=self::bt($id);
+$btd.=$alrt;
+$btd.=divd('txarea',self::txarea($msg,$id));
 $ret.=divd($rid,$btd);
 //if(auth(4))$ret.=checkbox("randim","ok","rename_img",0);
 return $ret;}

@@ -67,11 +67,11 @@ foreach($r as $k=>$v)$ret[]=[$k,'link','',art::target_date($v),'','','',$travel=
 return $ret;}
 
 //arts
-static function adm_arts($dir){$r=ses('rqt'); //if($r)$r=array_reverse($r,true);
+static function adm_arts($dir){$r=ma::readcache(); //if($r)$r=array_reverse($r,true);
 $ret[]=[$dir,'link','','/'.$dir,'','','Categorie',sesr('catpic',$dir),'',''];
 if($r)foreach($r as $k=>$v)if($v[1]==$dir)$ret[]=[$v[2],'art','',$k,'','',$v[1],'txt'];
 return $ret;}
-static function adm_arts_fast(){$r=ses('rqt'); if($r)$r=array_reverse($r,true);
+static function adm_arts_fast(){$r=ma::readcache(); if($r)$r=array_reverse($r,true);
 if($r)foreach($r as $k=>$v)if(substr($v[1],0,1)!='_')$ra[$v[1]]=1;
 $rb=ses('catpic',[]); $ret='';
 if($ra)foreach($ra as $k=>$v){$ic=$rb[$k]??'folder';
@@ -215,7 +215,7 @@ return $ret;}
 //login
 static function exec($d){
 if($d=='login'){login::call('','',''); return div(atd('nob'),login::form('','1',''));}
-if($d=='cache'){$_SESSION['rqt']=[]; return li(boot::cache_arts(1));}}
+if($d=='cache')return li(boot::rebuild());}
 
 //taxo
 static function bubtaxo_root($r,$ib){
@@ -223,15 +223,15 @@ foreach($r as $k=>$v)
 	if($k==$ib)$dir=self::bubtaxo_root($r,$v[10]);
 if($ib)return $dir.'/'.$ib;}
 
-static function taxo($dir,$ret){$r=$_SESSION['rqt'];
+static function taxo($dir,$ret){$r=ma::readcache();
 if(is_array($r))foreach($r as $k=>$v)if($v[10]){
 	$root=$dir.self::bubtaxo_root($r,$v[10]);
 	$ret[]=[$v[2],'art','',$k,'','',$root,'article','',''];}
 return $ret;}
 	
 //overcat
-static function overcats($d,$ret=''){//mods/overcats
-if($ret)$root=$d.'/';//inclusion in self::menu
+static function overcats($d,$ret=[]){//mods/overcats
+$root=$ret?$d.'/':'';//inclusion in self::menu
 $r=ma::surcat_list();
 if($r)foreach($r as $k=>$v)$ret[]=[$k,'link','cat','/cat/'.$k,'','',$root.$v,'url'];
 return $ret;}
@@ -239,11 +239,10 @@ return $ret;}
 //desk
 //'button','type','process','param','option','condition','root','icon','hide','private'
 static function menubub($d,$n){//root,action,type,button,icon,auth
-$r=msql::read('users',nod('menubub_'.($n?$n:'1')),'',1); $ret=[];
+$r=msql::read('',nod('menubub_'.($n?$n:'1')),'',1); $ret=[];
 if($r)foreach($r as $k=>$v){//if(strpos($v[0],$d)!==false)
 	[$v0,$v1,$v2,$v3,$v4,$v5]=arr($v,6);
 	$bt=$v[3]?$v[3]:$v[1];
-	//if($v[2]=='bub')p($v);
 	if($v[2]=='app')$ret[]=[$v[3],$v[2],$v[1],'','','',$v[0],$v[4],'',$v[5]];
 	elseif($v[2]=='appjs')$ret[]=[$v[3],$v[2],$v[1],'','','',$v[0],$v[4],'',$v[5]];
 	//elseif($v[2]=='appin')$ret[]=[$v[3],$v[2],$v[1],'','','',$v[0],$v[4],'',$v[5]];
@@ -258,7 +257,7 @@ if($r)foreach($r as $k=>$v){//if(strpos($v[0],$d)!==false)
 	elseif($v[2]=='arts')$ret[]=[$v[3],'arts',$v[1],'','','',$v[0],$v[4],'',$v[5]];
 	elseif($v[2]=='overcat' && $v[5]<=ses('auth'))$ret=self::overcats($v[0],$ret);
 	elseif($v[2])$ret[]=[$v[3],$v[2],'',$v[1],'','',$v[0],$v[4],'',$v[5]];
-	else{if(sesr('line',$v[1]))$lk=htac('cat').$v[1];
+	else{if(sesr('line',$v[1]))$lk='cat/'.$v[1];
 		elseif(is_numeric($v[1]))$lk='/'.$v[1];	else $lk=$v[1];
 		$ret[]=[$v[3],'link','',$lk,'','',$v[0],$v[4],'',$v[5]];}}
 return $ret;}

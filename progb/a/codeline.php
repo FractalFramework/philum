@@ -465,7 +465,7 @@ return [$p,$r];}
 
 static function cbasic_vars($ret,$p,$r){if(is_array($r)){$i=0;
 foreach($r as $k=>$v){$i++; $ret=str_replace('_'.$i,stripslashes($v),$ret);}}
-$ret=str_replace('_PARAM',stripslashes($p),$ret);
+else $ret=str_replace('_PARAM',($p),$ret);//stripslashes
 return $ret;}
 
 static function cbasic($code,$p){//eco($code);

@@ -78,4 +78,6 @@ $r=["_"=>['val0'],
 "MenusJ"=>['category'],
 "api_arts"=>['atom'],
 "desktop"=>['desktop'],
-"desk"=>['desktop']];
+"desk"=>['desktop'],
+"links"=>['url'],
+"rssurl"=>['rss']];

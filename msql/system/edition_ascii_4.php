@@ -2,7 +2,7 @@
 $r=["_"=>['code clavier','Code ISO','Code HTML','Description'],
 "2"=>['1','9786','','Smiley blanc souriant'],
 "3"=>['2','9787','','Smiley noir souriant'],
-"4"=>['3','9829','&hearts','C&oeligur noir'],
+"4"=>['3','9829','&hearts','Coeur noir'],
 "5"=>['4','9830','&diams','Carreau noir'],
 "6"=>['5','9827','&clubs','Trèfle noir'],
 "7"=>['6','9824','&spades','Pique noir'],

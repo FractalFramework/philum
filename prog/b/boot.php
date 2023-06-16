@@ -71,6 +71,7 @@ if(!$pm[17])$pm[17]='ymd.Hi';//date
 if(!$pm[19])$pm[19]='fr en es';//langs
 if(!$pm[24])$pm[24]='http://philum.fr';//server
 if(!$pm[25])$pm[25]='fr';//lang
+if(!$pm[27])$pm[27]='440/320';//thumb
 return $pm;}
 
 static function define_config(){$qb=ses('qb');
@@ -342,15 +343,16 @@ $ret=self::state();
 if($ret)Head::add('jscode',sj('popup_'.$ret));}
 
 #cache
-static function cache_arts($x=''){$lastart=''; $rtb=[]; $ret=[]; $main=[]; $nod=nod('cache');
+static function cache_arts($x=''){
+$lastart=''; $rtb=[]; $ret=[]; $main=[]; $nod=nod('cache');
 if($x)msql::del('',$nod); else $main=msql::read_b('',$nod,'',1);
 if($main){$last=current($main); $lastart=$last?$last[0]:ma::lastartid();}
 if(($lastart && !isset($main[$lastart])) or $x){
 	$rh=[msql::$m=>['date','cat','title','img','hub','url','lu','author','length','src','ib','re','lg']];
 	$r=ma::rqtall();
 	if($r)foreach($r as $k=>$v){$ka=array_shift($v); $v[3]=pop::art_img($v[3]); $ret[$ka]=$v;}
-	$ok='cache reloaded'; msql::save('',$nod,$rh+$ret); $_SESSION['rqt']=$ret;}
-elseif($main)$_SESSION['rqt']=$main;
+	$ok='cache reloaded'; msql::save('',$nod,$rh+$ret); if(rstr(140))$_SESSION['rqt']=$ret;}
+elseif($main && rstr(140))$_SESSION['rqt']=$main;
 return lk('/reload/'.ses('qb'),'reload');}
 
 static function cats(){
@@ -363,8 +365,8 @@ self::define_hubs(); self::define_qb(); self::define_config();}
 static function reboot(){self::reset_ses(); $_SESSION['dayx']=time();
 self::init(); self::define_use(); self::define_iq(); self::define_auth(); self::seslng(); self::time_system('ok'); self::cache_arts(); self::define_condition(); self::define_clr();}//self::cats(); 
 
-static function rebuild(){$_SESSION['rqt']=[]; 
-return self::cache_arts(1); $_SESSION['dayx']=time();}
+static function rebuild(){$_SESSION['rqt']=[]; $_SESSION['dayx']=time();
+return self::cache_arts(1);}
 
 #utils
 static function block_crawls(){$ip=ses('ip');//hostname()//proxad

@@ -68,4 +68,78 @@ $r=["_"=>['date','text'],
 - prise en charge de lk|im
 - le nettoyage des utm et fbclid est systématique
 - finalisation poc()
-- correctif erreurs codeline::correct']];
+- correctif erreurs codeline::correct
+- amélioration embed_links'],
+"15"=>['0512','- finalisation de adim, qui répertorie les images cataloguées (imct), récupérables (imdb) et existantes (imex) dans un tableau qui propose de réparer les diverses lacunes
+- apparition du menu social, qui regroupe les boutons sociaux dans un sous-menu plutôt que de les afficher en ligne
+- rstr152: autoreduce img width at 940
+- révision de \'orderim\' qui en fait fait comme pop::art_img, mais sans les autres vérifs
+- adimg peut rollback/reimporter les images déficientes à la chaîne (les erreurs et embûches ont été neutralisée tout au long de la chaîne de commandement)'],
+"16"=>['0513','- réfection de catslct-catedit-catsav
+- réfection de la catégorie des rssin
+- suppression de la relique SaveJb
+- ajout de définitions à ath'],
+"17"=>['0514','- on peut utiliser le séparateur ; au lieu de _ dans la commande ajax, le but est de soulager la dette technique nommée ajx (à l\'état de relique)
+- amélioration substantielle de la suppression d\'espaces spéciaux
+- support des usages décoratifs des ponctuations
+- avancement au moment de l\'import de la construction du catalogue d\'images (pour avoir les miniatures au premier lancement)
+- réfection de timetravel, impacte le quelconque module en homepage
+- réfection de m_system et regroupement de tâches
+- amélioration addlines'],
+"18"=>['0515','- fix big pb d\'identification de l\'image candidate pour une vignette (avait éclaté toute la base de données)
+- grosse révision de str et des multiples cheminements des usages, qui va conduire à une autre grosse révision générale
+- amélioration du nettoyage des titres
+- amélioration du nettoyage des erreurs typographiques
+- ajout de l\'app funcs qui va cartographier le logiciel'],
+"19"=>['0516','- le sélecteur de catégories de panneau metas est plus rapide, et on peut l\'étendre à une recherche plus profonde
+- l\'indicateur \'g\' de la commande ajax envoie les gets dans le post, et prmg les interprète (depuis la réforme on ne peut plus utiliser de \'&\' dans les gets, bah oui, elle était faite pour ça l\'ancienne solution)
+- pré-finalisation de funcs, qui cartographie le logiciel (pour éclairer la complexité des filtres)'],
+"20"=>['0517','- amélioration de la détection des liens redondants (c\'est une nouvelle manie de présenter un lien qui pointe vers un autre avec une url légèrement différente)
+- amélioration du design par défaut pour bien utiliser les largeurs de vignettes à la une
+- réfection (encore) de la fameuse problématique des connecteurs automatiques [img/txt/link/html] de part et d\'autre du séparateur. Cette-fois c\'est bon :)
+- amélioration substantielle de l\'api, capable de distinguer les recherches additives des combinées, de façon à avoir des résultats d\'autant plus précis qu\'il y a un grand nombre de paramètres, et non pas d\'autant plus vaste. Grosse nuance.
+- réparation ouverture api depuis search
+- search utilise api pour multitags'],
+"21"=>['0518','- ah oui il restait un type d\'espace blanc insécable invisible qui pourrissait les lignes, on l\'a trouvé
+- ajout du filtre decode_noutf8() (latin encodé en utf) et suppression de l\'ancien decode_unicode() (utf8 encodé en latin), tandis que unicode_decode() est envoyé dans le lost, nouvel endroit de perdition des fonction non-obsolètes
+- l\'objet desk \'art\' appelle un hj au lieu d\'un lj'],
+"22"=>['0519','- dépatouillage de grosse gabegie du traitement des ponctuations, normalisées, régularisées, nettoyées, mises en conformité et décorées, à l\'enregistrement, l\'import, et au réimport (cette fois c\'est bon)
+- finalisation de funcs (trucs redondants qui se rejoignent) et ajout de la production de données en vue d\'une dataviz'],
+"23"=>['0520','- fix pb bris de codage dû à un trim étendu inutilement aux /ntr ; le str::trim ajoute seulement le nbsp'],
+"24"=>['0521','- on déplace des trucs strings dans str
+- tree(), en plus de playr(), permet de naviguer dans les nœuds d\'une structure'],
+"25"=>['0522','- peaufinement de tree()
+- fix bug mod art popup en rstr85
+- correctifs design tags in scrolls, thumb'],
+"26"=>['0523','- ajout de spn, suppléant de span
+- ses(qda) passe à db(qda)
+- relifting du fonctionnement de sty (pas de reloads)
+- preview1 devient un appel au template \'simple\''],
+"27"=>['0524','- amélioration de la gestion du template \'simple\', utilisé pour prw=1 et prw=rch, de sorte à retomber sur la recherche après un sav tags, ou à ouvrir le contenu en \'look\' (choses plus évidentes)'],
+"28"=>['0525','- css global tright pour soulager les templates
+- hardurl évite les l/raquo (les liens en dur sont réécris)
+- fix pb affichage de l\'icône qui signale les images manquantes
+- recenseim et placeimdel fait automatiquement un orderim
+- introduction de wordstats, graphique animé des usages des mots'],
+"29"=>['0526','- update des templates-machine'],
+"30"=>['0527','- bon on laisse msqa::mopen décider en dur de la taille des fenêtres msqledit, au lieu de js (retrait de l\'appendice archaïque dans saveJ)
+- introduction de emoji(), reprend les codes de picto() en émo
+- fix hed in titles of popup'],
+"31"=>['0528','- réforme du back-cat qui se scinde en deux, back et cat : back renvoie seulement un lien vers len-2, et cat est systématisé (non conditionné) dans une variable de template distincte. Stupide de ne pas l\'avoir fait avant.'],
+"32"=>['0529','- suppression des préfixes de tables (modif critique)
+- simplification du boot des tables (pourra ensuite s\'épargner l\'usage de sessions)
+- les apikeys des traducteurs sont planquées dans une base msql
+- le traducteur est renommé \'trans\' au lieu de l\'antique \'yandex\' ; y compris la database'],
+"33"=>['0530','- finalisation de la réforme de suppression des archaïques préfixes de tables
+- mise à niveau non testée de l\'installateur
+- utils.js devient core.js
+- les éléments ne contenant que de la data (templates, tables, authes) sont logés dans le nouveau répertoire \'d\'
+- rénovation du backup des articles, désormais confié à une database
+- rstr134 automatise le backup des articles à chaque modif
+- rénovation en passant de la création de table mysql à la volée
+- rénovation l\'admin rstr, pour ne réafficher que le bouton modifié
+- correctifs transport et refs manuelles de tables dans les plugs, suite à la réforme des préfixes'],
+"34"=>['0530','- le curseur de tweetfeed est posé dans une table msql au lieu d\'un fichier txt
+- l\'app html ne marchait plus
+- rénovation de l\'admin msql
+']];

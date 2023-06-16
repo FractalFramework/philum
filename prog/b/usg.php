@@ -234,7 +234,7 @@ static function cookprefs($p){
 $r=['iq'=>ses('iq')];
 $ex=sql('id','qdk','v',$r);
 if($ex)sqlup('qdk',['ok'=>$p],$ex,0);
-else{$r+=['ok'=>$p,'usr'=>'','time'=>mysqldate()]; $ex=sqlsav('qdk',$r,0);}
+else{$r+=['ok'=>$p,'usr'=>'','time'=>sqldate()]; $ex=sqlsav('qdk',$r,0);}
 if($p==1)cookie('iq',$r['iq']); //if($use=ses('USE'))cookie('use',$use);
 if($ex)ses('iqa',$p);}
 
@@ -248,11 +248,17 @@ return $d;}
 static function conn2($g1){$d=sql('msg','qdm','v',$g1); 
 $d=conn::read($d,'',$g1,1); return str_replace('</p>',"</p>\n",$d);}
 
+#windows
+static function slctmod($g1){
+return boot::select_mods(yesnoses('slctm')?$g1:'');}
+
 static function iframe($g1){$sz=get('sz'); [$w,$h]=expl('-',$sz); $s=$w>400?$w:cw();
 ses::$r['popm']=lkt('',$g1,pictxt('pdf',domain($g1))); ses::$r['popw']=$s;
 return iframe($g1,$s-20);}
 
-static function site($g1,$g2){
-return iframe('index.php'.($g1?'?'.$g1.'='.$g2:''),cw());}
+static function site($g1,$g2,$g3){
+if($sz=get('sz'))[$w,$h]=expl('-',$sz,2); if(!$w)$w=cw();
+$u='index.php'; if($g1)$u.='/'.$g1; if($g2)$u.='/'.$g2;
+return iframe($u,$w,$h);}
 }
 ?>

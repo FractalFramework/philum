@@ -23,7 +23,6 @@ $w=ses::$r['popw']??cw(); if($w)$s='max-width:'.($w+36).'px;';
 $bt=ljb('','Close','popup',picto('close'));
 $bt.=btj(picto('ktop'),'poprepos()');
 $bt.=btj(picto('less'),'reduce()');
-if($id)$bt.=btj(picto('input'),atj('dock',$id));
 //$bt.=btj(picto('fix'),'fixelem()');
 $bt.=ses::r('popm').' ';
 $bt.=tagb('small',$t);//.atmd('noslct(0);')
@@ -68,7 +67,7 @@ if(!$ret)$ret=match($app){
 'art'=>art::playc($g1,$g2,$g3),
 'popart'=>popart($g1),
 'api'=>api::call($g1,$g2,$prm),
-'site'=>usg::site($g1,$g2),//apps252
+//'site'=>usg::site($g1,$g2),//apps252
 //'app'=>$g1::$g2($g3,$g4,$res),//old
 //sys
 'lang'=>usg::setlng($g1),
@@ -83,7 +82,7 @@ if(!$ret)$ret=match($app){
 'offon'=>offon($g1),
 'tog'=>yesnoses($g1),
 'togses'=>offon(yesnoses($g1)),
-'slctmod'=>boot::select_mods(yesnoses('slctm')?$g1:''),
+//'slctmod'=>boot::select_mods(yesnoses('slctm')?$g1:''),
 'dev'=>usg::putses('dev',$g1??''),
 'jump'=>divc('console',$g1),
 'lj'=>$lj($g3,$g1,$g2),

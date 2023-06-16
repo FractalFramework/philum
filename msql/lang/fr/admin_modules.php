@@ -74,7 +74,7 @@ exemple : [site.com:site blog:hub :channel|Titre, close|x:ajax]','autorefresh (s
 "csscode"=>['ajoute des css dans le header','','',''],
 "deja_vu"=>['articles récemment visités','','',''],
 "design"=>['détermine la feuille Css à utiliser (informé par le constructeur css, obligatoire)','spécifier un numéro de feuille css','abonnement css : place les css récents en sous-couche, sur laquelle il est possible d\'utiliser le minimum de personnalisation : classic, default, n>3 pour une table public) ; sinon voir params/auto_design',''],
-"desktop"=>['paramètres du bureau','spécifier couleur html, #_var, dégradé ou image','',''],
+"desktop"=>['paramètres du bureau','spécifier couleur html, #_var, dégradé, image ou répertoire d\'images (random)','',''],
 "desktop_apps"=>['renvoie le contenu du desktop','concerne les apps avec la condition \'desk\', ou celle de l\'option','',''],
 "desktop_arts"=>['présente des articles dans le Desktop','script de commande d\'articles (rien = ceux du cache)','',''],
 "desktop_files"=>['présente des fichiers partagés dans le Desktop','global|virtual (defaut : local|real)','position du root',''],

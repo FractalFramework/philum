@@ -4,7 +4,7 @@
 
 #store
 class ses{static $r=[]; static $s=[]; static $adm=[]; static $st=[]; static $er=[];
-static $urlsrc=''; static $loader=''; static $enc=''; static $local=0; static $n=0; static $nb=0;
+static $urlsrc=''; static $loader=''; static $enc=''; static $local=0; static $tw=1; static $n=0; static $nb=0;
 static function adm($k){return self::$adm[$k]??'';}
 static function s($k,$v=''){return self::$s[$k]??(self::$s[$k]=$v);}
 static function k($k,$v){return self::$r[$k]=$v;}
@@ -13,13 +13,17 @@ static function z($k){unset(self::$r[$k]);}
 static function er($v){return self::$er[]=$v;}}
 
 #popart
-function popart($g1){eye(); $j='popart__x_'.$g1; $tg=get('tg')=='pagup'?1:0;
+function popart($g1){eye(); $bt='';
+$j='popart__x_'.$g1; $tg=get('tg')=='pagup'?1:0;
 //$is=ma::is_public($g1); if(!$is)return divc('frame-red',helps('not_published'));//nms(170)// && !auth(6)
 //ses::$r['curdiv']='content'; boot::deductions($g1,'');
 if($g1=='last')$g1=ma::lastartid();
-if($tg)$bt=lj('','popup_'.$j,pictxt('popup')); else $bt=lj('','pagup_'.$j,pictxt('popup'));
+if(rstr(155)){
+	//$ex=sql('ib','qdf','k',['ib'=>$id,'type'=>'dock','iq'=>ses('iq')]);
+	$bt=btj(picto('input'),atj('dock',$g1));}
+if($tg)$bt.=lj('','popup_'.$j,pictxt('popup')); else $bt.=lj('','pagup_'.$j,pictxt('popup'));
 if(rstr(144))$bt.=md::prevnext_art('arts',1,$g1,$tg);
-if(auth(6))$bt.=lj('','popup_meta,metall___'.$g1.'_3',picto('tag',20)).lj('','popup_meta,titedt___'.$g1.'_3',picto('meta',20)).lj('','popup_edit,call____'.$g1,picto('edit',20)).btj(picto('editor',20),atj('editart',$g1));
+if(auth(6))$bt.=lj('','popup_meta,metall___'.$g1.'_3',picto('tag',20)).lj('','popup_meta,titedt___'.$g1.'_3',picto('meta',20)).lj('','popup_edit,call____'.$g1,picto('edit',20)).btj(picto('edit2',20),atj('editart',$g1));
 $ret=art::playb($g1,3); $t=ses::r('suj');//if(!$t)$t=ma::suj_of_id($g1);
 ses::$r['popt']=etc($t,70); ses::$r['popm']=$bt; ses::$r['popw']=prma('content');//+20 //ses::$r['popwm']=640;
 if(is_numeric($g1))ses::$r['id']=$g1;
@@ -145,7 +149,12 @@ function order($d,$t=''){return pictxt($d?'arrow-top':'arrow-down',$t);}
 #slct
 function mkbub($d,$c='',$s='',$o=''){
 if($s=='1')$s='position:relative; text-decoration:none; display:inline-block;';
-return div(atd('bub').atc($c).ats($s).atk($o),ul($d));}
+//return div(atd('bub').atc($c).ats($s).atk($o),ul($d));
+return diva(atd('bub').atc($c).ats($s).atk($o),ul($d));
+//return tag('div',['c'=>$c,'d'=>'bub','s'=>$s,'k'=>$o],ul($d));
+//return divp(ul($d),['class'=>$c,'id'=>'bub','style'=>$s,'onclick'=>$o]);
+//return divp(ul($d),['c'=>$c,'d'=>'bub','s'=>$s,'oc'=>$o]);
+}
 function bubslct($j,$t){$j=str_replace('_','.',$j); $ret=popbub($j,'bub',$t,'d');
 return mkbub($ret,'','1','popz+=1; this.style.zIndex=popz;');}
 
@@ -345,6 +354,8 @@ function msqlang($d){return msql::read('lang',$d,0,1);}
 function usrconn(){return msql::kv('',nod('connectors_1'));}
 function scanplug(){return explore('plug','dirs',1);}
 function emoj(){return msql::kv('system','edition_pictos_4','',1);}
+function conns(){return msql::read('system','connectors_basic','',1);}
+function connlg(){return msql::kv('lang','connectors_basic','',1);}
 
 //mimes
 function msqmimes(){return msql::kv('system','edition_mimes');}
@@ -360,9 +371,9 @@ function conn_ref(){return array_keys(msql_read('system','connectors_all',''));}
 #ajax
 function ajx($v,$p=''){#dont edit!
 $r=['*','_','(star)']; $a=$p?1:0; $b=$p?0:1; $c=$p?0:2; $d=$p?2:0;
-$ra=[$r[$a],$r[$b],'_','&','+'];//,':','#','’','“','”','/',"'",'"'
-$rb=[$r[$c],$r[$d],'(und)','(and)','(add)'];//,'(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)','(quote)','(dquote)'
-if($v)$v=$p?str_replace($rb,$ra,$v):str_replace($ra,$rb,$v);
+$a=[$r[$a],$r[$b],'_','&','+',"'"];//,':','#','’','“','”','/','"'
+$b=[$r[$c],$r[$d],'(und)','(and)','(add)','(quote)'];//,'(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)','(dquote)'
+if($p)[$b,$a]=[$a,$b]; if($v){$v=str_replace($a,$b,$v);}// $v=urlencode($v);
 return $v;}
 
 function decuri($d){return $d!=null?html_entity_decode($d):'';}
@@ -459,7 +470,7 @@ function eye($p=''){$iq=ses('iq'); $qbd=ses('qbd');
 $pag=implode_k(ses::$r['get'],'&','='); if(get('id')=='imgc/')exit;
 if($_SESSION['rstr'][22] && !auth(6)){
 	$_SESSION['crwl'][$iq]=radd($_SESSION['crwl'],$iq,1); if($_SESSION['crwl'][$iq]>100)exit;}
-if($pag && $iq)sql::sav('qdv',['iq'=>$iq,'qb'=>$qbd,'page'=>$pag,'time'=>mysqldate()],0,0);}
+if($pag && $iq)sql::sav('qdv',['iq'=>$iq,'qb'=>$qbd,'page'=>$pag,'time'=>sqldate()],0,0);}
 
 #utils
 function checkupdate($n=1){return read_file2(upsrv().'/call/software,version/'.$n);}

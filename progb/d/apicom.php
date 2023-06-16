@@ -1,8 +1,8 @@
 <?php 
 class apicom{
 
-static function form($p,$id,$a){$ret='';
-$ra=explode_k($p,',',':');
+static function form($p,$id,$a){
+$ra=explode_k($p,',',':'); $rt=[]; $ret='';
 $rh=msql::kv('lang','edition_apicom');
 $r=msql::read('system','edition_apicom');
 $tgs='tag '.prmb(18);//.' utag'

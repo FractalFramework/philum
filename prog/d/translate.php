@@ -5,14 +5,46 @@ class translate{
 static $a=__CLASS__;
 static $default='';
 
-static function oklangs($id,$id2,$lg,$lg2){
-meta::utag_sav($id2,'lang'.$lg,$id);//save id of ref			
-meta::utag_sav($id,'lang'.$lg2,$id2);//say to ref new translation
-$es=sql('msg','qdd','v','ib="'.$id.'" AND val="langes"');//find es version
-//if($es)meta::utag_sav($id2,'langes',$es);//say to ref es version
-//if($es)meta::utag_sav($es,'langen',$id2);//say to esref new translation
-//meta::utag_sav($id2,'related',' ');//empty related
-meta::affectlgr($id);}
+static function structure(){$r=meta::langs(); $rt=[];//sets of langs//fr=>[en,es],en=>[fr,es],es=>[fr,en]
+foreach($r as $k=>$v)foreach($r as $ka=>$va)if($va!=$v)$rt[$v][]=$va;
+return $rt;}
+
+//one art
+static function allg($id){$rt=[];//all langs for one art
+$r=sql('msg,val','qdd','kv',['ib'=>$id]);//all version
+foreach($r as $k=>$v)if(substr($v,0,4)=='lang')$rt[$k]=substr($v,4);
+return $rt;}
+
+//all_arts
+static function known($id){//structure of links
+$r=self::allg($id); $rt=[]; $rt[$id]=$r;
+foreach($r as $k=>$v)if($k!=$id)$rt[$k]=self::allg($k);
+return $rt;}
+
+static function exists($id,$lg=''){$rt=[];//all arts linked in cascade
+$r=self::allg($id); if(!$lg)$lg=meta::curlg($id); $rt[$id]=$lg;
+foreach($r as $k=>$v)if($k!=$id)$rt+=self::allg($k);
+return $rt;}
+
+static function missing($id,$lg=''){//missing links//[es,de]
+$ra=meta::langs(); $r=self::exists($id); $r=array_flip($r); $rt=[];
+foreach($ra as $k=>$v)if(!isset($r[$v]))$rt[]=$v;
+return $rt;}
+
+static function fillmap($id,$lg=''){//map of existing links
+$r=self::structure(); $rb=self::exists($id,$lg); $rb=array_flip($rb); $rt=[];
+foreach($r as $k=>$v)foreach($v as $ka=>$va)if($va!=$v)$rt[$k][]=$va;
+return $rt;}
+
+//repercute
+static function oklangs($id,$id2,$lg,$lg2){			
+meta::utag_sav($id,'lang'.$lg2,$id2);//save new ref
+meta::utag_sav($id2,'lang'.$lg,$id);//inform ref of original id
+$r=self::allg($id);//id=>lg
+foreach($r as $k=>$v){	
+meta::utag_sav($k,'lang'.$lg2,$id2);
+meta::utag_sav($id2,'lang'.$v,$k);}
+meta::affectlgr($id);}//inform targets
 
 static function updmetas($id,$idart){$rt=[];
 $ra=explode(' ','tag '.prmb(18));//todo:not works
@@ -34,35 +66,26 @@ sqlup('qdm',['msg'=>$msg],$id,0);
 self::oklangs($p,$id,$lgref,$lg);
 return $p?'ok':'';}
 
-static function create($lang,$p){//p:id
-$r=sql('ib,name,mail,day,nod,frm,suj,re,lu,img,thm,host,lg','qda','a',$p);
+static function create($lang,$aid){//p:id
+$r=sql('ib,name,mail,day,nod,frm,suj,re,lu,img,thm,host,lg','qda','a',$aid);
 $lgref=$r['lg']; $lgset=$lang.'-'.$r['lg'];//to,from
-$r['suj']=trans::call('suj'.$p,$lgset,2);
-$r['lg']=$lang;
+$r['suj']=trans::call('suj'.$aid,$lgset,2);
+$r['lg']=$lang; $r['lu']='0';
 if($r['ib']){$ib=sql('msg','qdd','v',['ib'=>$r['ib'],'val'=>'lang'.$r['lg']]); if($ib)$r['ib']=$ib;}
-$msg=trans::call('art'.$p,$lgset,2); //p($r); eco($msg);//
+$msg=trans::call('art'.$aid,$lgset,2);
+$r['host']=mb_strlen($msg);
 if($msg)$id=sqlsav('qda',$r,0,1);
 if($id)$id=sql::savi('qdm',[$id,$msg]);
-$rt=self::updmetas($p,$id);
-self::oklangs($p,$id,$lgref,$lang);
-return $p?lka($id,'ok:'.$id):'';}
+$rt=self::updmetas($aid,$id);
+self::oklangs($aid,$id,$lgref,$lang);
+return $id?ma::popart($id,'ok:'.$id):'';}
 
 static function call($p,$o,$prm=[]){$p=$prm[0]??$p;
 if(is_numeric($p))$ret=self::build($p,$o);//put data in existing art 
-else $ret=self::create($p,$o);//specified lang
+else $ret=self::create($p,$o);//specified lang//lg,id//from meta
 return $ret;}
 
-static function menu($p,$o,$rid){
-if(!$p)$p=self::$default;
-$j=$rid.'_translate,call_inp_3__'.$p;
-$ret=inputj('inp','fr',$j,'',3);
-$ret.=lj('',$j,picto('ok'),att('translate')).' ';
-//$ret.=lj('txtx',$rid.'_translate,repair___'.$p,'repair_txt').' ';
-//$ret.=lj('txtx',$rid.'_translate,convert___'.$p,'html2conn').' ';
-//$ret.=lj('txtx',$rid.'_translate,fempty___'.$p,'fill_empties').' ';
-//$ret.=lj('txtx',$rid.'_translate,batch_inp___'.$p,'batch').' ';
-return $ret;}
-
+#tools
 static function repair($p){
 $id=sql('id','qdm','v',$p);
 if(!$id)$id=sql::sav('qdm',['empty']);
@@ -92,6 +115,19 @@ foreach($r as $k=>$v){
 	$ret=self::build($v,$id);
 	$id++;}
 return 'ok';}
+
+static function menu($p,$o,$rid){
+if(!$p)$p=self::$default; $ret='';
+$j=$rid.'_translate,call_inp_3__'.$p;
+$ret=inputj('inp','fr',$j,'',3);
+$ret.=lj('',$j,picto('ok'),att('translate')).' ';
+$r=self::missing($p); $lg=meta::curlg($o);
+foreach($r as $k=>$v)if($v!=$lg)$ret.=lj('popsav',$rid.'_translate,call__3_'.$v.'_'.$p,$v).' ';
+//$ret.=lj('txtx',$rid.'_translate,repair___'.$p,'repair_txt').' ';
+//$ret.=lj('txtx',$rid.'_translate,convert___'.$p,'html2conn').' ';
+//$ret.=lj('txtx',$rid.'_translate,fempty___'.$p,'fill_empties').' ';
+//$ret.=lj('txtx',$rid.'_translate,batch_inp___'.$p,'batch').' ';
+return $ret;}
 
 static function home($p,$o){
 $rid=randid(self::$a); $ret='';

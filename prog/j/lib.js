@@ -1,7 +1,7 @@
 //lib
 
 //states
-function updateurl(a,j,io,b){ pr(j);
+function updateurl(a,j,io,b){
 var dn=j.split("_");
 if(a=='read'){a='art'; var u='/'+dn[5];
 	setTimeout(function(){document.title=recuptit();},200);}
@@ -11,13 +11,12 @@ else if(a=='menu'){
 	//if(pm.m=='context')var u='/context/'+pm.p;else 
 	if(pm.t)var u='#'+pm.t;
 	else var u='/module/'+dn[3];}
-else var u='/'+dn[4]+(dn[5]?'/'+ajx(dn[5],1)+(dn[6]?'/'+ajx(dn[6],1):''):''); //pr(a+'--'+u);
+else var u='/'+dn[4]+(dn[5]?'/'+ajx(dn[5],1)+(dn[6]?'/'+ajx(dn[6],1):''):'');
 var r={u:u,a:a,j:j,i:io,t:''};
 if(!b)window.history.pushState(r,a,u);// && r.j!=event.state.r.j
-if('scrollRestoration' in history)history.scrollRestoration='manual';
-scrolltoob('content',34);}
+if('scrollRestoration' in history)history.scrollRestoration='manual';}
 
-function restorestate(st){if(!st)return; pr(st);
+function restorestate(st){if(!st)return;
 if(st.a=='menu')SaveBg(st.i,1);//abort update
 else if(st.a=='module' && st.j)SaveJ(st.j);
 else if(st.a=='art' && st.j){SaveJ(st.j); document.title=st.t;}//?st.t:recuptit()
@@ -192,14 +191,6 @@ if(ob=='block'||!ob){po.style.display='none'; nbw+=1; //pa.style.display='none';
 else{po.style.display='block'; nbw-=1;}}//setTimeout(function(){poprepos()},200);
 	//pp.style.left=pp.dataset.x+'px'; pp.style.top=pp.dataset.y+'px';
 
-function dock(id){
-var pp=getbyid('pop'+curid); var ex=0;
-var rd=getbyid('desktop').getElementsByTagName("a");
-for(i=0;i<rd.length;i++){var idb=rd[i].id; if(idb=='ic'+id)ex=1;}
-if(ex)Remove('ic'+id);
-else ajaxcall('desktop','desk,icoart',[id],[],'after');
-Close('popup');}
-
 function expand(){var po=getbyid('pop'+curid);
 var owa=po.style.width; var oha=po.style.height;
 var wa=innerW()-100; var ha=innerH()-40;
@@ -277,7 +268,7 @@ var p=document.documentElement.scrollTop; var diff=(to-p)/inc;
 for(i=0;i<=inc;i++){var set=Math.round(p+(diff*i)); setTimeout(scrollto(set),100*i);}}
 
 function scrolltoel(id,dec){
-var ob=getbyid(id); var pos=getPosition(ob); var to=pos.y-dec; pr(to);
+var ob=getbyid(id); var pos=getPosition(ob); var to=pos.y-dec;
 scrolltoanim(to);}*/
 
 function getScroll(){

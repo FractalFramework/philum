@@ -294,8 +294,8 @@ La restriction Access/user_template (55) permet d\'utiliser le template nommé \
 - segment : mot entier
 - booléen : plusieurs mots (séparés par un espace)
 - lang, cat, tag : inclure ou exclure des mots-liés (métas)
-- limit : nombre minimum d\'occurrences (attention à la casse)
-- length : longueur de l\'article minimale (en minutes de lecture)
+- limite : nombre minimum d\'occurrences (attention à la casse)
+- taille : longueur de l\'article minimale (en minutes de lecture)
 
 Astuces :
 - recherche vide : porte seulement sur des paramètres

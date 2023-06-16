@@ -201,7 +201,7 @@ case('desktop_files'):$ret=self::mdtitle($t).desk::deskarts($p,$o,'files'); brea
 case('hierarchics'):$in=md::suj_hierarchic('active',''); $ret=ul($in,$cs); break;
 //cacheable
 case('hubs'):$mn=$_SESSION['mn']; if(count($mn)>=2){$t=$p!=1?$p:$t;
-	if($t)$t=lkc('',htac('module').'hubs',$t);
+	if($t)$t=lkc('','module/hubs',$t);
 	$in=md::m_nodes_b($mn,$o); $ret=ul($in,$cs);} break;
 case('tags_cloud'):$p=$p?$p:'tag';
 	$ret=self::title('',lj('','popup_tags,home__3_'.$p.'_1',$t));
@@ -397,7 +397,7 @@ if($ib!=ses('read'))return self::find_navigation($ib).$nav;}}
 
 static function page_titles($o='',$rid=''){//$o=parent
 $frm=get('frm'); $read=ses('read'); $mod=get('module');
-if($mod=='All'){$p['suj']=nms(100); $p['url']=htac('module').'All';}
+if($mod=='All'){$p['suj']=nms(100); $p['url']='module/All';}
 elseif($frm){$p['suj']=$frm; $p['url']='cat/'.$frm; $p['float']=catpict($frm,72);}
 elseif(!$frm)$p['suj']=nms(69);
 if(rstr(149))$p['title']=lh($p['url'],$p['suj']); else $p['title']=lk($p['url'],$p['suj']);
@@ -421,9 +421,9 @@ $ra=sesr('modc','system'); $rm=[];
 $r=sesr('modc',prma('ARTMOD')); $rt=[];
 foreach($ra as $k=>$v)if($v[0]=='ARTMOD')$rm=$v; $d=$v[4]; $o=$v[5];
 foreach($r as $k=>$v){$v[1]=$id; $k=$ico[$v[1]]??$v[2];
-	$md=self::build($v); if($md)$rt[$k]=$md?scroll(0,$md,''):nmx([11,1]);}
+	$md=self::build($v); if($md)$rt[$k]=$md?scroll(0,$md,''):nmx([11,1]);}//
 if($d=='tabs')return tabs($rt,randid('tmd'));
-return join('',$rt);}
+return $rt?join('',$rt):nmx(11,16);}
 
 static function fav_mod($p,$t){$ret='';
 $r=msql_read('',nod('coms'),'',1); $r=array_reverse($r);

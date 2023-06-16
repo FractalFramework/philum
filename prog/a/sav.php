@@ -29,7 +29,7 @@ if($nid){$rc=[$dt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$urlsrc,$ib,$re,$lg];
 	codeline::parse($d,$nid,'savimg');
 	if(rstr(147))codeline::png2jpg($nid);
 	$rc[3]=self::orderim($nid);
-	$_SESSION['rqt'][$nid]=$rc;
+	ma::cacherow($nid,$rc);
 	msql::modif('',nod('cache'),$rc,'one','',$nid);
 	geta('read',$nid); boot::deductions($nid,''); self::$r=[];}
 $_SESSION['dayx']=$dt; $_SESSION['daya']=$dt;
@@ -39,23 +39,23 @@ return $nid;}
 static function saveart_url($u){$cat=vacses($u,'c'); if(!auth(4))return;
 $qda=db('qda'); $qdm=db('qdm'); $qb=$name=ses('qb'); 
 $dt=ses('dayx'); $frm=$cat?$cat:'public'; $re=rstr(11)?1:0;
-ses::$urlsrc=$u; [$suj,$d]=conv::vacuum($u,''); $ib='0'; $lg='';
-$sz=mb_strlen($d); $img=''; $lg='';
+ses::$urlsrc=$u; [$suj,$d]=conv::vacuum($u,'');
+$sz=mb_strlen($d); $ib='0'; $img=''; $lg=''; $lu=0;
 $thm=str::hardurl($suj);//if(rstr(38))
-$rw=[$ib,$name,$u,$dt,$qb,$frm,$suj,$re,0,$img,$thm,$sz,$lg];
+$rw=[$ib,$name,$u,$dt,$qb,$frm,$suj,$re,$lu,$img,$thm,$sz,$lg];
 $nid=sqlsav('qda',$rw); if($nid)sql::savi('qdm',[$nid,$d]);
 if($nid){vacses($u,'b','x');
-$d=codeline::parse($d,$nid,'savimg');
-$img=self::orderim($nid);
-//day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg
-$_SESSION['rqt'][$nid]=[$dt,stripslashes($frm),stripslashes($suj),$img,$qb,'','','',$sz,$u,$ib,$re,''];}
-if($nid)msql::modif('',nod('last'),[$nid,$dt],'one','',1);
+	$d=codeline::parse($d,$nid,'savimg');
+	$img=self::orderim($nid);
+	$rc=[$dt,$frm,$suj,$img,$qb,$thm,$lu,$name,$sz,$u,$ib,$re,$lg];//stripslashes
+	ma::cacherow($nid,$rc);
+	msql::modif('',nod('last'),[$nid,$dt],'one','',1);}
 $_SESSION['daya']=ses('dayx');
 return $nid;}
 
 static function backart($id){
 $d=sql('msg','qdm','v',$id);
-if($d)sqlsav('qdmb',[$id,$d,mysqldate()]);}
+if($d)sqlsav('qdmb',[$id,$d,sqldate()]);}
 
 static function modif_art($id,$d){
 $qdm=db('qdm'); if(!auth(3))return;
@@ -69,7 +69,7 @@ return stripslashes($d??'');}
 static function editart($id,$cont,$prm){$d=$prm[0]??'';
 $d=str::post_treat_repair($d);
 $d=self::modif_art($id,$d);
-$edt=txarea1($d); $txt=ma::read_msg($id,3);
+$edt=edit::txarea($d,$id); $txt=ma::read_msg($id,3);
 return $cont?[$edt,$txt]:$txt;}
 
 static function publish_art($d,$id,$bs){
@@ -107,7 +107,7 @@ if(!auth(6))return;
 [$t,$d]=self::webread($f);
 $sq=['suj'=>$t,'mail'=>$f,'img'=>'','thm'=>str::hardurl($t)];//if(rstr(38))
 sqlup('qda',$sq,$id);
-self::modif_art($id,$d); ma::cachevs($id,2,$t); vacses($f,'t','x');
+self::modif_art($id,$d); vacses($f,'t','x');
 return $d;}
 
 static function art_mirror($id,$prw){
@@ -203,11 +203,13 @@ sql::upd('qda',['img'=>$ims],$id); conn::replaceinmsg($id,'['.$x.']','');
 self::orderim($id);
 $rb[0]=self::placeim($id); $rb[1]=$ims; return $rb;}
 
+static function remini($f){[$w,$h]=explode('/',prmb(27));
+return img::remini('img/'.$f,'imgc/'.$f,$w,$h,0);}
+
 static function placeim($id){$ret='';
 $ims=sql('img','qda','v',$id); $r=explode('/',$ims);
 $ra=sql('im,id','qdg','kv',['ib'=>$id]);
-if($r)foreach($r as $k=>$v)if(is_img($v)){$bt=''; $f='img/'.$v;
-	$im=make_mini($f,'imgc/'.$v,'','',$_SESSION['rstr'][16]);
+if($r)foreach($r as $k=>$v)if(is_img($v)){$bt=''; $f='img/'.$v; $fc='imgc/'.$v; $im=img::thumb($v);
 	if($im)$bt=ljb('','insert','['.$v.']',image($im,'72','',att(fwidth($f,1)))); else $bt=picto('img2',24);
 	$bt.=btn('txtx',$k.'. '.strfrom($v,'_'));
 	if(is_file($f))[$w,$h]=getimagesize($f); else [$w,$h]=['',''];
@@ -215,13 +217,15 @@ if($r)foreach($r as $k=>$v)if(is_img($v)){$bt=''; $f='img/'.$v;
 	else $bt.=btn('popbt grey',picto('popup'));
 	if(auth(5)){
 		if(!isset($ra[$v]))$bt.=btn('popsav grey',pictit('pull','unknown source'));
-		else $bt.=lj('popsav','pim'.$id.'_sav,rollbackim___'.$id.'_'.ajx($v).'_1',pictit('pull','restore'));}
-	if(auth(6))$bt.=lj('popdel','pim'.$id.',img'.$id.'_sav,placeimdel__json_'.$id.'_'.ajx($v),picto('del'));
+		else $bt.=lj('popsav','pim'.$id.'_sav,rollbackim___'.$id.'_'.ajx($v).'_1',pictit('pull','restore'));
+		$bt.=lj('popdel','pim'.$id.',img'.$id.'_sav,placeimdel__json_'.$id.'_'.ajx($v),picto('del'));
+		if(is_file($fc))[$w,$h]=getimagesize($fc); $tt='rebuild_mini: '.$w.'/'.$h;
+		$bt.=blj('popbt','btrb'.$id.'-'.$k,'sav,remini__okbt_'.ajx($v),picto('file-img'),att($tt));}
 	$ret.=divb($bt,'');}
 return scroll($r,$ret,12,'',240);}
 
 static function placeimtrk($f,$id){$ret=''; $fb=img::thumbname($f,72,72);
-$im=make_mini('img/'.$f,$fb,'','',1);
+$im=img::remini('img/'.$f,$fb,'','',1);
 $ret=ljb('','insert_b',['['.$f.']',$id],image('/'.$im,'72','72',att($f)));
 return $ret;}
 
@@ -249,7 +253,7 @@ return conn::read($txt,3,$id);}
 #vacuum
 static function find_vaccum($n){$i=0; foreach($_SESSION['vac'] as $k=>$v){$i++; if($i==$n)return $k;}}
 static function newartcatset($n,$d){$u=self::find_vaccum($n); $_SESSION['vac'][$u]['c']=$d;}
-static function newartparent(){$r=array_keys_r($_SESSION['rqt'],10); $rb=[];
+static function newartparent(){$r=ma::readcachecol(10); $rb=[];
 if(isset($r))foreach($r as $k=>$v)if($v!='/')$rb[$v]=radd($rb,$v); if($rb)arsort($rb);
 if(isset($rb))foreach($rb as $k=>$v)$ret[$k]='('.$v.') '.ma::suj_of_id($k);
 return $ret;}
@@ -379,7 +383,7 @@ if(is_uploaded_file($f_tmp) && !$er){
 	if($type=='art' && is_img($fc)){conn::add_im_img($fb,$id);}//conn::add_im_msg($id,'',$fb.$w);
 	if($xt=='.tar' or $xt=='.gz')unpack_gz($fc,$dir);}
 else $er.='upload refused: '.$fb;
-if(!$er && $type=='avnim')make_mini($fc,$fc,72,72,2);
+if(!$er && $type=='avnim')img::remini($fc,$fc,72,72,2);
 if($er)return btn('txtyl',picto('false').' '.$fc.': '.$er);
 elseif($type=='disk' or !is_img($fc))return btn('txtyl',picto('true').' '.$fc);
 elseif($type=='art')return self::placeim($id);

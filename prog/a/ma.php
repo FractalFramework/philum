@@ -69,46 +69,44 @@ return $r;}
 
 #rqt
 static function rqtall($c='',$kv='',$sq=[],$z=''){
-if($d=ses('dayb'))$sq['>day']=$d; else $sq['>day']=calctime(360);
-if($d=ses('daya')){$d2=$sq['>day']; $sq['>day']=''; $sq['&day']=[$d2,$d+1];}
+if(rstr(3) && $d=ses('dayb'))$sq['>day']=$d; else $sq['>day']=calctime(360);
+if($d=ses('daya')){$d2=$sq['>day']; unset($sq['>day']); $sq['&day']=[$d2,$d+1];}
 $sq+=['nod'=>ses('qb'),'>re'=>'0','-frm'=>'_','_order'=>prmb(9)];
 if(!$c)$c='id,day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg';
 return sqb::read($c,'art',$kv,$sq,$z);}
 
 static function rqtart($id){
-$d='day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg';
-return sqb::read($d,'art','w',$id);}
+$r=sqb::read('day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg','art','w',$id);
+return arr($r,13);}
 
 static function rqtcol($tri,$vrf){
-return rqtall('id','k',[$vrf=>$tri]);}
+return self::rqtall('id','k',[$tri=>$vrf],0);}
 
 static function rqtv($id,$c){
-$d=sqb::read($c,'art','v',$id);
-return $d;}
+return sqb::read($c,'art','v',$id);}
 
 #cache
-static function rqtr(){return ['day'=>0,'frm'=>1,'suj'=>2,'img'=>3,'nod'=>4,'tag'=>5,'lu'=>6,'name'=>7,'host'=>8,'mail'=>9,'ib'=>10,'re'=>11];}
+static function cacheart($id){
+$r=self::rqtart($id); $r[3]=pop::art_img($r[3]);
+self::cacherow($id,$r);}
 
-static function rqtlast(){if(!empty($_SESSION['rqt']))return key($_SESSION['rqt']);}
-static function rqtfirst(){$r=$_SESSION['rqt']; $rk=array_keys($r); return array_pop($rk);}
+static function cacherow($id,$r){
+if(rstr(140))$_SESSION['rqt'][$id]=$r;
+msql::modif('',nod('cache'),$r,'one','',$id);}
 
-/**/static function rqt($id,$n=''){$r=self::rqtr();
-if(!is_numeric($n))$n=$r[$n]; $r=$_SESSION['rqt'][$id]??[];
-if($id)return $r[$n]??'';}
+static function cacheval($id,$n,$v){
+if(rstr(140))$_SESSION['rqt'][$id][$n]=$v;
+msql::modif('',nod('cache'),$v,'val',$n,$id);}
 
-/**/static function rqtcol2($tri,$vrf){
-$r=$_SESSION['rqt']; if(!is_numeric($n)){$r=self::rqtr(); $n=$r[$n]??'';}
-if($n)return array_column_k($r,$n);}
-static function rqtrow2($id){return is_array($_SESSION['rqt'][$id])?$_SESSION['rqt'][$id]:[];}
-static function rqtv2($id,$n){return is_array($_SESSION['rqt'][$id])?$_SESSION['rqt'][$id][$n]:'';}
-
-static function cachevs($id,$n,$v,$o=''){
-if(isset($_SESSION['rqt'][$id]) && is_array($_SESSION['rqt'][$id])){$_SESSION['rqt'][$id][$n]=$v;
-if($o)msql::modif('',nod('cache'),$v,'val',$n,$id);}}
-
-static function cacheart($id){//self::cachevs($id,11,$v,1);
-$r=ma::rqtart($id); $r[3]=pop::art_img($r[3]);
-msql::modif('',nod('cache'),$r,'one','',$id); $_SESSION['rqt'][$id]=$r;}
+static function readcache(){
+if(rstr(140))return $_SESSION['rqt'];
+return msql::read('',nod('cache'),'',1);}
+static function readcacherow($id){
+if(rstr(140)){$r=$_SESSION['rqt'][$id]??[]; if($r)return $r;}
+return msql::row('',nod('cache'),$id,0);}
+static function readcachecol($n){$r=self::readcache(); return array_column($r,$n);}//array_keys_r($r,$n);
+static function readcacheval($id,$k){$r=self::readcacherow($id); return $r[$k]??'';}
+static function readcachedel($id){if(rstr(140))unset($_SESSION['rqt'][$id]); return msql::delrow('',nod('cache'),$id);}
 
 #outputs
 static function output_arts($r,$md,$tp,$j=''){$rch=get('search');

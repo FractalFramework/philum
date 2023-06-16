@@ -256,7 +256,7 @@ switch($mod){
 case('BLOCK'):$edit=divb(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
 case('MENU'):$edit=divb(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
 case('ARTMOD'):$edit=divb(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
-case('submenus'):$edit=self::menus_h($mid); if($opt)$p=self::menu_h_g($opt);break;
+case('submenus'):$edit=self::menus_h($mid); if($option)$p=self::menu_h_g($option);break;
 case('Banner'):$edit=lkc('popbt','/admin/banner','edit_banner');break;
 case('template'):$ra=msql::row('',nod('template'),'',1); 
 	if($ra){$rb=array_keys_r($ra,1,'k'); $edit=jump_btns($rvs['mp'],$rb,'');}break;
@@ -275,7 +275,7 @@ case('articles'):$edit=$edtapi;break;
 case('api'):$edit=$edtapi;break;
 case('api_arts'):$edit=$edtapi;break;
 case('api_mod'):$edit=$edtapi;break;
-case('design'):$edit=picto('alert').helps('prmb5');break;
+case('design'):if(prmb(5))$edit=picto('alert').helps('prmb5');break;
 case('submenus'):$edit=textarea($rvs['mp'],$p,42,4);break;}
 //exceptions
 $rx=[];
@@ -391,24 +391,7 @@ $_SESSION['rstr'][$k]=$n; ses::$s['rstr'][$k]=$n;
 if($_SESSION['rstr'][63]==1)$_SESSION['negcss']=0;
 self::backup_rstr('save');}
 
-/*static function showparamscat($r,$h){
-$j='lang_admin*restrictions_';
-foreach($r as $k=>$v){
-//$hlp=bubble('txtsmall2','usg,popmsqt',$j.$k.'_description',$k);
-$hlp=togbub('usg,popmsqt',$j.$k.'_description',$k,'txtsmall2');
-$t=$h[$k][0]??$v; if(rstr($k))$n=1; else $n=0;
-$ret[]=valid($n).' '.btn('',lj('','rstr_admx,showparams___'.$k.'_'.$n,$t)).$hlp.br();}
-return divc('nbp cols',implode('',$ret));
-return divc('nbp',colonize($ret,3,'','',550));}
-
-static function showparams0($ik,$n){$rb=[];
-$r=msql::prep('system','admin_restrictions');
-$h=msql::read('lang','admin_restrictions');
-if($ik && auth(6))self::modifparams($ik,$n);
-foreach($r as $k=>$v)$rb[$k]=self::showparamscat($v,$h); ksort($rb);
-return tabs($rb,'rst');}*/
-
-/**/static function mdfrstr($ik,$n){$rt=[];
+static function mdfrstr($ik,$n){$rt=[];
 if($ik && auth(6))self::modifparams($ik,$n);
 $r=msql::read('system','admin_restrictions');
 $h=msql::read('lang','admin_restrictions');
@@ -455,7 +438,7 @@ $ret.=lj('popbt',$j.'nocat|1','reverse').' - ';
 $ret.=lj('popbt',$j.'append','append').' ';
 $ret.=lj('popbt',$j.'append|1','reverse').' ';
 return $ret;}
-static function menu_h_g($d){$p=explode('|',$d); $ret='';
+static function menu_h_g($d){$p=expl('|',$d,2); $ret='';
 	if($p[0]=='append')$r=md::collect_hierarchie_b($p[1]);
 	elseif($p[0]=='nocat')$r=md::collect_hierarchie_c($p[1],'');
 	elseif($p[0]=='collect')$r=md::collect_hierarchie($p[1]);

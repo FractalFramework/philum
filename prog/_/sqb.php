@@ -52,39 +52,97 @@ foreach($r as $k=>$v){
 	elseif($c=='<'){$rb[]=$kb.'<:'.$kb; $rt[$kb]=$v;}
 	elseif($c=='>'){$rb[]=$kb.'>:'.$kb; $rt[$kb]=$v;}
 	elseif($c=='!'){$rb[]=$kb.'!=:'.$kb; $rt[$kb]=$v;}
-	elseif($c=='%')$rb[]=$kb.' like "%'.$v.'%"';
-	elseif($c=='-')$rb[]='substring('.$kb.',1,1)!="'.$v.'"';
-	elseif($c=='&')$rb[]=$kb.' between "'.$v[0].'" and "'.$v[1].'"';
+	elseif($c=='%'){$rb[]=$kb.' like :'.$kb.''; $rt[$kb]='%'.$v.'%';}
+	elseif($c=='-'){$rb[]='substring('.$kb.',1,1)!=:'.$kb.''; $rt[$kb]=$v;}
+	elseif($c=='&'){$rb[]=$kb.' between :'.$kb.'0 and :'.$kb.'1'; $rt[$kb.'0']=$v[0]; $rt[$kb.'1']=$v[1];}
 	else{$rb[]=$k.'=:'.$k; $rt[$k]=$v;}}
 $q=implode(' and ',$rb); if($q)$q='where '.$q; if($w)$q.=$w;
 return [$rt,$q];}
 
-static function read($d,$b,$p,$r,$z=''){
-$qr=self::rq(); $rt=[]; self::$r=$r; [$r,$q]=self::where($r);
-$sql='select '.$d.' from '.$b.' '.$q; self::$sq=$sql; if($z)echo $sql;
-$stmt=$qr->prepare($sql);
-foreach($r as $k=>$v)$stmt->bindValue(':'.$k,$v,is_numeric($v)?PDO::PARAM_INT:PDO::PARAM_STR);
-$stmt->execute();
-//try{$stmt->execute();}catch(Exception $e){echo $e->getMessage();}//self::$er['er']=
+static function mkv($r){$rt=[]; foreach($r as $k=>$v)$rt[]=':'.$k; return implode(',',$rt);}
+static function mkvk($r){$rt=[]; foreach($r as $k=>$v)$rt[]=$k.'=:'.$k; return implode(',',$rt);}
+static function mkvr($r){$rt=[]; foreach($r as $k=>$v)$rt[]=$k.'="'.$v.'"'; return implode(',',$rt);}
+static function mkq($r){[$r,$q]=self::where($r);//oldschool
+foreach($r as $k=>$v)$q=str_replace(':'.$k,'"'.$v.'"',$q); return $q;}
+
+static function fetch($stmt,$p){$rt=[];
 if($p=='a' or $p=='ar')$rt=$stmt->fetchAll(\PDO::FETCH_ASSOC);
 elseif($p=='r' or $p=='rr')$rt=$stmt->fetchAll(\PDO::FETCH_BOTH);
 else $rt=$stmt->fetchAll(PDO::FETCH_NUM);
+return $rt;}
+
+static function bind($stmt,$r){
+foreach($r as $k=>$v)$stmt->bindValue(':'.$k,$v,is_numeric($v)?PDO::PARAM_INT:PDO::PARAM_STR);}
+
+static function prep($sql,$r){
+$qr=self::rq();
+$stmt=$qr->prepare($sql);
+self::bind($stmt,$r);
+$ok=$stmt->execute();//try{}catch(Exception $e){echo self::$er['er']=$e->getMessage();}
+return $stmt;}
+
+static function read($d,$b,$p,$r,$z=''){
+[$r,$q]=self::where($r); $rt=[];
+$sql='select '.$d.' from '.$b.' '.$q; self::$sq=$sql; if($z)echo $sql;
+$stmt=self::prep($sql,$r);
+$rt=self::fetch($stmt,$p);
 if($p)$rt=self::format($rt,$p);
 return $rt;}
 
-static function call0($sql){
-return self::$qr->query($sql)->fetchAll();}
-
-static function call2($sql){$qr=self::rq();
+static function read2($d,$b,$p,$r,$z=''){$rt=[];
+$qr=self::rq(); $q=self::mkq($r);
+$sql='select '.$d.' from '.$b.' '.$q; self::$sq=$sql; if($z)echo $sql;
 $stmt=$qr->query($sql);
-return $stmt->fetchAll();}
+$rt=self::fetch($stmt,$p);
+if($p)$rt=self::format($rt,$p);
+return $rt;}
 
-static function call($sql,$z=''){
-$rq=self::qr($sql,$z);
-return self::qra($rq);}
+static function sav1($b,$r,$z=''){$rt=[];
+$cols=implode(',',array_keys($r)); $vals=self::mkv($r);
+$sql='insert into '.$b.' ('.$cols.') value ('.$vals.')'; if($z)echo $sql;
+$stmt=self::prep($sql,$r);
+return self::$qr->lastInsertId();}
+
+static function sav($b,$r,$z=''){$rt=[];
+$ra=self::cols3($b); array_unshift($r,NULL); $r=array_combine($ra,$r);
+$sql='insert into '.$b.' value ('.self::mkv($r).')'; if($z)echo $sql;
+$stmt=self::prep($sql,$r);
+return self::$qr->lastInsertId();}
+
+static function upd($b,$ra,$rb,$z=''){$rt=[];
+$vals=self::mkvk($ra); [$r,$q]=self::where($rb);
+$sql='update '.$b.' set '.$vals.' '.$q; if($z)echo $sql;
+$stmt=self::prep($sql,$ra+$rb);
+return $stmt?1:0;}
+
+static function call($sql,$p){
+$qr=self::rq(); $stmt=$qr->query($sql); $rt=self::fetch($stmt,$p); return self::format($rt,$p);}
+
+static function call1($sql){
+$qr=self::rq(); $stmt=$qr->query($sql); return $stmt->fetchAll();}
+
+static function call2($sql){
+return self::rq()->query($sql)->fetchAll(PDO::FETCH_ASSOC);}
+
+static function call2b($sql){
+return self::rq()->query($sql)->fetchAll(PDO::FETCH_NUM);}
+
+static function call3($sql,$z=''){
+$rq=self::qr($sql,$z); return self::qra($rq);}
 
 static function com($sql,$z=''){
 return self::qr($sql,$z);}
+
+static function cols($b){return self::call(self::sqcols($b),'rv');}
+static function cols2($b){return self::call(self::sqcols2($b));}
+static function cols3($b){$r=self::call2b(self::sqcols($b)); $r=array_column($r,0); return $r;}
+
+static function sqcols($b){return 'select column_name from information_schema.columns where table_name="'.$b.'"';}
+static function sqcols2($b){return 'select column_name,data_type,character_maximum_length from information_schema.columns where table_name="'.$b.'"';}
+static function sqdrop($b){return 'drop table '.$b;}
+static function sqtrunc($b){return 'truncate table '.$b;}
+static function sqalter($b,$n){return 'alter table '.$b.' auto_increment='.$n;}
+static function sqshow($b){return 'show tables like "'.$b.'"';}
 
 }
 ?>

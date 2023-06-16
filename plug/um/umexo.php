@@ -174,7 +174,7 @@ $ret.=hidden('umo',1); //$ret.=input('umo',$o,'').' exoplanets ';
 //$ret.=lj('',$rid.'_umexo,call___1_1_umx|umo',picto('no'));
 $ret.=lj('',$rid.'_umexo,call_umx,umo__1_1_',picto('ok'));
 $ret.=divc('txtcadr','algo: pow(16.79*pow(3,$n),1/3) ; pow(13.36*pow(M_PI,$n),1/3)');
-//$pub=popim('http://oumo.fr/img/ummo_1327_314705.jpg',picto('img'));
+//$pub=popim('http://oomo.ovh/img/ummo_1327_314705.jpg',picto('img'));
 $pub=ma::popart(1327,'O6-133');
 return $ret.divd($rid,self::call($p,$o)).$pub.br();}
 }

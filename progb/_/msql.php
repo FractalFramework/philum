@@ -22,7 +22,7 @@ if(is_array($r))foreach($r as $k=>$v){$rb=[];
 if($rc)$ret=implode(','.n(),$rc);
 return '<?php //msql/'.$p."\n".'$r=['.$ret.'];';}
 
-static function del($dr,$nod){$f=self::url($dr,$nod); if(is_file($f) && auth(6))unlink($f);}
+static function del($dr,$nod,$o=''){$f=self::url($dr,$nod,$o); if(is_file($f) && auth(4))unlink($f);}
 
 static function save($dr,$nod,$r,$rh=[]){if(!$r)$r=[];
 if($rh && !isset($r[self::$m]))$r=array_merge([self::$m=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
@@ -94,6 +94,9 @@ return self::save($dr,$nod,$r);}
 static function create($dr,$nod,$r,$rb){
 if($r)foreach($r as $k=>$v)if(!is_array($v))$r[$k]=[$v]; $f=self::url($dr,$nod);
 if(!is_file($f))return self::save($dr,$nod,$r,$rb);}
+
+static function delrow($dr,$nod,$k){
+msql::modif($dr,$nod,$k,'del');}
 
 //select
 static function choose($dr,$pr,$nd){$ret=[];

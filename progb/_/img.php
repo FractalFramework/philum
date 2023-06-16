@@ -1,6 +1,7 @@
 <?php 
 class img{
 
+#db
 static function install(){sqldb::install('img');}
 
 static function original($im,$id){
@@ -18,10 +19,41 @@ return conn::mkimg($b,3,920,$id,'');}
 
 static function rewrite($d){$im='img/'.$d;
 [$w,$h,$ty]=getimagesize($im);
-make_mini($im,$im,$w,$h,'');
+self::remini($im,$im,$w,$h,'');
 $bt=btn('txtyl',$w.'-'.$h.':'.fsize($im));
 return img($im).$bt;}
 
+static function save($id,$im,$dc){
+$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
+if(!$ex)return $ex=sqlsav('qdg',[$id,$im,$dc,0],0);
+elseif($dc)sqlup('qdg',['ib'=>$id,'im'=>$im,'dc'=>$dc,'no'=>0],$ex);
+return $im;}
+
+static function mdf($id,$a,$b){if(!auth(6))return;
+$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$a]);
+if($ex)sqlup('qdg',['im'=>$b],$ex);}
+
+static function rm($id,$im){if(!auth(6))return;
+$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
+if($ex)sqlup('qdg',['no'=>1],$ex);}
+
+static function del($id,$im){if(!auth(6))return;
+$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
+if($ex)sql::del('qdg',$ex);
+conn::replaceinmsg($id,'['.$im.']','');
+conn::replaceinimg($id,'/'.$im,'');
+rm('img'.$im); rm('imgc'.$im);}
+
+static function batch($p=1,$l=10000){//self::install();
+$min=$p*$l; $max=$min+$l; $rc=[];
+$r=sql('id,img','qda','kv','id>"'.$min.'" and id<="'.$max.'"');
+foreach($r as $k=>$v){$rb=explode('/',$v);
+	if(is_numeric($rb[0]))unset($rb[0]);
+	foreach($rb as $k=>$v)if(is_file('img/'.$v)){
+		$rc[]=[$k,$v,fsize('img/'.$v),'',0];}}//self::save($k,$v,'');
+return $rc;}
+
+#correct
 static function sz($w,$h,$w1,$h1){
 $h2=($w1/$w)*$h; $w2=$w1;
 if($h>$w){$w2=($h1/$h)*$w; $h2=$h1;}
@@ -31,7 +63,7 @@ static function reduce($d,$o,$id=''){$im='img/'.$d;
 [$wo,$ho,$ty]=getimagesize($im);
 if($o){$w=$wo/2; $h=$ho/2;}
 else [$w,$h]=self::sz($wo,$ho,940,940);
-make_mini($im,$im,$w,$h,''); opcache($im);
+self::remini($im,$im,$w,$h,'');
 if($id)return conn::mkimg($d.'?'.$w,3,920,$id,'');}
 
 static function png2jpg($a,$id){
@@ -63,69 +95,55 @@ if($id){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
 	self::mdf($id,$a,$b); if($b!=$a)rm($in);}
 return $b;}
 
-static function batch($p=1,$l=10000){//self::install();
-$min=$p*$l; $max=$min+$l; $rc=[];
-$r=sql('id,img','qda','kv','id>"'.$min.'" and id<="'.$max.'"');
-foreach($r as $k=>$v){$rb=explode('/',$v);
-	if(is_numeric($rb[0]))unset($rb[0]);
-	foreach($rb as $k=>$v)if(is_file('img/'.$v)){
-		$rc[]=[$k,$v,fsize('img/'.$v),'',0];}}//self::save($k,$v,'');
-return $rc;}
-
-static function save($id,$im,$dc){
-$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
-if(!$ex)return $ex=sqlsav('qdg',[$id,$im,$dc,0],0);
-elseif($dc)sqlup('qdg',['ib'=>$id,'im'=>$im,'dc'=>$dc,'no'=>0],$ex);
-return $im;}
-
-static function mdf($id,$a,$b){if(!auth(6))return;
-$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$a]);
-if($ex)sqlup('qdg',['im'=>$b],$ex);}
-
-static function rm($id,$im){if(!auth(6))return;
-$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
-if($ex)sqlup('qdg',['no'=>1],$ex);}
-
-static function del($id,$im){if(!auth(6))return;
-$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
-if($ex)sql::del('qdg',$ex);
-conn::replaceinmsg($id,'['.$im.']','');
-conn::replaceinimg($id,'/'.$im,'');
-rm('img'.$im); rm('imgc'.$im);}
-
-#thumbs
+#thumb
 static function thumbname($d,$w,$h){
 $nm=strto(strend($d,'/'),'.'); $xt=strend($d,'.');
 return 'imgc/'.$nm.'_'.$w.'x'.$h.'.'.$xt;}
 
-#arts
-static function make_thumb($mg,$prm){$ida='img';
-if(!file_exists($ida.'/'.$mg))return; $preb='';
-if(substr($mg,0,4)!='http')$pre='imgc/'; else $pre='';
-	if($prm=='h')$rpm='height="36" class="imgl"';
-	elseif(is_numeric($prm))$rpm='title="'.ma::rqtv($prm,'suj').'"';
-	elseif($prm=='nl'){$rpm='class="imgl"'; $preb=host();}
-	elseif($prm=='hb')$rpm='height="32" class="imgl"';
-	elseif($prm=='no')$rpm='';
-	elseif(!$prm)$rpm='class="imgl"';
-	else{$ida=$prm;$rpm='';}
-$thumb=$pre.$mg;
-if((!file_exists($thumb) && $mg && $pre) or ses('rebuild_img')){
-	[$w,$h]=expl('/',prmb(27)); $mode=$_SESSION['rstr'][16]?0:1;//0=outsize
-	make_mini($ida.'/'.$mg,$thumb,$w,$h,$mode);}
-return '<img src="'.$preb.'/'.$thumb.'" '.$rpm.'>';}
+static function thumbprm($s,$m,$x){
+if(!$s)$s=prmb(27); [$w,$h]=expl('/',$s);
+if($m===false)$m=rstr(16)?1:0;
+if(!$x)$x=ses('rebuild_img');
+return [$w,$h,$m,$x];}
+
+static function remini($im1,$im2,$w,$h,$m){
+return make_mini($im1,$im2,$w,$h,$m); opcache($im2);}
+
+static function build_thumb($img,$thumb,$x=''){
+if(is_file($img) && (!file_exists($thumb) or $x)){
+	//[$w,$h]=expl('/',prmb(27)); $m=$_SESSION['rstr'][16]?0:1;
+	[$w,$h,$m,$x]=self::thumbprm('',false,$x);
+	self::remini($img,$thumb,$w,$h,$m);}
+return $thumb;}
+
+static function thumb($img,$x=''){//if(!$x)$x=ses('rebuild_img');
+return self::build_thumb('img/'.$img,'imgc/'.$img,$x);}
+
+static function make_thumb($img,$prm){$dr='img';
+if(!file_exists($dr.'/'.$img))return; $http=''; $rp=[];
+if(substr($img,0,4)!='http')$pre='imgc/'; else $pre='';
+	if($prm=='h')$rp=['height'=>'36','class'=>'imgl'];
+	elseif(is_numeric($prm))$rp['title']=ma::rqtv($prm,'suj');
+	elseif($prm=='nl'){$rp['class']='imgl'; $http=host();}
+	elseif($prm=='hb')$rp+=['height'=>'32','class'=>'imgl'];
+	elseif($prm=='no')$rp=[];
+	elseif(!$prm)$rp['class']='imgl';
+	else{$dr=$prm; $rp=[];}
+$thumb=self::build_thumb($dr.'/'.$img,$pre.$img,ses('rebuild_img'));
+$rp['src']=$http.'/'.$thumb;
+return taga('img',$rp);}
 
 //xsmall
-static function make_thumb_c($d,$size='',$s=''){
+static function make_thumb_c($img,$size='',$s=''){
 if(!$size)$size=prmb(27); [$w,$h]=explode('/',$size); $jd='';
-if(strpos($d,'?'))$d=strto($d,'?'); $wo=0; $x=ses('rebuild_img');
-if(substr($d,0,4)=='http')$b=substr(md5($d),0,6).'.'.strend($d,'.');
-else{$b=str_replace(['users/','img/','imgb/','icons','/'],'',$d); $jd='/';}
+if(strpos($img,'?'))$img=strto($img,'?'); $wo=0; $x=ses('rebuild_img');
+if(substr($img,0,4)=='http')$b=substr(md5($img),0,6).'.'.strend($img,'.');
+else{$b=str_replace(['users/','img/','imgb/','icons','/'],'',$img); $jd='/';}
 $thumb=self::thumbname($b,$w,$h.($s?'-'.$s:''));
-if(is_file($thumb) && !$x)return '<img src="'.$jd.$thumb.'">';//.'?'.randid()
-if(is_file($d) or $x)make_mini($d,$thumb,$w,$h,$s);//case of tw img not detected but exists
-if(is_file($thumb))return '<img src="'.$jd.$thumb.'">';}
+$thumb=self::build_thumb($img,$thumb,$x);
+return taga('img',['src'=>$jd.$thumb]);}//.'?'.randid()
 
+//arts
 static function imgartlk($im,$id){//[$w]=getimagesize('img/'.$im); if($w>100)
 if($im && is_file('img/'.$im))return lj('','popup_popart__3_'.$id.'_3',self::make_thumb($im,$id));}
 
@@ -133,6 +151,7 @@ static function outputimg($r){$ret=''; if($r)foreach($r as $id=>$ra){
 if($ra)foreach($ra as $k=>$im)if(is_img($im))$ret.=self::imgartlk($im,$id);}
 return $ret;}
 
+#graph
 static function imgclr($im,$d,$a=''){$r=hexrgb_r($d);
 if($a)return imagecolorallocatealpha($im,$r[0],$r[1],$r[2],$a);
 else return imagecolorallocate($im,$r[0],$r[1],$r[2]);}

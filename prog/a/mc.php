@@ -208,7 +208,7 @@ if(rstr(13))$d=embed_p($d); if(!$d)$d="\n";
 return divedit($rid,'editarea justy','max-width:720px','',nl2br($d));}
 
 static function wygoff($id,$o,$prm=[]){$p1=$prm[0]??''; $ret=edit::bt($id);
-$ret.=divd('txarea',txarea1(usg::html2conn($p1))); return $ret;}
+$ret.=divd('txarea',edit::txarea(usg::html2conn($p1),$id)); return $ret;}
 
 static function wygok($id,$o,$prm=[]){$p1=$prm[0]??'';
 return usg::html2conn($p1);}
@@ -258,7 +258,7 @@ elseif($va=='stripvk')$rt=self::stripvk($d);
 elseif($va=='striputm')$rt=self::striputm($d);
 elseif($va=='citai')$rt=mk::citations($d,'i');
 elseif($va=='citaq')$rt=mk::citations($d,'q');
-return txarea1($rt);}
+return edit::txarea($rt);}
 
 //str
 static function add_lines($d){
@@ -356,7 +356,7 @@ if(auth(6))$ret.=msqbt('system','edition_ascii_10');
 $ret.=divd('asc4','');
 return $ret;}
 
-static function navs($op,$id=''){$ret='';
+static function navs($op,$id){$ret='';
 if($op=='ascii'){$r=msql::read_b('system','edition_ascii_11','',1); $r=msql::cat($r,1);
 	$ret.=lj('txtx','popup_mc,navs___ascii_'.$id,pictxt('popup','detach'));
 	$ret.=lj('txtx','popup_ascii,home',pictxt('icons','search'));
@@ -384,13 +384,13 @@ elseif($op=='codeline'){$bt='';
 	if($r)foreach($r as $k=>$v){$tt=isset($rb[$k])?att($rb[$k]):'';
 		$ret.=ljb('','insert_b',['['.$v.':'.$k.']',$id],$k,$tt).' ';}}
 elseif($op=='backup'){
-	sqlop::install('txb',sqldb::def('txb'),1);
+	//sqlop::install('txb',sqldb::def('txb'),1);//patch
 	if($id){$r=sql('id,unix_timestamp(date)','qdmb','kv',['ib'=>$id]); $rb=[];
 		if($r)foreach($r as $k=>$v){$bt='';
 			$bt.=btn('txtsmall',date('ymd.Hi',$v));
 			$bt.=lj('popbt','bckp_mc,backup_txtarea_3_'.$id.'_'.$k,'save');
 			$bt.=lj('popbt','txarea_mc,restore___'.$k,'restore');
-			$bt.=lj('popbt','bckp_mc,backdel___'.$k,'delete');
+			$bt.=lj('popbt','bckp_mc,backdel___'.$k.'_'.$id,'delete');
 			$ret.=divb($bt);}
 		$ret.=lj('popsav','bckp_mc,backup_txtarea__'.$id,'+ new').' ';
 		$ret.=lj('popbt','txarea_mc,filters_txtarea__revert','revert').' ';
@@ -404,11 +404,12 @@ else $ret=self::conn_props_b($op);
 return divb($ret,'nbp','nv'.$op);}//,'min-width:300px; max-width:680px;'
 
 //backup_arts
-static function backup($g1,$g2,$prm=[]){$d=$prm[0]??'';
-if($d){if($g2)sqlup('qdmb',['msg'=>$d],$g2); else sqlsav('qdmb',[$g1,$d,mysqldate()]);}
+static function backup($g1,$g2,$prm=[]){$d=$prm[0]??''; if($d){
+if($g2)sqlup('qdmb',['msg'=>$d],$g2); else $g2=sqlsav('qdmb',[$g1,$d,sqldate()]); meta::utag_sav($g1,'review',$g2);}
 return self::navs('backup',$g1);}
-static function restore($g1,$g2){$v=sql('msg','qdmb','v',['id'=>$g1]); return txarea1($v);}
-static function backdel($g1){if($g1)sql::del('qdmb',$g1); return self::navs('backup',strend($g1,'_'));}
+static function restore($g1,$g2){$v=sql('msg','qdmb','v',['id'=>$g1]); return edit::txarea($v,$g1);}
+static function backdel($g1,$id){if($g1)sql::del('qdmb',$g1); meta::utag_sav($id,'review','');
+return self::navs('backup',$id);}
 
 }
 ?>

@@ -47,7 +47,7 @@ if($r){foreach($r as $k=>$v)if(isset($v[3]))$ra[$v[3]]=radd($ra,$v[3]);//cat lis
 		$css='active'; else $css='';//as in boot::context_mods()
 	if($k)$ret.=lj($css,'mdls'.$vl.'_modsav___'.$vl.'__'.ajx($k),$kc).' ';}
 if($ret)$ret=lj($cnd[0]?'':'active','mdls'.$vl.'_modsav___'.$vl.'__all',nms(100)).$ret;
-return divc('nbp',$ret);}}
+return divc('menus',$ret);}}
 
 static function see_conds_b(){
 $r=$_SESSION['mods']['system']; $cnd=ses('cond');
@@ -56,7 +56,7 @@ if($r){foreach($r as $k=>$v)if(isset($v[3]))$ra[$v[3]]=radd($ra,$v[3]);
 	foreach($ra as $k=>$v)if($k){$c=$k==$cnd[0] && !$cnd[1]?'active':'';
 		$ret.=self::admactbt('set_cond',$k,'admcnt',$k,'',$c);}}
 if($ret){$all=self::admactbt('set_cond',nms(100),'admcnt','all','','');
-return divc('',btn('nbp',$all.$ret).hlpbt('console_cond'));}}
+return divc('',btn('menus',$all.$ret).hlpbt('console_cond'));}}
 
 //build
 static function mod_name($v){

@@ -1,6 +1,7 @@
 <?php 
 class favs{
 static $rid='';
+static $cb='fv';
 
 //render
 static function icons($r){
@@ -21,13 +22,14 @@ return sql('ib','qdf','k',['type'=>$cat,'iq'=>ses('iq'),'_order'=>'id desc']);}
 static function mklist($p){
 if($p=='poll')$r=self::cart('poll');
 elseif($p=='like')$r=self::cart('like');
+elseif($p=='dock')$r=self::cart('dock');
 elseif($p=='visit')$r=ses('mem');
 else $r=self::cart('fav');
 if($r)return textarea('','id:'.implode('|',array_keys($r)),40,4);}
 
 //com (api)
 static function sav($p,$o,$ra){
-$rb=array(ses('iq'),$ra[0],$ra[1],$ra[2]);
+$rb=[ses('iq'),$ra[0],$ra[1],$ra[2]];
 $r=msql::modif('',nod('coms'),$rb,'push',['iq','name','value']);
 return self::reload($r);}
 
@@ -118,6 +120,19 @@ static function mktag($r){if(!$r)return; $ret='';
 foreach($r as $k=>$v)$ret.=$k;//lj('','popup_api___'.ses('iq').';'.ajx($k),$k).' ';
 if($ret)return btn('nbp',picto('bookmark',16).' '.$ret);}
 
+//dbsav//used for dock only
+static function favsav($id,$type,$poll=1){$iq=ses('iq');
+$r=sql('id,poll','qdf','w',['ib'=>$id,'type'=>$type,'iq'=>$iq]); [$ex,$d]=arr($r,2);
+if($ex)sql::upd('qdf',['poll'=>$poll],$ex); else $ex=sqlsav('qdf',[$id,$iq,$type,$poll],1);}
+
+static function favdel($id,$type){$iq=ses('iq');
+$r=sql('id,poll','qdf','w',['ib'=>$id,'type'=>$type,'iq'=>$iq]); [$ex,$d]=arr($r,2);
+if($ex)sql::del('qdf',$ex);}
+
+static function dock(){$r=self::cart('dock'); $ret='';
+if($r)foreach($r as $k=>$v)$ret.=divb(desk::icoart($k,$v,''));
+return $ret;}
+
 //read
 static function art($id,$rtg=''){
 $im=minimg(sql('img','qda','v',$id),'h');
@@ -129,28 +144,30 @@ if($id)return divc('txtcadr',$im.$dat.$tag.lj('','popup_popart__3_'.$id.'_3',$su
 //menus
 static function log(){
 $iqb=ses('iq');//base64_encode
-$ret=input('favid',$iqb,'4');
-$ret.=lj('popbt','plgfv_fav,home_favid',picto('ok')).hlpbt('flog').' ';
+$ret=divb(helps('flog'),'frame-blue');
+$ret.=input('favid',$iqb,'4');
+$ret.=lj('popbt','fvwrp_favs,home_favid',picto('ok')).' ';
 if(auth(4))$ret.=msqbt('',nod('coms'));
 //if(auth(1))$ret.=lj('popbt','popup_login,form____'.$iqb,pictxt('logout',nms(54)));
 return divc('',$ret);}
 
-static function menu($p){$j='plgfavs_favs,build___'; $ret='';
+static function menu($p){$j='fvcb_favs,build___'; $ret='';
 //$ret=lj('txtx','popup_art,home__x___640',picto('refresh')).' ';
 if(rstr(52))$ret=lj(active($p,'fav'),$j.'fav',pictxt('bookmark',nms(108))).' ';//favs
 if(rstr(90))$ret.=lj(active($p,'like'),$j.'like',pictxt('love','likes')).' ';
 if(rstr(91))$ret.=lj(active($p,'poll'),$j.'poll',pictxt('like',nms(144))).' ';//polls
 if(rstr(42))$ret.=lj(active($p,'tags'),$j.'tags',pictxt('diez','tags')).' ';
+if(rstr(155))$ret.=lj(active($p,'dock'),$j.'dock',pictxt('input','dock')).' ';
 if(ses('mem'))$ret.=lj(active($p,'visit'),$j.'visit',pictxt('articles',nms(33))).' ';
 if(rstr(52))$ret.=lj(active($p,'com'),$j.'com',pictxt('work','com')).' ';
 $ret.=lj(active($p,'shar'),$j.'shar',pictxt('people',nms(74))).' ';
-$ret.=lj('','popup_favs,log',picto('logout')).' ';
+$ret.=lj('','fvcnt_favs,log',picto('logout')).' ';
 //if(rstr(90))$ret.=lj('txtx',$j.'like_no',pictxt('trash','Olds')).' ';
 if($p=='fav' or $p=='like' or $p=='poll' or $p=='visit'){
-	$ret.=lj('txtx','pagup_book,home__3_'.ses('iq').'_'.$p,pictxt('book','Web-Book')).' ';
-	$ret.=lj('txtx','popup_favs,mklist__3_'.$p,pictxt('emission','Api'));
-	$ret.=lj('txtx','popup_mkbook,call___'.$p.'_favs_',pictxt('book2','Ebook'));}
-return divc('txtit',helps('fav_'.$p)).divc('nbp',$ret);}
+	$ret.=lj('','pagup_book,home__3_'.ses('iq').'_'.$p,pictxt('book','Web-Book')).' ';
+	$ret.=lj('','popup_favs,mklist__3_'.$p,pictxt('emission','Api'));
+	$ret.=lj('','popup_mkbook,call___'.$p.'_favs_',pictxt('book2','Ebook'));}
+return divc('txtit',helps('fav_'.$p)).divc('menu',$ret);}
 
 static function flog($res){//echo genpswd();
 if(is_numeric($res))$iq=sql('id','qdp','v','id="'.$res.'" LIMIT 1');
@@ -162,21 +179,23 @@ static function build($p,$o){
 if(!$p)$p='fav';
 $menu=self::menu($p); $ret='';
 if($p=='tags')$ret=self::tags();
+elseif($p=='fav')$r=self::cart('fav');
 elseif($p=='poll')$r=self::cart('poll');
 elseif($p=='like')$r=self::cart('like');
+elseif($p=='dock')$r=self::cart('dock');
 elseif($p=='visit')$r=ses('mem');
 elseif($p=='com')$ret=self::nav($o);
 elseif($p=='shar')$ret=self::shar($o);
-else $r=self::cart('fav');
 if(isset($r))$ret=self::icons($r);
 //if($r)$ret=self::cols($r);
-return $menu.divc('',$ret);}
+if($p=='dock' && $r)$ret.=lj('popbt','desktop_favs,dock','put in dock');
+return $menu.divb($ret,'','fvcnt');}
 
 static function home($p,$o,$prm=[]){$res=$prm[0]??'';
 if($res)self::flog($res);
 //$bt=self::log();
 $ret=self::build($p,$o);
-return divd('plgfv',divd('plgfavs',$ret));}
+return divd('fvwrp',divd('fvcb',$ret));}
 
 }
 ?>

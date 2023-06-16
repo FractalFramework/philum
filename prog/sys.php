@@ -1,5 +1,5 @@
 <?php 
-gets(); $cache='';
+gets(); $cache=''; //pr($_GET);
 $_SESSION['stime']=$stime; $_SESSION['dayx']=substr($stime,0,10); geta('nl',0);
 if(!ses('qb') or get('hub') or get('refresh') or get('log')){$cache='ok'; boot::reset_ses();}
 if(get('dev')){$_SESSION['dev']='b'; relod('/reload');}
@@ -18,8 +18,7 @@ boot::define_auth();
 define_ses();
 $cache=boot::time_system($cache);
 boot::seslng();
-#rqt
-if($cache)boot::cache_arts($cache);
+if($cache)boot::cache_arts();
 //if($cache)boot::cats();
 #Home
 //condition
@@ -34,7 +33,8 @@ if(!ses('stsys'))eye();
 $out=[];
 if($adm=get('admin'))$out['content']=adm::home();
 elseif($msq=get('msql'))$out['content']=msqa::home();
-elseif(rstr(85) && (!rstr(146) or $_SESSION['cond'][0]=='home'))$out['content']=boot::deskpage();
+elseif(prma('desktop') && (!rstr(146) or $_SESSION['cond'][0]=='home'))//rstr(85)
+	$out['content']=boot::deskpage();
 else $out=mod::blocks();
 #admin
 if(!rstr(98) or auth(4))$madmin=pop::popadmin($stime);
@@ -47,10 +47,12 @@ elseif(ses::$r['raed']??''){$meta['title']=ses::$r['raed']; $meta['descript']=se
 	$meta['img']=$host.'/img/'.ses::r('imgrel');}
 else{$mn=ses('mn'); $meta['title']=$mn[ses('qb')]??'';
 	$meta['descript']=$_SESSION['qbin']['dscrp'];}
+//$meta['author']=ma::readcacheval($read,7);
 $cst=('dev')?'?'.randid():'';//ses
 if($adm or $msq)$meta['css']='_admin';
 else $meta['css']=boot::define_design();
 boot::verif_update();
+//if(rstr(155))Head::add('jscode',sj('desktop_favs,dock'));
 if(get('flow') or rstr(39))$flow=1; else $flow=0;
 //alert(playr(ses::r('spl')));
 ?>

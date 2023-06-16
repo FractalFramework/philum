@@ -198,7 +198,8 @@ $maxid=ma::lastartid();
 if($rech && !is_numeric($rech) && strlen($rech)>7)$isdate=strtotime($rech);
 if($rech=='1'){$id=$maxid; $load[$id]=1; return popart($id);}
 if($rech && is_http($rech)){$id=sql('id','qda','v',['mail'=>$rech]); if($id)return popart($id);}
-if(is_numeric($rech) && strpos($rech,'.')===false && $rech<=$maxid)$load[abs($rech)]=1;
+//if(is_numeric($rech) && strpos($rech,'.')===false && $rech<=$maxid)$load[abs($rech)]=1;
+if(is_numeric($rech)){$id=sql('id','qda','v',$rech); if($id)return popart($id);}
 //if(is_numeric($rech) && $rech<=$maxid)return art::playb($rech,3);
 elseif($rech && strpos($rech,',') && strpos($rech,':')){
 	$ra=explode_k($rech,',',':');

@@ -197,4 +197,11 @@ $r=["_"=>['title'],
 "195"=>['suggestions'],
 "196"=>['desktop'],
 "197"=>['finder'],
-"198"=>['continuer l\'édition']];
+"198"=>['continuer l\'édition'],
+"199"=>['limite'],
+"200"=>['taille'],
+"201"=>['cluster d\'articles'],
+"202"=>['mettre dans le dock'],
+"203"=>['retirer du dock'],
+"204"=>['révision'],
+"205"=>['révisions']];

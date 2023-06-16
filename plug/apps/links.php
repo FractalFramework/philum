@@ -5,7 +5,8 @@ $r=msql::read('','public_defcons','',1); $r=array_keys($r); sort($r);
 return implode(br(),$r);}
 
 static function home(){$rb=[]; $ret='';
-foreach($_SESSION['rqt'] as $k=>$v)if(!empty($v[9])){
+$r=ma::readcache();
+foreach($r as $k=>$v)if(!empty($v[9])){
 	$kb=preplink($v[9]); $n=$rb[$kb]??0; 
 	$rb[$kb]=$n+1;}
 arsort($rb); //p($rb);

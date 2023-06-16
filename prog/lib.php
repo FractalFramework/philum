@@ -41,7 +41,8 @@ function span($p,$v){return '<span'.$p.'>'.$v.'</span>';}
 function btn($c,$v){return '<span'.atc($c).'>'.$v.'</span>';}
 function btd($d,$v){return '<span'.atd($d).'>'.$v.'</span>';}
 function bts($d,$v){return '<span'.ats($d).'>'.$v.'</span>';}
-function div($p,$v){return '<div'.$p.'>'.$v.'</div>';}
+function div($p,$v){return '<div'.$p.'>'.$v.'</div>';}//
+function diva($p,$v){return '<div'.$p.'>'.$v.'</div>';}
 function divc($c,$v){return '<div'.atc($c).'>'.$v.'</div>';}
 function divd($d,$v){return '<div'.atd($d).'>'.$v.'</div>';}
 function divs($s,$v){return '<div'.ats($s).'>'.$v.'</div>';}
@@ -58,7 +59,7 @@ function lh($h,$v,$p=''){return '<a href="'.$h.'" onclick="return hj(this)"'.$p.
 function ljb($c,$j,$p,$v,$o=''){$j=atjr($j,$p); return '<a'.atk($j).atc($c).$o.'>'.$v.'</a>';}
 function ljh($c,$j,$p,$v,$o=''){$j=atjr($j,$p); return '<a'.atmo($j).atmu($j).atc($c).$o.'>'.$v.'</a>';}
 function ljp($p,$j,$v){return '<a'.atk(sj($j)).' '.$p.'>'.$v.'</a>';}
-function blj($c,$id,$j,$v,$o=''){return btd($id,lj($c,$id.'_'.$j,$v,$o));}
+function blj($c,$id,$j,$v,$o=''){return spn(lj('',$id.'_'.$j,$v,$o),$c,$id);}
 function llj($c,$j,$v,$id='',$a=''){return '<li'.atd($id).'>'.lj($c,$j,$v,'').'</li>';}
 function image($d,$w='',$h='',$p=''){if(substr($d,0,4)=='img/')$d='/'.$d;
 return '<img src="'.$d.'"'.atb('width',$w).atb('height',$h).' '.$p.'/>';}
@@ -76,10 +77,18 @@ return '<a onclick="bj(this)" data-bj="'.$j.'"'.atc($c).$o.'>'.$v.'</a>';}//
 function tag($b,$p,$d){return '<'.$b.attr($p).'>'.$d.'</'.$b.'>';}
 function taga($b,$p){return '<'.$b.attr($p).' />';}
 function tagb($b,$d){return '<'.$b.'>'.$d.'</'.$b.'>';}
-function tagc($b,$c,$v){return '<'.$b.atc($c).'>'.$v.'</'.$b.'>';}
+function tagc($b,$c,$d){return '<'.$b.atc($c).'>'.$d.'</'.$b.'>';}
 function divb($v,$c='',$id='',$s=''){return '<div'.atc($c).atd($id).ats($s).'>'.$v.'</div>';}
 function spn($v,$c='',$id='',$s=''){return '<span'.atc($c).atd($id).ats($s).'>'.$v.'</span>';}
 function btj($t,$j,$c='',$id='',$p=[]){return tag('a',['onclick'=>$j,'class'=>$c,'id'=>$id]+$p,$t);}
+
+#rp
+function tagp($b,$p,$d){return '<'.$b.rp($p).'>'.$d.'</'.$b.'>';}
+function divp($v,$p=[]){return '<div'.rp($p).'>'.$v.'</div>';}
+function spnp($v,$p=[]){return '<span'.rp($s).'>'.$v.'</span>';}
+function rp($r){$ra=['c'=>'class','d'=>'id','s'=>'style','t'=>'title','h'=>'href','n'=>'name','v'=>'value','z'=>'size','oc'=>'onclick','ok'=>'onkeyup','ch'=>'onchange','mu'=>'onmouseup','mo'=>'onmouseout','md'=>'onmousedown','mv'=>'onmouseover']; $ret='';
+foreach($r as $k=>$v)if($v)$ret.=' '.($r[$k]??$k).'="'.$v.'"';
+return $ret;}
 
 #forms
 function input($d,$v='',$s='',$p=[]){
@@ -140,7 +149,6 @@ return $ret;}
 //edit
 function textarea($id,$v,$cl='40',$rw='4',$p=[]){
 return tag('textarea',['id'=>$id,'cols'=>$cl,'rows'=>$rw]+$p,$v);}
-function txarea1($msg){return '<textarea id="txtarea" name="msg" class="console" style="margin:0; width:100%; min-width:640px; min-height:240px;">'.$msg.'</textarea>';}
 function diveditbt($id){
 $r=['no'=>nms(72),'p'=>'normal','h1'=>'h1','h2'=>'h2','h3'=>'h3','h4'=>'h4','h5'=>'h5','fact'=>'fact'];
 $ret=select(['id'=>'wygs','onchange'=>'execom2(this.value)'],$r);
@@ -575,7 +583,7 @@ function timeago($d){$dy=ses('daya'); $day=$dy?$dy:ses('dayx'); $m=is_numeric($d
 return $day-(86400*$m);}
 function calctime($d){return ses('dayx')-86400*(is_numeric($d)?$d:1);}
 function daysfrom($d){return round((ses('dayx')-(is_numeric($d)?$d:1))/86400);}
-function mysqldate(){return date('Y-m-d H:i:s');}//%A%d%B%G%T
+function sqldate(){return date('Y-m-d H:i:s');}//%A%d%B%G%T
 function timelang($lg=''){if(!$lg or $lg=='all')$lg=prmb(25); setlocale(LC_TIME,$lg.'_'.strtoupper($lg));}
 function time_prev($d){$ret='';
 $r=[0,7,30,90,365]; for($i=5;$i<25;$i++){$a=isset($r[$i-1])?$r[$i-1]:0; $r[]=$a+365;} $n=count($r);
@@ -650,8 +658,8 @@ $r=[$w,$h,$wo,$ho,$xb,$yb]; foreach($r as $k=>$v)if($v)$r[$k]=round($v);
 return $r;}
 
 function make_mini($in,$out,$w,$h,$s){
-if(!is_file($in) && substr($in,0,4)!='http')return;
-$w=$w?$w:140; $h=$h?$h:100; [$wo,$ho,$ty]=getimagesize($in); $xa=0; $ya=0;
+if(!is_file($in) && substr($in,0,4)!='http')return; [$wa,$ha]=[440,320];
+$w=$w?$w:$wa; $h=$h?$h:$ha; [$wo,$ho,$ty]=getimagesize($in); $xa=0; $ya=0;
 [$w,$h,$wo,$ho,$xb,$yb]=scale_img($w,$h,$wo,$ho,$s);
 $img=imagecreatetruecolor($w,$h);
 $c=imagecolorallocate($img,255,255,255); imagefill($img,0,0,$c);
@@ -714,9 +722,9 @@ function hsl2hex($h,$s,$l){$r=hsl2rgb($h,$s,$l); return rgb2hex($r);}
 function chr_b($d){return '&#'.$d.';';}
 function asciinb($n){if(is_numeric($n))return chr_b(9311+$n);}
 function ascii($d,$s='',$c=''){
+if(is_numeric($s))$s='font-size:'.$s.'px;';
 if(is_numeric($d))return span(ats($s),chr_b($d));
-if($c)$c=' '.$c; if(is_numeric($s))$s='font-size:'.$s.'px;';
-return span(atc('as-'.$d.$c).ats($s),'');}
+return spn('','as-'.$d.' '.$c,'',$s);}
 function nb($d,$o=''){$d=str_replace(['(',')','[',']'],'',$d);
 if($d>20)return $o?tagb('sup','('.$d.')'):tagb('sup',$d.'.');
 if($o)return "&#93".(31+$d); else return "&#93".(51+$d);}

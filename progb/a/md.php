@@ -24,7 +24,7 @@ if(rstr(32))$img=minimg($amg,'hb'); $lnk=urlread($id);
 return tagb('h2',lkc('',$lnk,$suj)).divc('panel',ma::read_msg($id,$o?$o:2));}
 
 static function pub_img($id){
-[$dy,$frm,$suj,$amg]=$_SESSION['rqt'][$id];
+[$dy,$frm,$suj,$amg]=ma::readcacherow($id);
 if(!$dy){$amg=sql('img','qda','v',$id);}
 return lkc('',urlread($id),minimg($amg,'ban'));}
 
@@ -87,8 +87,8 @@ $rc=sesmk2('boot','cats');
 if(!is_numeric($k)){
 	if(substr($k,0,1)=='?')return [$k,$v];
 	//elseif(substr($k,0,1)=='/')return [$k,$v];
-	elseif($rc[$v])return [htac('cat').$k,$v];
-	elseif($rc[$k])return [htac('cat').$k,$k];
+	elseif($rc[$v]??'')return ['cat/'.$k,$v];
+	elseif($rc[$k]??'')return ['cat/'.$k,$k];
 	elseif($v)return [$k,$v];
 	elseif($k)return ['',$k];}
 else{$tit=ma::suj_of_id($k);
@@ -98,7 +98,7 @@ else{$tit=ma::suj_of_id($k);
 	else return [urlread($k),$k];}}//numeric name
 
 static function bubble_menus($t,$inl=''){//mods/submenus
-if(!$t)return; $nbo=0; $n="\n"; $r=explode("\n",$t.$n); $ret='';
+if(!$t)return; $nbo=0; $n="\n"; $r=explode("\n",$t.$n); $ret=''; $ra=[];
 foreach($r as $n=>$k){
 	$nb=substr_count(substr($k,0,9),'-'); $tit=substr($k,$nb); $tit=trim($tit);
 	if($tit){[$lk,$d]=self::submn_t($tit); $cat[$nb]=$tit; $ct='';
@@ -127,13 +127,17 @@ static function birthday($p){if(!$p)$p=date('d-m-Y'); $time=strtotime($p); $d=da
 [$day,$month]=explode('-',$d); $day=(int)$day; $month=frdate((int)$month);
 return search::call($day.' '.$month);}
 
+static function artsofcluster($d){$rt=[];
+$rb=sql('idtag','qdtc','rv',['word'=>$d]);
+$rt=sql('idart,count(id) as nb','qdta','kv','idtag in ('.implode(',',$rb).') group by idart order by nb desc');
+$rt=array_slice($rt,0,1000,true);
+return $rt;}
+
 static function cluster_tags($id){//arts with tags from cluster from tags from current art :)
 $r=sql('idtag','qdta','rv',['idart'=>$id]); $rt=[];
-$rc=sql('word,count(idtag) as nb','qdtc','rv','idtag in ('.implode(',',$r).') group by word order by nb desc');
-if(isset($rc[0])){$rb=sql('idtag','qdtc','rv',['word'=>$rc[0]]);
-	$r1=sql('idart,count(id) as nb','qdta','kv','idtag in ('.implode(',',$rb).') group by idart order by nb desc');}
-if(isset($rc[1])){$rb=sql('idtag','qdtc','rv',['word'=>$rc[1]]);
-	$r2=sql('idart,count(id) as nb','qdta','kv','idtag in ('.implode(',',$rb).') group by idart order by nb desc');}
+if($r)$rc=sql('word,count(idtag) as nb','qdtc','rv','idtag in ('.implode(',',$r).') group by word order by nb desc');
+if(isset($rc[0]))$r1=self::artsofcluster($rc[0]);
+if(isset($rc[1]))$r2=self::artsofcluster($rc[1]);
 if(isset($r1) && isset($r2)){foreach($r1 as $k=>$v)if(isset($r2[$k]))$r1[$k]+=$r2[$k]; arsort($r1);}
 if(isset($r1)){$min=min($r1); $max=max($r1); foreach($r1 as $k=>$v)if($v>$min*3 && $k!=$id)$rt[$k]=$v;}
 return $rt;}
@@ -146,7 +150,7 @@ if(isset($rb[$id]))unset($rb[$id]);
 return $rb;}
 
 //sources
-static function recup_src(){$r=$_SESSION['rqt']; $ret=[];
+static function recup_src(){$r=ma::readcache(); $ret=[];
 if($r)foreach($r as $k=>$v)if($v[9] && $v[9]!='mail'){$purl=domain($v[9]);
 	$purl=str_replace(['.wordpress','.blogspot','.pagesperso-orange'],'',$purl);
 	if($purl)$ret[$purl]=radd($ret,$purl,1);} return $ret;}
@@ -338,7 +342,7 @@ if($rtag)foreach($rtag as $tag=>$v){$ret[$tag]=[];
 return $ret;}
 
 static function see_also_source($o=''){$o=$o?$o:10;
-$id=ses('read'); $r=$_SESSION['rqt']; $src=$r[$id][9];
+$id=ses('read'); $r=ma::readcache(); $src=$r[$id][9];
 if(!$src)$src=sql('mail','qda','v',$id);
 if($src){$src=preplink($src); $ret=[];
 if($r)foreach($r as $k=>$v)if(preplink($v[9])==$src)$ret[$k]=radd($ret,$k);
@@ -347,7 +351,7 @@ if($ret){unset($ret[$id]);
 return [$ret,lk(htac('source').strto($src,'.'),$src)];}}}
 
 static function siteclics($src){$n=0;
-$id=ses('read'); if($id)$src=$_SESSION['rqt'][$id][9];
+$id=ses('read'); if($id)$src=ma::readcacheval($id,9);
 $r=sql('lu','qda','rv','mail like "%'.$src.'%"');
 foreach($r as $k=>$v)$n+=$v;
 return tagb('h3',$src).divc('',$n.' vues');}
@@ -375,30 +379,33 @@ $po['msg']=conn::read($d,3,'');
 $po['source']=picto('link').' '.art::pub_link($p);
 return art::template($po,'');}
 
-static function modlk($p,$t,$o=''){
+static function modlk($p,$t,$o=''){$u='';
 if(is_numeric($p)){$u='/'.$p; $ic='article';}
 elseif(sesr('line',$p)){$u='/cat/'.$p; $ic=sesr('catpic',$p);}
 elseif($p=='home'){$u='/home'; $ic='home';}
 if($o)$t=pictxt($ic,$t);
-return lh('/'.$u,$t);}
+if($u)return lh('/'.$u,$t);}
 
 //m_suj
 static function m_suj_r($r,$cs1,$cs2){
-$id=ses('read'); $ret='';
+$id=get('read'); $ret='';
 foreach($r as $k=>$v){
 $csb=$id==$k?$cs1:$cs2;
-$ret.=llk($csb,urlread($k),'â?¢ '.ma::suj_of_id($k));
+//$ret.=llk($csb,urlread($k),'- '.ma::suj_of_id($k));
+$ret.=lh($k,ma::suj_of_id($k));
 if(is_array($v)){
 	if($id==$k or self::verif_array_exists_s($id,$v)){
 		foreach($v as $ka=>$va){$csc=$id==$ka?$cs1:$cs2;
-		$ret.=llk($csc,urlread($ka),'-- '.ma::suj_of_id($ka));}}}}
+		//$ret.=llk($csc,urlread($ka),'-- '.ma::suj_of_id($ka));
+		$ret.=lh($ka,'-- '.ma::suj_of_id($ka));}}}}
 return $ret;}
 
 static function suj_hierarchic($cs1,$cs2){
 $rb=self::collect_hierarchie(''); $frm=get('frm'); $ret='';
 if($rb)foreach($rb as $k=>$v){
 $csb=$frm==$k?$cs1:$cs2;
-$ret.=llk($csb,htac('cat').$k,$k);
+//$ret.=llk($csb,'cat/'.$k,$k);
+$ret.=lh('cat/'.$k,$k);
 if($frm==$k && is_array($v))$ret.=m_suj_r($v,$cs1,$cs2);}
 return $ret;}
 
@@ -427,7 +434,7 @@ if($rev && $ret)krsort($ret);
 return $ret;}
 
 static function supertriad(){$rt=[];//descend
-$r=$_SESSION['rqt']; if(is_array($r))foreach($r as $k=>$v)
+$r=ma::readcache(); if(is_array($r))foreach($r as $k=>$v)
 	if($v[10] && is_numeric($v[10]))$rt[$v[1]][$v[10]][$k]=$v[2];
 return $rt;}
 
@@ -438,7 +445,7 @@ if($rev && $rb)ksort($rb);
 return $rb;}
 
 static function supertriad_b(){$rt=[];//descend
-$r=$_SESSION['rqt']; if(is_array($r))foreach($r as $k=>$v)
+$r=ma::readcache(); if(is_array($r))foreach($r as $k=>$v)
 if(is_numeric($v[10]))$rt[$k][$v[10]][$k]=1;
 return $rt;}
 
@@ -449,8 +456,8 @@ $r=self::supertriad_b(); if(is_array($r)){
 return $rt;}
 
 static function supertriad_c($d,$p=''){$rt=[];//descend
-if($r=$_SESSION['rqt'])foreach($r as $k=>$v){
-	if($v[10]>0 && (!$p or $v[1]==$p))$rt[$v[10]][$k]=1;}
+$r=ma::readcache(); if($r)foreach($r as $k=>$v){
+if($v[10]>0 && (!$p or $v[1]==$p))$rt[$v[10]][$k]=1;}
 return $rt;}
 
 static function collect_hierarchie_c($rev,$o){//no_cat

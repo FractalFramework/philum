@@ -195,8 +195,6 @@ for($i=1;$i<$n;$i++)$ret.=lj('',$rid.'_backupim,db___'.$i.'_'.$rid,$i).' ';
 return divc('nbp',$ret);}
 
 static function patchmrc(){
-//$d='newsnet_mrcreseauinternational.netunsenateurrusseaccuselesetatsunisdeprepareruncoupdetatsoftauve';
-//$d='newsnet_mrcreseauinternational.netunempirediaboliquedefauxdrapeaux_f3dcdb.jpg';
 //$ra=[$d];
 $ra=scandir('imgx'); $i=0; //mkdir_r('/imgx');
 foreach($ra as $k=>$v){

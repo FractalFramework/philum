@@ -1,5 +1,5 @@
 <?php //msql/program_plugs_types
-$r=["_"=>['_menus_','usage'],
+$r=["_"=>['name','usage'],
 "1"=>['external','call directly the page'],
 "2"=>['system','used by software'],
 "3"=>['plug','connector [param|plugin:plug] or [param|option:plugin] '],

@@ -5,7 +5,7 @@ static $cb='dfc';
 function __construct(){self::$cb=randid();}
 
 static function build($p,$o){
-$r=msql::read('','newsnet_defcons','');
+$r=msql::read('',nod('defcons'),'');
 
 function dtrm($v){
 $c=''; $d=''; $b='';
@@ -48,9 +48,9 @@ $rt[$k]=$v;}
 }
 //eco($rt);
 
-msql::save('','newsnet_defcons_1',$ra,$r['_']);
-msql::save('','newsnet_defcons_2',$ro,$r['_']);
-msql::save('','newsnet_defcons_3',$rt,$r['_']);
+msql::save('',nod('defcons_1'),$ra,$r['_']);
+msql::save('',nod('defcons_2'),$ro,$r['_']);
+msql::save('',nod('defcons_3'),$rt,$r['_']);
 
 $ret=count($rt).'-'.count($ro);
 return $ret;}

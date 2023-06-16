@@ -93,7 +93,8 @@ return $r;}
 static function thumb($id,$p=''){//ses('rebuild_img',1);
 $img=sql('img','qda','v',$id); if($img)$f=pop::art_img($img,$id);
 if(isset($f)){if($f && !is_file('img/'.$f))conn::recup_image($f);
-return img::make_thumb_c('img/'.$f,'50/38',1);} else return $p?$p:'articles';}
+	return img::make_thumb_c('img/'.$f,'50/38',1);}
+else return $p?$p:'articles';}
 
 //call
 static function desktop($id,$va,$opt,$o){
@@ -114,8 +115,8 @@ if($ica)return $ra[$ica]??'';}
 static function icoart($k,$v,$c){$ico=''; $id='ic'.$k;
 if(is_numeric($k)){$v='popup_popart__3_'.$k; $ic=self::thumb($k); $k=ma::suj_of_id($k);}
 else $ic=self::desk_icon($k,$v);
-if($ic)$ico=strpos($ic,'<')!==false?btn('',$ic):mimes($k,$ic,32);
-return ljp(att($k).atd($id),$v,divc($c.' dicon',$ico.' '.spn(etc($k,70),'','','')));}
+if($ic)$ico=strpos($ic,'<')!==false?$ic:mimes($k,$ic,32);
+return ljp(att($k).atd($id),$v,divc($c.' dicon',divb($ico).' '.divb(etc($k,50))));}
 
 static function pane_icons($r,$c){$ret='';
 if(is_array($r))foreach($r as $k=>$v)$ret.=self::icoart($k,$v,$c);
@@ -132,7 +133,7 @@ if($r)foreach($r as $k=>$v)$rc[]=[$k,'art','auto',$k,$cnd,'',$v,'articles'];
 return $rc;}
 
 static function apps_arts($cnd,$cat,$p,$o){$rb=[];
-if($p)$r=api::mod_arts_row($p); elseif(rstr(3))$r=$_SESSION['rqt'];
+if($p)$r=api::mod_arts_row($p); elseif(rstr(3))$r=ma::readcache();
 else $r=sql('id,day,frm','qda','kvv','nod="'.ses('qb').'" and re>0 and substring(frm,1,1)!="_" order by '.prmb(9));
 if(is_array($r))foreach($r as $k=>$v){[$day,$frm]=$p?ma::rqtart($k):$v;
 	if(($cat && $cat==$frm) or !$cat)$rb[]=[$k,'art','auto',$k,$cnd,'',$frm,'articles'];}

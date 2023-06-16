@@ -51,7 +51,7 @@ return art::trkone($id);}
 //static function save($msg,$id,$name,$mail){$tim=time(); $iq=hostname(); //ses('iq');
 static function save($id,$o,$prm){$tim=time(); $iq=hostname();
 [$msg,$name,$mail,$ib]=arr($prm,4); $suj=''; $lg=prmb(25);
-$msg=str::htmlentities_b($msg); $msg=usg::html2conn(nl2br($msg),1);
+$msg=str::htmlentities_b($msg); if($msg && strpos($msg,'<'))$msg=usg::html2conn(nl2br($msg),1);
 if(is_numeric($id) or substr($id,0,4)=='wall')$local=1; else $local=0;
 if(!is_numeric($id)){$ib=$id; $id=0;}//$to=frm
 if(!$msg)return;// btn('popdel','bruuu! '.helps('empty_msg'));

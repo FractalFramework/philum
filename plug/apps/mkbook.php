@@ -11,7 +11,7 @@ static function manifest($r,$dr,$ti=''){$n=count($r); $lg='fr';
 $d='<?xml version="1.0" encoding="'.self::$enc.'"?>
 <package unique-identifier="unique-identifier" version="3.0" xmlns="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:opf="http://www.idpf.org/2007/opf"><metadata><dc:identifier id="unique-identifier">4d07bf09-0a07-4c49-8f91-bcf5adcebad1</dc:identifier>
 <dc:title>'.$ti.'</dc:title>
-<dc:creator>oumo.fr</dc:creator>
+<dc:creator>'.ses('qb').'</dc:creator>
 <dc:language>'.$lg.'</dc:language>
 <meta property="dcterms:modified">2020-08-02T10:30:44Z</meta>
 <meta content="philum" name="generator"/>

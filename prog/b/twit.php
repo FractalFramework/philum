@@ -406,7 +406,8 @@ return sql('text','qdtw','v','twid="'.$id.'"',0);}
 #cache
 static function play($id,$r,$q='',$o=''){
 [$nm,$date,$rplid,$favs,$favd,$rtw,$rtwd,$flw,$friends,$txt,$med,$mnt,$quoid,$lg]=vals($r,['screen_name','date','reply_id','favs','favorited','retweets','retweeted','followers','friends','text','media','mentions','quote_id','lang']);
-$url=self::lk($nm); $own=msql::val('',nod('twit_'.ses('apk')),5);
+$url=self::lk($nm);
+$own=msql::val('',nod('twit_'.ses('apk')),5);
 //$ret=lkt('popbt',$url,pictxt('tw',$nm));
 $ret=self::banner($r,0).' '; $j='popup_twit,call__3_';
 //if(isset($q['retweeted_status']['id']))$ret.=btn('small','(retweet)').' ';
@@ -720,7 +721,7 @@ $ret.=hidden('exs','exs=[];');
 $ret.=hlpbt('twit');
 return $ret;}
 
-static function init($n=''){$n2=sesb('apk',self::apk()); if(!$n)$n=$n2;//if(!$n)$n=2;
+static function init($n=''){$n2=sesb('apk',self::apk()); if(!$n)$n=$n2;
 require_once('plug/tiers/Twitter.php'); return new Twitter($n);}
 
 static function r(){return ['ib'=>'int','twid'=>'bint','name'=>'var','screen_name'=>'var','user_id'=>'bint','date'=>'int','text'=>'var','media'=>'var','mentions'=>'var','reply_id'=>'bint','reply_name'=>'var','favs'=>'int','retweets'=>'int','followers'=>'int','friends'=>'int','quote_id'=>'bint','quote_name'=>'var','retweeted'=>'bint','lang'=>'var'];}//geo,coordinates
@@ -728,9 +729,7 @@ static function r(){return ['ib'=>'int','twid'=>'bint','name'=>'var','screen_nam
 static function install(){sqlop::install('twit',self::r(),0);}
 
 static function apk(){
-$d=domain(host()); $n=1;
-if($d=='newsnet.fr')$n=4;
-if($d=='oumo.fr')$n=6;
+$n=!empty(ses::$tw)?ses::$tw:1;
 return $n;}
 
 static function home($p,$o){$rid='tw'.randid();

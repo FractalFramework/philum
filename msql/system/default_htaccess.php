@@ -1,7 +1,6 @@
 <?php //msql/default_htaccess
 $r=["_"=>['title_1'],
-"1"=>['AddDefaultCharset ISO-8859-1
-RewriteEngine on
+"1"=>['RewriteEngine on
 RewriteRule ^([0-9]+)$ /?read=$1 [L]
 RewriteRule ^art/([^/])$ /?art=$1 [L]
 RewriteRule ^read/([^/])$ /?read=$1 [L]

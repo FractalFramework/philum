@@ -315,7 +315,7 @@ if(id)clp[n]=id; else if(n){if(e)var m=mouse(e); else m={x:0,y:0};
 			clp[i]=undefined;}}}}}}
 //close togbub
 function cltog(d){var op=getbyid(d); if(op)var ob=op.parentNode; Remove(d);
-if(ob){var oa=ob.getElementsByTagName("a")[0]; oa.className=oa.dataset.css?oa.dataset.css:"";}}
+if(ob){var oa=ob.getElementsByTagName("a")[0]; active('',oa);}}
 
 //function onclickoutsisde(){}
 function rmclp(d){for(i=0;i<clp.length;i++)if(clp[i]==d)clp[i]=undefined;}
@@ -598,6 +598,15 @@ function recuptit(){
 var mnu=document.getElementsByTagName('h1')[0];
 var mna=mnu.getElementsByTagName('a');
 if(mna[0]!=undefined)return mna[0].innerHTML; else return mnu.innerHTML;}
+
+//dock
+function dock(id){
+var pp=getbyid('pop'+curid); var ex=0;
+var rd=getbyid('desktop').getElementsByTagName("a");
+for(i=0;i<rd.length;i++){var idb=rd[i].id; if(idb=='ic'+id)ex=1;}
+if(ex){Remove('ic'+id); ajaxcall('socket','favs,favdel',[id,'dock'],[],'');}
+else{ajaxcall('desktop','desk,icoart',[id],[],'after'); ajaxcall('socket','favs,favsav',[id,'dock','1'],[],'');}
+Close('popup');}
 
 //continuous scroll
 function artlive2(div){var ret=''; var ia=0;

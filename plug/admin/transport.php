@@ -22,13 +22,6 @@ static function tr_dcrpt($d){
 $iv='fKxb6KW8K37/IzoScd7kcQ==';
 return base64_decode(crypt::decrypt_build($d,$iv));}
 
-/*static function srv0(){$srv=$_SERVER['HTTP_HOST'];
-$r=msql::col('server','shared_servers_1',0,1);
-if($srv=='oumo.fr')return ['dav','umm',self::tr_dcrpt($r[1]),'umm'];//srv1
-//if($srv=='socialnetwork.ovh')return ['dav','umm',self::tr_dcrpt($r[2]),'umm'];//srv2
-if($srv=='newsnet.fr')return ['root','nfo',self::tr_dcrpt($r[1]),'nfo'];//1
-if($srv=='newsnet.ovh')return ['dav','nfo',self::tr_dcrpt($r[2]),'nfo'];}*///2
-
 static function srv($o=''){$d=read_file(boot::cnc()); $sbr=$o?'/home':'';
 $d=between($d,'sql([','])'); $d=str_replace("'",'',$d); $r=explode(',',$d);
 if(auth(6))return ['root',$r[3],$r[2],$sbr.'/'.$r[3]];}

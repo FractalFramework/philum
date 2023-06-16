@@ -75,7 +75,7 @@ $ret=self::sav($rca,$rcb,$rid);
 return $ret;}
 
 static function taxoarts($p){$rca=[]; $rcb=[];
-$r=$_SESSION['rqt'];
+//$r=ma::readcache();
 $r=taxonav::collect_hierarchie_d('reverse');
 //$r=tri_hierarchic($r,$h); p($r);
 //mk::taxonomy($r)

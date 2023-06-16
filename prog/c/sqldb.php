@@ -56,6 +56,11 @@ $r['umvoc']=['id'=>'ai','voc'=>'var'];
 $r['umvoc_arts']=['id'=>'ai','idvoc'=>'int','idart'=>'int','pos'=>'int'];
 return $r;}
 
+static function renoveart($n){
+$ra=['id','ib','name','mail','day','nod','frm','suj','re','lu','img','thm','host','lg'];
+$rb=['id','ib','usr','src','day','hub','cat','suj','vi','vu','img','url','len','lg'];
+return $ra[$n];}
+
 static function qb($b){return in_array_b($b,self::$rt);}
 static function db($q){return self::$rt[$q]??'';}
 static function tn($q){return self::$rt[$q]??'';}//

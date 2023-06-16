@@ -40,6 +40,12 @@ if(!$p)$ret=embed_p($ret);
 if(!$o)$ret=nl2br($ret);
 return $ret;}
 
+static function call($d){
+$d=self::parser($d);
+$d=embed_p($d);
+$d=nl2br($d);
+return $d;}
+
 static function connbr($msg){return $msg;
 $r=[':q]',':h]',':h1]',':h2]',':h3]',':h4]',':ul]',':ol]',':table]',':figure]',':video]',':php]',':photo]',':iframe]']; $n=count($r);
 for($i=0;$i<$n;$i++)$msg=str_replace($r[$i]."\n\n",$r[$i]."\n",$msg);
@@ -65,7 +71,7 @@ if(!$id)$id=ses('read'); if(!$id or $id=='test')return;
 $nmw=str_replace(['users/','img/'],'',$nmw);
 $d=sql('img','qda','v',['id'=>$id]);
 if(strpos($d,$nmw)===false)sql::upd('qda',['img'=>$d.'/'.$nmw],$id);
-ma::cachevs($id,3,$d.'/'.$nmw,1);}
+ma::cacheval($id,3,$d.'/'.$nmw);}
 
 static function replaceinmsg($id,$a,$b,$c=''){
 $d=sql('msg','qdm','v',$id); if($c)$d=str_replace($a.':'.$c,$b,$d); $d=str_replace($a,$b,$d);
@@ -78,7 +84,7 @@ self::replaceinmsg($id,$a,$b,$c);}
 
 static function autothumb($f){
 if(is_file($f)){[$w,$h]=getimagesize($f);
-make_mini($f,$f,$w,$h,0);}}
+img::remini($f,$f,$w,$h,0);}}
 
 static function png2jpg($a,$id){
 $d=img::png2jpg($a,$id); return self::mkimg($d,3,920,$id,'');}

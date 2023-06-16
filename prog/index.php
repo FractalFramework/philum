@@ -19,7 +19,7 @@ else{
 	$ret.=meta('name','title',$meta['title']);
 	$ret.=meta('name','image',$meta['img']??'');
 	$ret.=meta('name','description',$meta['descript']??'');}
-//$ret.=meta('name','author',$_SESSION['rqt'][$read][7]);
+//$ret.=meta('name','author',$meta['author']);
 $ret.=meta('name','category',get('frm'));
 $ret.=meta('name','generator','philum_'.ses('philum'));//needed
 $ret.=meta('name','hub',ses('qb'));

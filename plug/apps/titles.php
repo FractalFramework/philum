@@ -12,7 +12,7 @@ foreach($r as $k=>$v){
 $ra=$r=ma::art_tags($v); //pr($ra);
 $a=key($ra['auteurs']??[]);
 $t=ma::suj_of_id($v);
-$rb[]='- '.$t.' '.($a?'('.$a.') ':'').' : http://newsnet.fr/'.$v;}
+$rb[]='- '.$t.' '.($a?'('.$a.') ':'').' : '.host().'/'.$v;}
 return implode(br(),$rb);}
 
 static function call($p,$o,$prm=[]){

@@ -46,12 +46,10 @@ if(this.m_Request.readyState==4){wait=0;
 		else if(tg=='togbub')togbub(res,act);
 		else if(tg=='pagup')pagup(res,act);
 		else if(tg=='panup')panup(res,act);
-		//else if(act==4||act==7||act==9)cb.value=res;
 		else if(act==5)insert(stripslashes(ajx(res,1)));
 		else if(act==6){insert(res); Close('popup');}
 		else if(act==10){cb.style.display='none';}
 		else if(act==11){cb.innerHTML=res; window.setSelectionRange(tg,res.length,res.length);}
-		//else if(act==12){var cb=getbyid('popu'+curid); cb.innerHTML=res;}
 		else if(act==13)addiv(tg,res,'before');
 		else if(act==14)addiv(tg,res,'after');
 		else if(act=='before')addiv(tg,res,act);
@@ -70,6 +68,7 @@ if(this.m_Request.readyState==4){wait=0;
 		else if(act=='exec')eval(res);
 		else if(act=='json')jsonput(tg,res);
 		else if(act=='head')addhead(res);
+		else if(act=='okbt')okbt(tg,res);
 		//else if(res.indexOf('Fatal error')!=-1)popub(res,act);
 		else if(cb!=null){var typ=cb.type; //alert(typ);
 			if(typ=='text'||typ=='hidden'||typ=='textarea')cb.value=res;
@@ -93,6 +92,7 @@ if(this.m_Request.readyState==4){wait=0;
 		else if(act==25)setTimeout(function(){poprepos()},500);
 		else if(act==26)audio();
 		else if(act==27)audioif(tg);
+		else if(act=='u')scrolltoob('content',40);
 		if(xb)clearTimeout(xb);
 		//if(this.onDraw!=undefined)this.onDraw();
 	return res;}
@@ -113,10 +113,11 @@ function aj(tg,app,v){ajaxcall(tg,app,[v],[],'2'); return false;}
 function sj(o){SaveJ(o.dataset.j); th=o; return false;}
 function hj(o){var com=o.href; var r=com.split('/'); r=undefiner(r,5); var diez;//unused
 	if(r[3].indexOf('#')!=-1){var rd=r[3].split('#'); r[3]=rd[0]; var diez='#'+rd[1];}
+	var pp=getbyid('content')=='undefined'?'popup':'';
 	//if(r[3]>0)ajaxcall('page','mod,playcontext',['read',r[3]],[],'u');//+diez//secondary action ?
-	if(r[3]>0)ajaxcall('content','mod,playmod',['read',r[3]],[],'u');
-	else if(r[3]=='art')ajaxcall('content','mod,playmod',['art',r[4]],[],'u');
-	else ajaxcall('page','mod,playcontext',[r[3],r[4],r[5]],[],'u');
+	if(r[3]>0)ajaxcall(pp?pp:'content','mod,playmod',['read',r[3]],[],'u');
+	else if(r[3]=='art')ajaxcall(pp?pp:'content','mod,playmod',['art',r[4]],[],'u');
+	else ajaxcall(pp?pp:'page','mod,playcontext',[r[3],r[4],r[5]],[],'u');
 	return false;}
 
 //saves
@@ -170,6 +171,11 @@ function addhead(json){var ia=0;
 		if(i=='jscode')jscode(obj[i][ia]);
 		if(i=='csslink')csslink(obj[i][ia]);
 		if(i=='csscode')csscode(obj[i][ia]);}}}
+
+function okbt(tg,res){
+var el=getbyid(tg); var bt=el.innerHTML; el.innerHTML="ok";
+x=setTimeout(function(){el.innerHTML=bt},1500);
+}
 
 //new canal
 //target,tg2|app,mth|3|var1,var2|inp1,inp2 //tg;a;tp;g;p
@@ -241,10 +247,13 @@ var popup=getbyid('pop'+curid);
 var pos=ppos(popu,0);
 popup.style.left=pos.x+'px'; popup.style.top=pos.y+'px';}
 
-function autoscroll(popu){var p=getPosition(popu); var ha=innerH();
-if(p.y+p.h>ha){var nh=ha-p.y-20;
-	if(nh>140){popu.style.height=nh+'px';
-		popu.style.overflowY='scroll'; popu.style.overflowX='hidden'; popu.style.scrollbarWidth='thin';}}}
+function autoscroll(popu){
+var p=getPosition(popu); var ha=innerH();
+var sc=document.documentElement.scrollTop;
+if(p.y+p.h>(ha+sc)){var nh=(ha+sc)-p.y-20; if(nh>440)nh=440;
+var iscroll=popu.getElementsByClassName('scroll');
+if(iscroll.length==0){
+popu.style.height=nh+'px'; popu.style.overflowY='scroll'; popu.style.overflowX='hidden'; popu.style.scrollbarWidth='thin';}}}
 
 function bpos(id,nb,p){//bubblepop
 var bt=getbyid(id); var pos=getPosition(bt);
@@ -405,7 +414,7 @@ var div=getbyid('bt'+id); var pid='pop'+popnb; var pos=get_dim(div);
 div.style.position='relative';//parent need to be relative
 var bub=document.createElement('div'); bub.innerHTML=res; bub.style.zIndex=popz;
 bub.className='popup'; bub.style.position='absolute';
-bub.style.minWidth='270px'; bub.style.maxWidth='480px'; bub.style.lineHeight='normal';
+bub.style.minWidth='270px'; bub.style.maxWidth='500px'; bub.style.lineHeight='normal';
 bub.style.padding='4px'; bub.style.marginRight='4px'; bub.id='pub'+id;
 div.appendChild(bub); bub.style.left=(0-pos.x)+'px';//to measure width
 var pob=get_dim(bub); var mxw=innerW();
@@ -450,11 +459,11 @@ else if(dn[3]=='x')Close('popup');
 else if(dn[3]=='xb')cltog(dn[2]);//close tog
 else if(dn[3]=='xc')clpop();//autoclose togbub
 else if(dn[3]=='exs')exs=[];//artlive2()
-//else if(dn[3]=='u'){updateurl(dn[4],val.replace('_u_','__'));}
+//else if(dn[3]=='u'){updateurl(dn[4],val.replace('_u_','__'));}//see after
 else if(dn[3]=='jx'){Close('popup'); jumpvalue(dn[4],dn[5]);}
+else if(dn[3]=='xk')falseClose('trkdsk');//o.parentNode
 else if(dn[3]=='xx')setTimeout(function(){Close('popup')},2000);
 else if(dn[3]=='xd')setTimeout(function(){falseClose(dn[0])},1000);
-else if(dn[3]=='xk')falseClose('trkdsk');//o.parentNode
 else if(dn[3]=='xr')setTimeout(function(){poprepos()},1000);
 else if(dn[3]=='tg'){var op=active(dn[2]); if(op==0)Close(dn[0]);}
 else if(dn[3]=='head'){var da=dn[1].split(','); ajaxcall('',da[0]+',head',[dn[4],dn[5]],[],'head');}

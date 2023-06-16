@@ -64,11 +64,11 @@ if(!$r)$r=['','','',$id];
 return $r;}
 
 static function kit($f,$id){
-$http='http://newsnet.ovh'; if(host()==$http)return;
+$proxy='newsnet.ovh';
+$http=http($proxy); if(host()==$http)return;
 if(substr($f,0,7)=='youtube')$u=strend($f,'=');
-$u='http://newsnet.ovh/call/yt,build/'.str_replace('/','|',$u);
-//$u=$http.'/call/yt,build/'.$f.'/'.$id;
-$u='http://logic.ovh/api/web/p1:'.segment($f,'=','&');
+$u=$http.'/call/yt,build/'.str_replace('/','|',$u);
+//$u='http://logic.ovh/api/web/p1:'.segment($f,'=','&');
 if(auth(6))echo $u.' ';
 $d=file_get_contents($u);
 $r=json_decode($d,true);

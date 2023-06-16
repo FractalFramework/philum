@@ -34,7 +34,7 @@ if(is_array($rc)){//version
 	$nurl=$url.$b.$d.$p.'_#'; $bt=self::lnk($rs,$nurl,$tb,'');
 	if($bt)$rt['version']=$bt;}
 foreach($rt as $k=>$v)$ret.=divc('cell',$v);
-return divc('table nbp',$ret);}
+return divc('table menu',$ret);}
 
 static function menusj($ra){$top='d';//rstr(69)?'':'d';
 [$b,$d,$p,$t,$ver,$def]=ses('murl'); $ret='';
@@ -144,9 +144,9 @@ $r=msql::modif($dir,$node,$prm,$rg);
 geta('def',$rg);
 return self::editable($id,$r);}
 
-static function msqldel($id,$va){
-[$dir,$node]=self::node_decompil($id);
-$r=msql::modif($dir,$node,$va,'del');
+static function msqldel($id,$k){
+[$dr,$nod]=self::node_decompil($id);
+$r=msql::delrow($dr,$nod,$k);
 return self::editable($id,$r);}
 
 static function msqldisplace($id,$va,$prm){$to=$prm[0]??'';
@@ -428,7 +428,7 @@ if($o)copy($u,$ub); else rename($u,$ub);
 return [$dr,$nd];}
 
 static function deltable($dr,$nd,$o=0){
-$u=msql::url($dr,$nd,$o); unlink($u);}
+msql::del($dr,$nd,$o);}
 
 static function import_keys($r,$d){
 [$a,$b]=split_one('/',$d,1); $rb=msql::read_b($a,$b);
@@ -735,7 +735,7 @@ if(!$def && auth(6)){
 		if(auth(6)){//($base=='system' or $hub=='public') && 
 			$rt[]=self::opbt('renove',$jurl,['renove','import from '.prms('srvmirror')]);
 			$rt[]=self::opbt('resav',$jurl,['resav','resav']);}
-	if($rt)$ret['l1']=divc('nbp',join(' ',$rt)); $rt=[];
+	if($rt)$ret['l1']=divc('menu',join(' ',$rt)); $rt=[];
 	#-util
 	if($table && $authorized && $hub && $is_file){
 		$rt[]=lj('active','popup_msqa,editmsql___'.$jurl.'_*',$lh[1][0]);
@@ -757,7 +757,7 @@ if(!$def && auth(6)){
 		$rt[]=self::opbt('average',$jurl,$lh[45],1);
 		//$rt[]=self::opbt('connexions',$jurl,$lh[47],1);
 		$rt[]=self::opbt('friends',$jurl,$lh[46],1);
-		$ret['l2']=divc('nbp',join(' ',$rt)); $rt=[];
+		$ret['l2']=divc('menu',join(' ',$rt)); $rt=[];
 		if($base!='system' && is_file(self::sesm('root').'system/'.$node.'.php'))
 			$rt[]=self::opbt('update',$jurl,$lh[26]);
 		$rt[]=self::opbt('sort_table',$jurl,$lh[19],1);
@@ -774,7 +774,7 @@ if(!$def && auth(6)){
 		if(auth(6))$rt[]=self::opedt('export_mysql',$jurl,$lh[42],1);
 		$rt[]=lj('txtx','popup_msql___lang_helps_msql','?');
 		if(auth(6))$rt[]=self::opedt('backup_msql',$jurl,$lh[43],1);}
-	if($rt)$ret['l3']=divc('nbp',join(' ',$rt)); $rt=[];}
+	if($rt)$ret['l3']=divc('menu',join(' ',$rt)); $rt=[];}
 #-infos
 if($table && $is_file){
 	$rt[]=lkc('',$lk,$murl);
@@ -791,7 +791,7 @@ if($table && $is_file){
 	if($is_file)$rt[]=btn('txtsmall2',fsize($basename.'.php',1)).' - ';
 	$rt[]=btn('txtsmall2',ftime($basename.'.php'));
 	$rt[]=self::search($murl);
-	if($rt)$ret['l4']=divc('nbp',join(' ',$rt)); $rt=[];}
+	if($rt)$ret['l4']=divc('menu',join(' ',$rt)); $rt=[];}
 #render
 if($defs && !get('def')){
 $out=divd('admsql',self::draw_table($defs,$murl,''));
