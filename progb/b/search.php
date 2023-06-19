@@ -201,14 +201,14 @@ if($rech && is_http($rech)){$id=sql('id','qda','v',['mail'=>$rech]); if($id)retu
 //if(is_numeric($rech) && strpos($rech,'.')===false && $rech<=$maxid)$load[abs($rech)]=1;
 if(is_numeric($rech)){$id=sql('id','qda','v',$rech); if($id)return popart($id);}
 //if(is_numeric($rech) && $rech<=$maxid)return art::playb($rech,3);
-elseif($rech && strpos($rech,',') && strpos($rech,':')){
+elseif($rech && strpos($rech,':') && strpos($rech,',')){
 	$ra=explode_k($rech,',',':');
 	foreach($ra as $k=>$v)//{//inform motor
 		if($k=='search' or $k=='')self::$rp['search']=$v;
 		//if($k=='cat')self::$rp['cat']=$cat='+'.str_replace('|','~+',$v);
 		//if($k=='tag')self::$rp['tag']=$tag='+'.str_replace('|','~+',$v);}
 	//self::$rp['nodig']=1; 
-	$ra['idlist']=1; $ra['lang']=$lng; $ra['dig']=$n; 
+	$ra['idlist']=1; $ra['dig']=$n; //$ra['lang']=$lng;
 	if($t)$ra['title']=self::$rp['search']; $ra['nbyp']='10000';//tip
 	$ra=api::defaults_rq($ra,['pg'=>1]); if($ra)$load=api::callr($ra);}
 elseif(!empty($_SESSION['recache'][$vrf])){$load=$_SESSION['recache'][$vrf]; $cac=$vrf;}

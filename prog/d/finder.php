@@ -77,7 +77,7 @@ return is_array($r)?$r:[];}
 static function distrib_virtual_dir(){$rc=[]; $dr='users'; $nd='shared';
 $ra=msql::choose($dr,'',$nd); $n=count($ra);
 for($i=0;$i<$n;$i++)if(isset($ra[$i])){
-	$r=msql_read($dr,$ra[$i],'',1); $r=self::unset_nofile($r);
+	$r=msql::read($dr,$ra[$i],1); $r=self::unset_nofile($r);
 	if($r)$rc=array_merge($rc,$r);}
 return $rc;}
 
@@ -87,7 +87,7 @@ if($r){$ra[msql::$m]=['url','vurl']; $ra+=$r;
 msql::modif($dr,$nod,$ra,'arr');}}
 
 static function shared_files(){
-$r=msql_read('',nod('shared'),'',1); $rb=self::unset_nofile($r);
+$r=msql::kv('',nod('shared'),'',1); $rb=self::unset_nofile($r);
 if(count($r)>count($rb))msql::modif('',nod('shared'),$rb,'arr');
 $_SESSION['curdir']=$rb;}
 
@@ -96,7 +96,7 @@ $_SESSION['curdir']=msql::modif('',nod('shared'),[$d,$p],$b,$h,$b=='del'?$p:0);
 self::distrib_share();}
 
 static function share_rename($d,$old){$h=['url','vurl']; 
-$r=msql_read('',nod('shared'),'');
+$r=msql::kv('',nod('shared'),'');
 if($r)foreach($r as $k=>$v){$ret[$k]=[str_replace($old,$d,$v[0]),$v[1]];}
 $_SESSION['curdir']=msql::modif('',nod('shared'),$ret,'mdf',$h,'');
 self::distrib_share();}
@@ -109,8 +109,8 @@ if(strpos($h,'.')!==false)return msqa::import_json($u);}
 static function shared($p,$rb){//select
 if(substr($p,0,1)=='/')$p=substr($p,1).'/'; $o=$rb[2]=='real'?0:1;
 if($rb[1]=='distant')$r=self::fdistant($p);
-elseif($rb[1]=='global')$r=msql_read('server','shared_files','',1);
-else $r=msql_read('',nod('shared'),'',1);//$_SESSION['curdir'];
+elseif($rb[1]=='global')$r=msql::read('server','shared_files',1);
+else $r=msql::read('',nod('shared'),1);//$_SESSION['curdir'];
 if($r)$r=self::virtual_array($r,$o);
 $r=self::select_subarray($p,$r,$o);
 return $r;}
@@ -125,7 +125,7 @@ return self::distant($_SESSION['prmb'][24],'addserver',$_SERVER['HTTP_HOST']);}
 
 static function dist_list(){$h=$_SERVER['HTTP_HOST'];
 $rt=self::distant($_SESSION['prmb'][24],'getservers','=');
-$r=explode(';',$rt); $cur=''; $ret=''; //$r=msql_read('server','shared_servers','',1); 
+$r=explode(';',$rt); $cur=''; $ret=''; //$r=msql::kv('server','shared_servers','',1); 
 if($r)foreach($r as $k=>$v){if($v==$h)$cur='ok';
 	if($v)$ret.=divc('fipop',lj('popbt','fndr_finder,home___'.$v.'_auto',$v));}
 if(!$cur)$ret.=blj('','fisrv','finder,dist*reg',self::pic('register')).' ';

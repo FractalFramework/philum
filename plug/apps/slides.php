@@ -21,7 +21,7 @@ $ret=$bt.div(atc('book').ats('display:flex; min-height:300px; width:94%;'),$cell
 return $ret;}
 
 static function build($p,$rid){if(!$p)$p=1;
-$r=msql::read_b('',nod(ses('nodslid')),'',1,['val']);
+$r=msql::read('',nod(ses('nodslid')),1,['val']);
 $ret=self::slide($r,$p,$rid);
 $bt=self::menu($p,'',$rid);
 return $bt.$ret;}

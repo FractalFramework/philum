@@ -115,10 +115,10 @@ return $ret;}
 
 //read
 static function pictosys($d){$nm='?time='.randid();
-return imgico('/imgb/icons/system/philum/16/'.$d.'.png'.$nm,$nm,4,root());}//'../'
+return imgico('/imgb/icons/system/philum/16/'.$d.'.png'.$nm,4,$nm);}
 
 static function read(){$id=randid();
-$r=msql::read('system','program_icons','',1); ksort($r);
+$r=msql::read('system','program_icons',1); ksort($r);
 if($r)foreach($r as $k=>$v){$im=self::pictosys($k).' ';
 	//self::graphics($v,16,16,'../imgb/icons/system/philum/16/'.$k.'.png');
 	$ret[]=lj('','popup_icons,edit__js_'.$k,$im.$k).br();}

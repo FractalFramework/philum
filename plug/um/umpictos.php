@@ -4,7 +4,7 @@ static function ex($p){
 return span(att($p),oomo($p,32));}
 
 static function all(){
-$r=msql::read('system','edition_pictos_2','',1);
+$r=msql::read('system','edition_pictos_2',1);
 if($r)foreach($r as $k=>$v)$rb[]=[$k,self::ex($k),$v[1]];
 return tabler($rb);}
 

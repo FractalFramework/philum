@@ -68,8 +68,8 @@ function rolloverimg($a,$b){
 return taga('img',['src'=>$a,'onmouseover'=>'this.src=\''.$b.'\'','onmouseout'=>'this.src=\''.$a.'\'']);}
 function etc($d,$n=400){if($d)return mb_substr(hed($d),0,$n).(mb_substr($d,$n)?'...':'');}
 function gridpos($d){$r=explode('-',$d); return 'grid-row:'.$r[0].'; grid-column:'.$r[1].';';}
-function btim($d,$w='',$h=''){$j=str_replace('_','*',$d).'_'.$w.'_'.$h; $rot=root(); $s=$rot?'':'/';
-return lj('','popup_usg,overim___'.$j,img($rot.$s.$d,$w));}
+function btim($d,$w='',$h=''){$j=str_replace('_','*',$d).'_'.$w.'_'.$h;
+return lj('','popup_usg,overim___'.$j,img('/'.$d,$w));}
 
 //ff
 function bj($c,$j,$v,$o=''){if(ses('dev')=='b')$o.=att($j);
@@ -357,9 +357,9 @@ return $rt;}
 
 function utf_r($r){$rt=[];
 if(is_array($r))foreach($r as $k=>$v){
-	$kb=$o?utf8dec($k):toutf8($k); $k=$kb?$kb:$k;
+	$kb=toutf8($k); $k=$kb?$kb:$k;
 	if(is_array($v))$rt[$k]=utf_r($v);
-	else $rt[$k]=$o?utf8dec($v):toutf8($v);}
+	else $rt[$k]=toutf8($v);}
 return $rt;}
 
 #unicode
@@ -424,6 +424,9 @@ function array_combine_sub($a,$b){$rb=[];//bar_org
 foreach($a as $k=>$v)if(!isset($b[$k]))$rb[$k]=$v; return $rb;}
 function array_merge_b($ra,$rb){$a=is_array($ra)?1:0; $b=is_array($rb)?1:0;
 if($a && $b)return array_merge($ra,$rb); elseif($b)return $rb; else return $ra;}
+function array_diff_r($ra,$rb){$rt=[]; foreach($ra as $k=>$v){$ma=implode('',$v);
+	if(isset($rb[$k])){$mb=implode('',$rb[$k]); if($ma!=$mb)$rt[$k]=$v;} else $rt[$k]=$v;}
+return $rt;}
 function array_merge_r($a,$b){$n=count($a);
 foreach($b as $k=>$v)if(!$a[$k])$a[$k]=$v; return $a;}
 function array_append($r,$rb){foreach($r as $k=>$v){$vb=$rb[$k]; $n=count($vb);

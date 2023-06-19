@@ -46,13 +46,13 @@ static function reimport(){
 }
 
 static function toyandex($p){$qb=ses('qb'); ses('trn','trans');
-$r=explore(root().'msql/users','files',1); $n=count($r);
+$r=explore('/msql/users','files',1); $n=count($r);
 for($i=0;$i<$n;$i++){$rb=preg_split("/[_\.]/",$r[$i]);
 	if($rb[2]!='sav' && $rb[3]!='sav')
 		if($rb[0]==$qb && $rb[1]=='trans' && $rb[2])$rc[]=$rb[2];}
 //pr($rc);
 foreach($rc as $k=>$v){
-	$rd=msql::read('users',nod('trans_'.$v),'','1'); //p($rd);
+	$rd=msql::read('users',nod('trans_'.$v),'1'); //p($rd);
 	foreach($rd as $kb=>$vb){$hash=md5($vb); $lg=substr($kb,0,2);
 		$ex=sql('id','trn','v','ref="art'.$v.'" and lang="'.$lg.'"','');
 		if(!$ex)sql::sav('trn',['art'.$v,$hash,$vb,$lg]);}}
@@ -61,7 +61,7 @@ foreach($rc as $k=>$v){
 static function lang_es(){$lg=ses('lang');
 $nod='admin_restrictions';
 //require('msql/lang/fr/helps_nominations.php');
-$r=msql::read_b('lang/fr',$nod,'',''); //pr($r);
+$r=msql::read('lang/fr',$nod);
 $rk=array_keys($r);
 foreach($r as $k=>$v)$rb[]=(is_array($v)?implode('(cl)',$v):$v); //pr($rb);
 $doc=implode("(nl)",$rb); $ref=substr('msq'.$nod,0,11);
@@ -130,7 +130,7 @@ return implode(' ',array_keys($r));
 static function patchweb(){
 $r=msql::choose('',ses('qb'),'web'); pr($r);
 foreach($r as $k=>$v){
-$rb=msql::read('',nod('web_'.$v),''); pr($rb);
+$rb=msql::read('',nod('web_'.$v)); pr($rb);
 }
 return $ret;}
 

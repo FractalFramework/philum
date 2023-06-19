@@ -607,7 +607,7 @@ $rb[$n]['orb']=str_replace(array('<br />'."\n",'<br>'),'-',$orb);
 return $rb;}
 
 static function home($p,$o){
-$r=msql::read('','public_atomic_2','');
+$r=msql::read('','public_atomic_2');
 $ra=self::spi_r(); pr($ra);
 $rb=self::spi_rb(); pr($rb);
 foreach($r as $k=>$v)if($k!=msql::$m){

@@ -5,7 +5,7 @@ static function img($f,$n){$w=cw();
 [$n,$na]=explode('-',$n); $sdj='sdjp'.$na;
 if(is_numeric($n))$_SESSION[$sdj]=$n;
 elseif($n=='next')$_SESSION[$sdj]++; elseif($n=='prev')$_SESSION[$sdj]--;
-$ra=msql::read('gallery',$f,''); 
+$ra=msql::read('gallery',$f); 
 if($ra){unset($ra[msql::$m]); $ra=msql::reorder($ra); $nb=max(array_keys($ra));}
 if($_SESSION[$sdj]>$nb)$_SESSION[$sdj]=1;
 if($_SESSION[$sdj]<1)$_SESSION[$sdj]=$nb;
@@ -52,7 +52,7 @@ $j='sdj'.$na.'_sliderJ,img___'.ajx($f,'').'_';
 return $ret.br();}
 
 static function home($f,$id,$o){$w=cw(); static $i; $i++; 
-$r=msql::read('gallery',$f,'');
+$r=msql::read('gallery',$f);
 if($o){self::js($f,$i); $ret=self::thumbs($r,$f,$i);}
 //else $ret.=self::nav($i,$f,$r);
 if($r)$ret.=divd('sdj'.$i,self::img($f,'1-'.$i));

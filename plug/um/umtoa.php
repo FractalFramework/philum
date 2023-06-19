@@ -3,7 +3,7 @@ class umtoa{
 static $clr=['#ffffff','#ff0000','#0000ff','#ffff00','#00ff00','#00ffff','#ff9900','#cccccc','#666666','#000000'];
 
 static function toa(){
-$r=msql::read('','ummo_umtoa_1','','1'); //p($r);
+$r=msql::read('','ummo_umtoa_1','1'); //p($r);
 if($r)foreach($r as $k=>$v){[$aeon,$xee]=explode('-',$v[0]); $ra[$aeon][$xee]=$v[1];}
 if($ra)ksort($ra); $nn=0;
 if($ra)foreach($ra as $k=>$v){ksort($v); foreach($v as $ka=>$va)$rb[]=[$k,$ka,$va];}

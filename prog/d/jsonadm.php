@@ -35,9 +35,9 @@ if($r)foreach($r as $k=>$v)
 	else $ret[$k][]=$v;
 return tabler($ret);}
 
-static function read($dr,$nod,$rid=''){//chrono();
-$r=json::read($dr,$nod);//echo chrono('json'); echo '-'.fsize($b->f,1);
-//$q=msql::read($dr,$nod); //echo chrono('msql');
+static function read($dr,$nod,$rid=''){
+$r=json::read($dr,$nod);
+//$q=msql::read($dr,$nod);
 if($r)$bt=self::stats($r); else $bt='';
 $bt.=lj('','nav'.$rid.'_json,del___'.$dr.'_'.ajx($nod),picto('del'));
 if($r)$r=array_reverse($r);

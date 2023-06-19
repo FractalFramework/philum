@@ -274,7 +274,7 @@ $r=msql::goodtable_b($com); $bt=msqbt($b,$nd).csvfile($com,$r);
 if(is_array($r))return self::msqplay($r,$o).$bt; else return $r;}
 
 static function msqtwit($d,$id){
-$r=msql::read_b('',$d,'',1); $rb=[]; $img='';
+$r=msql::read('',$d,1); $rb=[]; $img='';
 if($r)foreach($r as $k=>$v){
 	$im=img::make_thumb_c($v[5],'48/48',1); if($im)$img='[img:var]'; else $img='[[img:var]:distimg]';
 	$rb[$k]=['img'=>$im?$im:$v[5],'name'=>$v[2],'screen'=>$v[1],'txt'=>stripslashes($v[4])];}
@@ -438,7 +438,7 @@ static function jukebox($f,$m,$id){[$f,$t]=cprm($f);
 if($m<3)return lj('','popup_mk,jukebox___'.ajx($f).'_3',pictxt('music',$t?$t:'Jukebox'));
 $r=explore('users/'.$f); $ret=''; $rb=[];
 if($r)foreach($r as $k=>$v)$rb[ftime('users/'.$f.'/'.$v)]=$v; if($rb)krsort($rb);
-if($rb)foreach($rb as $k=>$v)$ret.=lj('','juke'.$id.'_call___pop_audio_'.ajx('users/'.$f.'/'.$v).'|'.ajx($v).'_'.$id,ascii('speaker').' '.$v);//pictxt('music',$v)
+if($rb)foreach($rb as $k=>$v)$ret.=lj('','juke'.$id.'_usg,audio___'.ajx('users/'.$f.'/'.$v).'|'.ajx($v).'_'.$id,ascii('speaker').' '.$v);//pictxt('music',$v)
 $bt=divd('juke'.$id,audio('users/'.$f.'/'.$r[0],$id,$r[0]));
 return $bt.divc('list',$ret);}
 

@@ -29,7 +29,7 @@ $ret.=self::content('url',$url,$date,$freq,$prio);}
 return self::head('urlset',$ret);}
 
 static function call($hub){
-$r=msql::read('users',$hub.'_cache','',1);
+$r=msql::read('',$hub.'_cache',1);
 if($r)return self::build($r);}
 
 static function robots($r){$rt=[];

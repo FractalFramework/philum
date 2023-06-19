@@ -32,7 +32,7 @@ static function call($p,$o){
 $id=$p?$p:ses('read');
 $d=sql('suj','qda','v','id='.$id);
 $vrf=between($d,'[',']'); $ret='';
-$r=msql::read('',nod('es_3'),'');
+$r=msql::read('',nod('es_3'));
 $r=msql::tri($r,0,$vrf); if($r)$r=current($r);
 if(!isset($r[0]))return;
 if(!empty($r[1])){

@@ -27,7 +27,7 @@ return $ret;}
 //plug
 //0:usage/1:dir/2:loadable/3:callable/4:interface/5:state/6:private
 static function plug($dr){$qb=ses('qb'); $ath=auth(6); $dr=strprm($dr);
-$r=msql::read('system','program_plugs','','1');
+$r=msql::read('system','program_plugs','1');
 foreach($r as $k=>$v){//if($v[2])//loadable //if($v[3])//callable //if($v[4])//interface
 	if(!$v[5] or $ath)//state
 	if(substr($v[1],0,6)!='system')//sys
@@ -154,10 +154,10 @@ return self::msql($cat,$dir,$nod,$tabl);}
 static function msql_fast($r,$cat){$qb=ses('qb');
 $r[]=['backoffice','linkt','','/msql/users','','',$cat,'link'];
 $r[]=['popup','ajax','popup','msql___users_'.ses('qb'),'','',$cat,'window'];
-$r[]=[$qb,'ajax','bubble','bubs,root','msql','',$cat.'/'.$qb,''];
+$r[]=[$qb,'ajax','bubble','bubs,call','msql','',$cat.'/'.$qb,''];
 if(auth(6)){
-$r[]=['system','ajax','bubble','bubs,root','msql','',$cat.'/system',''];
-$r[]=['helps','ajax','bubble','bubs,root','msql','',$cat.'/helps',''];}
+$r[]=['system','ajax','bubble','bubs,call','msql','',$cat.'/system',''];
+$r[]=['helps','ajax','bubble','bubs,call','msql','',$cat.'/helps',''];}
 return $r;}
 
 #admsq
@@ -208,9 +208,9 @@ if($va<=$_SESSION['auth'])$ret[$k][$ka]=$va;
 $_SESSION['admath']=$ret; return $ret;}
 
 static function fastmenu(){//$arw=rightarrow();$arw.
-$r=msql::kv('lang','admin_menus',1); $ret='';
-foreach($r as $k=>$v)$ret.=popbub('admin',$k,mimes($k).'&nbsp;'.$v,'',1);
-return $ret;}
+$r=msql::kv('lang','admin_menus',1); $rt=[];
+foreach($r as $k=>$v)$rt[]=popbub('admin',$k,mimes($k).'&nbsp;'.$v,'',1);
+return join('',$rt);}
 
 //login
 static function exec($d){
@@ -239,7 +239,7 @@ return $ret;}
 //desk
 //'button','type','process','param','option','condition','root','icon','hide','private'
 static function menubub($d,$n){//root,action,type,button,icon,auth
-$r=msql::read('',nod('menubub_'.($n?$n:'1')),'',1); $ret=[];
+$r=msql::read('',nod('menubub_'.($n?$n:'1')),1); $ret=[];
 if($r)foreach($r as $k=>$v){//if(strpos($v[0],$d)!==false)
 	[$v0,$v1,$v2,$v3,$v4,$v5]=arr($v,6);
 	$bt=$v[3]?$v[3]:$v[1];
@@ -266,8 +266,8 @@ return $ret;}
 static function adm_user_fast(){
 if(ses('USE'))$ret=popbub('user','',mimes('login').'&nbsp;'.ses('USE'),'',1);
 return $ret;}
-static function adm_user(){$rb=msql::read('system','default_apps_user','',1);
-$r=msql::read_b('system','default_apps','',1); $r=self::r_apps_cond('user'); if($r)$r=$rb+$r;
+static function adm_user(){$rb=msql::read('system','default_apps_user',1);
+$r=msql::read('system','default_apps',1); $r=self::r_apps_cond('user'); if($r)$r=$rb+$r;
 if(ses('USE'))$r=unsetk($r,'login',0); else $r=unsetk($r,'logout',0);
 return $r;}
 
@@ -325,7 +325,7 @@ $ret[]=['backoffice','link','blank','/admin/msql','','','Microsql','link'];
 $ret[]=['hub','ajax','popup','msql___users_'.ses('qb'),'','','Microsql','window'];
 if(auth(6))$ret[]=['lang','ajax','popup','msql___lang','','','Microsql','window'];
 if(auth(6))$ret[]=['system','ajax','popup','msql___system','','','Microsql','window'];
-$r[]=[ses('murl'),'ajax','bubble','bubs,root','msql','',ses('murl'),''];
+$r[]=[ses('murl'),'ajax','bubble','bubs,call','msql','',ses('murl'),''];
 foreach($r as $k=>$v){if($k==$dir)foreach($v as $ka=>$va){$t=$rm[$ka]??$ka;
 	if($k!='Microsql')$ret[]=[$t,'ajax','popup','admin___'.ajx($ka),'','',$k,mime($ka)];
 	else $ret[]=[$t,'ajax','popup','msql___users_'.ses('qb').'_'.$ka,'','',$k,'window'];}}
@@ -367,29 +367,31 @@ if($rb)$ret=implode('',$rb);
 return $ret;}
 
 //rooter
-static function r_apps_cond($d){$r=msql::read_b('',nod('apps'),'',1); $ret=[];
+static function r_apps_cond($d){$r=msql::read('',nod('apps'),1); $ret=[];
 if($r)foreach($r as $k=>$v)if($v[5]==$d){$v[5]=''; $ret[$k]=$v;} return $ret;}
 
 static function r_apps_home($o){
-$r=msql::read_b('system','default_apps_home','',1); if($o)return $r; 
+$r=msql::read('system','default_apps_home',1); if($o)return $r; 
 $rb=self::r_apps_cond('home'); if(!rstr(56))$r=unsetk($r,'hubs',0);
 //if(!rstr(48))$r=unsetk($r,'boot',6);
 return array_merge_b($rb,$r);}
 
-static function root($d,$dir='',$n=''){$r=[];
-switch($dir){//pre-rendered, intercepte navigation
-case('batch'):return sav::batch('','c');break;
-case('fastmenu'):return self::fastmenu();break;
-case('fastmenu2'):return adm::fastmenu(1);break;
-case('search'):return search_btn();break;
-case('addart'):return self::addart_btn();break;
-case('ucom'):return self::ucom_btn();break;
-case('arts'):return self::adm_arts_fast(); break;
-case('user'):return self::adm_user_fast(); break;
-case('exec'):return self::exec($d); break;
-case('hubs'):$r=self::hubs_fast(); break;
-case('bub'):$r=self::slct($d); break;}
+static function call($d,$dir='',$n=''){
+$ret=match($dir){//pre-rendered, intercepte navigation
+'batch'=>sav::batch('','c'),
+'fastmenu'=>self::fastmenu(),
+'fastmenu2'=>adm::fastmenu(1),
+'search'=>search_btn(),
+'addart'=>self::addart_btn(),
+'ucom'=>self::ucom_btn(),
+'arts'=>self::adm_arts_fast(),
+'user'=>self::adm_user_fast(),
+'exec'=>self::exec($d),
+default=>''};
+if($ret)return $ret;
 $r=match($d){
+'hubs'=>self::hubs_fast(),
+'bub'=>self::slct($d),
 'home'=>self::r_apps_home(0),
 'adhome'=>self::r_apps_home(1),
 'admin'=>self::adm_admin($dir),
@@ -403,7 +405,7 @@ $r=match($d){
 'msql'=>self::msql_dir($dir),
 'admsq'=>self::admsq($dir),
 //'admsqb'=>self::admsq_b($dir),
-'table'=>msql::read('',nod($dir),'',1),
+'table'=>msql::read('',nod($dir),1),
 'lang'=>self::langs(),
 'timetravel'=>self::timetravel(),
 'dev'=>self::dev(),

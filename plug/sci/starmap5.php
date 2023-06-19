@@ -215,9 +215,9 @@ if($rb[$k]['hip']=='0'){$rb[$k]['status']='galaxy'; $rb[$k]['star']='Galactic Ce
 return $rb;}*/
 
 static function build($p,$o){$ra=[];
-$ra=msql::read('','ummo_exo_5','',1); $pb=$p;
+$ra=msql::read('','ummo_exo_5',1); $pb=$p;
 if($p=='knownstars')$pb=implode(',',array_keys_r($ra,8));
-if($p=='allstars'){$rb=msql::read('','ummo_exo_stars','',1);
+if($p=='allstars'){$rb=msql::read('','ummo_exo_stars',1);
 	$ra=array_merge($ra,$rb); $pb=implode(',',array_keys_r($ra,8));}
 $sq=star::sq($pb);
 $r=star::build($sq,1); //pr($r);

@@ -2,7 +2,7 @@
 class umnote{
 
 static function r(){
-return msql::read('users',ses('umncnod'),'',1);}
+return msql::read('',ses('umncnod'),1);}
 
 static function umnr(){$r=self::r();
 foreach($r as $k=>$v)$rb[$v[0]]=$v[0]; sort($rb);

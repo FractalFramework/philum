@@ -17,7 +17,7 @@ return $rb;}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
-$r=msql::read('','public_atomic','',1);
+$r=msql::read('','public_atomic',1);
 if($p)$rb=self::console($p); //p($r);
 if($p)return self::build($r,$rb);}
 

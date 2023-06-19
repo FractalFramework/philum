@@ -127,7 +127,7 @@ return $atr.$rect.$t;}
 
 //build
 static function build($p,$o){//$o=0;
-$r=msql::read('','public_atomic','',1);
+$r=msql::read('','public_atomic',1);
 if(!$o)$o=self::$mode;
 $w=1000; $h=600*self::$ratio; $sz=$w.'/'.$h;
 $bt=self::nav($p,$o,'spl');

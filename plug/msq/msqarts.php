@@ -86,7 +86,7 @@ return $ret;}
 //
 static function home($p,$o){$rid='plg'.randid(); //if(!$p)$p='Oyagaa Ayoo Yissaa';
 $nod=self::name($p);
-msql::read('',$nod,'','',['id','suj','msg']);
+msql::read('',$nod,'',['id','suj','msg']);
 $bt=self::menu($p,$o,$rid); $ret=self::call($p,$o);
 //$bt.=msqbt('',$nod);
 return $bt.divd($rid,$ret);}

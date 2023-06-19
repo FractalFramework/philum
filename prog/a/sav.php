@@ -23,7 +23,7 @@ if(!self::$er){$d=html_entity_decode($d);
 	if(rstr(129))$lg=trans::detect($suj); if($lg==ses('lng'))$lg='';
 	$rw=[$ib,$name,$mail,$dt,$qb,$frm,$suj,$re,0,$img,$thm,$sz,$lg];
 	$nid=sqlsav('qda',$rw,0); if($nid)$nib=sql::savi('qdm',[$nid,$d],0);
-	if($nid && $nib!=$nid)translate::repair($id);}
+	if($nid && $nib!=$nid)transart::repair($id);}
 vacses($urlsrc,'u','x');
 if($nid){$rc=[$dt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$urlsrc,$ib,$re,$lg];
 	codeline::parse($d,$nid,'savimg');
@@ -245,11 +245,6 @@ $d=delnl($d);
 $d=self::modif_art($id,$d);
 return ma::read_msg($id,$prw);}
 
-#visitor
-static function bckread($id,$idb){
-$r=msql_read('',nod('backup_'.$id),$idb); $txt=is_array($r)?$r[1]:$r;
-return conn::read($txt,3,$id);}
-
 #vacuum
 static function find_vaccum($n){$i=0; foreach($_SESSION['vac'] as $k=>$v){$i++; if($i==$n)return $k;}}
 static function newartcatset($n,$d){$u=self::find_vaccum($n); $_SESSION['vac'][$u]['c']=$d;}
@@ -330,7 +325,7 @@ if($id)break; elseif($f && !vacses($f,'u')){$fb=vacurl($f);
 $_SESSION['vac'][$fb]=['t'=>$suj,'d'=>$dat,'u'=>$f];}}}
 
 static function batchfbi(){$ret=hlpbt('rssurl_1').br();
-$r=msql::read('',nod('rssurl'),'',1); $r=msql::tri($r,3,1);
+$r=msql::read('',nod('rssurl'),1); $r=msql::tri($r,3,1);
 if($r)foreach($r as $k=>$v)self::batchprep($v[0]);
 return self::batch('','in');}
 
@@ -342,7 +337,7 @@ return tagb('section',tagb('h1',$t).tagc('article','justy',$d));}
 static function batchpreview($f,$sug='',$prm=[]){$f=$prm[0]??$f; $d=''; $t='';
 $f=trim($f); $fb=http($f); ses::$urlsrc=$fb; $ret='';
 if($f){[$t,$d]=conv::vacuum($fb); vacses($fb,'t',$t);} if(!$d)$d='nothing';
-if($sug){$r=msql::read('',nod('suggest'),$sug); [$day,$ok,$url,$mail,$t,$d,$iq]=$r;}
+if($sug){$r=msql::row('',nod('suggest'),$sug); [$day,$ok,$url,$mail,$t,$d,$iq]=$r;}
 $d=str::embed_links($d); $d=str::add_nbsp($d);//?why is needed?
 $d=conn::read($d,'','test');$ti=tagb('h2',$t);
 ses::$r['sugm']=$sug; $rid=randid('btch');

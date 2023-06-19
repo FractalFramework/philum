@@ -56,15 +56,6 @@ $ret.=divb(textarea($rid,$d,$w,$h,['class'=>'console']+$js));
 return $ret;}
 
 #msql
-function msql_read($dr,$nod,$in='',$u=''){$f=msql::url($dr,$nod); $m=msql::$m; $r=[];//old
-if(is_file($f))include $f; if(!isset($r)){alert('msq_er:'.$f);return;} if($u)unset($r[$m]);
-unset($r[0]); $r0=current($r); if(!$r0)$r0=next($r); $n=is_array($r0)?count($r0):0;
-if($r)foreach($r as $k=>$rb)foreach($rb as $kb=>$vb)$r[$k][$kb]=stripslashes_b($vb);
-if($in){if(!isset($r[$in]))return; if($u=='k')return $r[$in]; elseif($n==1)return $r[$in][0];
-	elseif(isset($r[$m]))return array_combine_a($r[$m],$r[$in]); else return $r[$in];}
-elseif($n==1 && $u!='k')foreach($r as $k=>$v)$r[$k]=$v[0]??'';
-return ($r);}//utf_r
-
 function pub($d){return 'public_'.$d;}
 function nod($d){return $_SESSION['qb'].'_'.$d;}
 function msqbt($b,$p,$d=''){if($d)return msqedt($b,$p,$d);
@@ -97,8 +88,8 @@ $j='popup_usg,dropmenupop__bt'.$rid.'_'.ajx(addslashes($pr)).'_'.$id.'_'.$rid.'_
 return lj('',$j,$t?$t:'...',atd('adcat'.$rid)).hidden($id,$t).btd('bt'.$rid,'');}
 function jumpmenu($pr,$id,$t){$j='tg'.$id.'_usg,jumpmenu___'.ajx($pr).'_'.$id.'_'.ajx($t);
 return toggle('popbt',$j,btd('bt'.$id,$t?$t:'...'),'',atd('a'.$id)).hidden($id,$t).btd('tg'.$id,'');}
-function toggle($c,$j,$v,$n='',$o=''){static $i; $i++; if($n=='x')$i=0;
-return ljb($c,'tog_j',[$j.'_'.$i,'bt'.$i,$n],$v,atd(strto($j,'_').'bt'.$i).$o);}
+function toggle($c,$j,$v,$n='',$o=''){static $i; $i++; if($n=='x')$i=0; //$j.='_'.$i;
+return ljb($c,'tog_j',[$j,'bt'.$i,$n],$v,atd(strto($j,'_').'bt'.$i).$o);}
 function ljtog($c,$j,$jb,$v,$o=''){$rid=randid('bt');
 return ljb($c,'tog_jb',[$j,$jb,$rid],$v,atd($rid).$o);}
 function lj_tog($n,$d,$v){return toggle('txtx',$n.$d.'_'.$n.'___'.$d,$v).btd($n.$d,'');}//unused
@@ -106,10 +97,10 @@ function bubble($c,$ja,$j,$v){$id=randid();
 return lj($c,'bubble_'.$ja.'__'.$id.'_'.$j,$v,atd('bt'.$id));}
 function popbub($d,$j,$v,$c='',$o=''){$id=randid();//apps+dir or call+predir//j=pre-rendered
 if(rstr(102) && !rstr(69))return panup($d,$j,$v,$c);
-if($d=='call' or $c)$id=($c?$c:'c').$id; $j='bubble_bubs,root__'.$id.'_'.$d.'_'.$j;
+if($d=='call' or $c)$id=($c?$c:'c').$id; $j='bubble_bubs,call__'.$id.'_'.$d.'_'.$j;
 return llj('',$j,$v,'bb'.$id,$o);}
 function panup($d,$j,$v,$c){$id=randid();
-if($d=='call' or $c)$id=($c?$c:'c').$id; $j='panup_bubs,root__'.$id.'_'.$d.'_'.$j;
+if($d=='call' or $c)$id=($c?$c:'c').$id; $j='panup_bubs,call__'.$id.'_'.$d.'_'.$j;
 return llj('',$j,$v,'bb'.$id,'');}
 function togbub($ja,$j,$v,$c='',$o='',$a=''){$id=randid();//bub from j
 return btd('bt'.$id,ljb($c,'togglebub',$ja.'__'.$id.'_'.$j,$v,$o,$a));}//.'_1'
@@ -179,7 +170,7 @@ $hid='bt'.$id; $j=$id.'_'.$f.'_'.ajx($v).'_'.ajx($o);
 return lj('txtx'.$c,'popup_chkj_'.$id.'_'.$hid.'_'.$j,$t,atd($hid)).$h;}
 
 #roots
-function root($d=''){return (is_dir('plug')?'':'/').$d;}//used by rss
+function groot($d=''){return (is_dir('plug')?'':'/').$d;}//used by rss
 function htac($d){return prms('htacc')?'/'.$d.'/':'/?'.$d.'=';}
 function htacc($d){return prms('htacc')?'/':'/?'.$d.'=';}//read/id
 function urlread($d){return prms('htacc')?'/'.$d:'/?read='.$d;}//read
@@ -193,12 +184,12 @@ function prep_host($nod){if(prms('sbdm'))return subdomain($nod);
 else return host().htac('hub').$nod;}
 function contact($t,$c){return lj($c,'popup_tracks,form___'.ses('qb'),$t?$t:picto('mail'));}
 
-function jcim($f,$o=''){$h=$o?host().'/':'';//root()
+function jcim($f,$o=''){$h=$o?host().'/':'';
 if(substr($f??'',0,4)!='http')return $h.(strpos($f??'','/')!==false?'users/':'img/');}
 function gcim($im,$o=''){return jcim($im,$o).$im;}
 
 function goodroot($f,$h=''){//jcim()
-if($h==1)$h=host().'/'; elseif($h)$h=http($h).'/'; //else $h=root();
+if($h==1)$h=host().'/'; elseif($h)$h=http($h).'/';
 if(substr($f,0,4)=='http')return $f;
 elseif(substr($f,0,1)=='/')return substr($f,1);
 elseif(substr($f,0,3)=='../')return $f;
@@ -350,12 +341,12 @@ function setlng($p){if($p && $p!='all')return $p; $lg=$_SESSION['lng']; return $
 function voc($d,$b='helps_voc'){$r=sesmk('msqlang',$b,0); return $r[$d][0]??$d;}
 
 //sesmk
-function msqlang($d){return msql::read('lang',$d,0,1);}
+function msqlang($d){return msql::read('lang',$d,1);}
 function usrconn(){return msql::kv('',nod('connectors_1'));}
 function scanplug(){return explore('plug','dirs',1);}
-function emoj(){return msql::kv('system','edition_pictos_4','',1);}
-function conns(){return msql::read('system','connectors_basic','',1);}
-function connlg(){return msql::kv('lang','connectors_basic','',1);}
+function emoj(){return msql::kv('system','edition_pictos_4',1);}
+function conns(){return msql::read('system','connectors_basic',1);}
+function connlg(){return msql::kv('lang','connectors_basic',1);}
 
 //mimes
 function msqmimes(){return msql::kv('system','edition_mimes');}
@@ -366,7 +357,7 @@ if($ta && $ta!='less')$t=$ta; if(!$t)$t='file'; if($t)return picto($t,$sz);}
 function conn_ref_in(){
 return [':h',':h1',':h2',':h3',':h4','h5',':c',':b',':u',':i',':q',':s',':k',':e',':n',':stabilo',':pre',':code',':nh',':nb',':list',':numlist',':table',':center','video','iframe'];}
 function conn_ref_out(){return sesmk('conn_ref','',0);}
-function conn_ref(){return array_keys(msql_read('system','connectors_all',''));}
+function conn_ref(){return msql::rk('system','connectors_all');}
 
 #ajax
 function ajx($v,$p=''){#dont edit!
@@ -389,7 +380,7 @@ function preplink($u){$u=nohttp($u); $pos=strpos($u,'/',1);
 if($pos===false)$pos=strpos($u,'.'); return substr($u,0,$pos);}
 function prepdlink($d){[$p,$o]=cprm($d);
 if(!$o or $o==$p)$o=domain($p); return [$p,$o];}
-function flags(){$r=msql::read('system','edition_flags_8','',1);
+function flags(){$r=msql::read('system','edition_flags_8',1);
 foreach($r as $k=>$v)$ret[$v[2]]=$v[1]; return $ret;}
 function flag($d){$r=sesmk('flags','',0); return $r[$d]??$d;}
 function svg($f,$w='',$h=''){return taga('img',['src'=>$f.'.svg','width'=>$w,'height'=>$h?$h:$w]);}
@@ -426,6 +417,8 @@ function unpack_conn($d){$r=split_right(':',$d,1);//p|o:c
 $p=split_one('|',$r[0],1); return [$p[0],$p[1],$r[1]];}
 function unpack_conn_b($d){$r=split_right(':',$d,1);//p:c|b:c2//clbasic,menusj
 $p=split_right('|',$r[0],1); return [$p[0],$p[1],$r[1]];}
+function unpack_conn_c($d){$r=split_right('|',$d,1);//p|o:c|b//appbt
+$p=split_right(':',$r[0],1); $c=split_right('|',$p[0],1); return [$c[0],$c[1],$p[1],$r[1]];}
 function unpack_mod($d){$r=split_right('|',$d,1);//p:c|o
 $p=split_right(':',$r[0],1); return [$p[0],$p[1],$r[1]];}
 function subparams($d){[$p,$v]=cprm($d);//p1/p2|p

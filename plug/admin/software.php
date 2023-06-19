@@ -10,7 +10,7 @@ $r=explode('/',$f); if($r[0]!='params')
 return base64_encode(file_get_contents($f));}
 
 static function patch($p=''){$ret='';
-$r=msql::read('system','program_patches','',1);
+$r=msql::read('system','program_patches',1);
 $rb=msql::col('server','program_patches',0,1);
 if($r)foreach($r as $k=>$v)if(!val($rb,$k))$ret.=lj('','popup_software,patch___'.$k,$k);
 if($ret)$ret=btn('txtyl','patch needed: '.$ret);
@@ -24,7 +24,7 @@ static function tabler($r){
 return divc('scroll',tabler($r[0],['updated']).tabler($r[1],['created']).tabler($r[2],['deleted']));}
 static function details(){$r=json::read('srv','upd'); if($r)return self::tabler($r);}
 static function rapport($r){return lj('txtalert','updb_pubdate,call',count($r[0]).' files updated, '.count($r[1]).' files created, '.count($r[2]).' files deleted');}
-static function notes(){$r=msql::read('system','program_updates_'.date('ym'),'',1);
+static function notes(){$r=msql::read('system','program_updates_'.date('ym'),1);
 $r=array_reverse($r); return tabler($r);}
 
 static function state($p=''){$ret='';

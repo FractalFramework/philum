@@ -16,7 +16,7 @@ return $ret;}
 
 static function home($p,$o){
 $rid='plg'.randid(); $p=$p?$p:'msqads'; $o?$o:1; $nod=nod($p.'_'.$o);
-$rb=['day','quest','resp']; $r=msql::read('',$nod,'','',$rb);
+$rb=['day','quest','resp']; $r=msql::read('',$nod,'',$rb);
 $ret=lj('popsav',$rid.'_msqads,call_'.implode(',',$rb).'__'.$p.'_'.$o,'save');
 $ret.=msqbt('',$nod).br();
 $ret.=input($rb[0],date('ymd')).br();

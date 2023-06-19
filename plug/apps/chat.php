@@ -1,7 +1,7 @@
 <?php //chat
 class chat{
 static function data($p){;
-return msql::read_b('',nod('chat_'.$p),'',1,['time','name','msg']);}
+return msql::read('',nod('chat_'.$p),1,['time','name','msg']);}
 
 static function erz($p,$erz){$nod=ses('qb').'_chat_'.$p;
 msql::modif('',$nod,$erz,'del'); return self::read($p);}

@@ -164,8 +164,8 @@ return $ret.divd('cr2bn',self::wordstobin('','',[$p]));}
 //search
 static function search($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o); $enc=self::encode($p); $rb=[]; $ret='';
-$r=msql::read('',nod('carbin'),'',1); //pr($r);
-foreach($r as $k=>[$v])if($n=substr_count($v,$enc))$rb[$k]=$n; //pr($rt);
+$r=msql::read('',nod('carbin'),1);
+foreach($r as $k=>[$v])if($n=substr_count($v,$enc))$rb[$k]=$n;
 foreach($rb as $k=>$v)$ret.=divb(lj('','b2d_bincode,bin2txt___'.$k.'_'.$enc,pictxt('view',$k.' ('.$v.')')));
 $ret.=divd('b2d','');
 return divb('bincode: '.$enc).divb(count($rb).' articles').$ret;}

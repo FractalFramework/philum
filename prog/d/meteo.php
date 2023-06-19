@@ -71,7 +71,7 @@ return $ret;}
 static function build($p,$o){$ret='-'; $day=date('ymdH');
 $insee=$p?$p:cookie('insee'); if(!$insee)$insee=75101;//92012
 $rh=['day','insee','res']; $d=''; $r=[];
-$r=msql::read('',nod('meteo_1'),$insee,'',$rh);
+$r=msql::mul('',nod('meteo_1'),$insee,'',$rh);
 if(!empty($r[0]) && $r[0]==$day)$d=$r[1]??'';
 $f='http://logic.ovh/api/meteo/uid:13,insee:'.($p?$p:$insee);
 if(!$d){$d=get_file($f); if($d)$r=json_decode($d,true); if(!is_array($r)){$d=''; $r=[];}

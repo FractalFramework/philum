@@ -22,14 +22,14 @@ msql::modif('',$nod,$k,'del');
 return self::call($p,$rid);}
 
 static function id($p){$nod=nod('proposal');
-$r=msql::read_b('',$nod,'',1,['usr','tit','day']);
+$r=msql::read('',$nod,1,['usr','tit','day']);
 if($r)$k=in_array_r($r,$p,1);
 if(!$k)$r=msql::push('',$nod,[cookie('use'),$p,date('ymd')]);
 if($r)$k=in_array_r($r,$p,1);
 return $k;}
 
 static function t($k){$nod=nod('proposal');
-if($k)$r=msql::read_b('',$nod,$k);
+if($k)$r=msql::row('',$nod,$k);
 if(isset($r))return $r[1]??'';}
 
 static function save($p,$o,$res){
@@ -69,7 +69,7 @@ if(strpos($o,';')){$ro=explode(';',$o); $o=$ro[0]; $ord=$ro[1];}
 $bt=lj('',$o.'_proposal,call___'.$p.'_'.$o,self::t($p));
 if(auth(4))$bt.=lj('',$o.'_proposal,home____'.$o,picto('back'));
 $ret=divc('txtcadr',$bt);
-if($p)$r=msql::read('',nod('proposal_'.$p),'',1,['name','txt','date']);//p($r);
+if($p)$r=msql::read('',nod('proposal_'.$p),1,['name','txt','date']);//p($r);
 //if($ord==2)$r=msql::order($r,2);
 $ret.=self::build($p,$o,$ord,$r);
 return $ret;}
@@ -91,7 +91,7 @@ return div('',$ret);}
 
 static function stream($p,$rid){
 $b='proposal'; $nod=nod($b); $rt=[];
-$r=msql::read_b('',$nod,'',1,['usr','tit','day']);
+$r=msql::read('',$nod,1,['usr','tit','day']);
 if($r)foreach($r as $k=>$v)$rt[]=lj('popbt',$rid.'_proposal,call___'.$k.'_'.$rid,$v[1]);
 if($rt)return divc('list',implode($rt));}
 

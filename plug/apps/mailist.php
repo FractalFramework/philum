@@ -16,14 +16,14 @@ class mailist{
 'adios_mail'=>'clic this link to confirm unsubscribe');*/
 
 static function ra(){$defsb[msql::$m]=['name','re','date','ip','id'];
-return msql::read_b('',nod('mails'),'','',$defsb);}
-static function rb(){return msql::read('',nod('mails'),'');}
+return msql::read('',nod('mails'),'',$defsb);}
+static function rb(){return msql::read('',nod('mails'));}
 static function rm($r,$d){msql::modif('',nod('mails'),$r,$d);}
 static function rs($r){msql::save('',nod('mails'),$r);}
-static function mailvoc(){return msql::read('lang','helps_newsletter','');}
+static function mailvoc(){return msql::read('lang','helps_newsletter');}
 
 /*static function upgrade($p){//patch
-$r=msql::read('',ses('qb').'_mails','');
+$r=msql::read('',ses('qb').'_mails');
 if($r)foreach($r as $k=>$v){if(substr($v[0],0,1)=='_' && !$v[4])$upg=1;}
 if($p==1 && $upg)return lj('txtx','popup_maillist,upgrade','upgrade');
 elseif($upg){foreach($r as $k=>$v){

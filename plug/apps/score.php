@@ -9,7 +9,6 @@ foreach($r as $k=>$v){foreach($v as $ka=>$va)$rb[$ka][$k]=$va;}
 return $rb;}
 
 static function build($ra,$cat){$limit='limit 10000';
-//$r=msql::read_b('',nod(self::$a.'_1'));//p($r);
 $qda=db('qda'); $add=db('qdd'); $qdf=db('qdf'); $qdt=db('qdt'); $qdta=db('qdta');
 foreach($ra as $k=>$v){switch($k){
 //case('cat'):$r[$k]=sql('id','qdk','kv','frm="'.$v.'"'); break;

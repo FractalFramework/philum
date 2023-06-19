@@ -8,9 +8,9 @@ msql::modif('',nod('test_1'),$r,'one','',$p);
 return $t.mod::call($res.':'.$p);}
 
 static function mod($p,$o){
-$r=msql::read_b('system','admin_modules','',1);//p($r);
-$rh=msql::read_b('lang','admin_modules','',1);
-$rb=msql::read_b('',nod('test_1')); $ret=[];
+$r=msql::read('system','admin_modules',1);//p($r);
+$rh=msql::read('lang','admin_modules',1);
+$rb=msql::read('',nod('test_1')); $ret=[];
 $t=divc('txtcadr',count($r).' modules');
 foreach($r as $k=>$v){
 	$rid=str::normalize('prm'.$k); $j='popup_test,playmod_'.$rid.'_3_'.ajx($k);
@@ -23,9 +23,9 @@ msql::modif('',nod('test_2'),[$res],'one','',$p);
 return $t.conn::read('['.$res.':'.$p.']');}
 
 static function conn($p,$o){
-$r=msql::read_b('system','connectors_all','',1);
-$rh=msql::read_b('lang','connectors_all','',1);
-$rb=msql::read_b('',nod('test_2')); $i=0;
+$r=msql::read('system','connectors_all',1);
+$rh=msql::read('lang','connectors_all',1);
+$rb=msql::read('',nod('test_2')); $i=0;
 foreach($r as $k=>$v)if(substr($k,0,1)!=':' && !$v[1]){$tst=valr($rb,$k,0); $i++;
 	if(!$tst)$tst=between($rh[$k][0],'[',':'); 
 	$rid=str::normalize('prm'.$k); $j='popup_test,playconn_'.$rid.'__'.ajx($k);

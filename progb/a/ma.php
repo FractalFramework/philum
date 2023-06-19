@@ -100,7 +100,7 @@ msql::modif('',nod('cache'),$v,'val',$n,$id);}
 
 static function readcache(){
 if(rstr(140))return $_SESSION['rqt'];
-return msql::read('',nod('cache'),'',1);}
+return msql::read('',nod('cache'),1);}//teststripslashes
 static function readcacherow($id){
 if(rstr(140)){$r=$_SESSION['rqt'][$id]??[]; if($r)return $r;}
 return msql::row('',nod('cache'),$id,0);}

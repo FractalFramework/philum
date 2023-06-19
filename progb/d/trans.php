@@ -268,11 +268,16 @@ static function callin($p,$o,$prm=[]){
 //return self::call($txt,$setlg='',$edt='');
 return self::read($txt,'',$to,'plain');}
 
+static function callr($r,$lg,$lga=''){
+$d=implode_k($r,n(),'#');
+$d=self::read($d,$lga,$lg,'');
+return explode_k($d,n(),'#');}
+
 static function menu($p){
 $rid=randid('yd');
 $ret=textarea('txt',$p);
 $ret.=select('lng',['en','es','fr','it','de'],'vv');
-$ret.=lj('popbt',$rid.'_trans,callin_txt,lng_1',nms(153).' '.self::$motor);//translate
+$ret.=lj('popbt',$rid.'_trans,callin_txt,lng_1',nms(153).' '.self::$motor);
 $ret.=lj('popbt',$rid.'_trans,detect_txt_1','detection');
 $ret.=lj('popbt',$rid.'_trans,getlangs','langs');
 return $ret.divd($rid,'');}

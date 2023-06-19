@@ -41,7 +41,6 @@ else $d=self::sections($r,$n,$w,$clr,$bdr);
 return $d;}
 
 static function build($p,$o){
-//$r=msql::read_b('',nod('hexagon_1'));//p($r);
 if(strpos($o,';'))[$n,$w,$h,$sz]=opt($o,';',2);
 $w=640; $h=$w; $n=10; $sz=300;
 //$r=self::hexa($n,$w/2,$h/2,sz);

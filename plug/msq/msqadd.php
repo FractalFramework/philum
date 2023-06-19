@@ -9,7 +9,7 @@ $bt=msqbt('users',$nod);
 return $bt.self::call($p);}
 
 static function call($p){
-$r=msql::read('',nod($p),'',1);
+$r=msql::read('',nod($p),1);
 return tabler($r,1,1);}
 
 static function home($p,$o){$p=$p?$p:'1';

@@ -13,7 +13,7 @@ return $ret;}
 
 static function build($p,$o){
 $rh=explode(',',$o);
-$r=msql::read('',nod($p),'','',$rh);
+$r=msql::read('',nod($p),'',$rh);
 $murl=msqa::murl('users','',ses('qb'),$p,'');
 $url=msqa::sesm('murl',$murl);
 if($r)return msqa::draw_table($r,$url,'');}

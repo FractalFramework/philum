@@ -97,7 +97,7 @@ $ret.=self::levels($p);
 return divc('nbp',$ret).br();}
 
 static function build($p){$p=$p?$p:118;
-$r=msql::read('','public_atomic','');
+$r=msql::read('','public_atomic');
 [$ra,$n]=self::subring($r,[],[],1,1,0,$p); //pr($ra);
 return self::nav($p).self::mktable_empty($ra);}//divs('overflow-y:auto;',)
 

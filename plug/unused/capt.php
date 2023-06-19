@@ -89,7 +89,7 @@ $n=count($rb);
 return $rb;}
 
 static function build($p,$o){
-//$r=msql::read_b('',nod('capt_1'));//p($r);
+//$r=msql::read('',nod('capt_1'));
 $f='https://www.societe.com/cgi-bin/liste?nom=&dirig=&pre=&ape='.$p.'&dep='.$o;//4637z//
 $r=self::read($f);
 msql::save('',nod('capt_'.$p.'-'.$o),$r,'');

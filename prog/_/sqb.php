@@ -17,9 +17,10 @@ static function qrr($r){return $r->fetchAll(PDO::FETCH_BOTH);}
 static function qra($r){return $r->fetchAll(PDO::FETCH_ASSOC);}
 static function qrw($r){return $r->fetchAll(PDO::FETCH_NUM);}
 static function qr($sql,$z=''){$qr=self::rq();
-try{return $qr->query($sql);}catch(Exception $e){self::$er['er']=$z.' //'.$e->getMessage();}}
+try{return $qr->query($sql);}catch(Exception $e){self::$er['er']=$sql.' //'.$e->getMessage();}}
 
-static function format($r,$p){$rt=[];
+static function format($r,$p){
+$rt=[];  if($p=='v')$rt='';
 foreach($r as $k=>$v)switch($p){
 	case('a'):$rt=$v; break;//assoc
 	case('w'):$rt=$v; break;//num
@@ -55,6 +56,10 @@ foreach($r as $k=>$v){
 	elseif($c=='%'){$rb[]=$kb.' like :'.$kb.''; $rt[$kb]='%'.$v.'%';}
 	elseif($c=='-'){$rb[]='substring('.$kb.',1,1)!=:'.$kb.''; $rt[$kb]=$v;}
 	elseif($c=='&'){$rb[]=$kb.' between :'.$kb.'0 and :'.$kb.'1'; $rt[$kb.'0']=$v[0]; $rt[$kb.'1']=$v[1];}
+	elseif($c=='('){foreach($v as $ka=>$va)$rta['in'.$ka]=$va; $rt+=$rta;
+		$rb[]=$kb.' in (:'.implode(',:',array_keys($rta)).')';}
+	elseif($c==')'){foreach($v as $ka=>$va)$rta['nin'.$ka]=$va; $rt+=$rta;
+		$rb[]=$kb.' not in (:'.implode(',:',array_keys($rta)).')';}
 	else{$rb[]=$k.'=:'.$k; $rt[$k]=$v;}}
 $q=implode(' and ',$rb); if($q)$q='where '.$q; if($w)$q.=$w;
 return [$rt,$q];}
@@ -82,8 +87,8 @@ $ok=$stmt->execute();//try{}catch(Exception $e){echo self::$er['er']=$e->getMess
 return $stmt;}
 
 static function read($d,$b,$p,$r,$z=''){
-[$r,$q]=self::where($r); $rt=[];
-$sql='select '.$d.' from '.$b.' '.$q; self::$sq=$sql; if($z)echo $sql;
+[$r,$q]=self::where($r); $rt=[]; if($p=='v')$rt='';
+$sql='select '.$d.' from '.$b.' '.$q; self::$sq=$sql; //if($z)echo $sql;
 $stmt=self::prep($sql,$r);
 $rt=self::fetch($stmt,$p);
 if($p)$rt=self::format($rt,$p);
@@ -99,19 +104,19 @@ return $rt;}
 
 static function sav1($b,$r,$z=''){$rt=[];
 $cols=implode(',',array_keys($r)); $vals=self::mkv($r);
-$sql='insert into '.$b.' ('.$cols.') value ('.$vals.')'; if($z)echo $sql;
+$sql='insert into '.$b.' ('.$cols.') value ('.$vals.')'; //if($z)echo $sql;
 $stmt=self::prep($sql,$r);
 return self::$qr->lastInsertId();}
 
 static function sav($b,$r,$z=''){$rt=[];
 $ra=self::cols3($b); array_unshift($r,NULL); $r=array_combine($ra,$r);
-$sql='insert into '.$b.' value ('.self::mkv($r).')'; if($z)echo $sql;
+$sql='insert into '.$b.' value ('.self::mkv($r).')'; //if($z)echo $sql;
 $stmt=self::prep($sql,$r);
 return self::$qr->lastInsertId();}
 
 static function upd($b,$ra,$rb,$z=''){$rt=[];
 $vals=self::mkvk($ra); [$r,$q]=self::where($rb);
-$sql='update '.$b.' set '.$vals.' '.$q; if($z)echo $sql;
+$sql='update '.$b.' set '.$vals.' '.$q; //if($z)echo $sql;
 $stmt=self::prep($sql,$ra+$rb);
 return $stmt?1:0;}
 

@@ -6,7 +6,7 @@ if($r)foreach($r as $k=>$v)if($v[0]==$d)return true;}
 
 static function sav($rid,$var2,$prm=[]){
 $nod=$_SESSION['sppnod'];
-$r=msql::read('users',$nod,'');
+$r=msql::read('users',$nod);
 $rb=$prm; $nb=count($rb);
 for($i=0;$i<$nb;$i++){$rb[$i]=ajx($rb[$i],1);}
 if(self::verif($r,$rb[0])!=true){if(count($r)==1)$r[1]=$rb; else $r[]=$rb;
@@ -30,13 +30,13 @@ elseif($ok=='no')return true;}
 
 static function poll($k,$p){
 $nod=$_SESSION['sppnod'];
-$r=msql::read('users',$nod,'');
+$r=msql::read('users',$nod);
 if($p==1)$r[$k][1]+=1; else $r[$k][1]-=1;
 if($k && !self::verifuser($k,$p))msql::save('',$nod,$r);
 return $r[$k][1];}
 
 static function read($k){
-$r=msql::row('',$_SESSION['sppnod'],$k,1); //p($r);
+$r=msql::row('',$_SESSION['sppnod'],$k,1);
 unset($r['projet']); unset($r['poll']);
 return on2cols($r,500,5);}
 
@@ -53,7 +53,7 @@ return btn('txtred',$k.' deleted');}
 
 static function table($rid){
 $dfb[msql::$m]=['projet','poll']; $ret='';
-$r=msql::read('',$_SESSION['sppnod'],'',1);//p($r);
+$r=msql::read('',$_SESSION['sppnod'],1);
 if($r){$ra=array_keys_r($r,1); arsort($ra);
 foreach($ra as $k=>$v){
 $bt=lj('txtbox','ob'.$k.','.$rid.'_superpoll,poll___'.$k.'_0','-').' ';

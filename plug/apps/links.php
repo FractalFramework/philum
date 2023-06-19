@@ -1,7 +1,7 @@
 <?php //links
 class links{
 static function all(){
-$r=msql::read('','public_defcons','',1); $r=array_keys($r); sort($r);
+$r=msql::read('','public_defcons',1); $r=array_keys($r); sort($r);
 return implode(br(),$r);}
 
 static function home(){$rb=[]; $ret='';

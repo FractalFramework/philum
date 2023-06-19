@@ -4,7 +4,7 @@ static $a=__CLASS__;
 static $default='';
 
 static function build($p,$o){
-//$r=msql::read_b('',nod(self::$a.'_1'));//p($r);
+//$r=msql::read('',nod(self::$a.'_1'));
 $ret=$p.'-'.$o;
 return $ret;}
 

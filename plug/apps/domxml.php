@@ -117,7 +117,7 @@ foreach($r->childNodes as $k=>$v){
 		}}
 return $ret;}
 
-//$r=msql::read_b('',nod('dom_1'));//p($r);
+//$r=msql::read('',nod('dom_1'));//p($r);
 static function build($f,$o){
 //self::test();
 //echo $f='https://fr.dompedia.org/wiki/'.$p;

@@ -363,7 +363,7 @@ if($r)$tags=slctmnu($r,htac('rub_tag'),get('rub_tag'),'active','','k');
 return divc('nbp',$tags);}
 
 static function apichan($p,$t,$o,$tp){if(!$p)$p=1; $ret='';
-$r=msql::read('',nod('apichan_'.$p),'',1);//api,button,icon,color,hide
+$r=msql::read('',nod('apichan_'.$p),1);//api,button,icon,color,hide
 if($r)foreach($r as $k=>$v)if(!$v[4])$ret.=lj('','apichan_api___'.ajx($v[0]),pictxt($v[2],$v[1],36),ats('background-color:#'.$v[3]));
 return divc('apichan',$ret).divd('apichan','');}
 

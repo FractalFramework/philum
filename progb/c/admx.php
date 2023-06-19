@@ -29,7 +29,7 @@ return console::block($block);}
 
 #config_mod
 static function user_mods(){$rt=[];
-$r=msql::read('',nod('modules'),'',1);
+$r=msql::read('',nod('modules'),1);
 if($r)foreach($r as $k=>$v)$rt[$k]=[$k,1];
 return $rt;}
 
@@ -61,7 +61,7 @@ return $ret;}
 
 static function mod_edit($p,$o,$id=''){
 $ret=btn('txtcadr','command-line').' ';
-$rb=msql::read('system','admin_modules','',1); 
+$rb=msql::read('system','admin_modules',1); 
 foreach($rb as $k=>$v){if($v[0]!='system')$ra[$k]=$k;}
 $ret.=btn('txtsmall2','module: ');
 $ret.=select(['id'=>'sdx'],$ra,'kk','moded_admx,modEditSav_sdx__'.$o.'__'.$id.'_',);
@@ -84,8 +84,8 @@ static function mps($ka,$vl,$va){if($ka==$va)return;
 static function deft(){
 	msql::copy('users',ses('qb').'_apps','users',ses('qb').'_apps_sav');
 	msql::copy('system','default_apps_users','users',ses('qb').'_apps');}
-static function locapps($p='',$n=''){return msql_read('',nod('apps'),$p,$n);}//optional n?
-static function modsmenu($id,$v){$r=msql::read('system','admin_modules','',1); 
+static function locapps($p='',$n=''){return msql::mul('',nod('apps'),$p,$n);}//optional n?
+static function modsmenu($id,$v){$r=msql::read('system','admin_modules',1); 
 	$rb=self::user_mods(); if($rb)$r+=$rb; ksort($r); $rt=implode(' ',array_keys($r)); 
 	return dropmenu($rt,$id,$v,'1');}
 static function sbmpos($ka,$id){$r=self::locapps('',1); $ret='';
@@ -109,10 +109,10 @@ static function sbmrev($m){echo btn('frame-blue','empty table '.$m.': default co
 	return msql::copy('system','default_apps'.$m,'users',ses('qb').'_apps');}
 static function sbmove($d){$r=self::locapps(); $ra=$r[$d-1]; $r[$d-1]=$r[$d]; $r[$d]=$ra;
 	return msql::modif('',ses('qb').'_apps',$r,'mdf','','');}
-static function sbmpct($d){$r=msql::read('system','edition_pictos','',1); $ret='';
+static function sbmpct($d){$r=msql::read('system','edition_pictos',1); $ret='';
 	foreach($r as $k=>$v)$ret.=lj('','___jx_'.$d.'_'.$k,picto($k,24)).' ';
 	ses::$r['popw']=320; ses::$r['popt']='pictos'; return $ret;}
-static function pictodrop($id){$r=msql::read('system','edition_pictos','',1);
+static function pictodrop($id){$r=msql::read('system','edition_pictos',1);
 	$vals=implode(' ',array_keys($r)); return dropmenu($vals,$id,'pictos','1');}
 
 static function submds($d,$id,$o,$ob,$prm){$r=[];
@@ -134,7 +134,7 @@ return self::desktop($id,$ob,'',$r);}
 	$top.=lj(active($d,'desk'),'popup_submds__x_home_'.$id.'_sbmadd','home').' ';
 	$top.=lj(active($d,'desk'),'popup_admx,sbmadd__x_desk_'.$id,'desk').' ';
 	$top.=lj(active($d,'dev'),'popup_admx,sbmadd__x_dev_'.$id,'dev').' ';
-	$r=msql::read_b('system','default_apps'.$ver,'',1); if($r)$ra=msql::cat($r,1,1);
+	$r=msql::read('system','default_apps'.$ver,1); if($r)$ra=msql::cat($r,1,1);
 	if($ra)foreach($ra as $va){$bt=picto('file',32).$va;
 		$rb[$va][]=lj('sicon','popup_admx,sbmadc__x_'.$va.'_'.$id,$bt).' ';
 		foreach($r as $k=>$v){$bt=picto($v[7],32).$v[0];
@@ -143,7 +143,7 @@ ses::$r['popw']=320; ses::$r['popt']=nms(92).' Apps';
 return $top.tabs($rb).divc('clear','');}
 
 static function sbmedt($p,$id,$cnd){$rid=randid(); $r=self::locapps($p);
-if($r['type']=='mod')$arb=msql::read('system','admin_modules',$r['process']);
+if($r['type']=='mod')$arb=msql::row('system','admin_modules',$r['process']);
 $rh=msql::row('system','admin_tools',$r['type']); $ri=[]; $rb=[]; $ret=''; //pr($r);
 foreach($r as $k=>$v){$ri[]=$k.$rid; $hk=$rh[$k]??'';
 if($hk!='0'){
@@ -186,8 +186,8 @@ $top.=msqbt('',ses('qb').'_'.$m).' ';
 if(rstr(61) && $m=='apps')$top.=hlpbt('apps','alert');
 $top.=msqbt('system','default_apps').' ';
 $top.=lj('txtsmall2','popup_admin___apps_1','sys').' ';
-if($sys)$r=msql::read_b('system','default_apps','',0);
-elseif(!$r)$r=msql::read('',nod($m),'',0);
+if($sys)$r=msql::read('system','default_apps');
+elseif(!$r)$r=msql::read('',nod($m));
 if(!$r)$r=self::sbmrev('');
 //$ar[]=['','button','root','type','condition',nms(105)];
 foreach($r as $k=>$v)if(($cnd && strpos($v[5],$cnd)!==false) or !$cnd){
@@ -210,12 +210,12 @@ ses::$r['popw']=460; ses::$r['popt']='Apps';
 return self::desktop('','');}
 
 static function deskcall($nod,$cnd){
-$r=msql::read_b('',$nod,'',0);
+$r=msql::read('',$nod);
 return self::desktop('',$cnd,'',$r);}
 
 #add_mod
 static function addmod($vl){$rm=[]; $rt=[];
-$r=msql::read('system','admin_modules','',1); $rb=array_keys($r);
+$r=msql::read('system','admin_modules',1); $rb=array_keys($r);
 foreach($r as $k=>$v)$rm[$v[0]][]=$k;
 $ru=self::user_mods(); $rm['user']=array_keys($ru);
 $ret=label('modbar','module','txtsmall'); ksort($rb);
@@ -228,7 +228,7 @@ if(!is_array($re))$re=['-'=>'-']; end($re); $pos=current($re);//select last
 $ret.=select(['id'=>'modpos','name'=>'pos'],array_flip($re),'kv',$pos).' ';*/
 $ret.=lj('popsav','mdls'.$vl.'_modsav_modbar,modcond_x_'.$vl.'__add',nms(92)).br().br();//,modpos
 $ret.=divc('imgr',hlpbt('modules'));
-$rh=msql::read('lang','admin_modules','');//help
+$rh=msql::read('lang','admin_modules');//help
 foreach($rm as $k=>$v)foreach($v as $ka=>$va){
 	$j='mdls'.$vl.'_modsav_modbar,modcond_x_'.$vl.'_'.ajx($va).'_add';//,modpos
 	$rt[$k][]=divc('panel',lj('popbt',$j,$va).' '.btn('txtsmall',$rh[$va][0]??''));}

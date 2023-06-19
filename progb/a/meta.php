@@ -90,6 +90,13 @@ $d=sql('msg','qdm','v',$id); $d=mc::add_anchors($d);
 if($d)sql::upd('qdm',['msg'=>$d],$id);
 return art::playd($id,$m);}
 
+static function addrelated($id,$o,$prm=[]){$rt=[];
+$d=sql('msg','qdm','v',$id); $p=$prm[0]??''; $rb=[]; if($p)$rb[]=$p;
+$b=codeline::parse($d,'','extractlnk'); $r=explode('|',substr($b,0,-1)); //pr($r);
+//$rd=sqb::read('id','art','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
+$rd=sql::read('id','qda','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd; //pr($rd);
+return implode(' ',$rb);}
+
 static function titedt($id,$m,$rch){$css='poph'; $ret='';
 $ra=sql('ib,day,name,nod,mail,suj,frm,img,thm,re,lg','qda','r',$id);
 [$ib,$day,$name,$hub,$src,$suj,$frm,$img,$url,$re,$lg]=$ra; if(!$lg)$lg=ses('lng');
@@ -101,8 +108,8 @@ $ret.=lj($css,'popup_tracks,form___'.$id,picto('forum'));
 //$ret.=lj($css,'popup_deploy,home___'.$id,picto('maillist'),att('deploy by mail list'));
 //if(auth(6) && $src)$ret.=lj($css,$id.'_sav,recapart___'.$id,picto('update'),att('backup+reimport'));
 //$ret.=toggle($css,'cbk'.$id.'_sav,reimportedt___'.$id.'_'.$m,picto('rollback'));
-$ret.=toggle($css,'cbk'.$id.'_translate,home___'.$id,picto('translate'));
-//$ret.=toggle($css,'cbk'.$id.'_translate,repair___'.$id,picto('tools'));//missing qdm
+$ret.=toggle($css,'cbk'.$id.'_transart,home___'.$id,picto('translate'));
+//$ret.=toggle($css,'cbk'.$id.'_transart,repair___'.$id,picto('tools'));//missing qdm
 //$ret.=toggle($css,'cbk'.$id.'_mails,sendart___'.$id,picto('mail'),'',att('send'));
 //$ret.=toggle($css,'cbk'.$id.'_few,exportation___'.$id.'_'.ses('qb'),picto('export'));
 //$ret.=lj($css,'art'.$id.'few,importation___'.$id.'_'.$m,picto('cycle'),att(':import'));
@@ -203,7 +210,7 @@ return div('',picto('language').' '.$ret);}
 static function autolang($id,$va){
 $lg=self::curlg($id); $ret='';
 $ret=sql('ib','qdd','v',['val'=>'lang'.$lg,'msg'=>$id]);
-if(!$ret){$r=sql('ib','qdd','rv','substring(val,1,4)=="lang" and msg="'.$id.'"');//jump to ref
+if(!$ret){$r=sql('ib','qdd','rv','substring(val,1,4)="lang" and msg="'.$id.'"');//jump to ref
 	if($r)foreach($r as $k=>$v)if(!$ret)$ret=self::autolang($v,$va);}
 if($ret)self::utag_sav($id,'lang'.$va,$ret);
 return $ret;}
@@ -226,19 +233,20 @@ $rd=valk($ra,$r);
 if($r)foreach($r as $k=>$v){$val=$rd[$v]; $hlp=''; $sid=str::normalize($v).$id;
 	if($v=='folder'){$rid='s'.$sid; $ret.=picto('virtual'); $hlp=btd($rid,'');
 	$ret.=toggle('poph',$rid.'_meta,virtualfolder___'.$id.'_folder',nms(73));}
-	if($v=='related'){$ret.=picto('file-chain').btn('poph',nms(138)); $hlp=hlpbt('meta_related');}
+	if($v=='related'){$ret.=picto('file-chain'); $hlp=hlpbt('meta_related');
+		$ret.=lj('poph',$sid.'_meta,addrelated_'.$sid.'__'.$id,nms(138),att('find related'));}
 	if($v=='agenda'){$rid='s'.$sid; $ret.=picto('time'); $hlp=btd($rid,'');
 	$ret.=toggle('poph',$rid.'_calendar,call_'.$sid.'_k__'.$sid,'Agenda');}
 	elseif($v=='password')$ret.=label($sid,'password','poph');
 	elseif($v=='lang'){$rl=[];
 		foreach($lgs as $lg2)$rl[]='lang'.$lg2.$id; $j=implode(',',$rl).'_meta,affectlangs___'.$id.'_'.$lg;
-		$ret.=picto('translate').lj('poph',$j,pictxt('enquiry',nms(163)));}
+		$ret.=picto('translate').lj('poph',$j,nms(163));}
 //$ret.=btn('',picto('valid').' '.nms(166));
 if($v=='authlevel'){$ret.=btn('txtx',$v).' '.jumpmenu('|1|2|3|4|5|6|7|8',$sid,$val,'1').' ';}
 //if($v=='authlevel'){$rp=explode('|','all|1|2|3|4|5|6|7|8'); $ret.=select(['id'=>$sid],$rp,'kv',$val).br();}
 elseif($v=='template'){$val=$val?$val:' '; $hlp=btd('tmp'.$id,'');
-	$tmpub=msql_read('','public_template','',1);
-	$tmprv=msql_read('',nod('template'),'',1);
+	$tmpub=msql::kv('','public_template','',1);
+	$tmprv=msql::kv('',nod('template'),'',1);
 	$arr=array_merge_b($tmpub,$tmprv); $arr[' ']=[''=>1];
 	$rp='|'.implode('|',array_keys($arr));
 	//$ret.=select(['id'=>$sid],$rp,'kv',$val);
@@ -279,7 +287,7 @@ elseif($v=='lang'){if($lgs){
 	$ret.=hlpbt('meta_lang');
 	$lang=$rd['lang'];}
 	$ret.=br();}
-else $ret.=inputb($sid,$val,'14','','255',['autocomplete'=>'off']).$hlp.ljb('poph','jumpvalue',[$sid,''],ascii(10006)).br();}
+else $ret.=inputb($sid,$val,'14','','255',['autocomplete'=>'off']).ljb('poph','jumpvalue',[$sid,''],ascii(10006)).$hlp.br();}
 return $ret;}
 
 //folder
@@ -635,7 +643,7 @@ $utags=self::catag(); $utags[]=ses('iq'); $utags[]='folders'; $ret='';
 $j=$rid.'_meta,admin*tags___';
 foreach($utags as $v)$ret.=lj(active($v,$cat),$j.ajx($v),is_numeric($v)?'usertags':$v).' ';
 $ret.=' | ';
-$ret.=lj(active($cat,'classes'),$j.'classes','classes');
+$ret.=lj(active($cat,'classes'),$j.'classes','classes').' ';
 $ret.=lj(active($cat,'translations'),$j.'translations',nms(153)).' ';
 $ret.=lj(active($cat,'synonyms'),$j.'synonyms',nms(192)).' ';
 $ret.=lj(active($cat,'clusters'),$j.'clusters','clusters').' ';
@@ -692,13 +700,13 @@ return $ret;}
 
 //tools
 static function tags2msql($cat,$lg){
-$rt=self::catag(); $rn=[]; $bt=''; $n=0; $ret=divc('txtcadr',nms(191));
+$rt=self::catag(); $rn=[]; $bt=''; $n=0; $ret=divc('txtcadr',nms(191)); $lga='fr';//ses('lng')
 foreach($rt as $k=>$v){$rn[$v]=$k+1; $bt.=lj(active($cat,$v),'tg2msq_meta,tags2msql___'.$v.'_'.$lg,$v).' ';}
-foreach(['fr','en','es'] as $k=>$v){$bt.=lj(active($lg,$v),'tg2msq_meta,tags2msql___'.$cat.'_'.$v,$v).' ';}
+foreach(self::langs() as $k=>$v){$bt.=lj(active($lg,$v),'tg2msq_meta,tags2msql___'.$cat.'_'.$v,$v).' ';}
 $ret.=divc('nbp',$bt); if(!$cat)return divd('tg2msq',$ret);
 $n=$rn[$cat];//auteurs thèmes pays type personnalité org corp
 $ra=sql('id,tag','qdt','kv',['cat'=>$cat],0);
-$rb=msql::kx('',nod('tags_'.$n.'fr'),0);
+$rb=msql::kx('',nod('tags_'.$n.$lga),0);
 $rc=array_diff_key($ra,$rb);
 $ret.=divc('txtcadr','newly added:'.count($rc));
 $nod=nod('tags_'.$n.$lg);
@@ -710,7 +718,8 @@ $re=array_diff_key($rb,$rd);
 $ret.=divc('txtcadr',$n.':'.count($rb).'-'.count($rd).'='.count($re));
 $ret.=msqbt('',$nod);
 if($re){$rt=[];
-	foreach($re as $k=>$v)if($v)$rt[$k]=trans::read($v,ses('lng'),$lg,'xml');
+	//foreach($re as $k=>$v)if($v)$rt[$k]=trans::read($v,$lga,$lg,'xml');
+	$rt=trans::callr($re,$lg,$lga);
 	$ret.=lj('popbt','tgtom_meta,cleanuptag___'.ajx($cat).'_'.$lg,'cleanup').' ';
 	$ret.=lj('popbt','tgtom_meta,addcsv_addcsv__'.ajx($nod).'_'.$lg,'inject').' ';
 	$ret.=lj('popbt','popup;msqa,editors;;;users/'.ajx($nod).';import_csv','open csv').br();

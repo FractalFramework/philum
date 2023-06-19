@@ -110,7 +110,7 @@ $r=sql('*','qdlk','','poll=1'); p($r);
 }
 
 function patch_fav(){
-$r=msql::read('',ses('qb').'_fav','','1'); p($r);
+$r=msql::read('',nod('fav'),'1'); p($r);
 foreach($r as $k=>$v){$rb=explode(' ',$v);
 	//foreach($rb as $vb)sql::sav('qdd',[$vb,'fav',$k]);
 	}

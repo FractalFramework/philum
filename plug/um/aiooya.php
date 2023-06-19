@@ -19,7 +19,7 @@ static function pattern_diff($ra,$rb,$door){$n=count($ra);
 for($i=0;$i<$n;$i++)if($door($ra[$i],$rb[$i]))return 0;}
 
 static function build($p,$o){
-//$r=msql::read('',nod('umnum'),$p);
+//$r=msql::row('',nod('umnum'),$p);
 $ra=[1,1,1,1,0,0,1];
 $rb=[0,0,0,1,1,1,0];
 $ra=['blue','red','green'];

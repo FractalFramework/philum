@@ -113,9 +113,9 @@ return $r;}
 
 static function build($p1,$p2,$ob){
 if(!$p1)$p1=self::$default;
-$ra=msql::read('','ummo_exo_5','',1); $pb=$p1;
+$ra=msql::read('','ummo_exo_5',1); $pb=$p1;
 if($p1=='knownstars')$pb=implode(',',array_keys_r($ra,8));
-if($p1=='allstars'){$rb=msql::read('','ummo_exo_stars','',1);
+if($p1=='allstars'){$rb=msql::read('','ummo_exo_stars',1);
 	$ra=array_merge($ra,$rb); $pb=implode(',',array_keys_r($ra,8));}
 $sq=star::sq($pb); //pr($sq);
 $r=star::build($sq,1); //pr($r);

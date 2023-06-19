@@ -5,7 +5,6 @@ static $db='metaen';
 static $default='';
 
 static function build($p,$o){
-//$r=msql::read_b('',nod(self::$a.'_1'));//p($r);
 $ret=$p.'-'.$o;
 return $ret;}
 

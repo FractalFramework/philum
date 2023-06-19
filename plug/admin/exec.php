@@ -14,7 +14,7 @@ foreach($r as $k=>$v){
 return $ret;}
 
 static function readfunc($d){
-$r=msql::read('system','program_core',$d,1);
+$r=msql::row('system','program_core',$d);
 $r=self::strip_r($r);
 $ret=on2cols($r,340,7);
 $stl=strlen($r['function']);
@@ -24,7 +24,7 @@ $ret.=ljb('txtbox','jumpMenuIns',$r['function'],'insert');
 return $ret;}
 
 static function lib(){$ret='';
-$r=msql::read('system','program_core','',1);
+$r=msql::read('system','program_core',1);
 $rb=msql::sort($r,0);
 foreach($rb as $k=>$v)
 	$ret.=ljb('','insert_b',[$v[0].'('.$v[1].');','codarea'],$v[0].'('.$v[1].')');

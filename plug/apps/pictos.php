@@ -22,8 +22,8 @@ $_SESSION['icons'][$k]=$f;
 return ico($f);}
 
 static function refresh($k,$d){
-$_SESSION['icons']=msql::read('system','program_pictos','');
-//$_SESSION['picto']=msql::read('system','edition_pictos','');
+$_SESSION['icons']=msql::read('system','program_pictos');
+//$_SESSION['picto']=msql::read('system','edition_pictos');
 return ico($file);}
 
 static function home($d,$id){$rid='bld'.randid();

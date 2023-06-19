@@ -11,7 +11,7 @@ if(!$d){$n=1;$c='';}elseif(!rstr($k)){$n=0;$c='active';}
 $ret[]=offon($n).' '.btn($cx,lj('','rstr_params___'.$k.'_'.$n,$v)).br();}
 
 static function edit(){$r=mails::datas();
-$r=msql::read('',nod('mails'),'',1);
+$r=msql::read('',nod('mails'),1);
 if($r)foreach($r as $k=>$v){$i++; $n='nl'.$i; $c=''; if($v[1])$c='active';
 	$ret.=lj('',$n.'_newsletter,mmsav',$k).br();}
 return div(atd('nldt').atc('nbp'),$ret);}

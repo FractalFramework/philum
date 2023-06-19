@@ -21,8 +21,8 @@ static function popim($g1){[$w,$h]=getimagesize($g1); return usg::photo($g1,$w,$
 static function poptxt($g1){return divb(sesr('delaytxt',$g1),'twit','','display:block; min-width:440px;');}
 static function popfile($g1){return nl2br(str::cleanmail(read_file($g1)));}
 static function popread($g1){return ma::read_msg($g1,3);}
-static function popmsql($g1,$g2,$g3){$r=msql_read($g1,$g2,$g3,1); if($r)return divtable($r,1);}
-static function popmsqt($g1,$g2,$g3,$g4){$rt=msql_read($g1,$g2,$g3); if(is_array($rt))$rt=$rt[$g4?$g4:0]??'';
+static function popmsql($g1,$g2,$g3){$r=msql::mul($g1,$g2,$g3,1); if($r)return divtable($r,1);}
+static function popmsqt($g1,$g2,$g3,$g4){$rt=msql::mul($g1,$g2,$g3); if(is_array($rt))$rt=$rt[$g4?$g4:0]??'';
 $ret=''; if(auth(6))$ret=msqbt($g1,$g2,$g3).' '; if($rt)$ret.=nl2br(stripslashes($rt));
 ses::$r['popm']=$g2.' '.$g3.' '.$g4; return $ret;}
 static function yesno($g1,$g2){return offon($g1,$g2);}
@@ -172,14 +172,14 @@ switch($d){case('parent'):$r=sav::newartparent(); break;
 	case('pri'):$r=[1=>0,2=>1,3=>2,4=>3,5=>4]; break;
 	case('vfld'):$r=sql('msg','qdd','k','val="folder"'); $cl=0; break;
 	case('lang'):$r=array_flip(explode(' ',prmb(26))); $cl=0; break;
-	case('msql'):[$dr,$nd,$vn]=msqa::murlvars($o); $r=msql::read($dr,$nd,'',1);
+	case('msql'):[$dr,$nd,$vn]=msqa::murlvars($o); $r=msql::read($dr,$nd,1);
 		if($r)$r=array_flip(array_keys($r)); break;
 	case('msqlb'):[$dr,$nd,$vn]=msqa::murlvars($o); $r=msql::kx($dr,$nd,$vn?$vn:0); break;
 	case('msqlc'):[$dr,$nd,$vn]=msqa::murlvars($o);
-		$ra=msql::read($dr,$nd,'',1); $vrf=$vn?$vn:0;
+		$ra=msql::read($dr,$nd,1); $vrf=$vn?$vn:0;
 		if($ra)foreach($ra as $k=>$v){$v=str::htmlentities_b($v[$vrf]); $r[$v]=$v;}
 		if($r)ksort($r); break;
-	case('plug'):$r=msql_read('system','program_plugs'); if($r)ksort($r); break;
+	case('plug'):$r=msql::read('system','program_plugs'); if($r)ksort($r); break;
 	case('func'):if($o)$r=call_user_func($o); $r=array_keys($r); if($r)ksort($r); break;
 	case('pclass'):[$a,$m,$p]=expl('/',$o,3); if(method_exists($a,$m))$r=$a::$m($p); break;
 	default: if(strpos($d,'|'))$r=array_flip(explode('|',$d));

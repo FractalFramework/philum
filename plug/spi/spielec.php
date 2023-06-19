@@ -5,7 +5,7 @@ for($i=1;$i<118;$i++)$ret.='#id'.$i.':hover{background:rgba(255,255,255,0.4);}'.
 return $ret;}
 
 static function mol($d){
-$r=msql::read('','public_atomic','',1);
+$r=msql::read('','public_atomic',1);
 [$ring,$subring,$pos]=self::findpos($r[$d][4],$d);
 $rg=[1=>2,2=>6,3=>10,4=>14];
 $freesocks=$rg[$subring]-$pos;
@@ -68,7 +68,7 @@ return $atr.$rect.$t;}
 
 //build
 static function build($p,$o){//$o=0;
-$r=msql::read('','public_atomic','',1);
+$r=msql::read('','public_atomic',1);
 $bt=self::nav($p,$o,'spe');
 //mode linear
 if($o){$mode='linear'; $sz='1900/400';} else{$mode=0; $sz='900/600';}

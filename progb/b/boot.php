@@ -149,16 +149,16 @@ ses::$st=['a'=>$rs[0],'p'=>$rs[1]];//,'j'=>self::state()
 return $cache;}
 
 static function repair_mods($nod){
-$r=msql::read_b('',$nod.'_sav');
-if($r){$r=msql::copy('users',$nod.'_sav','users',$nod);
+$r=msql::read('',$nod,'',[],1);
+if($r){$r=msql::copy('',$nod.'_sav','users',$nod);
 	if(auth(2))alert('backup mods restored');}
-if(!$r){$r=msql::read_b('system','default_mods');
+if(!$r){$r=msql::read('system','default_mods');
 	if($r)$r=msql::copy('system','default_mods','users',$nod);
 	if(auth(4))alert('using minimal config '.lkc('txtx','/admin/hubs&reinit==','reinit?'));} 
 return $r;}
 
 static function define_mods(){$nod=ses('qb').'_mods_'.prmb(1);
-$r=msql::read('',$nod,'',1); if(!$r)$r=self::repair_mods($nod); $tmp=[];
+$r=msql::read('',$nod,1); if(!$r)$r=self::repair_mods($nod); $tmp=[];
 if($r)foreach($r as $k=>$v){
 	if($v[0]=='system' && $v[1]=='template')$tmp[$v[4]]=$v[2];
 	if($v[0]=='system' && $v[2])$vrf[$v[1]]=$k;
@@ -223,7 +223,7 @@ $r=msql::col('design',nod('clrset_'.$k),0,1);
 $_SESSION['clrs'][$k]=$r; return $r;}
 
 static function auto_design(){$n=ses('prmd'); $phi=ses('philum'); $qb=ses('qb');
-$d=msql::read_b('',$qb.'_autodesign',$phi,'',[$phi=>[1]]);
+$d=msql::mul('',$qb.'_autodesign',$phi,'',[$phi=>[1]]);
 if(!$d){
 if($n<4)$r=msql::read('system','default_css_'.$n);
 elseif(is_numeric($n))$r=msql::read('design','public_design_'.$n);
@@ -345,7 +345,7 @@ if($ret)Head::add('jscode',sj('popup_'.$ret));}
 #cache
 static function cache_arts($x=''){
 $lastart=''; $rtb=[]; $ret=[]; $main=[]; $nod=nod('cache');
-if($x)msql::del('',$nod); else $main=msql::read_b('',$nod,'',1);
+if($x)msql::del('',$nod); else $main=msql::read('',$nod,1);
 if($main){$last=current($main); $lastart=$last?$last[0]:ma::lastartid();}
 if(($lastart && !isset($main[$lastart])) or $x){
 	$rh=[msql::$m=>['date','cat','title','img','hub','url','lu','author','length','src','ib','re','lg']];

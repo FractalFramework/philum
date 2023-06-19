@@ -27,7 +27,7 @@ if($r)foreach($r as $k=>$v)if($i<40){
 if(substr($v[1],0,1)!='_' && $v[7]){$i++;
 	//$suj=str_replace("&nbsp;",' ',$v[2]);
 	$rt[$k]['item']['title']=self::parsetxt($v[2]);
-	$url=$http.htacc('read').$k;
+	$url=$http.urlread($k);
 	//$rt[$k]['item']['link']=$url;
 	$rt[$k]['item']['guid isPermaLink="true"']=$url;
 	$rt[$k]['item']['pubDate']=date('r',$v[0]);
@@ -56,7 +56,7 @@ return $ret;}
 
 static function build($p,$prw){$http=host(); $rt=[];
 $qb=ses('qb'); $desc=sql('dscrp','qdu','v','name="'.$qb.'"');
-$r=msql::read_b('users',nod('cache'),'',1); //p($r);
+$r=msql::read('users',nod('cache'),1);
 //$nb_arts=count($r);
 $lastid=ma::lastartid(); $last_art=$r[$lastid];
 //$newest=key($r); $oldest=array_pop($r);
@@ -81,7 +81,7 @@ return $ret;}
 static function home($hub,$prw){
 $rebuild=1; $cache=1;
 if(!$hub)return slctmnu(ses('mn'),'/rss/','','','','kv');
-$r=msql::read_b('',nod('cache'),'',1); //$nb_arts=count($r);
+$r=msql::read('',nod('cache'),1); //$nb_arts=count($r);
 $lastid=ma::lastartid(); $last_art=$r[$lastid];
 $newest=key($r); $oldest=array_pop($r);
 $nb_days=round((time()-$oldest[0])/86400);
@@ -101,7 +101,7 @@ return self::call($p,$p);}
 
 static function api($p,$o){
 $p=$p?$p:sesr('prms','default_hub'); $o=$o?$o:2;//prw
-$r=msql::read_b('',nod('cache'),'',1);
+$r=msql::read('',nod('cache'),1);
 $rt['channel']=self::datas($r,$o);
 return json_encode($rt);}
 

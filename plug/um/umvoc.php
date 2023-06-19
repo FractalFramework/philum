@@ -2,7 +2,7 @@
 class umvoc{
 
 static function r(){
-return msql::read('users','ummo_umvoc_1','',1);}
+return msql::read('','ummo_umvoc_1',1);}
 
 static function umvr(){$r=self::r();
 foreach($r as $k=>$v)$rb[$v[0]]=$v[0]; sort($rb);
@@ -34,7 +34,7 @@ msql::modif('','ummo_umvoc_1',$r,'row','',$p);
 return self::search($r[0],'1','');}
 
 static function cmdf($p){
-$r=msql::read('users','ummo_umvoc_1',$p);
+$r=msql::row('users','ummo_umvoc_1',$p);
 $ret=input('mdfvoc',$r[0]).' ';
 $ret.=select(['id'=>'mdftyp'],['word','name','expression','unit','number'],'vv',$r[2]).br();
 $ret.=textarea('mdftxt',$r[1],40,4).br();

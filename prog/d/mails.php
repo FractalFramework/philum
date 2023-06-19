@@ -51,7 +51,7 @@ if(isset($r))self::batch($r,'html',$suj,$msg,$sender,$id);}
 
 //meca
 static function datas($o=''){
-$r=msql_read('',nod('mails'),'',1); $rt=[];
+$r=msql::read('',nod('mails'),1); $rt=[];
 if($r)foreach($r as $k=>$v){if($v[2])$rt[$v[0]]=$v[1].'<'.$v[0].'>';}
 return $o?implode(",\n",$rt):$rt;}
 

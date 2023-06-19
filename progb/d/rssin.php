@@ -176,7 +176,7 @@ $bt.=lj('txtsmall','rssj_rssin,twss___'.$p.'','twss').' ';
 return $bt;}
 
 static function home($p,$o=''){$ret=[];//rssj
-$r=msql::read('',nod($p),'',1); $bt=''; $ro=[];
+$r=msql::read('',nod($p),1); $bt=''; $ro=[];
 if($r)foreach($r as $k=>$v){$v3=isset($v[3])?$v[3]:''; $ro[]=$v3;
 	if($o && $o==$v3)$d=self::call($k,$v[0]); else $d='';
 	if($d)$c=' active'; else $c='';

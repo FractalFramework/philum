@@ -69,14 +69,15 @@ else Head::add('csscode','#page{margin-left:28px;}');
 return $ret;}
 
 #articles
-static function btapp($d,$nl=''){
-[$p,$o,$c]=unpack_conn($d); [$c,$ob]=cprm($c);//p|o:c|ob
+static function btapp($d,$nl=''){//p|o:c|ob
+[$p,$o,$c,$ob]=unpack_conn_c($d);
 $ic=mime($c,'cube'); $t=pictxt($ic,$ob?$ob:$c); if($ob==1)$t=picto('url');
 $u='/app/'.$c; if($p){$u.='/'.$p; if($o)$u.='/'.$o;} if($nl)return lkt('',$u,$t); if(!$ob)$ob='conn';
 return lj('','popup_'.$c.',home__3_'.ajx($p).'_'.ajx($o),$t).' '.lkt('',$u,picto('chain'));}
 
 static function connbt($d,$nl=''){
-[$p,$o,$c]=unpack_conn($d); [$c,$ob]=cprm($c);//p|o:c|ob
+//[$p,$o,$c]=unpack_conn($d); [$c,$ob]=cprm($c);//p|o:c|ob
+[$p,$o,$c,$ob]=unpack_conn_c($d);
 $ic=mime($c,'cube'); $t=pictxt($ic,$ob?$ob:$c); if($ob==1)$t=picto('url');
 $u='/app/'.$c; if($p){$u.='/'.$p; if($o)$u.='/'.$o;} if($nl)return lkt('',$u,$t); if(!$ob)$ob='conn';
 return lj('','popup_conn,parser__3_['.ajx($p.($o?'|'.$o:'').':'.$c).']_3_test',$t).' '.lkt('',$u,picto('chain'));}

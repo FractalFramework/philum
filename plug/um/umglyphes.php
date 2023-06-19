@@ -2,7 +2,7 @@
 class umglyphes{
 
 static function r(){
-$r=msql::read('users','ummo_umvoc_1','',1);
+$r=msql::read('','ummo_umvoc_1',1);
 if($r)foreach($r as $v){$rb[$v[0]]=$v[1].($v[3]?' ['.stripslashes($v[3]).']':'');}
 return $rb;}
 

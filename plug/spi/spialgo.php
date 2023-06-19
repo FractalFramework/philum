@@ -72,7 +72,7 @@ return $ret;}
 
 //build
 static function build($p,$o){//$o=0;
-$r=msql::read('','public_atomic','',1); $ret='';
+$r=msql::read('','public_atomic',1); $ret='';
 $bt=self::menu($p,$o,'spg');
 $ret=self::build_layer($p); //pr($rb);
 if($ret)$ret=svg::home($ret,self::$sz);//render

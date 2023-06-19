@@ -225,18 +225,17 @@ return $rb;}
 
 static function clr2(){
 return msql::col('','public_atomic_3',4);
-//$r=msql::read_b('','public_atomic_3','',1);
 return array_keys_r($r,4);}
 
 static function patch(){
-$r=msql::read_b('','public_atomic_2','',1); $rb=self::$clr;
+$r=msql::read('','public_atomic_2',1); $rb=self::$clr;
 $rh=['Nom','Symbole','Famille','Couche','Niveau orbital','Fusion','Ebulition (C°)','Découverte','Masse','Masse atomique (u)','Isotopes','Numéro atomique','clr','pos','free','deg','clr2'];
 foreach($r as $k=>$v)$r[$k][12]=$rb[$v[2]];
 msql::save('','public_atomic_2',$r,$rh);}
 
 //build
 static function build($p,$o){//$o=0;
-$r=msql::read('','public_atomic_1','',1);
+$r=msql::read('','public_atomic_1',1);
 [$mode,$clr]=expl('-',$o);
 $u=self::$unit;//unit
 if($mode=='linear'){$u=self::$unit=30; $w=49*$u; $h=10*$u;}

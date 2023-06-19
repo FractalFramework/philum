@@ -7,7 +7,7 @@ static $rid='';
 
 static function find($p,$o,$prm=[]){
 $u=$prm[0]??''; self::rid($u); $rt=[];
-$r=msql::read('',self::$nod,'');
+$r=msql::read('',self::$nod);
 foreach($r as $k=>$v){
 $ra[]=[$v[0],$v[1],'birth'];
 $ra[]=[$v[0],$v[2],'death'];
@@ -48,7 +48,7 @@ self::$nod=nod('captor_'.self::$rid);}
 
 static function call($a,$b,$prm=[]){$ret='';
 [$u,$p,$o]=arr($prm,3); self::rid($u);
-$r=msql::read('',self::$nod,'');
+$r=msql::read('',self::$nod);
 if(!$r or $a){
 	$r=self::build($u,$p,$o); //eco($r);
 	$r=self::capture($r,$o); //eco($r);
@@ -59,7 +59,7 @@ $ret.=tabler($r,1);
 return $ret;}
 
 static function r(){
-return msql::read('',nod('captor'),'',1);}
+return msql::read('',nod('captor'),1);}
 
 static function slct($p){
 $rp=explode(',',$p);

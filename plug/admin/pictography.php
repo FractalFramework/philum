@@ -18,7 +18,7 @@ if($r)foreach($r as $k=>$v)$ret.=divc('',ascii($v,32).' '.$k);
 return divc('cols',$ret);}
 
 static function oomo(){$ret='';
-$r=msql::read('system','edition_pictos_2','',1);
+$r=msql::read('system','edition_pictos_2',1);
 if($r)foreach($r as $k=>$v)$ret.=divc('',oomo($k,36,$v[1].' '.$v[0]).' '.$k.' ('.$v[1].')');
 //$bt=pubdate::mkoomo();
 return divc('cols',$ret);}
@@ -29,7 +29,7 @@ if($r)foreach($r as $k=>$v)$ret.=divc('',pictit($k,$v,36).' '.$k);
 return div(atc('cols').ats('columns:auto 200px; line-height:1.6em;'),$ret);}
 
 static function pictos(){$ret=''; $rb=[];
-$r=msql::read('system','edition_pictos','',1); $s='columns:auto 180px; line-height:1.6em;';
+$r=msql::read('system','edition_pictos',1); $s='columns:auto 180px; line-height:1.6em;';
 if($r)foreach($r as $k=>$v)$rb[$v[1]][]=[$k,$v[0]];
 if($rb)foreach($rb as $k=>$v){$ret.=tagb('h2',$k); $bt='';
 	foreach($v as $ka=>$va)$bt.=divc('',pictit($va[0],$va[1],36).' '.$va[0]);

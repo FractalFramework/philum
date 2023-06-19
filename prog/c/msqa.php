@@ -59,7 +59,7 @@ $ret.=lj('','admsql_msqa,find_msqsr__'.ajx($dr).'_'.ajx($nd),picto('ok'));
 return $ret;}
 
 static function find($dr,$nd,$prm){$sr=$prm[0]??'';
-$r=msql::read_b($dr,$nd,'',1); $rt=[];
+$r=msql::read($dr,$nd,1); $rt=[];
 if(!is_array($r) or !$sr)return;
 foreach($r as $k=>$v)
 	if(strpos($k,$sr)!==false)$rt[$k]=$v;
@@ -71,7 +71,7 @@ $r=msql::row($g1,$g2,$g3,1); $v=$r[$g4]??($r[0]??'');
 if(auth(6))$ret=msqbt($g1,$g2,$g3).' '; $ret.=btn('small',nl2br($v)); return $ret;}
 static function msqread($g1,$g2,$g3,$g4){$r=msql::goodtable_b($g1.'_'.$g2.'_'.$g3.'|'.$g4.'|'.$g4);
 return conn::parser(stripslashes($r));}//unused
-static function msqlp($g1,$g2,$g3,$g4){$r=msql::read($g1,$g2,$g3);
+static function msqlp($g1,$g2,$g3,$g4){$r=msql::row($g1,$g2,$g3);
 return is_array($r)?divtable($r,1):$r;}
 static function syshlp($g1,$g2,$g3,$g4){$b='';
 if(auth(6))$b=lj('','popup_msqa,editmsql___lang/fr/helps*txts_'.ajx($g1),picto('msql')).' ';
@@ -158,11 +158,11 @@ return self::editable($id,$r);}
 
 static function editable($nod,$r=[]){
 [$dir,$node]=self::node_decompil($nod);
-$defs=$r?$r:msql::read_b($dir,$node,'');
+$defs=$r?$r:msql::read($dir,$node);
 if($defs)return self::draw_table($defs,$nod,1);}
 
 static function meditksav($murl,$key,$prm=[]){$rid=str::normalize($murl);
-if($prm){[$dr,$nod]=self::node_decompil($murl); $d=$prm[0]??''; $r=msql::read_b($dr,$nod);
+if($prm){[$dr,$nod]=self::node_decompil($murl); $d=$prm[0]??''; $r=msql::read($dr,$nod);
 foreach($r as $k=>$v)if($k==$key)$ret[$d]=$v; else $ret[$k]=$v; msql::save($dr,$nod,$ret);}
 $mx=strlen($key)>24?24:strlen($key); $ret=input($rid,$d?$d:$key,$mx);
 $ret.=lj('small','edt'.$rid.'_msqa,meditksav_'.$rid.'__'.ajx($murl).'_'.$key,'ok');
@@ -198,7 +198,7 @@ return textarea($k,$v,$n,'1',$p);}
 static function editmsql($nod,$va,$o,$ob){
 $qb=ses('qb'); $tg=$ob?'socket':'admsql'; $rid=randid(); $rh=[];
 [$dir,$node]=self::node_decompil($nod); $nodb=ajx($nod); $pn=''; $rc=[]; $kb='';
-$r=msql::read_b($dir,$node); $h=isset($r[msql::$m])?1:0; if($r)$rh=$h?$r[msql::$m]:current($r);
+$r=msql::read($dir,$node); $h=isset($r[msql::$m])?1:0; if($r)$rh=$h?$r[msql::$m]:current($r);
 if($r)$nxtk=msql::nextentry($r); $idn=randid();
 if($va=='add'){$u=$o; $o=domain(strtolower($u));
 	$va=$o?$o:self::findnextkey($r,0); $ry=array_fill(0,count($rh),'');
@@ -214,7 +214,7 @@ if($r){foreach($r as $k=>$v){$i++; if($k==$va){$n=$i; $key=$k; $def=$v;}
 		$pn.=lj('txtx','popup_msqa,editmsql__x_'.$nodb.'_'.ajx($kt),picto('before')); 
 	if(isset($keys[$na+1]))$kt=$keys[$na+1]; else $kt=$keys[$na]??'';
 		$pn.=lj('txtx','popup_msqa,editmsql__x_'.$nodb.'_'.ajx($kt),picto('after'));}
-if(isset($ra))$r=$r[$va]; elseif($key)$r=msql::read_b($dir,$node,$key);
+if(isset($ra))$r=$r[$va]; elseif($key)$r=msql::row($dir,$node,$key);
 if(is_array($r)){$i=0; $kys[]='k'.$rid;//keys to shift from array
 	foreach($r as $k=>$v){$kb=self::normaliz($idn.$k); $kys[]=$kb; $rhk=$rh[$k]??''; $i++;
 		if(substr($node,-7)=='defcons'){
@@ -320,11 +320,11 @@ static function tools($dr,$nod,$md,$d,$o=''){
 $r=msql::read($dr,$nod); $ok=''; $rl='';
 switch($md){
 case('creatable'):[$dr,$nod,$r]=self::creatable_sav($d); break;//$rl=1;
-case('backup'):msql::save($dr,$nod.'_sav',$r); $ok=1; break;
-case('restore'):$r=msql::read_b($dr,$nod.'_sav'); break;
+case('backup'):msql::save($dr,$nod,$r,[],1); $ok=1; break;
+case('restore'):$r=msql::read($dr,$nod,'',[],1); break;
 case('add_row'):$r[]=array_fill(0,count(current($r)),''); break;
 case('del_menus'):unset($r[msql::$m]); break;
-case('del_file'):msql::save($dr,$nod.'_sav',$r); self::deltable($dr,$nod); $ok=1; break;//$rl=1;
+case('del_file'):msql::save($dr,$nod,$r,[],1); self::deltable($dr,$nod); $ok=1; break;//$rl=1;
 case('trunc_table'):$ra[msql::$m]=$r[msql::$m]??''; $r=$ra; break;
 case('append_update'):$r=self::append_update($r,$d); break;
 case('import_defs'):$r=self::import_defs($r,$d); break;
@@ -364,11 +364,12 @@ case('import_csv'):$r=self::import_csv($r,$d,$o); break;
 case('rename_table'):[$dr,$nod]=self::optable($dr,$nod,$d,0); $ok=1; break;//$rl=1;
 case('duplicate_table'):[$dr,$nod]=self::optable($dr,$nod,$d,1); $ok=1; break;//$rl=1;
 case('del_backup'):self::deltable($dr,$nod,1); break;
-case('update'):$r=self::update_table($nod,$r); break;}
+case('update'):$r=self::update_table($nod,$r); break;
+case('translate'):$r=self::translate_table($dr,$nod,$r); break;}
 if(!$ok && $r)$r=msql::save($dr,$nod,$r);
 //if($rl)return 'msql/'.$dr.'/'.$nod; //reload obsolete
 return $r;}
-
+	
 static function edtconn($r){$ret=''; if($r)foreach($r as $k=>$v)$ret.=$k.'|'.implode('|',str_replace(['|','¬'],[':BAR:',':LINE:'],$v)).'¬'."\n"; return $ret;}
 
 #modif apps
@@ -391,7 +392,7 @@ static function import_defs($r,$d){$rh=$r[msql::$m]??'';
 if(strpos($d,'msql/')!==false){$r=explode('/',$d); $n=count($r)-1; $nod=$r[$n]; $dr=$r[$n-1];
 	$u=upsrv().'/call/msqj/'.$dr.'|'.$nod; $r=self::import_json_lk($u);
 	return msql::save($dr,$nod,$r);}
-else{[$a,$b]=split_one('/',$d,1); return msql::read($a,$b,'','',$rh);}}
+else{[$a,$b]=split_one('/',$d,1); return msql::read($a,$b,'',$rh);}}
 
 //json
 static function edtjson($r){if($r)return json_encode($r);}
@@ -413,11 +414,15 @@ if($r)foreach($r as $k=>$v){$rb=[$k];
 	$rc[]=implode('#',$rb);}
 return implode("\n",$rc);}
 
+static function csv2r($d){
+$r=explode("\n",$d); $rc=[];
+foreach($r as $k=>$v){$rb=explode('#',$v); $ka=array_shift($rb);
+	foreach($rb as $kb=>$vb)$rc[$ka][$kb]=trim(delbr(str_replace(['(diez)','(n)'],['#',"\n"],$vb)));}
+return $rc;}
+
 static function import_csv($r,$d,$o=''){
-$ra=explode("\n",$d); $rc=[];
-foreach($ra as $k=>$v){$rb=explode('#',$v);
-	foreach($rb as $kb=>$vb)$rc[$k][$kb]=trim(delbr(str_replace(['(diez)','(n)'],['#',"\n"],$vb)));}
-$rc=self::del_keys($rc);
+$rc=self::csv2r($d);
+//$rc=self::del_keys($rc);
 if($o && $rc)$rc=$r+$rc;
 return $rc?$rc:$r;}
 
@@ -431,15 +436,15 @@ static function deltable($dr,$nd,$o=0){
 msql::del($dr,$nd,$o);}
 
 static function import_keys($r,$d){
-[$a,$b]=split_one('/',$d,1); $rb=msql::read_b($a,$b);
+[$a,$b]=split_one('/',$d,1); $rb=msql::read($a,$b);
 if($rb[msql::$m])$r[msql::$m]=$rb[msql::$m]; return $r;}
 
 static function merge_defs($r,$d){
-[$a,$b]=split_one('/',$d,1); $rb=msql::read_b($a,$b,'',1);
+[$a,$b]=split_one('/',$d,1); $rb=msql::read($a,$b,1);
 return array_merge_b($r,$rb);}
 
 static function append_values($r,$d){
-[$a,$b]=split_one('/',$d,1); $rb=msql::read_b($a,$b); return array_append($r,$rb);}
+[$a,$b]=split_one('/',$d,1); $rb=msql::read($a,$b); return array_append($r,$rb);}
 
 static function reset_menus($r){
 if($r){reset($r); $first=key($r);} $ret=[];
@@ -499,7 +504,7 @@ static function compare($ra,$d){
 $rh=$ra[msql::$m]; $n=1;
 if(isset($ra[msql::$m]))unset($ra[msql::$m]);
 [$b,$d]=explode('/',$d);
-$rb=msql_read($b,$d,'','1');
+$rb=msql::read($b,$d,'1');
 $rka=array_keys_r($ra,$n);
 $rkb=array_keys_r($rb,$n);
 if($rka && $rkb){$r1=array_diff($rka,$rkb); $r2=array_diff($rkb,$rka); $r3=array_intersect($rka,$rkb);}
@@ -521,7 +526,7 @@ if(isset($rk[msql::$m]))unset($rk[msql::$m]);
 echo tabler(['addition',$rh[$n],array_sum($rk)/count($rk)]);}
 
 static function intersecter($r){$ra=[]; $rb=[]; $rc=[]; $re=[]; $rt=[]; $rtb=[];
-foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1); $r0=msql::read($dr,$nod,'',1);
+foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1); $r0=msql::read($dr,$nod,1);
 	if($r0){$ra[$k]=array_column($r0,0); $re=array_merge($re,$r0);}else echo 'x:'.$dr.$nod.' ';}//
 foreach($r as $k=>$v)foreach($ra[$k] as $ka=>$va)if($va!=$v && in_array($va,$ra[$k]))$rb[$va][]=1;//pr($rb);
 foreach($rb as $k=>$v){$n=count($v); if($n>1)$rc[$k]=$n;} arsort($rc);//pr($rc);
@@ -559,9 +564,21 @@ return $r;}
 
 static function update_table($d,$r){
 $ret[msql::$m]=$r[msql::$m];
-$defs=msql::read_b('system',$d);
+$defs=msql::read('system',$d);
 foreach($defs as $k=>$v)$ret[$k]=isset($r[$k])?$r[$k]:array_pad(array(),count($r[msql::$m]),'');
 return $ret;}
+
+static function translate_table($dr,$nod,$ra){
+$lg=strfrom($dr,'/'); $lga=ses('lng');
+$r=msql::read('lang/'.$lga,$nod);
+foreach($r as $k=>$v)if(implode('',$ra[$k]??[]))unset($r[$k]);//keep empties
+$rk=array_keys($r); $r=array_values($r);//detach keys
+$d=self::mkcsv($r);
+$d=trans::read($d,$lga,$lg,'');
+$rb=self::csv2r($d);//import_csv($ra,$d,1)
+$rb=array_combine($rk,$rb);
+foreach($rb as $k=>$v)$ra[$k]=$v;//fill with new
+return $ra;}
 
 static function import_conn($defs,$it,$aid){$ret=$defs['menus']??[];
 if(substr($it,0,1)=='[')$it=substr($it,1); $it=str_replace(':table]','',$it); 
@@ -580,7 +597,7 @@ if(isset($r[$nb]))$nb=self::findnextkey($r,$nb);
 return $nb;}
 
 static function append_update($defs,$d){
-[$a,$b]=split_right('/',$d,1); $r=msql::read_b($a,$b);
+[$a,$b]=split_right('/',$d,1); $r=msql::read($a,$b);
 if($a=='design')return sty::append_design($defs,$r);
 foreach($r as $k=>$v){$up=$v['last-update']??''; $upa=valr($defs,$k,'last-update');
 	if(($up && $up>=$upa) or !isset($defs[$k]))$defs[$k]=$v;}
@@ -598,7 +615,7 @@ return $ret;}
 
 static function del_keys($r){
 foreach($r as $k=>$v){
-	if(is_array($v)){if($k===msql::$m)$kb=msql::$m; else $kb=$v[0]; array_shift($v);}
+	if(is_array($v)){if($k===msql::$m)$kb=msql::$m; else $kb=array_shift($v);}
 	$ret[$kb]=$v;}
 return $ret;}
 
@@ -703,8 +720,8 @@ $localusr=$base=='users' && $hub==ses('USE')?1:0;
 $authorized=$ath or $localusr?1:0;
 #load
 $defs=[];
-if($is_file)$defs=msql::read_b($base.($dir?'/'.$dir:''),$node);
-if(get('sav'))msql::save($dir?$dir:$base,$node.'_sav',$defs);
+if($is_file)$defs=msql::read($base.($dir?'/'.$dir:''),$node);
+//if(get('sav'))msql::save($dir?$dir:$base,$node,$defs,[],1);
 #render
 $lh=sesmk('msqlang','helps_msql',1);
 if(!$lh){$rl=msql::read('system','helps_msql'); foreach($rl as $k=>$v)$lh[]=[$v,$v];}
@@ -760,6 +777,7 @@ if(!$def && auth(6)){
 		$ret['l2']=divc('menu',join(' ',$rt)); $rt=[];
 		if($base!='system' && is_file(self::sesm('root').'system/'.$node.'.php'))
 			$rt[]=self::opbt('update',$jurl,$lh[26]);
+		if($base=='lang')$rt[]=self::opbt('translate',$jurl,$lh[48]);
 		$rt[]=self::opbt('sort_table',$jurl,$lh[19],1);
 		if($table!='restrictions' && $table!='params')
 			$rt[]=self::opbt('reorder',$jurl,$lh[20]);

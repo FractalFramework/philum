@@ -2,7 +2,7 @@
 class oldhubs{
 
 static function build($p,$o){
-//$r=msql::read('',nod('umnum'),$p);
+//$r=msql::row('',nod('umnum'),$p);
 //$r=sqb('name,count(name)','qda','kv','group by name');
 
 //$r=sql('id','qda','rv','frm="ES" or frm="_system"'); //pr($r);
@@ -59,7 +59,7 @@ echo $ret.br();}*/
 /*
 //install art
 $r=sql('nod,name,id,suj,frm','qda','ar','nod="ummo" and frm="_system" and suj="free" and id>100');
-$rb=msql::read('',nod('es_3'),'',1); //pr($rb);
+$rb=msql::read('',nod('es_3'),1); //pr($rb);
 //echo count($rb);//647/191
 foreach($rb as $k=>$v){
 	$idb=$r[$k]['id'];

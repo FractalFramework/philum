@@ -13,7 +13,7 @@ static function merge($r,$d){$d=strend($d,'_');
 if($r)foreach($r as $k=>$v){$dy=substr($v[1],0,6); 
 $msg=$v[2]; 
 $msg=delconn($msg);
-$msg=self::msg($msg); //echo 'eee';
+$msg=self::msg($msg);
 //$msg=miniconn($msg);
 //$msg=str::embed_links($msg);
 //$msg=conn::read($msg,'','');
@@ -24,8 +24,8 @@ return $ret;}
 
 static function build($p,$o){
 $r=explode(',',$p); $ra=array();
-if($r && $p)foreach($r as $k=>$v){//echo $v;
-$r=msql::read('',$v);//pr($r);
+if($r && $p)foreach($r as $k=>$v){
+$r=msql::read('',$v);
 if($r)$ra+=self::merge($r,$v);}
 ksort($ra);
 return tabler($ra);}

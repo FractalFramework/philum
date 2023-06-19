@@ -66,7 +66,7 @@ return [$ti,$tx,''];}
 
 static function verif_defcon($f){$f=domain($f);
 $base=rstr(18)?'public':ses('qb');
-$r=msql::read('',$base.'_defcons','');
+$r=msql::read('',$base.'_defcons');
 if($r)foreach($r as $k=>$v)if($f==$k)return [$k,self::stripslashes_r($v)];
 return ['',['','','','','','']];}
 

@@ -55,7 +55,7 @@ if($gpsv && $gpsu)return get_distance_m($gpsru[1],$gpsru[0],$gpsrv[1],$gpsrv[0])
 
 static function build($p,$o,$prm=[]){
 $p=$prm[0]??$$p;
-//$r=msql::read_b('',nod('geo_1'));//p($r);
+//$r=msql::read('',nod('geo_1'));
 $ret=$p.'-'.$o;
 return $ret;}
 

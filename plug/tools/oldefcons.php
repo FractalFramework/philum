@@ -5,7 +5,7 @@ static $cb='dfc';
 function __construct(){self::$cb=randid();}
 
 static function build($p,$o){
-$r=msql::read('',nod('defcons'),'');
+$r=msql::read('',nod('defcons'));
 
 function dtrm($v){
 $c=''; $d=''; $b='';

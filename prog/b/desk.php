@@ -4,7 +4,7 @@ static $rico=[];
 static $rid='dk';
 
 #desktop
-//ajax,art,file,finder,admin,msql,iframe,link,url,bub//plugfunc,,plug,plup,link,appin,ajxlnk,mod
+//ajax,art,file,finder,admin,msql,iframe,link,url,bub//plugfunc,,plug,plup,link,appin,mod
 static function read($v){$ret='';
 if($v[1]=='app'){[$a,$m]=expl(',',$v[2]);
 	return 'popup_'.$a.','.($m?$m:'home').'__3_'.ajx($v[3]).'_'.ajx($v[4]);}
@@ -28,7 +28,7 @@ return match($v[1]){//p/t/d/o/c/h/tp/br
 'url'=>'socket_ret__url_'.ajx($v[3]),//host().//$v[2]=blank
 'appjs'=>'popup_'.$v[2].',home__js_'.ajx($v[3]).'_'.ajx($v[4]),
 'api'=>'popup_api,callj__3_'.ajx($v[3]),
-'bub'=>'bubble_bubs,root__d'.randid().'_'.$v[2].'_'.$v[3],//loos mod
+'bub'=>'bubble_bubs,call__d'.randid().'_'.$v[2].'_'.$v[3],//loos mod
 default=>''};
 return $ret;}
 
@@ -65,8 +65,8 @@ elseif((strpos($v[5],$cnd)!==false or !$v[5])){$t=$v[0];
 return $ret;}
 
 static function datas($p=''){$p=$p?$p:'apps';
-if(rstr(61))$r=msql::read('system','default_apps','',1);
-$rb=msql::read('',nod($p),'',1);
+if(rstr(61))$r=msql::read('system','default_apps',1);
+$rb=msql::read('',nod($p),1);
 if(isset($r))$rb=self::array_merge_p($r,$rb);
 return $rb;}
 
@@ -74,7 +74,7 @@ static function build_from_datas($cnd,$dir='',$p='',$o=''){$r=self::datas();
 return self::build($r,$cnd,$dir,$p,$o);}
 
 static function play($id){
-$r=msql::read('',nod('apps'),$id);
+$r=msql::row('',nod('apps'),$id);
 $j=self::read($r);
 return lj('',$j,pictxt($r[7],$r[0]));}
 
@@ -162,9 +162,9 @@ if($r)return self::files_build($r,$rb,$o);}
 
 static function apps_files($cnd,$p,$o){$rc=[];
 if(!$p)$p='local|real'; $rb=explode('|',$p); if($o)$o=str_replace('|','/',$o);
-if($rb[0]=='global')$r=msql::read('server','shared_files','',1);
+if($rb[0]=='global')$r=msql::read('server','shared_files',1);
 elseif($rb[1]=='real')$r=self::files_dir($o);
-else $r=msql::read('users',nod('shared'),'',1);
+else $r=msql::read('users',nod('shared'),1);
 if($r)foreach($r as $k=>$v){
 if(!$o or substr($v[0],0,strlen($o))==$o){[$dir,$nm]=split_one('/',$v[0],1); 
 	if($rb[1]=='virtual')$dir=$v[1]; else $dir=strfrom($dir,'/');
@@ -172,7 +172,7 @@ if(!$o or substr($v[0],0,strlen($o))==$o){[$dir,$nm]=split_one('/',$v[0],1);
 return $rc;}
 
 static function explore($dr,$vir){
-if($vir)$r=msql::read('',nod('shared'),''); else $r=explore('users/'.$dr);
+if($vir)$r=msql::read('',nod('shared')); else $r=explore('users/'.$dr);
 if($r)foreach($r as $k=>$v){
 	if($vir){$t=strend($v[0],'/'); $f=$v[0]; $root=$v[1];}
 	elseif(is_numeric($k)){$t=$v; $f=$dr.'/'.$v; $root=$dr;}
@@ -185,7 +185,7 @@ if($r)foreach($r as $k=>$v){
 return $rb;}
 
 static function menubub($dr){//root,action,type,button,icon,auth
-$r=msql::read('users',nod('menubub_1'),'',1); $ret=[];
+$r=msql::read('users',nod('menubub_1'),1); $ret=[];
 //if(!$_SESSION['qb'])boot::reboot();
 $rc=sesmk2('boot','cats');
 if($r)foreach($r as $k=>$v){$bt=$v[3]?$v[3]:$v[1];

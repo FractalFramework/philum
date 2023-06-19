@@ -24,7 +24,7 @@ foreach($ra as $ka=>$va){[$kab,$vab]=explode(':',$va);$sc[$vab]=$kab;}
 if($sc['site']){
 $site='http://'.$sc['site']; $t=lka($site,$sc['site'].'/'.$sc['hub']);
 $load=microxml::call($sc['site'].'/msql/users/'.$sc['hub'].'_cache');}
-else $load=msql::read('users',$sc['hub'].'_cache','',1);
+else $load=msql::read('',$sc['hub'].'_cache',1);
 if($load){
 	if($sc['cat'])$load=self::tri($load,$sc['cat'],1);
 	if($sc['parent'])$load=self::tri($load,$sc['art'],10);

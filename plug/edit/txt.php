@@ -103,7 +103,7 @@ if($d)$ret.=msqbt('',$nd.'_txt_'.$d);
 return $ret;}
 
 static function home($d,$tx){$nd=self::log(); $msg='';
-if($d)$ra=msql::read('',$nd.'_txt_'.$d,'');
+if($d)$ra=msql::read('',$nd.'_txt_'.$d);
 if($d && is_array($ra)){$msg=stripslashes(valr($ra,1,1));} //$msg=str::html_entity_decode_b($msg);
 if($d && !$ra && $nd)msql::modif('users',$nd.'_txt_'.$d,['title',''],'one','',1);
 $ret=self::paste($d).' ';

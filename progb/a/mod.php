@@ -3,16 +3,6 @@ class mod{
 static $r=['m','p','t','c','d','o','ch','hd','tp','bt','dv','pv','pp'];
 static $rha=[];
 
-/*static function find_mod($n){
-foreach($_SESSION['mods'] as $k=>$v)if(key($v)==$n)return $v;}*/
-
-#new protocole
-/*static function connmod0($d){$r=split_one('|',$d,1);//a:p1,b:p2|bt:c
-$ra=split_one(':',$r[1],1); $rb=explode_k($r[0],',',':');
-if(!$r[1] && strpos($r[0],',')===false)$rb=expl(':',$r[0]);//bridge2old
-if($ra[0])$rb['bt']=$ra[0]; if($ra[1])$rb['m']=$ra[1];
-if($rb[0]??'')$rb['p']=$rb[0]; if($rb[1]??'')$rb['m']=$rb[1]; return $rb;}*/
-
 static function connmod($d){$rb=explode_k($d,',',':');
 if($rb[0]??'')$rb['p']=$rb[0]; if($rb[1]??'')$rb['m']=$rb[1]; return $rb;}
 
@@ -58,7 +48,7 @@ if($r)foreach($r as $k=>$v){if(!$v[7] && (!$v[11] or $ath)){//hide/private
 	if($v[9]??'')$rl[$k]=self::btmod('',$v);//bt
 	elseif($bt){$i++;//menu
 		$rl[$k]=self::btmnu($v,$ik,$i,$ni,$k);
-		if($c && $v[0]=='categories')ses::$loader=self::build($v);
+		if($c && !$g && $v[0]=='categories')ses::$loader=self::build($v);
 		elseif($i==$ni && !$g && !$c)ses::$loader=self::build($v);}//superflous if #
 	elseif($v[6]){$mdc=sesr('mdc',$k);//cache
 		if(!$mdc or $cr){$rb[$k]=self::build($v); $_SESSION['mdc'][$k]=$rb[$k];}
@@ -186,8 +176,8 @@ case('folder'):$lin=desk::vfolders($p); break;
 //menus
 case('link'):$ret=md::modlk($p,$t,$o); break;
 case('app_popup'):Head::add('jscode',sj(desk::read(explode(',',$p)))); break;
-case('overcats'):return mkbub(bubs::root('overcat','zero'),'inline','1'); break;
-case('MenuBub'):return mkbub(bubs::root('menubub','zero',$p),'inline','1'); break;
+case('overcats'):return mkbub(bubs::call('overcat','zero'),'inline','1'); break;
+case('MenuBub'):return mkbub(bubs::call('menubub','zero',$p),'inline','1'); break;
 case('timetravel'):return md::timetravel($p,$o); break;
 case('submenus'):return md::bubble_menus($p,$o); break;
 case('taxonomy'):$ret=md::mod_taxonomy($p,$o); break;
@@ -426,7 +416,7 @@ if($d=='tabs')return tabs($rt,randid('tmd'));
 return $rt?join('',$rt):nmx(11,16);}
 
 static function fav_mod($p,$t){$ret='';
-$r=msql_read('',nod('coms'),'',1); $r=array_reverse($r);
+$r=msql::read('',nod('coms'),1); $r=array_reverse($r);
 foreach($r as $k=>$v)if($v[3]){//if($p){if($v[1]==$p)$api=$v[2];}else 
 	$ret.=lj('','popup_api___'.ajx($v[2].',t:'.$v[1]),divc('txtcadr',pictxt('articles',$v[1])));}
 //if($api)return api::call($api);

@@ -42,14 +42,14 @@ foreach($rb as $k=>$v){sort($v); foreach($v as $vb)$rc[$vb]=$r[$vb];} //p($rc);
 return $rc;}
 
 static function build0($p,$rid){if(!$p)$p=1;
-$r=msql::read_b('',ses('topo'),'',1);
+$r=msql::read('',ses('topo'),1);
 if($r)$r=self::order($r);
 if($r)$r=self::desc($r,$p);
 if($r)$ret=self::draw($r);
 return $ret;}
 
 static function build($p,$rid){if(!$p)$p=1;
-$r=msql::read_b('',ses('topo'),'',1);
+$r=msql::read('',ses('topo'),1);
 //if($r)$r=self::displace($r,54,8);
 if($r)$ret=self::slide($r,$p,$rid);
 $bt=self::menu($p,$o,$rid);

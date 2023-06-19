@@ -42,7 +42,7 @@ static function call($id,$o,$prm){
 self::save($id,$o,$prm); return self::read();}
 
 static function home(){
-//$t=msql::read('lang','helps_plugs','tickets');
+//$t=msql::row('lang','helps_plugs','tickets');
 $ret=btn('txtcadr',' philum_discussions');
 $ret.=msqbt('clients','philum_tickets').br().br();
 $ret.=self::form().br();

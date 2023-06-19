@@ -4,8 +4,8 @@ static $pr='followers';
 
 static function build($p,$o){
 [$a,$b]=expl('|',$o); $n=1; $nd=ses('qb').'_'.self::$pr;
-$rb=msql::read('',$nd.'_'.$a,'','1'); //pr($ra);
-$ra=msql::read('',$nd.'_'.$b,'','1');
+$rb=msql::read('',$nd.'_'.$a,'1'); //pr($ra);
+$ra=msql::read('',$nd.'_'.$b,'1');
 if(!$ra or !$rb)return;
 $rka=array_keys_r($ra,$n);
 $rkb=array_keys_r($rb,$n);

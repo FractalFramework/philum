@@ -3,7 +3,7 @@ class graph{
 static $a=__CLASS__;
 
 static function build($p,$o){
-$r=msql_read('',nod('graph_'.$p));
+$r=msql::read('',nod('graph_'.$p));
 return $r;}
 
 static function call($p,$o,$prm=[]){$p=$prm[0]??$p;

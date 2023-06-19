@@ -4,7 +4,7 @@ class apicom{
 static function form($p,$id,$a){
 $ra=explode_k($p,',',':'); $rt=[]; $ret='';
 $rh=msql::kv('lang','edition_apicom');
-$r=msql::read('system','edition_apicom');
+$r=msql::read('system','edition_apicom',1);
 $tgs='tag '.prmb(18);//.' utag'
 $ut=explode(' ',$tgs);
 if($a==1)foreach($ut as $v)if($v)$rt[$v]='word1|word2';
@@ -26,7 +26,7 @@ $bt=lj('','apcf_apicom,form___'.ajx($p).'_'.$id.'_'.($a==1?2:1),picto($a==1?'rig
 return divb($bt).divb($ret,'cols');}
 
 static function build($p,$id,$a=1){
-$p=str_replace(';',',',$p);
+$p=str_replace(';',',',$p); if(!$a)$a=1;
 $ret=self::form($p,$id,$a);
 return divb($ret,'','apcf');}
 
@@ -46,7 +46,7 @@ return tag('textarea',['onclick'=>'apijumptoinputs()','onkeyup'=>'apijumptoinput
 
 static function menu($p,$o,$rid){if($o && $o!=1)$rid=$o; $ret='';
 if(!$p)$p='hub:'.ses('qb').',minday:'.ses('nbj').',nbyp:'.prmb(6);
-$rb=msql::read('lang','helps_api','',1);
+$rb=msql::read('lang','helps_api',1);
 $ret=self::area($p,'inp').' ';
 $ret.=lj('',$rid.'_apicom,call_inp',picto('ok')).' ';
 $ret.=hlpbt('api').' ';

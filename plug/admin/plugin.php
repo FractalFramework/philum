@@ -21,8 +21,8 @@ return $ret;}
 
 static function plugs(){
 $ico=picto('editxt'); $dir='plug';
-$plug=msql::read('system','program_plugs','');
-$help=msql::read('lang','program_plugs','');
+$plug=msql::read('system','program_plugs');
+$help=msql::read('lang','program_plugs');
 $mt=msql::prep('system','program_plugs_types'); 
 //$re=explore($dir,'files',1); sort($re);
 $re=scandir_r($dir); //eco($re);
@@ -54,7 +54,7 @@ foreach($ra as $k=>$v){$rd=array_merge(array($rt),$v);
 return tabs($rb);}
 
 static function apps(){$rt=[];
-$r=msql::read('system','program_apps','',1);
+$r=msql::read('system','program_apps',1);
 foreach($r as $k=>$v)$rt[]=[lj('','plg_'.$v[0].',home__3',$v[0],att($v[1])),$v[1]];
 return tabler($rt);}
 

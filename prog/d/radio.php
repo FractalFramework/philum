@@ -37,7 +37,7 @@ return audio(self::song($g1,$g2),$g3);}
 
 static function call($d,$p,$id){$ret='';
 if(strpos($d,'/'))$nod=nod('radio'.$id); else $nod=$d;
-$r=msql::read_b('radio',$nod,'',1); $rid=randid('rad');
+$r=msql::read('radio',$nod,1); $rid=randid('rad');
 if($r)foreach($r as $k=>$v){if($k==$p)$f=$v[1];
 	$ret.=lj('',$rid.'_radio,play___'.ajx($nod).'_'.$k,$v[3]).br();}
 if(!$r && strpos($d,'/'))$dr=$d; else $dr='';
@@ -49,7 +49,7 @@ $id=$id?$id:ses('read'); $ret=''; $edit=''; $datas=[]; $ky='';
 $nd='radio'.$id; if(!$nod)$nod=nod($nd);
 $nodb=str_replace('_','*',$nod);
 if($dr)$ret.=self::build($dr,$nod);
-$r=msql_read('radio',$nod,''); 
+$r=msql::read('radio',$nod); 
 $ret.=msqbt('radio',nod($nd));
 if(isset($r[$md])){foreach($r[$md] as $k=>$v){$ky.=$md.'.'.$k.'|';
 	$edit.=input($md.'.'.$k,$v).btn('txtsmall',$r[msql::$m][$k]).br();}

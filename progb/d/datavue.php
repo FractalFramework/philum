@@ -35,10 +35,10 @@ return $ret;}
 //take all children
 static function build2($p,$o){$ret=''; $rc=[]; $rca=[]; $rcb=[]; $rcc=[]; $dt='211103'; 
 $nod=nod('frn_'.$p);//$p='bebd9b';
-$r=msql::read('',$nod,'',1); //eco($r);
+$r=msql::read('',$nod,1);
 foreach($r as $k=>$v){
-	$nd=nod('frn_'.$v[1]).'-'.$dt; //echo $nod.' ';
-	$rb=msql::read('',$nd,'',1);
+	$nd=nod('frn_'.$v[1]).'-'.$dt;
+	$rb=msql::read('',$nd,1);
 	if($rb)foreach($rb as $kb=>$vb){$ida=self::rid($v[0]); $idb=self::rid($vb[0]); 
 		$tag=self::tag($vb[0]);
 		$rca[$idb]=[$idb,$vb[1],'0',$tag];
@@ -58,7 +58,7 @@ foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1); $nod=strend($nod,'_'); $
 	$r[$k]=$dr.'/'.$nd0.'_'.$nod; $rk[$k]=$nd;} //pr($r);
 //datas
 foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1);//rca
-	$ra=msql::read($dr,$nod,'',1); $rab[$rk[$k]]=$ra; if($ra)$re=array_merge($re,$ra);
+	$ra=msql::read($dr,$nod,1); $rab[$rk[$k]]=$ra; if($ra)$re=array_merge($re,$ra);
 	if($ra)foreach($ra as $ka=>$va){$ida=self::rid($v[0]); $idb=self::rid($va[0]); 
 		$rb[$ida]=$v[1];
 		$tag=self::tag($va[0]);

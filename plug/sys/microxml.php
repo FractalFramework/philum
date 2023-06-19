@@ -23,7 +23,7 @@ return str_replace(htmlentities("&nbsp;"),' ',$ret);}
 static function stream($nod,$lst){
 $nod=self::protect($nod,1);
 [$dr,$nod]=split_right('/',$nod,1);
-$r=msql::read($dr,$nod,'');
+$r=msql::read($dr,$nod);
 $dscrp=$r?self::flux_xml($r,$lst):''; $host=$_SERVER['HTTP_HOST'];
 //header('Content-Type: text/xml');
 $xml='<?xml version="1.0" encoding="utf-8" ?>'."\n";

@@ -42,7 +42,6 @@ return divc('',$bt);}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
-//$r=msql::read('',nod('xss'),$p);
 $u=msql::val('',nod('xss'),$p,0);
 $u=nohttp($u); if(substr($u,-1)=='/')$u=substr($u,0,-1);
 $ret=self::build($p,$o);
@@ -50,7 +49,7 @@ $bt=self::bt($u,$o);
 return $bt.$ret;}
 
 static function xssr(){
-$r=msql::read('',nod('xss'),'',1);
+$r=msql::read('',nod('xss'),1);
 if(!$r)$r=msql::save('',nod('xss'),[['','','','','','','','','','','','','']],self::$dfb);
 foreach($r as $k=>$v)$rb[$k]=$v[0];
 return $rb;}

@@ -109,7 +109,7 @@ $r=[$d,$wd,$hd,$ra0,$ra1,$dc0,$dc1,$wm,$hm,$right,$left,$top,$bottom,$wr,$hr]; /
 self::$dims=$r;}
 
 static function build($p,$o){$ra=[];
-$ra=msql::read('','ummo_exo_5','',1);
+$ra=msql::read('','ummo_exo_5',1);
 //if(!$p)$p=self::$default;
 //$r=star::build($p,1);
 if(strpos($p,'radius')===false)$p.=',radius=1h';

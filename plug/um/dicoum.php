@@ -56,7 +56,7 @@ return $ret;}
 
 //update dico
 static function upd(){
-$r=msql::read('','ummo_umvoc_1','');
+$r=msql::read('','ummo_umvoc_1');
 if($r)foreach($r as $k=>$v){
 	[$voc,$def,$typ,$ref]=$v;
 	$ex=sql('id','dico','v','voc="'.$voc.'"');

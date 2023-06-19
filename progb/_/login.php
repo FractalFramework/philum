@@ -126,10 +126,11 @@ $ex=sql('id','qdu','v','1');
 $rp=[$usr,'PASSWORD("'.$psw.'")',$mail,$dayx,'',$ip,$rstr,$mbrs,$hub,0,$config,'','',$menus,$open];
 return sql::sav('qdu',$rp);}
 
-static function ndprms_defaults(){$rstr=admx::defaults_rstr(0);
-$r=msql_read('system','default_params','',1); $rb=[]; $config='';
-foreach($r as $k=>$v)$rb[$k]=$v[0];
-for($i=0;$i<=$k;$i++)$config.=val($rb,$i).'#';
+static function ndprms_defaults(){
+$rstr=admx::defaults_rstr(0); $config='';
+//$r=msql::read('system','default_params',1); $rb=[]; foreach($r as $k=>$v)$rb[$k]=$v[0];
+$rb=msql::col('system','default_params',0,1);
+for($i=0;$i<=$k;$i++)$config.=($rb[$i]??'').'#';
 $ln=explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 if($ln[0]=='fr')$lang='fr'; else $lang='en'; //$first_art=$lang=="fr"?236:253;
 $config=str_replace('LANG',$lang,$config);
@@ -149,9 +150,9 @@ msql::copy('system','default_apps','users',$qb.'_apps');
 if($restore){[$rstr,$config]=self::ndprms_defaults();
 sql::upd('qdu',['rstr'=>$rstr],['name'=>ses('qb')]);
 sql::upd('qdu',['config'=>$config],['name'=>ses('qb')]);}
-$clr=msql_read('system','default_clr_1','');
+$clr=msql::kv('system','default_clr_1','');
 $css='css/'.$qb.'_design_1.css'; sty::build_css($css,sty::css_default(1),$clr);
-$clr=msql_read('system','default_clr_2','');
+$clr=msql::kv('system','default_clr_2','');
 $css='css/'.$qb.'_design_2.css'; sty::build_css($css,sty::css_default(),$clr);
 sql::upd('qdu',['menus'=>ses('dayx')],['name'=>$qb]);
 if(!is_dir('users/'.$qb))mkdir_r('users/'.$qb);

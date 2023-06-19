@@ -4,7 +4,7 @@ class star3d{
 //var datas=[["Milky Way",4.4637,-0.5061,26100,10,-221258.63,126445.65,-64240.84,white,"0","","Milky Way"],["Oomo",3.15,0.16,14.6,10,-1.21,24.49,-145.99,green,"0","","Oomo"]
 static function build($p){$ret='';
 //known datas
-$ra=msql::read('','ummo_exo_5','',1); $rc=[];
+$ra=msql::read('','ummo_exo_5',1); $rc=[];
 if($ra)foreach($ra as $k=>$v)if($v[8])$rc[$v[8]]=['nm'=>$v[0],'clr'=>$v[5],'planet'=>$v[6],'nfo'=>$v[9]];
 if($p=='knownstars')$p=implode(',',array_keys_r($ra,8));
 

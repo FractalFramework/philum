@@ -1,7 +1,7 @@
 <?php 
 //copy and translate an article
 
-class translate{
+class transart{
 static $a=__CLASS__;
 static $default='';
 
@@ -118,15 +118,15 @@ return 'ok';}
 
 static function menu($p,$o,$rid){
 if(!$p)$p=self::$default; $ret='';
-$j=$rid.'_translate,call_inp_3__'.$p;
+$j=$rid.'_transart,call_inp_3__'.$p;
 $ret=inputj('inp','fr',$j,'',3);
 $ret.=lj('',$j,picto('ok'),att('translate')).' ';
 $r=self::missing($p); $lg=meta::curlg($o);
-foreach($r as $k=>$v)if($v!=$lg)$ret.=lj('popsav',$rid.'_translate,call__3_'.$v.'_'.$p,$v).' ';
-//$ret.=lj('txtx',$rid.'_translate,repair___'.$p,'repair_txt').' ';
-//$ret.=lj('txtx',$rid.'_translate,convert___'.$p,'html2conn').' ';
-//$ret.=lj('txtx',$rid.'_translate,fempty___'.$p,'fill_empties').' ';
-//$ret.=lj('txtx',$rid.'_translate,batch_inp___'.$p,'batch').' ';
+foreach($r as $k=>$v)if($v!=$lg)$ret.=lj('popsav',$rid.'_transart,call__3_'.$v.'_'.$p,$v).' ';
+//$ret.=lj('txtx',$rid.'_transart,repair___'.$p,'repair_txt').' ';
+//$ret.=lj('txtx',$rid.'_transart,convert___'.$p,'html2conn').' ';
+//$ret.=lj('txtx',$rid.'_transart,fempty___'.$p,'fill_empties').' ';
+//$ret.=lj('txtx',$rid.'_transart,batch_inp___'.$p,'batch').' ';
 return $ret;}
 
 static function home($p,$o){

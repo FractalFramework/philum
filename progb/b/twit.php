@@ -87,13 +87,10 @@ $r=self::apikeys(); if($r)foreach($r as $i=>$nm)
 $ret.=spn('','txtsmall','strcount');
 return divd($rid,$ret);}
 
-static function botshare($p,$o=4){//build mini before
-//$suj=ma::suj_of_id($p); $url=host().urlread($p);
+static function botshare($p,$o=''){//build mini before
 $ret=self::content($p);
-//$ret=html_entity_decode($ret);
 $ret=htmlentities($ret);
-//$ret=rawurlencode($ret);//test
-return self::send($p,$o,[$ret]);}//$suj.' '.
+return self::send($p,$o,[$ret]);}
 
 //philum::save
 static function vacuum($f){
@@ -261,7 +258,7 @@ return $ret;}
 
 static function statuses($d){$rid=rid($d);//find
 $r=explode(',',$d); $t=self::init(); $ra=[]; $rb=[];
-$nd=nod('twusr_'.$rid); $rb=msql::read('',$nd,'',1);
+$nd=nod('twusr_'.$rid); $rb=msql::read('',$nd,1);
 if(!$rb){if(!is_numeric(array_sum($r)))$rq=$t->lookup($d);//id1,id2
 else foreach($r as $k=>$v)$rq[]=$t->show($v);//usr1,usr2,id3
 foreach($rq as $k=>$v)if(isset($v['id']))$rb[]=[$v['id'],($v['screen_name']),($v['name']),($v['location']),($v['description']),$v['profile_image_url']];//$q['user']['followers_count']

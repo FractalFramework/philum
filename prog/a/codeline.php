@@ -31,6 +31,7 @@ if($in!==false){
 		'delconn'=>self::delconn($mid),
 		'importim'=>self::importim($mid,$op),
 		'extractimg'=>self::extractimg($mid,$op),
+		'extractlnk'=>self::extractlnk($mid,$op),
 		'conn2xhtml'=>xhtml::conn2xhtml($mid,$op),
 		'extract'=>self::conn_extract($mid,$op),
 		'num2nb'=>self::num2nb($mid,$op),
@@ -41,7 +42,7 @@ if($in!==false){
 		$end=self::parse($end,$op,$g);}
 	else $end=substr($msg,$in+1);}
 else $end=$msg;
-if($g=='extractimg' or $g=='importim')return $mid.$end;
+if($g=='extractimg' or $g=='extractlnk' or $g=='importim')return $mid.$end;
 return $deb.$mid.$end;}//clean_nb
 
 static function read($d){
@@ -90,8 +91,8 @@ elseif($op=='forcewebp2jpg'){$id=get('read'); $xt=is_img($p);
 elseif($op=='stripimg'){if(!is_img($p))return '['.$p.']';}
 elseif($op=='stripvideo'){if($c==':video')return '['.$p.'|1:video]';}
 elseif($op=='striplink'){
-	if(is_numeric($p))$p=host().urlread($p);
-	elseif($o or substr($p,0,4)=='http')return $o?$o:$p;
+	if(is_numeric($p))return $o?$o:host().urlread($p);
+	elseif(substr($p,0,4)=='http')return $o?$o:domain($p);
 	elseif($c==':pub')return ma::suj_of_id($p).' ('.host().urlread($p).') ';
 	elseif($c==':figure')return $o;}
 elseif($op=='stripvk')return '['.mc::stripvk($p).($o?'|'.mc::stripvk($o):'').($c?$c:'').']';
@@ -158,19 +159,13 @@ elseif(strpos($p,':pdf'))return lj('','popup_mk,pdfreader__xr_'.ajx($p).'_3__aut
 elseif(strpos($p,'twitter.com')!==false && strpos($p,'status/')!==false)return pop::poptwit($d);
 elseif(strpos($p,'wikipedia.org')!==false)return mk::wiki($d,0);
 elseif(substr($p,0,4)=='http')return rstr(111)?mk::webview($d,$b):lka($p,$o);
-elseif(is_numeric($p))return ma::jread('',$p,$o);
-}
+elseif(is_numeric($p))return ma::jread('',$p,$o);}
 
-static function sconn_app($d,$c,$xt,$o,$b){
-switch($c){
-case(':video'):if($b=='epub')return video::titlk($d,'');
-	return video::any($d,$b,3,'');break;
-case(':app'):[$p,$o,$fc]=unpack_conn($d); return appin($fc,'call',$p,$o);break;
-case(':tag'):[$p,$o]=cprm($d); if(!$o)$o=sql('cat','qdt','v',['tag'=>$p]);
-	return lj('txtx','popup_api__3_'.$o.':'.ajx($p),pictxt('tag',$p));break;
-case(':ascii'):[$p,$o]=cprm($d); return ascii($p,$o);break;
-case(':oomo'):[$p,$o]=cprm($d); return oomo($p,$o);break;
-case(':picto'):return picto($d);break;}
+static function scapp_app($d){[$p,$o,$fc]=unpack_conn($d); return appin($fc,'call',$p,$o);}
+static function scapp_tag($d){[$p,$o]=cprm($d); if(!$o)$o=sql('cat','qdt','v',['tag'=>$p]);
+	return lj('txtx','popup_api__3_'.$o.':'.ajx($p),pictxt('tag',$p));}
+
+static function sconn_app($d,$o,$c,$xt,$b){
 $ret=match($c){
 ':pub'=>pop::pubart($d),
 ':art'=>pop::pubart($d),
@@ -182,10 +177,17 @@ $ret=match($c){
 ':twitter'=>pop::twitart($d,$b,'',$o),
 ':twapi'=>pop::twitapi($d),
 ':twusr'=>twit::play_usrs($d),
-':bt'=>pop::btapp($d,''),
-':connbt'=>pop::connbt($d,''),
 //':poptwit'=>pop::poptwit($d),
 ':search'=>lj('popw','popup_search,home___'.ajx($d),pictxt('search',$d)),
+':video'=>$b=='epub'?video::titlk($d,''):video::any($d,$b,3,''),
+':tag'=>self::scapp_tag($d.'|'.$o),
+':app'=>self::scapp_app($d.'|'.$o),
+':appbt'=>pop::btapp($d.'|'.$o,''),
+':connbt'=>pop::connbt($d.'|'.$o,''),
+':bt'=>pop::connbt($d.'|'.$o,''),
+':ascii'=>ascii($p,$o),
+':picto'=>picto($d),
+':oomo'=>oomo($d),
 ':msql'=>mk::msqcall($d,'',''),
 ':popimg'=>mk::mini_d($d),
 ':quote'=>mk::quote2($d,$c),
@@ -207,7 +209,7 @@ static function sconn($da,$b,$a=''){if(!$da)return;
 //[$d,$c,$xt]=getconn($da); [$p,$o]=cprm($d);
 [$p,$o,$c]=poc($da); $xt=xt($p); $d=$p.'|'.$o;
 $ret=self::sconn_html($p,$o,$c);
-if(!$ret && $a==1)$ret=self::sconn_app($p,$c,$xt,$o,$b);
+if(!$ret && $a==1)$ret=self::sconn_app($p,$o,$c,$xt,$b);
 if(!$ret)$ret=match($c){
 ':c'=>'<txtclr>'.$p.'</txtclr>',
 ':stabilo'=>'<stabilo>'.$p.'</stabilo>',
@@ -323,6 +325,9 @@ elseif($c=='video'){$qb=ses('qb');
 	$imv=$qb.'_'.$id.'_'.$p.'.jpg';
 	if(is_file('img/'.$imv))return $imv;}
 elseif(is_img($d))return '/'.$d;}
+
+static function extractlnk($d,$id){[$p,$o,$c]=poc($d);
+if(substr($p,0,4)==='http')return trim($p).'|';}
 
 static function importim($d,$id){[$p,$o,$c]=poc($d);
 if(is_img($p))return conn::getimg($p,$id,3);

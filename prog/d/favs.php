@@ -51,7 +51,7 @@ $ret.=textarea('comv'.$rid,$p,44,4,['placeholder'=>'Api Command','size'=>'44']);
 return $ret;}
 
 static function edt($k){
-$r=msql::read_b('',nod('coms'),$k);
+$r=msql::row('',nod('coms'),$k);
 $ret=self::form($r[2],$r[1],$r[3]); $rid=self::$rid;
 $ret.=lj('popsav','plgfavcom_favs,mdf_comn'.$rid.',comv'.$rid.',comp'.$rid.'__'.$k,pictxt('save',nms(27)));
 return $ret;}
@@ -61,7 +61,7 @@ $ret.=lj('popsav','plgfavcom_favs,sav_comn'.$rid.',comv'.$rid.',comp'.$rid.'',pi
 return divd('fvcmdt',$ret);}
 
 static function pub($p){
-$ra=msql::read_b('',nod('coms'),$p);
+$ra=msql::row('',nod('coms'),$p);
 $r=msql::modif('',nod('coms'),[ses('iq'),$ra[1],$ra[2],yesno($ra[3])],$p);
 return self::reload($r);}
 
@@ -88,7 +88,7 @@ if(auth(6))$bt=msqbt('',nod('coms')); else $bt='';
 return divd('plgfavcom',$ret);}
 
 static function shar($p){
-$r=msql::read('',nod('coms'),'',1); if(!$r)$r=[]; $r=array_reverse($r,true);
+$r=msql::read('',nod('coms'),1); if(!$r)$r=[]; $r=array_reverse($r,true);
 $rb=array_keys_r($r,0,1); $rn=[]; $ret='';
 foreach($rb as $k=>$v){$ip=sql('ip','qdp','v',$k);
 	$rn[$k]=sql('name','qdu','v','ip="'.$ip.'"');}

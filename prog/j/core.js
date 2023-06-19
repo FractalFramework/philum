@@ -250,7 +250,7 @@ if(v)insert_b(v,id);}
 
 function cmd(e){var k=e.keyCode;//115/s
 //if(getbyid('srch').value='')
-if(k==110){ajaxcall('popup','bubs,root',['call','addart'],['txtarea'],'focus:addsrc');}}//n //getbyid('addurl').focus();
+if(k==110){ajaxcall('popup','bubs,call',['call','addart'],['txtarea'],'focus:addsrc');}}//n //getbyid('addurl').focus();
 //addEvent(document,'keypress',function(){cmd(event)});
 
 //toggles

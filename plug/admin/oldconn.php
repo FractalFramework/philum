@@ -14,7 +14,7 @@ return $p.'=>'.$repl.' in '.$n.' docs';}
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o); $ret='';
 if($p)return self::build($p,$o);
-$r=msql::read_b('system','connectors_old','',1);
+$r=msql::read('system','connectors_old',1);
 if($r)foreach($r as $k=>$v){
 	$n=sql('count(id)','qdm','v','msg like "%'.$k.']%"');
 	if(!$n)$ret.=$k.': all is clean in msg';
@@ -27,7 +27,7 @@ if($r)foreach($r as $k=>$v){
 return $ret.divd($o.'b','');}
 
 static function arr(){
-$r=msql::read('system','connectors_old','',1);
+$r=msql::read('system','connectors_old',1);
 if($r)foreach($r as $k=>$v)$rb[$k]=$k;
 return $rb;}
 

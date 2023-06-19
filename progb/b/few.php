@@ -128,8 +128,8 @@ return $ret;}
 
 #fonts
 static function inject_fonts(){$dr='fonts/'; $ret='';
-$ra=msql::read('server','edition_typos',''); $vra=array_keys_r($ra,0);
-$rb=msql::read('system','edition_typos',''); $vrb=array_keys_r($rb,0);
+$ra=msql::read('server','edition_typos'); $vra=array_keys_r($ra,0);
+$rb=msql::read('system','edition_typos'); $vrb=array_keys_r($rb,0);
 $rc=explore($dr,'files',1); $vrf[]=1;
 if($rc)foreach($rc as $k=>$v){[$nm,$xt]=split_right('.',$v,1,1);//add
 	if($xt=='woff' or $xt=='eot' or $xt=='svg'){// or $xt=='ttf'

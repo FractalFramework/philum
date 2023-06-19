@@ -93,7 +93,7 @@ $ret=msql::val('server','program_dev',$d,3);
 return divc('txtblc',nl2br($ret));}
 
 static function cancel_menu($del){$i=0; $ret='';
-$r=msql::read('server','program_dev',''); //1=>array('','','')
+$r=msql::read('server','program_dev'); //1=>array('','','')
 if($del=='all'){$r=array(); msql::modif('server','program_dev',$r,'arr');}
 if($del){unset($r[$del]); msql::modif('server','program_dev',$del,'del');}
 //$ret.=lj('txtx','popup_dev,cancel*menu___all','empty').br();
