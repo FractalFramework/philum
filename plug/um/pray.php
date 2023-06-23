@@ -49,7 +49,7 @@ return $ret;}
 
 static function home($p,$o){
 ses('prayid',$rid='plg'.randid());
-Head::add('csscode',self::css());
+head::add('csscode',self::css());
 $bt=inputb('inp','','15','uid',100,[]);
 $bt.=lj('',$rid.'_pray,call_inp',picto('ok')).br();
 $ret=self::call($p,$o);

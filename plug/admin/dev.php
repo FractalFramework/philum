@@ -112,7 +112,7 @@ return $ret;}
 $view=strrchr($view,'/');
 if(substr($va,0,2)!='<'.'?php')$va='<'."? //philum$view\n\n//$func\n$va\n\n//end\n?".'>';
 $reb=highlight_string($va,true); //$reb=str_replace($ra,$rb,$reb);
-return div(ats('max-width:600px; max-height:400px; overflow:auto; wrap:true; padding:10px; border:1px solid black;'),$reb);}*/
+return divp(ats('max-width:600px; max-height:400px; overflow:auto; wrap:true; padding:10px; border:1px solid black;'),$reb);}*/
 
 static function func_sav($fa,$fb,$prm){$va=$prm[0]??'';
 if(!auth(6))return;

@@ -87,7 +87,7 @@ $ret=msqbt('',$nod);
 $ret.=input('inp',$p);
 $ret.=lj('popbt',$rid.'_proposal,add_inp_3__'.$rid,pictxt('add','new job'));
 $ret.=lj('popbt',$rid.'_proposal,stream____'.$rid,picto('menu'));
-return div('',$ret);}
+return divb($ret);}
 
 static function stream($p,$rid){
 $b='proposal'; $nod=nod($b); $rt=[];

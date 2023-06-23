@@ -149,8 +149,8 @@ $ret.=lk('/app/spt',picto('filelist'));
 return $ret;}
 
 static function home($p,$o){$rid='spt'; $p=$p?$p:118; $o=1;//linear
-Head::add('csscode',self::css());
-Head::add('jscode',self::js('spt_spiatom,call',$p,$o));
+head::add('csscode',self::css());
+head::add('jscode',self::js('spt_spiatom,call',$p,$o));
 $ret=self::call($p,$o);
 return divd($rid,$ret);}
 }

@@ -25,7 +25,7 @@ else $sty.='background-color:#'.$_SESSION['clrs'][$_SESSION['prmd']][6].'; ';
 if($r[11]=='inside')$pos='position:absolute; margin-left:'.$wb.'px;';
 $ret=self::nav($_SESSION[$sdj],$na,$nb,$f);
 if($r[7])$ret=divs($sty.$width.$font.$color.$align.$alpha.$pos,$ret.$r[7]);
-return div('',$ret.$im);}//style="text-align:center;"
+return divb($ret.$im);}//style="text-align:center;"
 
 static function thumbs($r,$f,$a){$w=cw(); if($r)unset($r[msql::$m]);
 if($r)$rb=array_keys_r($r,5); if($rb)$wt=array_sum($rb); $limit=0-($wt-$w+22);
@@ -38,7 +38,7 @@ $ret=divb($ret,'','','overflow:hidden; width:'.($w).'px; height:75px;',$ret);
 return $ret;}
 
 static function js($f,$a){
-Head::add('jscode','
+head::add('jscode','
 static function sliderjnav_'.$a.'(v,i){
 	SaveJ("sdj"+'.$a.'+"_sliderJ,img___'.ajx($f,"").'_"+i+"-'.$a.'");
 	var curv=Number(document.getElementById("sdjv"+"'.$a.'").style.marginLeft.replace("px",""));

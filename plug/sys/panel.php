@@ -11,7 +11,7 @@ $ret=self::build($p,$o);
 return $ret;}
 
 static function menu($p,$o,$rid){
-$ret.=input('inp',$p,'').' ';
+$ret.=input('inp',$p).' ';
 $ret.=lj('',$rid.'_panel,call_inp',picto('ok')).' ';
 return $ret;}
 

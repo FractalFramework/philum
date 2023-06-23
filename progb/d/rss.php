@@ -17,7 +17,8 @@ if($r)foreach($r as $k=>$v){[$q,$d]=explode('_',$k); $xt=substr($k,-3);
 if($q=='data/rss/'.ses('qb') && $d<$da && $xt=='xml')unlink($k);}}
 
 static function parsetxt($d){
-$d=str_replace(['&','<','>',"&nbsp;"],['&amp;','&lt;','&gt;',' '],$d); //$d=parse($d);
+//$d=str_replace(['&','<','>',"&nbsp;"],['&amp;','&lt;','&gt;',' '],$d); //$d=parse($d);
+$d=htmlspecialchars($d);
 return ($d);}//utf8_encode
 
 //0:day 1:frm 2:suj 3:img 4:nod 5:tag 6:lu 7:re 9:lk 12:lang
@@ -50,13 +51,18 @@ static function xml($r){$ret='';
 foreach($r as $k=>$v){
 	if(is_array($v))$v=self::xml($v);
 	if(is_numeric($k))$ret.=$v."\n";
-	else{if($n=strpos($k,' '))$ret.=tag(substr($k,0,$n),substr($k,$n+1),$v)."\n";//?
+	else{
+		if($n=mb_strpos($k,' ')){
+			$k=str_replace('"','',$k);
+			$tag=mb_substr($k,0,$n);
+			[$prop,$attr]=explode('=',mb_substr($k,$n+1));//guid isPermaLink="true"
+			$ret.=tag($tag,[$prop=>$attr],$v)."\n";}
 		else $ret.=tagb($k,$v)."\n";}}
 return $ret;}
 
 static function build($p,$prw){$http=host(); $rt=[];
-$qb=ses('qb'); $desc=sql('dscrp','qdu','v','name="'.$qb.'"');
-$r=msql::read('users',nod('cache'),1);
+$qb=ses('qb'); $desc=sql('dscrp','qdu','v',['name'=>$qb]);
+$r=msql::read('',nod('cache'),1);
 //$nb_arts=count($r);
 $lastid=ma::lastartid(); $last_art=$r[$lastid];
 //$newest=key($r); $oldest=array_pop($r);
@@ -64,8 +70,8 @@ $lastid=ma::lastartid(); $last_art=$r[$lastid];
 //header('Content-Type: application/rss+xml; charset=utf-8');
 header('Content-Type: text/xml');
 $ret='<?xml version="1.0" encoding="utf-8" ?>
-	<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-	<channel>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
 	';
 $rt['title']=$qb;
 $rt['link']=$http;
@@ -81,7 +87,7 @@ return $ret;}
 static function home($hub,$prw){
 $rebuild=1; $cache=1;
 if(!$hub)return slctmnu(ses('mn'),'/rss/','','','','kv');
-$r=msql::read('',nod('cache'),1); //$nb_arts=count($r);
+$r=msql::read('',nod('cache'),1); //pr($r);//$nb_arts=count($r);
 $lastid=ma::lastartid(); $last_art=$r[$lastid];
 $newest=key($r); $oldest=array_pop($r);
 $nb_days=round((time()-$oldest[0])/86400);

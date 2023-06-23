@@ -40,7 +40,8 @@ return divs('',$ret);}
 
 static function cover($t,$id){$t=str_replace(' ',"\n",$t); //$w=$_SESSION['prma']['content'];
 $t=lj('','popup_book,home__3_'.ajx($_SESSION['book'][$id]).'_'.ses('boko'),$t);
-return div(' class="book" style="background-color:black; padding:10px; width:220px;"',divs('background-color:#222; border:1px solid #fff; padding:5px; margin:auto; color:white; font-size:16px; text-align:center; text-decoration:none;',$t));}
+$bt=divs('background-color:#222; border:1px solid #fff; padding:5px; margin:auto; color:white; font-size:16px; text-align:center; text-decoration:none;',$t);
+return divb($bt,'book','','background-color:black; padding:10px; width:220px;');}
 
 static function prevnxt($id,$rid){$r=ses('bookr');
 $j='book'.$rid.'_book,reload___'.$id; $i=0; $ok=0; $old=0;
@@ -77,8 +78,8 @@ static function reload($id){//need read or art_id
 return self::home($_SESSION['book'][$id]??'',ses('boko'));}
 
 static function home($p,$id){
-//Head::add('csscode',self::css());
-//Head::add('jscode',self::js());
+//head::add('csscode',self::css());
+//head::add('jscode',self::js());
 $_SESSION['book'][$id]=$p; $_SESSION['boko']=$id;
 if($id=='fav' or $id=='like' or $id=='poll')$r=sql('ib','qdf','k',['type'=>$id,'iq'=>$p]);
 elseif($id=='visit')$r=array_flip(array_keys(ses('mem')));
@@ -95,7 +96,7 @@ foreach($r as $k=>$v){$i++; $io=$i.'. ';
 	$msg.=lj('',$lk,picto('kright').' '.$io.ma::suj_of_id($k).btn('small',' ('.$lgh.')')).br();}
 $rb['msg']=self::scroll($msg,$rid);
 $ret=divd('book'.$rid,art::template($rb,'book'));
-$ret.=jscode(self::js()).csscode(self::css());
+$ret.=head::jscode(self::js()).head::csscode(self::css());
 //ses::$r['curdiv']='content';
 return $ret;}
 }

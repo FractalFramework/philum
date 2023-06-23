@@ -56,7 +56,7 @@ elseif($from && !$idy && $nfo!='favoris' && $nfo!='retweet'){
 if($nfo=='favoris'){$rb['opt']='Favoris'; $rb['player']=$from;}
 elseif($nfo=='retweet'){$rb['opt']='Retweet'; $rb['player']=$from;}
 elseif($nfo=='status')$rb['opt']='Statut du';
-elseif($from)$rb['opt']='Réponse';
+elseif($from)$rb['opt']='RÃ©ponse';
 else $rb['opt']='Message';
 if($idy)$rb['tracks']=conn::read2($idy,1).n(); $rb['trkbrut']=$idy;
 $rb['social']=ma::popart($id);
@@ -66,7 +66,7 @@ static function ret($r){
 [$id,$day,$suj,$lg,$msg,$trk]=$r;
 $ret='['.$suj.':h2]';
 $ret.='['.$trk.':div]';
-$ret.='['.($trk?'Réponse':'Message').':b] ('.localdate($day).')';
+$ret.='['.($trk?'RÃ©ponse':'Message').':b] ('.localdate($day).')';
 $ret.='['.$msg.':div]';
 return $ret;}
 

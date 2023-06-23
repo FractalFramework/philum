@@ -184,7 +184,7 @@ if(rstr(17))$pwb/=2;
 //if($w && $w<$pwb)$p['style'].=' width:'.$w.'px;';
 $p['src']=$http.'/'.$dca; //if(!rstr(9) && $h>40)$br="\n\n";
 $p['title']=ses::adm('alert');
-$ret='<img'.attr($p).' />';//image()
+$ret='<img'.prr($p).' />';//image()
 if($w>$pw && $pw && !$nl)$ret=ljb('','SaveBf',ajx($da).'_'.$w.'_'.$h.'_'.$id,$ret).$br;
 if(auth(6) && rstr(121) && !$nl)$ret=self::rzim($ret,$da,$dca,$id,$w,$h);
 return $ret;}//.$br
@@ -231,10 +231,13 @@ $ret=match($c){
 ':bkg'=>mk::bkg($d,$id),
 ':stabilo'=>mk::stabilo($d),
 ':bkgclr'=>mk::pub_bkgclr($d),
-':red'=>mk::pub_clr($d,'#bd0000'),
-':blue'=>mk::pub_clr($d,'#333399'),
-':parma'=>mk::pub_clr($d,'#993399'),
-':green'=>mk::pub_clr($d,'#339933'),
+':red'=>mk::pub_clr($d,'#d22'),
+':green'=>mk::pub_clr($d,'#2d2'),
+':blue'=>mk::pub_clr($d,'#22d'),
+':cyan'=>mk::pub_clr($d,'#2dd'),
+':purple'=>mk::pub_clr($d,'#d2d'),
+':yellow'=>mk::pub_clr($d,'#dd2'),
+//':parma'=>mk::pub_clr($d,'#993399'),
 ':numlist'=>mk::make_li($d,'ol'),
 ':right'=>divs('text-align:right;',$d),
 ':float'=>mk::pub_float($d),
@@ -392,9 +395,9 @@ default=>''};
 if($ret)return $ret;
 switch($c){
 case(':app'):[$p,$o,$fc]=unpack_conn($d); return appin($fc,'home',$p,$o); break;
-case(':header'):Head::add($o?$o:'code',delbr($p,"\n")); return; break;
-case(':jscode'):Head::add('jscode',delbr($d,"\n")); return; break;
-case(':jslink'):Head::add('jslink',delbr($d,"\n")); return; break;
+case(':header'):head::add($o?$o:'code',delbr($p,"\n")); return; break;
+case(':jscode'):head::add('jscode',delbr($d,"\n")); return; break;
+case(':jslink'):head::add('jslink',delbr($d,"\n")); return; break;
 case(':private'):if(auth(6))return $d.' '.picto('secret'); break;
 case(':dev'):if(auth(4))return $d; break;
 case(':no'):return ''; break;}

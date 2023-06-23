@@ -11,7 +11,7 @@ return $ret;}
 
 static function legend($r,$im,$klr,$font){$w=self::$w; $h=$w/2; $sz=16; $x=40; $i=0;
 [$white,$black,$red,$green,$blue,$yellow,$cyan,$silver,$gray,$orange]=$klr;
-$r=['amical'=>$green,'neutre'=>$yellow,'inamical'=>$orange,'danger'=>$red,'indéfini'=>$white];
+$r=['amical'=>$green,'neutre'=>$yellow,'inamical'=>$orange,'danger'=>$red,'indÃ©fini'=>$white];
 foreach($r as $k=>$v){$i++; $y=$sz+$i*$sz+16;
 	ImageFilledRectangle($im,$x,$y,$x+$sz,$y+$sz,$v);
 	imagestring($im,$font,$x+24,$y,$k,$white);}}

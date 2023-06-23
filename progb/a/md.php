@@ -214,7 +214,7 @@ if($r)foreach($r as $k=>$v)//active($v,$p)
 $prw=$prw?$prw:(rstr(41)?3:2);
 $p=get('frm')?get('frm'):$p;
 $ret=api::arts($p,$prw,'');
-return divc('nbp',$bt).divd($rid,$ret);}
+return divc('menus',$bt).divd($rid,$ret);}
 
 static function last_search($p,$o){$ret='';
 $r=sqb('id,word','qdsr','kv','order by id desc');

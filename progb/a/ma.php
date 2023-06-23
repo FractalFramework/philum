@@ -116,7 +116,7 @@ $min=($page-1)*$npg; $max=$page*$npg; $md=art::slct_media($md); $i=0;
 if(is_array($r))foreach($r as $id=>$nb)if($id>0){$i++;
 	if($md=='prw')$media=$nb; elseif($rch)$media='rch'; else $media=$md;
 	if($i>=$min && $i<$max)$ret.=art::playb($id,$media,$tp,'',$nb);
-	elseif($fw)$ret.=div(atd('d'.$id).atb('data-prw',$media),'');}
+	elseif($fw)$ret.=divp(atd('d'.$id).atb('data-prw',$media),'');}
 $nbpg=!$fw?pop::btpages($npg,$page,$i,$j):'';
 return $nbpg.$ret.$nbpg;}
 

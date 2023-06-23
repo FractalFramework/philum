@@ -8,7 +8,7 @@ static $dims=[];
 
 static function legend($r){$w=self::$w; $h=$w; $sz=16; $x=40; $y=0; $i=0;
 [$white,$black,$red,$green,$blue,$yellow,$cyan,$orange,$silver,$gray]=self::$clr;
-$r=['amical'=>$green,'neutre'=>$yellow,'inamical'=>$orange,'danger'=>$red,'indéfini'=>$white];
+$r=['amical'=>$green,'neutre'=>$yellow,'inamical'=>$orange,'danger'=>$red,'indÃ©fini'=>$white];
 $i++; $y=$sz+$i*$sz;
 svg::text(10,$x,$y+12,'Stars',$white);
 svg::text(10,$w-100,$y+12,mkday('','d/m/Y'),$white);

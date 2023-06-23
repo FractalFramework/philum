@@ -157,7 +157,7 @@ $p=$prm[0]??$p;
 //$rb=array_column($r,1); $d=implode(',',$rb);
 //$d=self::build($p);
 $ret=self::play($p);
-//$ret.=Head::generate();
+//$ret.=head::generate();
 return $ret;}
 
 static function menu($p,$o,$rid){
@@ -168,20 +168,20 @@ return $ret;}
 
 static function home($p,$o){
 $rid=randid('s3d'); $ret=''; $bt='';
-Head::add('csscode','html,body{overflow:hidden; width:100%; height:100%; padding:0; margin:0;}
+head::add('csscode','html,body{overflow:hidden; width:100%; height:100%; padding:0; margin:0;}
 #'.$rid.'{width:100%; height:100%; touch-action:none;}
 .canvas{width:100%; height:100%; touch-action: none;}');
-//Head::add('jslink','https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js');
-//Head::add('jslink','https://www.babylonjs.com/hand.minified-1.2.js');
-Head::add('jslink','https://preview.babylonjs.com/babylon.js');
-Head::add('jslink','https://preview.babylonjs.com/gui/babylon.gui.min.js');
-//Head::add('jslink','https://preview.babylonjs.com/cannon.js');
-//Head::add('jslink','https://preview.babylonjs.com/oimo.js');//physics
-//Head::add('jslink','/js/bab.js');
+//head::add('jslink','https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js');
+//head::add('jslink','https://www.babylonjs.com/hand.minified-1.2.js');
+head::add('jslink','https://preview.babylonjs.com/babylon.js');
+head::add('jslink','https://preview.babylonjs.com/gui/babylon.gui.min.js');
+//head::add('jslink','https://preview.babylonjs.com/cannon.js');
+//head::add('jslink','https://preview.babylonjs.com/oimo.js');//physics
+//head::add('jslink','/js/bab.js');
 if(!$p)$bt=self::menu($p,$o,$rid);
 $bt.=lkt('txtx','/app/star3d/'.$p,picto('chain'));
 if($p)$ret=self::call($p,$o);
-Head::add('jscode',self::js($p));
+head::add('jscode',self::js($p));
 return $bt.divd($rid,$ret);}
 }
 ?>

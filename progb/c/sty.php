@@ -6,7 +6,7 @@ $bd='design'; $bs='system'; $qb=ses('qb'); $lh=sesmk2('adm','csslang');
 $defsb=['div','class','element','color','bkg','border','free'];
 $numb=ses('desgn');//desgn
 if($numb && $numb!='='){$_SESSION['desgn']=$numb; $_SESSION['clrset']=$numb;
-	$_SESSION['clrs'][$numb]=msql::read('design',$qb.'_clrset_'.$numb);
+	$_SESSION['clrs'][$numb]=msql::kv('design',$qb.'_clrset_'.$numb);
 	$defs=msql::read('design',nod('design_'.ses('desgn')),'',$defsb);}
 $desgn=ses('desgn'); $prmd=ses('prmd');
 $clrset=$_SESSION['clrset']=ses('clrset',$prmd);
@@ -40,13 +40,13 @@ case('make_default'):self::build_css('css/_classic.css',$defs);
 	msql::copy('design',$noc,'system','default_clr_2');
 	$defse=self::empty_design($defs,'clr'); self::build_css('css/_default.css',$defse);
 	alert('modified: table system/default_css_2, _classic.css, _default.css (no colors)'); break;
-case('reset_clr'):$_SESSION['clrs'][$clrset]=msql::read('system','default_clr_2'); 
+case('reset_clr'):$_SESSION['clrs'][$clrset]=msql::kv('system','default_clr_2'); 
 	self::save_clr($noc); break;
 case('reset_default'):$defs=self::css_default(); unset($defs[msql::$m]);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
 case('reset_global'):$defs=self::css_default(1); unset($defs[msql::$m]);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
-case('public_clr'):$_SESSION['clrs'][$clrset]=msql::read('design','public_clrset_'.$o);
+case('public_clr'):$_SESSION['clrs'][$clrset]=msql::kv('design','public_clrset_'.$o);
 	self::save_clr($noc); break;
 case('public_design'):$defs=msql::read('design','public_design_'.$o); unset($defs[msql::$m]);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
@@ -73,7 +73,7 @@ case('herit_design'):[$qbb,$nbd]=explode('_',$o);
 	$defs=msql::read('design',$qbb.'_design_'.$nbd,'',$defsb);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
 case('herit_clrset'):[$qbb,$nbd]=explode('_',$o);
-	$_SESSION['clrs'][$clrset]=msql::read('design',$qbb.'_clrset_'.$nbd);
+	$_SESSION['clrs'][$clrset]=msql::kv('design',$qbb.'_clrset_'.$nbd);
 	self::save_clr($noc); self::build_css($ftmp,$defs); break;
 case('addff'):$defs=self::defs_adder_ff($defs,$o);
 	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
@@ -285,7 +285,7 @@ if($r){foreach($r as $k=>$v){$v=substr($v,0,-4); [$nd,$dr,$nb,$sv]=opt($v,'_',4)
 $tab[]=['open','herit','colors']; 
 if($rb)foreach($rb as $k=>$v){
 	if(is_array($v)){$taba=[]; $tabb=[];
-	$ra=msq_read('users',$k.'_design','');
+	$ra=msql::read('',$k.'_design','');
 	foreach($v as $nb=>$bs){
 		$ds=$bs['design']??''; $cl=$bs['clrset']??'';
 		$na=isset($ra[$nb][0])?$ra[$nb][0]:$ds;//name
@@ -304,7 +304,8 @@ $ndc=$_SESSION['clrset']?$_SESSION['clrset']:$_SESSION['prmd'];
 $clr=msql::kv('design',nod('clrset_'.$ndc),''); $nb=count($clr);
 $clrn=['','bkg','border','bloc','identity','active','art_bkg','art_txt','txt'];
 for($i=1;$i<=$nb;$i++){$name=$i.(isset($clrn[$i])?':'.$clrn[$i]:'');
-$ret.=div(atc('clrp').atd('colorpick'.$i).ats('color:#'.invert_color($clr[$i],1)),divs('background-color: #'.$clr[$i].';',$name.input('colorpickerField'.$i,$clr[$i],5)));}
+$bt=divs('background-color: #'.$clr[$i].';',$name.input('colorpickerField'.$i,$clr[$i],5));
+$ret.=divb($bt,'clrp','colorpick'.$i,'color:#'.invert_color($clr[$i],1));}
 return $ret.br().ljb('txtbox','SaveClr',$nb,nms(27)).divd('clrreponse','');}
 
 #editor
@@ -380,18 +381,18 @@ var x=setTimeout("Close(\"clrreponse\")",3000);}';
 return $ret;}
 
 static function clrpckr_js(){$jsp='/js/colorpicker/';
-Head::add('jslink',$jsp.'js/jquery.js');
-Head::add('jslink',$jsp.'js/colorpicker.js');
-Head::add('jslink',$jsp.'js/eye.js');
-Head::add('csslink',$jsp.'css/colorpicker.css');
-Head::add('csslink',$jsp.'css/layout.css');
-Head::add('jscode',self::clrpckr_layout());}
+head::add('jslink',$jsp.'js/jquery.js');
+head::add('jslink',$jsp.'js/colorpicker.js');
+head::add('jslink',$jsp.'js/eye.js');
+head::add('csslink',$jsp.'css/colorpicker.css');
+head::add('csslink',$jsp.'css/layout.css');
+head::add('jscode',self::clrpckr_layout());}
 
 //see_css
 static function editcss($d){$qb=ses('qb'); $prmd=ses('prmd'); $nod=$qb.'_design_'.getb('desgn',$prmd);
 $r=msql::read('design',$nod); return self::form_facilities($r,$d);}
 static function chargeclr(){$qb=ses('qb'); $prmd=ses('prmd'); $ndc=$qb.'_clrset_'.getb('clrset',$prmd);
-$r=msql::read('design',$ndc); return tabler($r,'txtblc','txtx');}
+$r=msql::kv('design',$ndc); return tabler($r,'txtblc','txtx');}
 
 static function save_css_j_del($r,$n){//vrf n
 foreach($r as $k=>$v)if($k!=$n)$ret[]=$v;//$k
@@ -497,7 +498,7 @@ static function preview_ff($k,$v,$c){
 $nm=str_replace('-webfont','',$v[0]); 
 $str=ses('ffstr','AaBbCcDdEe0123éà;!');
 //$seeall=lj('txtx','pop_stylsall___','set');
-$opt=div(atd('fnt'.$k),self::preview_ff_p($k,$v)).br().br();
+$opt=divd('fnt'.$k,self::preview_ff_p($k,$v)).br().br();
 return divs('font-family:'.$nm.'; font-size:'.$c.'px; line-height:'.round($c*1.2).'px;',$str).br().$opt;}
 
 static function fontface($p,$b,$c,$o,$s=''){//page,cat,size,opt
@@ -519,7 +520,7 @@ $mnu.=lj(($k==$b?$csb:$csa),'popup_fontface__x_1_'.ajx($k).'_'.$c.'_'.$o,$k).' '
 $mnu.=br(); $b=$b=='unclassed'?'':$b;
 $pk=substr($o,0,3); $pv=substr($o,3); if($pv)$pp[$pk]=$pv; else $pp=[];
 //rech
-$srch=input('srchfnt',$pp['rch']??'',8,'search');
+$srch=inputb('srchfnt',$pp['rch']??'',8,'search');
 $srch.=lj('popbt','popup_sty,ffcall_srchfnt_x_1_'.$b.'_'.$c.'_'.$o,'ok').' ';
 $srch.=lj('popbt','popup_fontface__x_1_all','x');
 //tri
@@ -548,11 +549,11 @@ $prp.=lj((isset($pp['fav'])?$csb:$csa),$go.'_fav'.(isset($pp['fav'])?'':1),'favs
 $max=$p*$no; $min=$max-$no; $ia=0; $rta=''; $rtb='';
 if($rc)foreach($rc as $k=>$v){$ia++; if($ia>=$min && $ia<$max && $v[0]){
 	$rta.='@font-face {'.self::css_ff($v[0]).'}'."\n"; $rtb.=preview_ff($k,$v,$c);}}
-$ret.=csscode($rta).$mnu.$hlp.$siz.$prp.$srch.br().br();
+$ret.=head::csscode($rta).$mnu.$hlp.$siz.$prp.$srch.br().br();
 $ret.=input('ffwr',$_SESSION['ffstr']??'AaBbCcDdEe0123éà','44');
 $ret.=lj('txtx','ffwr_sesmake_ffwr__ffstr','set');
 $ret.=divd('scroll',divd('pop',$nbp.br().$rtb.$nbp)).br();
-//return csscode($rta).$nbp.br().$rtb.$nbp;
+//return head::csscode($rta).$nbp.br().$rtb.$nbp;
 return $ret;}
 
 static function ffcall($g,$prm=[]){[$p,$b,$c,$o]=arr($g,4); $s=$prm[0]??'';
@@ -577,10 +578,10 @@ if($defs)foreach($defs as $k=>$v)//find
 static function informe_config_design(){
 $cnd=$_SESSION['cond']; $cndb=$cnd[1]?$cnd[1]:$cnd[0]; $r=boot::context_mods('system');
 foreach($r as $k=>$v)if($v[0]=='design'){
-	$v[1]=$_SESSION['desgn']; $_SESSION['prma'][$v[0]]=$v[1]; $_SESSION['prmd']=$v[1];
-	if($k=='push')$_SESSION['mods']['system'][]=$v; else $_SESSION['mods']['system'][$k]=$v;
-	array_unshift($v,'system');
-	msql::modif('',$_SESSION['modsnod'],$v,$k);}}
+$v[1]=$_SESSION['desgn']; $_SESSION['prma'][$v[0]]=$v[1]; $_SESSION['prmd']=$v[1];
+if($k=='push')$_SESSION['mods']['system'][]=$v; else $_SESSION['mods']['system'][$k]=$v;
+array_unshift($v,'system');
+msql::modif('',$_SESSION['modsnod'],$v,$k);}}
 
 #facilities	
 static function facil_images($k,$url,$val){
@@ -598,10 +599,10 @@ $ret.=upload_j('upl','css',$k).' ';
 return $ret;}
 
 static function facil_names($defs,$k){
-$sty='" size="20'; $ids='cl1'.$k.',cl2'.$k.',cl3'.$k;
-$ret=btn('txtsmall2','div:').input('cl1'.$k.$sty,$defs[$k][0]).br();
-$ret.=btn('txtsmall2','class:').input('cl2'.$k.$sty,$defs[$k][1]).br();
-$ret.=btn('txtsmall2','element:').input('cl3'.$k.$sty,$defs[$k][2]).' ';
+$ids='cl1'.$k.',cl2'.$k.',cl3'.$k;
+$ret=btn('txtsmall2','div:').input('cl1'.$k,$defs[$k][0],20).br();
+$ret.=btn('txtsmall2','class:').input('cl2'.$k,$defs[$k][1],20).br();
+$ret.=btn('txtsmall2','element:').input('cl3'.$k,$defs[$k][2],20).' ';
 $ret.=lj('popbt','css'.$k.'_sty,savcss_'.$ids.'__'.$k.'_3',nms(66)).br().br();
 return $ret;}
 
@@ -783,7 +784,7 @@ foreach($r as $k=>$v)if($v)$r[$k]=invert_color($v,0);
 return $r;}
 
 static function build_css($f,$defs,$neg=''){
-unset($defs[msql::$m]); $clr=getclrs(); $ret=[];
+unset($defs[msql::$m]); $clr=getclrs(); $ret=[]; //pr($clr);
 if($neg){$f=str_replace('.css','_neg.css',$f); $clr=self::invertclrs($clr);}
 $sheets=[3=>'color',4=>'background-color',5=>'border-color',''];
 $attributes=['','a','a:hover',''];

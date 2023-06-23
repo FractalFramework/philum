@@ -57,7 +57,7 @@ if($r)foreach($r as $v)$ret.=lj($p==$v?'active':'',$rid.'_study,call___'.$v.'_'.
 return btn('nbp',$ret).' ';}
 
 static function home($p,$o){$rid=randid('plg');
-Head::add('jscode','function stydiv(d){}'); $bt=''; $ret='';
+head::add('jscode','function stydiv(d){}'); $bt=''; $ret='';
 if(auth(4))$bt=lj('',$rid.'_study,input___'.$rid,picto('add')).' ';
 if(auth(4))$bt.=msqbt('',nod('study_'.$p)).' ';
 $bt.=hlpbt('study');

@@ -113,6 +113,6 @@ return $ret;}
 static function home($p,$o){
 $rid=randid('ind');
 $bt=self::menu($p,$o,$rid);
-return $bt.div(atd($rid).atc('console').ats('white-space:pre-wrap;'),'');}//nowrap
+return $bt.divb('','console',$rid,'white-space:pre-wrap;');}//nowrap
 }
 ?>

@@ -5,7 +5,7 @@ if($t)$ta=btn('txtsmall',$t);
 if(!ses('USE')){// or !is_numeric($rg)
 $nam=nameofauthes($_SESSION['prmb'][11]);
 return '<form id="login" name="form2" method="post" action="/?log=on" onKeyPress="checkEnter(event,\'login\')">'.$ta.inputb('user',$nam,16,'',100,['name'=>'user']).' '.inpsw('pass','',16).' '.
-$ret.=button('document.forms[\'login\'].submit();','ok',atc('txtx')).'</form>';}
+$ret.=button('document.forms[\'login\'].submit();','ok',['class'=>'txtx']).'</form>';}
 else return lkc('txtx',"/?log=out","log_out").br();}
 
 static function home($p){
@@ -20,7 +20,7 @@ $ret.=input('pass','','',['name'=>'pass']).' ';
 $ret.=tag('label',['for'=>'pass','size'=>15],nms(137)).br();
 $ret.=input('mail','','',['name'=>'mail']).' ';
 $ret.=tag('label',array('for'=>'mail','size'=>15),nms(136)).br().br();
-$ret.=button('document.forms[\'login\'].submit();',nms(27),atc('popsav'));
+$ret.=button('document.forms[\'login\'].submit();',nms(27),['class'=>'popsav']);
 return '<form id="login" method="post" action="" onKeyPress="checkEnter(event,\'login\')">'.$ret.' </form>';}
 }
 ?>

@@ -59,7 +59,7 @@ return togbub('umnote,slctjr',$d.'_'.$rid,$bt);}
 static function home($p,$o){
 ses('umncnod','ummo_umnote_1');
 $ret=self::slctj($p).' ';
-$ret.=input('unrch',$p,'').' ';
+$ret.=input('unrch',$p).' ';
 $ret.=lj('popsav','uncbk_umnote,search_unrch_15_'.ajx($p),'chercher').' ';
 $ret.=divd('uncbk',umvoc::search($p,'1','')).br();
 $ret.=msqbt('',ses('umncnod'),'').' ';

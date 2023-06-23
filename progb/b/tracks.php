@@ -18,7 +18,7 @@ $nm=sql('name','qdi','v','id="'.$id.'"');
 //$r=sql('name','qdi','rv','nod="'.ses('qb').'"');
 $j='trknm'.$id.'_tracks,trkowner_trkchgnm__'.$id;
 $ret=inputj('trkchgnm',$nm,$j).lj('',$j,picto('ok'));
-return div(atd('trknm'.$id),$ret);}
+return divd('trknm'.$id,$ret);}
 
 static function trkstatus($id,$st){$ret='';
 if($st){sql::upd('qdi',['re'=>$st],$id); return art::trkone($id);}

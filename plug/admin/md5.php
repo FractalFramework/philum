@@ -6,7 +6,7 @@ $ret=md5($p);
 if(is_numeric($o))$ret=substr($ret,0,$o);
 return $ret;}
 
-static function menu($p,$o,$rid){$ret.=input('inp',$p,'').' ';
+static function menu($p,$o,$rid){$ret.=input('inp',$p).' ';
 $ret.=lj('',$rid.'_md5,call_inp',picto('ok')).' ';
 return $ret;}
 

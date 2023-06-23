@@ -65,13 +65,13 @@ $fa=''.$dr.'/'; $f='_backup/'.$p.date('ymd').'.dump';
 #dump
 //$d='mysqldump --user='.$user.' --host='.$host.' --password='.$pasw.' '.$base.' > '.$fa;
 //$ps='';
-//$opt='–default-character-set=utf8 ';
+//$opt='â€“default-character-set=utf8 ';
 $d='mysqldump -u '.$usr.' -h localhost -p'.$ps.' --opt '.$base.' > '.$fa.$f;//ecko($d);
 #restore
 //$d='mysql -u root -p maBase < '.$fa;
 #copy dir
 //if(is_file($f))unlink($f); if(is_file($f.'.gz'))unlink($f.'.gz'); //echo exc('ls -la');
-//cp -r /répertoire_source /répertoire_destination
+//cp -r /rÃ©pertoire_source /rÃ©pertoire_destination
 if(!is_file($f) && $p){//exc($d);
 	if(auth(6) or $y=='c9f4e6')echo shell_exec($d);
 	if($o)echo exc('gzip -r '.$fa.$f);}//gzip

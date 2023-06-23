@@ -48,7 +48,7 @@ if($n>0)$ret=lj('txtbox','cbk_addfonts,inject','add '.$n.' typos').br().br();//x
 return $ret.tabler($r,0,1);}
 
 static function home($d){$here='addfonts';
-//Head::add('css','../css/_admin.css')); Head::add('js','../progb/ajx.js'));
+//head::add('css','../css/_admin.css')); head::add('js','../progb/ajx.js'));
 $r=msql::read('','public_addfonts');
 $ret=divc('txtalert','coller la classe @face-font (avec url absolue)').br();
 $ret.=textarea('txtcss','',60,10);

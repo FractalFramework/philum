@@ -2,7 +2,7 @@
 class snifr{
 
 static function js($rid){
-Head::add('jscode','
+head::add('jscode','
 var lapsetime=60000;
 function twlive(e){var inp=getbyid("inp").value;
 	SaveJ("'.$rid.'_twit,call__14_"+inp);

@@ -75,10 +75,10 @@ static function home($p,$o){$rid='plg'.randid(); //echo $p.'-'.$o;
 profile_init('profil');
 $r=self::datas(ses('USE')); //p($r);
 if(strpos($r['gps'],'/')===false)$r['gps']='0/0';
-//Head::add('js','http://maps.googleapis.com/maps/api/js');
-Head::add('jscode',self::js($r['gps']));
+//head::add('js','http://maps.googleapis.com/maps/api/js');
+head::add('jscode',self::js($r['gps']));
 $ret=self::form($r,$o);
-//$ret.=jscode(self::js($r[5]));
+//$ret.=head::jscode(self::js($r[5]));
 return divd($rid,$ret);}
 }
 ?>

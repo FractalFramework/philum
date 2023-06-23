@@ -12,7 +12,7 @@ static function call($p,$o,$prm=[]){
 $ret=self::build($p,$o);
 return $ret;}
 
-static function menu($p,$o,$rid){$ret=input('inp',$p,'').' ';
+static function menu($p,$o,$rid){$ret=input('inp',$p).' ';
 $ret.=lj('',$rid.'_atomic,call_inp',picto('ok')).' ';
 $ret.=msqbt('','public_atomic').' ';
 $ret.=lk('/app/spt',picto('url'));

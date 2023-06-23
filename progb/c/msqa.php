@@ -125,7 +125,7 @@ if($r)foreach($r as $k=>$v){$ra=[]; $i++;
 	elseif(is_array($ra))if(auth(4)){if(get('del'))$open=$del.$open;
 		foreach($ra as $ka=>$va){$rid=str::normalize('msqedt'.$k.'-'.$ka);
 			$ra[$ka]=divd($rid,self::mdfcolbt(trim($va),$k,$ka,$murl,$rid));
-			if($rh && $rh[$ka]=='picto')$ra[$ka.'pc']=picto($va);}
+			if(($rh[$ka]??'')=='picto')$ra[$ka.'pc']=picto($va);}//add pictos
 		array_unshift($ra,$open);}
 	else array_unshift($ra,$k); //eco($rh[$ka]);
 	$datas[$k]=$ra;}
@@ -195,9 +195,17 @@ if(strpos($v,'<')!==false)$v=str::htmlentities_b($v);
 $p=['style'=>'height:'.(($s?$s:1)*$h).'px;','onkeyup'=>'goodheight(this,'.($n).','.$h.');'];
 return textarea($k,$v,$n,'1',$p);}
 
+static function translate($nod,$d,$o,$ob){$lga='fr';
+[$dir,$node]=self::node_decompil($nod); $nodb=ajx($nod);
+[$dr,$lg]=expl('/',$dir,2);
+$r=msql::row($dr.'/'.$lga,$node,$d); $rt=[];
+foreach($r as $k=>$v)$rt[$k]=trans::read($v,$lga,$lg,'');
+msql::modif($dir,$node,$rt,'row',[],$d);
+return self::editmsql($nod,$d,$o,$ob);}
+
 static function editmsql($nod,$va,$o,$ob){
 $qb=ses('qb'); $tg=$ob?'socket':'admsql'; $rid=randid(); $rh=[];
-[$dir,$node]=self::node_decompil($nod); $nodb=ajx($nod); $pn=''; $rc=[]; $kb='';
+[$dir,$node]=self::node_decompil($nod); $nodb=ajx($nod); $pn=''; $rc=[]; $kb=''; $kyb='';
 $r=msql::read($dir,$node); $h=isset($r[msql::$m])?1:0; if($r)$rh=$h?$r[msql::$m]:current($r);
 if($r)$nxtk=msql::nextentry($r); $idn=randid();
 if($va=='add'){$u=$o; $o=domain(strtolower($u));
@@ -221,7 +229,7 @@ if(is_array($r)){$i=0; $kys[]='k'.$rid;//keys to shift from array
 			if($rhk=='post-treat')$opt=br().jump_btns($kb,conv::ptvars(),'|'); else $opt=''; 
 			//if($rhk=='last-update')$opt=ljb('txtbox','jumpvalue',[$kb,date('ymd',time())],date('ymd',time()));
 			if($rhk=='last-update'){$opt=btn('txtx',$v); $v=date('ymd',time());}}
-		else $opt=self::slct($idn,$k,$dir.'/'.$node.'-'.($i-1));//slct
+		else $opt=self::slct($idn,$k,$dir.'/'.$node.'~'.($i-1));//slct
 		if($rhk=='icon')$opt.=' '.lj('txtx','popup_admx,sbmpct___'.$kb,'pictos');
 		//elseif($rhk=='condition')$opt.=' '.jump_btns($kb,'menu|desk|boot|home|user',' ');
 		//elseif($rhk=='context')$opt.=' '.jump_btns($kb,'home|art|cat',' ');
@@ -246,8 +254,9 @@ if(auth(4)){
 	$bt.=select_j('pos'.$rid,'msql',$key,$nod,'');//displace
 	$bt.=lj('popbt',$tg.'_msqa,msqldisplace_pos'.$rid.'__'.$nodb.'_'.ajx($key),nms(158)).' ';
 	$bt.=lj('popdel',$tg.'_msqa,msqldel__x_'.$nodb.'_'.$kyb,pictit('del',nms(76))).' ';}//del
-if(substr($nod,0,4)=='lang'){$lg=strprm($nod,1,'/'); if($lg=='en')$lg='fr'; else $lg='en';
-$bt.=lj('popbt','popup_msqa,editmsql___lang/'.$lg.'/'.ajx(strend($node,'/')).'_'.ajx($va),$lg);}
+if(substr($nod,0,4)=='lang'){$lg=strprm($nod,1,'/'); $rl=meta::langs(); $nd=strend($node,'/');//trans
+	foreach($rl as $k=>$v)if($v!=$lg)$bt.=lj('popbt','popup_msqa,editmsql___lang/'.$v.'/'.ajx($nd).'_'.ajx($va),$v);
+	if($lg!=ses('lng'))$bt.=lj('popbt','popup_msqa,translate__x_lang/'.$lg.'/'.ajx($nd).'_'.ajx($va),picto('translate'));}
 $bt.=msqbt($dir,$node).hlpbt('defcons');
 $ret=divs('padding-bottom:4px',btd('bts','').$bt).$ret;
 return $ret;}

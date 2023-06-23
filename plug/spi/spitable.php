@@ -114,8 +114,8 @@ for($i=1;$i<=$n;$i++){$td='';
 return tagb('table',$tr);}
 
 static function home($p){$p=$p?$p:118;
-Head::add('csscode','td{margin:0; padding:1px;}');
-Head::add('jscode',self::js($p));
+head::add('csscode','td{margin:0; padding:1px;}');
+head::add('jscode',self::js($p));
 $pub=msqbt('','public_atomic','');
 //$bt=self::menu($p);
 $ret=self::build($p);

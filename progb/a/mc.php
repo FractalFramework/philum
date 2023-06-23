@@ -137,7 +137,7 @@ return $ret;}
 
 static function paste(){$ret=diveditbt('');
 $ret=btn('right',lj('popbt" id="bts','txtarea_mc,wygok_txtareb_5',nms(86)));
-$ret.=div(' contenteditable id="txtareb" class="panel justy" style="padding:10px; border:1px dotted grey; min-width:550px; min-height:240px;"','<br>');
+$ret.=divr('<br>',['contenteditable'=>'true','id'=>'txtareb','class'=>'panel justy','style'=>'padding:10px; border:1px dotted grey; min-width:550px; min-height:240px;']);
 return $ret;}
 
 //table
@@ -233,7 +233,8 @@ static function filters($va,$opt,$prm){
 $rt=''; [$d,$rep,$by]=arr($prm,3); //$d=delr($d);
 if($va=='cleanbr')$rt=str::clean_br($d);
 elseif($va=='cleanmail')$rt=str::cleanmail($d);
-elseif($va=='cleanpunct')$rt=str::clean_punctuation($d,2);
+elseif($va=='cleanpunct')$rt=str::clean_punctuation($d,2);//nicequotes
+elseif($va=='nicequotes')$rt=str::nicequotes($d,2);
 elseif($va=='cleanpdf')$rt=self::clean_pdf($d);
 elseif($va=='striplink')$rt=codeline::parse($d,'striplink','correct');
 elseif($va=='converthtml'){$rt=conv::call(nl2br($d)); $rt=str::post_treat_repair($rt);}
@@ -312,10 +313,10 @@ $ret=preg_replace('/( ){2,}/',' ',$ret);
 return $ret;}
 
 //dsnav
-static function conn_props_b($n){$ret=''; $rb=[];
-$r=msql::read('system','connectors_all',1); ksort($r);
-foreach($r as $k=>$v)if($v[2]==$n)$rb[$k]=[$v[0],$v[1]];
-$help=msql::kv('lang','connectors_all','');
+static function conn_props_b($d,$b){$ret=''; $rb=[];
+$r=msql::read('system','connectors_'.$b,1); ksort($r);
+foreach($r as $k=>$v)if($v[2]==$d)$rb[$k]=[$v[0],$v[1]];
+$help=msql::kv('lang','connectors_'.$b,'');
 if($rb)foreach($rb as $k=>$v){
 	if($help[$k])$hlp=stripslashes($help[$k]); else $hlp='';
 	if($v[0]=='embed'){if($v[1])$v[0]='embedslct'; else $v[1]=$k;}
@@ -400,7 +401,9 @@ elseif($op=='del')$ret=self::conn_del('html',$id);
 elseif($op=='del2')$ret=self::conn_del('media',$id);
 elseif($op=='disk')$ret=finder::home(ses('qb'),'disk///disk/conn//mini');
 elseif($op=='icons')$ret=finder::home('','disk///icon/conn//mini');
-else $ret=self::conn_props_b($op);
+elseif($op=='filters')$ret=self::conn_props_b($op,'tools');
+elseif($op=='tools')$ret=self::conn_props_b($op,'tools');
+else $ret=self::conn_props_b($op,'all');
 return divb($ret,'nbp','nv'.$op);}//,'min-width:300px; max-width:680px;'
 
 //backup_arts

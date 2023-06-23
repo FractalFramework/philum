@@ -99,10 +99,10 @@ $ret.=lj('',$rid.'_spielec,call_inp',picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid='spe'; $p=$p?$p:118; //$o=1;
-Head::add('csscode',self::css());
+head::add('csscode',self::css());
 //$bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 //$bt.=msqbt('',nod('public_atomic'));
-return div(atd($rid).atc('panel small'),$ret);}
+return divb($ret,'panel small',$rid);}
 }
 ?>

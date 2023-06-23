@@ -3,8 +3,8 @@ class mod{
 static $r=['m','p','t','c','d','o','ch','hd','tp','bt','dv','pv','pp'];
 static $rha=[];
 
-static function connmod($d){$rb=explode_k($d,',',':');
-if($rb[0]??'')$rb['p']=$rb[0]; if($rb[1]??'')$rb['m']=$rb[1]; return $rb;}
+static function connmod($d){$rt=explode_k($d,',',':');
+if($rt[0]??'')$rt['p']=$rt[0]; if($rt[1]??'')$rt['m']=$rt[1]; return $rt;}
 
 static function mkcmd($p,$r=[],$o=0){if(!$r)$r=self::connmod($p);//p|bt:m
 if($o)return array_combine(self::$r,arr($r,13));//build keys
@@ -12,7 +12,7 @@ else return valk($r,self::$r);}//verify keys
 
 static function jsmap($nm){$r=self::$rha;
 foreach($r as $k=>$v)$rt[]='["'.$k.'","'.$v.'"]';
-return jscode('const '.$nm.'=new Map(['.implode(',',$rt).']);');}
+return head::jscode('const '.$nm.'=new Map(['.implode(',',$rt).']);');}
 
 //send only one command
 static function btmod($p,$r=[]){$r=self::mkcmd($p,$r,1);
@@ -43,7 +43,7 @@ foreach($r as $k=>$v)$ret.=self::callmod($v);
 return $ret;}
 
 static function block($va,$cr,$bt=''){$ath=auth(6); $g=get('read'); $c=get('frm'); //pr(ses::$r['get']);
-$r=sesr('modc',$va); ses::$r['curdiv']=$va; $rb=[]; $rl=[]; $ret=''; $ik=1; $i=-1; $ni=0;
+$r=sesr('modc',$va); ses::$r['curdiv']=$va; $rt=[]; $rl=[]; $ret=''; $ik=1; $i=-1; $ni=0;
 if($r)foreach($r as $k=>$v){if(!$v[7] && (!$v[11] or $ath)){//hide/private
 	if($v[9]??'')$rl[$k]=self::btmod('',$v);//bt
 	elseif($bt){$i++;//menu
@@ -51,13 +51,13 @@ if($r)foreach($r as $k=>$v){if(!$v[7] && (!$v[11] or $ath)){//hide/private
 		if($c && !$g && $v[0]=='categories')ses::$loader=self::build($v);
 		elseif($i==$ni && !$g && !$c)ses::$loader=self::build($v);}//superflous if #
 	elseif($v[6]){$mdc=sesr('mdc',$k);//cache
-		if(!$mdc or $cr){$rb[$k]=self::build($v); $_SESSION['mdc'][$k]=$rb[$k];}
-		else $rb[$k]=$mdc;}
-	//elseif($v[11]??'')$rb[$k]=divd('mod'.$k,lj('txtcadr','mod'.$k.'_md::modj___'.$k.'_'.$va,$v[2]));
-	//elseif($v[12]??'')Head::add('jscode',sj('popup_mod,callmod___'.$k));//better use apps
-	else $rb[$k]=self::build($v);}}
+		if(!$mdc or $cr){$rt[$k]=self::build($v); $_SESSION['mdc'][$k]=$rt[$k];}
+		else $rt[$k]=$mdc;}
+	//elseif($v[11]??'')$rt[$k]=divd('mod'.$k,lj('txtcadr','mod'.$k.'_md::modj___'.$k.'_'.$va,$v[2]));
+	elseif($v[12]??''){$rt[$k]=divd('mod'.$k,''); head::add('jscode',sj('mod'.$k.'_mod,callmod___'.$k));}
+	else $rt[$k]=self::build($v);}}
 if($rl)$ret=implode(thin(),$rl);
-if($rb)$ret.=implode(n(),$rb);
+if($rt)$ret.=implode(n(),$rt);
 ses::$r['curdiv']='content'; $h='';
 if(self::$rha){$h=self::jsmap('rha'); self::$rha=[];}
 return divd($va,$ret.$h);}
@@ -175,7 +175,7 @@ case('sources'):if($t)$t=lkc('','/module/source',$t); $lin=md::art_sources($p); 
 case('folder'):$lin=desk::vfolders($p); break;
 //menus
 case('link'):$ret=md::modlk($p,$t,$o); break;
-case('app_popup'):Head::add('jscode',sj(desk::read(explode(',',$p)))); break;
+case('app_popup'):head::add('jscode',sj(desk::read(explode(',',$p)))); break;
 case('overcats'):return mkbub(bubs::call('overcat','zero'),'inline','1'); break;
 case('MenuBub'):return mkbub(bubs::call('menubub','zero',$p),'inline','1'); break;
 case('timetravel'):return md::timetravel($p,$o); break;
@@ -256,8 +256,9 @@ case('webs'):if($t)$ret=self::title('',$t,''); $ret.=web::stream($p,$o); break;
 case('module'):$ret=self::callmod($p); break;
 case('command'):$ret=self::com_mod($p); break;
 case('vacuum'):$ret=self::com_vacuum($p,$o); break;
-case('app'):[$pa,$pb,$oa,$ob]=expl('_',$p,4); if($t)$ret=self::title('',$t,'');
-	$ret.=appin($pa,$pb?$pb:'home',$oa,$ob); break;
+case('app'):[$pa,$pb,$oa,$ob]=expl('_',$p,4); 
+	//if($pp){$rid=randid($pa); $ret=divd($rid,''); head::add('jscode',sj($rid.'_'.$pa.','.$pb.'___'.$oa.'_'.$ob));}
+	if($t)$ret=self::title('',$t,''); $ret.=appin($pa,$pb?$pb:'home',$oa,$ob); break;
 case('close'):$ret='';
 default:if(method_exists($m,'call'))$ret=$m::call($p,$o); break;}
 if($lin)$ret=self::mod_lin($lin,$t,$d,$o);//menus
@@ -434,7 +435,7 @@ return $bt.divd($rid.'cb','');}
 static function make_ban($p,$o,$t){
 $t=divc('bantxt',conn::parser($t));
 $im=$p?goodroot($p):'imgb/usr/'.ses('qb').'_ban.jpg'; $h=is_numeric($o)?$o:'120';
-return div($t,'banim','','background-image:url('.$im.'); height:'.$h.'px;');}
+return divb($t,'banim','','background-image:url('.$im.'); height:'.$h.'px;');}
 
 static function footer(){
 ses::$r['curdiv']='footer';

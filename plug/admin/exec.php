@@ -52,7 +52,7 @@ return isset($ret)?$ret:'';}
 
 static function home($p){$rid='plg'.randid();
 if(!auth(6))return btn('txtalert','need auth>6');
-//Head::add('jscode',self::js());
+//head::add('jscode',self::js());
 $j=$rid.'_exec,run_codarea_2';
 $f='_datas/exec/'.date('ymd').'.php'; mkdir_r($f);
 if(!$p && is_file($f)){$p=read_file($f); if($p)$p=substr($p,6);}
@@ -61,9 +61,9 @@ $bt.=togbub('exec,fast','','fast').' ';
 //$bt.=select($r,'');
 $bt.=msqbt('system','program_core').' ';
 $bt.=lj('popsav',$j,'exec');
-$ret=jscode(self::js());
+$ret=head::jscode(self::js());
 $sj=atjr('SaveJtim',[$j,1000]); //$onk=atjr('autocomp','codarea');
 $ret.=textarea('codarea',$p?$p:'$d=\'hello\';',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);
-return $bt.div(atc('grid-pad').ats('min-width:640px'),divc('col1',$ret).div(atd($rid).atc('col2 scroll'),''));}
+return $bt.divb(divc('col1',$ret).divb('','col2 scroll',$rid),'grid-pad','','min-width:640px');}
 }
 ?>

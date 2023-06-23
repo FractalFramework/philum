@@ -10,7 +10,7 @@ if(!empty($r[2]))$im=divs('float:left; margin-right:10px',image(goodroot($img),9
 $ret=$im.lka($u,$tit).divc('',$txt).divc('small grey',lkt('',$u,pictxt('url',preplink($u))));
 return tagb('blockquote',$ret.divc('clear',''));}
 
-static function imgyt($u){return 'https://img.youtube.com/vi/'.segment($u,'=','&').'/hqdefault.jpg';}
+static function imgyt($u){return 'https://img.youtube.com/vi/'.strin($u,'=','&').'/hqdefault.jpg';}
 
 static function metas2($f,$d,$dom){$ti=''; $tx='';
 [$defid,$defs]=conv::verif_defcon($f);//defcons
@@ -68,7 +68,7 @@ $proxy='newsnet.ovh';
 $http=http($proxy); if(host()==$http)return;
 if(substr($f,0,7)=='youtube')$u=strend($f,'=');
 $u=$http.'/call/yt,build/'.str_replace('/','|',$u);
-//$u='http://logic.ovh/api/web/p1:'.segment($f,'=','&');
+//$u='http://logic.ovh/api/web/p1:'.strin($f,'=','&');
 if(auth(6))echo $u.' ';
 $d=file_get_contents($u);
 $r=json_decode($d,true);
@@ -119,7 +119,7 @@ if(substr($p,0,4)!='http')$p=http($p);
 if(!is_url($p))return 'nothing';
 $ret=self::com($p,$o,$id);
 $bt=self::wmenu($p,$rid,$id);
-return div('',div(atd($rid).ats('min-width:320px;'),$ret).$bt);}
+return divb(divb($ret,'',$rid,'min-width:320px;').$bt);}
 
 static function j($p,$o,$prm=[]){$p=$prm[0]??$p;
 return self::call($p,$o);}

@@ -7,7 +7,7 @@ return self::build($p,$o);}
 
 static function add($p,$o){
 $r=explode(',',$o); $ret=''; $j='admsql_msqedit,save__x_';
-foreach($r as $k=>$v){$id='inp'.$v; $ids[]=$id; $ret.=$v.' '.input($id,'','').br();}
+foreach($r as $k=>$v){$id='inp'.$v; $ids[]=$id; $ret.=$v.' '.input($id,'').br();}
 $ret.=lj('',$j.ajx($p).'__'.implode('|',$ids),pictxt('save2'));
 return $ret;}
 

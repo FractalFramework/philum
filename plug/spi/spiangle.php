@@ -135,7 +135,7 @@ $ret.=lk('/app/spt',picto('filelist'));
 return $ret;}
 
 static function home($p,$o){$rid='spg'; $p=$p?$p:118; //$o=1;
-Head::add('csscode',self::css());
+head::add('csscode',self::css());
 //$bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 return divd($rid,$ret);}

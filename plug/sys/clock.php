@@ -27,7 +27,7 @@ static function head(){
 	$minclr='#000099';
 	$secclr='#009900';
 	
-	Head::add('csscode','
+	head::add('csscode','
 	#clockFrame{
 		background:#fff;
 		width:'.($size3+40).'px;
@@ -95,7 +95,7 @@ static function head(){
 	'.self::uclock_needle('needleSec',$size3,$secclr,4,$size3/2).'
 	');
 	
-	Head::add('jscode',self::js());
+	head::add('jscode',self::js());
 }
 
 static function js(){return '
@@ -141,7 +141,7 @@ self::head();
 	$ret.=tag('div',array('id'=>'needleSecFrame'),$needleSec);
 	$ret.=tag('div',array('id'=>'clockCenter'),'');
 	$ret.=tag('div',array('id'=>'digit'),'');
-	$ret.=jscode('clock();');
+	$ret.=head::jscode('clock();');
 	$ret=tag('div',array('id'=>'clockFrame'),$ret);
 return $ret;}
 }

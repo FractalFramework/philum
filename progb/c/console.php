@@ -61,6 +61,7 @@ return divc('',btn('menus',$all.$ret).hlpbt('console_cond'));}}
 //build
 static function mod_name($v){
 [$m,$p,$t]=$v; $ti=$t?$t:$m;
+if($m=='app')$ti=strto($p,'_');
 return mimes($m,'file-config').' '.$ti;}
 
 static function console_module($k,$v,$vl){//(4411)
@@ -99,7 +100,7 @@ if($p && !is_numeric($p))return divd('mdls'.$p,self::block($p,1));
 $ret=self::select_mods_m();//mods
 if(auth(6))$ret.=self::backup_console_bt();
 $ret.=self::see_conds_b();//conditions
-$ret.=div('',self::console_nav()).divc('clear','');
+$ret.=divb(self::console_nav()).divc('clear','');
 return $ret;}
 
 #actions

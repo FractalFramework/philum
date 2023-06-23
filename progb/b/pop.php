@@ -5,47 +5,48 @@ static function m_system($st){$auth=$_SESSION['auth']; $id=ses('read');
 $rst=ses('rstr'); $top=!$rst[69]?'':'d'; $hv=1;
 $ra=[0=>prmb(8),1=>'loading',2=>'admin',3=>'desktop',4=>'download',5=>'search',6=>'articles',7=>'add',8=>'link',9=>'language',10=>'time',11=>'circle-full',12=>'circle-empty',13=>'list',14=>'user',15=>'menu',16=>'circle-half']; 
 foreach($ra as $k=>$v)$ico[$k]=picto($v);
-$ret['home']=popbub('home','',$ico[0],$top,$hv);//if(!$rst[20])
-if(!$rst[94])$ret['menuB']=popbub('menubub','',$ico[15],$top,$hv);
-if(!$rst[95])$ret['menuO']=popbub('overcat','',$ico[15],$top,$hv);
-if(!$rst[51])$ret['desk']=popbub('desk','',$ico[3],$top,$hv);
+$rt['home']=popbub('home','',$ico[0],$top,$hv);//if(!$rst[20])
+if(!$rst[94])$rt['menuB']=popbub('menubub','',$ico[15],$top,$hv);
+if(!$rst[95])$rt['menuO']=popbub('overcat','',$ico[15],$top,$hv);
+if(!$rst[51])$rt['desk']=popbub('desk','',$ico[3],$top,$hv);
 if($auth>4){
-	if(!$rst[120])$ret['admin']=popbub('fadm','fastmenu',$ico[2],$top,$hv);
-	else $ret['admin']=popbub('fadm','fastmenu2',$ico[2],$top,$hv);}
+	if(!$rst[120])$rt['admin']=popbub('fadm','fastmenu',$ico[2],$top,$hv);
+	else $rt['admin']=popbub('fadm','fastmenu2',$ico[2],$top,$hv);}
 if(!$rst[75]){
-	if($top)$ret['search']=search_btn(1);
-	else $ret['search']=popbub('call','search',$ico[5],$top,$hv);}
+	if($top)$rt['search']=search_btn(1);
+	else $rt['search']=popbub('call','search',$ico[5],$top,$hv);}
 if($auth>1){
-	if(!$rst[83])$ret['ucom']=popbub('call','ucom',$ico[8],$top,$hv);
-	if($auth>3 && !$rst[76])$ret['batch']=popbub('call','batch',$ico[4],$top,$hv);}
+	if(!$rst[83])$rt['ucom']=popbub('call','ucom',$ico[8],$top,$hv);
+	if($auth>3 && !$rst[76])$rt['batch']=popbub('call','batch',$ico[4],$top,$hv);}
 if($auth>2){
-	if(!$rst[79])$ret['addurl']=popbub('call','addart',$ico[7],$top,$hv);
-	//if(!$rst[79])$ret['addurl']=llj('','bubble_sav,addart',$ico[7]);
-	else $ret['addart']=li(btj($ico[7],sj('popup_edit,call').' closebub(this);'));}
-if(!$rst[81])$ret['favs']=llj('','popup_favs,home',picto('bookmark2'));//favs
-if(!$rst[80])$ret['arts']=popbub('','arts',$ico[6],$top,$hv);//arts
-if(!$rst[82])$ret['lang']=popbub('lang','lang',$ico[9],$top,$hv);//lang
+	if(!$rst[79])$rt['addurl']=popbub('call','addart',$ico[7],$top,$hv);
+	//if(!$rst[79])$rt['addurl']=llj('','bubble_sav,addart',$ico[7]);
+	else $rt['addart']=li(btj($ico[7],sj('popup_edit,call').' closebub(this);'));}
+if(!$rst[81])$rt['favs']=llj('','popup_favs,home',picto('bookmark2'));//favs
+if(!$rst[80])$rt['arts']=popbub('','arts',$ico[6],$top,$hv);//arts
+if(!$rst[82])$rt['lang']=popbub('lang','lang',$ico[9],$top,$hv);//lang
 if(abs(ses('dayx')-ses('daya'))>86400 or !$rst[84]){//back_in_time
-	$ret['timetravel']=popbub('timetravel','',$ico[10],$top,$hv);//archives
-	$ret['timeout']=lkc('popsav','/reload',nmx([82,199]).' '.date('Y',ses('daya')));}
-if($des=ses('desgn'))$ret['design']=lj('popbt','socket;sty,actions;;url;exit_design','design:'.$des);
+	$rt['timetravel']=popbub('timetravel','',$ico[10],$top,$hv);//archives
+	$rt['timeout']=lkc('popsav','/reload',nmx([82,199]).' '.date('Y',ses('daya')));}
+if($des=ses('desgn'))$rt['design']=lj('popbt','socket;sty,actions;;url;exit_design','design:'.$des);
 if(!$rst[48]){if($top)$nm=' '.btn('small',ses('USE'));//usr
-	$ret['user']=popbub('user','',$ico[14],$top,$hv);}//user on prm1=app user, on prm2=bubfast
-if($id && !$rst[89])$ret['seek']=popbub('seek','',$ico[13],$top,$hv);//metas
+	$rt['user']=popbub('user','',$ico[14],$top,$hv);}//user on prm1=app user, on prm2=bubfast
+if($id && !$rst[89])$rt['seek']=popbub('seek','',$ico[13],$top,$hv);//metas
 if($id && auth(6)){
 	$tag=lj('','popup_meta,metall___'.$id.'_3',picto('tag'));
 	$tit=lj('','popup_meta,titedt___'.$id.'_3',picto('meta'));
 	$edt=lj('','popup_edit,call____'.$id.'__autowidth',picto('edit'));
 	$edt2=btj(picto('editor'),atj('editart',$id));
 	//if(!$rst[1])$trk=li(lj('','popup_tracks,form___'.$id,picto('forum')));
-	$ret['edit']=li($tag).li($tit).li($edt).tag('li',['id'=>'adt2'.$id],$edt2);}//.$trk
+	$rt['edit']=li($tag).li($tit).li($edt).tag('li',['id'=>'adt2'.$id],$edt2);}//.$trk
 $dev=ses('dev'); $ic=$dev=='b'?$ico[11]:($dev=='c'?$ico[16]:$ico[12]);
-if(auth(6) or $dev)$ret['dev']=popbub('dev','dev',$ic,$top,$hv);//dev
-$ret['fixit']=spn(' ','etc','fixtit');
+if(auth(6) or $dev)$rt['dev']=popbub('dev','dev',$ic,$top,$hv);//dev
+$rt['fixit']=spn(' ','etc','fixtit');
 $chrono=round(microtime(1)-$st,3); 
-if(ses('dev'))$ret['chrono']=btn('popbt',$chrono);
-//if(ses::r('tst'))$ret['chrono'].=divb(playr(ses::r['tst']),'small');
-return $ret;}
+if(ses('dev'))$rt['chrono']=btj($chrono,'relj()','popbt');
+if(ses::r('er'))$rt['err']=divb(playr(ses::r['er']),'small');
+if(!$rst[157])$rt['night']=li(btj(btd('swcs',picto('moon')),'switchcss()',''));
+return $rt;}
 
 //poplinks
 static function popadmin($st){
@@ -56,16 +57,15 @@ if(get('admin')){$top='d';
 	$rta=$hom.adm::menus();}
 elseif(get('msql')){$top='d'; $rta=msqa::menusj('');}
 else foreach($r as $k=>$v){
-	if(strstr('cache design hub alert log chrono srch timeout',$k))$rtb.=btn('',$v).' '; 
-	elseif($k=='er')$rtb.=btn('popdel',implode(';',$v)).' '; 
+	if(strstr('cache design hub alert log chrono srch timeout err',$k))$rtb.=btn('',$v).' ';
 	else $rta.=$v;}
 $css=$top?'inline':''; ses::$adm=[];
 if(!ses('iqa'))$rta.=boot::cookie_accept();
 if($rta)$ret=mkbub($rta,$css,'','this.style.zIndex=popz+1;');
 if($rtb)$ret.=bts('position:fixed; right:0;',$rtb);//
 //if($rtb)$ret.=mkbub($rtb,$css,'left:50%;right:0;
-if($top)Head::add('csscode','#page{padding-top:28px;}');
-else Head::add('csscode','#page{margin-left:28px;}');
+if($top)head::add('csscode','#page{padding-top:28px;}');
+else head::add('csscode','#page{margin-left:28px;}');
 return $ret;}
 
 #articles
@@ -169,7 +169,7 @@ if(!is_file('video/'.$nmw) && $dc){@copy($dc,'video/'.$nmw);}//conn::replaceinms
 if(is_file('video/'.$nmw)){$sz=fsize('video/'.$nmw);
 	if($sz>50000){ses::$adm['alert']='media: '.$sz;//exclude from importation
 		conn::replaceinmsg($id,$da,str_replace('.mp4',':mp4',$da));}
-	return 'video/'.$nmw.($t?'|'.$t:'');}
+	return '/video/'.$nmw.($t?'|'.$t:'');}
 else return $da;}
 
 static function getmp4($d,$id,$o=1){if($o)$d=self::vacuum_media($d,$id); return video($d);}

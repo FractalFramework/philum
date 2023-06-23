@@ -306,7 +306,7 @@ if($r)foreach($r as $k=>$v){$i++;
 	if($u)$btb.=lkt('small',$u,pictxt('url',domain($u)),att(preplink($u).' '.$suj));
 	$btb.=lj('',$idt.'_sav,batch___'.$kb.'_x',picto('del')).br();
 	$ret.=divc('small',$btb.$suj);}
-if($d!='in')$ret=div(atd($idt).ats('padding:2px; min-width:320px;'),$ret);
+if($d!='in')$ret=divb($ret,'',$idt,'padding:2px; min-width:320px;');
 return scroll($i,$ret,10);}
 
 static function slct_cat($id,$t,$n){//dropmenu_jb//catslct

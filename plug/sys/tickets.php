@@ -26,8 +26,8 @@ if($r)foreach($r as $k=>$v){//array('host','hub','msg','day','ip')
 	$rb[$k].=lkc('txtsmall','http://'.$v[0].'/'.$v[1],$v[1]).' ';
 	if(!$v[5])$rb[$k].=$answ.' '; $rb[$k].=$del.br(); $msg=$v[2];
 	if($i>=$min && $i<$max)$msg=codeline::parse($msg,'','sconn'); $i++;
-	$rb[$k].=divc('" style="width:400px;',nl2br(stripslashes($msg))).br();
-	if($v[5]){$rb[$v[5]].=div(ats('margin-left:40px;'),$rb[$k]); unset($rb[$k]);}}
+	$rb[$k].=divs('width:400px;',nl2br(stripslashes($msg))).br();
+	if($v[5]){$rb[$v[5]].=divs('margin-left:40px;',$rb[$k]); unset($rb[$k]);}}
 if($rb)rsort($rb);
 return self::bypages($rb,$page);}
 

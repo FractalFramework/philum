@@ -33,7 +33,7 @@ static function fbcall($u){
 $d=curl_get_contents($u); $d=($d);
 $ret=conv::html_detect($d,'<div class="_5pcr userContentWrapper"');
 if(!$ret)$ret=conv::html_detect($d,'<p class="_1q3v">');
-$ret.=div('',lkt('txtx',$u,pictxt('link',domain($u))));
+$ret.=divb(lkt('txtx',$u,pictxt('link',domain($u))));
 return divc('panel justy',$ret);}
 
 static function call($g1,$g2,$prm){
@@ -67,7 +67,7 @@ $bt=lj('','pagup_usg,overim__x_'.ajx($im).'_'.$dim.'_'.$sz.'_'.$id,picto('fullsc
 if(is_numeric($id))$bt.=self::photosbt($im,$sz,$id,'popup_usg,photo__x_');
 ses::$r['popm']=$bt; ses::$r['popw']=$w; ses::$r['popt']=sql('dc','qdg','v','im="'.$im.'"');
 $s='overflow:auto; width:auto; height:auto;';
-return div(ats($s),image($img,'auto','100%'));}
+return divs($s,image($img,'auto','100%'));}
 
 static function overim($im,$dim,$sz,$id){$bt='';
 $img=goodroot($im); [$w,$h]=self::bestdim($dim,$sz,$img,0);
@@ -75,7 +75,7 @@ $bt=lj('','popup_usg,photo__x_'.ajx($im).'_'.$dim.'_'.$sz.'_'.$id,picto('popup')
 if($id)$bt.=self::photosbt($im,$sz,$id,'pagup_usg,overim__x_');
 ses::$r['popm']=$bt; ses::$r['popw']=$w; ses::$r['popt']=sql('dc','qdg','v','im="'.$im.'"');
 $s='overflow:auto; width:100%; height:'.($h+4).'px;';
-return div(ats($s),image($img,'100%','auto'));}
+return divs($s,image($img,'100%','auto'));}
 
 //video
 static function playvideo($iv,$cr_div,$n){
@@ -177,7 +177,7 @@ switch($d){case('parent'):$r=sav::newartparent(); break;
 	case('msqlb'):[$dr,$nd,$vn]=msqa::murlvars($o); $r=msql::kx($dr,$nd,$vn?$vn:0); break;
 	case('msqlc'):[$dr,$nd,$vn]=msqa::murlvars($o);
 		$ra=msql::read($dr,$nd,1); $vrf=$vn?$vn:0;
-		if($ra)foreach($ra as $k=>$v){$v=str::htmlentities_b($v[$vrf]); $r[$v]=$v;}
+		if($ra)foreach($ra as $k=>$v){$va=$v[$vrf]; $r[$va]=$va;}
 		if($r)ksort($r); break;
 	case('plug'):$r=msql::read('system','program_plugs'); if($r)ksort($r); break;
 	case('func'):if($o)$r=call_user_func($o); $r=array_keys($r); if($r)ksort($r); break;

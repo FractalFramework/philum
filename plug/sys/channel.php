@@ -44,7 +44,7 @@ return $t.$ret;}
 static function home($p,$t,$d='articles'){
 $p='philum.fr:site newworld:hub'; $o=1; $ret='';
 if($o){$n=$o*1000; $j='SaveJ("chan_channel___'.$p.'_'.$t.'_'.$d.'");';
-	$ret=jscode(temporize('channeltimer',$j,$n));}
+	$ret=head::jscode(temporize('channeltimer',$j,$n));}
 	$ret.=divd('chan',self::call($p,$t,$d));
 return $ret;}
 }

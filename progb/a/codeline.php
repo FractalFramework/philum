@@ -214,10 +214,12 @@ if(!$ret)$ret=match($c){
 ':c'=>'<txtclr>'.$p.'</txtclr>',
 ':stabilo'=>'<stabilo>'.$p.'</stabilo>',
 ':color'=>mk::pub_clr($d),
-':red'=>mk::pub_clr($p.'|#bd0000'),
-':blue'=>mk::pub_clr($p.'|#333399'),
-':parma'=>mk::pub_clr($p.'|#993399'),
-':green'=>mk::pub_clr($p.'|#339933'),
+':red'=>mk::pub_clr($d,'#d22'),
+':green'=>mk::pub_clr($d,'#2d2'),
+':blue'=>mk::pub_clr($d,'#22d'),
+':cyan'=>mk::pub_clr($d,'#2dd'),
+':purple'=>mk::pub_clr($d,'#d2d'),
+':yellow'=>mk::pub_clr($d,'#dd2'),
 ':bkgclr'=>mk::pub_bkgclr($d),
 ':video'=>video::titlk($p,''),
 ':videourl'=>video::titlk($p,''),
@@ -395,7 +397,7 @@ if(!$ret)$ret=match($c){
 ':tag'=>tagb($p,$o),
 ':span'=>$p?spn($p,$o):'',
 ':css'=>$p?btn($o,$p):'',
-':div'=>$p?div($o,$p):'',
+':div'=>$p?divp($o,$p):'',
 ':divc'=>$p?divc($o,$p):'',
 ':divd'=>$p?divd($o,$p):'',
 ':grid'=>$p?divs(gridpos($o),$p):'',
@@ -519,7 +521,7 @@ $js=['onkeyup'=>sj($j),'onclick'=>sj($j)];
 $bt=divb(checkbox_j('chk'.$rid,'','template'));
 $bt.=editarea('inp'.$rid,$p,54,8,$js,1);
 $ret=self::calli($p,$o);
-return $bt.div(atd($rid),$ret);}
+return $bt.divd($rid,$ret);}
 
 }
 ?>

@@ -14,7 +14,7 @@ static function edit(){$r=mails::datas();
 $r=msql::read('',nod('mails'),1);
 if($r)foreach($r as $k=>$v){$i++; $n='nl'.$i; $c=''; if($v[1])$c='active';
 	$ret.=lj('',$n.'_newsletter,mmsav',$k).br();}
-return div(atd('nldt').atc('nbp'),$ret);}
+return divb($ret,'nbp','nldt');}
 
 static function read(){$here=host();
 geta('nl',1); $ret=mod::block('newsletter',''); getz('nl');

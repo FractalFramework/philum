@@ -13,23 +13,23 @@ if($o)echo $d.' transforme '.$r[0].' en '.($r[3]).br();//.', renvoie '.$ret
 return $ret;}
 
 static function isinv($r){
-//détermine l'effet de l'opérande
-$op=self::op($r['a'],0);//applique l'opérande au secteur connu
-//regarde le résultat
+//dÃ©termine l'effet de l'opÃ©rande
+$op=self::op($r['a'],0);//applique l'opÃ©rande au secteur connu
+//regarde le rÃ©sultat
 $inv=$op!=$r[3]?true:false;
-//compare le résultat attendu au réel (renvoie 1/0)
+//compare le rÃ©sultat attendu au rÃ©el (renvoie 1/0)
 $op=self::op($r['b']);
-//déduction
+//dÃ©duction
 return $inv?inv($op):$op;}
 
 static function addinv($r){
-//détermine l'effet
+//dÃ©termine l'effet
 $op=$r['a'][0]+$r['a'][1];
-//verif véracité
+//verif vÃ©racitÃ©
 $inv=$op==$r[3]?1:0;
-//applique à b
+//applique Ã  b
 $op=$r['b'][0]+$r['b'][1];
-//déduction
+//dÃ©duction
 return $inv?$op:inv($op);}
 
 static function transp($r){static $i; $i++;
@@ -131,7 +131,7 @@ static function cartobin($p,$o,$id){
 $ret=''; $ok=''; $r=[];
 if(is_numeric($id))$d=sql('msg','qdm','v','id='.$id);
 else $d=$p;
-//$d=str_replace(['&nbsp;',"'",'"','-','/',',',';',':','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','«','»'],'',($d));//'.','|','%','&',
+//$d=str_replace(['&nbsp;',"'",'"','-','/',',',';',':','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','Â«','Â»'],'',($d));//'.','|','%','&',
 //$ret=tagb('code',self::encode($d));
 $rb=self::bin_answ(); //pr($rb);
 foreach($rb as $k=>$v)$rc[]=[$k,$v];
@@ -178,7 +178,7 @@ return $ret.divd('cr2bn',self::wordstobin('','',[$p]));}
 //algo
 static function ub_algo($r,$p){//pr($r);
 if($p==0)return '';//test0
-if($p==1)return self::isinv($r);//test1: utilise ma et mb comme opérande
+if($p==1)return self::isinv($r);//test1: utilise ma et mb comme opÃ©rande
 if($p==2)return self::addinv($r);//test2: additionne aa+am=ab, si vrai alors bb=ba+bm
 if($p==3)return self::transp($r);//test3: transpose
 if($p==4)return self::equi($r);//test4: transpose

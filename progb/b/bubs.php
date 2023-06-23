@@ -214,7 +214,7 @@ return join('',$rt);}
 
 //login
 static function exec($d){
-if($d=='login'){login::call('','',''); return div(atd('nob'),login::form('','1',''));}
+if($d=='login'){login::call('','',''); return divd('nob',login::form('','1',''));}
 if($d=='cache')return li(boot::rebuild());}
 
 //taxo

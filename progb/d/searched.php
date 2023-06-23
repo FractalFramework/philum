@@ -94,7 +94,7 @@ if($r)foreach($r as $k=>$v)if($v){$re='';
 	if(auth(4))$re.=lj('','popup_searched,call__3_'.$va,picto('search')).' ';
 	if(auth(4))$re.=lj('','socket_searched,del___'.$k,picto('del')).' ';
 	if(auth(6))$re.=lj('','popup_searched,save__3_'.$va,picto('save2'));
-	$rd[$k]=div('',$re);}}}
+	$rd[$k]=divb($re);}}}
 if($rd){arsort($rc); foreach($rc as $k=>$v)$ret.=$rd[$k];}
 else $ret.=btn('txtx',nmx([11,16]));
 return divs('text-align:left',$ret);}

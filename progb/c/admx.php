@@ -361,7 +361,7 @@ $bt.=msqbt('',ses('modsnod'),$mid);
 $bt.=msqbt('system','admin_modules',$mod);
 //render
 $ret=on2cols($rd,680,5).$hid;
-$ret.=div('',$bt);
+$ret.=divb($bt);
 return $ret;}
 
 #retrictions

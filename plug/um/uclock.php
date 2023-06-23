@@ -162,14 +162,14 @@ setInterval(clock,200);
 //clock();';}
 
 static function head(){
-	Head::add('csscode',self::css());
-	Head::add('jscode',self::js());}
+	head::add('csscode',self::css());
+	head::add('jscode',self::js());}
 
 static function home($p,$o){//$rid='plg'.randid();
 	//echo mktime(4,0,0,7,26,2003); //1059184800
 	//echo mktime(4,0,0,7,9,2003); //1057716000
 	self::head();
-	//if(get('callj'))$head=Head::generate();
+	//if(get('callj'))$head=head::generate();
 	$ret=tag('div',array('id'=>'clock'),'');
 	//landmarkUiwSub
 	for($i=0;$i<60;$i++){
@@ -197,8 +197,8 @@ static function home($p,$o){//$rid='plg'.randid();
 	$digit.=tag('span',array('id'=>'uiw','class'=>'uiwColor'),'').' ';
 	$digit.=tag('span',array('id'=>'uiwHour','class'=>'uiwHourColor'),'').' ';
 	$ret.=tag('div',array('id'=>'digit'),'Aeon 4 '.$digit);
-	$ret.=jscode('clock();');
-	if(get('callj'))$ret.=csscode(self::css()).jscode(self::js());
+	$ret.=head::jscode('clock();');
+	if(get('callj'))$ret.=head::csscode(self::css()).head::jscode(self::js());
 	return tag('div',array('id'=>'clockFrame'),$ret);}
 }
 ?>

@@ -274,7 +274,7 @@ static function ibload($id,$ord){//$r=ma::id_of_ib($ib);
 $w=auth(4)?'':'and re>="1" and substring(frm,1,1)!="_"'; $bt='';
 $load=sql('id','qda','k','ib="'.$id.'" '.$w.' order by id '.($ord?'desc':'asc'));
 if(count($load)>1)$bt=lj('txtbox','ch'.$id.'_art,ibload___'.$id.'_'.yesno($ord),nms($ord?41:40),att(nms($ord?40:41)));
-if(rstr(43))$bt=hr().div('',btn('txtcadr',nms(39)).' '.$bt);
+if(rstr(43))$bt=hr().divb(btn('txtcadr',nms(39)).' '.$bt);
 if($load)return $bt.ma::output_arts($load,'flow','');}
 
 static function ib_arts($id,$prw){//child

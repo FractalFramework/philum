@@ -90,13 +90,6 @@ $d=sql('msg','qdm','v',$id); $d=mc::add_anchors($d);
 if($d)sql::upd('qdm',['msg'=>$d],$id);
 return art::playd($id,$m);}
 
-static function addrelated($id,$o,$prm=[]){$rt=[];
-$d=sql('msg','qdm','v',$id); $p=$prm[0]??''; $rb=[]; if($p)$rb[]=$p;
-$b=codeline::parse($d,'','extractlnk'); $r=explode('|',substr($b,0,-1)); //pr($r);
-//$rd=sqb::read('id','art','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
-$rd=sql::read('id','qda','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd; //pr($rd);
-return implode(' ',$rb);}
-
 static function titedt($id,$m,$rch){$css='poph'; $ret='';
 $ra=sql('ib,day,name,nod,mail,suj,frm,img,thm,re,lg','qda','r',$id);
 [$ib,$day,$name,$hub,$src,$suj,$frm,$img,$url,$re,$lg]=$ra; if(!$lg)$lg=ses('lng');
@@ -205,7 +198,7 @@ return divc('list scroll',$ret);}
 static function otherlangs($lng,$id){$r=self::langs();
 $ret=lj('','art'.$id.'_trans,play__3_art'.$id.'_'.$lng,flag($lng)).'&#8658';
 foreach($r as $k=>$v)if($v!=$lng)$ret.=lj('','art'.$id.'_trans,call__3_art'.$id.'_'.$v.'-'.$lng,flag($v)).' ';
-return div('',picto('language').' '.$ret);}
+return divb(picto('language').' '.$ret);}
 
 static function autolang($id,$va){
 $lg=self::curlg($id); $ret='';
@@ -225,6 +218,13 @@ $lgs=self::langs(); $r=[];
 foreach($lgs as $k=>$v)$r[]=sql('msg','qdd','v',['val'=>'lang'.$v,'ib'=>$id]);
 return json_encode($r);}
 
+static function addrelated($id,$o,$prm=[]){$rt=[];
+$d=sql('msg','qdm','v',$id); $p=$prm[0]??''; $rb=[]; if($p)$rb[]=$p;
+$b=codeline::parse($d,'','extractlnk'); $r=explode('|',substr($b,0,-1));
+$rd=sqb::read('id','art','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
+//$rd=sql::read('id','qda','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
+return implode(' ',$rb);}
+
 //options
 static function art_options($id,$lg){$ret='';
 $r=ses('art_options'); $lgs=self::langs();
@@ -237,7 +237,7 @@ if($r)foreach($r as $k=>$v){$val=$rd[$v]; $hlp=''; $sid=str::normalize($v).$id;
 		$ret.=lj('poph',$sid.'_meta,addrelated_'.$sid.'__'.$id,nms(138),att('find related'));}
 	if($v=='agenda'){$rid='s'.$sid; $ret.=picto('time'); $hlp=btd($rid,'');
 	$ret.=toggle('poph',$rid.'_calendar,call_'.$sid.'_k__'.$sid,'Agenda');}
-	elseif($v=='password')$ret.=label($sid,'password','poph');
+	//elseif($v=='password')$ret.=label($sid,'password','poph');
 	elseif($v=='lang'){$rl=[];
 		foreach($lgs as $lg2)$rl[]='lang'.$lg2.$id; $j=implode(',',$rl).'_meta,affectlangs___'.$id.'_'.$lg;
 		$ret.=picto('translate').lj('poph',$j,nms(163));}
@@ -252,7 +252,7 @@ elseif($v=='template'){$val=$val?$val:' '; $hlp=btd('tmp'.$id,'');
 	//$ret.=select(['id'=>$sid],$rp,'kv',$val);
 	$ret.=btn('txtx',$v).' '.jumpmenu($rp,$sid,$val?trim($val):$v,'1').' ';}
 //elseif($v=='agenda')$ret.=inpdate($sid,$val,'','',1).$hlp.br();
-elseif($v=='password')$ret.=input($sid,$val,'4');
+elseif($v=='password')$ret.=inputb($sid,$val,'4','pswd');
 elseif($v=='tracks'){if((!$rst[1] && !$val) or $val=='true')$chk=1; else $chk=0;
 	$ret.=btn('txtx',checkbox_j($sid,$chk,$v));}
 elseif($v=='2cols'){if((!$rst[17] && !$val) or $val=='true')$chk=1; else $chk=0;
@@ -449,7 +449,8 @@ $rj=[]; foreach($rc as $k=>$v)$rj[]='slct'.str::normalize($v).$id;
 $bt.=lj('',implode(',',$rj).'_meta,matchall__json_'.$id,picto('enquiry'));
 $rj=[]; foreach($rc as $k=>$v)$rj[]=str::normalize($v).$id; 
 $bt.=lj('',implode(',',$rj).'_meta,delalltags__json_'.$id,picto('del'));
-$bt.=toggle('','cls'.$id.'_clusters,viewart___'.$id,picto('network')).divd('cls'.$id,'');
+$bt.=toggle('','clusters,viewart___'.$id,picto('network')).divd('cls'.$id,'');
+//$bt.=lj('','meta,importags___'.$id,picto('get'),att('tags from translation'));
 $ret.=divd('lng'.$id,self::langslct($id));
 return divs('min-width:440px; padding:0 4px;',$bt.$ret);}
 

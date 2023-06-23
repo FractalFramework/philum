@@ -235,7 +235,7 @@ $ret.='qde'.$v.br();}
 $r=array('iq iq INT(7) NOT NULL','nb nb INT(10) NOT NULL');
 foreach($r as $k=>$v){qr('ALTER TABLE '.db('qde').' CHANGE '.$v.';');
 $ret.='qde'.$v.br();}
-echo $ret.btn('txtalert','patch d\'optimisation des tables appliqué avec succès');}
+echo $ret.btn('txtalert','patch d\'optimisation des tables appliquÃ© avec succÃ¨s');}
 
 //120805
 /*function patch_htaccess(){

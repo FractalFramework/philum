@@ -46,7 +46,7 @@ if($d=='html2conn'){$ret=conv::call($txt);}
 elseif($d=='conn2html'){$ret=conn::read($txt);}
 elseif($d=='utf8')$ret=$enc?utf8enc($txt):utf8dec_b($txt);
 elseif($d=='base64')$ret=$enc?base64_encode($txt):base64_decode($txt);
-elseif($d=='htmlentities')$ret=$enc?htmlentities($txt,ENT_QUOTES,'utf-8',false):html_entity_decode($txt);
+elseif($d=='htmlentities')$ret=$enc?htmlentities($txt):html_entity_decode($txt);//,ENT_QUOTES,'utf-8',false
 elseif($d=='url')$ret=$enc?urlencode($txt):urldecode($txt);
 elseif($d=='ajx')$ret=ajx($txt,$enc?0:1);
 elseif($d=='unescape')$ret=$enc?$ret:str::decode_nonutf8($txt);//unicode_decode

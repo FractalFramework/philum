@@ -1,6 +1,6 @@
 //ajax
-var wait=0; var reloadart=100; var x=0; var xb=0; var th=''; var gj;
-var clp=[]; var enc=''; var pos=0; var xch; var get={};
+var wait=0; var x=0; var xb=0; var th=''; var gj;
+var clp=[]; var pos=0; var xch; var get={};
 if(typeof fixpop==='undefined')var fixpop=0;
 if(typeof fulpop==='undefined')var fulpop=0;
 
@@ -101,7 +101,7 @@ if(this.m_Request.readyState==4){wait=0;
 			this.onError({status:this.m_Request.status,
 			statusText:this.m_Request.statusText});}}
 	delete this.m_Request;}
-else if(wait==0){wait=1;//wait
+else if(wait==0){wait=1;
 	if((act==3||act==7||act==9||act==15) && wait)waitmsg(tg);
 	else if(act!=2 && tg!='popup' && tg!='bubble' && act!='after')opac(10,tg);}// && act!='u'
 //else if(wait==1){wait=2; setTimeout(function(){delete AJAX.m_Request;},2000);}
@@ -247,13 +247,17 @@ var popup=getbyid('pop'+curid);
 var pos=ppos(popu,0);
 popup.style.left=pos.x+'px'; popup.style.top=pos.y+'px';}
 
+function scrollpos(){
+var sc=document.body.scrollTop;
+if(sc==0)var sc=document.documentElement.scrollTop;
+return sc;}
+
 function autoscroll(popu){
-var p=getPosition(popu); var ha=innerH();
-var sc=document.documentElement.scrollTop;
-if(p.y+p.h>(ha+sc)){var nh=(ha+sc)-p.y-20; if(nh>440)nh=440;
+var p=getPosition(popu); var is=inpopup(popu); var ha=is?is.offsetHeight:innerH();
+var sc=scrollinpos(popu.parentNode); //pr(ha+'-'+sc+'-'+p.y+'-'+p.h+'-'+is.id);
+if(p.y+p.h>(ha+sc)){var nh=(ha+sc)-p.y-20; if(nh>440)nh=440; if(nh<100)nh=140;
 var iscroll=popu.getElementsByClassName('scroll');
-if(iscroll.length==0){
-popu.style.height=nh+'px'; popu.style.overflowY='scroll'; popu.style.overflowX='hidden'; popu.style.scrollbarWidth='thin';}}}
+if(iscroll.length==0){popu.style.height=nh+'px'; popu.style.overflowY='scroll'; popu.style.overflowX='hidden'; popu.style.scrollbarWidth='thin';}}}
 
 function bpos(id,nb,p){//bubblepop
 var bt=getbyid(id); var pos=getPosition(bt);

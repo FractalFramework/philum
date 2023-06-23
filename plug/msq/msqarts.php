@@ -79,7 +79,7 @@ return msqbt('users',$nod).' '.btn('txtsmall2',$nod);}
 //$ret.=togbub('msqarts','r',btn('popbt','select...'));
 
 static function menu($p,$o,$rid){
-$ret=input('inp',$p,'').' ';
+$ret=input('inp',$p).' ';
 $ret.=lj('',$rid.'_msqarts,call_inp',picto('ok')).' ';
 return $ret;}
 

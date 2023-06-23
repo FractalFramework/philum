@@ -3,7 +3,7 @@ class twit{
 static $er=0;
 
 static function headers($rid){
-Head::add('jscode',"
+head::add('jscode',"
 //continuous scroll
 var exs=[];
 static function twlive(e){var ret=''; var ia=0;
@@ -154,7 +154,7 @@ static function edit($p,$o){$rid=randid('tw');
 $cls=implode(',',array_keys(self::r())); $ret=''; $kr=[];
 $r=sql($cls,'qdtw','a',['twid'=>$p]);
 if($r)foreach($r as $k=>$v){$kb=$k.$rid;
-	$ret.=div('',goodarea($kb,$v,60).label($kb,$k,'small')); $kr[]=ajx($kb);}
+	$ret.=divb(goodarea($kb,$v,60).label($kb,$k,'small')); $kr[]=ajx($kb);}
 $bt=lj('popsav',$p.'_twit,edtsav_'.implode(',',$kr).'__'.$p.'_'.$o,picto('save2'));
 return divd('edt'.$p,$bt.$ret);}
 
@@ -304,7 +304,7 @@ if(strpos($p,' ')){$ra=explode(' ',$p); foreach($ra as $v){
 $q=implode(' or ',$qr);}
 else $q='text like "%'.$p.'%" or mentions like "%'.$p.'%" ';
 $r=sql('name,screen_name','qdtw','ar',$q.'order by twid desc',0);
-if($r)foreach($r as $k=>$v){$ret[$v['screen_name']]=div('',self::banner($v,0));}
+if($r)foreach($r as $k=>$v){$ret[$v['screen_name']]=divb(self::banner($v,0));}
 if($ret)return count($ret).' results'.implode('',$ret);}
 
 //img

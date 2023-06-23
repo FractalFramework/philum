@@ -12,7 +12,7 @@ $rt=divb(img($ima),'','im1','position:absolute;');
 if(!$o)$rt.=divb(img($imb),'','im2','position:absolute;');
 //$ret=divc('txtcadr',$r[$a].'/'.$r[$b]);
 $ret=lj('',$rid.'_uban,call__2_'.$a.'-'.$b.'_'.($o?0:1),picto($o?'arrow-down':'arrow-top'));
-$ret.=div('',$rt);
+$ret.=divb($rt);
 return $ret;}
 
 static function call($p,$o,$prm=[]){

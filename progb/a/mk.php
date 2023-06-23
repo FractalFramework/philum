@@ -84,7 +84,7 @@ return lj('','popup_sav,batchpreview__3_'.ajx(nohttp($d)),preplink($d).' '.picto
 static function img_fluid($d){
 [$im,$h]=split_one('|',$d,1); $h=is_numeric($h)?$h:200; $im=goodroot($im);
 $s='height:'.$h.'px; background-image:url(/'.$im.'); background-size:cover; background-attachment:fixed;';
-return div(ats($s),'');}
+return divs($s,'');}
 
 static function lastup($v,$id){
 $r=art::metart($id); $d=$r['lastup']??'';
@@ -494,7 +494,7 @@ $r=sql('id,name,msg','qdi','','ib="'.$id.'"');
 if($r)foreach($r as $k=>$v){$rb=explode(':callquote]',$v[2]); $n=count($rb);
 	if($n>1){foreach($rb as $ka=>$va){$s1=mb_strrpos($va,'['); $va=mb_substr($va,$s1+1); [$p,$s]=cprm($va);
 		if($s)$msg=self::apply_quote2($msg,$id,$s,$p,$v[0]);}}}
-return div(atb('ondblclick','useslct(this,\''.$id.'\')'),conn::read($msg,3,$id,''));}
+return divr(conn::read($msg,3,$id,''),['ondblclick'=>'useslct(this,\''.$id.'\')']);}
 
 //ephemeral conn
 static function quote2($d,$id){[$p,$o]=cprm($d); return self::stabilo($p);//from art, built by find_quotes
@@ -517,7 +517,7 @@ return tagb('blockquote',$p.' '.$nb);}//find_quotes
 
 //xltags
 static function xltags($id,$conn,$msg=''){if(!$msg)$msg=sql('msg','qdm','v','id="'.$id.'"');
-return div(atb('ondblclick','xltags(this,\''.$id.'\',\''.$conn.'\')'),conn::read($msg,3,$id,''));}
+return divr(conn::read($msg,3,$id,''),['ondblclick'=>'xltags(this,\''.$id.'\',\''.$conn.'\')']);}
 
 static function xltagslct($id){$r=['fact','quote','stabilo'];
 $j2='art'.$id.'_art,playq___'.$id.'_3_1'; $bt='';//'all',

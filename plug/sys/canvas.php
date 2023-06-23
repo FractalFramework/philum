@@ -20,7 +20,7 @@ case('text'):$ret.='ctx.fillStyle="#'.$ra[5].'"; ctx.font="'.($ra[3]?$ra[3]:24).
 case('gradient'):$ret.='var grd=ctx.createLinearGradient(0,0,200,0); 
 grd.addColorStop(0,"red"); grd.addColorStop(1,"white");
 ctx.fillStyle=grd; ctx.fillRect(10,10,150,80);'; break;}}
-return jscode(self::js($ret,$id));}
+return head::jscode(self::js($ret,$id));}
 
 static function call($d,$id,$s=''){
 $s=$s?$s:$_SESSION['graphsz']; [$w,$h]=explode('-',$s); $w=$w?$w:200; $h=$h?$h:60;
@@ -48,7 +48,7 @@ line=120,22,180,22,00ff00
 circle=190,22,10,000000
 disk=190,22,9,ffffff
 text=oeil,0,58,12,arial,ff0000
-text=observé,77,58,12,arial
+text=observÃ©,77,58,12,arial
 text=existant,158,58,12,arial';}
 
 //http://www.w3schools.com/html/html5_canvas.asp

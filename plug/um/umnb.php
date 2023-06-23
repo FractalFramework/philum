@@ -1,11 +1,11 @@
 <?php //umnb
 class umnb{
-static $r=[0=>'OU-O',1=>'I·AS',2=>'I·EN',3=>'I·EDOO',4=>'I·ES',5=>'I·EGO',6=>'O·AEE',7=>'O·ANA',8=>'O·ANMA',9=>'O·ADA',10=>'O·AS',11=>'O·ADEN',12=>'DOU·IO',13=>'DI·AS',14=>'DI·EN',24=>'KOU-IO',25=>'KI-AS'];
+static $r=[0=>'OU-O',1=>'IÂ·AS',2=>'IÂ·EN',3=>'IÂ·EDOO',4=>'IÂ·ES',5=>'IÂ·EGO',6=>'OÂ·AEE',7=>'OÂ·ANA',8=>'OÂ·ANMA',9=>'OÂ·ADA',10=>'OÂ·AS',11=>'OÂ·ADEN',12=>'DOUÂ·IO',13=>'DIÂ·AS',14=>'DIÂ·EN',24=>'KOU-IO',25=>'KI-AS'];
 //nominations base 6
 static $rc=[0=>'OU',1=>'I',2=>'I',3=>'I',4=>'I',5=>'I',6=>'O',7=>'O',8=>'O',9=>'O','a'=>'O','b'=>'O'];
 //chiffres
 static $ru=[0=>'O',1=>'AS',2=>'EN',3=>'EDOO',4=>'ES',5=>'EGO',6=>'AEE',7=>'ANA',8=>'ANMA',9=>'ADA','a'=>'AS','b'=>'ADEN'];
-//décimales
+//dÃ©cimales
 static $rd=[0=>'',1=>'D',2=>'K',3=>'?',4=>'?',5=>'?'];
 
 static function pic($d){//return oomo($d,48);
@@ -25,7 +25,7 @@ $rc=self::$ru; $ru=self::$rc; $rd=self::$rd;
 $r=str_split($n); //p($r);
 $nb=count($r);//nb de chiffres
 $ra=[$rc,$ru,$rd];
-//theory: le zéro de chaque décimale base 12 est préfixé d'un incrément de demi-décimale $rc: I, O
+//theory: le zÃ©ro de chaque dÃ©cimale base 12 est prÃ©fixÃ© d'un incrÃ©ment de demi-dÃ©cimale $rc: I, O
 if(!$p)$p=0;
 $decimale12=floor($p/12);
 if($decimale12==$p/12)$indicatif_zero=$rc[$decimale12];
@@ -36,7 +36,7 @@ $ren=''; foreach($r as $k=>$v)$ren.=self::pic($v).' ';
 //for($i=$nb-1;$i>=0;$i--)$ren.=self::pic($r[$i]).$r[$i].br();
 $ret=lj('',$o.'_umnb,call___'.($p-1).'_'.$o,picto('previous')).' ';
 $ret.=lj('',$o.'_umnb,call___'.($p+1).'_'.$o,picto('next')).' ';
-$ret.=tagb('b',$p).' ('.tagb('b',$n).' en base 12, décimale '.$decimale12.'): ';
+$ret.=tagb('b',$p).' ('.tagb('b',$n).' en base 12, dÃ©cimale '.$decimale12.'): ';
 $ret.=tagb('h3',$res);
 $ret.=$ren;
 return $ret;}

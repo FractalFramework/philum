@@ -166,10 +166,10 @@ return '[[[{url}|{suj}:url]:h2]
 static function text($r){//umcom
 $ret=divc('nbp',$r['lang']);
 $ret.=tagb('h2',$r['suj']).' '.$r['social'].' '.btn('small','#'.$r['pid']).' '.$r['tag'];
-$ret.=div('',tagb('b',$r['source']).' '.tagb('u',$r['author']));//.' '.$r['btrk']
-$ret.=div('',$r['tracks']);
-$ret.=div('',tagb('b',$r['opt']).' '.tagb('u',$r['player']).' ('.$r['day'].')');//.' '.$r['btxt']
-$ret.=div('',$r['msg']);
+$ret.=divb(tagb('b',$r['source']).' '.tagb('u',$r['author']));//.' '.$r['btrk']
+$ret.=divb($r['tracks']);
+$ret.=divb(tagb('b',$r['opt']).' '.tagb('u',$r['player']).' ('.$r['day'].')');//.' '.$r['btxt']
+$ret.=divb($r['msg']);
 return $ret;}
 
 static function text_b($r){//brut/com2
@@ -219,12 +219,12 @@ if($r)foreach($r as $k=>$v){
 	elseif($o=='text')$ret.=self::text($rb);//umcom
 	//elseif($o=='brut')$ret.=art::mktmp($tmp,$rb);
 	//elseif($o=='brut')$ret.=self::brut($rb);
-	elseif($o=='brut'){$rb['suj']=segment($rb['suj'],'[',']'); $rc[]=$rb;}//codeline
+	elseif($o=='brut'){$rb['suj']=strin($rb['suj'],'[',']'); $rc[]=$rb;}//codeline
 	/*elseif($o=='brut'){//vue
 		$rb['tracks']=codeline::parse($rb['tracks'],'','sconn');
 		$rb['msg']=codeline::parse($rb['msg'],'','sconn'); $rc[]=$rb;}*/
 	elseif($o=='ebook')$rc[]=[$id,$day,$suj.' ('.($lg?$lg:'fr').')',self::brut($rb),$lg];
-	elseif($o=='table'){$t=tag('b',[],segment($rb['suj'],'[',']')); //pr($rb);
+	elseif($o=='table'){$t=tag('b',[],strin($rb['suj'],'[',']')); //pr($rb);
 		$trk=''; if($rb['author'])$trk=divb(tag('b',[],$rb['author']).' : '); $trk.=$rb['tracks']??'';
 		$rc[$day]=[$t,$rb['day'],$trk,$rb['msg'],$rb['tag']];}
 	elseif($o=='tags')$rc[$day]=$rb;
@@ -267,8 +267,8 @@ if(!$o)$o='fr';
 //timelang($o);//setlocale
 $r=self::req_art_id($p); if(!$r)return 'nothing';
 $rb=self::datas($r,$o,$mode);
-Head::add('meta',['property','og:title',$rb['suj']]);
-Head::add('meta',['property','og:description',trim(strip_tags($rb['txtbrut']))]);
+head::add('meta',['property','og:title',$rb['suj']]);
+head::add('meta',['property','og:description',trim(strip_tags($rb['txtbrut']))]);
 if($mode=='brut' or $mode=='ebook')$tmp=self::temp_brut(); else $tmp=self::template();
 if($mode=='com2')return self::text_b($rb);//!rstr8 (mode ajax)
 elseif($mode=='com')return delbr(self::text($rb));//format_txt
@@ -284,7 +284,7 @@ if(strpos($p,',')){$r=explode(',',$p); $lang=ses('umrlg');
 	foreach($r as $k=>$v){if(!is_numeric($v))$v=ma::id_of_urlsuj('['.$v.']');
 		$r=self::req_art_id($v); [$id,$day,$suj,$msg,$lk,$lg]=$r;
 		$rb=self::datas($r,$lang,$o);
-		$rc[$day]=[segment($rb['suj'],'[',']'),$rb['day'],$rb['tracks']??'',$rb['msg'],$rb['tag']];}
+		$rc[$day]=[strin($rb['suj'],'[',']'),$rb['day'],$rb['tracks']??'',$rb['msg'],$rb['tag']];}
 	return $ret=tabler($rc,'1','');}
 if(!is_numeric($p) && $p!='All' && $o!='table'){//passage délicat qui évite d'envoyer un id à call()
 	$pb=ma::id_of_urlsuj('['.$p.']');

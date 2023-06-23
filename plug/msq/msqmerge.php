@@ -40,7 +40,7 @@ return 'ummo_arts_Oaxiiboo6,ummo_arts_OolgaWaam,ummo_arts_OomoToa,ummo_arts_Oyag
 
 static function menu($p,$o,$rid){
 $p=$p?$p:self::default();
-$ret=input('inp',$p,'').' ';
+$ret=input('inp',$p).' ';
 $ret.=lj('',$rid.'_msqmerge,call_inp',picto('ok')).' ';
 return $ret;}
 

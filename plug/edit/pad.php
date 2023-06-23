@@ -20,10 +20,10 @@ static function sav($d,$id){$ret=self::menu($d,$id);
 $ret.=ljb('popsav','mem_storage',$id.'_cka__1_ckc',nms(27),atd('ckc')).' ';
 if(auth(2))$ret.=lj('','popup_pad,write_'.$id.'__',picto('export')).' ';
 $ret.=hlpbt('memstorage');
-return div('',$ret);}
+return divb($ret);}
 
 static function home($d){
-//Head::add('csscode','#content{width:100%;}');
+//head::add('csscode','#content{width:100%;}');
 $d=$d?$d:2; $id='np'.randid(); //$j='storeCaret(this);';
 $ret=self::sav($d,$id);
 $ret.=divedit($id,'pad justy','','','');

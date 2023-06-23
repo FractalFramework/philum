@@ -15,8 +15,8 @@ RewriteRule ^app/([^/]+)$ /app.php?a=$1 [L]*/
 
 function load_app($a,$p,$o){$ret='';
 if(method_exists($a,'home')){$ret=$a::home($p,$o);
-	//if(method_exists($a,'css'))Head::add('csslink',$a::css());
-	//if(method_exists($a,'js'))Head::add('jslink',$a::js());
+	//if(method_exists($a,'css'))head::add('csslink',$a::css());
+	//if(method_exists($a,'js'))head::add('jslink',$a::js());
 }
 return $ret;}
 
@@ -25,32 +25,33 @@ if(rstr(22))boot::block_crawls();//crawl
 $_SESSION['onload']=''; $content='';
 $a=get('a'); $p=get('p'); $o=get('o'); $enc=ses::$enc; $cst=ses('dev')?'?'.randid():'';
 if(substr($a,-1)=='/')$a=substr($a,0,-1); if(substr($p,-1)=='/')$p=substr($p,0,-1);
-Head::add('tag',['title',$a?$a:'plugin']);
-Head::add('meta',['http-equiv','Content-Type','text/html; charset='.$enc]);
-Head::add('rel',['shortcut icon','/favicon.ico']);//uicon('copy_16','picol/16','/')
-//Head::add('code','<base'.atb('href',$host).' />');
-Head::add('meta',['name','viewport','user-scalable=yes, initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width','yes']);
-Head::add('meta',['name','apple-mobile-web-app-capable','yes']);
-Head::add('meta',['name','mobile-web-app-capable','yes']);
-Head::add('meta',['name','generator','philum_'.ses('philum')]);
-Head::add('csslink','/css/_global.css'.$cst);
-Head::add('csslink','/css/_pictos.css');
-Head::add('csslink','/css/_glyphs.css');
-Head::add('csslink','/css/_ascii.css');
-Head::add('csslink','/css/_oomo.css');
-//Head::add('csslink','/css/_admin.css');
-//Head::add('csslink','/css/_fa.css');
-//Head::add('csslink','/css/_classic.css');
+head::add('tag',['title',$a?$a:'plugin']);
+head::add('meta',['http-equiv','Content-Type','text/html; charset='.$enc]);
+head::add('link',['shortcut icon','/favicon.ico']);//uicon('copy_16','picol/16','/')
+//head::add('code','<base'.atb('href',$host).' />');
+head::add('taga',['base'=>['href'=>$host]]];
+head::add('meta',['name','viewport','user-scalable=yes, initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width','yes']);
+head::add('meta',['name','apple-mobile-web-app-capable','yes']);
+head::add('meta',['name','mobile-web-app-capable','yes']);
+head::add('meta',['name','generator','philum_'.ses('philum')]);
+head::add('csslink','/css/_global.css'.$cst);
+head::add('csslink','/css/_pictos.css');
+head::add('csslink','/css/_glyphs.css');
+head::add('csslink','/css/_ascii.css');
+head::add('csslink','/css/_oomo.css');
+//head::add('csslink','/css/_admin.css');
+//head::add('csslink','/css/_fa.css');
+//head::add('csslink','/css/_classic.css');
 if($_SESSION['prmb'][5])$nod=nod('auto');
 else $nod=ses('qb').'_design_'.ses('prmd');
-Head::add('csslink','/css/'.boot::define_design().'.css'.$cst);
-Head::add('jslink','/progb/j/lib.js'.$cst);
-Head::add('jslink','/progb/j/ajx.js'.$cst);
-Head::add('jslink','/progb/j/core.js'.$cst);//core
-Head::add('jscode','flow="0"; enc="'.ses::$enc.'";');
-Head::add('jscode',ses('jscode'));
+head::add('csslink','/css/'.boot::define_design().'.css'.$cst);
+head::add('jslink','/progb/j/lib.js'.$cst);
+head::add('jslink','/progb/j/ajx.js'.$cst);
+head::add('jslink','/progb/j/core.js'.$cst);//core
+head::add('jscode','flow="0"; enc="'.ses::$enc.'";');
+head::add('jscode',ses('jscode'));
 if($a)$content=load_app($a,$p,$o);
-$ret=Head::generate();
+$ret=head::generate();
 $ret.='<body onmousemove="popslide(event)" onclick="clpop(event);" onload="'.ses('onload').'">'."\n";//spellcheck="false" 
 $ret.=divd('clbub','');
 //$ret.=li(lj('','popup_plugin___codeview_plug'.ajx($a),picto('code')));

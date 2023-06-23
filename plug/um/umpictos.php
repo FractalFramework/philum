@@ -1,7 +1,7 @@
 <?php //umpictos
 class umpictos{
 static function ex($p){
-return span(att($p),oomo($p,32));}
+return btp(att($p),oomo($p,32));}
 
 static function all(){
 $r=msql::read('system','edition_pictos_2',1);
@@ -13,7 +13,7 @@ $ret.=lj('',$rid.'_umpictos,all',picto('down')).' ';
 return $ret;}
 
 static function home($p,$o){$rid=randid('plg');
-Head::add('csslink','/css/_oomo.css'); $bt='';
+head::add('csslink','/css/_oomo.css'); $bt='';
 //$bt=self::menu($p,$o,$rid);
 if(auth(6))$bt.=msqbt('system','edition_pictos_2');
 $ret=self::all($p,$o);

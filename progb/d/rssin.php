@@ -99,7 +99,7 @@ if(!$id)$id=sql('id','qda','v',['nod'=>ses('qb'),'%suj'=>$d,'_limit'=>'1']);
 return $id;}
 
 static function alx(){//already_exists, suj&url
-$rt=[]; $r=ma::readcache();//sesmk2('ma','readcache');//
+$rt=[]; $r=sesmk2('ma','readcache');//ma::readcache();//
 if($r)foreach($r as $k=>$v){$rt[$v[2]]=$k; $rt[$v[9]]=$k;}
 return $rt;}
 

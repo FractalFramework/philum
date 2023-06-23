@@ -104,9 +104,9 @@ $PDF->Output();
 static function home($p,$o){
 $_SESSION['call']='';
 if(!$_GET['nom']){
-	Head::add('csslink','../css/_admin.css');
-	Head::add('jslink','../progb/ajx.js');
-	$ret=Head::get();}
+	head::add('csslink','../css/_admin.css');
+	head::add('jslink','../progb/ajx.js');
+	$ret=head::call();}
 $ret.=self::arts_menus($dya,$dyb);
 $ret.=divd('call','');
 $ret.=divd('pdf','');

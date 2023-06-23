@@ -126,7 +126,7 @@ static function build($f,$o){
 $dom=fdom($f); //pr($dom);
 if($dom)foreach($dom->getElementsByTagName('div') as $k=>$div)
 	if($div->getAttribute('id')=='mw-content-text'){//pr($div);
-	if($o)for($i=0;$i<3;$i++)$ret.=div('',$div->getElementsByTagName('p')->item($i)->nodeValue);
+	if($o)for($i=0;$i<3;$i++)$ret.=divb($div->getElementsByTagName('p')->item($i)->nodeValue);
 	else $ret=self::explore($div);
 	//foreach($div->childNodes as $vb)$ret.=$vb->ownerDocument->saveHTML($vb);
 	//$ret=$div->ownerDocument->saveHTML($div);

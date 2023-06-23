@@ -67,8 +67,8 @@ static function home($p,$o){$rid=randid('geo');
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 if(strpos($r['gps'],'/')===false)$r['gps']='0/0';
-Head::add('js','http://maps.googleapis.com/maps/api/js');
-Head::add('jscode',self::profil_js($r['gps']));
+head::add('js','http://maps.googleapis.com/maps/api/js');
+head::add('jscode',self::profil_js($r['gps']));
 //$bt.=msqbt('',nod('geo_1'));
 return $bt.divd($rid,$ret);}
 }

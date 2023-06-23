@@ -1,16 +1,16 @@
-<?php //pictography
-class pictography{
+<?php 
+class pictos{
 static $conn=1;
 
 static function fa(){$ret='';
 $r=msql::col('system','edition_glyphes_2',0,1);
 if($r)foreach($r as $k=>$v)$ret.=divs('padding:4px;',fa($k,24).' '.$k);
-return div(atc('cols').ats('line-height:1.6em;'),$ret);}
+return divb($ret,'cols','','line-height:1.6em;');}
 
 static function glyphes(){$ret='';
 $r=msql::col('system','edition_glyphes_1',0,1);
 if($r)foreach($r as $k=>$v)$ret.=divs('padding:4px;',glyph($k,24).' '.$k);
-return div(atc('cols').ats('line-height:1.6em;'),$ret);}
+return divb($ret,'cols','','line-height:1.6em;');}
 
 static function ascii(){$ret='';
 $r=msql::col('system','edition_ascii_2',0,1);
@@ -26,14 +26,14 @@ return divc('cols',$ret);}
 static function pictos0(){$ret='';
 $r=msql::col('system','edition_pictos',0,1);
 if($r)foreach($r as $k=>$v)$ret.=divc('',pictit($k,$v,36).' '.$k);
-return div(atc('cols').ats('columns:auto 200px; line-height:1.6em;'),$ret);}
+return divb($ret,'cols','','columns:auto 200px; line-height:1.6em;');}
 
 static function pictos(){$ret=''; $rb=[];
 $r=msql::read('system','edition_pictos',1); $s='columns:auto 180px; line-height:1.6em;';
 if($r)foreach($r as $k=>$v)$rb[$v[1]][]=[$k,$v[0]];
 if($rb)foreach($rb as $k=>$v){$ret.=tagb('h2',$k); $bt='';
-	foreach($v as $ka=>$va)$bt.=divc('',pictit($va[0],$va[1],36).' '.$va[0]);
-	$ret.=div(atc('cols').ats($s),$bt);}
+	foreach($v as $ka=>$va)$bt.=divb(pictit($va[0],$va[1],36).' '.$va[0]);
+	$ret.=divb($bt,'cols','',$s);}
 return $ret;}
 
 static function pictos_mimes(){$rb=[];
@@ -75,19 +75,19 @@ static function pct_call($p){
 if($p=='pictos'){$b='edition_pictos'; $v='18_2';}}
 
 static function pct_menu($p){
-$ret=lj('','pct_pictography,pictos__2','philum');
+$ret=lj('','pct_pictos,pictos__2','philum');
 if(auth(6))$ret.=msqbt('system','edition_pictos','');
-$ret.=lj('','popup_pictography,pct*nam',picto('get'));
-if(auth(6))$ret.=lj('','popup_pictography,cssmk1',picto('builders','')).'|';
-$ret.=lj('','pct_pictography,ascii__2','ascii');
+$ret.=lj('','popup_pictos,pct*nam',picto('get'));
+if(auth(6))$ret.=lj('','popup_pictos,cssmk1',picto('builders','')).'|';
+$ret.=lj('','pct_pictos,ascii__2','ascii');
 if(auth(6))$ret.=msqbt('system','edition_ascii_2','');
-if(auth(6))$ret.=lj('','popup_pictography,cssmk3',picto('builders','')).'|';
-$ret.=lj('','pct_pictography,oomo__2','oomo');
+if(auth(6))$ret.=lj('','popup_pictos,cssmk3',picto('builders','')).'|';
+$ret.=lj('','pct_pictos,oomo__2','oomo');
 if(auth(6))$ret.=msqbt('system','edition_pictos_2','');
-if(auth(6))$ret.=lj('','popup_pictography,cssmk2',picto('builders','')).'|';
-$ret.=lj('','pct_pictography,glyphes__2','glyphes');
-$ret.=lj('','pct_pictography,fa__2','fa');
-//$ret.=lj('','pct_pictography,pictos*mimes__2','mimes');
+if(auth(6))$ret.=lj('','popup_pictos,cssmk2',picto('builders','')).'|';
+$ret.=lj('','pct_pictos,glyphes__2','glyphes');
+$ret.=lj('','pct_pictos,fa__2','fa');
+//$ret.=lj('','pct_pictos,pictos*mimes__2','mimes');
 $ret.=lj('','pct_msqladm__2_system/program*mimes','mimes').' ';
 //$ret.=msqbt('system','edition_pictos');
 //$ret.=lj('','pct_msqladm__2_system/edition*pictos',picto('msql')).' ';
