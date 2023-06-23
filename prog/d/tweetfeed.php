@@ -19,11 +19,11 @@ return $rc;}
 
 static function batch($p,$o,$prm=[]){
 $rok=[]; $vx=0; $minid=$prm[0]??''; $f='/_datas/twfeed.txt';
-$r=msql::read('',nod('tweetfeed'),1,['lastid']); if(!$minid)$minid=$r[1][0]??read_file($f);
+$r=msql::read('',nod('tweetfeed'),1,['lastid']); if(!$minid)$minid=$r[1][0]??'';//read_file($f)
 $r=self::build($minid); //p($r);
 if($r)foreach($r as $k=>$v){$rok[]=divb($v.': '.twit::botshare($v)); sleep(1);}//apikey:4
 if($r)$vx=max($r); if($vx>$minid && !twit::$er){
-	msql::modif('',nod('tweetfeed'),$vx,'val',0,1); write_file($f,$vx);}
+	msql::modif('',nod('tweetfeed'),$vx,'val',0,1);}//write_file($f,$vx);
 $ret=divc('',count($r).' tweets have been sent');
 if($rok)$ret.=implode('',$rok);
 $ret.=self::tlex($minid);

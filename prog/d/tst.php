@@ -15,7 +15,7 @@ $ret.=divb(chrono(2));
 return $ret;}
 
 static function build($p,$o){
-Head::add('http-equiv',['refresh','1']);
+head::add('http-equiv',['refresh','1']);
 sesz('tst');
 sesk('tst',$chrono); $res=average(ses('tst'));
 ses::$adm['chrono'].=divb($res.playr(array_reverse(ses('tst'))),'small');

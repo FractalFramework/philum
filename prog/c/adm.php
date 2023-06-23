@@ -241,7 +241,7 @@ static function msql($m){return msqa::home($m?$m:(auth(6)?'system':'users'));}
 static function csslang(){return msql::col('lang','helps_css',0,1);}
 
 #css_builder
-static function adm_css(){//echo jslink('js/live.js');
+static function adm_css(){//echo head::jslink('js/live.js');
 $ndd=$_SESSION['desgn']?$_SESSION['desgn']:$_SESSION['prmd'];
 if(!$_SESSION['desgn'])$ret=divc('tab',helps('public_design')).br();
 $r=msql::read('design',nod('design_'.$ndd),1);
@@ -630,7 +630,7 @@ if(auth(6))msql::save('',nod('pictocat'),$r);
 return self::adm_pictocat();}
 
 static function adm_pictocat(){
-$ret=lj('','popup_pictography,home',picto('icon')).' ';
+$ret=lj('','popup_pictos,home',picto('icon')).' ';
 $ret.=lj('popsav','admart_adm,pictocatsav',pictit('drop','set from cats')).' ';
 $ret.=msqedit::call('pictocat','cat,picto');
 return $ret;}
@@ -677,8 +677,8 @@ return $ret;}
 
 static function fastmenus($o,$m){$rt=[];
 $r=self::authmenus(0); $tg=$o?'popup':'admcnt';//'modules','templates'
-if(!$m)$rm=['console','desktop','config','rstr','css','msql','articles','tags','api','images','finder','connectors','stats','software','twit','apps','txt','pad','exec','test','members'];
-else $rm=['pictos','nodes','newsletter','banner','favicon','dev','backup','htaccess','links','rssurl','mail','password','descrption','icons','authes','avatar','messages'];
+if(!$m)$rm=['console','desktop','config','rstr','css','msql','articles','tags','api','images','pictos','finder','connectors','stats','software','twit','apps','txt','pad','exec','test','members'];
+else $rm=['nodes','newsletter','banner','favicon','dev','backup','htaccess','links','rssurl','mail','password','descrption','icons','pictography','authes','avatar','messages'];
 foreach($rm as $v){$j='admin___'.ajx($v);//'sty,home__head__'//
 	if($v=='css' && !$o)$j='admin__url_css_1';
 	if($r && in_array($v,$r))$rt[]=lj('',$tg.'_'.$j,pictxt(mime($v),$v,22));}
@@ -782,7 +782,8 @@ case('backup'):$ret=self::backup('',''); break;
 case('software'):$ret=software::home('=',''); break;
 //case('update_notes'):$ret=adm_update_notes('',1); break;
 case('images'):$ret=adimg::home('',''); break;
-case('pictos'):$ret=pictography::home('',''); break;
+case('pictos'):$ret=pictos::home('',''); break;
+case('pictography'):$ret=pictography::home('',''); break;
 case('api'):$ret=apicom::home('',1); break;}
 if($admin && !$ret && $auth>=$curauth)if(method_exists($admin,'home'))$ret=$admin::home('','');
 }//end if auth

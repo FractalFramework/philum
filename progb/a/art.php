@@ -45,8 +45,8 @@ if(get('search') && $auth>4)
 if(($USE==$kem) or $auth>3){
 	$ret.=togbub('meta,metall',$id.'_'.$prw.'_'.$rech,picto('tag')).' ';
 	$ret.=togbub('meta,titedt',$id.'_'.$prw.'_'.$rech,picto('meta')).' ';
-	$ret.=lj('','popup_edit,call____'.$id,picto('edit')).' ';
 	$ret.=toggle('','edt'.$id.'_edit,call____'.$id.'',picto('editxt')).' ';
+	$ret.=lj('','popup_edit,call____'.$id,picto('edit')).' ';
 	$ret.=btd('adt'.$id,btj(picto('edit2'),atj('editart',$id)));}
 return btd('artmnu'.$id,$ret);}
 

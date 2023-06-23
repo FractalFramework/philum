@@ -44,10 +44,10 @@ $ret=match($c){
 //elements
 'br'=>br(),
 'hr'=>hr(),
-'div'=>!$d?'':div($p,$d),
+'div'=>!$d?'':divp($p,$d),
 'divc'=>!$d?'':divc($p,$d),
 'divd'=>!$d?'':divd($p,$d),
-'span'=>!$d?'':span($p,$d),
+'span'=>!$d?'':btp($p,$d),
 'spanc'=>!$d?'':btn($p,$d),
 'css'=>!$d?'':btn($p,$d),
 'clear'=>divc($c,$d),
@@ -122,7 +122,7 @@ $j=$rid.'_vue,calli_inp'.$rid;
 $js=['onkeyup'=>sj($j),'onclick'=>sj($j)];
 $bt=editarea('inp'.$rid,$p,54,8,$js,1);
 $ret=self::calli($p,$o);
-return $bt.div(atd($rid),$ret);}
+return $bt.divd($rid,$ret);}
 
 }
 ?>

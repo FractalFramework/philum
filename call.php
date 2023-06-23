@@ -17,7 +17,7 @@ if(strpos($a,','))[$a,$m]=explode(',',$a); $m=$m?$m:'call';
 //vacuum,api,rss,sitemap
 if(method_exists($a,$m))$ret=$a::$m($p,$o);
 elseif(method_exists($a,'call'))$ret=$a::call($p,$o);
-$ret.=Head::get();//call
+$ret.=head::call();
 echo $ret;
 //alert(tree(ses::r('spl')));
 //if(method_exists($a,'js')echo jscode($a::js());

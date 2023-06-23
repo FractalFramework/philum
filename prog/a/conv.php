@@ -339,11 +339,11 @@ case('p'):$b=$n.$n.$b.$n.$n; break;
 case('strong'):if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
 case('bold'):if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
 case('em'):	if(self::notin($b,':em]'))$b='['.$b.':i]'; break;
-case('h1'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h1':'h').']'.$n.$n; break;
-case('h2'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h2':'h').']'.$n.$n; break;
-case('h3'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h3':'h').']'.$n.$n; break;
-case('h4'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h4':'h').']'.$n.$n; break;
-case('h5'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h5':'h').']'.$n.$n; break;
+case('h1'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h1':'h').']'.$n.$n; break;//
+case('h2'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h2':'h').']'.$n.$n; break;//
+case('h3'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h3':'h').']'.$n.$n; break;//
+case('h4'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h4':'h').']'.$n.$n; break;//
+case('h5'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h5':'h').']'.$n.$n; break;//
 case('i'):if(self::notin($b,':i]'))$b='['.$b.':i]'; break;
 case('b'):if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
 case('u'):if(self::notin($b,':u]'))$b='['.$b.':u]'; break;
@@ -432,8 +432,7 @@ return [$taga,$b,$tagb];}
 static function bal_conv_style($b,$bin){$bse=strtolower($bin);
 if(strpos($bse,'bold')!==false && self::notin($b,':b]'))$b='['.$b.':b]';
 elseif(strpos($bse,'italic')!==false && self::notin($b,':i]'))$b='['.$b.':i]';
-elseif(strpos($bse,'underline')!==false && self::notin($b,':u]'))
-	$b='['.$b.':u]';
+elseif(strpos($bse,'underline')!==false && self::notin($b,':u]'))$b='['.$b.':u]';
 elseif((strpos($bse,'color:#ff0000')!==false or strpos($bse,':red')!==false or strpos($bse,'rgb(255,0,0)')!==false) && self::notin($b,':c]'))$b='['.$b.':c]';
 elseif(strpos($bse,'background-color')!==false && self::notin($b,':bkgclr]')){
 	$n=strpos($bse,'background-color:'); $nb=strpos($bse,';',$n); $s=$nb!==false?$s=';':'"';
@@ -457,9 +456,9 @@ elseif(strpos($bse,'class="udouble"')!==false)$b='['.$b.'|double:underline]';
 return $b;}
 
 //strings
-static function notin($d,$t){
-$balsansesp=preg_replace("/(\r)|(\n)|( )|(&nbsp;)/",'',$d);
-if(strpos($d,$t)===false && strpos($d,'.jpg]')===false && strpos($d,'.gif]')===false && strpos($d,'.png]')===false && $balsansesp)return true;}
+static function notin($d,$c){
+$b=preg_replace("/(\r)|(\n)|( )|(&nbsp;)/",'',$d);
+if($b && strpos($d,$c)===false && !is_img($d))return true;}//
 
 static $splitable="\n";
 static function prep_table($d){$d=trim($d);

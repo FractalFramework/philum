@@ -22,7 +22,7 @@ $d=self::eradic_acc($d); $d=mb_strtolower($d); $d=str_replace("&nbsp;",' ',$d); 
 $r=['/','«','»',',','.',';',':','!','?','|','§','%','&','$','#','_','+','=','\n','\\','~','(',')','[',']','{','}'];
 $d=str_replace($r,'',$d);
 $d=str_replace([' ',"'",'"'],'-',trim($d));
-$d=preg_replace('/(-){2,}/','-',$d);
+$d=delsp($d);
 return $d;}
 
 static function protect_url($d,$o=''){
@@ -195,20 +195,21 @@ return $d;}
 
 #postreat
 static function clean_acc($d){if(!$d)return;
-$a=['»»','«','»',"’","‘",'“','”',"…","–","\t"];
-$b=['⇒','"','"',"'","'",'"','"',"...","-",''];
+$a=['»»',"’","‘",'“','”',"…","–","\t"];//,'«','»'//no detructive because of odd number
+$b=['⇒',"'","'",'"','"',"...","-",''];//,'"','"'
+if(substr_count($d,'«')==substr_count($d,'»')){$a+=['«','»']; $b+=['"','"'];}
 foreach($a as $k=>$v)$d=str_replace([htmlentities($v),$v],$b[$k],$d);
 return $d;}
 
 static function clean_punctuation($d,$o=''){if(!$d)return;
 if($o)$d=self::clean_acc($d);//avoid utf error
-//$n=mb_substr_count($d,'"'); if($n%2)return $d;
+$n=mb_substr_count($d,'"'); $no=$n%2;
 //$d=hed($d);
 $r=mb_str_split($d); $n=count($r); $ia=2;
 for($i=0;$i<$n;$i++){
 	if(($r[$i]??'')=='"'){$ia=$ia==2?1:2;
-		if($ia==1 && ($r[$i+1]??'')==' ')unset($r[$i+1]);
-		if($ia==2 && ($r[$i-1]??'')==' ')unset($r[$i-1]);}
+		if($ia==1 && !$no && ($r[$i+1]??'')==' ')unset($r[$i+1]);
+		if($ia==2 && !$no && ($r[$i-1]??'')==' ')unset($r[$i-1]);}
 	if(($r[$i]??'')=='(' && ($r[$i+1]??'')==' ')unset($r[$i+1]);
 	if(($r[$i]??'')==')' && ($r[$i-1]??'')==' ')unset($r[$i-1]);
 	if(($r[$i]??'')=="," && ($r[$i-1]??'')==' ')unset($r[$i-1]);}
@@ -222,12 +223,10 @@ return $d;}
 
 static function nicequotes($d,$o=''){if(!$d)return;
 if($o)$d=self::clean_acc(delnbsp($d)); $nb=sep();
+$n=mb_substr_count($d,'"'); $no=$n%2;
 //$n=mb_substr_count($d,'"'); if($n%2)return $d;
 $r=mb_str_split($d); $n=1; $rp=['&laquo;'.$nb,$nb.'&raquo;'];
-foreach($r as $k=>$v)if($v=='"'){
-	$n=$n==1?0:1; $r[$k]=$rp[$n];
-	if($n==0 && ($r[$k+1]??'')==' ')unset($r[$k+1]);
-	if($n==1 && ($r[$k-1]??'')==' ')unset($r[$k-1]);}
+if(!$no)foreach($r as $k=>$v)if($v=='"'){$n=$n==1?0:1; $r[$k]=$rp[$n];}
 if($r)$d=implode('',$r); if($o)$d=self::add_nbsp($d);
 return $d;}
 
@@ -385,7 +384,7 @@ $d=self::clean_tables($d);
 //$d=self::clean_spaces($d);
 $d=self::clean_acc($d);
 $d=self::clean_punctuation($d);
-$d=self::nicequotes($d);
+//$d=self::nicequotes($d);
 $d=self::add_nbsp($d);
 $d=self::clean_br($d);
 $d=self::clean_lines($d);

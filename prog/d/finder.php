@@ -213,7 +213,7 @@ return ljb('','SaveBf',ajx($f).'_'.$w.'_'.$h,$img);}
 
 static function info_shared($d,$id){
 $sh=in_array_r($_SESSION['curdir'],$d,0); $dj=ajx($d).'_'.$id;
-if($sh)$t=nms(74); else $t=nms(75); $c=($sh?'color:#bd0000':''); 
+if($sh)$t=nms(74); else $t=nms(75); $c=($sh?'color:#d22':''); 
 $ret=blj('',$id.'fishr','finder,share___'.$dj,picto('share',$c)).' ';
 if($sh)$ret.=blj('',$id.'fivrd','finder,vdir___'.$sh.'_'.$id,self::pic('virtual_dir')).' ';
 return $ret;}
@@ -394,7 +394,7 @@ if($rb[4]!='conn')$ret=divc('fimnu imgr',$fi['menu'].hlpbt('finder'));
 [$u,$fl,$rg,$ac]=vals($fi,['url','flap','reg','act']);
 $ret.=$u.$fl.$rg.$ac;
 $ret.=($ret?br():'').($fi['win']??'');
-return div(atd('fndr'),$ret);}//.ats('width:640px;')
+return divb($ret,'','fndr','');}//'width:640px;
 
 static function plnk($p,$o){$o=self::mkprm($o,'',5); $rb='';//?
 if(strprm($o,0)=='')$o=self::mkprm($rb,'disk',0); $o=str_replace('/','|',$o);
@@ -455,7 +455,7 @@ if($rb[5]!='alone'){//$fi['flap']=flap($r,$p,$rb);
 	if($rb[1]=='distant' && strpos($p,'.')===false)$fi['reg']=self::dist_list();
 	if(count($fi)>0)$ret=self::design($fi,$rb);}
 else $ret=($fi['act']??'').($fi['win']??'');
-//$ret.=jscode('autoscroll(\'finder\');');
+//$ret.=head::jscode('autoscroll(\'finder\');');
 return $ret.divc('clear','');}
 
 }

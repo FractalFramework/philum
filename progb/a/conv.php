@@ -456,9 +456,9 @@ elseif(strpos($bse,'class="udouble"')!==false)$b='['.$b.'|double:underline]';
 return $b;}
 
 //strings
-static function notin($d,$t){
-$balsansesp=preg_replace("/(\r)|(\n)|( )|(&nbsp;)/",'',$d);
-if(strpos($d,$t)===false && strpos($d,'.jpg]')===false && strpos($d,'.gif]')===false && strpos($d,'.png]')===false && $balsansesp)return true;}
+static function notin($d,$c){
+$b=preg_replace("/(\r)|(\n)|( )|(&nbsp;)/",'',$d);
+if($b && strpos($d,$c)===false && !is_img($d))return true;}//
 
 static $splitable="\n";
 static function prep_table($d){$d=trim($d);

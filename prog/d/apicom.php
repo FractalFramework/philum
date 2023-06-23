@@ -21,7 +21,7 @@ foreach($rt as $k=>$v){$val=$ra[$k]??'';
 	//select_j('inp'.$k,'vfld',$k,$k,'','2');
 	else $bt=$k;
 	$btn=tag('span',['class'=>'small','title'=>$rh[$k]??''],$bt);
-	$ret.=div('',input('inp'.$k,$val,'',$pr).''.$btn);}
+	$ret.=divb(input('inp'.$k,$val,'',$pr).$btn);}
 $bt=lj('','apcf_apicom,form___'.ajx($p).'_'.$id.'_'.($a==1?2:1),picto($a==1?'right':'left'));
 return divb($bt).divb($ret,'cols');}
 
@@ -57,7 +57,7 @@ $ret.=divb($rt,'','','min-width:720px;');
 return $ret;}
 
 static function home($p,$o){$rid='plg'.randid();
-//Head::add('jscode',self::js($p,$o));
+//head::add('jscode',self::js($p,$o));
 if($o)$bt=self::menu($p,$o,$rid).br();
 //else $bt=toggle('',$rid.'2_apicom,menu___'.ajx($p).'_'.$rid,picto('menu'));
 else $bt=lj('','popup_apicom,menu___'.ajx($p).'_'.$rid,picto('menu'));

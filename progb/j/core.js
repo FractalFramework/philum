@@ -176,8 +176,8 @@ if(!s2)var s2=txt.value;
 ajaxcall('popup','mc,conns',[val,s2],[],'');}
 
 function edtmode(rid,id){var a=active('edtmd');
-if(a)ajaxcall(rid,'mc,wygedt',[id,'txtarea'],['txtarea'],'15');
-else ajaxcall(rid,'mc,wygoff',[id,'txtarea'],['txtarea'],'15');}
+if(a)SaveJ(rid+'_mc,wygedt_txtarea_15_'+id+'_txtarea');
+else SaveJ(rid+'_mc,wygoff_txtarea_15_'+id+'_txtarea');}
 
 function autoslct(val){var id=val?val:'txtarea';
 var txt=getbyid(id); txt.focus();
@@ -368,7 +368,13 @@ return ret;}
 function tog_j(val,nb,nob){var dn=val.split("_"); dn=undefiner(dn,7);
 if(nob)var ac=active_tg(dn[0],nb,nob); else var ac=active(dn[0]+nb);
 //dn[2]=undefine(dn[2]); dn[3]=undefine(dn[3]); dn[4]=undefine(dn[4]); dn[5]=undefine(dn[5]);
+if(ac){var ob=getbyid(dn[0]); ob.dataset.tognb=nb;}
 if(ac)SaveJ(val); else falseClose(dn[0]);}
+
+function tog_cl(el){
+el=el.parentNode; if(el.id==null)el=el.parentNode;
+var id=el.id; var nb=el.dataset.tognb;
+tog_j(id,nb,'');}
 
 function tog_jb(ja,jb,rid){
 var ac=active(rid);

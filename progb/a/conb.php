@@ -1,5 +1,5 @@
 <?php 
-class codeline{
+class conb{
 
 static function parse($msg,$op,$g){if(!$msg)return;
 $st='['; $nd=']'; $deb=''; $mid=''; $end='';

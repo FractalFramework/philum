@@ -152,7 +152,8 @@ $ret=select(['id'=>'wygs','onchange'=>'execom2(this.value)'],$r);
 $r=['increaseFontSize'=>'size','decreaseFontSize'=>'fontsize','bold'=>'bold','italic'=>'italic','underline'=>'underline','strikeThrough'=>'strike','insertUnorderedList'=>'textlist','Indent'=>'block','Outdent'=>'unblock','stabilo'=>'highlight','createLink'=>'url'];
 foreach($r as $k=>$v)$ret.=btj(picto($v,16),atj('execom',$k));
 //$ret.=bubble('','mc,navs','ascii','&#128578;').' ';
-if(is_numeric($id))$ret.=lj('','art'.$id.'_mc,savwyg_art'.$id.'__'.$id.'_1',picto('save2',16));
+//if(is_numeric($id))$ret.=lj('','art'.$id.'_mc,savwyg_art'.$id.'__'.$id.'_1',picto('save2',16));
+if(is_numeric($id))$ret.=btj(picto('save2',16),atj('saveart',$id));
 return btn('nbp',$ret);}
 function divarea($id,$d,$c='',$s='',$j='',$o=''){$ja='';
 $rp=['contenteditable'=>'true','id'=>$id,'c'=>$c,'s'=>$s];
@@ -182,23 +183,25 @@ if($r)foreach($r as $k=>$v){
 return tag('select',$ra,$ret);}
 
 #headers
-class head{static $r=[];
+class head{static $r=[]; static $rid='';
 static function add($k,$v){self::$r[][$k]=$v;}
 static function ra($r){foreach($r as $k=>$v)self::$r[]=$v;}
 static function meta($d,$v,$c=''){return taga('meta',[$d=>$v,'content'=>$c])."\n";}
-static function css($d,$c=''){return taga('link',['href'=>'/css/'.$d.'.css'.$c,'rel'=>'stylesheet','id'=>$d])."\n";}
-static function js($d,$c='',$b=''){return tag('script',['src'=>'/prog'.$b.'/j/'.$d.'.js'.$c,'id'=>$d],'')."\n";}
 static function csslink($d){return taga('link',['href'=>$d,'rel'=>'stylesheet'])."\n";}
 static function jslink($d){return tag('script',['src'=>$d,'id'=>between($d,'/','.',1)],'')."\n";}
 static function csscode($d){return tag('style',['type'=>'text/css'],$d)."\n";}
 static function jscode($d){return tag('script',['type'=>'text/javascript'],$d)."\n";}
+static function css($d){$c=self::$rid;
+	return taga('link',['href'=>'/css/'.$d.'.css'.$c,'rel'=>'stylesheet','id'=>$d])."\n";}
+static function js($d){$c=self::$rid; $b=ses('dev');
+	return tag('script',['src'=>'/prog'.$b.'/j/'.$d.'.js'.$c,'id'=>$d],'')."\n";}
 static function link($d,$v){return taga('link',['href'=>$v,'rel'=>$d])."\n";}
 static function temporize($name,$func,$p){$i=randid();
 return 'function '.$name.$i.'(){'.$func.' setTimeout(\''.$name.$i.'()\','.$p.');} '.$name.$i.'();';}
 static function relod($v){echo self::jscode('window.location="'.$v.'"');}
 static function build(){$r=self::$r; $rt=[]; //pr($r);
 if($r)foreach($r as $k=>$v){$va=current($v); $ka=key($v); $rt[]=match($ka){
-'css'=>self::css($va[0],$va[1]??'',$va[2]??''),'js'=>self::js($va[0],$va[1]??'',$va[2]??''),
+'css'=>self::css($va[0]),'js'=>self::js($va[0]),
 'csslink'=>self::csslink($va),'jslink'=>self::jslink($va),'csscode'=>self::csscode($va),'jscode'=>self::jscode($va),
 'meta'=>self::meta($va[0],$va[1],$va[2]),'link'=>self::link($va[0],$va[1]),
 'name'=>self::meta('name',$va[0],$va[1]),'code'=>$va."\n",

@@ -36,7 +36,7 @@ $ret=bar('wstbar',0,$parts,0,$lid,$js='wstcall',$s='240px');
 return $ret;}
 
 static function home($p,$o){
-Head::add('jscode',self::js());
+head::add('jscode',self::js());
 $bt=self::menu($p,$o);
 $ret=self::call($p,$o);
 return $bt.divd(self::$cb,$ret);}

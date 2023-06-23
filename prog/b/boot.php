@@ -37,7 +37,7 @@ static function define_hubs(){
 $ret=[]; $rtb=[];
 $ex=sqb('id','qdu','v','limit 1');
 if(!$ex){$_SESSION['stsys']=1; $_SESSION['first']=1;
-	Head::add('jscode',sj('popup_login,form'));}
+	head::add('jscode',sj('popup_login,form'));}
 $wh='active="1" ';//if(!auth(7))
 $req=sql::com('name,hub,id','qdu',$wh.'order by nbarts desc');
 if($req)while($r=sql::qrw($req)){// && ($r[3] or auth(6))
@@ -181,10 +181,10 @@ if($ret)ksort($ret); $_SESSION['modc']=$ret;}
 static function define_prma(){$r=sesr('modc','system'); $_SESSION['prma']=[];
 if($r)foreach($r as $k=>$v){
 if($v[0]=='design' && empty($_SESSION['desgn'])){$_SESSION['prmd']=$v[1];
-	if($v[5])Head::add('jslink','/css/'.self::csslayer($v[5]).'.css');}
-if($v[0]=='csscode' && $v[1])Head::add('csscode',$v[1]);
-elseif($v[0]=='jscode' && $v[1])Head::add('jscode',$v[1]);
-elseif($v[0]=='jslink' && $v[1])Head::add('jslink',$v[1]);
+	if($v[5])head::add('jslink','/css/'.self::csslayer($v[5]).'.css');}
+if($v[0]=='csscode' && $v[1])head::add('csscode',$v[1]);
+elseif($v[0]=='jscode' && $v[1])head::add('jscode',$v[1]);
+elseif($v[0]=='jslink' && $v[1])head::add('jslink',$v[1]);
 elseif($v[1])$_SESSION['prma'][$v[0]]=$v[1];}}
 
 static function define_condition(){
@@ -219,7 +219,7 @@ return $ret;}
 
 #css
 static function define_clr(){$k=ses('prmd');
-$r=msql::col('design',nod('clrset_'.$k),0,1);
+$r=msql::kv('design',nod('clrset_'.$k),0,1);
 $_SESSION['clrs'][$k]=$r; return $r;}
 
 static function auto_design(){$n=ses('prmd'); $phi=ses('philum'); $qb=ses('qb');
@@ -256,7 +256,7 @@ $qb=ses('qb'); if(!$qb)$qb='public'; $nod=$qb.'_design';
 if(ses('desgn'))$nod.='_dev';
 if($sw=ses('switch'))$nod.='_'.$sw; else $nod.='_'.ses('prmd');
 if(prmb(5) && !isset($_SESSION['desgn']))$nod=nod('auto');
-if(ses('tablet'))Head::add('csscode',tablet::home());
+if(ses('tablet'))head::add('csscode',tablet::home());
 if(ses('negcss')){$nod.='_neg'; self::negcss();}
 elseif(rstr(122)){[$h1,$h2]=self::night(); $dt=ses('dayx');//sesmk2('boot','night','')
 	if($dt>$h2 or $dt<$h1){$nod.='_neg'; if(!ses('night'))self::negcss();}}
@@ -320,9 +320,9 @@ static function verif_update(){
 if($_SESSION['auth']>5){
 	if(!prms('aupdate')){
 	$localver=checkversion(2); $distver=sesmk('checkupdate',2,1);//ses('philum')
-	if($distver>$localver)Head::add('jscode',sj('popup_software,call___1'));}
+	if($distver>$localver)head::add('jscode',sj('popup_software,call___1'));}
 	if(!isset($_SESSION['verifs'])){
-	if(prms('srvmirror'))Head::add('jscode',sj('popup_transport,batch__3'));}
+	if(prms('srvmirror'))head::add('jscode',sj('popup_transport,batch__3'));}
 $_SESSION['verifs']=1;}}
 
 #state
@@ -337,10 +337,9 @@ elseif($ra=api::load_rq())$ret='api,callj___'.implode_k($ra,',',':');
 //else $ret='mod,block__3_home';
 return $ret;}
 
-static function deskpage(){
-Head::add('jscode',desk::desktop_js('boot')); 
-$ret=self::state();
-if($ret)Head::add('jscode',sj('popup_'.$ret));}
+static function deskpage(){$ret=self::state();
+head::add('jscode',desk::desktop_js('boot'));
+if($ret)head::add('jscode',sj('popup_'.$ret));}
 
 #cache
 static function cache_arts($x=''){

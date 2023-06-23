@@ -137,8 +137,7 @@ function jurl(){return '/ajax.php?app=';}
 function ajaxcall(tg,app,ra,prm,tp){
 var fd=''; var get=jx(app); ra=jrb(ra);
 if(tp=='u')updateurl(ra[0],tg+'_'+app+'___'+ra[0]+'_'+ra[1]);
-if(prm){var fd=new FormData();
-for(var i in prm)fd.append(i,prm[i]);}
+if(prm){var fd=new FormData(); for(var i in prm)fd.append(i,prm[i]);}
 if(tp=='g')for(var i in ra)fd.append('g'+i,ra[i]); else get+=jrc(ra);
 new AJAX(jurl()+get+'&tg='+tg,tg,tp,fd);}
 
@@ -161,7 +160,7 @@ function jsonput(keys,json){var cb,k,typ,val;
 		else if(cb!=null)cb.innerHTML=obj[i];}}
 
 function poparts(d){var r=d.split(',');
-for(var i in r)ajaxcall('popup','popart',[r[i],'3'],'',3);}
+for(var i in r)ajaxcall('popup','popart',[r[i],'3'],[],3);}
 
 function addhead(json){var ia=0;
 	var obj=JSON.parse(json);

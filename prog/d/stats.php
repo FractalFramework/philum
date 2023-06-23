@@ -62,7 +62,7 @@ foreach($r as $k=>$v){$x2=$x1+$ecart; $ah=round($v/$xr*($h-12));
 	$ret.='ctx.fillRect('.($x1).','.($h-$ah-12).','.($ecart).','.($ah).');'."\n";
 	if($t=='yes'){
 		$ret.='ctx.fillStyle="#'.$clr[7].'"; ctx.font="12px Arial"; ';
-		if(strpos($k,'='))$k=segment($k,'=','&');
+		if(strpos($k,'='))$k=strin($k,'=','&');
 		$ret.='ctx.fillText("'.($k).'",'.($x1).','.($h-2).'); ';
 		$ret.='ctx.fillStyle="yellow"; ctx.font="11px Arial"; ';
 		$ret.='ctx.fillText("'.$v.'",'.($x1+2).','.($h-$ah).'); ';}
@@ -88,7 +88,7 @@ return image('/'.$f.'?'.randid(),'','');}
 static function graph($c,$n,$prm){
 [$r,$w,$h]=self::boot($c,$n,$prm);
 $t=array_sum($r).' '.($c=='nbp'?'vues':'visitors').' / '.count($r).' '.nms(4);
-if($r)return self::graph_mk($r,$w,$h).div('',$t);}
+if($r)return self::graph_mk($r,$w,$h).divb($t);}
 
 //list
 static function list_sql($c,$n){
@@ -105,7 +105,7 @@ if($c=='nbf')$ret='user: '.$n.br();
 elseif($c=='nbp')$ret='article: '.$n.br();
 $sql=self::list_sql($c,$n); $r=sql::call($sql,'',0); //p($r);
 if($c=='nbv' or $c=='nbu' or $c=='nbf'){if($r)foreach($r as $k=>$v){
-	$id=segment($v[0],'=','&'); $id=strto($id=strfrom($id,'_'),'_');//del popart_12___
+	$id=strin($v[0],'=','&'); $id=strto($id=strfrom($id,'_'),'_');//del popart_12___
 	if(is_numeric($id)){$suj=ma::suj_of_id($id); //else $suj=$id;
 	$flw=lj('','popup_popart___'.$id,picto('articles'));
 	$ret.=$v[1].' '.lj('txtx',$j.'nbp_'.$id,$suj).' '.$flw.br();}}}
@@ -169,13 +169,13 @@ return tabler($ret,'txtx','txtx');}
 static function js($p,$o){$o=$o?$o:100;
 $p=sqb('id','qdv','v','order by id desc limit 1');
 $j=sj('sts_statsee,call___'.$p.'_'.$o);
-return jscode(temporize('sttimer',$j,3000));}
+return head::jscode(temporize('sttimer',$j,3000));}
 
 static function statsee($p,$o){
 $rid='sts'; $o=$o?$o:100;
 $p=sqb('id','qdv','v','order by id desc limit 1');
 $j=sj($rid.'_statsee,call___'.$p.'_'.$o);
-Head::add('jscode',temporize('sttimer',$j,3000));
+head::add('jscode',temporize('sttimer',$j,3000));
 return divd($rid,self::call($p,$o));}
 
 //plug

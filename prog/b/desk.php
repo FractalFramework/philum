@@ -231,7 +231,7 @@ elseif(strpos($g,',')===false && $g){$ret='background-color:'.sty::affect_rgba($
 else{$g=sty::affect_rgba($g,$clr); $gh=$g?$g:'#'.$clr[4].',#'.$clr[1]; $klr=self::medclr($gh);
 	if(!$g)$g='to bottom, '.hexrgb($clr[4],0.4).', '.hexrgb($clr[1],1).'';
 	$ret='height:100%; background:linear-gradient('.$g.') no-repeat fixed;';}
-return csscode('body {'.$ret.'}
+return head::csscode('body {'.$ret.'}
 	#desktop {padding:20px;}
 	#desktop a, #desktop .philum {color:#'.invert_color($klr,1).';}
 	#desktop #page {padding:0; margin:0 40px 0 0; border:0; box-shadow:none; background:rgba(0,0,0,0.4);}');}

@@ -446,11 +446,12 @@ $j=atjr('autocomp',[$id,'tag '.prmb(18)]); $rj=['onkeyup'=>$j,'onclick'=>$j];
 $bt.=lj('','popup_meta,metall___'.$id.'_'.$m,picto('popup')).' ';
 $bt.=inputb('inp'.$id,nms(24),12,1,255,$rj);
 $rj=[]; foreach($rc as $k=>$v)$rj[]='slct'.str::normalize($v).$id; 
-$bt.=lj('',implode(',',$rj).'_meta,matchall__json_'.$id,picto('enquiry'));
+$bt.=lj('',implode(',',$rj).'_meta,matchall__json_'.$id,picto('enquiry'),att('search'));
 $rj=[]; foreach($rc as $k=>$v)$rj[]=str::normalize($v).$id; 
-$bt.=lj('',implode(',',$rj).'_meta,delalltags__json_'.$id,picto('del'));
-$bt.=toggle('','clusters,viewart___'.$id,picto('network')).divd('cls'.$id,'');
-//$bt.=lj('','meta,importags___'.$id,picto('get'),att('tags from translation'));
+$bt.=lj('',implode(',',$rj).'_meta,delalltags__json_'.$id,picto('del'),att('del all'));
+$bt.=toggle('','cls'.$id.'_clusters,viewart___'.$id,picto('network'),'',att('edit clusters')).' ';
+$bt.=toggle('','cls'.$id.'_meta,importags___'.$id,picto('import'),'',att('tags from translation'));
+$bt.=divd('cls'.$id,'');
 $ret.=divd('lng'.$id,self::langslct($id));
 return divs('min-width:440px; padding:0 4px;',$bt.$ret);}
 
@@ -528,6 +529,15 @@ foreach($cats as $k=>$cat){$r=self::read_tags($id,$cat); $kb=str::normalize($cat
 	foreach($r as $idtag=>$tag){$idartag=self::idartag($id,$idtag); sql::del('qdta',$idartag);}
 $rt[$kb]='';}
 return $rt;}
+
+static function importags($id){
+$lg=sql('lg','qda','v',$id); $lga=ses('lng'); $ex=''; $rb=[]; $rd=[];
+$r=sql('msg,val','qdd','kv',['ib'=>$id,'(val'=>['langfr','langen','langes']]);
+foreach($r as $k=>$v)if($v!=$lg && !$ex){$ex=$k; $lgb=substr($v,4);}
+if($ex)$rb=sql('idtag','qdta','rv',['idart'=>$ex]); //pr($rb);
+$rc=sql('idtag','qdta','k',['idart'=>$id]); //pr($rc);
+if($rb){foreach($rb as $k=>$v)if(!isset($rc[$v]))$rd[]=[$id,$v]; if($rd)sql::sav2('qdta',$rd);}//pr($rd);
+return count($rd).' tags applied';}
 
 #admin
 //remove

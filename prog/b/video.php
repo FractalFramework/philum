@@ -119,7 +119,7 @@ if($tx)$lk.=togbub('video,txt',ajx($d).'_'.$id,picto('bubble'));
 //if(auth(4))$lk.=lj('','popup_web,redit___'.ajx($u).'_'.$rid.'_'.$id,picto('editxt'));
 if(auth(4))$lk.=togbub('web,redit',ajx($u).'_'.$rid.'_'.$id,picto('editxt'));
 if($m=='vd')$ret=divb($bt,'video',$rid).$lk;
-elseif($o)$ret=span(att($ti).atd($rid),$bt.$lk);
+elseif($o)$ret=btp(att($ti).atd($rid),$bt.$lk);
 elseif($m<3 or $m=='noimages')$ret=btd($rid,$bt.$lk);
 else $ret=divb($bt.divc('small',$lk),'video',$rid);
 return $ret;}

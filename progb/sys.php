@@ -48,7 +48,7 @@ elseif(ses::$r['raed']??''){$meta['title']=ses::$r['raed']; $meta['descript']=se
 else{$mn=ses('mn'); $meta['title']=$mn[ses('qb')]??'';
 	$meta['descript']=$_SESSION['qbin']['dscrp'];}
 //$meta['author']=ma::readcacheval($read,7);
-$cst=('dev')?'?'.randid():'';//ses
+head::$rid='?'.randid();//if(ses('dev')
 if($adm or $msq)$meta['css']='_admin';
 else $meta['css']=boot::define_design();
 boot::verif_update();

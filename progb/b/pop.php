@@ -40,12 +40,12 @@ if($id && auth(6)){
 	//if(!$rst[1])$trk=li(lj('','popup_tracks,form___'.$id,picto('forum')));
 	$rt['edit']=li($tag).li($tit).li($edt).tag('li',['id'=>'adt2'.$id],$edt2);}//.$trk
 $dev=ses('dev'); $ic=$dev=='b'?$ico[11]:($dev=='c'?$ico[16]:$ico[12]);
+if(!$rst[157])$rt['night']=li(btj(btd('swcs',picto('moon')),'switchcss()',''));
 if(auth(6) or $dev)$rt['dev']=popbub('dev','dev',$ic,$top,$hv);//dev
 $rt['fixit']=spn(' ','etc','fixtit');
 $chrono=round(microtime(1)-$st,3); 
 if(ses('dev'))$rt['chrono']=btj($chrono,'relj()','popbt');
 if(ses::r('er'))$rt['err']=divb(playr(ses::r['er']),'small');
-if(!$rst[157])$rt['night']=li(btj(btd('swcs',picto('moon')),'switchcss()',''));
 return $rt;}
 
 //poplinks

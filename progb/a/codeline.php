@@ -104,9 +104,11 @@ elseif($op==$c){
 		$p=str_replace(['¬','|'],["\n","\t"],$p);
 		if(strpos($p,' ')!==false && strpos($p,'.jpg')===false && trim($p))return '['.$p.':q]';
 		else return $p;}
-	elseif($c==';chat')return;
+	elseif($c==':chat')return;
 	elseif($c==':list')return str_replace('|',' ',$p);
-	else{$na=strpos($da,'|'); $nb=strpos($da,']'); if($nb>$na)return substr($da,0,$nb+1); else return $p;}}
+	else{//$na=strpos($da,'|'); $nb=strpos($da,']');//used for some errors
+		//if($nb>$na)return substr($da,0,$nb+1); else//kill long texts
+		return $p;}}
 return '['.$da.']';}
 
 #conndefs
@@ -139,15 +141,8 @@ return match($c){
 ':qu'=>'<q>'.$d.'</q>',
 default=>''};}
 
-static function sconn_links($d,$p,$o,$c,$xt,$b){
-if(is_img($p) && !$o)return conn::mkimg($p,3,'','',$b);
-if(is_img($p)){//image|text
-	if(is_img($o))return lkt('',goodroot($p),image(goodroot($o)));
-	return lkt('',goodroot($o),image(goodroot($p)));}
-elseif(is_img($o)){//link|image
-	return lkt('',goodroot($p),image(goodroot($o)));}
-elseif(substr($p,0,1)=='/')return lka($p,$o);
-elseif(substr($p,0,1)=='@')return lj('txtx','popup_twit,call__3_'.ajx($p).'_ban',$p);
+static function sconn_links_2($d,$p,$o,$c,$xt,$b){
+if(substr($p,0,1)=='@')return lj('txtx','popup_twit,call__3_'.ajx($p).'_ban',$p);
 //elseif(strpos($p,'@'))return $p;//odysee
 elseif($xt=='.pdf')return mk::pdfdoc($d,0,640);//lka($p,$o);
 elseif($xt=='.mp3')return audio(goodroot($d,'1'));
@@ -160,6 +155,16 @@ elseif(strpos($p,'twitter.com')!==false && strpos($p,'status/')!==false)return p
 elseif(strpos($p,'wikipedia.org')!==false)return mk::wiki($d,0);
 elseif(substr($p,0,4)=='http')return rstr(111)?mk::webview($d,$b):lka($p,$o);
 elseif(is_numeric($p))return ma::jread('',$p,$o);}
+
+static function sconn_links($d,$p,$o,$c,$xt,$b){
+if(is_img($p)){//image|text
+	if(!$o)return image(goodroot($p));
+	if(is_img($o))return lkt('',goodroot($p),image(goodroot($o)));
+	return lkt('',goodroot($o),image(goodroot($p)));}
+elseif(is_img($o)){//link|image
+	return lkt('',goodroot($p),image(goodroot($o)));}
+elseif(substr($p,0,1)=='/')return lka($p,$o);
+elseif(substr($p,0,4)=='http')return lka($p,$o);}
 
 static function scapp_app($d){[$p,$o,$fc]=unpack_conn($d); return appin($fc,'call',$p,$o);}
 static function scapp_tag($d){[$p,$o]=cprm($d); if(!$o)$o=sql('cat','qdt','v',['tag'=>$p]);
@@ -246,7 +251,8 @@ if(is_img($da) && strpos($da,'|')===false){$im=goodroot($da,'');
 	if($b=='epub'){$fb='_datas/epub/OEBPS/images/';
 		if(file_exists($im) && !file_exists($fb.$da))copy($im,$fb.$da); return image('../images/'.$da);}
 	else return image($im);}//;conn::mkimg($da,3,'','',1)
-$d=self::sconn_links($d,$p,$o,$c,$xt,$b); if($d)return $d;
+if(!$a){$d=self::sconn_links($d,$p,$o,$c,$xt,$b); if($d)return $d;}
+else{$d=self::sconn_links_2($d,$p,$o,$c,$xt,$b); if($d)return $d;}
 if($da=='--')return hr();
 return '['.$da.']';}
 

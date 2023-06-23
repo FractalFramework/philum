@@ -307,8 +307,8 @@ $ret=self::callr($ra);
 if($ra['noheader']??'')return $ret;
 $nbpg=self::head($ra);
 $js='addEvent(document,"scroll",function(){artlive2("'.$ra['rid'].'")});';
-Head::add('jscode',$js); $jb='';
-//$jb=jscode($js);
+head::add('jscode',$js); $jb='';
+//$jb=head::jscode($js);
 //if(!$ret)$ret=nmx([11,16]);
 return divd($ra['rid'],$nbpg.$ret).$jb;}
 
@@ -480,7 +480,7 @@ foreach(['rid','notpublished','nbarts','ti','t'] as $v)unset($ra[$v]);
 $com=implode_k($ra,',',':');
 $bt=hlpbt('api').' '.lj('grey','popup_favs,home___com_'.ajx($com),picto('save')).' '.lj('grey','popup_apicom,home___'.ajx($com),picto('view')).' '.lkc('grey','/api/'.$com,picto('url')).' ';
 $bt.=lj('','popup_apicom,menu___'.ajx($p).'_'.$rid,picto('menu'));
-return $bt.divc('editor',$com);}
+return $bt.divc('console',$com);}
 
 static function home($p,$o,$prm=[]){
 return self::call($p,$o,$prm);}
