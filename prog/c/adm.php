@@ -6,7 +6,7 @@ static $curauth=0;
 static function conn_help(){$qb=ses('qb');
 $ret=helps('conn_help_txt'); $nb=0;
 $ret=br().tagc('blockquote','tabd',$ret).br().br();
-$arr=['auto','basic','all','codeline',$qb];
+$arr=['auto','basic','all','conb',$qb];
 foreach($arr as $v){$d='lang'; $nod='connectors_'.$v;
 	$r=msql::read($d,$nod,1); if($r)$nb+=count($r); $arr=[];
 	if($r)foreach($r as $ka=>$va)$arr[]=[$ka,$va[0]];
@@ -36,7 +36,7 @@ if($p=='google'){
 $ret.=lj('popsav','hubprm_adm,hubprm*sav_hbp_xx_'.ajx($p),nms(27));
 return divd('hubprm',$ret);}
 
-#codeline
+#conb
 //core
 static function core_view_edit($rb,$s){
 $r=['static function'=>$rb[0],'variables'=>$rb[1],'usage'=>stripslashes($rb[2]),'return'=>$rb[3],'context'=>$rb[4]];
@@ -66,16 +66,16 @@ if($d){$r=msql::tri($r,2,$d);
 	$ret.=slctmnuj($cat,$js.$d.'_',$s,br()).br();}//!
 return $ret;}
 
-//codeline_edit
-static function codeline_editor($d,$type,$slct){
+//conb_edit
+static function conb_editor($d,$type,$slct){
 $_SESSION['cur_cl']=$type; $menu='';
-$r=msql::kv('system','connectors_codeline');
-$rb=msql::kv('lang','connectors_codeline');
+$r=msql::kv('system','connectors_conb');
+$rb=msql::kv('lang','connectors_conb');
 foreach($r as $k=>$v){$hlp=att($rb[$k]??'');
 $menu.=lj('txtx','editcl_adm,clview___'.$k.'_'.$type,$k,$hlp).' ';}
 $re['preview']=self::clview_basic($d,$type,$slct);
-$re['codeline']=$menu.br().br().divd('editcl','').divd('seecl','');
-if($type=='template'){$re['structure']=codeline::parse($d,'','clpreview');
+$re['conb']=$menu.br().br().divd('editcl','').divd('seecl','');
+if($type=='template'){$re['structure']=conb::parse($d,'','clpreview');
 	$re['vars']=self::clview_vars();}
 else{$re['core']=divd('crv',self::core_view('',''));}
 $re['connectors']=divd('cnv',self::conn_view('',''));
@@ -92,10 +92,10 @@ if($r[0])$ret.=divc('txtx',btn('txtblc','value').' '.$r[0]);
 if($r[1])$ret.=divc('txtx',btn('txtblc','option').' '.$r[1]);
 $ret.=divc('txtx',btn('txtblc','connector').' '.$r[2]);
 return divb($ret,'txtbox','','margin:4px;');}
-//codeline
+//conb
 static function clview($v,$t){
-$p=msql::val('system','connectors_codeline',$v); [$p,$o]=opt($p,'|');
-$hlp=msql::val('lang','connectors_codeline',$v);
+$p=msql::val('system','connectors_conb',$v); [$p,$o]=opt($p,'|');
+$hlp=msql::val('lang','connectors_conb',$v);
 $val=$p.($o?'|'.$o:'').':'.$v; if($t=='template')$val='['.$val.']';
 $ret=divc('',$hlp).br().input('clvw',$val);
 $ret.=ljb('txtbox','jumpText_insert_b',['clvw','txarea'],'insert').br();
@@ -103,8 +103,8 @@ return $ret;}
 //clbasic_preview
 static function clview_basic_j($t,$s,$pr=[]){[$p,$re]=$pr;
 if(!$re)$re=msql::val('users',nod($t),$s);
-if($t=='template' && $re)$ret=codeline::parse($re,'','template');
-else $ret=codeline::cbasic($re,$p);
+if($t=='template' && $re)$ret=conb::parse($re,'','template');
+else $ret=cbasic::read($re,$p);
 if(strpos($ret,'<br')===false)$ret=nl2br($ret);
 return divc('track',$ret).br().textarea('',$ret,40,5);}
 
@@ -159,7 +159,7 @@ if($slct){//save
 		elseif($slct=='titles')$msg=cltmp::titles();
 		elseif($slct=='panart')$msg=cltmp::panart();
 		elseif($slct=='products')$msg=cltmp::product();}
-	$ret.=self::codeline_editor($msg,$type,$slct).br();
+	$ret.=self::conb_editor($msg,$type,$slct).br();
 	if(!$pubase)$ret.=lj('txtx',$j.'mkpub_'.$slct,'make public').' ';
 	else $ret.=lj('txtx',$j.'mkpriv_'.$slct,'make private').' ';
 	$ret.=input('titl',$slct).' ';
@@ -277,7 +277,7 @@ if($nb)$ret.=$nb.' modules'.br().$ret;
 return $ret;}
 static function adm_tcm($n){$ret='';
 foreach(['templates','connectors','modules'] as $k=>$v)$ret.=lj(active($k,$n),'admcnt_admin___'.$v,$v);
-return divc('nbp',$ret);}
+return divc('menus',$ret);}
 static function connectors(){
 $lk=lj('txtblc','popup_adm,conn*help',pictxt('info','connectors_infos'));
 return self::adm_tcm(1).self::cortex('connectors').br().$lk;}
@@ -526,7 +526,8 @@ static function list_articles($r){$ye=offon(1); $no=offon(0);
 foreach($r as $id=>$va){$cid='&art='.$id.'#'.$id;
 	foreach($va as $k=>$v){
 		switch($k){
-		case('id'):$v='<a name="'.$v.'"></a>'.lkt('','/'.$id,$v); break;
+		//case('id'):$v='<a name="'.$v.'"></a>'.lkt('','/'.$id,$v); break;
+		case('id'):$v=ma::popart($id,$id); break;
 		case('day'):$v=mkday($v,1); break;
 		case('suj'):$v=lj('','popup_usg,editbrut___'.$id,$v); break;
 		case('img'):$v=''; break;

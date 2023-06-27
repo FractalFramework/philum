@@ -45,7 +45,7 @@ if(auth(6) or $dev)$rt['dev']=popbub('dev','dev',$ic,$top,$hv);//dev
 $rt['fixit']=spn(' ','etc','fixtit');
 $chrono=round(microtime(1)-$st,3); 
 if(ses('dev'))$rt['chrono']=btj($chrono,'relj()','popbt');
-if(ses::r('er'))$rt['err']=divb(playr(ses::r['er']),'small');
+if(ses::r('er'))$rt['err']=divb(rdiv(ses::$er),'small');
 return $rt;}
 
 //poplinks

@@ -7,7 +7,7 @@ static $w=10000;
 function __construct(){self::$cb=randid();}
 
 static function js(){return '
-var lid='.self::lastid().';
+var lid='.self::lastartid().';
 function wstcall(id,v){
 aj("wst","wordstats,call",v);
 getbyid("lbl"+id).innerHTML=lid-v;}

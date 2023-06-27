@@ -17,13 +17,13 @@ static function menus($r){$rt=[];
 if(isset($r['_']))return $r['_']; $n=count($r); if($r)$r=current($r);
 if(is_array($r))foreach($r as $k=>$v)$rt['_'][]=$k; return $rt;}
 
-static function dump($r,$p=''){$rc=[]; $ret='';
+static function dump($r,$p=''){$rc=[];
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
 	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?addslashes(stripslashes($va)):'')."'";
 		if($rb)$rc[]=('"'.$k.'"').'=>['.implode(',',$rb).']';}
 	else $rc[$k]=('"'.$k.'"').'=>[\''.($v?addslashes(stripslashes($v)):'').'\']';}
-if($rc)$ret=implode(','.n(),$rc);
-return '<?php //'.$p."\n".'$r=['.$ret.'];';}
+if($rc)$rt=implode(','.n(),$rc);
+return '<?php //'.$p."\n".'$r=['.$rt.']; ?>';}
 
 static function del($dr,$nod,$o=''){$f=self::url($dr,$nod,$o); if(is_file($f) && auth(4))unlink($f);}
 
@@ -59,15 +59,16 @@ self::save($dr,$nod,$rb);
 //json::write($dr,$nod,$r);
 return $rb;}
 
-static function include($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak);
+static function inc($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak); $r=[];
 if(is_file($f)){try{include $f;}catch(Exception $e){echo 'bruu: '.$nod;}}
+//if(is_file($f))include $f;
 elseif($rh)self::save($dr,$nod,[],$bak);
 return $r;}
 
 static function rollback($f){$r=self::read($dr,$nod,'',[],1); self::save($dr,$nod,$r);}
 
 static function read($dr,$nod,$u='',$rh=[],$bak=''){
-$r=self::include($dr,$nod,$rh,$bak);
+$r=self::inc($dr,$nod,$rh,$bak);
 if(isset($r)){if($u && isset($r['_']))unset($r['_']); return $r;}}
 
 static function mul($dr,$nod,$in='',$u='',$rh=[]){
@@ -75,7 +76,7 @@ $r=self::read($dr,$nod,$u,$rh);
 if($r)return self::sl($r[$in]??$r);}
 
 static function row($dr,$nod,$in,$o='',$rh=[]){
-$r=self::include($dr,$nod,$rh);
+$r=self::inc($dr,$nod,$rh);
 if($o && isset($r['_']))return array_combine_a($r['_'],$r[$in]);
 return $r[$in]??[];}
 

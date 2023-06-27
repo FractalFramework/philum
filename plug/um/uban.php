@@ -27,7 +27,7 @@ $r=scandir_b(self::$dr);//pr($r);
 foreach($r as $k=>$v){$t=strprm(strto($v,'.'),2,'_');
 	$rt[1][]=$ret=lj(active($k,$a),$rid.'_uban,call__2_'.$k.'-'.$b.'_'.$o,$t).' ';
 	$rt[2][]=$ret=lj(active($k,$b),$rid.'_uban,call__2_'.$a.'-'.$k.'_'.$o,$t).' ';}
-return divc('nbp',impl($rt[1])).divc('nbp',impl($rt[2]));
+return divc('nbp',join('',$rt[1])).divc('nbp',join('',$rt[2]));
 return $ret;}
 
 static function home($p,$o){

@@ -1,5 +1,5 @@
 <?php 
-class codeline{
+class conb{
 
 static function parse($msg,$op,$g){if(!$msg)return;
 $st='['; $nd=']'; $deb=''; $mid=''; $end='';
@@ -51,9 +51,9 @@ if($d)return nl2br($d);}
 
 static function png2jpg($id,$o=''){
 $d=sql('msg','qdm','v',$id); get('read',$id);
-if(rstr(48))$d=codeline::parse($d,'webp2jpg','correct');
-if($o)$d=codeline::parse($d,'forcewebp2jpg','correct');
-return codeline::parse($d,'png2jpg','correct');}
+if(rstr(48))$d=conb::parse($d,'webp2jpg','correct');
+if($o)$d=conb::parse($d,'forcewebp2jpg','correct');
+return conb::parse($d,'png2jpg','correct');}
 
 #templater
 static function build($d,$r){
@@ -62,8 +62,8 @@ foreach($r as $k=>$v){$va='_'.strtoupper($k); $ra[$k]=$va;
 	else $r[$k]=self::read($v);}
 $d=str::repair_tags($d); $d=delsp($d); $d=str::clean_lines($d); $d=delnl($d);
 //$d=preg_replace('/(\n){1,}/',"\n",$d);
-$d=self::parse($d,'','template');//build
-return str_replace($ra,$r,$d);}//return embed_p($d);
+$d=self::parse($d,'','template');
+return str_replace($ra,$r,$d);}//embed_p($d);
 
 //calls with variables
 static function call($d,$r){$ret='';
@@ -438,77 +438,12 @@ if(!$ret)$ret=match($c){
 ':setvar'=>self::setvar($o),
 ':setvars'=>self::setvars($o),
 default=>$da};
-//if(!$ret)$ret=self::exrun($p,$o,$c);
-return $ret;}
-
-static function exrun($p,$o,$c){$ret='';
-switch($c){
-case(':exec'):$ret=self::exec_run($p,$o);break;
-case(':split'):$ret=explode($o,$p);break;
-case(':cut'):[$s,$e]=explode('/',$o); $ret=between($p,$s,$e);break;
-case(':core'):if(is_array($p))$ret=call_user_func($o,$p,'',''); else{$pb=opt($p,'/',4);
-	$ret=call_user_func($o,$pb[0],$pb[1],$pb[2],$pb[3]);}break;
-case(':foreach'):foreach($p as $v)$ret.=self::cbasic_exec($v,'','',$o);break;}
+//if(!$ret)$ret=cbasic::exrun($p,$o,$c);
 return $ret;}
 
 static function setvar($d){$n=strpos($d,'=');
 if($n!==false){$a=substr($d,0,$n); $b=substr($d,$n+1); ses::$r[$a]=$b;}}
 static function setvars($d){$r=explode(',',$d); foreach($r as $v)self::setvar($v);}
-
-static function exec_run($d,$id){$f='_datas/exec/'.$id.'.php'; mkdir_r($f);
-if(!is_file($f) or auth(4))write_file($f,'<?php '.$d);
-if(is_file($f))require($f); return $ret;}
-
-#cbasic //|txtit:css|h2:html
-static function cbasic_exec($d,$p,$r,$o){
-[$av,$ap,$c]=unpack_conn_b($d);//v|p:c
-if(strpos($av,':')!==false)$av=self::cbasic_exec($av,$p,$r,$o);//iteration
-if($o==2)$av=$av?$av:$p;//param on left (no |) //strpos($ap,'_PARAM')===false
-if(!is_array($av))$av=self::cbasic_vars($av,$p,$r);
-if($ap)$ap=self::cbasic_vars($ap,$p,$r);
-if($o==1)echo $av.'$'.$ap.':'.$c.br();
-return self::template($av,$ap,$c);}
-
-static function cbasic_if($d,$p,$r,$o){[$va,$vb]=explode('=',$d);
-//if(strpos('+-*/',$vb)!==false)$vb=cbasic_mth($vb);
-if(strpos($vb,':')!==false)$vb=self::cbasic_exec($vb,$p,$r,'');
-else $p=self::cbasic_vars($vb,$p,$r);
-if($va=='_PARAM')$p=$p&&$o?$p:$vb; else $r[$va]=$vb;
-return [$p,$r];}
-
-static function cbasic_vars($ret,$p,$r){if(is_array($r)){$i=0;
-foreach($r as $k=>$v){$i++; $ret=str_replace('_'.$i,stripslashes($v),$ret);}}
-else $ret=str_replace('_PARAM',($p),$ret);//stripslashes
-return $ret;}
-
-static function cbasic($code,$p){//eco($code);
-if(is_array($code))return;
-if(strpos($code,'[')!==false){if($p)$code=str_replace('_PARAM',$p,$code);
-	return self::parse($code,'','template');}
-$code=str_replace('--',"\n",$code);
-$r=explode("\n",$code); $n=count($r); $rb=[];//self::parse($p,'',''codeline);
-for($i=0;$i<$n;$i++){$sp=$r[$i]??''; $op=substr($sp,0,1); $ret='';//trim
-	if($sp && strpos('+-/?!.;=',$op)!==false)$sp=substr($sp,1);
-	if($op=='/' or !$op)$reb='';
-	elseif($op=='?')[$p,$rb]=self::cbasic_if($sp,$p,$rb,1);
-	elseif($op=='!')[$p,$rb]=self::cbasic_if($sp,$p,$rb,0);
-	elseif($op=='.'){$ret=self::cbasic_exec($sp,$p,$ret,0); $ra[$i-1]='';}
-	elseif($op=='+')$rb=self::cbasic_exec($sp,$p,$rb,0);
-	elseif($op=='=')$p=self::cbasic_exec($sp,$p,$rb,0);
-	elseif($op=='-' && $rb)$ret=self::cbasic_exec($sp,$rb,$rb,2);//
-	elseif($op==';')$ret=self::cbasic_exec($sp,$p,$rb,1);
-	elseif($sp=='see')p($rb);
-	else $ret=self::cbasic_exec($sp,$p,$rb,0);//see
-$ra[$i]=$ret;}
-return implode('',$ra);}
-
-static function mod_basic($p,$o){
-$b=sesmk2('codeline','uconns',$p,0); if(!$b)$b=sesmk2('codeline','pconns',$p,0);
-if(!$b && $p)return self::parse('['.$p.']','','template');
-$r=['insert','update','delete','qr','write_file','file_put_contents'];
-foreach($r as $v)if(strpos($p,'|'.$v)!==false)return;
-//if($b && !is_array($b))return self::parse($b,'','template');
-if($b && !is_array($b))return self::cbasic($b,$o);}
 
 #refs
 static function uconns($p){return msql::val('',nod('connectors'),$p);}
@@ -522,7 +457,7 @@ return self::parse($p,'','sconn2');}
 
 static function home($p,$o){
 $rid='plg'.randid();
-$j=$rid.'_codeline,calli_inp'.$rid.',chk'.$rid;
+$j=$rid.'_conb,calli_inp'.$rid.',chk'.$rid;
 $js=['onkeyup'=>sj($j),'onclick'=>sj($j)];
 $bt=divb(checkbox_j('chk'.$rid,'','template'));
 $bt.=editarea('inp'.$rid,$p,54,8,$js,1);

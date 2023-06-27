@@ -1,10 +1,14 @@
 <?php 
 class str{
 
-#strings
+static function acc(){
+$a=['À','Á','Â','Ã','Ä','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ñ','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý'];
+$b=['à','á','â','ã','ä','ç','è','é','ê','ë','ì','í','î','ï','ñ','ò','ó','ô','õ','ö','ù','ú','û','ü','ý'];
+return [$a,$b];}
+
 static function eradic_acc($d){
 $a=['À','Á','Â','Ã','Ä','Å','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý','à','á','â','ã','ä','å','ç','è','é','ê','ë','ì','í','î','ï','ð','ò','ó','ô','õ','ö','ù','ú','û','ü','ý','ÿ'];
-$b=['A','A','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y'];	
+$b=['A','A','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y'];
 return str_replace($a,$b,$d);}
 
 static function normalize_alpha($d,$o=''){if(!$d)return;
@@ -142,7 +146,7 @@ return mb_substr($d,0,$kmx);}
 
 #repairs
 static function stripconn($d){
-return codeline::parse($d,'','delconn');}
+return conb::parse($d,'','delconn');}
 
 static function clean_html($d,$o=''){
 //$d=hed($d);//create infinite loop
@@ -249,18 +253,26 @@ static function del_n($d,$s=' '){$d=self::clean_prespace($d); if(!$d)return '';
 $ret=str_replace(["\r","\n",'<br>','<br/>','<br />','</br>'],$s,$d);
 return preg_replace('/( ){2,}/',' ',$ret);}
 
-static function mb_ucfirst($d,$e='utf-8'){
+static function mb_ucfirst($d,$e='utf-8'){//unused
 return mb_strtoupper(mb_substr($d,0,1,$e),$e).mb_strtolower(mb_substr($d,1,mb_strlen($d,$e),$e));}
 
-static function lowercase($d){if(!$d)return;
-$nb=mb_strlen($d); $y=0; $ret='';
-$a=['À','Á','Â','Ã','Ä','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ñ','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý'];
-$b=['à','á','â','ã','ä','ç','è','é','ê','ë','ì','í','î','ï','ñ','ò','ó','ô','õ','ö','ù','ú','û','ü','ý'];
-for($i=0;$i<$nb;$i++){$k=mb_substr($d,$i,1);
-	if($y==0)$ret.=$k;
-	else{$k=mb_strtolower($k,ses::$enc); $ret.=$k;} //$k=str_replace($a,$b,$k);
-	if($k==' ' or $k=="&nbsp;" or $k=="'" or $k=='"' or $k=='«' or $k=='-' or $k=='[' or $k=='(')$y=0; else $y=1;}
+static function mb_uclet($d,$e='utf-8'){//unused
+return mb_substr($d,0,1,$e).mb_strtolower(mb_substr($d,1,mb_strlen($d,$e),$e));}
+
+static function lowcase($d){[$a,$b]=self::acc();
+return str_replace($a,$b,$d);}
+
+static function letcase($d){//unused
+$n=mb_strlen($d); $ret=''; $y=1; $o=0;
+for($i=0;$i<$n;$i++){$c=mb_substr($d,$i,1);
+	if(!$y)$c=mb_strtolower($c); $ret.=$c;//if($i>0)$o=1; 
+	if($c==' ' or $c=="&nbsp;" or $c=="'" or $c=='"' or $c=='«' or $c=='-' or $c=='[' or $c=='(')$y=1; else $y=0;}
 return $ret;}
+
+static function lowercase($d){if(!$d)return;
+$r=explode(' ',$d); $rt=[];
+foreach($r as $k=>$v)$rt[]=self::letcase($v);
+return join(' ',$rt);}
 
 static function clean_lines($d,$o=''){if(!$d)return '';
 if($o)$d=self::clean_whitespaces($d);

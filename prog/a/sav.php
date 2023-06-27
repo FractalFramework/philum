@@ -4,7 +4,7 @@ static $r=[];
 static $er='';
 
 static function save_art(){$frm=ses('frm');
-$qb=ses('qb'); $USE=ses('USE'); self::$er=''; $lg=''; $mail=''; $nid='';
+$qb=ses('qb'); $USE=ses('USE'); self::$er=''; $lg=ses('lng'); $mail=''; $nid='';
 if(!$frm)$frm='public'; if(!auth(2))return;
 $rc=['suj','msg','name','mail','ib','pdat','pub','sub'];
 [$suj,$d,$name,$mail,$ib,$pdat,$pub,$sub]=vals(self::$r,$rc);
@@ -20,14 +20,14 @@ if(empty($suj))$suj='forbidden title';
 if(empty($d))self::$er='miss::msg;';//alert('msg forbidden'); 
 if(!self::$er){$d=html_entity_decode($d);
 	$sz=mb_strlen($d); $img=''; $thm=str::hardurl($suj);//if(rstr(38))
-	if(rstr(129))$lg=trans::detect($suj); if($lg==ses('lng'))$lg='';
+	if(rstr(129))$lg=trans::detect($suj); //if($lg==ses('lng'))$lg='';
 	$rw=[$ib,$name,$mail,$dt,$qb,$frm,$suj,$re,0,$img,$thm,$sz,$lg];
 	$nid=sqlsav('qda',$rw,0); if($nid)$nib=sql::savi('qdm',[$nid,$d],0);
 	if($nid && $nib!=$nid)transart::repair($id);}
 vacses($urlsrc,'u','x');
 if($nid){$rc=[$dt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$urlsrc,$ib,$re,$lg];
-	codeline::parse($d,$nid,'savimg');
-	if(rstr(147))codeline::png2jpg($nid);
+	conb::parse($d,$nid,'savimg');
+	if(rstr(147))conb::png2jpg($nid);
 	$rc[3]=self::orderim($nid);
 	ma::cacherow($nid,$rc);
 	msql::modif('',nod('cache'),$rc,'one','',$nid);
@@ -40,14 +40,14 @@ static function saveart_url($u){$cat=vacses($u,'c'); if(!auth(4))return;
 $qda=db('qda'); $qdm=db('qdm'); $qb=$name=ses('qb'); 
 $dt=ses('dayx'); $frm=$cat?$cat:'public'; $re=rstr(11)?1:0;
 ses::$urlsrc=$u; [$suj,$d]=conv::vacuum($u,'');
-$sz=mb_strlen($d); $ib='0'; $img=''; $lg=''; $lu=0;
+$sz=mb_strlen($d); $ib='0'; $img=''; $lg=ses('lng'); $lu=0;
 $thm=str::hardurl($suj);//if(rstr(38))
 $rw=[$ib,$name,$u,$dt,$qb,$frm,$suj,$re,$lu,$img,$thm,$sz,$lg];
 $nid=sqlsav('qda',$rw); if($nid)sql::savi('qdm',[$nid,$d]);
 if($nid){vacses($u,'b','x');
-	$d=codeline::parse($d,$nid,'savimg');
+	$d=conb::parse($d,$nid,'savimg');
 	$img=self::orderim($nid);
-	$rc=[$dt,$frm,$suj,$img,$qb,$thm,$lu,$name,$sz,$u,$ib,$re,$lg];//stripslashes
+	$rc=[$dt,$frm,$suj,$img,$qb,$thm,$lu,$name,$sz,$u,$ib,$re,$lg];
 	ma::cacherow($nid,$rc);
 	msql::modif('',nod('last'),[$nid,$dt],'one','',1);}
 $_SESSION['daya']=ses('dayx');
@@ -61,9 +61,9 @@ static function modif_art($id,$d){
 $qdm=db('qdm'); if(!auth(3))return;
 if(rstr(154))self::backart($id);
 if($id)sqlup('qdm',['msg'=>$d],$id);
-if(rstr(147))codeline::png2jpg($id);
+if(rstr(147))conb::png2jpg($id);
 $sz=mb_strlen($d??''); sql::upd('qda',['host'=>$sz],$id);
-codeline::parse($d,$id,'savimg'); self::orderim($id); ma::cacheart($id);
+conb::parse($d,$id,'savimg'); self::orderim($id); ma::cacheart($id);
 return stripslashes($d??'');}
 
 static function editart($id,$cont,$prm){$d=$prm[0]??'';
@@ -164,13 +164,13 @@ return implode('/',$rt);}
 static function reimportim($id,$o=''){
 $u=sql('mail','qda','v',$id); ses::$urlsrc=$u;
 [$t,$d]=conv::vacuum($u,''); vacses($u,'t','x'); //eco($d);
-$d=codeline::parse($d,$id,'importim');
+$d=conb::parse($d,$id,'importim');
 if($o)return art::playd($id,$o,'');
 return $d;}
 
 static function recenseim($id,$imx=''){
 $msg=sql('msg','qdm','v',$id); $r=[]; $rb=[]; $re=[]; $ret='';
-$ims=codeline::parse($msg,$id,'extractimg'); //echo $ims.'--';
+$ims=conb::parse($msg,$id,'extractimg'); //echo $ims.'--';
 if($ims){$ra=explode('/',$ims); foreach($ra as $k=>$v)$re[$v]=$v;}
 if(!$imx)$imx=sql('img','qda','v',$id); if($imx)$r=explode('/',$imx);
 if(isset($r[0]) &&  is_numeric($r[0]))unset($r[0]);
@@ -248,10 +248,10 @@ return ma::read_msg($id,$prw);}
 #vacuum
 static function find_vaccum($n){$i=0; foreach($_SESSION['vac'] as $k=>$v){$i++; if($i==$n)return $k;}}
 static function newartcatset($n,$d){$u=self::find_vaccum($n); $_SESSION['vac'][$u]['c']=$d;}
-static function newartparent(){$r=ma::readcachecol(10); $rb=[];
-if(isset($r))foreach($r as $k=>$v)if($v!='/')$rb[$v]=radd($rb,$v); if($rb)arsort($rb);
-if(isset($rb))foreach($rb as $k=>$v)$ret[$k]='('.$v.') '.ma::suj_of_id($k);
-return $ret;}
+static function newartparent(){$r=ma::readcachecol(10); $rb=[]; $rt=[];
+if($r)foreach($r as $k=>$v)if($v && $v!='/')$rb[$v]=radd($rb,$v); if($rb)arsort($rb);
+if($rb)foreach($rb as $k=>$v)$rt[$k]='('.$v.') '.ma::suj_of_id($k);
+return $rt;}
 
 static function saveiec($j,$cat,$rid,$cid='',$v='',$x='',$c='',$suj=''){
 $p=[$j,$cat,$rid,$cid,$x,ajx($suj)]; $h=$rid?hidden($rid,''):'';

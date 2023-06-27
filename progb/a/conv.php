@@ -6,12 +6,12 @@ static function ptvars(){return 'line:1|line:last|line:title|del:|linewith:|bold
 static function post_treat($v,$t,$p){$todo=explode('|',$p); $ret='';//admin/editmsql
 foreach($todo as $ka=>$va){[$act,$pb]=split_one(':',$va,0);//global
 	if($act=='deltables' && $v)$v=mc::del_tables($v);
-	elseif($act=='delblocks' && $v)$v=codeline::parse($v,':q','correct');
-	elseif($act=='stripconn' && $v)$v=codeline::parse($v,'stripconn','correct');
-	elseif($act=='striplink' && $v)$v=codeline::parse($v,'striplink','correct');
-	elseif($act=='delconn' && $pb && $v)$v=codeline::parse($v,':'.$pb,'correct');
-	elseif($act=='replconn' && $pb && $v)$v=codeline::parse($v,'replconn-'.$pb,'correct');
-	//elseif($act=='png2jpg' && $v)$v=codeline::parse($v,'png2jpg','correct');//need id
+	elseif($act=='delblocks' && $v)$v=conb::parse($v,':q','correct');
+	elseif($act=='stripconn' && $v)$v=conb::parse($v,'stripconn','correct');
+	elseif($act=='striplink' && $v)$v=conb::parse($v,'striplink','correct');
+	elseif($act=='delconn' && $pb && $v)$v=conb::parse($v,':'.$pb,'correct');
+	elseif($act=='replconn' && $pb && $v)$v=conb::parse($v,'replconn-'.$pb,'correct');
+	//elseif($act=='png2jpg' && $v)$v=conb::parse($v,'png2jpg','correct');//need id
 	elseif($act=='cleanmail' && $v)$v=str::cleanmail($v);
 	//elseif($act=='cleanmini' && $v)$v=cleanmini($v);//todo
 	elseif($act=='delqmark' && $v)$v=mc::del_qmark($v);
@@ -59,7 +59,7 @@ if($rw)msql::modif('',(rstr(18)?'public':ses('qb')).'_defcons',$rw,'row',[],$fb)
 return $rw;}
 
 static function vacuum_json($d){
-$r=json_decode($d,true); $er=json_error(); if($er)return $er;
+$r=json_decode($d,true); $er=json_error(); if($er)return er($er);
 $ti=$r['title']??''; $tx=$r['content']??'';
 $tx=self::call($tx);
 return [$ti,$tx,''];}

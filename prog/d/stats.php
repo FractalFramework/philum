@@ -169,13 +169,17 @@ return tabler($ret,'txtx','txtx');}
 static function js($p,$o){$o=$o?$o:100;
 $p=sqb('id','qdv','v','order by id desc limit 1');
 $j=sj('sts_statsee,call___'.$p.'_'.$o);
-return head::jscode(temporize('sttimer',$j,3000));}
+$js=head::temporize('sttimer',$j,3000);
+head::add('jscode',$js);
+return head::jscode($js);}
 
 static function statsee($p,$o){
 $rid='sts'; $o=$o?$o:100;
 $p=sqb('id','qdv','v','order by id desc limit 1');
 $j=sj($rid.'_statsee,call___'.$p.'_'.$o);
-head::add('jscode',temporize('sttimer',$j,3000));
+$js=head::temporize('sttimer',$j,3000);
+//echo head::jscode($js);
+head::add('jscode',$js);
 return divd($rid,self::call($p,$o));}
 
 //plug

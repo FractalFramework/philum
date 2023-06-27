@@ -21,7 +21,7 @@ else if($v=='nbsp')return '&#9141;'; //if($v=='--')return '&#9188;';
 return isset($rp[$v])?picto($rp[$v],'16'):$v;}
 
 static function props($id){$ret='';
-$r=['html','arts','media','tools','filters','del','backup','ascii','pictos','oomo'];//,'disk','msql','codeline'
+$r=['html','arts','media','tools','filters','del','backup','ascii','pictos','oomo'];//,'disk','msql','conb'
 foreach($r as $k=>$v)$ret.=togbub('mc,navs',$v.'_'.$id,$v);
 $ret.=lj('','popup_mc,navs___disk_','disk');
 //$r=['icons','glyphs']; foreach($r as $k=>$v)$ret.=bubble('','mc,navs',$v.'_'.$id,$v);

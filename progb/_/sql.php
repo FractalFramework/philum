@@ -95,7 +95,7 @@ if($q)foreach($q as $k=>$v){
 	elseif($c1=='>')$rb[]=$k1.'>'.self::qres($v);
 	elseif($c1=='<')$rb[]=$k1.'<'.self::qres($v);
 	elseif($c1=='%')$rb[]=$k1.' like "%'.self::qres($v).'%"';
-	elseif($c1=='&')$rb[]=$k1.' between "'.$v[0].'" and "'.$v[1].'"';
+	elseif($c1=='&')$rb[]=$k1.' between ("'.$v[0].'" and "'.$v[1].'")';
 	elseif($c1=='(')$rb[]=$k1.' in ('.implode(',',self::atmr($v)).')';
 	elseif($c1==')')$rb[]=$k1.' not in ('.implode(',',self::atmr($v)).')';
 	elseif($c1=='#')$rb[]='date_format('.$k1.',"%y%m%d")='.self::qres($v);

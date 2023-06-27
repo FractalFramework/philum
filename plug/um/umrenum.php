@@ -21,7 +21,7 @@ return sql::call($sql,'','');}
 static function build($p,$o,$ob=''){
 //require_once('plug/tiers/Twitter.php'); //timelang();
 //$r=sql('id,day,suj,mail','qda','','frm="'.$p.'" order by day ASC');// and re>"0"
-$r=self::req_arts_yb($p); $rc=[]; //pr($r);
+$r=self::req_arts_yb($p); $rc=[]; $d=''; $nm=''; $newtit=''; $newtit2='';
 if($p=='Oaxiiboo 6'){$d='O6'; $nm='oaxiiboo6';}
 elseif($p=='Oolga Waam'){$d='OW'; $nm='olga_waam';}
 elseif($p=='Oomo Toa'){$d='OT'; $nm='oomo_toa';}
@@ -36,7 +36,7 @@ if($r)foreach($r as $k=>$v){
 	//$id=$v[0]; $day=$v[1]; $suj=$v[2]; $lk=$v[3]; $msg=$v[4];
 	[$id,$day,$suj,$lk,$msg]=arr($v,5);
 	//$msg=sql('msg','qdm','v','id='.$id);
-	$suj=str_replace('@'.$nm.' ','',$suj);
+	$suj=$suj?str_replace('@'.$nm.' ','',$suj):'';
 	$newtit=$suj;
 	//date from twitter
 	//if(!$_SESSION['twtime'][$id])$_SESSION['twtime'][$id]=self::twit_time($v[2]);
@@ -86,7 +86,7 @@ if($r)foreach($r as $k=>$v){
 		if(strpos($suj,'::')){[$num,$tit]=explode('::',$suj);
 			$newtit='['.strtoupper(trim($num)).'] '.trim($tit);}
 		else $newtit=$suj;}*/
-	else{[$num,$tit]=explode(']',$suj); $newtit=strtoupper(trim($num)).'] '.trim($tit);}
+	else{[$num,$tit]=expl(']',$suj,2); $newtit=strtoupper(trim($num)).'] '.trim($tit);}
 	$rc[$id]=$newtit;
 	//if(strpos($suj,'@')===false){}
 	#sql::upd('qda',['suj'=>$newtit],$id);

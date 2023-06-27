@@ -2,7 +2,6 @@
 class sqb{
 static $qr;
 static $sq;
-static $er;
 static $r;
 
 function __construct(){if(!self::$qr)self::dbq();}
@@ -16,8 +15,8 @@ static function rq(){if(!self::$qr)self::dbq(); return self::$qr;}
 static function qrr($r){return $r->fetchAll(PDO::FETCH_BOTH);}
 static function qra($r){return $r->fetchAll(PDO::FETCH_ASSOC);}
 static function qrw($r){return $r->fetchAll(PDO::FETCH_NUM);}
-static function qr($sql,$z=''){$qr=self::rq(); if($z)self::$er[]=$sql;
-try{return $qr->query($sql);}catch(Exception $e){self::$er[]=$e->getMessage();}}
+static function qr($sql,$z=''){$qr=self::rq(); if($z)er($sql);
+try{return $qr->query($sql);}catch(Exception $e){er($e->getMessage());}}
 
 static function format($r,$p){
 $rt=[];  if($p=='v')$rt='';
@@ -44,18 +43,18 @@ foreach($r as $k=>$v)switch($p){
 return $rt;}
 
 static function where($r){$rb=[]; $rt=[]; $w='';
-if(is_numeric($r))$r=['id'=>$r];
-foreach($r as $k=>$v){
-	$c=substr($k,0,1); $kb=substr($k,1);
+if(is_numeric($r))$r=['id'=>$r]; $i=0;
+foreach($r as $k=>$v){$i++;
+	$c=substr($k,0,1); $kb=substr($k,1); $kc=$kb.$i;
 	if($k=='_order')$w=' order by '.$v;
 	elseif($k=='_group')$w.=' group by '.$v;
 	elseif($k=='_limit')$w.=' limit '.$v;
-	elseif($c=='<'){$rb[]=$kb.'<:'.$kb; $rt[$kb]=$v;}
-	elseif($c=='>'){$rb[]=$kb.'>:'.$kb; $rt[$kb]=$v;}
-	elseif($c=='!'){$rb[]=$kb.'!=:'.$kb; $rt[$kb]=$v;}
-	elseif($c=='%'){$rb[]=$kb.' like :'.$kb.''; $rt[$kb]='%'.$v.'%';}
-	elseif($c=='-'){$rb[]='substring('.$kb.',1,1)!=:'.$kb.''; $rt[$kb]=$v;}
-	elseif($c=='&'){$rb[]=$kb.' between :'.$kb.'0 and :'.$kb.'1'; $rt[$kb.'0']=$v[0]; $rt[$kb.'1']=$v[1];}
+	elseif($c=='<'){$rb[]=$kb.'<:'.$kc; $rt[$kc]=$v;}
+	elseif($c=='>'){$rb[]=$kb.'>:'.$kc; $rt[$kc]=$v;}
+	elseif($c=='!'){$rb[]=$kb.'!=:'.$kc; $rt[$kc]=$v;}
+	elseif($c=='%'){$rb[]=$kb.' like :'.$kc; $rt[$kc]='%'.$v.'%';}
+	elseif($c=='-'){$rb[]='substring('.$kb.',1,1)!=:'.$kc.''; $rt[$kc]=$v;}
+	elseif($c=='&'){$rb[]=$kb.' between :'.$kc.' and :'.$kc; $rt[$kc]=$v[0]; $rt[$kc]=$v[1];}
 	elseif($c=='('){foreach($v as $ka=>$va)$rta['in'.$ka]=$va; $rt+=$rta;
 		$rb[]=$kb.' in (:'.implode(',:',array_keys($rta)).')';}
 	elseif($c==')'){foreach($v as $ka=>$va)$rta['nin'.$ka]=$va; $rt+=$rta;
@@ -79,12 +78,16 @@ return $rt;}
 static function bind($stmt,$r){
 foreach($r as $k=>$v)$stmt->bindValue(':'.$k,$v,is_numeric($v)?PDO::PARAM_INT:PDO::PARAM_STR);}
 
+static function see($sql,$r){
+foreach($r as $k=>$v)$sql=str_replace(':'.$k,'"'.$v.'"',$sql);
+return $sql;}
+
 static function prep($sql,$r,$z=''){
-$qr=self::rq(); if($z)self::$er[]=$sql;
+$qr=self::rq(); if($z)echo self::see($sql,$r);
 $stmt=$qr->prepare($sql);
 self::bind($stmt,$r);
 $ok=$stmt->execute();
-//try{}catch(Exception $e){self::$er[]=$e->getMessage();}
+//try{}catch(Exception $e){er($e->getMessage());}
 return $stmt;}
 
 static function read($d,$b,$p,$r,$z=''){
@@ -149,7 +152,6 @@ static function sqdrop($b){return 'drop table '.$b;}
 static function sqtrunc($b){return 'truncate table '.$b;}
 static function sqalter($b,$n){return 'alter table '.$b.' auto_increment='.$n;}
 static function sqshow($b){return 'show tables like "'.$b.'"';}
-static function er(){return rdiv(self::$er);}
 
 }
 ?>

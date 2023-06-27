@@ -10,7 +10,7 @@ static function list_tags(){//and cat="tag"
 return ma::artags('idart,tag','','kk');}
 
 static function msg($msg){
-$msg=codeline::parse($msg,'','sconn'); $msg=embed_p($msg); $msg=nl2br($msg);
+$msg=conb::parse($msg,'','sconn'); $msg=embed_p($msg); $msg=nl2br($msg);
 return $msg;}
 
 static function template(){return '

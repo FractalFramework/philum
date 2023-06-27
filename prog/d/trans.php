@@ -133,7 +133,7 @@ if($um)return self::callum($ref,$setlg.'-1',$edt);
 return self::call($ref,$setlg.'-1',$edt);}
 
 static function clean_tw($d,$o=''){
-$d=codeline::parse($d,'','striptw');
+$d=conb::parse($d,'','striptw');
 $d=str_replace("\n",' ## ',$d); if(!$d)return;
 $r=explode(' ',$d);
 if($r)foreach($r as $k=>$v){

@@ -1,6 +1,6 @@
 <?php //umrec
 class umrec{
-static $cats=['O6'=>'Oaxiiboo 6','OW'=>'Oolga Waam','OT'=>'Oomo Toa','OAY'=>'Oyagaa Ayoo Yissaa','312oay'=>'312oay','UM'=>'Unio Mentalis'];
+static $cats=['O6'=>'Oaxiiboo 6','OW'=>'Oolga Waam','OT'=>'Oomo Toa','OAY'=>'Oyagaa Ayoo Yissaa','312oay'=>'312oay','UM'=>'Unio_Mentalis'];
 
 static function cats($p){$r=self::$cats;
 return $p=='All'?implode('","',$r):$r[$p];}
@@ -219,10 +219,10 @@ if($r)foreach($r as $k=>$v){
 	elseif($o=='text')$ret.=self::text($rb);//umcom
 	//elseif($o=='brut')$ret.=art::mktmp($tmp,$rb);
 	//elseif($o=='brut')$ret.=self::brut($rb);
-	elseif($o=='brut'){$rb['suj']=strin($rb['suj'],'[',']'); $rc[]=$rb;}//codeline
+	elseif($o=='brut'){$rb['suj']=strin($rb['suj'],'[',']'); $rc[]=$rb;}
 	/*elseif($o=='brut'){//vue
-		$rb['tracks']=codeline::parse($rb['tracks'],'','sconn');
-		$rb['msg']=codeline::parse($rb['msg'],'','sconn'); $rc[]=$rb;}*/
+		$rb['tracks']=conb::parse($rb['tracks'],'','sconn');
+		$rb['msg']=conb::parse($rb['msg'],'','sconn'); $rc[]=$rb;}*/
 	elseif($o=='ebook')$rc[]=[$id,$day,$suj.' ('.($lg?$lg:'fr').')',self::brut($rb),$lg];
 	elseif($o=='table'){$t=tag('b',[],strin($rb['suj'],'[',']')); //pr($rb);
 		$trk=''; if($rb['author'])$trk=divb(tag('b',[],$rb['author']).' : '); $trk.=$rb['tracks']??'';
@@ -235,7 +235,7 @@ if($o=='array')pr($rb);
 elseif($o=='table')$ret=tabler($rc,'1','');
 //elseif($o=='text')$ret=conn::read($ret);
 //elseif($o=='brut')$ret=conn::read($ret,'','','');
-elseif($o=='brut')$ret=codeline::call($tmp,$rc);
+elseif($o=='brut')$ret=conb::call($tmp,$rc);
 //elseif($o=='brut')$ret=vue::call($tmp,$rc);
 elseif($o=='tags'){
 	if($rc)foreach($rc as $k=>$v){$rd=$v['tagr']??[];

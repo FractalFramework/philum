@@ -82,7 +82,7 @@ if(!$nm){$q=twit::read($p); $r=twit::datas($q); $nm=$r['screen_name'];}
 return $nm;}
 
 static function artopt($id){return tabler(art::metart($id));}
-static function png2jpg($id,$m){codeline::png2jpg($id,1); echo ses::adm('alert');
+static function png2jpg($id,$m){conb::png2jpg($id,1); echo ses::adm('alert');
 return art::playd($id,$m);}
 
 static function addfoot($id,$m){
@@ -220,7 +220,7 @@ return json_encode($r);}
 
 static function addrelated($id,$o,$prm=[]){$rt=[];
 $d=sql('msg','qdm','v',$id); $p=$prm[0]??''; $rb=[]; if($p)$rb[]=$p;
-$b=codeline::parse($d,'','extractlnk'); $r=explode('|',substr($b,0,-1));
+$b=conb::parse($d,'','extractlnk'); $r=explode('|',substr($b,0,-1));
 $rd=sqb::read('id','art','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
 //$rd=sql::read('id','qda','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
 return implode(' ',$rb);}

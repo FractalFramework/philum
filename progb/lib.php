@@ -199,16 +199,17 @@ static function link($d,$v){return taga('link',['href'=>$v,'rel'=>$d])."\n";}
 static function temporize($name,$func,$p){$i=randid();
 return 'function '.$name.$i.'(){'.$func.' setTimeout(\''.$name.$i.'()\','.$p.');} '.$name.$i.'();';}
 static function relod($v){echo self::jscode('window.location="'.$v.'"');}
-static function build(){$r=self::$r; $rt=[]; //pr($r);
+static function build(){$r=self::$r; $rt=[];
 if($r)foreach($r as $k=>$v){$va=current($v); $ka=key($v); $rt[]=match($ka){
-'css'=>self::css($va[0]),'js'=>self::js($va[0]),
-'csslink'=>self::csslink($va),'jslink'=>self::jslink($va),'csscode'=>self::csscode($va),'jscode'=>self::jscode($va),
-'meta'=>self::meta($va[0],$va[1],$va[2]),'link'=>self::link($va[0],$va[1]),
+'css'=>self::css($va),'js'=>self::js($va),
+'csslink'=>self::csslink($va),'jslink'=>self::jslink($va),
+'csscode'=>self::csscode($va),'jscode'=>self::jscode($va),
 'name'=>self::meta('name',$va[0],$va[1]),'code'=>$va."\n",
+'meta'=>self::meta($va[0],$va[1],$va[2]),'link'=>self::link($va[0],$va[1]),
 'tagb'=>tagb($va[0],$va[1])."\n",'taga'=>taga(key($va),current($va))."\n",
 default=>self::meta($ka,$va[0],$va[1])};}
 return implode('',$rt);}
-static function html($lg='fr'){return '<!DOCTYPE html><html lang="'.$lg.'" xml:lang="'.$lg.'">';}
+static function html($lg='fr'){return '<!DOCTYPE html>'."\n".'<html lang="'.$lg.'" xml:lang="'.$lg.'">';}
 static function generate($lg='fr'){return self::html($lg).tagb('head',self::build());}
 static function page($d,$lg){return self::generate($lg).tagb('body',$d).'</html>';}
 static function call($r=[]){if($r)self::$r=array_merge($r,self::$r); return self::build();}
@@ -310,7 +311,7 @@ curl_setopt($c,CURLOPT_SSL_VERIFYPEER,0); curl_setopt($c,CURLOPT_SSL_VERIFYHOST,
 curl_setopt($c,CURLOPT_REFERER,host()); curl_setopt($c,CURLOPT_CONNECTTIMEOUT,2);
 curl_setopt($c,CURLOPT_ENCODING,'UTF-8'); $enc=curl_getinfo($c,CURLINFO_CONTENT_TYPE);
 $ret=curl_exec($c); if($ret===false)$er=curl_errno($c);
-curl_close($c); if(!$er)return $ret;}
+curl_close($c); if($er)er($er); else return $ret;}
 
 #dom
 function dom($d){
@@ -505,9 +506,9 @@ for($i=0;$i<5;$i++)if(mb_strpos($d,$r[$i])!==false)return $r[$i];}
 function is_http($d){if(substr($d,0,4)=='http' or substr($d,0,2)=='//')return true;}
 
 //vars
-function opt($d,$s,$n=2){$r=explode($s,$d); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}//old
+function expk($s,$d){[$k,$v]=explode($s,$d); return [$k=>$v];}
 function expl($s,$d,$n=2){$r=explode($s,$d); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
-function impl($r,$s=''){return implode($s,$r);}
+function opt($d,$s,$n=2){$r=explode($s,$d); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}//old
 function arr($r,$n=''){$rb=[]; $n=$n?$n:count($r); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
 function arb($r,$n=''){$rb=array_values($r); if($n)$rb=array_pad($rb,$n,''); return $rb;}
 function arv($r,$ra){$rt=[]; foreach($r as $k=>$v)$rt[]=$v?$v:$ra[$k]; return $rt;}
@@ -772,7 +773,7 @@ $ret=textarea('',str::htmlentities_b($d),44,12); if($o)return $ret; elseif(auth(
 function verbose($r){echo implode(br(),$r).hr();}
 function funcs(){pr(get_defined_functions());}
 function trace(){pr(debug_backtrace());}
-function er($d){ses::$er[]=$d;}
+function er($d){return ses::$er[]=$d;}
 
 //debugdeclare(ticks=1); $calls=[]; register_tick_function('tracer');
 function tracer(){global $calls; $calls[]=array_shift(debug_backtrace());}

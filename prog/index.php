@@ -34,16 +34,16 @@ $rh[]=['meta'=>['name','viewport','user-scalable=no, initial-scale=1, minimum-sc
 $rh[]=['meta'=>['name','apple-mobile-web-app-capable','yes']];
 $rh[]=['meta'=>['name','mobile-web-app-capable','yes']];
 $rh[]=['meta'=>['name','google-site-verification',prms('goog')]];
-$rh[]=['css'=>['_global']];
-$rh[]=['css'=>['_pictos']];
-$rh[]=['css'=>['_oomo']];
-$rh[]=['css'=>[$meta['css']]];
+$rh[]=['css'=>'_global'];
+$rh[]=['css'=>'_pictos'];
+$rh[]=['css'=>'_oomo'];
+$rh[]=['css'=>$meta['css']];
 $rh[]=['jscode'=>'read="'.$read.'"; flow="'.$flow.'";
 fixpop="'.ses('mobile').'"; fulpop="1"; var design="'.$meta['css'].'";
 state='.json_encode(ses::$st).';'];
-$rh[]=['js'=>['lib']];
-$rh[]=['js'=>['ajx']];
-$rh[]=['js'=>['core']];
+$rh[]=['js'=>'lib'];
+$rh[]=['js'=>'ajx'];
+$rh[]=['js'=>'core'];
 /*if(ses('dev'){
 $rh[]=['meta'=>['http-equiv','cache-control','no-cache']];
 $rh[]=['meta'=>['http-equiv','expires','0']];

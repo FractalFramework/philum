@@ -344,7 +344,7 @@ $rb=twit::render_usrs($r); $ret=tabler($rb);
 return divc('scroll',$ret).msqbt('',$nd).$csv;}
 
 //:thumb
-static function thumb_d($im,$sz,$id){//web,vue,codeline
+static function thumb_d($im,$sz,$id){//web,vue,conb
 [$w,$h]=opt($sz,'/'); if(!$w)$w=cw();
 if(substr($im,0,4)=='http')$imn=ses('qb').'_'.$id.'_'.substr(md5($sz),0,6).xt($im);
 elseif(strpos($im,'/')!==false)$imn=str_replace('/','',$im); else $imn=$im;
@@ -354,7 +354,7 @@ if(is_file($im) or substr($im,0,4)=='http'){$lmt='';//$_SESSION['rstr'][16];
 	return image($imb,$w,$h);}
 else return picto('img',48);}
 
-static function mini_d($da,$id,$nl){//im|w/h//conn_thumb//codeline
+static function mini_d($da,$id,$nl){//im|w/h//conn_thumb//conb
 [$v,$p]=split_one('|',$da,1); $img=self::thumb_d($v,$p,$id);
 if($nl)return image(goodroot($v),cw(),'');
 else return self::popim($v,$img,$id);}

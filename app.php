@@ -1,5 +1,4 @@
 <?php
-#philum/app
 session_start();
 ini_set('display_errors',1); error_reporting(E_ALL);
 $b=$_SESSION['dev']??($_SESSION['dev']='');
@@ -15,26 +14,25 @@ RewriteRule ^app/([^/]+)$ /app.php?a=$1 [L]*/
 
 function load_app($a,$p,$o){$ret='';
 if(method_exists($a,'home')){$ret=$a::home($p,$o);
-	//if(method_exists($a,'css'))head::add('csslink',$a::css());
-	//if(method_exists($a,'js'))head::add('jslink',$a::js());
-}
+	if(method_exists($a,'css'))head::add('csslink',$a::css());
+	if(method_exists($a,'js'))head::add('jslink',$a::js());}
 return $ret;}
 
 #--render
-if(rstr(22))boot::block_crawls();//crawl
+if(rstr(22))boot::block_crawls();
 $_SESSION['onload']=''; $content='';
-$a=get('a'); $p=get('p'); $o=get('o'); $enc=ses::$enc; $cst=ses('dev')?'?'.randid():'';
+$a=get('a'); $p=get('p'); $o=get('o'); $enc=ses::$enc; head::$rid='?'.randid();//if(ses('dev')
 if(substr($a,-1)=='/')$a=substr($a,0,-1); if(substr($p,-1)=='/')$p=substr($p,0,-1);
-head::add('tag',['title',$a?$a:'plugin']);
+head::add('tag',['title',$a?$a:'App']);
 head::add('meta',['http-equiv','Content-Type','text/html; charset='.$enc]);
-head::add('link',['shortcut icon','/favicon.ico']);//uicon('copy_16','picol/16','/')
-//head::add('code','<base'.atb('href',$host).' />');
-head::add('taga',['base'=>['href'=>$host]]];
+head::add('link',['shortcut icon','/favicon.ico']);
+//head::add('code','<base'.atb('href',host()).' />');
+head::add('taga',['base'=>['href'=>host()]]);
 head::add('meta',['name','viewport','user-scalable=yes, initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width','yes']);
 head::add('meta',['name','apple-mobile-web-app-capable','yes']);
 head::add('meta',['name','mobile-web-app-capable','yes']);
 head::add('meta',['name','generator','philum_'.ses('philum')]);
-head::add('csslink','/css/_global.css'.$cst);
+head::add('css','_global');
 head::add('csslink','/css/_pictos.css');
 head::add('csslink','/css/_glyphs.css');
 head::add('csslink','/css/_ascii.css');
@@ -42,12 +40,12 @@ head::add('csslink','/css/_oomo.css');
 //head::add('csslink','/css/_admin.css');
 //head::add('csslink','/css/_fa.css');
 //head::add('csslink','/css/_classic.css');
-if($_SESSION['prmb'][5])$nod=nod('auto');
+if(prmb(5))$nod=nod('auto');
 else $nod=ses('qb').'_design_'.ses('prmd');
-head::add('csslink','/css/'.boot::define_design().'.css'.$cst);
-head::add('jslink','/progb/j/lib.js'.$cst);
-head::add('jslink','/progb/j/ajx.js'.$cst);
-head::add('jslink','/progb/j/core.js'.$cst);//core
+head::add('css',boot::define_design());
+head::add('js','lib');
+head::add('js','ajx');
+head::add('js','core');
 head::add('jscode','flow="0"; enc="'.ses::$enc.'";');
 head::add('jscode',ses('jscode'));
 if($a)$content=load_app($a,$p,$o);
@@ -61,6 +59,6 @@ $ret.=divd('popup','');
 $ret.=divd('popw','');
 $ret.='</body>';
 eye();
-echo ($ret);//utf
+echo $ret;
 sqlclose();
 ?>

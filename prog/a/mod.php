@@ -105,10 +105,11 @@ case('articles'):$load=api::mod_arts_row($p); $obj=1; break;
 case('api'):$ret=api::call(str_replace(';',',',$p),$o); break;
 case('api_arts'):$api=api::mod_arts_rq($p,$t,$d,$o,$tp); break;
 case('api_mod'):$api=api::defaults_rq(explode_k($p,',',':')); break;//unused
+case('api_load'):$ra=explode_k($p,',',':'); $load=api::callr($ra); break;
 case('Page_titles'):$ret=self::page_titles($o); break;
 case('categories'):$ret=md::cat_mod_j($p,$o,$d,$tp); break;
 case('category'):if($p==1 && !get('frm'))$p='All'; $ret=api::arts($p,$o,$tp); break;
-case('catarts'):$p=$p!=1?$p:get('frm'); $t=$t!=$m?$t:$p; $load=ma::rqtcol('frm',$p); break;
+case('catarts'):if($p)$sq=['frm'=>$p]; if($o)$sq+=explode_k($o,',','='); $load=ma::rqtcol($sq); break;
 case('playconn'):$api=api::arts_rq('',''); $api['media']=$p; $api['nbyp']=10; $api['t']=$t; break;
 case('gallery'):$ret=md::gallery($p,$o); break;//old
 case('tracks'):$ret=md::trkarts($p,$t,$d,$o); break;//api::tracks($t)
@@ -122,7 +123,7 @@ case('related_by'):$load=md::related_by($p); break;
 case('parent_art'):$load=md::parent_art($p); break;
 case('child_arts'):$load=md::child_arts($p); break;
 case('prev_next'):$ret=md::prevnext_art($d,$o,''); break;
-case('priority_arts'):$load=ma::rqtcol('lu',$p); $t=$t!=$m?$t:$p; break;
+case('priority_arts'):$load=ma::rqtcol(['lu'=>$p]); $t=$t!=$m?$t:$p; break;
 case('recents'):$load=md::recents_arts($p,$o); $obj=1; break;
 case('read'):$ret=divc($o,ma::read_msg($p,3)); break;
 case('popart'):$ret=pop::btart($p); break;
@@ -161,9 +162,9 @@ case('clear'):$ret=divc('clear',''); break;
 case('connector'):if($t)$ret=self::title('',$t);
 	if($o=='article')$ret.=tagc('article','justy',conn::read2($p,'',1));
 	else $ret.=conn::read2($p,'',1); break;
-case('codeline'):if($p)$ret=codeline::parse($p,'','template'); break;
+case('conb'):if($p)$ret=conb::parse($p,'','template'); break;
 case('conn'):$ret=conn::connectors($p,$o,'',''); break;
-case('basic'):$ret=codeline::mod_basic($p,$o); break;
+case('basic'):$ret=cbasic::mod_basic($p,$o); break;
 //lin
 case('cats'):$lin=md::cat_mod($p,$o,$d); break;//x
 case('tags'):$t=lj('menus','popup_tags,home__3_'.$p.'_1',pictxt('tag',$t?$t:$p));
@@ -266,7 +267,7 @@ elseif($load)$ret=self::mod_load($load,$t,$d,$o,$obj,$prw,$tp,$id,$pp);//arts
 elseif($api)$ret=api::load($api);//api
 if(!$ret && !$lin && !$load && $p && $m){//user_mods
 	$func=msql::val('',nod('modules'),$m);
-	if($func && !is_array($func))$ret=codeline::cbasic($func,$p);}
+	if($func && !is_array($func))$ret=cbasic::read($func,$p);}
 if($ret){if($dv)return divc('mod',$ret); else return $ret;}}
 
 //['button','type','process','param','option','condition','root','icon','hide','private']
@@ -308,11 +309,11 @@ if($d=='read')foreach($load as $id=>$prw)$ret.=divc('justy',ma::read_msg($id,3))
 elseif($d=='articles')$ret=ma::output_arts($load,$prw,$tp);
 elseif($d=='viewer')$ret=md::art_viewer($load);
 elseif($d=='multi'){geta('flow',1); $nl=get('nl'); $i=0; foreach($load as $id=>$md){$i++;
-	if($i<$mx)$ret.=art::playb($id,$md,$tp,$nl,'');
-	else $ret.=divb('',$md,$id);}}
+	if($i<$mx)$ret.=art::playb($id,$md,$tp,$nl,''); else $ret.=divb('',$md,$id);}}
 elseif($d=='api')$ret=api::mod_call($load);
 elseif($d=='icons')$ret=desk::pane_icons($load,'icones').divc('clear','');
 elseif($d=='panel' && is_array($load))foreach($load as $k=>$v)$ret.=self::pane_art($k,$o,$tp,$pp);
+elseif($d=='lines')$ret=self::m_publist($load,$tp);
 elseif($load)$ret=self::m_pubart($load,$d,$o,$tp);
 if($o=='scroll')$ret=scroll($load,$ret,10);
 elseif($o=='cols')$ret=pop::columns($ret,240,'','');

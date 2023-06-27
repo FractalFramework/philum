@@ -17,7 +17,7 @@ $msg=self::msg($msg);
 //$msg=miniconn($msg);
 //$msg=str::embed_links($msg);
 //$msg=conn::read($msg,'','');
-$msg=codeline::parse($msg,'','sconn');
+$msg=conb::parse($msg,'','sconn');
 $msg=nl2br($msg);
 $ret[$v[0]]=array($d,lka($v[0],$dy),$msg,lka($v[3],picto('tw')));}
 return $ret;}

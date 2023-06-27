@@ -16,7 +16,7 @@ $o=is_numeric($o)?$o:10;
 $wh['nod']=ses('qb');//slowlog
 if($d=='auto')$wh['frm']=get('frm');
 elseif($d!='all' && $d!=1 && $d)$wh['frm']=$d;
-return sql('id','qda','k',$wh+['>=re('=>'1','_order'=>'id desc','_limit'=>$o]);}
+return sql('id','qda','k',$wh+['>=re('=>'1','_order'=>prmb(9),'_limit'=>$o]);}
 
 static function pub_art_b($id,$t,$o){
 [$dy,$frm,$suj,$amg]=ma::rqtart($id);
@@ -135,7 +135,7 @@ return $rt;}
 
 static function cluster_tags($id){//arts with tags from cluster from tags from current art :)
 $r=sql('idtag','qdta','rv',['idart'=>$id]); $rt=[];
-if($r)$rc=sql('word,count(idtag) as nb','qdtc','rv','idtag in ('.implode(',',$r).') group by word order by nb desc');
+if($r)$rc=sql('word,count(idtag) as nb','qdtc','rv','idtag in ('.implode(',',$r).') group by word order by id desc, nb desc limit 10000');
 if(isset($rc[0]))$r1=self::artsofcluster($rc[0]);
 if(isset($rc[1]))$r2=self::artsofcluster($rc[1]);
 if(isset($r1) && isset($r2)){foreach($r1 as $k=>$v)if(isset($r2[$k]))$r1[$k]+=$r2[$k]; arsort($r1);}
@@ -319,14 +319,14 @@ static function parent_art($id){if(!$id)$id=ses('read');
 return sql('ib','qda','k',['id'=>$id]);}
 
 static function same_title($id){if(!$id)$id=ses('read');
-return sql('id','qda','k',['suj'=>$id,'nod'=>ses('qb'),'!id'=>$id,'_order'=>'id desc']);}
+return sql('id','qda','k',['suj'=>$id,'nod'=>ses('qb'),'!id'=>$id,'_order'=>prmb(9)]);}
 
 static function call_context($cntx){$r=$_SESSION['mods']; $ret='';//context as module
 if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)if($va[7]!=1 && $va[3]==$cntx)$ret.=mod::build($va);
 return $ret;}
 
 static function see_also_rub($frm){
-return ma::rqtcol('frm',$frm);}
+return ma::rqtcol(['frm'=>$frm]);}
 
 static function see_also($r,$p,$d='',$o='',$tp=''){
 foreach($r as $kb=>$pb){$t=lk(htac(str::eradic_acc($p)).$kb,$kb);

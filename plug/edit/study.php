@@ -13,7 +13,7 @@ foreach($r as $k=>$v){
 		$j='stda'.$k.$i.'_study,sav_stda'.$k.$i.'__'.$p.'-'.$k.'-'.$i;
 		//$bt=lj('',$j,picto('save')).' ';.$bt
 		$t=isset($v[$i])?$v[$i]:'';//stripslashes
-		$t=codeline::parse($t,'','sconn'); //$t=htmlentities($t);
+		$t=conb::parse($t,'','sconn'); //$t=htmlentities($t);
 		$t=nl2br($t);
 		if($i==0)$v[$i]=divc('track',$t);
 		else $v[$i]=divarea('stda'.$k.$i,$t,'track',$s,sj($j),1);}
@@ -39,7 +39,7 @@ return self::read($rb,$p);}
 static function build($p,$o,$prm=[]){$id=prm[0]??'';
 $d=sql('msg','qdm','v','id='.$id);
 if(is_array($d))return 'no';
-$d=codeline::parse($d,'','delconn');
+$d=conb::parse($d,'','delconn');
 $ret=self::hash($d,$id);
 return $ret;}
 

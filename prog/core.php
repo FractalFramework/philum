@@ -1,6 +1,4 @@
-<?php //common
-
-//class core{static function com($a,$b,$c,$d){return $a($b,$c,$d);}}
+<?php 
 
 #store
 class ses{static $r=[]; static $s=[]; static $adm=[]; static $st=[]; static $er=[];
@@ -17,7 +15,7 @@ function popart($g1){eye(); $bt='';
 $j='popart__x_'.$g1; $tg=get('tg')=='pagup'?1:0;
 //$is=ma::is_public($g1); if(!$is)return divc('frame-red',helps('not_published'));//nms(170)// && !auth(6)
 //ses::$r['curdiv']='content'; boot::deductions($g1,'');
-if($g1=='last')$g1=ma::lastartid();
+if($g1=='last')$g1=ma::lastid('qda');
 if(rstr(155)){
 	//$ex=sql('ib','qdf','k',['ib'=>$id,'type'=>'dock','iq'=>ses('iq')]);
 	$bt=btj(picto('input'),atj('dock',$g1));}
@@ -25,7 +23,8 @@ if($tg)$bt.=lj('','popup_'.$j,pictxt('popup')); else $bt.=lj('','pagup_'.$j,pict
 if(rstr(144))$bt.=md::prevnext_art('arts',1,$g1,$tg);
 if(auth(6))$bt.=lj('','popup_meta,metall___'.$g1.'_3',picto('tag',20)).lj('','popup_meta,titedt___'.$g1.'_3',picto('meta',20)).lj('','popup_edit,call____'.$g1,picto('edit',20)).btj(picto('edit2',20),atj('editart',$g1));
 $ret=art::playb($g1,3); $t=ses::r('suj');//if(!$t)$t=ma::suj_of_id($g1);
-ses::$r['popt']=etc($t,70); ses::$r['popm']=$bt; ses::$r['popw']=prma('content');//+20 //ses::$r['popwm']=640;
+ses::$r['popt']=etc($t,70); ses::$r['popm']=$bt; //ses::$r['popw']=prma('content');//+20
+//ses::$r['popwm']=1;
 if(is_numeric($g1))ses::$r['id']=$g1;
 return $ret;}
 
@@ -75,7 +74,7 @@ function slctmnuj($r,$j,$vf,$sep='',$kv=''){$ret=''; $m=strpos($j,'VAR')?1:0;
 foreach($r as $k=>$v){if($kv=='v')$k=$v; elseif($kv=='k')$v=$k;
 	$nj=$m?str_replace('VAR',$k,$j):$j.ajx($k);
 	$ret.=lj(active($vf,$k),$nj,stripslashes($v)).$sep;}
-return btn('nbp',$ret);}
+return btn('menu',$ret);}
 
 function jump_btns($id,$v,$o=''){
 $r=is_array($v)?$v:explode('|',$v); $ret='';
@@ -293,7 +292,7 @@ function prmb($n){return $_SESSION['prmb'][$n]??'';}
 function nms($d){return $_SESSION['nms'][$d]??$d;}
 function mn($n){return $_SESSION['mn'][$n]??'';}
 function nmx($r){$rb=[]; foreach($r as $k=>$v)$rb[]=nms($v); return implode(' ',$rb);}
-function yesnoses($d){return $_SESSION[$d]=$_SESSION[$d]==1?0:1;}
+function yesnoses($d){return $_SESSION[$d]=($_SESSION[$d]??'')==1?0:1;}
 function nbof($n,$i){if(!$n)return nms(11)."&nbsp;".nms($i); else return $n.' '.($n>1?nms($i+1):nms($i));}
 function plurial($n,$i){return $n>1?nms($i+1):nms($i);}
 
@@ -308,7 +307,7 @@ function plurial($n,$i){return $n>1?nms($i+1):nms($i);}
 
 function define_ses(){
 ses::$s['auth']=ses('auth');
-ses::$s['rstr']=ses('rstr');
+//ses::$s['rstr']=ses('rstr');
 //ses::$s['prms']=ses('prms');
 //ses::$s['prma']=ses('prma');
 //ses::$s['prmb']=ses('prmb');
@@ -316,15 +315,6 @@ ses::$s['rstr']=ses('rstr');
 //ses::$s['mn']=ses('mn');
 //ses::$s['db']=ses('db');
 }
-
-/*function afc0($a,$m){if(!$m)$a='ajax';
-$r=method_exists('ath',$a)?ath::$a():[];
-$a=$r[$m]??ses('auth'); //if($a=='secure')return security();
-if(!auth($a))return 'no';}*/
-
-function afc($a,$m){if(!$m)$a='ajax';
-$r=ath::$r[$a]??[]; $a=$r[$m]??ses('auth');
-if(!auth($a))return 'no';}
 
 function security(){
 $ip=sql('id','qdu','v',['name'=>ses('qb')]);

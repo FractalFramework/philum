@@ -17,13 +17,13 @@ static function menus($r){$rt=[];
 if(isset($r['_']))return $r['_']; $n=count($r); if($r)$r=current($r);
 if(is_array($r))foreach($r as $k=>$v)$rt['_'][]=$k; return $rt;}
 
-static function dump($r,$p=''){$rc=[]; $ret='';
+static function dump($r,$p=''){$rc=[];
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
 	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?addslashes(stripslashes($va)):'')."'";
 		if($rb)$rc[]=('"'.$k.'"').'=>['.implode(',',$rb).']';}
 	else $rc[$k]=('"'.$k.'"').'=>[\''.($v?addslashes(stripslashes($v)):'').'\']';}
-if($rc)$ret=implode(','.n(),$rc);
-return '<?php //'.$p."\n".'$r=['.$ret.'];';}
+if($rc)$rt=implode(','.n(),$rc);
+return '<?php //'.$p."\n".'$r=['.$rt.']; ?>';}
 
 static function del($dr,$nod,$o=''){$f=self::url($dr,$nod,$o); if(is_file($f) && auth(4))unlink($f);}
 
@@ -59,38 +59,35 @@ self::save($dr,$nod,$rb);
 //json::write($dr,$nod,$r);
 return $rb;}
 
-static function include($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak);
+static function inc($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak); $r=[];
 if(is_file($f)){try{include $f;}catch(Exception $e){echo 'bruu: '.$nod;}}
-elseif($rh)self::save($dr,$nod,[],$bak);}
+//if(is_file($f))include $f;
+elseif($rh)self::save($dr,$nod,[],$bak);
+return $r;}
 
 static function rollback($f){$r=self::read($dr,$nod,'',[],1); self::save($dr,$nod,$r);}
 
-static function mul($dr,$nod,$in='',$u='',$rh=[]){$f=self::url($dr,$nod);
-if(is_file($f))include $f; elseif($rh)$r=self::save($dr,$nod,[],$rh);
-if(isset($r)){foreach($r as $k=>$rb)foreach($rb as $kb=>$vb)$r[$k][$kb]=stripslashes($vb);
-if($u && isset($r['_']))unset($r['_']);
-return $r[$in]??$r;}}
-
-static function read($dr,$nod,$u='',$rh=[],$bak=''){$f=self::url($dr,$nod,$bak);
-if(is_file($f))include $f; elseif($rh)$r=self::save($dr,$nod,[],$rh,$bak);
-//$r=self::include($dr,$nod,$rh,$bak);
+static function read($dr,$nod,$u='',$rh=[],$bak=''){
+$r=self::inc($dr,$nod,$rh,$bak);
 if(isset($r)){if($u && isset($r['_']))unset($r['_']); return $r;}}
 
-static function row($dr,$nod,$in,$o='',$rh=[]){$f=self::url($dr,$nod);//assoc
-if(is_file($f))include $f; elseif($rh)self::save($dr,$nod,[]); if(!isset($r[$in]))return;
-if($o && isset($r['_']))return array_combine_a($r['_'],$r[$in]);
-return $r[$in];}
+static function mul($dr,$nod,$in='',$u='',$rh=[]){
+$r=self::read($dr,$nod,$u,$rh);
+if($r)return self::sl($r[$in]??$r);}
 
-static function col($dr,$nod,$n=0,$u=1,$rh=[]){$f=self::url($dr,$nod);
-if(is_file($f))include $f; elseif($rh)self::save($dr,$nod,[]); $rb=[];
-if(isset($r)){if($u && isset($r['_']))unset($r['_']);
-if($r)foreach($r as $k=>$v)$rb[$k]=($v[$n]??'');}//stripslashes_b
+static function row($dr,$nod,$in,$o='',$rh=[]){
+$r=self::inc($dr,$nod,$rh);
+if($o && isset($r['_']))return array_combine_a($r['_'],$r[$in]);
+return $r[$in]??[];}
+
+static function col($dr,$nod,$n=0,$u=1,$rh=[]){$rb=[];
+$r=self::read($dr,$nod,$u,$rh);
+if($r)foreach($r as $k=>$v)$rb[$k]=$v[$n]??'';
 return $rb;}
 
-static function val($dr,$nod,$in,$k=0,$rh=[]){$f=self::url($dr,$nod);
-if(is_file($f))include $f; elseif($rh)self::save($dr,$nod,[]);
-if(!isset($r[$in]))return; else $r=$r[$in];
-if(!isset($r[$k]))return; else return ($r[$k]);}//stripslashes_b
+static function val($dr,$nod,$in,$k=0,$rh=[]){
+$r=self::read($dr,$nod,1,$rh);
+return $r[$in][$k]??'';}
 
 static function add($dr,$nod,$rb,$rh=[],$key=''){
 $r=self::read($dr,$nod,'',$rh); if($key)$r+=$rb; else $r[]=$rb;
@@ -122,8 +119,6 @@ static function nextentry($r){if(!$r)return; ksort($r); $i=0; $n=isset($r['_'])?
 foreach($r as $k=>$v){$i++; if(!isset($r[$i]) && is_numeric($k))return $i;}
 if($n)unset($r['_']); $rb=array_keys($r); $max=$rb?(int)max($rb)+1:1; return $max;}
 static function exists($dr,$nod){$f=self::url($dr,$nod); if(is_file($f))return true;}
-/*static function exentry($dr,$nod,$k){$f=self::url($dr,$nod);
-if(is_file($f))include $f; if(isset($r[$k]))return true;}*/
 
 static function goodtable($d){//table_line|col
 [$dn,$vn]=cprm($d); [$dr,$da]=split_one('/',$dn);
@@ -157,8 +152,7 @@ static function assoc($dr,$nod){$r=self::read($dr,$nod); $rb=[]; $rh=$r['_']??[]
 if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)if($rh[$ka]??'')$rb[$k][$rh[$ka]]=$va; return $rb;}
 static function select($dr,$nod,$d,$n=0){$r=self::read($dr,$nod,1); $rb=[];
 if($r)foreach($r as $k=>$v)if($v[$n]==$d)$rb[$k]=$v; return $rb;}
-static function strip($dr,$nod){$r=self::read($dr,$nod,1);
-if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)$r[$k][$ka]=stripslashes($va); return $k;}
+static function strip($dr,$nod,$u=1){$r=self::read($dr,$nod,$u); if($r)$r=self::sl($r); return $r;}
 static function prep($b,$d){$r=self::read($b,$d,1); $rb=[];
 if($r)foreach($r as $k=>[$ka,$va])$rb[$ka][$k]=$va; return $rb;}
 static function two($b,$d,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];
@@ -177,6 +171,7 @@ if($r)foreach($r as $k=>$v)if($v[$n]==$d)$in=$k; if(!isset($in))return;
 if($o && isset($r['_']))return array_combine_a($r['_'],$r[$in]); else return $r[$in];}
 
 //filters
+static function sl($r){foreach($r as $k=>$v)$r[$k]=is_array($v)?self::sl($v):stripslashes($v); return $r;}
 static function format($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
 static function clb($r,$n){$rb=[]; foreach($r as $k=>$v)$rb[$k]=$v[$n]; return $rb;}
 static function cat($r,$n,$o=''){$rb=[]; foreach($r as $k=>$v)$rb[$v[$n]??$v]=$k; return $o?array_flip($rb):$rb;}
@@ -198,8 +193,7 @@ static function walk_k($r,$fn){foreach($r as $k=>$v){$kb=$fn($k,$v); $rt[$kb]=$v
 static function nb($r){$i=0; foreach($r as $k=>$v){$i++; $rt[$i]=[$v];} return $rt;}//prep
 static function prevnext($r,$d){$keys=array_keys($r);
 foreach($keys as $k=>$v)if($v==$d)return [$keys[$k-1],$keys[$k+1]];}
-static function copy($da,$na,$db,$nb){
-$r=self::read($da,$na); self::save($db,$nb,$r); return $r;}
+static function copy($da,$na,$db,$nb){$r=self::read($da,$na); self::save($db,$nb,$r); return $r;}
 static function num($dr,$nod,$d){$r=self::read($dr,$nod); $i=0;
 foreach($r as $k=>$v){$i++; if($k==$d)return $i;}}
 static function push($dr,$nod,$r){if(!is_array($r))$r=[$r];

@@ -343,16 +343,18 @@ if($ret)head::add('jscode',sj('popup_'.$ret));}
 
 #cache
 static function cache_arts($x=''){
-$lastart=''; $rtb=[]; $ret=[]; $main=[]; $nod=nod('cache');
-if($x)msql::del('',$nod); else $main=msql::read('',$nod,1);
-if($main){$last=current($main); $lastart=$last?$last[0]:ma::lastartid();}
+$lastart=''; $rtb=[]; $rt=[]; $main=[]; $nod=nod('cache');
+if($x)msql::del('',$nod); $main=msql::read('',$nod,1);
+if($main)$last=current($main); $lastart=$last[0]??ma::lastid('qda');
 if(($lastart && !isset($main[$lastart])) or $x){
 	$rh=[msql::$m=>['date','cat','title','img','hub','url','lu','author','length','src','ib','re','lg']];
 	$r=ma::rqtall();
-	if($r)foreach($r as $k=>$v){$ka=array_shift($v); $v[3]=pop::art_img($v[3]); $ret[$ka]=$v;}
-	$ok='cache reloaded'; msql::save('',$nod,$rh+$ret); if(rstr(140))$_SESSION['rqt']=$ret;}
+	if($r)foreach($r as $k=>$v){$ka=array_shift($v); $v[3]=pop::art_img($v[3]); $rt[$ka]=$v;}
+	er('cache reloaded');
+	msql::save('',$nod,$rh+$rt); //eco($rt);
+	if(rstr(140))$_SESSION['rqt']=$rt;}
 elseif($main && rstr(140))$_SESSION['rqt']=$main;
-return lk('/reload/'.ses('qb'),'reload');}
+return divc('frame-blue',count($rt).' articles');}
 
 static function cats(){
 return sql('distinct(frm)','qda','k','nod="'.ses('qb').'" and re>0 and substring(frm,1,1)!="_" order by frm');}

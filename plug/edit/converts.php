@@ -66,7 +66,7 @@ elseif($d=='asin')$ret=rad2deg(asin($txt));
 elseif($d=='acos')$ret=rad2deg(acos($txt));
 elseif($d=='atan')$ret=rad2deg(atan($txt));
 elseif($d=='indent')$ret=indent::build($txt);
-elseif($d=='md')$ret=codeline::parse($txt,'','md');
+elseif($d=='md')$ret=conb::parse($txt,'','md');
 elseif($d=='meta'){[$ti,$tx]=web::metas($txt); $ret='ti:'.$ti.n().'tx:'.$tx;}
 elseif($d=='counts'){$r=explode(' ',$txt); $ret=strlen($txt).' chars, '.count($r).' words';}
 elseif(in_array($d,['pc2al','pc2km','al2km','al2pc','deg2ra','ra2deg','deg2dec','dec2deg','mas2al','al2mas'])){

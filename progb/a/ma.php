@@ -27,13 +27,13 @@ return $ret;}
 static function lastart(){$r=msql::row('',nod('last'),1); if(!$r)$r=self::lastartrq(); return $r;}
 static function lastartid(){$r=self::lastart(); return $r[0]??0;}
 static function lastartday(){$r=self::lastart(); return $r[1]??0;}
-static function lastid($b){return sql('id',$b,'v',['_order'=>'id desc','_limit'=>'1']);}
+static function lastid($b){return sql('id',$b,'v',['_order'=>prmb(9),'_limit'=>'1']);}
 static function lastartrq(){
 return sql('id,day','qda','a',['nod'=>ses('qb'),'>re'=>'0','-frm'=>'_','_order'=>'id desc','_limit'=>'1']);}
 static function oldestart(){
 return sql('day','qda','v',['nod'=>ses('qb'),'>re'=>'0','-frm'=>'_','_order'=>'day asc','_limit'=>'1']);}
 
-static function find_id($id){if($id=='last')return self::lastartid();
+static function find_id($id){if($id=='last')return self::lastid('qda');
 elseif(!is_numeric($id))return self::id_of_suj($id); else return $id;}
 static function is_public($id){return sql('id','qda','v',['id'=>$id,'>re'=>'0','-frm'=>'_']);}
 static function maxdays(){$d=sesmk2('ma','oldestart'); if(!$d)$d=0;
@@ -69,18 +69,21 @@ return $r;}
 
 #rqt
 static function rqtall($c='',$kv='',$sq=[],$z=''){
-if(rstr(3) && $d=ses('dayb'))$sq['>day']=$d; else $sq['>day']=calctime(360);
-if($d=ses('daya')){$d2=$sq['>day']; unset($sq['>day']); $sq['&day']=[$d2,$d+1];}
-$sq+=['nod'=>ses('qb'),'>re'=>'0','-frm'=>'_','_order'=>prmb(9)];
+$sq+=['nod'=>ses('qb'),'>re'=>0];
+$sq['<day']=ses('daya'); if(rstr(3))$sq['>day']=ses('dayb');
+if(!isset($sq['frm']))$sq['-frm']='_';
+if(!isset($sq['_order']))$sq['_order']=prmb(9);
+if(ses('lang')!='all')$sq['lg']=ses('lang');
 if(!$c)$c='id,day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg';
+//return sql::read($c,'qda',$kv,$sq,$z);
 return sqb::read($c,'art',$kv,$sq,$z);}
 
 static function rqtart($id){
 $r=sqb::read('day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg','art','w',$id);
 return arr($r,13);}
 
-static function rqtcol($tri,$vrf){
-return self::rqtall('id','k',[$tri=>$vrf],0);}
+static function rqtcol($sq){
+return self::rqtall('id','k',$sq,0);}
 
 static function rqtv($id,$c){
 return sqb::read($c,'art','v',$id);}

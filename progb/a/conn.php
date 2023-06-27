@@ -357,7 +357,7 @@ $ret=match($c){
 ':artwork'=>mk::artwork($d,$m),
 ':look'=>mk::artlook($d),
 ':icon'=>icon($d),
-':math'=>tagb('math',codeline::parse($d,'','math')),
+':math'=>tagb('math',conb::parse($d,'','math')),
 ':dskbt'=>mod::read_apps_link($d),
 ':appbt'=>pop::btapp($d,$nl),
 ':connbt'=>pop::connbt($d,$nl),
@@ -367,13 +367,13 @@ $ret=match($c){
 ':contact'=>contact($d,''),
 ':bubble'=>md::bubble_menus($d,'inline'),//old
 ':submenus'=>md::bubble_menus($d,'inline'),
-':template'=>codeline::parse('['.$da.']','','template'),
+':template'=>conb::parse('['.$da.']','','template'),
 ':version'=>$_SESSION['philum'],
 ':flag'=>flag($d),
 ':nms'=>nms($d),
 ':sigle'=>'&'.$d.';',
 ':caviar'=>mk::caviar($d),
-':exec'=>codeline::exec_run($d,$id),
+':exec'=>cbasic::run($d,$id),
 ':on'=>tagb('code','['.delbr($d).']'),
 ':ko'=>'['.$d.']',
 default=>''};
@@ -384,7 +384,7 @@ $ret=match($c){
 ':search'=>lj('','popup_search,home__3_'.ajx($d).'_',picto('search').($o?$o:$d)),
 ':tag'=>lj('txtx','popup_api__3_'.($o?$o:'tag').':'.ajx($p),pictxt('tag',$p)),
 ':papi'=>lj('','popup_api__3_'.ajx($p),pictxt('atom',$o?$o:strend($p,':'))),//relegated
-':basic'=>codeline::cbasic($p,$o),
+':basic'=>cbasic::read($p,$o),
 ':ver'=>substr_replace(ses('philum'),'.',2,0),
 ':picto'=>picto($p,$o),
 ':ascii'=>ascii($p,$o),
@@ -419,7 +419,7 @@ elseif($xt=='.mp4'||$xt=='.ogg'||$xt=='.webm'){$t=$o?$o:$p;//.h264
 $res=self::connlk($da,$id,$m,$pw,$nl); if($res=='-')return; if($res)return $res;
 $cn=substr($c,1);
 if(method_exists($cn,'call') && isset($cn::$conn)){[$p,$o]=cprm($d); return $cn::call($p,$o);}
-//if($cn){$ret=codeline::mod_basic($cn,$d); if($ret)return $ret;}
+//if($cn){$ret=conb::mod_basic($cn,$d); if($ret)return $ret;}
 return '['.$da.']';}
 
 static function connlk($da,$id,$m,$pw,$nl){

@@ -6,33 +6,56 @@ static function mktmp($ret,$p){$r=sesmk2('cltmp','vars','',0); $rb=[]; $rc=[]; $
 foreach($r as $k=>$v)if(!isset($p[$k]))$rb[]=$v; else{$rc[]=$v; $rd[]=$p[$k];}
 $ret=str_replace($rb,'',$ret);//del_empty
 if(isset($p['img1']))$ret=str_replace('_IMG1',$p['img1'],$ret);
-$ret=codeline::parse($ret,'','template');//build
+$ret=conb::parse($ret,'','template');//build
 return str_replace($rc,$rd,$ret);}
 
 static function tmpu($tpl){$tmp='';
-if(!$tpl){$r=ses('tmpc'); $c=$_SESSION['cond'][0]; $tpl=$r[$c]??'';}
-if(rstr(103))$tmp=msql::val('',nod('template'),$tpl);//msql::val('',nod('template_'.$tpl),1)
-if(!$tmp && $tpl && method_exists('cltmp',$tpl))$tmp=cltmp::$tpl();
-if(!$tmp)$tmp=msql::val('system','default_template',$tpl);
+if(!$tpl){$r=ses('tmpc'); $c=$_SESSION['cond'][0]; $tpl=$r[$c]??'';}//from context
+if(rstr(103))$tmp=msql::val('',nod('template'),$tpl);//from user
+if(!$tmp && $tpl && method_exists('cltmp',$tpl))$tmp=cltmp::$tpl();//from sys
+if(!$tmp)$tmp=msql::val('system','default_template',$tpl);//default
 return $tmp;}
 
-static function template($p,$tpl){
-if(!$tpl)$tpl=prma('template');
+static function template1($p,$tpl){
+if(!$tpl)$tpl=prma('template');//from mod
 $tmp=sesmk2('art','tmpu',$tpl,1);
-if($tpl=='read' && rstr(88))$tmp=$tmp?$tmp:cltmp::read();
-elseif($tpl=='art')$tmp=rstr(55)?$tmp:cltmp::art();
-elseif($tpl=='pubart')$tmp=rstr(55)?$tmp:cltmp::pubart();
-elseif($tpl=='pubart_j')$tmp=rstr(55)?$tmp:cltmp::pubart_j();
-elseif($tpl=='pubart_b')$tmp=rstr(55)?$tmp:cltmp::pubart_b();
-elseif($tpl=='titles')$tmp=rstr(65)?$tmp:cltmp::titles();
-elseif($tpl=='tracks')$tmp=rstr(66)?$tmp:cltmp::tracks();
-elseif($tpl=='book')$tmp=rstr(67)?$tmp:cltmp::book();
+$rs=['read'=>88,'art'=>55,'pubart'=>55,'pubart_j'=>55,'pubart_b'=>55,'titles'=>65,'tracks'=>66,'book'=>67];
+$opt=$rs[$tpl]??'';
+if($tpl && $opt && !rstr($opt))$tmp=cltmp::$tpl();
 if(!$tmp){
-	if(!empty($_SESSION['simplified']))$tmp=cltmp::simple(); 
+	if(!empty($_SESSION['simplified']))$tmp=cltmp::simple();
 	elseif(rstr(88))$tmp=cltmp::cat();
 	else $tmp=cltmp::art();}
-//return vue::build($tmp,$p);
 return self::mktmp($tmp,$p);}
+
+#template2
+static function decide_tpl(){
+$tpl=prma('template');
+if(!$tpl){$r=ses('tmpc'); $c=$_SESSION['cond'][0]; $tpl=$r[$c]??'';}//from context
+if(!$tpl && rstr(88))$tpl='cat';
+if(!$tpl)$tpl='art';
+return $tpl;}
+
+static function decide_tmp($tpl){$tmp='';
+if(rstr(103))$tmp=msql::val('',nod('template_'.$tpl),1);//from user
+if(!$tmp && method_exists('cltmp2',$tpl))$tmp=cltmp2::$tpl();//from sys
+if(!$tmp)$tmp=msql::val('system','edition_template_'.$tpl,1);//default
+return $tmp;}
+
+static function build_view($tmp){
+return view::bridge($tmp);}
+
+static function decide_view($tpl){$r=[];
+if(method_exists('view',$tpl))$r=view::$tpl();
+return $r;}
+
+static function template2($ra,$tpl){$rt=[];
+if(!$tpl)$tpl=self::decide_tpl($tpl); echo $tpl;
+if($tpl)$rt=sesmk2('art','decide_view',$tpl,1);
+return view::call($rt,$ra);}
+
+static function template($p,$tpl){
+return self::template1($p,$tpl);}
 
 #edit
 static function btedit($kem,$id,$re,$prw){
@@ -98,13 +121,13 @@ foreach($rt as $k=>$v)$rn[$v]=$k+1;
 return $rn;}
 
 static function tags($id,$o='',$lg=''){
-$r=ma::art_tags($id); if(!$r)return; $sep=sti(); $ret=[];
+$r=ma::art_tags($id); if(!$r)return; $sep=sti(); $ret=[]; $lga=prmb(25);
 $ica=explode(' ',prmb(18)); $ico=explode(' ',prmb(19)); if($lg)$rn=self::tagn();
 if(count($ica)==count($ico))
 $rico=['tag'=>'tag']+array_combine($ica,$ico); $rico['utag']='like';
 if($r)foreach($rico as $cat=>$ico){$rt=[]; if(is_numeric($cat))$cat='utag';
 	if(isset($r[$cat])){
-		if($lg){$n=$rn[$cat]; $rb=msql::kx('',nod('tags_'.$n.$lg),0); $rc=[];
+		if($lg && $lg!=$lga){$n=$rn[$cat]; $rb=msql::kx('',nod('tags_'.$n.$lg),0); $rc=[];
 			foreach($rb as $k=>$v)if(in_array($k,$r[$cat]))$rc[$v]=$k; if($rc)$r[$cat]=$rc;}
 		foreach($r[$cat] as $ka=>$va)
 		$rt[$ka]=lj('','popup_api__3_'.$cat.':'.$va.',t:'.ajx($ka),$ka);}
@@ -135,7 +158,8 @@ if($ib && $read && $id!=$read){$ibb=ma::ib_of_id($ib);
 
 static function backcat($frm,$rst43){
 $t=!$rst43?catpict($frm,24):btn('txtbox',$frm);//rstr pictocat
-if($frm!=get('frm'))return lh('cat/'.$frm,$t);}
+if(rstr(85))return lk('cat/'.$frm,$t);//find a way
+return lh('cat/'.$frm,$t);}
 
 static function opnart($id,$prw,$o,$rch=''){$c=$o?'active':'';//art_read_c
 return ljb($c,'SaveBc','art_'.$id.'_'.$prw.'_'.$o.'_'.ajx($rch),picto('kdown'),atd('toggleart'.$id));}
@@ -217,7 +241,7 @@ case('date2'):$rb['date']=$day; break;
 case('img1'):$rb[$v]=pop::art_img($r['img'],$id); break;
 case('priority'):$rb[$v]=self::priority_hands($r['re']); break;
 case('back'):$rb[$v]=self::back($id,$ib); break;
-case('cat'):$rb[$v]=self::backcat($r['frm'],$rst[43]); break;
+case('cat'):$rb[$v]=self::backcat($r['frm'],$rst[112]); break;
 case('artedit'):$rb[$v]=divb('','sticky','edt'.$id); break;//diveditbt
 case('btim'):$rb[$v]=lj('','popup_sav,art*gallery___'.$id.'_gallery',picto('img')); break;
 case('author'):$rb[$v]=lj('','popup_api___owner:'.ajx($r['name']),'@'.$r['name']); break;
@@ -290,7 +314,7 @@ elseif(is_numeric($v))$d=$v; elseif($v=='flow' or !$v)$d=rstr(5)?2:1; else $d=1;
 return $d;}
 
 static function tometa($d){//$d=strip_tags($d);
-$d=codeline::parse($d,'','delconn'); $d=deln(trim($d),' '); $d=delsp($d); $lgh=mb_strlen($d);
+$d=conb::parse($d,'','delconn'); $d=deln(trim($d),' '); $d=delsp($d); $lgh=mb_strlen($d);
 if($lgh>200)$n=mb_strpos($d,'.',200); else $n=$lgh; $d=mb_substr($d,0,$n+1);
 ses::$r['descr']=stripslashes($d);}
 
@@ -312,15 +336,15 @@ $ret=lj('','popup_popart__3_'.$id.'_3',$ret);
 return $ret;}
 
 static function preview($d,$id,$l=''){
-if(strlen($l)<15 && strpos($d,':import')){[$p,$o,$c]=poc($d); $d=sql('d','qdm','v',['id'=>$p]);}
-if(rstr(64))$d=codeline::parse($d,'figure q twitter table msql iframe','stripconn');//thumb
+if(mb_strlen($l)<15 && strpos($d,':import')){[$p,$o,$c]=poc($d); $d=sql('d','qdm','v',['id'=>$p]);}
+if(rstr(64))$d=conb::parse($d,'figure q twitter table msql iframe','stripconn');//thumb
 if(rstr(34)){
-	$d=codeline::parse($d,'b i u h c l h1 h2 h3 h4 list numlist figure','corrfast');
-	$d=codeline::parse($d,'striplink','correct');
-	$d=codeline::parse($d,'color','corrfastb');
-	$d=codeline::parse($d,'stripvideo','correct');}
+	$d=conb::parse($d,'b i u h c l h1 h2 h3 h4 list numlist figure','corrfast');
+	$d=conb::parse($d,'striplink','correct');
+	$d=conb::parse($d,'color','corrfastb');
+	$d=conb::parse($d,'stripvideo','correct');}
 if(rstr(117)){
-	$d=codeline::parse($d,'stripimg','correct');
+	$d=conb::parse($d,'stripimg','correct');
 	$d=self::firstlines($d);}
 else $d=str::kmax($d);
 $d=conn::read($d,'noimages',$id);//if(strlen($d)>400)$d=etc($d);
@@ -365,8 +389,8 @@ if($rb)return implode("\n",$rb);}
 
 static function str_detect($msg,$d){
 $r=str::detect_words($msg,$d,ses::r('seg')); $ret=''; $end='';
-$sz=strlen($d); $len=strlen($msg); $nb=0; $nd=0; if(!$r)return $msg;
-foreach($r as $k=>$v){$pos=$k; $ba=0; $bb=0; $nb+=1; //$sz=strlen($v);
+$sz=mb_strlen($d); $len=mb_strlen($msg); $nb=0; $nd=0; if(!$r)return $msg;
+foreach($r as $k=>$v){$pos=$k; $ba=0; $bb=0; $nb+=1; //$sz=mb_strlen($v);
 	$part=substr($msg,$pos,$sz); $repl=$part;
 	$deb=substr($msg,$nd,$pos-$nd); $end=substr($msg,$pos+$sz);
 	$ba+=substr_count($deb,'<a'); $bb+=substr_count($deb,'</a');
@@ -376,9 +400,9 @@ foreach($r as $k=>$v){$pos=$k; $ba=0; $bb=0; $nb+=1; //$sz=strlen($v);
 return $ret.$end;}
 
 static function find_word($msg,$rch,$n,$id){
-$len=strlen($rch); $lenmsg=strlen($msg); $sz=100; $ret=''; $nd=0; $seg=ses::r('seg');
+$len=mb_strlen($rch); $lenmsg=mb_strlen($msg); $sz=100; $ret=''; $nd=0; $seg=ses::r('seg');
 $r=str::detect_words($msg,$rch,$seg); $n=count($r); ses::$n+=$n; $look=$seg?'find':'look';
-foreach($r as $k=>$v){$pos=$k; $nd+=1; //$len=strlen($v);
+foreach($r as $k=>$v){$pos=$k; $nd+=1; //$len=mb_strlen($v);
 	$prev=$pos-$sz; $next=$pos+$len; if($prev<0)$prev=0; if($next>$lenmsg)$next=$lenmsg;
 	$reta=substr($msg,$prev,$pos-$prev); $retb=substr($msg,$next,$sz);
 	$posa=strrpos($reta,'. '); if(!$posa)$posa=strpos($reta,' '); if($posa<0)$posa=0;
@@ -390,17 +414,17 @@ foreach($r as $k=>$v){$pos=$k; $nd+=1; //$len=strlen($v);
 	$ret.=divc('trkmsg',$reta.''.$bt.''.$retb);}
 return $ret;}
 
-static function prepare_rech($id,$msg,$out){if(!$msg)return;
+static function prepare_rech($id,$msg,$rt){if(!$msg)return;
 $rch=search::good_rech(get('search')); $nbp=0; $ret=''; ses::$n=0;
 if(get('bool')){$r=explode(' ',trim($rch)); $nbp=count($r);}
 if(strpos($rch,'|')){$r=explode('|',$rch); $nbp=count($r);}
 $msg=str::stripconn($msg); $msgi=strtolower($msg); $msgb=$msg;//$msg=strip_tags($msg); 
-if(get('titles'))$out['msg']='';
+if(get('titles'))$rt['msg']='';
 elseif($nbp>1){foreach($r as $k=>$v)if($v){$ret.=self::find_word($msg,$v,'',$id);}}
 else $ret=self::find_word($msg,$rch,'',$id);
-$out['count']=ses::$n; ses::$nb+=ses::$n;
-$out['msg']=scroll($out['count'],str::clean_br_lite($ret),4,'','200');//610
-return $out;}
+$rt['count']=ses::$n; ses::$nb+=ses::$n;
+$rt['msg']=scroll($rt['count'],str::clean_br_lite($ret),4,'','200');//610
+return $rt;}
 
 static function prepare_tracks($id,$r,$opts){$ret=''; $trk='';
 if($id==get('read')){$optk=$opts['tracks']??'';
@@ -411,25 +435,52 @@ if($id==get('read')){$optk=$opts['tracks']??'';
 	$ret.=divd('track'.$id,$trk);}
 return $ret;}
 
+static function datas($id){//ma::rqtart
+return sqb::read('ib,name,mail,day,nod,frm,suj,re,lu,img,thm,host,lg','art','a',$id);}
+
 #article
-static function build($id,$r,$msg,$prw,$tp='',$nl='',$n=''){if(!$id or !$r)return;
-$rear=self::ib_arts_nb($id)+1; $otp=ma::read_idy($id,'ASC'); $trk=''; $nb='';
+static function build($id,$r,$otp,$msg,$prw,$tp='',$nl='',$n=''){if(!$id or !$r)return;
+$rear=self::ib_arts_nb($id)+1; $trk=''; $nb='';
 //cache needed for related, but stay sticked in threads
-$r['o']=self::metart($id);
+//$r['o']=self::metart($id);
 $tp=$tp?$tp:($r['o']['template']??'');
-$out['id']=$id; $out['suj']=$r['suj'];
-if($r['re']==0)$out['css']='hide'; else $out['css']='';
+$rt['id']=$id; $rt['suj']=$r['suj'];
+if($r['re']==0)$rt['css']='hide'; else $rt['css']='';
 if($prw==1 or $prw=='rch')$tp='simple';
-if($prw==2)$out['thumb']=self::prepare_thumb($r['img'],$id,$nl);
-if($prw=='rch')$out=self::prepare_rech($id,$msg,$out);
-elseif($msg){$out['msg']=self::prepare_msg($id,$msg,$r,$prw,$nl);
-	if(!$nl)$trk=self::prepare_tracks($id,$otp,$r['o']);}
-else $out['msg']=divd('art'.$id,'');
-if(get('search'))$nb=$out['count']??'';
+if($prw==2)$rt['thumb']=self::prepare_thumb($r['img'],$id,$nl);
+if($prw=='rch')$rt=self::prepare_rech($id,$msg,$rt);
+elseif($msg){$rt['msg']=self::prepare_msg($id,$msg,$r,$prw,$nl);
+	//if(!$nl)$trk=self::prepare_tracks($id,$otp,$r['o']);
+	}
+else $rt['msg']=divd('art'.$id,'');
+if(get('search'))$nb=$rt['count']??'';
 //elseif($prw=='score')$nb=sesr('score',$id);//jda
 elseif($prw>1)$nb=$n;
-$out=self::titles($id,$r,$rear,$otp,$prw,$nl,$nb,$out);
-return tag('section',['id'=>$id],self::template($out,$tp)).$trk."\n";}//.atn($id)//used by rstr31
+$rt=self::titles($id,$r,$rear,$otp,$prw,$nl,$nb,$rt);
+return $rt;
+//return tag('section',['id'=>$id],self::template($rt,$tp)).$trk."\n";
+}//.atn($id)//used by rstr31
+
+#call
+static function call($id,$r,$msg,$prw,$tp='',$nl='',$n=''){
+$r['o']=self::metart($id);
+$otp=ma::read_idy($id,'ASC');
+$rt=self::build($id,$r,$otp,$msg,$prw,$tp,$nl,$n);
+$ret=self::template($rt,$tp);
+$trk=self::prepare_tracks($id,$otp,$r['o']);
+return tag('section',['id'=>$id],$ret).$trk."\n";}
+
+/**/static function test($id,$tp=''){
+$tp=$tp?$tp:'read'; $prw=3; $ret=''; $trk=''; $n='';
+$r=self::datas($id); if(!$r)return;
+ses::$r['imgrel']=pop::art_img($r['img'],$id); $nl=get('nl');
+$msg=sql('msg','qdm','v',$id);
+$r['o']=self::metart($id);
+$otp=ma::read_idy($id,'ASC');
+$rt=self::build($id,$r,$otp,$msg,$prw,$tp,$nl,$n);
+$ret=self::template2($rt,$tp);
+//$trk=self::prepare_tracks($id,$otp,$r['o']);
+return tag('section',['id'=>$id],$ret).$trk."\n";}
 
 //conn player
 static function play_conn($msg,$conn){
@@ -443,17 +494,16 @@ return implode("\n\n",$rb);}
 
 #read
 static function read($id,$tp=''){$tp=$tp?$tp:'read'; $prw=0; $ret='';
-$r=sql('ib,name,mail,day,nod,frm,suj,re,lu,img,thm,host,lg','qda','a',$id); if(!$r)return;
+$r=self::datas($id); if(!$r)return;
 ses::$r['imgrel']=pop::art_img($r['img'],$id); $nl=get('nl');
-$msg=sql('msg','qdm','v','id="'.$id.'"');//msg
+$msg=sql('msg','qdm','v',$id);
 if($id && ($r['re']>='1' or auth(3) or ses('USE')==$r['name'])){$prw=3;
-	$ret=self::build($id,$r,$msg,$prw,$tp,$nl);}
+	//$ret=self::build($id,$r,$msg,$prw,$tp,$nl);
+	$ret=self::call($id,$r,$msg,$prw,$tp,$nl);
+	}
 elseif($id && !$r['re'])$ret=divc('frame-red',helps('not_published'));
 if(rstr(33))$ret.=self::ib_arts($id,$prw);
 return $ret;}
-
-static function datas($id){//ma::rqtart
-return sqb::read('day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg','art','a',$id);}
 
 //local_call/search/mod_load/popart
 static function playb($id,$prw,$tp='',$nl='',$nb=''){
@@ -463,7 +513,8 @@ $r=art::datas($id); if(!$r)return; $msg=''; ses::$r['suj']=$r['suj']??'';
 if($id && !$r['re'] && !auth(4))return divc('frame-red',helps('not_published'));
 if($prw>=2 or substr($prw,0,4)=='conn' or get('search'))
 	$msg=sql('msg','qdm','v',$id);//1.2.3.nl//rstr(5)
-$ret=self::build($id,$r,$msg,$prw,$tp,$nl,$nb);
+//$ret=self::build($id,$r,$msg,$prw,$tp,$nl,$nb);
+$ret=self::call($id,$r,$msg,$prw,$tp,$nl,$nb);
 if($prw==3)$ret.=art::ib_arts($id,$prw);//affiliates
 return $ret;}
 
@@ -473,7 +524,7 @@ $r=art::datas($id); $r['o']=art::metart($id);//$prw=art::slct_media($prw);
 if($prw>=2)$msg=sql('msg','qdm','v',$id);//rstr(5) or 
 if($prw==3 && $rch)ses::$r['look']=$rch;
 if($prw=='rch' && !$rch)$prw=2;//close after contradict rch
-if($prw=='rch' && $rch){get('search',$rch); $out=art::prepare_rech($id,$msg,[]); $ret=$out['msg'];}
+if($prw=='rch' && $rch){get('search',$rch); $rt=art::prepare_rech($id,$msg,[]); $ret=$rt['msg'];}
 else $ret=art::prepare_msg($id,$msg,$r,$prw); $ret.=divc('clear','');
 if(rstr(35))$ret=scroll(strlen($ret),$ret,1000,'','400',$id);//navig($id).
 return $ret;}
@@ -489,20 +540,20 @@ $r=art::datas($id); if(!$r)return;
 $r['o']=art::metart($id);
 $tp=$tp?$tp:$r['o']['template']; $msg='';
 if(($prw>=2) && $r['re'])$msg=sql('msg','qdm','v',$id);//rstr(5) or 
-$out['id']=$id; $out['suj']=$r['suj']; if(!$r['suj'])return 'not_exists';
-$out['cat']=$r['frm'];
-if(rstr(19))$out['img1']=pop::art_img($r['img'],$id);
-if($prw==2)$out['thumb']=art::prepare_thumb($r['img'],$id,$nl);
+$rt['id']=$id; $rt['suj']=$r['suj']; if(!$r['suj'])return 'not_exists';
+$rt['cat']=$r['frm'];
+if(rstr(19))$rt['img1']=pop::art_img($r['img'],$id);
+if($prw==2)$rt['thumb']=art::prepare_thumb($r['img'],$id,$nl);
 $rear=art::ib_arts_nb($id)+1; $otp=ma::read_idy($id,'ASC');//tracks
-$out=art::titles($id,$r,$rear,$otp,$prw,$nl,'',$out);
-if($prw=='rch' && $tp)$out=self::prepare_rech($id,$msg,$out); else
-if($msg)$out['msg']=art::prepare_msg($id,$msg,$r,$prw,$nl);
-$ret=art::template($out,$tp); //$ret=vue::build($tp,$out);
+$rt=art::titles($id,$r,$rear,$otp,$prw,$nl,'',$rt);
+if($prw=='rch' && $tp)$rt=self::prepare_rech($id,$msg,$rt); else
+if($msg)$rt['msg']=art::prepare_msg($id,$msg,$r,$prw,$nl);
+$ret=art::template($rt,$tp); //$ret=vue::build($tp,$rt);
 return $ret;}
 
 static function playq($id,$pos,$r35,$quot=''){//quotes
 $_SESSION['read']=$id; $r=art::datas($id); $r['o']=art::metart($id);
-$msg=sql('msg','qdm','v','id="'.$id.'"');
+$msg=sql('msg','qdm','v',$id);
 $msg=mk::apply_quote2($msg,$id,$pos,$r35,$quot);
 $ret=art::prepare_msg($id,$msg,$r,3); $ret.=divc('clear','');
 return $ret;}
@@ -510,16 +561,16 @@ return $ret;}
 static function playt($id,$otp,$tp=''){//tracks
 $r=art::datas($id); //$otp=ma::read_idy($id,'ASC');
 $r['o']=art::metart($id); $trk=art::output_trk($otp,$id);
-$out['id']=$id; $out['suj']=$r['suj'];
-$out['css']=$r['re']==0?'hide':'';
-$out=art::titles($id,$r,'',$otp,1,'',ses::$n,$out);
-return tag('section',['id'=>$id],art::template($out,$tp)).$trk."\n";}
+$rt['id']=$id; $rt['suj']=$r['suj'];
+$rt['css']=$r['re']==0?'hide':'';
+$rt=art::titles($id,$r,'',$otp,1,'',ses::$n,$rt);
+return tag('section',['id'=>$id],art::template($rt,$tp)).$trk."\n";}
 
 static function look($id,$rch,$nb){
 ses::$r['look']=$rch;
 return art::playb($id,3);}
 
-//tracks
+#tracks
 static function trkone($id,$o=''){//,$lu,$img,$thm
 $r=sql('id,ib,name,mail,day,nod,frm,suj,msg,re,host,lg','qdi','r',$id);
 return art::tracks_read($r,$o);}
@@ -527,7 +578,7 @@ return art::tracks_read($r,$o);}
 static function trktxt($id){
 $d=sql('msg','qdi','v',$id);
 //return conn::read($d,$id,'');
-return codeline::call2($d,$id);}
+return conb::call2($d,$id);}
 
 #tracks
 static function output_trk($r,$id=''){$ret='';
@@ -540,46 +591,46 @@ return lj('popbt','popup_art,trkone___'.$id,$t?$t:'@'.$to);}
 
 static function tracks_read($r,$o=''){
 $USE=ses('USE'); $qb=ses('qb'); $read=ses('read');
-$ip=hostname(); $out['css']='track'; $out['sty']='';
+$ip=hostname(); $rt['css']='track'; $rt['sty']='';
 [$id,$ib,$name,$mail,$day,$nod,$frm,$suj,$msg,$re,$host,$lg]=$r;//frm=reply
 if($re==0 && !auth(6))return;
-if($id)$out['id']=$id;
-$out['date']=mkday($day,'Y-m-d');//time_ago($day);
-$out['url']=host().urlread($id);
-$out['edit']=''; $msgbt=''; $tks='';
-if($re==0 && $host==$ip){$out['sty']='opacity:0.5;';
-	$out['edit'].=btn('txtsmall',helps('trackbacks')).' ';}
+if($id)$rt['id']=$id;
+$rt['date']=mkday($day,'Y-m-d');//time_ago($day);
+$rt['url']=host().urlread($id);
+$rt['edit']=''; $msgbt=''; $tks='';
+if($re==0 && $host==$ip){$rt['sty']='opacity:0.5;';
+	$rt['edit'].=btn('txtsmall',helps('trackbacks')).' ';}
 if($re==2)$tks='20,240,20'; elseif($re==3)$tks='240,20,20'; elseif($re==4)$tks='20,20,240';
-if($tks)$out['sty']='background-color:rgba('.$tks.',0.2);';
+if($tks)$rt['sty']='background-color:rgba('.$tks.',0.2);';
 if($host==$ip && (ses('dayx')-$day)<600 or auth(6))//redit
-	$out['edit'].=lj('','popup_tracks,redit___'.$id,picto('edit')).' ';
-$out['author']=lj('','popup_tracks,form___'.$read.'_'.$id,$name==$qb?'admin':$name);
+	$rt['edit'].=lj('','popup_tracks,redit___'.$id,picto('edit')).' ';
+$rt['author']=lj('','popup_tracks,form___'.$read.'_'.$id,$name==$qb?'admin':$name);
 $rc=explode('/','/'.prmb(10));
-$out['author'].=' '.btn('small','['.($rc[$re]??'').']');
+$rt['author'].=' '.btn('small','['.($rc[$re]??'').']');
 $f='imgb/usr/'.$name.'_avatar.gif';
-if(is_file($f))$out['avatar']=image($f,48,48,ats('vertical-align:bottom;'));
-$len=strlen($msg); 
+if(is_file($f))$rt['avatar']=image($f,48,48,ats('vertical-align:bottom;'));
+$len=mb_strlen($msg); 
 if($re && $len>400 && !$o){$kmx=str::kmax_nb(800,$msg);
-	if($len>$kmx){$msg=substr($msg,0,$kmx);
-		$msgbt="\n".lj('','trkxt'.$id.'_art,trktxt___'.$id,nms(184));
+	if($len>$kmx){$msg=mb_substr($msg,0,$kmx);
+		$msgbt="\n".lj('popw','trkxt'.$id.'_art,trktxt___'.$id,nms(184));
 		if($len>1000)$msgbt.=' '.btn('small',self::length($len));}}
 //if($re!=0)$msg=conn::read($msg,'trk',$id); else $msg='';
-if($re!=0)$msg=codeline::call2($msg,$id); else $msg='';
+if($re!=0)$msg=conb::call2($msg,$id); else $msg='';
 if(auth(4) && $frm!=$qb){$j='trk'.$id.'_tracks,publish___'.$id;
-	if($re==0)$out['edit'].=lj('txtyl',$j.'_on',nms(29)).' ';
-	else $out['edit'].=lj('',$j.'_off',offon(0)).' ';}
-if((auth(4) or $USE==$name) && ($re==0 or auth(6)))$out['edit'].=lj('','trk'.$id.'_tracks,trash___'.$id,pictit('trash',nms(43),20)).' ';
+	if($re==0)$rt['edit'].=lj('txtyl',$j.'_on',nms(29)).' ';
+	else $rt['edit'].=lj('',$j.'_off',offon(0)).' ';}
+if((auth(4) or $USE==$name) && ($re==0 or auth(6)))$rt['edit'].=lj('','trk'.$id.'_tracks,trash___'.$id,pictit('trash',nms(43),20)).' ';
 $lng=ses('lng'); if(!$lg && rstr(129)){$lg=prmb(25);//trans::detect('','',$msg);
 	if($lg)sql::upd('qdi',['lg'=>$lg],$id);}
-if($lg!=$lng)$out['edit'].=ljtog('','trkxt'.$id.'_trans,call___trk'.$id.'_'.$lng.'-'.$lg,'trkxt'.$id.'_art,trktxt___'.$id,picto('translate')).' ';
-if(auth(4)){$out['edit'].=togbub('tracks,trklang',$id,$lg?$lg:$lng).' ';
-	$out['edit'].=togbub('tracks,trkstatus',$id,picto('category')).' ';
-	$out['edit'].=togbub('tracks,trkowner',$id,picto('user',16)).' ';}
+if($lg!=$lng)$rt['edit'].=ljtog('','trkxt'.$id.'_trans,call___trk'.$id.'_'.$lng.'-'.$lg,'trkxt'.$id.'_art,trktxt___'.$id,picto('translate')).' ';
+if(auth(4)){$rt['edit'].=togbub('tracks,trklang',$id,$lg?$lg:$lng).' ';
+	$rt['edit'].=togbub('tracks,trkstatus',$id,picto('category')).' ';
+	$rt['edit'].=togbub('tracks,trkowner',$id,picto('user',16)).' ';}
 if(rstr(126)){$poll=sql('poll','qdf','v',['ib'=>$id,'type'=>'trkagree','iq'=>ses('iq')]);
-	$out['edit'].=social::edt($id,'trkagree',$poll);}
-$out['msg']=divd('trkxt'.$id,$msg.$msgbt);
-//$rb=ma::read_idy($read,'asc',$id); if($rb)$out['msg'].=self::output_trk($rb,$id);
-if(is_numeric($frm))$out['edit'].=btn('small',nms(174)).' '.self::tracks_to($frm);//in_reply
-return self::template($out,'tracks');}
+	$rt['edit'].=social::edt($id,'trkagree',$poll);}
+$rt['msg']=divd('trkxt'.$id,$msg.$msgbt);
+//$rb=ma::read_idy($read,'asc',$id); if($rb)$rt['msg'].=self::output_trk($rb,$id);
+if(is_numeric($frm))$rt['edit'].=btn('small',nms(174)).' '.self::tracks_to($frm);//in_reply
+return self::template($rt,'tracks');}
 }
 ?>

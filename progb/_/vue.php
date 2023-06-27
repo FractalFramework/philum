@@ -1,5 +1,5 @@
-<?php //vue
-//build html from template of connectors with vars
+<?php 
+//templater with vars
 
 class vue{
 static $r=[];
@@ -7,7 +7,7 @@ static $r=[];
 static function readconn($d){$p=''; $c='';
 $s=strrpos($d,':'); if($s!==false){$c=substr($d,$s+1); $d=substr($d,0,$s);
 $s=strrpos($d,'$'); if($s!==false){$p=substr($d,$s+1); $d=substr($d,0,$s);}}
-$r=[$d,$p,$c]; return $r;}
+return [$d,$p,$c];}
 
 static function setvar($d){$n=strpos($d,'=');
 if($n!==false && $d){$a=substr($d,0,$n); $b=substr($d,$n+1); self::$r[]=$d;}}
@@ -77,7 +77,7 @@ $ret=match($c){
 //high_level
 'split'=>explode($p,$d),
 'conn'=>conn::connectors($d.':'.$p,3,'','',''),//from pop
-//'exec'=>self::exec_run($d,$id),
+//'exec'=>cbasic::run($d,$id),
 'app'=>appin($d,$p),
 'var'=>$r[$d]??'',//here is the core//str_replace('$',"&dollar;",$r[$d]??'')
 'getvar'=>self::$r[$d],
@@ -86,7 +86,7 @@ $ret=match($c){
 default=>''};
 if($ret)return $ret;
 if($c=='cut'){[$s,$e]=explode('/',$p); return between($d,$s,$e);}
-if($c=='each'){foreach($d as $v)$ret.=codeline::cbasic_exec($v,'','',''); return $ret;}
+if($c=='each'){foreach($d as $v)$ret.=conb::exec($v,'','',''); return $ret;}
 if($c=='core'){if(is_array($d))return call_user_func($p,$d,'','');
 	else{$db=explode('/',$d); return call_user_func_array($p,$db);}}
 if(strpos($p,',')){[$css,$sty,$id]=expl(',',$p,3);
@@ -106,7 +106,6 @@ foreach($r as $k=>$v)$d=str_replace('{'.$k.'}',$v,$d);
 return nl2br($d);}
 
 static function call($tmp,$r){$ret='';//self::$r=$r;
-$tmp=utf8enc($tmp);//used for |
 //$r=array_chunk($r,100); $r=$r[7];//pr($r);
 foreach($r as $k=>$v)$ret.=self::build($tmp,$v);
 return $ret;}

@@ -132,12 +132,12 @@ static function apps_varts($cnd,$p){$r=self::varts($p); $rc=[];
 if($r)foreach($r as $k=>$v)$rc[]=[$k,'art','auto',$k,$cnd,'',$v,'articles'];
 return $rc;}
 
-static function apps_arts($cnd,$cat,$p,$o){$rb=[];
-if($p)$r=api::mod_arts_row($p); elseif(rstr(3))$r=ma::readcache();
-else $r=sql('id,day,frm','qda','kvv','nod="'.ses('qb').'" and re>0 and substring(frm,1,1)!="_" order by '.prmb(9));
-if(is_array($r))foreach($r as $k=>$v){[$day,$frm]=$p?ma::rqtart($k):$v;
-	if(($cat && $cat==$frm) or !$cat)$rb[]=[$k,'art','auto',$k,$cnd,'',$frm,'articles'];}
-return $rb;}
+static function apps_arts($cnd,$cat,$p,$o){$rt=[];
+if($p)$sq['id']=$p; elseif($cat)$sq=['frm'=>$cat]; else $sq=[];
+$r=ma::rqtall('id,frm','',$sq,0);
+if($r)foreach($r as $k=>$v){[$id,$frm]=$v;
+	$rt[]=[$id,'art','auto',$id,$cnd,'',$frm,'articles'];}
+return $rt;}
 
 static function deskarts($p,$o,$cnd,$no=''){self::poplist();
 if($o){$ob=str_replace('|','/',$o); $ob=strfrom($ob,'/');} else $ob='';

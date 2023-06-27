@@ -11,7 +11,7 @@ $mode=$mode?$mode:'translate';//
 $u='https://api-free.deepl.com/v2/translate?'.$prm;//
 $ret=trans::post($u,$txt);
 $r=json_decode($ret,true);
-if(isset($r['message'])){echo $r['message']; $r=['text'=>$txt];}
+if(isset($r['message'])){er($r['message']); $r=['text'=>$txt];}
 else $r=$r['translations'][0]??[];
 return $r;}
 

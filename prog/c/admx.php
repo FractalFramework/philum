@@ -84,7 +84,10 @@ static function mps($ka,$vl,$va){if($ka==$va)return;
 static function deft(){
 	msql::copy('users',ses('qb').'_apps','users',ses('qb').'_apps_sav');
 	msql::copy('system','default_apps_users','users',ses('qb').'_apps');}
-static function locapps($p='',$n=''){return msql::mul('',nod('apps'),$p,$n);}//optional n?
+static function locapps($p='',$n=''){//return msql::mul('',nod('apps'),$p,$n);
+	if($n)return msql::val('',nod('apps'),$p,$n);
+	elseif($p)return msql::row('',nod('apps'),$p,1);
+	else return msql::read('',nod('apps'),'');}
 static function modsmenu($id,$v){$r=msql::read('system','admin_modules',1); 
 	$rb=self::user_mods(); if($rb)$r+=$rb; ksort($r); $rt=implode(' ',array_keys($r)); 
 	return dropmenu($rt,$id,$v,'1');}
@@ -143,19 +146,20 @@ ses::$r['popw']=320; ses::$r['popt']=nms(92).' Apps';
 return $top.tabs($rb).divc('clear','');}
 
 static function sbmedt($p,$id,$cnd){$rid=randid(); $r=self::locapps($p);
-if($r['type']=='mod')$arb=msql::row('system','admin_modules',$r['process']);
-$rh=msql::row('system','admin_tools',$r['type']); $ri=[]; $rb=[]; $ret=''; //pr($r);
+$type=$r['type']??''; $process=$r['process']??'';
+if($type=='mod')$arb=msql::row('system','admin_modules',$process);
+$rh=msql::row('system','admin_tools',$type); $ri=[]; $rb=[]; $ret=''; //pr($r);
 foreach($r as $k=>$v){$ri[]=$k.$rid; $hk=$rh[$k]??'';
 if($hk!='0'){
 	if($k=='hide')$rb[$k]=checkbox_j($k.$rid,$v,''); 
 	elseif($k=='private')$rb[$k]=checkbox_j($k.$rid,$v,''); 
-	elseif($r['type']=='mod'){$no=''; $rh[$k]=$arb[$k]??'';
+	elseif($type=='mod'){$no=''; $rh[$k]=$arb[$k]??'';
 		if($k=='option' && ($arb['option']??'')==='0')$no=1;
 		if(!$no)$rb[$k]=input($k.$rid,$v); else $rb[$k]=hidden($k.$rid,'');
 		if($k=='type')$rb[$k]=hlpbt('submod_types');
 		if($k=='process'){$rb[$k]=self::modsmenu($k.$rid,$v);
 			if($v)$rb[$k]=self::admhlp($v,'description');}
-		if($k=='param')$rb[$k]=self::admhlp($r['process'],'help');}
+		if($k=='param')$rb[$k]=self::admhlp($process,'help');}
 	else $rb[$k]=input($k.$rid,$v);
 	if($k=='condition')$rb[$k].=' '.jump_btns($k.$rid,'menu|desk|boot|home|user',' ');//|favs
 	if($k=='context')$rb[$k].=' '.jump_btns($k.$rid,'home|art|cat',' ');//|cntx
