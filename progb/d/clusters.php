@@ -102,7 +102,7 @@ foreach($r as $k=>$v){$del='';
 return divc('table',$ret);}
 
 static function viewart($id){//edit art
-$r=ma::art_tags($id,'krr'); $rt=[]; //pr($r);//cat[tag=>idtag]
+$r=ma::art_tags($id,'krr'); $rt=[];//cat[tag=>idtag]
 foreach($r as $k=>$v)foreach($v as $ka=>$va){
 	$bt=self::viewone($id,$va[2]);
 	$rt[$k][]=divc('row',divc('cell',$va[1]).divb($bt,'cell','edt'.$va[2]));}

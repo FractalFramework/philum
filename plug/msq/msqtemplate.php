@@ -16,7 +16,7 @@ if($r)foreach($r as $k=>$v){$tpl=$tmp;
 		else $tpl=str_replace(['_'.$i,'_'.$mnu[$i]],'',$tpl);}}
 	else $tpl=str_replace(['_0','_'.$mnu],$v,$tpl);
 	$tpl=str_replace('_key',$k,$tpl);
-	$ret.=conb::parse($tpl,'','sconn');}
+	$ret.=conb::parse($tpl,'sconn');}
 return conn::parser($ret);}
 
 static function read($nod,$p){

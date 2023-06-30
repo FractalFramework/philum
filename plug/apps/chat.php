@@ -20,7 +20,7 @@ if($r){$r=array_reverse_b($r,50); $ret='';
 foreach($r as $k=>$v){$erz=''; $msg=$v[2];
 	if($nm==$v[1] or auth(6))$erz=lj($c,'cht'.$p.'_cha,erz___'.$p.'_'.$k,'(x)');
 	$bt=btn('popbt',$v[1]).' '.btn($c.'2',mkday($v[0],'ymd:Hi')).$erz;
-	//$msg=conb::parse($msg,'','sconn2');
+	//$msg=conb::parse($msg,'sconn2');
 	$msg=conn::read($msg,'','');
 	$ret.=divc('track',$bt.$msg);}}
 return scroll($r,$ret,7);}

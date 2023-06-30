@@ -42,7 +42,7 @@ $p=$prm[0]??$p; $ret=''; $r=explode(';',$p);
 foreach($r as $k=>$v)$ret.=self::callmod($v);
 return $ret;}
 
-static function block($va,$cr,$bt=''){$ath=auth(6); $g=get('read'); $c=get('frm'); //pr(ses::$r['get']);
+static function block($va,$cr,$bt=''){$ath=auth(6); $g=get('read'); $c=get('frm');
 $r=sesr('modc',$va); ses::$r['curdiv']=$va; $rt=[]; $rl=[]; $ret=''; $ik=1; $i=-1; $ni=0;
 if($r)foreach($r as $k=>$v){if(!$v[7] && (!$v[11] or $ath)){//hide/private
 	if($v[9]??'')$rl[$k]=self::btmod('',$v);//bt
@@ -75,7 +75,7 @@ return self::block('content','');}
 static function playcontext($g1,$g2,$g3){
 $g2=(urldecode($g2)); if($n=strpos($g2,'#'))$g2=substr($g2,0,$n);
 geta($g1,$g2); if($g3)geta('dig',$g3);//str::protect_url
-boot::deductions(); boot::define_condition(); boot::define_modc(); $rt=self::blocks(); //pr(ses('cond'));
+boot::deductions(); boot::define_condition(); boot::define_modc(); $rt=self::blocks();
 return implode('',$rt);}
 
 //mod,param,title,condition,command,option,(bloc),hide,template,nobr,div,ajxbtn
@@ -162,7 +162,7 @@ case('clear'):$ret=divc('clear',''); break;
 case('connector'):if($t)$ret=self::title('',$t);
 	if($o=='article')$ret.=tagc('article','justy',conn::read2($p,'',1));
 	else $ret.=conn::read2($p,'',1); break;
-case('conb'):if($p)$ret=conb::parse($p,'','template'); break;
+case('conb'):if($p)$ret=conb::parse($p,'template'); break;
 case('conn'):$ret=conn::connectors($p,$o,'',''); break;
 case('basic'):$ret=cbasic::mod_basic($p,$o); break;
 //lin
@@ -378,13 +378,12 @@ return divc('list',$ret);}
 static function rssj_m($p){
 return self::mdtitle('Rss').rssin::home('rssurl'.($p?'_'.$p:''));}
 
-//page-title//les modules ont leur propres titles
+//page-title
 static function find_navigation($id){$ib=ma::ib_of_id($id);
-if(is_numeric($ib) && $ib!=$id && $ib){//$nav=self::pane_art($ib,'');
-//$nav=tagb('h4',lka(urlread($ib),pictxt('sup',ma::suj_of_id($ib))).' '.ma::popart($ib));
+if(is_numeric($ib) && $ib!=$id && $ib){
 $t=pictxt('sup',ma::suj_of_id($ib));
 if(rstr(149))$lk=lh('/'.$ib,$t); else $lk=lk(urlread($ib),$t);
-$nav=tagb('h4',$lk.' '.ma::popart($ib));
+$nav=tagb('h4',ma::popart($ib).' '.$lk);
 if($ib!=ses('read'))return self::find_navigation($ib).$nav;}}
 
 static function page_titles($o='',$rid=''){//$o=parent

@@ -21,9 +21,9 @@ return $rt;}
 
 static function see2($p){$rt=[];
 $sq=$p?['child'=>$p]:[];
-$r=sql('parent,child','qdyar','kk',$sq); //pr($r);
+$r=sql('parent,child','qdyar','kk',$sq);
 self::$rr=$r;
-foreach($r as $k=>$v)$rt[$k]=self::iter2($k); //pr($rt);
+foreach($r as $k=>$v)$rt[$k]=self::iter2($k);
 return tree($rt,2,1);}
 
 #see
@@ -34,30 +34,30 @@ return $rt;}
 
 static function see($p){$rt=[];
 $sq=$p?['parent'=>$p]:[];
-$r=sql('child,parent','qdyar','kk',$sq); //pr($r);
+$r=sql('child,parent','qdyar','kk',$sq);
 self::$rr=$r;
-foreach($r as $k=>$v)$rt[$k]=self::iter($k); //pr($rt);
+foreach($r as $k=>$v)$rt[$k]=self::iter($k);
 return tree($rt,1,1);}
 
 static function vue(){$rm=[]; $rw=[]; $rd=[]; $rn=[];
-//$r=sqb('distinct(dir)','qdya','rv',''); $rk=array_flip($r); //pr($rk);
-//$r=sqb('dir,func','qdya','kk',''); //pr($r);
-//foreach($r as $k=>$v)foreach($v as $ka=>$va)$rm[$ka]=$rk[$k]; //pr($rm); //moodularity_class
+//$r=sqb('distinct(dir)','qdya','rv',''); $rk=array_flip($r);
+//$r=sqb('dir,func','qdya','kk','');
+//foreach($r as $k=>$v)foreach($v as $ka=>$va)$rm[$ka]=$rk[$k]; //moodularity_class
 $r=sqb('page,func as nb','qdya','k','order by nb desc');
-arsort($r); $rk=array_keys($r); $rk=array_flip($rk); //pr($rk);//classes ordered by popularity
-$r=sqb('dir,page,func,uses','qdya','',''); //pr($r);
+arsort($r); $rk=array_keys($r); $rk=array_flip($rk);//classes ordered by popularity
+$r=sqb('dir,page,func,uses','qdya','','');
 foreach($r as $k=>$v){$kb=($v[0]!='/'?$v[1].'::':'').$v[2];
 	$rm[$kb]=$rk[$v[1]];//moodularity_class2
 	$rw[$kb]=$v[3];}//weight
 //pr($rm);
 //pr($rw); 
-$r=sqb('parent,child','qdyar','kk',''); //pr($r);
+$r=sqb('parent,child','qdyar','kk','');
 $ra[]=['Id','Label','timeset','modularity_class']; $i=0; $rd=[];
 $rb[]=['Source','Target','Type','Id','Label','Timeset','Weight'];
-foreach($r as $k=>$v){$rd[$k]=$i++; foreach($v as $ka=>$va){$rd[$ka]=$i++; $rn[$ka][]=1;}} //pr($rd); //id,weight
-foreach($rd as $k=>$v)$ra[]=[$v,$k,'',$rm[$k]]; //pr($ra);
+foreach($r as $k=>$v){$rd[$k]=$i++; foreach($v as $ka=>$va){$rd[$ka]=$i++; $rn[$ka][]=1;}} //id,weight
+foreach($rd as $k=>$v)$ra[]=[$v,$k,'',$rm[$k]];
 foreach($r as $k=>$v){
-	foreach($v as $ka=>$va)$rb[]=[$rd[$k],$rd[$ka],'undirected','','','',$rw[$k]];} //pr($rb); count($rn[$k])
+	foreach($v as $ka=>$va)$rb[]=[$rd[$k],$rd[$ka],'undirected','','','',$rw[$k]];} count($rn[$k])
 $ret=csvfile('funcs',$ra);
 $ret.=csvfile('funcs_r',$rb);
 $ret.=tabler($ra).tabler($rb);
@@ -67,7 +67,7 @@ return $ret;}
 static function save2($r){$db='qdyar';
 sql::trunc($db); $rt=[];
 $rh=['parent','child'];
-foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[]=[$k,$va]; //pr($rt);
+foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[]=[$k,$va];
 if($rt)sql::sav2($db,$rt,1);}
 
 static function unused($r,$rb){$rt=[];
@@ -92,11 +92,11 @@ foreach($r as $k=>$v){[$a,$b,$d]=$v;
 return $rt;}
 
 static function tree($p,$o){$rt=[]; $rb=[]; $rc=[]; $ry=[];
-$r=sqb('dir,page,func,code','qdya','','order by dir'); //pr($r);
+$r=sqb('dir,page,func,code','qdya','','order by dir');
 foreach($r as $k=>$v){$a=$v[0]=='/'?'':$v[1]; $b=$v[2];
-	$rb[]=[$a,$b,$v[3]];} //pr($rb);
-$rt=self::arbo($rb); //pr($rt);
-//$ru=self::unused($rb,$rt); pr($ru);
+	$rb[]=[$a,$b,$v[3]];}
+$rt=self::arbo($rb);
+//$ru=self::unused($rb,$rt);
 if(self::$save)self::save2($rt);
 //foreach($rr as $k=>$v)foreach($v as $ka=>$va)
 //	if(isset($rt[$ka]))$ry[$k][$ka]=self::iter($ka); pr($ry);
@@ -107,29 +107,29 @@ return $ret;}
 
 //see
 static function funcsee($r){$rb=[];$rt=[];//child=>parent
-foreach($r as $k=>$v)foreach($v as $ka=>$va)$rb[$k][$va]=1; //pr($rb);
+foreach($r as $k=>$v)foreach($v as $ka=>$va)$rb[$k][$va]=1;
 self::$rr=$rb;
-foreach($rb as $k=>$v)$rt[$k]=self::iter($k); //pr($rt);
+foreach($rb as $k=>$v)$rt[$k]=self::iter($k);
 return $rt;}
 
 //arbo
 static function functree($r){$rt=[];//page=>func=>dr/page=>content
 foreach($r as $k=>$v)foreach($v as $ka=>$va){$a=strpos($k,'/')?between($k,'/','.'):'';
-	$rt[]=[$a,$ka,$va[1]];} //pr($rt);
+	$rt[]=[$a,$ka,$va[1]];}
 return self::arbo($rt);}
 
 //save
-static function save($p,$r){//echo $p;
+static function save($p,$r){/
 $db=self::$dr=='progb'?'qdya':'qdyb';
 if(self::$n==0)sql::trunc($db);
 self::$n+=1; $rt=[];
 if(strpos($p,'/'))[$dr,$p]=explode('/',$p); else [$dr,$p]=['/',$p];
 $rh=['dir','page','func','vars','code'];
-foreach($r as $k=>$v)$rt[]=[$dr,$p,$k,$v[0],$v[1],self::$rb[$k]]; //pr($rt);
+foreach($r as $k=>$v)$rt[]=[$dr,$p,$k,$v[0],$v[1],self::$rb[$k]];
 if($rt)sql::sav2($db,$rt,1);}
 
 static function find_func($d,$fc){
-$p=strpos($d,'function '.$fc.'('); //echo $fc.' ';
+$p=strpos($d,'function '.$fc.'(');
 $d=substr($d,$p);
 $vars=between($d,'(',')');
 $p=str_replace(["'{'","'}'"],['(ac1)','(ac2)'],$d);
@@ -138,7 +138,7 @@ $d=substr($d,$p);
 $n=strlen($d); $a=0; $b=0;
 for($i=0;$i<$n;$i++){$c=substr($d,$i,1);
 if($c=='{')$a+=1; elseif($c=='}')$b+=1; if($a-$b==0)$n=$i;}
-$func=substr($d,1,$n-1); //eco($func);
+$func=substr($d,1,$n-1);
 //$func=html_entity_decode($func);
 $func=utf8enc($func);
 $func=trim($func);
@@ -148,8 +148,8 @@ return [$vars,$func];}
 #list
 static function funcnt($p,$r){//fonctions contents
 //if(self::$n==2)return;
-$pg=strto($p,'.'); $rt=[]; //pr($r);
-$va=self::$r[$p]; //eco($va);
+$pg=strto($p,'.'); $rt=[];
+$va=self::$r[$p];
 foreach($r as $k=>$v){//fc,occurrences
 	$kb=strfrom($k,'::');
 	$vb=self::find_func($va,$kb);
@@ -169,12 +169,12 @@ foreach($r as $k=>$v)$n+=substr_count($va,$v.$a.'(');
 return $n;}
 
 static function occurrences($dr,$r){$rt=[];
-$a=strpos($dr,'/')?between($dr,'/','.').'::':''; //echo $a.' ';
+$a=strpos($dr,'/')?between($dr,'/','.').'::':'';
 foreach($r as $k=>$v){//0=>func
 	foreach(self::$r as $ka=>$va){$n=0; //console.php 
 		if(!$a)$n=self::count_cases($v,$va);//not class
 		if($a)$n+=substr_count($va,$a.$v.'(');
-		$kb=between($ka,'/','.').'::'; //echo $kb.'='.$a.' ';
+		$kb=between($ka,'/','.').'::';
 		if($a==$kb)$n+=substr_count($va,'self::'.$v.'(');
 		if($n)$rt[$a.$v][$ka]=$n;}}
 return $rt;}
@@ -203,12 +203,12 @@ static function rapport($r,$p){
 return tabler($r[$p],'',1);}
 
 static function build($p,$o){
-$r=explore(self::$dr); //pr($r);
-$ra=self::capture($r); $rb=[]; $rc=[]; $rd=[]; $ret=''; //pr($ra); //dr/page=>func
-$rb=self::funcount($ra); //pr($rb); //dr/page=>func=>dr/page=>nb
-$rc=self::funclist($rb,0); //pr($rc); //page=>func=>content
-$rd=self::functree($rc); //pr($rd);
-//$re=self::funcsee($rd); //pr($re);
+$r=explore(self::$dr);
+$ra=self::capture($r); $rb=[]; $rc=[]; $rd=[]; $ret=''; //dr/page=>func
+$rb=self::funcount($ra); //dr/page=>func=>dr/page=>nb
+$rc=self::funclist($rb,0); //page=>func=>content
+$rd=self::functree($rc);
+//$re=self::funcsee($rd);
 if($p)$ret=self::rapport($rd,$p);
 if(self::$save)$ret=self::state($o);
 return $ret;}

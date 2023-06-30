@@ -33,10 +33,10 @@ if(substr($v[1],0,1)!='_' && $v[7]){$i++;
 	$rt[$k]['item']['guid isPermaLink="true"']=$url;
 	$rt[$k]['item']['pubDate']=date('r',$v[0]);
 	/**/$msg=sql('msg','qdm','v','id="'.$k.'"');
-	$msg=conb::parse($msg,'b i h c s','corrfast');
+	$msg=conb::parse($msg,'corrfast','b i h c s');
 	if($prw!='full')$msg=substr($msg,0,str::kmax_nb(400,$msg));
 	//$msg=conn::read($msg,$prw,$k,'nl');
-	$msg=conb::parse($msg,'','delconn');
+	$msg=conb::parse($msg,'delconn');
 	$msg=self::parsetxt($msg);
 	$rt[$k]['item']['description']=$msg;
 	//$rt[$k]['item']['content']=$txt;
@@ -87,7 +87,7 @@ return $ret;}
 static function home($hub,$prw){
 $rebuild=1; $cache=1;
 if(!$hub)return slctmnu(ses('mn'),'/rss/','','','','kv');
-$r=msql::read('',nod('cache'),1); //pr($r);//$nb_arts=count($r);
+$r=msql::read('',nod('cache'),1);//$nb_arts=count($r);
 $lastid=ma::lastartid(); $last_art=$r[$lastid];
 $newest=key($r); $oldest=array_pop($r);
 $nb_days=round((time()-$oldest[0])/86400);

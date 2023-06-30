@@ -101,7 +101,7 @@ if($rd)foreach($rd as $k=>$v){$art=''; $trk='';
 static function maint_trn2(){
 $r=sql('id,txt','trn','','');//id=3636
 foreach($r as $k=>$v){$d=$v[1]; $hash1=md5($d);
-	//$d=conb::parse($d,':q','');
+	//$d=conb::parse($d,'',':q');
 	/*if(strpos($d,'twitter.com/hashtag/')){
 		echo $deb=strpos($d,'[https://twitter.com/hashtag/');
 		$end1=strpos($d,'?',$deb);

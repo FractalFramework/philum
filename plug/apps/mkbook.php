@@ -61,7 +61,7 @@ if($r)foreach($r as $k=>$v){$i=$k+1;
 	$rt.=tagb('i',date('d/m/Y',(int)$v[1])).' ';
 	$rt.=tagb('b','#'.$v[0]).br();
 	$txt=str_replace(':video',':videourl',$v[3]);
-	$txt=conb::parse($txt,'epub','sconn2');
+	$txt=conb::parse($txt,'sconn2','epub');
 	$txt=str_replace('œ','&oelig;',$txt);
 	$txt=self::enc($txt);
 	$txt=embed_p($txt);

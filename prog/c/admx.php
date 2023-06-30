@@ -129,7 +129,7 @@ if($o=='sbmfrom')$r=self::sbmfrom($d);
 if($o=='deft')self::deft();
 return self::desktop($id,$ob,'',$r);}
 
-/**/static function sbmadd($id,$d){$ver=''; $rb=[]; //pr($d);
+/**/static function sbmadd($id,$d){$ver=''; $rb=[];
 	$top=hlpbt('apps_add').' '; if($d)$ver='_'.$d;
 	$top.=ljp(att(nms(104)),'sbm_submds____'.$id.'_deft',picto('update')).' ';
 	$top.=msqbt('system','default_apps').' '; 
@@ -148,7 +148,7 @@ return $top.tabs($rb).divc('clear','');}
 static function sbmedt($p,$id,$cnd){$rid=randid(); $r=self::locapps($p);
 $type=$r['type']??''; $process=$r['process']??'';
 if($type=='mod')$arb=msql::row('system','admin_modules',$process);
-$rh=msql::row('system','admin_tools',$type); $ri=[]; $rb=[]; $ret=''; //pr($r);
+$rh=msql::row('system','admin_tools',$type); $ri=[]; $rb=[]; $ret='';
 foreach($r as $k=>$v){$ri[]=$k.$rid; $hk=$rh[$k]??'';
 if($hk!='0'){
 	if($k=='hide')$rb[$k]=checkbox_j($k.$rid,$v,''); 
@@ -343,7 +343,7 @@ case('article'):
 //del_empty//$hid
 foreach($rds as $k=>$v)if(!$rc[$v] or $rx[$v]??''){$hid.=hidden($rvs[$k],$rm[$v]); unset($rc[$v]);}
 //togs
-$rg=['cache','hide','bt','div','prv','pop']; //pr($rds);
+$rg=['cache','hide','bt','div','prv','pop'];
 foreach($rg as $k=>$v)if($rc[$v]??''){$tog.=$rc[$v].' '; unset($rc[$v]);} $rc['toggle']=$tog;
 //add hlp
 foreach($rc as $k=>$v)if($rh[$k]??'')$rc[$k].=' '.$rh[$k];

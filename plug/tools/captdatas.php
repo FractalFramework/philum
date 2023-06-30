@@ -12,8 +12,8 @@ else $rec=between($d,$r['start'],$r['end']);
 $reb=conv::call($rec); //echo $reb;
 $pos=strpos($reb,'[');//ici la clef est le premier élément du tableau 2D
 if($pos!==false){$ka=trim(substr($reb,0,$pos)); $reb=substr($reb,$pos);}
-//$reb=conb::parse($reb,'striplink','correct');
-$reb=conb::parse($reb,'','delconn'); //echo $reb;
+//$reb=conb::parse($reb,'correct','striplink');
+$reb=conb::parse($reb,'delconn');
 //$rb=inject_defs('',$reb);
 $rb=explode_r($reb,'¬','|'); //pr($rb);
 if($r)foreach($rb as $k=>$v)if(isset($v[1]))$rc[$v[0]]=$v[1]; //echo $o;

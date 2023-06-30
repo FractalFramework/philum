@@ -62,7 +62,7 @@ return [$r,$r1];}
 static function head($p,$r1){$erz='';
 if(strfrom($r1[3]??'','/')==ses('USE'))
 	$erz=lj('txtsmall','chtx'.$p.'_chatxml,sav___'.$p.'_1','(x)');
-$msg=$r1[2]??''; $msg=conb::parse($msg,'','sconn2'); 
+$msg=$r1[2]??''; $msg=conb::parse($msg,'sconn2'); 
 return divb($erz.nl2br(stripslashes($msg)),'bkg','border-color:white; padding:4px;');}
 
 static function read($p,$r){$c='txtsmall'; $nm=ses('muse'); $use=ses('USE');
@@ -72,7 +72,7 @@ if($use && ($v[1]==$nm or $p==$use))
 if(strfrom($v[3],'/')==$use)
 	$ml=lj('popbt','popup_chatxml,invitx___'.$p.'_'.ajx($v[3]),'@').'';
 $bt=lkt('popbt','http://'.$v[3],$v[1]).' '.btn($c.'2',mkday($v[0],'ymd:hi'));
-//$msg=conb::parse(html_entity_decode($msg),'','sconn2');
+//$msg=conb::parse(html_entity_decode($msg),'sconn2');
 $msg=conn::read($msg,'','');
 return divc('track',$ml.$bt.$erz.br().nl2br(stripslashes($msg)));}}
 

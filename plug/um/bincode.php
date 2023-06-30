@@ -4,7 +4,7 @@ static function bin_answ(){return ['aa'=>'001011010111','am'=>'000000100101','ab
 
 //encode
 static function cleanup($d){
-$d=conb::parse($d,'','delconn');
+$d=conb::parse($d,'delconn');
 $d=str_replace('&nbsp;',' ',$d);
 //$d=str_replace(['&nbsp;',"'",'"','-','/',',',';',':','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','|','%','&'],'',$d);
 return $d;}

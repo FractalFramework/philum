@@ -7,7 +7,7 @@ return art::output_trk(ma::read_idy($g1,'ASC'));}
 
 static function delconn($g1){$d=sql('msg','qdm','v',$g1); 
 $d=html_entity_decode($d,true,ses::$enc);
-$d=conb::parse($d,'','delconn'); return str::clean_lines($d);}
+$d=conb::parse($d,'delconn'); return str::clean_lines($d);}
 
 static function editbrut($g1,$g2,$prm){
 $p1=$prm[0]??''; if($p1)adm::artsav($p1,$g1);
@@ -22,9 +22,9 @@ static function poptxt($g1){return divb(sesr('delaytxt',$g1),'twit','','display:
 static function popfile($g1){return nl2br(str::cleanmail(read_file($g1)));}
 static function popread($g1){return ma::read_msg($g1,3);}
 static function popmsql($g1,$g2,$g3){$r=msql::mul($g1,$g2,$g3,1); if($r)return divtable($r,1);}
-static function popmsqt($g1,$g2,$g3,$g4){$ret=''; 
-$rt=msql::row($g1,$g2,$g3,1); if(is_array($rt))$rt=$rt[$g4?$g4:0]??'';
-if(auth(6))$ret=msqbt($g1,$g2,$g3).' '; if($rt)$ret.=nl2br($rt);
+static function popmsqt($g1,$g2,$g3,$g4){$ret=''; $d='';
+$r=msql::row($g1,$g2,$g3,is_numeric($g4)?0:1); if($r)$d=$r[$g4?$g4:0]??'';
+if(auth(6))$ret=msqbt($g1,$g2,$g3).' '; if($d)$ret.=nl2br($d);
 ses::$r['popm']=$g2.' '.$g3.' '.$g4; return $ret;}
 static function yesno($g1,$g2){return offon($g1,$g2);}
 static function togno($g1,$g2){return togon($g1,$g2);}

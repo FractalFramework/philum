@@ -20,8 +20,8 @@ return self::datas_old($d,$t,$r);}
 
 //2
 static function read_xml($f){
-$rss=@simplexml_load_file($f); //pr($rss);
-if(!$rss)return; //p($rss);
+$rss=@simplexml_load_file($f);
+if(!$rss)return;
 $xml=$rss->channel->item; if(!$xml)$xml=$rss->channel->entry;
 if(!$xml)$xml=$rss->items; if(!$xml)$xml=$rss->feed; if(!$xml)$xml=$rss->entry;
 return $xml?$xml:$rss;}

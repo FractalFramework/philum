@@ -47,7 +47,7 @@ static function friend_art($o){$id=ses('read');
 if($id){$id=ma::id_of_suj($id); $in=ma::read_msg($id,1,'');}
 if(is_numeric($id))return divc($o,$in);}
 
-static function timetravel(){$r=pop::timetravel(); pr($r);
+static function timetravel(){$r=pop::timetravel();
 $travel=date('Y',ses('daya')); $ret='';
 foreach($r as $k=>$v){$c=$k==$travel?'active':''; $ic=$travel==$k?'clock':'hour'; $yr=date('Y',$v);
 	$ret.=lj('','content_api___maxtime:'.$v.',t:'.$yr,pictxt($ic,$yr));}

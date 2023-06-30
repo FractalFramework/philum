@@ -1,7 +1,7 @@
 <?php 
 class conb{
 
-static function parse($msg,$op,$g){if(!$msg)return;
+static function parse($msg,$g,$op=''){if(!$msg)return;
 $st='['; $nd=']'; $deb=''; $mid=''; $end='';
 $in=strpos($msg,$st);
 if($in!==false){
@@ -14,10 +14,11 @@ if($in!==false){
 				$out+=strpos(substr($msg,$out_tmp),$nd)+1;
 				$nb_in=substr_count(substr($msg,$in+1,$out),$st);}
 			$mid=substr($msg,$in+1,$out);
-			$mid=self::parse($mid,$op,$g);}
+			$mid=self::parse($mid,$g,$op);}
 		else $mid=substr($msg,$in+1,$out);
 		$mid=match($g){
 		'template'=>self::template($mid,$op),
+		'json'=>self::json($mid,$op),
 		'sconn'=>self::sconn($mid,$op),
 		'sconn2'=>self::sconn2($mid,$op),
 		'sconn3'=>self::sconn3($mid),
@@ -39,21 +40,21 @@ if($in!==false){
 		'svg'=>svg::conn($mid),
 		'md'=>self::md($mid)};
 		$end=substr($msg,$in+1+$out+1);
-		$end=self::parse($end,$op,$g);}
+		$end=self::parse($end,$g,$op);}
 	else $end=substr($msg,$in+1);}
 else $end=$msg;
 if($g=='extractimg' or $g=='extractlnk' or $g=='importim')return $mid.$end;
 return $deb.$mid.$end;}//clean_nb
 
 static function read($d){
-$d=self::parse($d,'','sconn');
+$d=self::parse($d,'sconn');
 if($d)return nl2br($d);}
 
 static function png2jpg($id,$o=''){
 $d=sql('msg','qdm','v',$id); get('read',$id);
-if(rstr(48))$d=conb::parse($d,'webp2jpg','correct');
-if($o)$d=conb::parse($d,'forcewebp2jpg','correct');
-return conb::parse($d,'png2jpg','correct');}
+if(rstr(48))$d=conb::parse($d,'correct','webp2jpg');
+if($o)$d=conb::parse($d,'correct','forcewebp2jpg');
+return conb::parse($d,'correct','png2jpg');}
 
 #templater
 static function build($d,$r){
@@ -62,7 +63,7 @@ foreach($r as $k=>$v){$va='_'.strtoupper($k); $ra[$k]=$va;
 	else $r[$k]=self::read($v);}
 $d=str::repair_tags($d); $d=delsp($d); $d=str::clean_lines($d); $d=delnl($d);
 //$d=preg_replace('/(\n){1,}/',"\n",$d);
-$d=self::parse($d,'','template');
+$d=self::parse($d,'template');
 return str_replace($ra,$r,$d);}//embed_p($d);
 
 //calls with variables
@@ -71,7 +72,7 @@ foreach($r as $k=>$v)$ret.=self::build($d,$v);
 return $ret;}
 
 static function call2($d,$op=''){
-$ret=self::parse($d,$op,'sconn2');
+$ret=self::parse($d,'sconn2',$op);
 $ret=embed_p($ret);
 $ret=nl2br($ret);
 return $ret;}
@@ -108,7 +109,7 @@ elseif($op==$c){
 	elseif($c==':list')return str_replace('|',' ',$p);
 	else{//$na=strpos($da,'|'); $nb=strpos($da,']');//used for some errors
 		//if($nb>$na)return substr($da,0,$nb+1); else//kill long texts
-		return $p;}}
+		return $p.($o?'|'.$o:'');}}
 return '['.$da.']';}
 
 #conndefs
@@ -394,6 +395,12 @@ if(is_img($d)){$ret='![]('.gcim($d).')';}
 if(substr($p,0,4)=='http' or substr($p,0,2)=='//')$ret=($o?'['.$o.']':'').'('.$p.')';
 return $ret?$ret:$da;}
 
+#json//tst
+static function json($da){
+[$p,$o,$c]=unpack_conn($da);
+if(substr($p,0,1)!='{')$p='{'.$p.']';
+return '{0:"'.$c.'",1:"'.$o.'",2:'.$p.'}';}
+
 #templates
 static function template($da,$o,$b=''){//d|p:c
 [$d,$c,$xt]=getconn($da); [$p,$o]=cprm($d);//if(!$da)return;
@@ -437,8 +444,8 @@ if(!$ret)$ret=match($c){
 ':var'=>$o?ses::$r[$o]:'',
 ':setvar'=>self::setvar($o),
 ':setvars'=>self::setvars($o),
+':cbasic'=>cbasic::exrun($p,$o,$c),
 default=>$da};
-//if(!$ret)$ret=cbasic::exrun($p,$o,$c);
 return $ret;}
 
 static function setvar($d){$n=strpos($d,'=');
@@ -452,8 +459,8 @@ static function pconns($p){return msql::val('','public_connectors',$p);}
 #interface
 static function calli($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
-if($o)return self::parse($p,'','template');
-return self::parse($p,'','sconn2');}
+if($o)return self::parse($p,'template');
+return self::parse($p,'sconn2');}
 
 static function home($p,$o){
 $rid='plg'.randid();

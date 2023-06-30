@@ -22,41 +22,33 @@ sesk('tst',$chrono); $res=average(ses('tst'));
 ses::$adm['chrono'].=divb($res.playr(array_reverse(ses('tst'))),'small');
 return $ret;}
 
+static function jron($r){$rt=[];
+return $rt;}
+
+static function jcon($d){
+$d=conb::parse($d,'json');
+return $d;}
+
 #templates
 static function templates($p,$o){$ret=''; $d='';
-//sources
-$ra=['id'=>1,'cat'=>'cat','back'=>'<-','url'=>'uu','suj'=>'title','artedit'=>'@','artlang'=>'fr','float'=>'','nbarts'=>'','msg'=>'hello'];
-//pr($ra);
-
-
-//$r=view::art();
+$id=230425;
+$r=view::read();//template
 //$d=view::mkconn($r);
-//echo playr($r,0,1);
-//echo $d;
-
-$id=230342;
-//$ret=art::test($id);
-
-////$d=vue::build($d,$ra);
-//$d=cltmp2::patch('art');
-//eco($d);
-
+$ra=art::test($id,'');
+//$r=self::jron($r);
+//$d=self::jcon($d);
+$d=json_encode($r);
+$r=json_decode($d,true);
 chrono();
-/*
-$d=cltmp::art();
-for($i=0;$i<100;$i++)
-$d=conb::build($d,$ra);
-*/
-//$d=conb::parse($d,'','template');
-
-/*
-$r=view::art();
-for($i=0;$i<100;$i++)
-$d=view::call($r,$ra);*/
-
+//for($i=0;$i<100;$i++)
+$d=view::call($r,$ra);
+////$d=vue::build($d,$ra);
+//$d=cltmp2::patch('art');//convert to {var}
+//$d=conb::parse($d,'template');
+//$d=conb::build($d,$ra);
 echo chrono('e');
+echo playr($r,0,1);
 eco($d);
-
 return $ret;}
 
 #call

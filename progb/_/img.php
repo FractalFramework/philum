@@ -19,7 +19,7 @@ return conn::mkimg($b,3,920,$id,'');}
 
 static function rewrite($d){$im='img/'.$d;
 [$w,$h,$ty]=getimagesize($im);
-self::remini($im,$im,$w,$h,'');
+self::build($im,$im,$w,$h,'');
 $bt=btn('txtyl',$w.'-'.$h.':'.fsize($im));
 return img($im).$bt;}
 
@@ -63,7 +63,7 @@ static function reduce($d,$o,$id=''){$im='img/'.$d;
 [$wo,$ho,$ty]=getimagesize($im);
 if($o){$w=$wo/2; $h=$ho/2;}
 else [$w,$h]=self::sz($wo,$ho,940,940);
-self::remini($im,$im,$w,$h,'');
+self::build($im,$im,$w,$h,'');
 if($id)return conn::mkimg($d.'?'.$w,3,920,$id,'');}
 
 static function png2jpg($a,$id){
@@ -106,14 +106,11 @@ if($m===false)$m=rstr(16)?1:0;
 if(!$x)$x=ses('rebuild_img');
 return [$w,$h,$m,$x];}
 
-static function remini($im1,$im2,$w,$h,$m){
-return make_mini($im1,$im2,$w,$h,$m); opcache($im2);}
-
 static function build_thumb($img,$thumb,$x=''){
 if(is_file($img) && (!file_exists($thumb) or $x)){
 	//[$w,$h]=expl('/',prmb(27)); $m=$_SESSION['rstr'][16]?0:1;
 	[$w,$h,$m,$x]=self::thumbprm('',false,$x);
-	self::remini($img,$thumb,$w,$h,$m);}
+	self::build($img,$thumb,$w,$h,$m);}
 return $thumb;}
 
 static function thumb($img,$x=''){//if(!$x)$x=ses('rebuild_img');
@@ -150,6 +147,40 @@ if($im && is_file('img/'.$im))return lj('','popup_popart__3_'.$id.'_3',self::mak
 static function outputimg($r){$ret=''; if($r)foreach($r as $id=>$ra){
 if($ra)foreach($ra as $k=>$im)if(is_img($im))$ret.=self::imgartlk($im,$id);}
 return $ret;}
+
+#build
+//force LH, cut and center
+static function scale($w,$h,$wo,$ho,$s){$hx=$wo/$w; $hy=$ho/$h; $ya=0; $yb=0; $xa=0; $xb=0;
+if($s==2){$xb=($wo/2)-($w/2); $yb=($ho/2)-($h/2); $wo=$w; $ho=$h;}//center
+elseif($hy>$hx && $s){$yb=($ho-($h*$hx))/2; $ho=$ho/($hy/$hx);}//reduce_h
+elseif($hy<$hx && $s){$xb=($wo-($w*$hy))/2; $wo=$wo/($hx/$hy);}//reduce_w
+elseif($hy<$hx){$xb=($wo-($w*$hy))/2; $wo=$wo/($hx/$hy);}//adapt_h (no_crop)
+elseif($hy && $hx){$xb=0; $ho=$ho/($hy/$hx);}//adapt_w
+$r=[$w,$h,$wo,$ho,$xb,$yb]; foreach($r as $k=>$v)if($v)$r[$k]=round($v);
+return $r;}
+
+static function imgalpha($img){
+$c=imagecolorallocate($img,255,255,255); imagecolortransparent($img,$c);
+imagealphablending($img,false);
+imagesavealpha($img,true);}
+
+static function build($in,$out,$w,$h,$s){
+if(!is_file($in) && substr($in,0,4)!='http')return; [$wa,$ha]=[440,320];
+$w=$w?$w:$wa; $h=$h?$h:$ha; [$wo,$ho,$ty]=getimagesize($in); $xa=0; $ya=0;
+[$w,$h,$wo,$ho,$xb,$yb]=self::scale($w,$h,$wo,$ho,$s);
+$img=imagecreatetruecolor($w,$h);
+$c=imagecolorallocate($img,255,255,255); imagefill($img,0,0,$c);
+if($ty==2){$im=@imagecreatefromjpeg($in);
+	imagecopyresampled($img,$im,$xa,$ya,$xb,$yb,$w,$h,$wo,$ho);
+	imagejpeg($img,$out,100);}
+elseif($ty==1){$im=@imagecreatefromgif($in); self::imgalpha($img);
+	imagecopyresampled($img,$im,$xa,$ya,$xb,$yb,$w,$h,$wo,$ho);
+	imagegif($img,$out);}
+elseif($ty==3){$im=@imagecreatefrompng($in); self::imgalpha($img);
+	if($im)imagecopyresampled($img,$im,$xa,$ya,$xb,$yb,$w,$h,$wo,$ho);
+	imagepng($img,$out);}
+opcache($out);
+return $out;}
 
 #graph
 static function imgclr($im,$d,$a=''){$r=hexrgb_r($d);

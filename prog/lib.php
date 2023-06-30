@@ -655,38 +655,6 @@ if($w)$w.='px'; else $w='100%'; if($h)$h=' height="'.$h.'px"'; else $h=' height=
 return '<video src="'.$d.'" width="'.$w.'"'.$h.$ty.' controls autobuffer></video>';}//loop
 
 #img
-//force LH, cut and center
-function scale_img($w,$h,$wo,$ho,$s){$hx=$wo/$w; $hy=$ho/$h; $ya=0; $yb=0; $xa=0; $xb=0;
-if($s==2){$xb=($wo/2)-($w/2); $yb=($ho/2)-($h/2); $wo=$w; $ho=$h;}//center
-elseif($hy>$hx && $s){$yb=($ho-($h*$hx))/2; $ho=$ho/($hy/$hx);}//reduce_h
-elseif($hy<$hx && $s){$xb=($wo-($w*$hy))/2; $wo=$wo/($hx/$hy);}//reduce_w
-elseif($hy<$hx){$xb=($wo-($w*$hy))/2; $wo=$wo/($hx/$hy);}//adapt_h (no_crop)
-elseif($hy && $hx){$xb=0; $ho=$ho/($hy/$hx);}//adapt_w
-$r=[$w,$h,$wo,$ho,$xb,$yb]; foreach($r as $k=>$v)if($v)$r[$k]=round($v);
-return $r;}
-
-function make_mini($in,$out,$w,$h,$s){
-if(!is_file($in) && substr($in,0,4)!='http')return; [$wa,$ha]=[440,320];
-$w=$w?$w:$wa; $h=$h?$h:$ha; [$wo,$ho,$ty]=getimagesize($in); $xa=0; $ya=0;
-[$w,$h,$wo,$ho,$xb,$yb]=scale_img($w,$h,$wo,$ho,$s);
-$img=imagecreatetruecolor($w,$h);
-$c=imagecolorallocate($img,255,255,255); imagefill($img,0,0,$c);
-if($ty==2){$im=@imagecreatefromjpeg($in);
-	imagecopyresampled($img,$im,$xa,$ya,$xb,$yb,$w,$h,$wo,$ho);
-	imagejpeg($img,$out,100);}
-elseif($ty==1){$im=@imagecreatefromgif($in); imgalpha($img);
-	imagecopyresampled($img,$im,$xa,$ya,$xb,$yb,$w,$h,$wo,$ho);
-	imagegif($img,$out);}
-elseif($ty==3){$im=@imagecreatefrompng($in); imgalpha($img);
-	if($im)imagecopyresampled($img,$im,$xa,$ya,$xb,$yb,$w,$h,$wo,$ho);
-	imagepng($img,$out);}
-return $out;}
-
-function imgalpha($img){
-$c=imagecolorallocate($img,255,255,255); imagecolortransparent($img,$c);
-imagealphablending($img,false);
-imagesavealpha($img,true);}
-
 function img64($d,$m=''){$m=$m?$m:'jpeg';
 return '<img src="data:image/'.$m.';base64,'.base64_encode($d).'" />';}
 function imgmim($d){$typ=exif_imagetype($d); return image_type_to_mime_type($typ);}//image/jpeg

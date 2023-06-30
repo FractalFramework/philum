@@ -6,12 +6,12 @@ static function ptvars(){return 'line:1|line:last|line:title|del:|linewith:|bold
 static function post_treat($v,$t,$p){$todo=explode('|',$p); $ret='';//admin/editmsql
 foreach($todo as $ka=>$va){[$act,$pb]=split_one(':',$va,0);//global
 	if($act=='deltables' && $v)$v=mc::del_tables($v);
-	elseif($act=='delblocks' && $v)$v=conb::parse($v,':q','correct');
-	elseif($act=='stripconn' && $v)$v=conb::parse($v,'stripconn','correct');
-	elseif($act=='striplink' && $v)$v=conb::parse($v,'striplink','correct');
-	elseif($act=='delconn' && $pb && $v)$v=conb::parse($v,':'.$pb,'correct');
-	elseif($act=='replconn' && $pb && $v)$v=conb::parse($v,'replconn-'.$pb,'correct');
-	//elseif($act=='png2jpg' && $v)$v=conb::parse($v,'png2jpg','correct');//need id
+	elseif($act=='delblocks' && $v)$v=conb::parse($v,'correct',':q');
+	elseif($act=='stripconn' && $v)$v=conb::parse($v,'correct','stripconn');
+	elseif($act=='striplink' && $v)$v=conb::parse($v,'correct','striplink');
+	elseif($act=='delconn' && $pb && $v)$v=conb::parse($v,'correct',':'.$pb);
+	elseif($act=='replconn' && $pb && $v)$v=conb::parse($v,'correct','replconn-'.$pb);
+	//elseif($act=='png2jpg' && $v)$v=conb::parse($v,'correct','png2jpg');//need id
 	elseif($act=='cleanmail' && $v)$v=str::cleanmail($v);
 	//elseif($act=='cleanmini' && $v)$v=cleanmini($v);//todo
 	elseif($act=='delqmark' && $v)$v=mc::del_qmark($v);
@@ -45,10 +45,23 @@ $ret=str::repair_tags($ret);
 return trim($ret??'');}
 
 //defcon
+static function detect_defcon($d,$r){
+$dom=dom($d); $rec=dom(''); $ret='';
+if($r)foreach($r as $k=>$v){
+	[$cl,$at,$tag]=opt(':',$v,3); if(!$at)$at='class';
+	//$ret=dom::capture($dom,$v,$rec)->saveHTML();
+	if(strpos($d,$at.'="'.$cl) && !$ret)$ret=$v;
+	//elseif(dom::detect($d,$v) && !$ret)$ret=$v;else
+	//if($ret && !$tx)$d=$v;
+	}
+return $ret;}
+
 static function known_defcon($d){$tx=''; $tt='';
 if($d && strpos($d,'name="generator" content="philum'))return ['::article','','::h1','','','','','','',''];
-$r=msql::col('','public_defcons_tx',0,1); if($r)foreach($r as $k=>$v)if(dom::detect($d,$v) && !$tx)$tx=$v;
-$r=msql::col('','public_defcons_tt',0,1); if($r)foreach($r as $k=>$v)if(dom::detect($d,$v) && !$tt)$tt=$v;
+$r=msql::col('','public_defcons_tx',0,1); 
+$tx=self::detect_defcon($d,$r);
+$r=msql::col('','public_defcons_tt',0,1);
+$tt=self::detect_defcon($d,$r);
 return [$tx,'',$tt,'','','','','','','',''];}
 
 static function recognize_defcon($f){$d=vaccum_ses($f);
@@ -72,7 +85,7 @@ return ['',['','','','','','']];}
 
 #transductor
 static function call($d,$h=''){
-$h=$h?$h:rstr(137);
+$h=$h?$h:sesr('rstr',137);
 $d=str::clean_html($d);
 $d=str::br_rules($d);
 $d=self::interpret_html($d,'',$h);
@@ -104,7 +117,7 @@ if($defs[8])$rec=dom::detect($reb,$defs[8]);//header
 if($defs[0])$rec.=dom::detect($reb,$defs[0]);//content
 //elseif(strpos($reb,'<body')!==false)$rec=self::html_detect($reb,'<body');
 if($defs[4])$rec.=dom::detect($reb,$defs[4]);//footer
-if($defs[10])$rec=dom::del0($rec,$defs[10]);//jump_div
+if($defs[10])$rec=dom::del($rec,$defs[10]);//jump_div
 if($auv){$ret=$auv;//video
 	$rb=web::read($f,1); $suj=$rb[0]; $rec=$rb[1];
 	if($rec)$ret.=n().n().strip_tags($rec);}
@@ -146,6 +159,35 @@ $mail=$r[$sg][3]??''; [$m,$a]=expl('@',$mail,2); $id=ma::lastartid()+1;
 $msg=lkc('',host().urlread($id),helps('suggest_ok'));
 if($mail)mails::send_html($mail,nmx([1,89]),$msg,$_SESSION['qbin']['adminmail'],$id);
 if($m)return '['.nmx([56,88]).' '.$m.':q]'."\n";}
+
+static function detect_anchors($dz,$txt,$src,$rot,$root){$mid='';
+if(substr($dz,0,2)=='nb')$mid=' ['.$txt.':nh]';//spip
+elseif(substr($dz,0,2)=='nh')$mid='['.$txt.':nb] ';
+elseif(substr($dz,0,7)=='_ftnref')$mid='['.$txt.':nb] ';//symfony
+elseif(substr($dz,0,4)=='_ftn')$mid=' ['.$txt.':nh]';
+elseif(substr($dz,0,4)=='_edn')$mid=' ['.$txt.':nh]';
+elseif(substr($dz,0,7)=='_ednref')$mid='['.$txt.':nb] ';
+elseif(substr($dz,0,2)=='fn')$mid=' ['.$txt.':nh]';
+elseif(substr($dz,0,5)=='fnref')$mid='['.$txt.':nb] ';
+elseif(substr($dz,0,16)=='footnote-anchor-')$mid=' ['.substr($dz,16).':nb] ';//substrack
+elseif(substr($dz,0,9)=='footnote-')$mid=' ['.substr($dz,9).':nh]';
+elseif(substr($dz,0,9)=='footnote_')$mid=' ['.substr($dz,9).':nh]';//unz.com
+elseif(substr($dz,0,11)=='footnoteref')$mid='['.$txt.':nb] ';
+//elseif(strpos($dz,'<sup>'))$mid='['.between($txt,'<sup>','</sup>').':nb] ';//ri
+elseif(substr($dz,0,13)=='easy-footnote')$mid=' ['.$txt.':nh]';//ri
+elseif(substr($dz,0,5)=='note_')$mid='['.$txt.':nb] ';//rare
+elseif(substr($dz,0,5)=='foot_')$mid=' ['.$txt.':nh]';
+elseif(substr($src,-3)=='sym')$mid='['.$txt.':nh] ';//openoffice
+elseif(substr($src,-3)=='anc')$mid=' ['.$txt.':nb]';
+elseif(substr($dz,0,4)=='ref-')$mid='['.substr($dz,4).':nh] ';//ucpress.edu
+elseif(substr($dz,0,9)=='xref-ref-')$mid=' ['.subtostr($dz,9,'-').':nb]';
+elseif($dz=='outil_sommaire')$mid=$txt;//cadtm
+elseif(strto($src,'#')==$root)$mid=$txt;
+if(!$mid){if(!$txt)$mid=substr($dz,0);
+	elseif(substr($txt,0,1)=='[' or substr($txt,0,1)=='(')$mid=$txt;
+	elseif($txt && $src!=$txt)$mid='['.$rot.$src.'|'.$txt.']';
+	else $mid='['.$txt.']';}
+return $mid;}
 
 //link-img
 static function treat_link($bin,$txa){
@@ -191,36 +233,10 @@ elseif($src){$src=trim($src);
 	if(strpos($src,'javascript')!==false)$src='';
 	if(strpos($bin,'cs_glossaire')!==false)$mid=$txt;//strend($txt,'|')
 	if(!$srcim && !is_url($rot.$src) && $txt)return $txt;
-	elseif($dz=='outil_sommaire')$mid=$txt;//cadtm
 	elseif($srcim && !$txt)$mid='['.$rot.$src.'] ';//href to img
 	elseif($txt){$sp='';
 		$rt=['youtube.com/watch','youtu.be','dailymotion.com','vimeo.com','rutube.com'];
-		if($dz){//anchors
-			if(substr($dz,0,2)=='nb')$mid=' ['.$txt.':nh]';//spip
-			elseif(substr($dz,0,2)=='nh')$mid='['.$txt.':nb] ';
-			elseif(substr($dz,0,7)=='_ftnref')$mid='['.$txt.':nb] ';//symfony
-			elseif(substr($dz,0,4)=='_ftn')$mid=' ['.$txt.':nh]';
-			elseif(substr($dz,0,4)=='_edn')$mid=' ['.$txt.':nh]';
-			elseif(substr($dz,0,7)=='_ednref')$mid='['.$txt.':nb] ';
-			elseif(substr($dz,0,2)=='fn')$mid=' ['.$txt.':nh]';
-			elseif(substr($dz,0,5)=='fnref')$mid='['.$txt.':nb] ';
-			elseif(substr($dz,0,16)=='footnote-anchor-')$mid=' ['.substr($dz,16).':nb] ';//substrack
-			elseif(substr($dz,0,9)=='footnote-')$mid=' ['.substr($dz,9).':nh]';
-			elseif(substr($dz,0,9)=='footnote_')$mid=' ['.substr($dz,9).':nh]';//unz.com
-			elseif(substr($dz,0,12)=='footnoteref_')$mid='['.$txt.':nb] ';
-			//elseif(strpos($dz,'<sup>'))$mid='['.between($txt,'<sup>','</sup>').':nb] ';//ri
-			elseif(substr($dz,0,13)=='easy-footnote')$mid=' ['.$txt.':nh]';//ri
-			elseif(substr($dz,0,5)=='note_')$mid='['.$txt.':nb] ';//rare
-			elseif(substr($dz,0,5)=='foot_')$mid=' ['.$txt.':nh]';
-			elseif(substr($src,-3)=='sym')$mid='['.$txt.':nh] ';//openoffice
-			elseif(substr($src,-3)=='anc')$mid=' ['.$txt.':nb]';
-			elseif(substr($dz,0,4)=='ref-')$mid='['.substr($dz,4).':nh] ';//ucpress.edu
-			elseif(substr($dz,0,9)=='xref-ref-')$mid=' ['.subtostr($dz,9,'-').':nb]';
-			if(!$mid){if(!$txt)$mid=substr($dz,0);
-				elseif(substr($txt,0,1)=='[' or substr($txt,0,1)=='(')$mid=$txt;
-				elseif($txt && $src!=$txt)$mid='['.$rot.$src.'|'.$txt.']';
-				else $mid='['.$txt.']';}
-			if(strto($src,'#')==$root)$mid=$txt;}
+		if($dz)$mid=self::detect_anchors($dz,$txt,$src,$rot,$root);
 //		elseif(httproot($src)=='t')$mid='['.$rot.$src.'] ';
 		elseif(in_array_p($src,$rt)){//video
 			if(!is_img($txt) && !is_url($txt))$txb=$txt;// && !ishttp($txt)

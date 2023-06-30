@@ -6,7 +6,7 @@ static function mktmp($ret,$p){$r=sesmk2('cltmp','vars','',0); $rb=[]; $rc=[]; $
 foreach($r as $k=>$v)if(!isset($p[$k]))$rb[]=$v; else{$rc[]=$v; $rd[]=$p[$k];}
 $ret=str_replace($rb,'',$ret);//del_empty
 if(isset($p['img1']))$ret=str_replace('_IMG1',$p['img1'],$ret);
-$ret=conb::parse($ret,'','template');//build
+$ret=conb::parse($ret,'template');//build
 return str_replace($rc,$rd,$ret);}
 
 static function tmpu($tpl){$tmp='';
@@ -14,6 +14,7 @@ if(!$tpl){$r=ses('tmpc'); $c=$_SESSION['cond'][0]; $tpl=$r[$c]??'';}//from conte
 if(rstr(103))$tmp=msql::val('',nod('template'),$tpl);//from user
 if(!$tmp && $tpl && method_exists('cltmp',$tpl))$tmp=cltmp::$tpl();//from sys
 if(!$tmp)$tmp=msql::val('system','default_template',$tpl);//default
+//if(!$tmp)$tmp=msql::val('system','default_template_'.$tpl,1);//default
 return $tmp;}
 
 static function template1($p,$tpl){
@@ -98,15 +99,17 @@ if($lg && $lg!=ses('lng'))return ' '.flag($lg);}
 
 static function lang_art_others($id,$lg,$rb){$ret='';
 $r=explode(' ',prmb(26)); //$rb=sql('lang,id','trn','kv',['ref'=>'art'.$id]);
-foreach($r as $k=>$v)if($v!=$lg && isset($rb[$v]))
-	$ret.=lj('txtx','art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg,flag($v)).' ';
+foreach($r as $k=>$v)if($v!=$lg && isset($rb[$v])){
+	//$ret.=lj('txtx','art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg,flag($v)).' ';
+	$ja='art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg; $jb='art'.$id.'_ma,read*msg___'.$id;
+	$ret.=ljtog('',$ja,$jb,flag($v),att(nms(153))).' ';}
 return $ret;}
 
 static function lang_rel_arts($id,$lg,$ro,$rst101,$rst115){
 $lng=ses('lng'); if(!$lg)$lg=$lng; $rb=[]; $ex=''; $ret='';
 if($ro && !$rst101)foreach($ro as $k=>$v)if(substr($k,0,4)=='lang'){//arts
 	$lga=substr($k,4); if($v && $lga!=$lg)$ret.=ma::popart($v).flag($lga).' '; $rb[$lga]=$v;}
-if($lg!=$lng && $lg)$ex=sql('lang,id','trn','kv',['ref'=>'art'.$id]);//$ex=get('lang');
+$ex=sql('lang,id','trn','kv',['ref'=>'art'.$id]);//$ex=get('lang');//if($lg!=$lng)
 $ja='art'.$id.'_trans,call___art'.$id.'_'.$lng.'-'.$lg; $jb='art'.$id.'_ma,read*msg___'.$id;
 if((!$rst115 && $ex && !isset($rb[$lng]))){$ic=$rt[$lng]??'';// or $ex
 	$rt=['fr'=>'&#127467;&#127479;','en'=>"&#127468;&#127463;",'es'=>'&#127466;&#127480;'];
@@ -197,7 +200,7 @@ if($r['mail']){$mail=trim($r['mail']); if(!$rst[27])$rc[]='source'; if(!$rst[108
 if($nb)$rc[]='search';
 if($rear>1 && !$rst[14])$rc[]='nbarts';
 if(!$rst[86] && is_array($nbtrk)){$nbtk=count($nbtrk); if($nbtk)$rc[]='tracks';}
-if($ib>0 && $ib && $read!=$id){$sujb=ma::suj_of_id($ib); if($sujb)$rc[]='parent';}// && $read!=$ib
+if($ib>0 && $ib){$sujb=ma::suj_of_id($ib); if($sujb)$rc[]='parent';}// && $read!=$ib
 if(!$rst[58] && !$nl)$rc[]='open1';
 if(!$rst[141])$rc[]='open2';
 if(!$rst[138])$rc[]='open3';
@@ -314,7 +317,7 @@ elseif(is_numeric($v))$d=$v; elseif($v=='flow' or !$v)$d=rstr(5)?2:1; else $d=1;
 return $d;}
 
 static function tometa($d){//$d=strip_tags($d);
-$d=conb::parse($d,'','delconn'); $d=deln(trim($d),' '); $d=delsp($d); $lgh=mb_strlen($d);
+$d=conb::parse($d,'delconn'); $d=deln(trim($d),' '); $d=delsp($d); $lgh=mb_strlen($d);
 if($lgh>200)$n=mb_strpos($d,'.',200); else $n=$lgh; $d=mb_substr($d,0,$n+1);
 ses::$r['descr']=stripslashes($d);}
 
@@ -322,7 +325,7 @@ static function make_thumb_css($im){
 if(!file_exists('imgc/'.$im) or ses('rebuild_img')){
 	[$w,$h]=opt(prmb(27),'/');
 	if(!file_exists('img/'.$im))conn::recup_image($im);
-	img::remini('img/'.$im,'imgc/'.$im,$w,$h,0);}
+	img::build('img/'.$im,'imgc/'.$im,$w,$h,0);}
 return $im;}
 
 static function prepare_thumb($d,$id,$nl){
@@ -337,14 +340,14 @@ return $ret;}
 
 static function preview($d,$id,$l=''){
 if(mb_strlen($l)<15 && strpos($d,':import')){[$p,$o,$c]=poc($d); $d=sql('d','qdm','v',['id'=>$p]);}
-if(rstr(64))$d=conb::parse($d,'figure q twitter table msql iframe','stripconn');//thumb
+if(rstr(64))$d=conb::parse($d,'stripconn','figure q twitter table msql iframe');//thumb
 if(rstr(34)){
-	$d=conb::parse($d,'b i u h c l h1 h2 h3 h4 list numlist figure','corrfast');
-	$d=conb::parse($d,'striplink','correct');
-	$d=conb::parse($d,'color','corrfastb');
-	$d=conb::parse($d,'stripvideo','correct');}
+	$d=conb::parse($d,'corrfast','b i u h c l h1 h2 h3 h4 list numlist figure');
+	$d=conb::parse($d,'correct','striplink');
+	$d=conb::parse($d,'corrfastb','color');
+	$d=conb::parse($d,'correct','stripvideo');}
 if(rstr(117)){
-	$d=conb::parse($d,'stripimg','correct');
+	$d=conb::parse($d,'correct','stripimg');
 	$d=self::firstlines($d);}
 else $d=str::kmax($d);
 $d=conn::read($d,'noimages',$id);//if(strlen($d)>400)$d=etc($d);
@@ -359,10 +362,10 @@ if(rstr(21)){if($prw>1)$ath=$r['o']['authlevel'];
 if($psw=$r['o']['password']??''){if(ses('psw'.$id)!=$psw)return few::restricted_pswd($id);}
 if(isset($r['frm']) && substr($r['frm'],0,1)=='_' && $_SESSION['auth']<3)$msg=few::restricted_area(6);
 elseif($prw==3 or $prw=='rch'){//($id==$read && $prw==3) or 
-	if($r['o']['plan'])$msg=self::hmarks($msg);
 	sql::qr('update '.db('qda').' set lu=lu+1 where id="'.$id.'"');
 	//json::add('','art'.mkday(),[mkday('','His'),$id,ses('iq')]);
 	if(!$nl && $prw!='rch')self::tometa($msg);
+	if($r['o']['plan'])$msg=self::hmarks($msg);
 	$msg=conn::read($msg,$prw,$id,$nl);}
 elseif($prw==1)$msg='';
 elseif(substr($prw,0,4)=='conn'){$cn=substr($prw,4);
@@ -375,11 +378,11 @@ if($r['o']['2cols'] && $prw>2 && strlen($msg)>1000)$msg=divc('cols',$msg);
 return $msg;}
 
 static function hmarks($d){
-$d=str_replace(':h]',':h2]',$d); $r=explode("\n",$d); $ret=[];
+$d=str_replace(':h]',':h2]',$d); $r=explode("\n",$d); $rt=[];
 foreach($r as $k=>$v){$xt=substr($v,-3);
-	if($xt=='h1]' or $xt=='h2]' or $xt=='h3]' or $xt=='h4]' or $xt=='h5]')$ret[]=lkn('h'.$k).$v;
-	else $ret[]=$v;}
-return implode("\n",$ret);}
+	if($xt=='h1]' or $xt=='h2]' or $xt=='h3]' or $xt=='h4]' or $xt=='h5]')$rt[]='[h'.$k.':anchor]'.$v;
+	else $rt[]=$v;}
+return implode("\n",$rt);}
 
 static function firstlines($d){$r=explode("\n",$d); $rb=[];
 foreach($r as $k=>$v)if(count($rb)<7 && trim($v)){
@@ -478,6 +481,7 @@ $msg=sql('msg','qdm','v',$id);
 $r['o']=self::metart($id);
 $otp=ma::read_idy($id,'ASC');
 $rt=self::build($id,$r,$otp,$msg,$prw,$tp,$nl,$n);
+return $rt;
 $ret=self::template2($rt,$tp);
 //$trk=self::prepare_tracks($id,$otp,$r['o']);
 return tag('section',['id'=>$id],$ret).$trk."\n";}

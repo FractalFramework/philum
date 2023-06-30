@@ -9,11 +9,8 @@ $a=214668; $b=228066; $n=$b-$a;
 for($i=$a;$i<=$b;$i++){$id=$i;
 //sav::reimportim($id);
 $rt[]=$id;}
-//pr($rt);
 $ra=sql('ib','qdg','rv',['(ib'=>$rt,'_group'=>'ib']);
-$r1=array_diff($rt,$ra); //pr($r1);
-//echo count($r1);
-}
+$r1=array_diff($rt,$ra);}//echo count($r1);
 
 static function rollbackim($id,$im){
 $ok=sav::rollbackim($id,$im);
@@ -26,8 +23,8 @@ self::$rc['reimport'][]=1;
 return 'ok';}
 
 static function build($p,$o,$ob){$ret=''; $l=500; $n=($p?$p:0)*$l;
-$ra=sqb('id,img','qda','kx','order by id desc limit '.$n.','.$l); //pr($ra);
-$rb=sql('ib,id,im','qdg','kkv',['(ib'=>array_keys($ra)]); //pr($rb);
+$ra=sqb('id,img','qda','kx','order by id desc limit '.$n.','.$l);
+$rb=sql('ib,id,im','qdg','kkv',['(ib'=>array_keys($ra)]);
 $rt=[];
 foreach($ra as $k=>$v)foreach($v as $ka=>$va)if($va && !is_numeric($va)){
 	$rt[$k]['k'][$k]=1;
@@ -41,7 +38,7 @@ foreach($ra as $k=>$v)foreach($v as $ka=>$va)if($va && !is_numeric($va)){
 	if(is_file('img/'.$va)){$rt[$k]['exists'][$va]=1; $rt[$k]['size'][$va]=fwidth('img/'.$va,1);}
 	else{$rt[$k]['notex'][$va]=1; $rt[$k]['size'][$va]='';}}
 //pr($rt);
-//$r1=array_column($rt,'notimdb'); pr($r1);
+//$r1=array_column($rt,'notimdb');
 $rf['_']=['id','imct','imdb','exists','rollback'];
 foreach($ra as $k=>$v)foreach($v as $ka=>$va)if($va && !is_numeric($va)){
 $idm=strprm(strto($va,'.'),2,'_'); $idx=strprm(strto($va,'.'),3,'_');
@@ -54,7 +51,6 @@ if(strlen($idm)==6 && !$idx){$kb=ma::popart($k,$k);
 	elseif($imdb=='not'){if($ob)$bt=self::reimportim($k); else
 		$bt=lj('popdel','bt'.$idm.'_adimg,reimportim__3_'.$k,picto('cycle'));}
 if($imdb=='not' or $imex=='not')$rf[]=[$kb,$va,$imdb,$imex,btd('bt'.$idm,$bt)];}}
-//pr($rf);
 $ret=divb('rollbacks: '.count(self::$rc['rollback']).' - reimport: '.count(self::$rc['reimport']),'frame-blue');
 $ret.=tabler($rf,1);
 return $ret;}

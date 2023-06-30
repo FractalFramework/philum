@@ -33,14 +33,12 @@ $ret.=editarea('minp','',64,8);
 return $ret;}
 
 static function tmp(){
-//return '[[[tit:var]$popbt:spanc] [edt:var] [del:var]:div][[txt:var]$[track:class][[id:var]:id]:div]';
-return '[[[{tit}$txtcadr:span] {edt}{del}:div]{txt}$[track panel:class][{id}:id]:div]';
-return '[[_tit|popbt:spanc] _edt _del:div][_txt|[track panel:class][_id:id]:div]';}
+return '[[[{tit}|txtcadr:span] {edt}{del}:div]{txt}|[track panel:class][{id}:id]:div]';}
 
 static function read($v,$p){$id=$v[0]; $edt=''; $del='';
 if(auth(6)){$del=lj('',$id.'_microarts,del___'.ajx($p).'_x'.$id,picto('del')).btd('x'.$id,'');
 	$edt=lj('','popup_microarts,edit___'.ajx($p).'_'.$id,picto('edit'));}
-$txt=conn::read($v[2]);
+$txt=conn::read($v[2],3);
 return ['tit'=>$v[1],'del'=>$del,'edt'=>$edt,'txt'=>$txt,'id'=>$id];}
 
 static function one($p,$id){

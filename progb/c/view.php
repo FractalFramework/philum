@@ -229,7 +229,7 @@ static function play($r,$ra,$rc){$ret='';
 foreach($r as $k=>$v){[$c,$p,$d]=$v;
 	if(is_array($v[2]))$d=self::play($d,$ra,$rc);
 	else $d=str_replace($rc,$ra,$d);
-	$pr=is_array($p)?$p:['class'=>$p]; //pr($pr);
+	$pr=is_array($p)?$p:['class'=>$p];
 	if($pr)foreach($pr as $kp=>$vp)
 		$pr[$kp]=str_replace($rc,$ra,$vp);
 	$ret.=self::repl($c,$p,$pr,$d);}

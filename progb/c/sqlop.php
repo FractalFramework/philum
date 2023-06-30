@@ -64,8 +64,7 @@ static function trigger($db,$ra){$qb=sqldb::qb($db);
 $rb=self::read_cols($db); $rnew=[]; $rold=[];
 if(isset($rb['id']))unset($rb['id']); if(isset($rb['up']))unset($rb['up']);	
 if($rb){$rnew=array_diff_assoc($ra,$rb); $rold=array_diff_assoc($rb,$ra);}//old
-if($rnew or $rold){//pr([$rnew,$rold]);
-	$bb=sql::drop($qb);
+if($rnew or $rold){$bb=sql::drop($qb);
 	$rtwo=array_intersect_assoc($ra,$rb);//common
 	$rak=array_keys($ra); $rav=array_values($ra);
 	$rnk=array_keys($rnew); $rnv=array_values($rnew); $nn=count($rnk);

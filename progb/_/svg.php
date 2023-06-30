@@ -145,7 +145,7 @@ if($b!='attr')return tag($b,$pr,$v);}
 
 static function com($d){
 $d=deln($d); $d=str_replace("&nbsp;",' ',$d);//eco($d,1);
-return conb::parse($d,'','svg');}
+return conb::parse($d,'svg');}
 
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$p;

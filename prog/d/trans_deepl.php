@@ -4,7 +4,7 @@ class trans_deepl{
 
 //https://www.deepl.com/api.html
 static function api($prm,$mode,$txt=''){//return ['text'=>0=>[$txt]];
-$txt=utf8enc($txt); $r=[];
+$r=[];
 $prm.='&auth_key='.trans::getkey();
 //$prm.='&text='.rawurlencode($txt);
 $mode=$mode?$mode:'translate';//

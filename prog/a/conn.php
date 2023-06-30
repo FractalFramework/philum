@@ -84,7 +84,7 @@ self::replaceinmsg($id,$a,$b,$c);}
 
 static function autothumb($f){
 if(is_file($f)){[$w,$h]=getimagesize($f);
-img::remini($f,$f,$w,$h,0);}}
+img::build($f,$f,$w,$h,0);}}
 
 static function png2jpg($a,$id){
 $d=img::png2jpg($a,$id); return self::mkimg($d,3,920,$id,'');}
@@ -239,6 +239,7 @@ $ret=match($c){
 ':yellow'=>mk::pub_clr($d,'#dd2'),
 //':parma'=>mk::pub_clr($d,'#993399'),
 ':numlist'=>mk::make_li($d,'ol'),
+':anchor'=>mk::anchor($d),
 ':right'=>divs('text-align:right;',$d),
 ':float'=>mk::pub_float($d),
 ':clear'=>divc('clear',$d),
@@ -357,7 +358,7 @@ $ret=match($c){
 ':artwork'=>mk::artwork($d,$m),
 ':look'=>mk::artlook($d),
 ':icon'=>icon($d),
-':math'=>tagb('math',conb::parse($d,'','math')),
+':math'=>tagb('math',conb::parse($d,'math')),
 ':dskbt'=>mod::read_apps_link($d),
 ':appbt'=>pop::btapp($d,$nl),
 ':connbt'=>pop::connbt($d,$nl),
@@ -367,7 +368,7 @@ $ret=match($c){
 ':contact'=>contact($d,''),
 ':bubble'=>md::bubble_menus($d,'inline'),//old
 ':submenus'=>md::bubble_menus($d,'inline'),
-':template'=>conb::parse('['.$da.']','','template'),
+':template'=>conb::parse('['.$da.']','template'),
 ':version'=>$_SESSION['philum'],
 ':flag'=>flag($d),
 ':nms'=>nms($d),

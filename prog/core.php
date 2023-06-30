@@ -24,7 +24,6 @@ if(rstr(144))$bt.=md::prevnext_art('arts',1,$g1,$tg);
 if(auth(6))$bt.=lj('','popup_meta,metall___'.$g1.'_3',picto('tag',20)).lj('','popup_meta,titedt___'.$g1.'_3',picto('meta',20)).lj('','popup_edit,call____'.$g1,picto('edit',20)).btj(picto('edit2',20),atj('editart',$g1));
 $ret=art::playb($g1,3); $t=ses::r('suj');//if(!$t)$t=ma::suj_of_id($g1);
 ses::$r['popt']=etc($t,70); ses::$r['popm']=$bt; //ses::$r['popw']=prma('content');//+20
-//ses::$r['popwm']=1;
 if(is_numeric($g1))ses::$r['id']=$g1;
 return $ret;}
 
@@ -182,7 +181,7 @@ function jcim($f,$o=''){$h=$o?host().'/':'';
 if(substr($f??'',0,4)!='http')return $h.(strpos($f??'','/')!==false?'users/':'img/');}
 function gcim($im,$o=''){return jcim($im,$o).$im;}
 
-function goodroot($f,$h=''){//jcim()
+function goodroot($f,$h=''){
 if($h==1)$h=host().'/'; elseif($h)$h=http($h).'/';
 if(substr($f,0,4)=='http')return $f;
 elseif(substr($f,0,1)=='/')return substr($f,1);

@@ -242,7 +242,7 @@ if(range.startContainer.nodeType===Node.TEXT_NODE){
 range.startContainer.insertData(range.startOffset,t);}}
 
 function autochar(e,id){var v,k;
-var k=e.keyCode; //pr(k);//call 53.18.17, 52.18.17
+var k=e.keyCode;//call 53.18.17, 52.18.17
 //if(k==34)v='"';//lol
 if(k==53)v=')';//41
 if(k==91)v=']';//93
@@ -551,29 +551,29 @@ if(ob)ob.addEventListener('DOMMouseScroll',function(e){scrollarts(e,ob)},false);
 
 //refresh
 function relj(){
-var rid=randid(); //pr(rid);
+var rid=randid();
 var head=getbytag('head')[0]; //nocache(head);
 rejs(head,rid);
 recss(head,rid);}
 
 function rejs(head,rid){
 var r=['lib','core','ajx'];
-//var r=getbycss('js'); pr(r);
+//var r=getbycss('js');
 for(i in r){
 	var el=getbyid(r[i]); var nm=r[i];
-	//var nm=el.src; nm=strend(nm,'/'); nm=strto(nm,'?'); //pr(nm);
+	//var nm=el.src; nm=strend(nm,'/'); nm=strto(nm,'?');
 	if(nm)head.removeChild(el);
 	var ob=document.createElement('script');
 	ob.src='/progb/j/'+nm+'.js?'+rid; ob.id=nm;
 	if(nm)head.appendChild(ob);}}
 
 function recss(head,rid){
-var r=['_global',design];//
-//var r=getbycss('css'); //pr(r);
+var r=['_global',design];
+//var r=getbycss('css');
 for(i in r){
 	var el=getbyid(r[i]); var nm=r[i];
 	el.href='/css/'+nm+'.css?'+rid;
-	//var nm=r[i].href; nm=strend(nm,'/'); nm=strto(nm,'?'); if(nm)pr(nm);
+	//var nm=r[i].href; nm=strend(nm,'/'); nm=strto(nm,'?');
 	//if(nm)head.removeChild(el);
 	//var ob=document.createElement('link');
 	//ob.href='/css/'+nm+'.css?'+rid; ob.rel='stylesheet'; ob.id=nm;
@@ -794,7 +794,7 @@ function xltags(e,id,cnn){var d=getrange('art'+id);
 if(d.txt){var tg=cnn=='all'?'popup':'art'+id; if(cnn=='all')cnn='';
 	//var ob=getbyid('art'+id); var t=ob.innerHTML;
 	//var s1=t.substr(0,d.start); var s2=t.substr(d.start,d.end-d.start); var s3=t.substr(d.end);
-	//ob.innerHTML=s1+'<span id="slct1'+id+'"></span>'+s2+'<span id="slct2'+id+'"></span>'+s3; pr(s2);
+	//ob.innerHTML=s1+'<span id="slct1'+id+'"></span>'+s2+'<span id="slct2'+id+'"></span>'+s3;
 	ajaxcall(tg,'mk,slctconn',[id,d.txt,d.start,cnn],[],'');}}
 
 function dec2hex(n){var hex=n.toString(16); if(hex.length==1)hex="0"+hex; return hex;}//255

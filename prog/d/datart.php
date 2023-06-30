@@ -39,13 +39,13 @@ return $ret;}
 //id->parent->childs->related
 static function search_r($id){
 self::$rn[$id][]=1;
-self::addparents($id); //pr(self::$r);
+self::addparents($id);
 self::addchilds($id);
 self::addrelated($id);}
 
 static function build($id){
 if(!$id)return [];
-self::search_r($id); //pr(self::$r);
+self::search_r($id);
 //$r=self::$r; //self::$r=[];
 //foreach($r as $k=>$v)self::search_r($k);
 foreach(self::$r as $k=>$v){

@@ -75,7 +75,7 @@ foreach($r as $k=>$v){$hlp=att($rb[$k]??'');
 $menu.=lj('txtx','editcl_adm,clview___'.$k.'_'.$type,$k,$hlp).' ';}
 $re['preview']=self::clview_basic($d,$type,$slct);
 $re['conb']=$menu.br().br().divd('editcl','').divd('seecl','');
-if($type=='template'){$re['structure']=conb::parse($d,'','clpreview');
+if($type=='template'){$re['structure']=conb::parse($d,'clpreview');
 	$re['vars']=self::clview_vars();}
 else{$re['core']=divd('crv',self::core_view('',''));}
 $re['connectors']=divd('cnv',self::conn_view('',''));
@@ -103,7 +103,7 @@ return $ret;}
 //clbasic_preview
 static function clview_basic_j($t,$s,$pr=[]){[$p,$re]=$pr;
 if(!$re)$re=msql::val('users',nod($t),$s);
-if($t=='template' && $re)$ret=conb::parse($re,'','template');
+if($t=='template' && $re)$ret=conb::parse($re,'template');
 else $ret=cbasic::read($re,$p);
 if(strpos($ret,'<br')===false)$ret=nl2br($ret);
 return divc('track',$ret).br().textarea('',$ret,40,5);}
@@ -649,9 +649,7 @@ foreach($r as $k=>$v){$ra=msql::read('',nod('backup_'.$v),1);
 		if(is_numeric($va[0])){$time=day2time($va[0]); $d=$va[1];} else $d=$va[0];
 		$dt=date('Y-m-d H:i:s',$time);
 		$nid=sqlsav('qdmb',[$v,$d,$dt]);
-		meta::utag_sav($v,'review',$nid);
-		//$rt[$v][$dt]='';
-		}} //pr($rt);
+		meta::utag_sav($v,'review',$nid);}}//$rt[$v][$dt]='';
 return self::adm_reviews();}
 
 static function adm_reviews(){$ret='';

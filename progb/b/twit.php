@@ -23,7 +23,7 @@ addEvent(document,'scroll',static function(event){twlive(event)});
 //elements
 static function card($p,$o){
 $t=self::init(); $q=$t->show($p);//lookup//
-$er=self::error($q); if($er)return $er; //pr($q);
+$er=self::error($q); if($er)return $er;
 $ret=self::img($q['profile_image_url'],1);
 $nm=($q['name']); $sn=$q['screen_name'];
 //$q2=$t->credentials($q['screen_name']);
@@ -96,7 +96,7 @@ return self::send($p,$o,[$ret]);}
 static function vacuum($f){
 $p=strend($f,'/'); $p=strto($p,'?');
 $t=self::init();
-$q=$t->read($p);//pr($q);
+$q=$t->read($p);
 self::cache($p,0,1,$q);
 setlocale(LC_TIME,prmb(25).'_'.strtoupper(prmb(25)));
 //$ret['from']='@'.$q['user']['screen_name'];
@@ -206,7 +206,7 @@ $q=$t->search($usr,100,$id); if($q)$r=$q['statuses'];
 if($r)foreach($r as $k=>$v){
 	$b=$v['in_reply_to_status_id'];
 	if($b!=$p or !$b)unset($r[$k]);}
-//if(!$r)$q=$t->search($usr,100,$b); pr($r);
+//if(!$r)$q=$t->search($usr,100,$b);
 return $r;}
 
 static function delete($t,$p){
@@ -231,7 +231,7 @@ return $ret;}
 //userlist
 static function usrlist($r){$t=self::init();
 $n=count($r); $nb=ceil($n/100); $rb=[]; $rc=[]; $ia=0; $i=0; //$qu=$t->show($q['ids'][0]); pr($qu);
-if($r)foreach($r as $v){if($i==99){$i=0; $ia++;} $rb[$ia][$i]=$v; $i++;} //pr($rb);
+if($r)foreach($r as $v){if($i==99){$i=0; $ia++;} $rb[$ia][$i]=$v; $i++;}
 //$rb=array_slice($rb,0,1);//limit to 500
 if($rb)foreach($rb as $v){$d=implode(',',$v); $qu=$t->lookup($d); //pr($qu);
 	if($qu)foreach($qu as $k=>$vb)$rc[]=[$vb['id'],($vb['screen_name']),($vb['name']),($vb['location']),($vb['description']),$vb['profile_image_url'],$vb['protected'],$vb['verified'],$vb['followers_count'],$vb['friends_count'],$vb['following'],$vb['lang'],strtotime($vb['created_at']),$vb['profile_background_color'],$vb['profile_text_color']];}
@@ -348,19 +348,17 @@ $ret=between($r->textContent,'document.addEventListener("compositionend",n,!1))}
 return trim($ret);}
 
 static function oembed($u){
-$t=self::init(); $q=$t->embed($u); //pr($q);
+$t=self::init(); $q=$t->embed($u);
 //$d=get_file('https://publish.twitter.com/oembed?url='.$u); $q=json_decode($d,true); //pr($q);
 $txt=$q['html']??''; $nm=$q['author_name']??'';
-$n=strrpos($txt,'&mdash; '.$nm); if($n!==false)$txt=mb_substr($txt,0,$n);//del end
 //$txt=self::text($u);
 $ret=delbr($txt,"\n");
 $ret=strip_tags($ret);
-$ret=($ret);
 return $ret;}
 
 static function upvideo_m3u8($f){//tw_video
 $xt='.m3u8'; $fa=strprm($f,4);
-$fb='video/'.$fa.'_2.mp4';//already saved
+//$fb='video/'.$fa.'_2.mp4';//already saved
 //if(is_file($fb))return video('/'.$fb);
 $fb='video/'.$fa.'_0'.$xt;
 if(!is_file($fb))@copy($f,$fb);//first file
@@ -661,7 +659,7 @@ elseif($o=='ban')$ret=self::card($p,1);
 elseif($o=='erx' && auth(6))$ret=self::erasex('plug');
 //elseif($o=='chat'){$q=$t->messages('list','','');}//pr($q);
 elseif($o=='chat'){$q=$t->messages('new','2434088253','hello');}//echo $t->_prm; //pr($q);
-//elseif($o=='chat'){$q=$t->messages('show',$id,'');}//destroy //pr($q);
+//elseif($o=='chat'){$q=$t->messages('show',$id,'');}//destroy
 //elseif($o=='mnt')$q=$t->mentions($p,$id);
 elseif($o=='sql')[$q,$minid]=self::search($p,$id,'');
 elseif($o=='uwd')$ret=self::wordusrs($p,1);

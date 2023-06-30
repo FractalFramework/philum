@@ -35,7 +35,7 @@ if($rl)relod('?hub='.$qb.'&refresh==&log=on');
 else return 'logon: '.$qb;}
 
 //call
-static function call($p,$o,$prm=[]){//pr($prm);
+static function call($p,$o,$prm=[]){
 [$usr,$psw,$cook,$mail,$newhub]=arr($prm,5);
 $usr=str::normalize($usr); $psw=str::normalize($psw);
 $qdu=db('qdu'); $qb=ses('qb'); $host=hostname();

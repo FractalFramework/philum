@@ -73,7 +73,7 @@ for($i=0;$i<$n;$i++){
 	$ok.='from '.$min.' to '.$max.' : ';
 	$ex=sql('art','qdsra','k','ib='.$id.' and art>'.$min.' and art<='.$max);
 	$not=$ex?implode(',',array_keys($ex)):'';
-	$ret=self::build($id,$p,$min,$max,$lmt,$not);//pr($ret);
+	$ret=self::build($id,$p,$min,$max,$lmt,$not);
 	$na=count($ret); $nt+=$na;
 	$ok.=$na.' ref added '.br();
 	if($ret)self::save_results($id,$ret,$ra);}
@@ -125,7 +125,7 @@ return divc('dlist',$ret);}
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$p; geta('page',$o?$o:1);
 geta('search',$p);
-$r=sql::inner('art','qdsr','qdsra','ib','k','word="'.$p.'" order by art desc'); //pr($r);
+$r=sql::inner('art','qdsr','qdsra','ib','k','word="'.$p.'" order by art desc');
 $ret=divc('',lkc('popbt','/search/'.$p,nbof(count($r),1)));
 if($r)$ret.=ma::output_arts($r,'rch','art','popup_searched,call__x_'.ajx($p).'_');//look
 return $ret;}

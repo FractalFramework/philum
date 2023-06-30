@@ -146,7 +146,7 @@ return mb_substr($d,0,$kmx);}
 
 #repairs
 static function stripconn($d){
-return conb::parse($d,'','delconn');}
+return conb::parse($d,'delconn');}
 
 static function clean_html($d,$o=''){
 //$d=hed($d);//create infinite loop

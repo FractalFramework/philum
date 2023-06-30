@@ -6,13 +6,13 @@ static $cb='crn';
 static $cr=[];
 
 /**/static function followers($p){
-$t=twit::init(); $qu=$t->followers($p,''); //pr($q);
-$r=self::usrlist($q['ids']); //pr($q);
+$t=twit::init(); $qu=$t->followers($p,'');
+$r=self::usrlist($q['ids']);
 return;}
 
 /**/static function favorites($p){
-$t=twit::init(); $q=$t->favorites($p,$id,1); //pr($q);
-$r=self::datas($q); //pr($r);
+$t=twit::init(); $q=$t->favorites($p,$id,1);
+$r=self::datas($q);
 //$ret=twit::batch($q,'');
 //$ret=twit::play($k,$r,$q,$o);
 return;}
@@ -80,7 +80,7 @@ if(!$rc)$rc=array_flip($rh);
 if($rc)$rd=array_diff($r,$rc); //$bt=tabler(array_merge_cols($r,$rc));
 if(isset($rd['friends_count']) && $rd['friends_count']===0)unset($rd['friends_count']);
 if(isset($rd['listed_count']) && $rd['listed_count']===0)unset($rd['listed_count']);
-unset($rd['date']); //pr($rd);
+unset($rd['date']);
 if($rd or !$rb)$r=msql::modif('',$nod,$r,'push',$rh,'');
 $ret=$d.'/'.$nm.': '.implode_k($rd,'; ','=');
 //if($rd)mail(sesr('qbin','adminmail'),'cron',$ret);
@@ -89,7 +89,7 @@ return $ret.$bt;}
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$p; $rt=[];
 $f='_backup/cron.txt'; if(is_file($f))unlink($f);
-$r=msql::kv('',nod('cron')); //pr($r);
+$r=msql::kv('',nod('cron'));
 foreach($r as $k=>$v)$rt[]=self::build($k,$v);
 $ret=implode(' | ',$rt);
 return $ret;}

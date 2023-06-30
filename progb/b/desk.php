@@ -5,16 +5,16 @@ static $rid='dk';
 
 #desktop
 //ajax,art,file,finder,admin,msql,iframe,link,url,bub//plugfunc,,plug,plup,link,appin,mod
-static function read($v){$ret='';
+static function read($v,$tg=''){
 if($v[1]=='app'){[$a,$m]=expl(',',$v[2]);
 	return 'popup_'.$a.','.($m?$m:'home').'__3_'.ajx($v[3]).'_'.ajx($v[4]);}
-$tg=rstr(85)?'popup':'content';
+$rid=rstr(85)?'popup':'content';
 return match($v[1]){//p/t/d/o/c/h/tp/br
-'art'=>$tg.'_popart__3_'.$v[3].'_3_'.$v[4],
+'art'=>$rid.'_popart__3_'.$v[3].'_3_'.$v[4],
 'ajax'=>$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
 'popup'=>'popup_'.$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
-'desktop'=>'popup_desk,deskroot__3_'.$v[2].'_'.$v[3].'_'.$v[4],//type
-'module'=>$tg.'_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]),
+'desktop'=>$tg.'_desk,deskroot__15_'.$v[2].'_'.$v[3].'_'.$v[4].'_'.$tg,//type
+'module'=>$rid.'_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]),
 'modin'=>'content_mod,callmod__3_'.ajx($v[3]),//alias of module not in desk
 'modpop'=>'popup_mod,callmod__3_'.ajx($v[3]),//alias of module in desk
 'page'=>'page_mod,playcontext__3_'.ajx($v[3]),//from desk(use $v[2])
@@ -29,8 +29,7 @@ return match($v[1]){//p/t/d/o/c/h/tp/br
 'appjs'=>'popup_'.$v[2].',home__js_'.ajx($v[3]).'_'.ajx($v[4]),
 'api'=>'popup_api,callj__3_'.ajx($v[3]),
 'bub'=>'bubble_bubs,call__d'.randid().'_'.$v[2].'_'.$v[3],//loos mod
-default=>''};
-return $ret;}
+default=>''};}
 
 //if($r)$r=virtual_array($r,$o); //$r=select_subarray($p,$r,$o);
 static function match_vdir($dr,$nd,$rv){
@@ -38,31 +37,30 @@ for($i=0;$i<$nd;$i++)if(val($dr,$i)!=val($rv,$i))return false;
 return true;}
 
 //0:button,1:type,2:process,3:param,4:opt,5:cond,6:root,7:icon,8:hide,9:private,10:context
-static function build($r,$cnd,$dir,$p='',$o=''){if($p)$p=ajx($p); $ret=[]; $rid='popup';//$o?$o:
+static function build($r,$cnd,$dir,$p='',$o=''){if($p)$p=ajx($p); $rt=[]; $tg=$o?$o:'popup';//
 $dr=explode('/',$dir); $nd=$dir?count($dr):0; $mn=val($_SESSION['rstr'],16,1);//0=adapt,2=crop,3=center
 $cntx=$_SESSION['cond'][0];
 if($r)foreach($r as $k=>$v){
 	$cntk=($v[10]??'')==$cntx || !($v[10]??'')?1:0;
 	$hide=($v[8]??'')?1:0; $private=($v[9]??'')?1:0; if($private && auth(6))$private=0;
-if(strpos($v[5],$cnd)!==false && $cnd=='boot'){
-	//echo $cntx.'/'.$v[10].'='.$cntk.'-'.$hide; pr($v);
-	if($cntk && !$hide)$ret[]=self::read($v);}
+if(strpos($v[5],$cnd)!==false && $cnd=='boot'){if($cntk && !$hide)$rt[]=self::read($v);}
 elseif((strpos($v[5],$cnd)!==false or !$v[5])){$t=$v[0];
 	if($v[1]=='art'){if($v[2]=='auto')$t=ma::suj_of_id($v[3]); else $t=$v[2];
 		if($t)$v[7]=self::thumb($v[3],$v[7]);}
 	elseif($v[1]=='file' && is_img($v[3]))$v[7]=img::make_thumb_c($v[3],'50/38',$mn);
 	elseif($v[1]=='img')$v[7]=img::make_thumb_c('users/'.$v[3],'50/38',$mn);//
+	elseif($v[1]=='desktop' && $v[7]=='url')$v[7]='folder2';
 	self::$rico[$t]=$v[7]; $rv=explode('/',$v[6]); $nv=$v[6]?count($rv):0;
 	if($dir==$v[6])$is=true; else $is=self::match_vdir($dr,$nd,$rv);
 	if($is && $nv==$nd+1 && !$hide && !$private){//dirs
-		$ret[$rv[$nv-1]]=$rid.'_desk,deskroot__2_'.$cnd.'_'.ajx($v[6]).'_'.$p.'_'.$o;}
+		$rt[$rv[$nv-1]]=$tg.'_desk,deskroot__15_'.$cnd.'_'.ajx($v[6]).'_'.$p.'_'.$o;}
 	elseif($is && !empty($rv[$nd]) && !$hide){$v6=implode('/',array_slice($rv,0,$nd+1));
-		$ret[$rv[$nd]]=$rid.'_desk,deskroot__2_'.$cnd.'_'.ajx($v6).'_'.$p.'_'.$o;}
+		$rt[$rv[$nd]]=$tg.'_desk,deskroot__15_'.$cnd.'_'.ajx($v6).'_'.$p.'_'.$o;}
 	if($is && $nv>$nd)$is=false;
-	if($is && !$hide && !$private && $cntk){$j=self::read($v);
-		//if($v[1]=='link')$ret[$t]=['link',$v[3]];
-		if($j)$ret[$t]=$j;}}} //pr($ret);
-return $ret;}
+	if($is && !$hide && !$private && $cntk){$j=self::read($v,$o);//
+		//if($v[1]=='link')$rt[$t]=['link',$v[3]];
+		if($j)$rt[$t]=$j;}}}
+return $rt;}
 
 static function datas($p=''){$p=$p?$p:'apps';
 if(rstr(61))$r=msql::read('system','default_apps',1);
@@ -97,15 +95,15 @@ if(isset($f)){if($f && !is_file('img/'.$f))conn::recup_image($f);
 else return $p?$p:'articles';}
 
 //call
-static function desktop($id,$va,$opt,$o){
-if($id=='varts')$r=self::apps_varts($id,$opt);
-elseif($id=='arts')$r=self::apps_arts($id,$va,$opt,$o);
-elseif($id=='files')$r=self::apps_files($id,$opt,$o);
-elseif($id=='explore')$r=self::explore($va,$opt);
-elseif($id=='menubub')$r=self::menubub($va);
-elseif($id=='overcats')$r=self::overcats($va);
+static function desktop($p,$dr,$opt,$o){
+if($p=='varts')$r=self::apps_varts($p,$opt);
+elseif($p=='arts')$r=self::apps_arts($p,$dr,$opt,$o);
+elseif($p=='files')$r=self::apps_files($p,$opt,$o);
+elseif($p=='explore')$r=self::explore($dr,$opt);
+elseif($p=='menubub')$r=self::menubub($dr);
+elseif($p=='overcats')$r=self::overcats($dr);
 else $r=self::datas();
-return self::build($r,$id?$id:'desk',$va,$opt,$o);}
+return self::build($r,$p?$p:'desk',$dr,$opt,$o);}
 
 static function desk_icon($k,$j){$ic=self::$rico[$k]??''; $ica=''; if($ic)return $ic;
 $ra=['popart'=>'articles','msql'=>'server','desk,deskroot'=>'folder','usg,popim'=>'img'];
@@ -122,7 +120,7 @@ static function pane_icons($r,$c){$ret='';
 if(is_array($r))foreach($r as $k=>$v)$ret.=self::icoart($k,$v,$c);
 return $ret;}
 
-static function desktop_js($d){$r=self::build_from_datas($d); $ret=''; //pr($r);
+static function desktop_js($d){$r=self::build_from_datas($d); $ret='';
 if($d=='boot' && !$r)$r=['desktop_desk,deskico___desk','page_desk,deskbkg'];
 if($r)foreach($r as $k=>$v)$ret.=sj($v);
 return $ret;}
@@ -242,13 +240,21 @@ ses::$r['popm']=ljb('philum','poplist',$rid,btd($rid,'='));}
 static function deskico($id){$r=self::desktop($id,'','','');
 return self::pane_icons($r,'');}
 
-static function deskroot($id,$va,$opt,$optb){self::poplist(); $optb=$optb?$optb:randid('dk');
-$r=self::desktop($id,$va,$opt,$optb); $ret=self::pane_icons($r,'icones');
-return divd($optb,$ret);}//.divs('clear:left;','')
+static function deskmenu($dr,$p,$opt,$tg){
+$r=explode('/',$dr); $n=count($r); $rt=[]; $r[-1]='root';
+for($i=0;$i<$n;$i++){$dir=ajx(implode('/',array_slice($r,0,$i)));
+	$rt[]=lj('',$tg.'_desk,deskroot__15_'.$p.'_'.$dir.'_'.$opt.'_'.$tg,$r[$i]);}
+return divb(join(' ',$rt),'menus');}
 
-static function deskload($id){if($id)$r=self::build_from_datas($id);//deskload
+static function deskroot($p,$dr,$opt,$optb){self::poplist(); $optb=$optb?$optb:randid('dk');
+$r=self::desktop($p,$dr,$opt,$optb);
+if($optb)$bt=self::deskmenu($dr,$p,$opt,$optb);
+$ret=self::pane_icons($r,'icones');
+return divd($optb,$bt.$ret);}
+
+static function deskload($p){if($p)$r=self::build_from_datas($p);//deskload
 if(!$r)$r=['desktop_desk,deskico___desk','page_desk,deskbkg'];
-if($id=ses('read'))$r[]='popup_popart___'.$id.'_3';
+if($p=ses('read'))$r[]='popup_popart___'.$p.'_3';
 //else $r[]='popup_site___deskroot_ok';
 //$r[]='bub_';//del admin
 if($r)return implode(';',$r);}

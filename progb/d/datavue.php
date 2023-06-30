@@ -55,7 +55,7 @@ $r=explode(',',$p); $rab=[]; $rca=[]; $rcb=[]; $rc=[]; $rb=[]; $rk=[]; $re=[]; $
 [$dr0,$nod0]=split_right('/',$r[0]); $nd0=struntil($nod0,'_');
 //build names from heterogen src
 foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1); $nod=strend($nod,'_'); $nd=strto($nod,'-');
-	$r[$k]=$dr.'/'.$nd0.'_'.$nod; $rk[$k]=$nd;} //pr($r);
+	$r[$k]=$dr.'/'.$nd0.'_'.$nod; $rk[$k]=$nd;}
 //datas
 foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1);//rca
 	$ra=msql::read($dr,$nod,1); $rab[$rk[$k]]=$ra; if($ra)$re=array_merge($re,$ra);
@@ -63,9 +63,9 @@ foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1);//rca
 		$rb[$ida]=$v[1];
 		$tag=self::tag($va[0]);
 		$rca[$idb]=[$idb,$va[1],'0',$tag];
-		$rc[$idb][]=1;}} //pr($re);
+		$rc[$idb][]=1;}}
 //l'id des pusr n'apparaît que s'ils sont suivis par un des suivis du groupe
-foreach($rk as $k=>$v){$ka=in_array_r($re,$v,1); if($ka){$kb=$re[$ka][0]; if($kb)$rn[$v]=$kb;}} //pr($rn); //[usr]=id
+foreach($rk as $k=>$v){$ka=in_array_r($re,$v,1); if($ka){$kb=$re[$ka][0]; if($kb)$rn[$v]=$kb;}}//[usr]=id
 foreach($rab as $k=>$v)if($v)foreach($v as $ka=>$va){$kb=$rn[$k]??'';
 	$ida=self::rid($kb); $idb=self::rid($va[0]); $n=count($rc[$idb]);
 	if($kb)$rcb[]=[$ida,$idb,'Undirected','','','',$n*10];}//if($n>2) else unset($rca[$idb]);

@@ -26,7 +26,7 @@ if(!self::$er){$d=html_entity_decode($d);
 	if($nid && $nib!=$nid)transart::repair($id);}
 vacses($urlsrc,'u','x');
 if($nid){$rc=[$dt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$urlsrc,$ib,$re,$lg];
-	conb::parse($d,$nid,'savimg');
+	conb::parse($d,'savimg',$nid);
 	if(rstr(147))conb::png2jpg($nid);
 	$rc[3]=self::orderim($nid);
 	ma::cacherow($nid,$rc);
@@ -45,7 +45,7 @@ $thm=str::hardurl($suj);//if(rstr(38))
 $rw=[$ib,$name,$u,$dt,$qb,$frm,$suj,$re,$lu,$img,$thm,$sz,$lg];
 $nid=sqlsav('qda',$rw); if($nid)sql::savi('qdm',[$nid,$d]);
 if($nid){vacses($u,'b','x');
-	$d=conb::parse($d,$nid,'savimg');
+	$d=conb::parse($d,'savimg',$nid);
 	$img=self::orderim($nid);
 	$rc=[$dt,$frm,$suj,$img,$qb,$thm,$lu,$name,$sz,$u,$ib,$re,$lg];
 	ma::cacherow($nid,$rc);
@@ -63,7 +63,7 @@ if(rstr(154))self::backart($id);
 if($id)sqlup('qdm',['msg'=>$d],$id);
 if(rstr(147))conb::png2jpg($id);
 $sz=mb_strlen($d??''); sql::upd('qda',['host'=>$sz],$id);
-conb::parse($d,$id,'savimg'); self::orderim($id); ma::cacheart($id);
+conb::parse($d,'savimg',$id); self::orderim($id); ma::cacheart($id);
 return stripslashes($d??'');}
 
 static function editart($id,$cont,$prm){$d=$prm[0]??'';
@@ -164,13 +164,13 @@ return implode('/',$rt);}
 static function reimportim($id,$o=''){
 $u=sql('mail','qda','v',$id); ses::$urlsrc=$u;
 [$t,$d]=conv::vacuum($u,''); vacses($u,'t','x'); //eco($d);
-$d=conb::parse($d,$id,'importim');
+$d=conb::parse($d,'importim',$id);
 if($o)return art::playd($id,$o,'');
 return $d;}
 
 static function recenseim($id,$imx=''){
 $msg=sql('msg','qdm','v',$id); $r=[]; $rb=[]; $re=[]; $ret='';
-$ims=conb::parse($msg,$id,'extractimg'); //echo $ims.'--';
+$ims=conb::parse($msg,'extractimg',$id);
 if($ims){$ra=explode('/',$ims); foreach($ra as $k=>$v)$re[$v]=$v;}
 if(!$imx)$imx=sql('img','qda','v',$id); if($imx)$r=explode('/',$imx);
 if(isset($r[0]) &&  is_numeric($r[0]))unset($r[0]);
@@ -204,7 +204,7 @@ self::orderim($id);
 $rb[0]=self::placeim($id); $rb[1]=$ims; return $rb;}
 
 static function remini($f){[$w,$h]=explode('/',prmb(27));
-return img::remini('img/'.$f,'imgc/'.$f,$w,$h,0);}
+return img::build('img/'.$f,'imgc/'.$f,$w,$h,0);}
 
 static function placeim($id){$ret='';
 $ims=sql('img','qda','v',$id); $r=explode('/',$ims);
@@ -225,7 +225,7 @@ if($r)foreach($r as $k=>$v)if(is_img($v)){$bt=''; $f='img/'.$v; $fc='imgc/'.$v; 
 return scroll($r,$ret,12,'',240);}
 
 static function placeimtrk($f,$id){$ret=''; $fb=img::thumbname($f,72,72);
-$im=img::remini('img/'.$f,$fb,'','',1);
+$im=img::build('img/'.$f,$fb,'','',1);
 $ret=ljb('','insert_b',['['.$f.']',$id],image('/'.$im,'72','72',att($f)));
 return $ret;}
 
@@ -378,7 +378,7 @@ if(is_uploaded_file($f_tmp) && !$er){
 	if($type=='art' && is_img($fc)){conn::add_im_img($fb,$id);}//conn::add_im_msg($id,'',$fb.$w);
 	if($xt=='.tar' or $xt=='.gz')unpack_gz($fc,$dir);}
 else $er.='upload refused: '.$fb;
-if(!$er && $type=='avnim')img::remini($fc,$fc,72,72,2);
+if(!$er && $type=='avnim')img::build($fc,$fc,72,72,2);
 if($er)return btn('txtyl',picto('false').' '.$fc.': '.$er);
 elseif($type=='disk' or !is_img($fc))return btn('txtyl',picto('true').' '.$fc);
 elseif($type=='art')return self::placeim($id);

@@ -622,7 +622,7 @@ $h=hidden($p,$n); $t=self::mnu_line_t($clr,$n);
 return togbub('sty,selectclr',$p.'_'.$n,$t).$h;}
 
 static function mnu_line_color($d,$p){$r=explode('|',$d);//txt|link|hover/a.c.hover
-$kr=getclrs(); $n=$kr?count($kr):0; $ret='';//pr($r);
+$kr=getclrs(); $n=$kr?count($kr):0; $ret='';
 for($i=0;$i<=3;$i++){$ri=$r[$i]??'';
 	$clrn=$ri=='undefined'||!$ri?'0':$ri; $nid=$i+1;
 	$kl=isset($kr[$clrn])?$kr[$clrn]:'';
@@ -784,7 +784,7 @@ foreach($r as $k=>$v)if($v)$r[$k]=invert_color($v,0);
 return $r;}
 
 static function build_css($f,$defs,$neg=''){
-unset($defs[msql::$m]); $clr=getclrs(); $ret=[]; //pr($clr);
+unset($defs[msql::$m]); $clr=getclrs(); $ret=[];
 if($neg){$f=str_replace('.css','_neg.css',$f); $clr=self::invertclrs($clr);}
 $sheets=[3=>'color',4=>'background-color',5=>'border-color',''];
 $attributes=['','a','a:hover',''];

@@ -41,7 +41,7 @@ return $ret;}
 static function read($code,$p){//eco($code);
 if(is_array($code))return;
 if(strpos($code,'[')!==false){if($p)$code=str_replace('_PARAM',$p,$code);
-	return conb::parse($code,'','template');}
+	return conb::parse($code,'template');}
 $code=str_replace('--',"\n",$code);
 $r=explode("\n",$code); $n=count($r); $rb=[];//conb::parse($p,'','sconn');
 for($i=0;$i<$n;$i++){$sp=$r[$i]??''; $op=substr($sp,0,1); $ret='';//trim
@@ -61,10 +61,10 @@ return implode('',$ra);}
 
 static function mod_basic($p,$o){
 $b=sesmk2('conb','uconns',$p,0); if(!$b)$b=sesmk2('conb','pconns',$p,0);
-if(!$b && $p)return conb::parse('['.$p.']','','template');
+if(!$b && $p)return conb::parse('['.$p.']','template');
 $r=['insert','update','delete','qr','write_file','file_put_contents'];
 foreach($r as $v)if(strpos($p,'|'.$v)!==false)return;
-//if($b && !is_array($b))return conb::parse($b,'','template');
+//if($b && !is_array($b))return conb::parse($b,'template');
 if($b && !is_array($b))return self::read($b,$o);}
 
 #

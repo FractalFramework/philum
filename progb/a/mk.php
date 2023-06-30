@@ -64,6 +64,9 @@ foreach($r as $k=>$v)if(trim($v)){$v=trim($v); if(substr($v,0,1)=='-')$v=substr(
 	$ret.='['.lka(urlread($id).'#nh'.$i.'" name="nb'.$i,$i).'] '.$v.br(); $i++;}
 if($ret)return tagb('footer',$ret);}
 
+static function anchor($d){
+[$n,$v]=split_one('|',$d,2); return lkn($n,$v);}
+
 static function iframe_bt($d,$m,$nl){
 [$u,$t]=cprm($d); $t=$t==1?nms(194):$t; $bt=lkt('',$u,picto('url'));
 if($nl)return lk($u);
@@ -169,7 +172,7 @@ $f='_datas/dl/'.nod($f).'.txt'; mkdir_r($f);
 if(is_file($f)){$nb=read_file($f); return btn("txtsmall",':: '.$nb.' downloads');}}
 
 #mecanics
-static function plan($id,$m,$d,$lk=''){
+static function plan($id,$m,$d,$lk=''){echo $id;
 [$t,$o]=cprm($d); if($t==1)$t=''; if($t)$t=btn('txtcadr',$t);
 if(!is_numeric($id) or $m<3)return;
 $d=sql('msg','qdm','v','id="'.$id.'"');
@@ -214,7 +217,8 @@ foreach($rb as $k=>$v){
 return [$rx,$rt];}
 
 //$r[idp][id]=1
-static function taxonomy($r){$ra=$r; $rx=''; $rt=[];
+static function taxonomy($r){
+$ra=$r; $rx=''; $rt=[];
 foreach($r as $k=>$v){
 	if(is_array($v))
 		$rt[$k]=self::taxo_find($rx,$ra,$v);
@@ -276,9 +280,9 @@ if(is_array($r))return self::msqplay($r,$o).$bt; else return $r;}
 static function msqtwit($d,$id){
 $r=msql::read('',$d,1); $rb=[]; $img='';
 if($r)foreach($r as $k=>$v){
-	$im=img::make_thumb_c($v[5],'48/48',1); if($im)$img='[img:var]'; else $img='[[img:var]:distimg]';
+	$im=img::make_thumb_c($v[5],'48/48',1); if($im)$img='{img}'; else $img='[{img}:distimg]';
 	$rb[$k]=['img'=>$im?$im:$v[5],'name'=>$v[2],'screen'=>$v[1],'txt'=>stripslashes($v[4])];}
-$tmp='['.$img.' [name:var] (@[screen:var]) [[txt:var]:small]$trkmsg:divc]';//
+$tmp='['.$img.' {name} (@{screen}) [{txt}:small]|trkmsg:divc]';
 $ret=vue::call($tmp,$rb);
 return divc('scroll',$ret);}
 
@@ -350,7 +354,7 @@ if(substr($im,0,4)=='http')$imn=ses('qb').'_'.$id.'_'.substr(md5($sz),0,6).xt($i
 elseif(strpos($im,'/')!==false)$imn=str_replace('/','',$im); else $imn=$im;
 $imb=img::thumbname($imn,$w,$h); $im=goodroot($im);
 if(is_file($im) or substr($im,0,4)=='http'){$lmt='';//$_SESSION['rstr'][16];
-	if(!file_exists($imb) or ses('rebuild_img'))img::remini($im,$imb,$w,$h,$lmt);
+	if(!file_exists($imb) or ses('rebuild_img'))img::build($im,$imb,$w,$h,$lmt);
 	return image($imb,$w,$h);}
 else return picto('img',48);}
 
@@ -365,7 +369,7 @@ static function mini_b($d,$id){//mode w/h max//adlin
 if(!is_file('img/'.$im))return;
 [$w,$h]=explode('/',$sz); [$wo,$ho,$ty]=getimagesize('img/'.$im);
 [$w,$h]=img::sz($wo,$ho,$w,$h); $imb=img::thumbname($im,$w,$h);
-if(!file_exists($imb) or ses('rebuild_img'))img::remini('img/'.$im,$imb,$w,$h,'');
+if(!file_exists($imb) or ses('rebuild_img'))img::build('img/'.$im,$imb,$w,$h,'');
 return self::popim($im,img('/'.$imb),$id);}
 
 //citation
@@ -378,7 +382,7 @@ return html_entity_decode($d);}
 //:photos
 static function thumb_b($f,$id){$xt=xt($f); $w=200; $h=140;
 $imb=img::thumbname(str_replace('/','',$f),$w,$h);
-if(!file_exists($imb) or ses('rebuild_img'))img::remini($f,$imb,$w,$h,$_SESSION['rstr'][16]);
+if(!file_exists($imb) or ses('rebuild_img'))img::build($f,$imb,$w,$h,$_SESSION['rstr'][16]);
 return ljb('','SaveBf',ajx($f).'___'.$id,img($imb));}
 
 static function popim($im,$v,$id=''){$w=''; $h=''; $img=goodroot($im);

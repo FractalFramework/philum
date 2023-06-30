@@ -7,7 +7,7 @@ if($vrf && !$d)sql::del('qdd',$vrf);
 elseif(!$vrf && $d)sqlsav('qdd',[$id,$val,$d]);
 elseif($msb!=$d)sql::upd('qdd',['msg'=>$d],$vrf);}
 
-static function titsav($id,$m,$prm=[]){//pr($prm);
+static function titsav($id,$m,$prm=[]){
 $ra=['ib'=>'ib','frm1'=>'frm','suj'=>'suj','url'=>'thm','img'=>'img','src'=>'mail','author'=>'name','hub'=>'nod'];
 foreach($ra as $k=>$v){$va=$prm[$k.$id]??'';
 	if($v=='ib' && ($va=='/' or !$va))$va='0';
@@ -220,7 +220,7 @@ return json_encode($r);}
 
 static function addrelated($id,$o,$prm=[]){$rt=[];
 $d=sql('msg','qdm','v',$id); $p=$prm[0]??''; $rb=[]; if($p)$rb[]=$p;
-$b=conb::parse($d,'','extractlnk'); $r=explode('|',substr($b,0,-1));
+$b=conb::parse($d,'extractlnk'); $r=explode('|',substr($b,0,-1));
 $rd=sqb::read('id','art','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
 //$rd=sql::read('id','qda','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
 return implode(' ',$rb);}
@@ -230,7 +230,7 @@ static function art_options($id,$lg){$ret='';
 $r=ses('art_options'); $lgs=self::langs();
 $ra=sql('val,msg','qdd','kv',['ib'=>$id]); $rst=ses('rstr');
 $rd=valk($ra,$r);
-if($r)foreach($r as $k=>$v){$val=$rd[$v]; $hlp=''; $sid=str::normalize($v).$id;
+if($r)foreach($r as $k=>$v){$val=$rd[$v]; $hlp=''; $sid=str::normalize($v).$id; if($val=='1')$val='true';
 	if($v=='folder'){$rid='s'.$sid; $ret.=picto('virtual'); $hlp=btd($rid,'');
 	$ret.=toggle('poph',$rid.'_meta,virtualfolder___'.$id.'_folder',nms(73));}
 	if($v=='related'){$ret.=picto('file-chain'); $hlp=hlpbt('meta_related');
@@ -534,8 +534,8 @@ static function importags($id){
 $lg=sql('lg','qda','v',$id); $lga=ses('lng'); $ex=''; $rb=[]; $rd=[];
 $r=sql('msg,val','qdd','kv',['ib'=>$id,'(val'=>['langfr','langen','langes']]);
 foreach($r as $k=>$v)if($v!=$lg && !$ex){$ex=$k; $lgb=substr($v,4);}
-if($ex)$rb=sql('idtag','qdta','rv',['idart'=>$ex]); //pr($rb);
-$rc=sql('idtag','qdta','k',['idart'=>$id]); //pr($rc);
+if($ex)$rb=sql('idtag','qdta','rv',['idart'=>$ex]);
+$rc=sql('idtag','qdta','k',['idart'=>$id]);
 if($rb){foreach($rb as $k=>$v)if(!isset($rc[$v]))$rd[]=[$id,$v]; if($rd)sql::sav2('qdta',$rd);}//pr($rd);
 return count($rd).' tags applied';}
 
@@ -747,9 +747,10 @@ foreach($rt as $k=>$v)$rn[$v]=$k+1; $n=$rn[$cat];
 $nod=nod('tags_'.$n.$lg);//'fr'
 $ra=sql('id,tag','qdt','kv',['cat'=>$cat],0);
 $rb=msql::kx('',$nod,0);
-$rc=array_diff_key($rb,$ra); pr($rc);
+$rc=array_diff_key($rb,$ra);
 foreach($rc as $k=>$v)unset($rb[$k]);
-$r=msql::save('',$nod,$rb);}
+$r=msql::save('',$nod,$rb);
+return rdiv($rc);}
 
 static function synedit($cat,$idtag){
 $ret=divc('txtcadr','add synonym for id:'.$idtag.''); $rid='synedt'.$idtag;

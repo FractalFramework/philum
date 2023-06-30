@@ -17,8 +17,8 @@ $r=self::build($p,$o); $lang='es';
 if($r)foreach($r as $k=>$v){
 	[$id,$day,$nam,$suj,$msg,$lk,$lg]=$v;
 	if($lg!=$lang)$msb=trans::callum('art'.$id,$lang.'-'.$lg,2); else $msb='';
-	$msg=conb::parse($msg,'','sconn');//conn::read($msg,3);
-	$msb=conb::parse($msb,'','sconn');
+	$msg=conb::parse($msg,'sconn');//conn::read($msg,3);
+	$msb=conb::parse($msb,'sconn');
 	$dt=lka($lk,date('d/m/Y',$day));
 	$suj=substr($suj,1,-1);
 	$rt[]=[$suj,'@'.$nam.' '.$dt.br().$msg,$msb];}

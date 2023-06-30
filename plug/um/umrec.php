@@ -221,8 +221,8 @@ if($r)foreach($r as $k=>$v){
 	//elseif($o=='brut')$ret.=self::brut($rb);
 	elseif($o=='brut'){$rb['suj']=strin($rb['suj'],'[',']'); $rc[]=$rb;}
 	/*elseif($o=='brut'){//vue
-		$rb['tracks']=conb::parse($rb['tracks'],'','sconn');
-		$rb['msg']=conb::parse($rb['msg'],'','sconn'); $rc[]=$rb;}*/
+		$rb['tracks']=conb::parse($rb['tracks'],'sconn');
+		$rb['msg']=conb::parse($rb['msg'],'sconn'); $rc[]=$rb;}*/
 	elseif($o=='ebook')$rc[]=[$id,$day,$suj.' ('.($lg?$lg:'fr').')',self::brut($rb),$lg];
 	elseif($o=='table'){$t=tag('b',[],strin($rb['suj'],'[',']')); //pr($rb);
 		$trk=''; if($rb['author'])$trk=divb(tag('b',[],$rb['author']).' : '); $trk.=$rb['tracks']??'';

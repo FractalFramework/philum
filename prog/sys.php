@@ -1,5 +1,5 @@
 <?php 
-gets(); $cache=''; //pr($_GET);
+gets(); $cache='';
 $_SESSION['stime']=$stime; $_SESSION['dayx']=substr($stime,0,10); geta('nl',0);
 if(!ses('qb') or get('hub') or get('refresh') or get('log')){$cache='ok'; boot::reset_ses();}
 if(get('dev')){$_SESSION['dev']='b'; relod('/reload');}

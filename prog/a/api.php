@@ -296,7 +296,7 @@ $ra=self::defaults_rq($ra,$rb);
 if($ra)return self::callr($ra);}
 
 #load //from url
-static function load($ra){//pr($ra);
+static function load($ra){
 $ra['rid']=$ra['rid']??randid('load');
 if($md=$ra['media']??'')$ra['preview']='conn'.$md;
 else $ra['preview']=art::slct_media($ra['preview']??'');

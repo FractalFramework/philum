@@ -181,7 +181,7 @@ if($o)return btj(picto('save','','active'),atj('saveart',$id));
 else return btj(picto('editor'),atj('editart',$id));}
 
 static function artsconn($id){
-$d=sql('msg','qdm','v',$id); $d=conb::parse($d,'','sconn');
+$d=sql('msg','qdm','v',$id); $d=conb::parse($d,'sconn');
 $d=embed_p($d); return nl2br($d);}
 
 static function wygopn($id){
@@ -202,7 +202,7 @@ $bt=self::wygbt($id,0); $edt=''; $d=$prm[0]??''; $d=self::savwyg($id,'',[$d]);
 return mkjson([$d,$edt,$bt,$bt]);}
 
 static function wygedt($id,$g2,$prm=[]){$p1=$prm[0]??'';
-$d=conb::parse($p1,'','sconn');
+$d=conb::parse($p1,'sconn');
 $ret=lj('','txtarea_mc,wygok_edt'.$id.'_23_'.$id,picto('save2')).' '; $rid=$g2?$g2:'edt'.$id;
 if(rstr(13))$d=embed_p($d); if(!$d)$d="\n";
 return divedit($rid,'editarea justy','max-width:720px','',nl2br($d));}
@@ -226,7 +226,7 @@ static function stripvk($p){
 return str_replace('https://vk.com/away.php?to=','',$p);}
 
 static function striputm($d){
-return conb::parse($d,'striputm','correct');}
+return conb::parse($d,'correct','striputm');}
 
 #connedit
 static function filters($va,$opt,$prm){
@@ -236,7 +236,7 @@ elseif($va=='cleanmail')$rt=str::cleanmail($d);
 elseif($va=='cleanpunct')$rt=str::clean_punctuation($d,2);//nicequotes
 elseif($va=='nicequotes')$rt=str::nicequotes($d,2);
 elseif($va=='cleanpdf')$rt=self::clean_pdf($d);
-elseif($va=='striplink')$rt=conb::parse($d,'striplink','correct');
+elseif($va=='striplink')$rt=conb::parse($d,'correct','striplink');
 elseif($va=='converthtml'){$rt=conv::call(nl2br($d)); $rt=str::post_treat_repair($rt);}
 //elseif($va=='easytables')$rt=str_replace("\n","¬\n",$d);
 elseif($va=='addlines')$rt=self::add_lines($d);
@@ -292,13 +292,13 @@ for($i=200;$i>0;$i--){$nd='('.$i.')';
 $r=explode(':numlist]',$d); $n=count($r);
 if($n>1){$d='';
 for($i=0;$i<$n;$i++)
-	if($i==$n-2)$d.=conb::parse($r[$i].':numlist]','','num2nb');
+	if($i==$n-2)$d.=conb::parse($r[$i].':numlist]','num2nb');
 	elseif($i<$n-2)$d.=$r[$i].':numlist]';
 	else $d.=$r[$i];}
 return $d;}
 
 static function del_tables($v){
-$d=conb::parse($v,':table','correct');
+$d=conb::parse($v,'correct',':table');
 //$d=str_replace(['|','¬'],[' ',"\n"],$d);
 $d=str::clean_br($d);//clean_prespace//repair_badn//
 return $d;}

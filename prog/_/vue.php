@@ -6,7 +6,7 @@ static $r=[];
 
 static function readconn($d){$p=''; $c='';
 $s=strrpos($d,':'); if($s!==false){$c=substr($d,$s+1); $d=substr($d,0,$s);
-$s=strrpos($d,'$'); if($s!==false){$p=substr($d,$s+1); $d=substr($d,0,$s);}}
+$s=strrpos($d,'|'); if($s!==false){$p=substr($d,$s+1); $d=substr($d,0,$s);}}
 return [$d,$p,$c];}
 
 static function setvar($d){$n=strpos($d,'=');
@@ -97,7 +97,7 @@ if($d && $c)return tagb($c,$d);
 return $d;}
 
 static function build($tmp,$r){
-$tmp=str_replace('|','$',$tmp);//patch
+//$tmp=str_replace('|','$',$tmp);//patch
 //foreach($r as $k=>$v){$tmp=str_replace('['.$k.':var]','{'.$k.'}',$tmp);}//patch
 foreach($r as $k=>$v)if(!$v)$tmp=str_replace($v,'',$tmp);//del empty
 $tmp=str::repair_tags($tmp); $d=delsp($tmp); $tmp=str::clean_lines($tmp); $tmp=delnl($tmp);
@@ -106,7 +106,7 @@ foreach($r as $k=>$v)$d=str_replace('{'.$k.'}',$v,$d);
 return nl2br($d);}
 
 static function call($tmp,$r){$ret='';//self::$r=$r;
-//$r=array_chunk($r,100); $r=$r[7];//pr($r);
+//$r=array_chunk($r,100); $r=$r[7];
 foreach($r as $k=>$v)$ret.=self::build($tmp,$v);
 return $ret;}
 

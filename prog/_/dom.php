@@ -6,21 +6,7 @@ static function remove($v){$n=$v->childNodes->length;
 for($i=0;$i<$n;$i++)$v->removeChild($v->childNodes->item(0));
 return $v;}
 
-static function del0($d,$o){
-$r=explode('|',$o); $dom=dom($d);
-if($dom)foreach($r as $va)if($va){
-	[$c,$at,$tg,$op]=opt($va,':',4); if(!$at)$at='class'; if(!$tg)$tg='div';//id,href,...
-	foreach($dom->getElementsByTagName($tg) as $k=>$v){$attr=$v->getAttribute($at);
-		if($op=='del')$v->removeAttribute($at);//:data-image-caption:img:del
-		elseif($op=='x')self::remove($v);//::noscript:x
-		elseif($op=='rm' && $attr==$c)self::remove($v);//noopener:rel:a:rm
-		elseif($op=='clean'){$dest=$dom->createElement('img');//:src:img:clean
-			$src=$v->getAttribute($at); $dest->setAttribute('src',$src); $v->parentNode->replaceChild($dest,$v);}
-		elseif(($c && strpos($attr,$c)!==false) or !$c){self::remove($v); $v->parentNode->removeChild($v);}}}
-$ret=$dom->saveHTML();
-return $ret;}
-
-static function del($dom,$o){
+static function del2($dom,$o){
 $r=explode('|',$o);
 if($dom)foreach($r as $va)if($va){
 	[$c,$at,$tg,$op]=opt($va,':',4); if(!$at)$at='class'; if(!$tg)$tg='div';//id,href,...
@@ -31,6 +17,10 @@ if($dom)foreach($r as $va)if($va){
 		elseif($op=='clean'){$dest=$dom->createElement('img');//:src:img:clean
 			$src=$v->getAttribute($at); $dest->setAttribute('src',$src); $v->parentNode->replaceChild($dest,$v);}
 		elseif(($c && strpos($attr,$c)!==false) or !$c){self::remove($v); $v->parentNode->removeChild($v);}}}}
+
+static function del($d,$o){$dom=dom($d);
+self::del2($dom,$o);
+return $dom->saveHTML();}
 
 static function master_del($d,$o){
 $dom=dom($d); self::del($dom,$o);

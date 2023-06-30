@@ -133,7 +133,7 @@ if($um)return self::callum($ref,$setlg.'-1',$edt);
 return self::call($ref,$setlg.'-1',$edt);}
 
 static function clean_tw($d,$o=''){
-$d=conb::parse($d,'','striptw');
+$d=conb::parse($d,'striptw');
 $d=str_replace("\n",' ## ',$d); if(!$d)return;
 $r=explode(' ',$d);
 if($r)foreach($r as $k=>$v){
@@ -150,7 +150,7 @@ $r=explode(' ',prmb(26)); $id=substr($ref,3); $go='suj'.$id.',art'.$id;
 $ret=lj(active($to,$from),$tg.'_trans,call___'.$ref.'_'.$from.'-'.$from,flag($from)).' &#8658; ';
 //$ret=lj(active($to,$from),$go.'_trans,artsuj__json_'.$id.'_'.$from.'-'.$from,flag($from)).' &#8658; ';
 if($r)foreach($r as $k=>$v)if($v!=$from){$c=active($v,$to);
-	$ret.=lj($c,$tg.'_trans,call___'.$ref.'_'.$v.'-'.$from,flag($v)).' ';}
+	if(auth(6))$ret.=lj($c,$tg.'_trans,call___'.$ref.'_'.$v.'-'.$from,flag($v)).' ';}//
 	//$ret.=lj($c,$go.'_trans,artsuj__json_'.$id.'_'.$v.'-'.$from,flag($v)).' ';
 if(auth(6)){
 	$ret.=lj('',$tg.'_trans,redo___'.$ref.'_'.$to.'-'.$from,picto('refresh'));

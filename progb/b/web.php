@@ -77,13 +77,14 @@ $r[1]=$r[1]??'';
 $r[2]=$r[2]??'';
 return $r;}
 
-static function resav($u,$o,$r){$u=nohttp(utmsrc($u));
+static function resav($u,$o,$r){
+$u=nohttp(utmsrc($u));
 if($o)$r=self::read($u,$o);
 if($u){[$ti,$tx,$im,$ib]=arr($r,4);
 	$ex=sql('id','qdw','v',['url'=>$u],0);
-	$rs=['ib'=>$ib,'tit'=>($ti),'txt'=>($tx),'img'=>$im];
-	if($ex)sqlup('qdw',$rs,['url'=>$u],0,1);
-	else sqlsav('qdw',$rs,0,1);}
+	$rs=['ib'=>$ib,'url'=>$u,'tit'=>($ti),'txt'=>($tx),'img'=>$im];
+	if($ex)sqlup('qdw',$rs,['url'=>$u]);
+	else sqlsav('qdw',$rs);}
 if(strpos($u,'youtube.com')!==false)return video::any(strfrom($u,'='),$ib,3);
 return self::com($u);}
 
@@ -119,7 +120,7 @@ if(substr($p,0,4)!='http')$p=http($p);
 if(!is_url($p))return 'nothing';
 $ret=self::com($p,$o,$id);
 $bt=self::wmenu($p,$rid,$id);
-return divb(divb($ret,'',$rid,'min-width:320px;').$bt);}
+return $bt.divb(divb($ret,'',$rid,'min-width:320px;'));}
 
 static function j($p,$o,$prm=[]){$p=$prm[0]??$p;
 return self::call($p,$o);}

@@ -211,7 +211,7 @@ if($r)$nxtk=msql::nextentry($r); $idn=randid();
 if($va=='add'){$u=$o; $o=domain(strtolower($u));
 	$va=$o?$o:self::findnextkey($r,0); $ry=array_fill(0,count($rh),'');
 	if(is_array($rh))$ra[$va]=array_combine($rh,$ry); else $ra[$va]=$ry; if(!isset($r[$va]))$r=$ra;
-	$rw=conv::recognize_defcon($u); //pr($rw);
+	$rw=conv::recognize_defcon($u);
 	$ti='text start'; if(isset($r[$va][$ti]))$r[$va][$ti]=$rw[0]?$rw[0]:'entry-content::';
 	$ti='title start'; if(isset($r[$va][$ti]))$r[$va][$ti]=$rw[2]?$rw[2]:'::h1';}
 if($rh)$ntkp=1; else $ntkp=0; $i=0; $key=''; $def='';
@@ -536,11 +536,11 @@ echo tabler(['addition',$rh[$n],array_sum($rk)/count($rk)]);}
 
 static function intersecter($r){$ra=[]; $rb=[]; $rc=[]; $re=[]; $rt=[]; $rtb=[];
 foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1); $r0=msql::read($dr,$nod,1);
-	if($r0){$ra[$k]=array_column($r0,0); $re=array_merge($re,$r0);}else echo 'x:'.$dr.$nod.' ';}//
-foreach($r as $k=>$v)foreach($ra[$k] as $ka=>$va)if($va!=$v && in_array($va,$ra[$k]))$rb[$va][]=1;//pr($rb);
-foreach($rb as $k=>$v){$n=count($v); if($n>1)$rc[$k]=$n;} arsort($rc);//pr($rc);
-foreach($re as $k=>$v)if($rc[$v[0]]??'')$rt[$v[0]]=$v;//pr($rt);
-foreach($rc as $k=>$v)$rtb[$k]=$rt[$k];//pr($rt);
+	if($r0){$ra[$k]=array_column($r0,0); $re=array_merge($re,$r0);}else echo 'x:'.$dr.$nod.' ';}
+foreach($r as $k=>$v)foreach($ra[$k] as $ka=>$va)if($va!=$v && in_array($va,$ra[$k]))$rb[$va][]=1;
+foreach($rb as $k=>$v){$n=count($v); if($n>1)$rc[$k]=$n;} arsort($rc);
+foreach($re as $k=>$v)if($rc[$v[0]]??'')$rt[$v[0]]=$v;
+foreach($rc as $k=>$v)$rtb[$k]=$rt[$k];
 return [$rc,$rtb];}
 
 static function intersect($d0,$d){
