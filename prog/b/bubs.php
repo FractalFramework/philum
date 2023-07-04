@@ -208,7 +208,7 @@ if($va<=$_SESSION['auth'])$ret[$k][$ka]=$va;
 $_SESSION['admath']=$ret; return $ret;}
 
 static function fastmenu(){//$arw=rightarrow();$arw.
-$r=msql::kv('lang','admin_menus',1); $rt=[];
+$r=msql::kv('lang','admin_menus'); $rt=[];
 foreach($r as $k=>$v)$rt[]=popbub('admin',$k,mimes($k).'&nbsp;'.$v,'',1);
 return join('',$rt);}
 
@@ -295,7 +295,7 @@ return $ret;}
 
 //admin_menu //if rstr(98)
 static function adm_admin($dir){//case:admin
-$r=self::adminauthes2(); $rm=msql::kv('lang','admin_authes',1);
+$r=self::adminauthes2(); $rm=msql::kv('lang','admin_authes');
 $ret[]=['office','ajax','popup','admin___all','','','Global','popup'];
 $ret[]=['backoffice','linkt','','/admin/console','','','Global','link'];
 $mn=ses('mn');
@@ -320,7 +320,7 @@ if(strto($k,'/')==strto($dir,'/')){
 return $ret;}
 
 static function adm_admn($dir){
-$r=self::adminauthes2(); $rm=msql::kv('lang','admin_authes',1);
+$r=self::adminauthes2(); $rm=msql::kv('lang','admin_authes');
 $ret[]=['backoffice','link','blank','/admin/msql','','','Microsql','link'];
 $ret[]=['hub','ajax','popup','msql___users_'.ses('qb'),'','','Microsql','window'];
 if(auth(6))$ret[]=['lang','ajax','popup','msql___lang','','','Microsql','window'];

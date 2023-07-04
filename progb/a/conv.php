@@ -49,10 +49,10 @@ static function detect_defcon($d,$r){
 $dom=dom($d); $rec=dom(''); $ret='';
 if($r)foreach($r as $k=>$v){
 	[$cl,$at,$tag]=opt(':',$v,3); if(!$at)$at='class';
-	//$ret=dom::capture($dom,$v,$rec)->saveHTML();
+	//$ex=dom::capture($dom,$v,$rec)->saveHTML();
+	//$ex=dom::detect($d,$v);
 	if(strpos($d,$at.'="'.$cl) && !$ret)$ret=$v;
-	//elseif(dom::detect($d,$v) && !$ret)$ret=$v;else
-	//if($ret && !$tx)$d=$v;
+	//elseif($ex && !$ret)$ret=$v;
 	}
 return $ret;}
 
@@ -85,7 +85,7 @@ return ['',['','','','','','']];}
 
 #transductor
 static function call($d,$h=''){
-$h=$h?$h:sesr('rstr',137);
+$h=$h?$h:rstr(137);
 $d=str::clean_html($d);
 $d=str::br_rules($d);
 $d=self::interpret_html($d,'',$h);
@@ -100,7 +100,7 @@ $d=read_file($f); $r=json_decode($d,true);
 return [$ra['title'],$ra['content']];}
 
 static function vacuum($f,$sj='',$h=''){//$f=https($f);
-$f=http($f); $f=utmsrc($f); $suj=''; $rec=''; $ret='';
+$f=http($f); $f=utmsrc($f); $suj=''; $rec=''; $ret=''; $enc='';
 $reb=vaccum_ses($f); if(!$reb){vacses($f,'b','x'); return ['','','','',''];}
 [$defid,$defs]=self::verif_defcon($f);//defcons
 //if(substr($reb,0,1)=='{')return self::vacuum_json($reb);

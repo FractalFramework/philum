@@ -61,10 +61,10 @@ if(($c && strpos($attr,$c)!==false) or !$c){$n++;//nb of similar captures
 	if($n==$cn or !$cn)self::importnode($rec,$v,$tg);}}
 return $rec;}
 
-static function detect($d,$o){$ret='';
+static function detect($d,$o,$enc=''){$ret='';
 $r=explode('|',$o); $dom=dom($d); $rec=dom(''); $rec->formatOutput=true;
 if($dom)foreach($r as $k=>$va)self::capture($dom,$va,$rec);//var_dump($rec);
-$ret=$rec->saveHTML();
+$ret=$rec->saveHTML(); if($enc)$ret=utf8enc($ret);
 return $ret;}
 
 static function batch($dom,$rec,$o){$r=explode('|',$o);

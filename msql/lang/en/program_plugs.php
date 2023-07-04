@@ -1,2 +1,2 @@
-<?php //msql/program_plugs
-$r=["_"=>['usage']];
+<?php //program_plugs
+$r=["_"=>['usage']]; ?>

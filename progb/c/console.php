@@ -110,7 +110,7 @@ $nod=ses('modsnod'); $fb=msql::url('',$nod,'sav'); $rl='';
 switch($p){
 //config
 case('bckp_cnfg'):write_file($f,'#'.implode('#',$_SESSION['prmb'])); $ret='saved'; break;
-case('restore_cnfg'):$r=msql::kv('',nod('config'),'',0); $_SESSION['prmb']=$r; $cnfg=implode('#',$r); $rl=1;
+case('restore_cnfg'):$r=msql::kv('',nod('config')); $_SESSION['prmb']=$r; $cnfg=implode('#',$r); $rl=1;
 	sql::upd('qdu',['config'=>$cnfg],['name'=>ses('qb')]); $ret='msql config restored'; break;
 case('rollback_cnfg'):$cnfg=read_file($f); $_SESSION['prmb']=explode('#',$cnfg); $rl=1;
 	sql::upd('qdu',['config'=>$cnfg],['name'=>ses('qb')]); $ret='old config restored'; break;

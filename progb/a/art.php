@@ -17,7 +17,7 @@ if(!$tmp)$tmp=msql::val('system','default_template',$tpl);//default
 //if(!$tmp)$tmp=msql::val('system','default_template_'.$tpl,1);//default
 return $tmp;}
 
-static function template1($p,$tpl){
+static function template0($p,$tpl){
 if(!$tpl)$tpl=prma('template');//from mod
 $tmp=sesmk2('art','tmpu',$tpl,1);
 $rs=['read'=>88,'art'=>55,'pubart'=>55,'pubart_j'=>55,'pubart_b'=>55,'titles'=>65,'tracks'=>66,'book'=>67];
@@ -29,34 +29,53 @@ if(!$tmp){
 	else $tmp=cltmp::art();}
 return self::mktmp($tmp,$p);}
 
-#template2
-static function decide_tpl(){
-$tpl=prma('template');
+//tmp_common
+static function decide_tpl(){$tpl=prma('template');//from mod
 if(!$tpl){$r=ses('tmpc'); $c=$_SESSION['cond'][0]; $tpl=$r[$c]??'';}//from context
-if(!$tpl && rstr(88))$tpl='cat';
-if(!$tpl)$tpl='art';
+if(!$tpl){
+	if(ses('simplified'))$tpl='simple';
+	elseif(rstr(88))$tpl='cat';
+	else $tpl='art';}
 return $tpl;}
 
 static function decide_tmp($tpl){$tmp='';
-if(rstr(103))$tmp=msql::val('',nod('template_'.$tpl),1);//from user
-if(!$tmp && method_exists('cltmp2',$tpl))$tmp=cltmp2::$tpl();//from sys
+if(rstr(103)){//from usr
+	$rs=['read'=>88,'art'=>55,'pubart'=>55,'pubart_j'=>55,'pubart_b'=>55,'titles'=>65,'tracks'=>66,'book'=>67];
+	$opt=$rs[$tpl]??'';
+	if($tpl && $opt && !rstr($opt))$tmp=$tmp=msql::val('',nod('template_'.$tpl),1);}//from usr
+if(!$tmp && method_exists('cltmp2',$tpl))$tmp=cltmp2::$tpl();//from cnfg
 if(!$tmp)$tmp=msql::val('system','edition_template_'.$tpl,1);//default
 return $tmp;}
 
-static function build_view($tmp){
-return view::bridge($tmp);}
+//tmp1
+static function template1($p,$tpl){
+if(!$tpl)$tpl=self::decide_tpl($tpl);
+$tmp=self::decide_tmp($tpl);
+return self::mktmp($tmp,$p);}
 
+#template2
 static function decide_view($tpl){$r=[];
 if(method_exists('view',$tpl))$r=view::$tpl();
 return $r;}
 
 static function template2($ra,$tpl){$rt=[];
-if(!$tpl)$tpl=self::decide_tpl($tpl); echo $tpl;
-if($tpl)$rt=sesmk2('art','decide_view',$tpl,1);
+if(!$tpl)$tpl=self::decide_tpl($tpl);
+$tmp=self::decide_tmp($tpl);
+return vue::build($tmp,$ra);}
+
+//tmp3
+/**/static function build_view($tmp){//buikd r from tmp or json
+return view::bridge($tmp);}
+
+static function template3($ra,$tpl){$rt=[];
+if(!$tpl)$tpl=self::decide_tpl($tpl); //echo $tpl;
+//if($tpl)$rt=sesmk2('art','decide_view',$tpl,0);
+if($tpl)$rt=self::decide_view($tpl);
 return view::call($rt,$ra);}
 
+//tmp
 static function template($p,$tpl){
-return self::template1($p,$tpl);}
+return self::template2($p,$tpl);}
 
 #edit
 static function btedit($kem,$id,$re,$prw){
@@ -100,9 +119,9 @@ if($lg && $lg!=ses('lng'))return ' '.flag($lg);}
 static function lang_art_others($id,$lg,$rb){$ret='';
 $r=explode(' ',prmb(26)); //$rb=sql('lang,id','trn','kv',['ref'=>'art'.$id]);
 foreach($r as $k=>$v)if($v!=$lg && isset($rb[$v])){
-	//$ret.=lj('txtx','art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg,flag($v)).' ';
-	$ja='art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg; $jb='art'.$id.'_ma,read*msg___'.$id;
-	$ret.=ljtog('',$ja,$jb,flag($v),att(nms(153))).' ';}
+	//$ja='art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg; $jb='art'.$id.'_ma,read*msg___'.$id;
+	//$ret.=ljtog('',$ja,$jb,flag($v),att(nms(153))).' ';
+	$ret.=lj('txtx','art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg,flag($v)).' ';}
 return $ret;}
 
 static function lang_rel_arts($id,$lg,$ro,$rst101,$rst115){
@@ -161,7 +180,7 @@ if($ib && $read && $id!=$read){$ibb=ma::ib_of_id($ib);
 
 static function backcat($frm,$rst43){
 $t=!$rst43?catpict($frm,24):btn('txtbox',$frm);//rstr pictocat
-if(rstr(85))return lk('cat/'.$frm,$t);//find a way
+if(rstr(85))return lj('','popup_mod,callmod___m:category,p:'.ajx($frm),$t);
 return lh('cat/'.$frm,$t);}
 
 static function opnart($id,$prw,$o,$rch=''){$c=$o?'active':'';//art_read_c
@@ -170,6 +189,9 @@ return ljb($c,'SaveBc','art_'.$id.'_'.$prw.'_'.$o.'_'.ajx($rch),picto('kdown'),a
 static function priority_hands($d){
 $r=[2=>'s1',3=>'s2',4=>'s3',5=>'stars'];
 return isset($r[$d])?picto($r[$d],16):'';}
+
+/*static function priority_hands_0($d){$r=prmb('typarts');
+return isset($r[$d-1])?'['.$r[$d-1].']':'';}*/
 
 static function titles($id,$r,$rear,$nbtrk,$prw,$nl,$nb,$rb){//$rb:id,suj,css,msg
 $rst=$_SESSION['rstr']; $USE=ses('USE'); $ib=$r['ib']; $ro=$r['o']; if(!$rb)return [];
@@ -407,13 +429,13 @@ $len=mb_strlen($rch); $lenmsg=mb_strlen($msg); $sz=100; $ret=''; $nd=0; $seg=ses
 $r=str::detect_words($msg,$rch,$seg); $n=count($r); ses::$n+=$n; $look=$seg?'find':'look';
 foreach($r as $k=>$v){$pos=$k; $nd+=1; //$len=mb_strlen($v);
 	$prev=$pos-$sz; $next=$pos+$len; if($prev<0)$prev=0; if($next>$lenmsg)$next=$lenmsg;
-	$reta=substr($msg,$prev,$pos-$prev); $retb=substr($msg,$next,$sz);
-	$posa=strrpos($reta,'. '); if(!$posa)$posa=strpos($reta,' '); if($posa<0)$posa=0;
-	if($posa)$reta=substr($reta,$posa+1);
-	$posb=strrpos($retb,'. '); if(!$posb)$posb=strrpos($retb,' '); if($posb>$lenmsg)$posb=false;
-	if($posb)$retb=substr($retb,0,$posb+1);
+	$reta=mb_substr($msg,$prev,$pos-$prev); $retb=mb_substr($msg,$next,$sz);
+	$posa=mb_strrpos($reta,'. '); if(!$posa)$posa=mb_strpos($reta,"\n"); if(!$posa)$posa=mb_strpos($reta,' ');
+	if($posa<0)$posa=0; if($posa)$reta=trim(mb_substr($reta,$posa+1));
+	$posb=mb_strrpos($retb,'. '); if(!$posb)$posb=mb_strrpos($retb,"\n"); if(!$posb)$posb=mb_strrpos($retb,' ');
+	if($posb>$lenmsg)$posb=false; if($posb)$retb=trim(mb_substr($retb,0,$posb+1));
 	$bt=lkt('stabilo','/'.$id.'/'.$look.'/'.$rch.'#'.$nd,picto('chain'));
-	$bt.=lj('stabilo','popup_art,look___'.$id.'_'.ajx($rch).'_'.$nd,substr($msg,$pos,$len));
+	$bt.=lj('stabilo','popup_art,look___'.$id.'_'.ajx($rch).'_'.$nd,mb_substr($msg,$pos,$len));
 	$ret.=divc('trkmsg',$reta.''.$bt.''.$retb);}
 return $ret;}
 

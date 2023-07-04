@@ -186,13 +186,12 @@ if($h==1)$h=host().'/'; elseif($h)$h=http($h).'/';
 if(substr($f,0,4)=='http')return $f;
 elseif(substr($f,0,1)=='/')return substr($f,1);
 elseif(substr($f,0,3)=='../')return $f;
-elseif(strpos($f,'/')===false)return $h.'img/'.$f;
+elseif(substr($f,0,6)=='video/')return $h.''.$f;
 elseif(strpos($f,'img/')!==false)return $h.$f;
 elseif(strpos($f,'app/')!==false)return $h.$f;
-elseif(substr($f,0,7)=='video/')return $h.''.$f;
-elseif(strpos($f,'video/')!==false)return $h.'users/'.$f;
 elseif(strpos($f,'_datas/')!==false)return '/'.$h.''.$f;
 elseif(strpos($f,'/')!==false)return $h.'users/'.$f;
+elseif(strpos($f,'/')===false)return $h.'img/'.$f;
 //elseif(strpos($f,'<img')!==false)return between($o,'src="','"');
 else return $f;}
 
@@ -330,6 +329,7 @@ function scanplug(){return explore('plug','dirs',1);}
 function emoj(){return msql::kv('system','edition_pictos_4',1);}
 function conns(){return msql::read('system','connectors_basic',1);}
 function connlg(){return msql::kv('lang','connectors_basic',1);}
+function flags(){return msql::kn('system','edition_flags_8',2,1);}
 
 //mimes
 function msqmimes(){return msql::kv('system','edition_mimes');}
@@ -363,9 +363,7 @@ function preplink($u){$u=nohttp($u); $pos=strpos($u,'/',1);
 if($pos===false)$pos=strpos($u,'.'); return substr($u,0,$pos);}
 function prepdlink($d){[$p,$o]=cprm($d);
 if(!$o or $o==$p)$o=domain($p); return [$p,$o];}
-function flags(){$r=msql::read('system','edition_flags_8',1);
-foreach($r as $k=>$v)$ret[$v[2]]=$v[1]; return $ret;}
-function flag($d){$r=sesmk('flags','',0); return $r[$d]??$d;}
+function flag($d,$s=''){$r=sesmk('flags','',0); return bts($s?'font-size:'.$s.'px':'',$r[$d]??$d);}
 function svg($f,$w='',$h=''){return taga('img',['src'=>$f.'.svg','width'=>$w,'height'=>$h?$h:$w]);}
 function picto($d,$s=''){if(is_numeric($s))$s='font-size:'.$s.'px;'; return spn('','philum ic-'.$d,'',$s);}
 function pictxt($p,$t='',$s=''){return picto($p,$s).($t?'&#8239;'.$t:'');}

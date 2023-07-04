@@ -103,7 +103,8 @@ return $ret;}
 //clbasic_preview
 static function clview_basic_j($t,$s,$pr=[]){[$p,$re]=$pr;
 if(!$re)$re=msql::val('users',nod($t),$s);
-if($t=='template' && $re)$ret=conb::parse($re,'template');
+//if($t=='template' && $re)$ret=conb::parse($re,'template');
+if($t=='template' && $re)$ret=vue::build($re,[]);
 else $ret=cbasic::read($re,$p);
 if(strpos($ret,'<br')===false)$ret=nl2br($ret);
 return divc('track',$ret).br().textarea('',$ret,40,5);}

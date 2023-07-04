@@ -1,5 +1,5 @@
-<?php //msql/edition_apicom
-$r=["_"=>['col_1'],
+<?php //edition_apicom
+$r=["_"=>['description'],
 "auteurs"=>[''],
 "avoid"=>['ne contenant pas les termes'],
 "cat"=>['catégorie'],
@@ -56,4 +56,4 @@ $r=["_"=>['col_1'],
 "type"=>[''],
 "until"=>['jusqu\'à'],
 "utag"=>[''],
-"verbose"=>['(dev)']];
+"verbose"=>['(dev)']]; ?>

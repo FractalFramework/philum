@@ -1,4 +1,4 @@
-<?php //msql/edition_mimes
+<?php //edition_mimes
 $r=["_"=>['val0'],
 ".7z"=>['meet'],
 ".ai"=>['img'],
@@ -60,6 +60,7 @@ $r=["_"=>['val0'],
 "config"=>['builders'],
 "password"=>['lock'],
 "pictos"=>['icons'],
+"pictography"=>['icons'],
 "plugin"=>['plug'],
 "plug"=>['plug'],
 "rstr"=>['switch-on'],

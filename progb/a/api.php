@@ -356,7 +356,6 @@ if($to){$ord=strtolower($ra['order']??prmb(9));
 	elseif($ord=='id asc')$ra['minid']=$to;}
 if($ra['until']??'')$ra['nodig']=1;// or $ra['maxtime']??''
 if(empty($ra['hub']) && !rstr(105))$ra['hub']=ses('qb');
-if(!empty($ra['maxtime'])){$ra['nbdays']=30; $ra['mintime']=$ra['maxtime']-(84600*30); $dig='';}
 //$ra['maxday']=daysfrom($ra['maxtime']); $ra['maxtime']='';
 if($ra['dig']??''){$dig=$ra['dig']; unset($ra['dig']);}
 if($dig){$ra['nbarts']='';
@@ -365,6 +364,7 @@ if($dig){$ra['nbarts']='';
 	unset($ra['mintime']); unset($ra['maxtime']);}
 elseif(empty($ra['minday']) && !isset($ra['id']) && empty($ra['mintime']) && empty($ra['maxtime']) && empty($ra['from']) && empty($ra['nodig']) && rstr(3)){$ra['minday']=get('dig',ses('nbj'));
 	$pday=time_prev($ra['minday']); if($pday==1)$pday=0; $ra['maxday']=$pday;}
+elseif(!empty($ra['maxtime'])){$ra['nbdays']=30; $ra['mintime']=$ra['maxtime']-(84600*30); $dig='';}
 $ra['page']=$pg?$pg:$ra['page']??sesb('page',1);
 if($lg)$ra['lg']=$lg;
 //if(!isset($ra['lg']) && ses('lang')!='all')$ra['lg']=ses('lang');

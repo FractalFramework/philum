@@ -53,4 +53,7 @@ $r=["_"=>['date','text'],
 - review est connecté à data (metas des articles), pour s\'éviter une requête additionnelle
 - toggle édition d\'article incorporé (en plus du popup)
 - ajustement de l\'éditeur principal en vue de recevoir un id unique (69 implants à faire)
-- les éléments du dock sont conservés dans les favs']];
+- les éléments du dock sont conservés dans les favs'],
+"15"=>['0617','- correctifs jointure codeline et appbt (bt), connbt ; lifting du match
+- déblayage de dispositifs canoniques liés au root
+- ajout du transfert de données des backups msql vers le nouveau en sql']];

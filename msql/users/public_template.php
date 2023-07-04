@@ -1,5 +1,5 @@
-<?php //msql/public_template
-$r=["_"=>['function'],
+<?php //public_template
+$r=["_"=>['code'],
 "gsm"=>['[_ID:anchor] [_EDIT|[text-align:right;:style]:div] [_RECH|txtred:css][_ARTEDIT|[reponse_ID:id]:div] 
 [_BACK|txtx:css] [Par: _AUTHOR|txtsmall:css]
 [

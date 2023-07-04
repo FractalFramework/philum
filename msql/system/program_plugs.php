@@ -1,4 +1,4 @@
-<?php //msql/program_plugs
+<?php //program_plugs
 $r=["_"=>['usage','dir','loadable','callable','interface','state','private'],
 "Telex"=>['','','','','','',''],
 "Twitter"=>['','','','','','',''],
@@ -245,4 +245,4 @@ $r=["_"=>['usage','dir','loadable','callable','interface','state','private'],
 "wiktionary"=>['','','','','','',''],
 "xhtml"=>['','','','','','',''],
 "xss"=>['','','','','','',''],
-"yt"=>['','','','','','','']];
+"yt"=>['','','','','','','']]; ?>

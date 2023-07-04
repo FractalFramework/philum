@@ -1,4 +1,4 @@
-<?php //msql/admin_modules
+<?php //admin_modules
 $r=["_"=>['description','param','option','command'],
 "All"=>['Tous les articles','Donner un titre','prévisualisation : 1,2,3,auto',''],
 "LOAD"=>['Composant principal qui reçoit un déroulé d\'articles ou un article entier','','prévisualisation :1,2,3,auto','ordre des articles'],
@@ -15,6 +15,7 @@ La rstr60 permet de l\'afficher dans un petit bouton \"articles connectés\", au
 "api_arts"=>['Appel de l\'Api en utilisant les constructeurs Load','commande de l\'Api (séparateur \";\" au lieu de \",\")','',''],
 "api_chan"=>['chaîne de commandes Api','msql table (1)','',''],
 "api_mod"=>['Appel de l\'API en utilisant les constructeurs de l\'API','commande d\'articles de type Json','',''],
+"link"=>['renvoie un lien','home, category, 123, module/...','1 : picto associé ou picto nommé',''],
 "app_popup"=>['lance une app dans une popup','params : button,type,process,param
 ex: hello,art,auto,(id article)','',''],
 "apps"=>['Apps','Les Apps sont des boutons logiciels. On peut créer des boutons, liens, menus, html, ajax, situés dans le menu admin, dans un article, ouvrant des listes déroulantes, des logiciels, sur place, imbriqués, liés à d\'autres boutons, liés à des icônes, dans une popup, ou ailleurs... Ces possibilités sont classées par type de compétence et d\'emplacement.
@@ -42,7 +43,7 @@ tag=Une&nbdays:1,preview:auto,limit:10
 "bridge"=>['pont entre deux sites philum','param : serveur sans le \'http\'','ID de l\'article ou console url (/module/bridge/philum.fr/236)',''],
 "calendar"=>['calendrier','Donner un titre','',''],
 "cart"=>['Articles ajoutés au panier','Donner un titre','',''],
-"cat_arts"=>['articles d\'une catégorie','spécifier la catégorie','',''],
+"catarts"=>['articles d\'une catégorie','spécifier la catégorie','lang=en','render'],
 "categories"=>['liste des rubriques','Donner un titre','option de param ou nb = nombre d\'articles, home',''],
 "category"=>['articles de la catégorie en cours','','',''],
 "cats"=>['liste des catégories','','',''],
@@ -62,7 +63,7 @@ exemple : [site.com:site blog:hub :channel|Titre, close|x:ajax]','autorefresh (s
 "chrono"=>['temps de generation de la page','','',''],
 "classtag_arts"=>['Affiche les articles ayant une classe de tags définie','spécifier la classe de tags','',''],
 "clear"=>['clear:left annule le flottement à gauche','','',''],
-"codeline"=>['Renvoie des balises html imbriquées écrites en Codeline','ex: [[_URL|_SUJ:link]|h2:html] [[_OPT|txtsmall2:css]','',''],
+"conb"=>['templater conb','[[_URL|_SUJ:link]|h2:html] [[_OPT|txtsmall2:css]','',''],
 "conn"=>['résultat d\'un connecteur unique','','',''],
 "connector"=>['permet de composer du code sous forme de connecteurs','L\'éditeur renvoie son contenu dans le champ param','balise article',''],
 "contact"=>['mail à l\'admin','titre','css',''],
@@ -102,7 +103,6 @@ exemple : [site.com:site blog:hub :channel|Titre, close|x:ajax]','autorefresh (s
 "hubs"=>['liste des Hubs','Donner un titre','affiche nombre d\'articles',''],
 "jscode"=>['ajoute des js dans le header','','',''],
 "jslink"=>['ajoute un lien js dans le header ','','',''],
-"link"=>['renvoie un lien','home, category, 123, module/...','1 : picto associé ou picto nommé',''],
 "last"=>['article le plus récent','','',''],
 "last_search"=>['Recherches enregistrées','terme de la recherche','',''],
 "last_tags"=>['derniers tags ajoutés','nombre de tags','préciser une classe / command bub : à destination d menubub',''],
@@ -111,8 +111,6 @@ exemple : [site.com:site blog:hub :channel|Titre, close|x:ajax]','autorefresh (s
 "login"=>['login','Donner un titre','à droite',''],
 "login_popup"=>['login dans une popup','Donner un titre','',''],
 "module"=>['ID du module à appeler (utilisé pour simplifier les requêtes)','','',''],
-"most_read"=>['articles les plus vus','nb_jours-nb_arts (ex: 7-50)','',''],
-"most_read_stat"=>['articles les plus vus, stats consolidées','nb_jours-nb_arts (ex: 7-50) ','',''],
 "most_polled"=>['articles les plus votés','définir le type de vote (fav,like,poll,mood)','limite (100)',''],
 "score_datas"=>['articles les mieux notés','définir le type d\'évaluation (interest, feasibility, quality,...)','limite (100)',''],
 "special_poll"=>['attribue des notes à un article','définir le nom du champ','choix1|choix2',''],
@@ -120,7 +118,7 @@ exemple : [site.com:site blog:hub :channel|Titre, close|x:ajax]','autorefresh (s
 "overcats"=>['Menus supérieurs (voir /admin/overcat), auxquels se rattachent les catégories','Affiche un menu ouvrable, de type javascript ou ajax avec la commande bub','',''],
 "panel_arts"=>['panneau d\'articles','commande de l\'Api, ou id','',''],
 "player"=>['','','',''],
-"app"=>['appel d\'une app','nom de l\'app','p et o envoyés à l\'app',''],
+"app"=>['appel d\'une app','nom de l\'app','cible de la commande asynchrone si pp est activé',''],
 "popart"=>['ouvre article (local ou distant) dans une popup','','',''],
 "prev_next"=>['affiche lien vers articles précédent et suivant','titres à afficher sur les boutons (|), ex: prev|next ou &amp;lt;|&amp;gt;','css ; commande rub : dans la même rubrique',''],
 "priority_arts"=>['Articles ayant pour priorité','définir le niveau pour le tri (0-4)','nb cols ou limite de scroll ',''],

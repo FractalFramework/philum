@@ -29,7 +29,7 @@ static function del($dr,$nod,$o=''){$f=self::url($dr,$nod,$o); if(is_file($f) &&
 
 static function save($dr,$nod,$r,$rh=[],$bak=''){if(!$r)$r=[];
 if($rh && !isset($r['_']))$r=array_merge(['_'=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
-$f=self::url($dr,$nod,$bak); $d=self::dump($r,$nod); write_file($f,$d); return $r;}
+$f=self::url($dr,$nod,$bak); $d=self::dump($r,$nod); putfile($f,$d); return $r;}
 
 static function init($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak);
 if(!is_file($f))$r=self::save($dr,$nod,[],$rh,$bak);}
@@ -159,7 +159,7 @@ static function two($b,$d,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];
 if($r)foreach($r as $k=>[$ka,$va])$rb[$ka]=$va; return $rb;}
 
 static function rk($b,$d){$r=self::read($b,$d,'',1); return $r?array_keys($r):[];}
-static function kv($b,$d,$u=1){return self::col($b,$d,0,$u);}
+static function kv($b,$d){return self::col($b,$d,0,1);}
 static function kx($b,$d,$n=0,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];//like col
 if($r)foreach($r as $k=>$v)$rb[$k]=$v[$n]; return $rb;}
 static function kn($b,$d,$n=0,$n2=1,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];

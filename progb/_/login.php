@@ -150,9 +150,9 @@ msql::copy('system','default_apps','users',$qb.'_apps');
 if($restore){[$rstr,$config]=self::ndprms_defaults();
 sql::upd('qdu',['rstr'=>$rstr],['name'=>ses('qb')]);
 sql::upd('qdu',['config'=>$config],['name'=>ses('qb')]);}
-$clr=msql::kv('system','default_clr_1','');
+$clr=msql::kv('system','default_clr_1');
 $css='css/'.$qb.'_design_1.css'; sty::build_css($css,sty::css_default(1),$clr);
-$clr=msql::kv('system','default_clr_2','');
+$clr=msql::kv('system','default_clr_2');
 $css='css/'.$qb.'_design_2.css'; sty::build_css($css,sty::css_default(),$clr);
 sql::upd('qdu',['menus'=>ses('dayx')],['name'=>$qb]);
 if(!is_dir('users/'.$qb))mkdir_r('users/'.$qb);

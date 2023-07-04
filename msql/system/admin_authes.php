@@ -1,4 +1,4 @@
-<?php //msql/admin_authes
+<?php //admin_authes
 $r=["_"=>['category','auth_level'],
 "console"=>['Global','5'],
 "rstr"=>['Global','5'],
@@ -51,6 +51,7 @@ $r=["_"=>['category','auth_level'],
 "tags"=>['Builders','7'],
 "icons"=>['Builders','5'],
 "pictos"=>['Builders','5'],
+"pictography"=>['Builders','5'],
 "overcat"=>['Articles','4'],
 "pictocat"=>['Articles','4'],
 "msql"=>['Microsql','4'],

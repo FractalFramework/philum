@@ -54,7 +54,7 @@ return self::prior_edit($v,$id);}
 
 static function prior_edit($va,$id){
 $j='rdbt'.$id.'_meta,priorsav___'; $ret='';
-$ra=opt(prmb('7'),' ',5); if($ra)$r=[1=>$ra[0]==1?'-':$ra[0],2=>$ra[1]==2?picto('s1'):$ra[1],3=>$ra[2]==3?picto('s2'):$ra[2],4=>$ra[3]==4?picto('s3'):$ra[3],5=>$ra[4]==5?picto('stars'):$ra[4]];
+$ra=prmb('typarts'); if($ra)$r=[1=>$ra[0]==1?'-':$ra[0],2=>$ra[1]==2?picto('s1'):$ra[1],3=>$ra[2]==3?picto('s2'):$ra[2],4=>$ra[3]==4?picto('s3'):$ra[3],5=>$ra[4]==5?picto('stars'):$ra[4]];
 else $r=[2=>picto('s1'),3=>picto('s2'),4=>picto('s3'),5=>picto('stars')];
 if($va==0)$ret.=lj('',$j.'trash_'.$id,picto('trash')).' ';
 if($va==0)$ret.=lj('active',$j.'del_'.$id,picto('del'),att(nms(43))).' ';
@@ -138,8 +138,7 @@ if(rstr(38)){
 	$ret.=lj('poph','url'.$id.'_meta,hardurlsuj__4_'.$id,pictit('upload','update'));}
 $ret.=self::catedit($id,$frm);//$tags
 $ret.=self::art_options($id,$lg).' ';//art_options
-$rao=ses('art_options');
-foreach($rao as $k=>$v)if($v!='lang')$dn[]=$v;//by meta_all
+$r=ses('art_options'); foreach($r as $k=>$v)if($v!='lang')$dn[]=$v;//by meta_all
 $r=self::langs(); if($r)foreach($r as $k=>$v)$dn[]='lang'.$v;//lang
 foreach($dn as $k=>$v)$dn[$k]=$v.$id;//add id
 $sav=lj('popsav',$id.'_meta,titsav_'.implode(',',$dn).'_k_'.$id.'_'.$m.'_'.ajx($rch),picto('valid')).' ';
@@ -173,18 +172,21 @@ $suj=ma::suj_of_id($id); return str::hardurl($suj);}
 
 #langs
 static function langslct($id,$lg=''){$bt='';
-if($lg=='find'){$suj=sql('suj','qda','v',$id);
-	if(rstr(129))$lg=trans::detect('','',$suj); else $lg='';}
+if($lg=='find')$lg=self::detectlang($id);
 if($lg){sql::upd('qda',['lg'=>$lg],$id); ma::cacheval($id,12,$lg);}
 else $lg=self::curlg($id); $r=self::langs();
 foreach($r as $k=>$v){$c=active($v,$lg);
 	$bt.=lj($c,'lng'.$id.'_meta,langslct___'.$id.'_'.$v,flag($v),att($v)).' ';}
-//$bt.=lj('','lng'.$id.'_meta,langslct___'.$id.'_find',picto('enquiry'));
+$bt.=lj('','lng'.$id.'_meta,langslct___'.$id.'_find',picto('enquiry'));
 $lgn=msql::val('system','edition_flags_7',$lg,0);
 $bt.=toggle('popbt','slc'.$id.'_meta,lgsl___'.$id.'_'.$lg,$lgn);
 $ret=picto('flag').' '.btn('nbp',$bt).btd('slc'.$id,'');
 $ret.=btn('nbp',self::otherlangs($lg,$id));
-if($r)return $ret;}
+if($r)return divd('',$ret);}
+
+static function detectlang($id){
+$suj=sql('suj','qda','v',$id);
+return trans::detect($suj);}
 
 static function curlg($id){//lang of art
 $lg=sql('lg','qda','v',$id); if(!$lg)$lg=ses('lng');//prmb(25)
@@ -245,8 +247,8 @@ if($r)foreach($r as $k=>$v){$val=$rd[$v]; $hlp=''; $sid=str::normalize($v).$id; 
 if($v=='authlevel'){$ret.=btn('txtx',$v).' '.jumpmenu('|1|2|3|4|5|6|7|8',$sid,$val,'1').' ';}
 //if($v=='authlevel'){$rp=explode('|','all|1|2|3|4|5|6|7|8'); $ret.=select(['id'=>$sid],$rp,'kv',$val).br();}
 elseif($v=='template'){$val=$val?$val:' '; $hlp=btd('tmp'.$id,'');
-	$tmpub=msql::kv('','public_template','',1);
-	$tmprv=msql::kv('',nod('template'),'',1);
+	$tmpub=msql::kv('','public_template');
+	$tmprv=msql::kv('',nod('template'));
 	$arr=array_merge_b($tmpub,$tmprv); $arr[' ']=[''=>1];
 	$rp='|'.implode('|',array_keys($arr));
 	//$ret.=select(['id'=>$sid],$rp,'kv',$val);

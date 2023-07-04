@@ -57,7 +57,7 @@ $rb[]=['Source','Target','Type','Id','Label','Timeset','Weight'];
 foreach($r as $k=>$v){$rd[$k]=$i++; foreach($v as $ka=>$va){$rd[$ka]=$i++; $rn[$ka][]=1;}} //id,weight
 foreach($rd as $k=>$v)$ra[]=[$v,$k,'',$rm[$k]];
 foreach($r as $k=>$v){
-	foreach($v as $ka=>$va)$rb[]=[$rd[$k],$rd[$ka],'undirected','','','',$rw[$k]];} count($rn[$k])
+	foreach($v as $ka=>$va)$rb[]=[$rd[$k],$rd[$ka],'undirected','','','',$rw[$k]];} count($rn[$k]);
 $ret=csvfile('funcs',$ra);
 $ret.=csvfile('funcs_r',$rb);
 $ret.=tabler($ra).tabler($rb);
@@ -119,7 +119,7 @@ foreach($r as $k=>$v)foreach($v as $ka=>$va){$a=strpos($k,'/')?between($k,'/','.
 return self::arbo($rt);}
 
 //save
-static function save($p,$r){/
+static function save($p,$r){
 $db=self::$dr=='progb'?'qdya':'qdyb';
 if(self::$n==0)sql::trunc($db);
 self::$n+=1; $rt=[];

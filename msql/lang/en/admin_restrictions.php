@@ -1,4 +1,4 @@
-<?php //msql/admin_restrictions
+<?php //admin_restrictions
 $r=["_"=>['name','description'],
 "1"=>['trackbacks','comments opened to public'],
 "2"=>['moderation','comments are moderated (auth 4)'],
@@ -102,7 +102,7 @@ Set public or private defs in rstr18'],
 "98"=>['hide admin','hide the admin for visitors'],
 "99"=>['api twitter','need the oAuth in table user_twit'],
 "100"=>['api tlex','need the oAuth in table user_tlex'],
-"101"=>['translation','translate text with Yandex'],
+"101"=>['translation','translate text'],
 "102"=>['panup','display sub-menus in panel mode'],
 "103"=>['user templates','user templates'],
 "104"=>['low case title','controle uppercases of title'],
@@ -158,4 +158,5 @@ If rstr is deactivated, the opposite is true: only urls converted to connectors 
 "153"=>['progc','dev2'],
 "154"=>['trace','backup modifs'],
 "155"=>['dock','put art in dock'],
-"156"=>['reviews','reviews']];
+"156"=>['reviews','reviews'],
+"157"=>['switchnight','day/night']];

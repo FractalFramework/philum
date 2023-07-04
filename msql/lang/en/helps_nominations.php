@@ -1,4 +1,4 @@
-<?php //msql/helps_nominations
+<?php //helps_nominations
 $r=["_"=>['title'],
 "1"=>['article'],
 "2"=>['articles'],
@@ -204,4 +204,5 @@ $r=["_"=>['title'],
 "202"=>['put in dock'],
 "203"=>['remove from dock'],
 "204"=>['review'],
-"205"=>['reviews']];
+"205"=>['reviews'],
+"206"=>['synthesis']];

@@ -1,18 +1,18 @@
 <?php //template
 class cltmp2{
-static function art(){return '[{cat}{back}{avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}|txtsmall:css]|[meta{id}:id]:header][{edit}|right:css]{thumb}[{parent}:h4][{title}:h1]{artedit}{float}[{artlang}{social}{words}{open}|grey right:css][{tag}|txtsmall:divc] [:clear][{msg}|[art{id}:id][justy:class]{js}:article]';}
+static function art(){return '[{cat}{back}{avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:header][{edit}|right:css]{thumb}[{parent}:h4][{title}:h1]{artedit} {float}[{artlang} {social} {words} {open}|grey right:css][{tag}|txtsmall:divc] [:clear][{msg}|[art{id}:id][justy:class]{js}:article]';}
 static function cat(){return '[[{thumb}[{tag}|panel txtsmall scrollb:divc]|row1 col1:divc]
-[[[{cat}{back}{avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}|txtsmall:css]|[meta{id}:id]:div]
+[[[{cat} {back} {avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:div]
 [{parent}:h4]
 [{edit}|right:css][{title}:h2]
-[{artlang}{social}{words}{open}|[grey tright:class]:div]:header]{float}{artedit}[{msg}|[art{id}:id]:article]|row1 col2:divc]
+[{artlang} {social} {words} {open}|[grey tright:class]:div]:header]{float} {artedit}[{msg}|[art{id}:id]:article]|row1 col2:divc]
 |grid-art:divc][:clear]';}
-static function read(){return '[[{avatar}[{search}|txtbox:css]{cat}{back} [{date}|txtsmall2:css] [{nbarts}|txtnoir:css] [{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}|txtsmall:css]|[meta{id}:id]:div]
+static function read(){return '[[{avatar}[{search}|txtbox:css]{cat} {back} [{date}|txtsmall2:css] [{nbarts}|txtnoir:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:div]
 [{parent}:h4][{edit}|right:css][{title}:h1]
-[{artlang}{social}{words}{open}|grey right:css][:clear]{float}[{tag}|panel txtsmall:divc]:header]{artedit}[{msg}[:clear]|[art{id}:id][justy:class]{js}:article]';}
-static function simple(){return '[[{cat}{back}{avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}|txtsmall:css]|[meta{id}:id]:div]
+[{artlang} {social} {words} {open}|grey right:css][:clear]{float}[{tag}|panel txtsmall:divc]:header]{artedit}[{msg}[:clear]|[art{id}:id][justy:class][{js}:onclick]:article]';}
+static function simple(){return '[[{cat} {back} {avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:div]
 [{parent}:h4]
-[{edit}{artlang}{open}|right:css][{title}:h2]
+[{edit} {artlang} {open}|right:css][{title}:h2]
 :header]
 [{msg}|[art{id}:id][panel:class]:article]';}
 static function fastart(){return '[[[{url}|{suj}:url]:h3]:div]
@@ -23,7 +23,7 @@ static function pubart(){return '[[{img1}|44/44:thumb]|[imgl:class]:div][{auteur
 static function pubart_j(){return '[[{img1}|44/44:thumb]|[imgl:class]:div][{auteurs}|small:css] [[{purl}|{suj}:jurl]:h4]{video}[:clear]';}
 static function pubart_b(){return '[{url}|[{img1}|200/100:thumb]:url][{auteurs}|small:css]
 [[{url}|{suj}:hurl]:h4]{video}';}
-static function panart(){return '[{url}|[[[[{auteurs}|[small:class]:div]{cat}{suj}|[pantxt:class]:div]|[{sty}:style][panbkg:class]:div]|[panart:class]:div]:hurl]';}
+static function panart(){return '[{url}|[[[[{auteurs}|[small:class]:div]{cat} {suj}|[pantxt:class]:div]|[{sty}:style][panbkg:class]:div]|[panart:class]:div]:hurl]';}
 static function panart_j(){return '[{url}|[[[[{auteurs}|[small:class]:div]{cat}{suj}|[pantxt:class]:div]|[{sty}:style][panbkg:class]:div]|[panart:class]:div]:hurl]';}
 static function pubkg(){return '[{url}|[[[[{auteurs}|[small:class]:div]{cat}{suj}|[pantxt:class]:div]|[{sty}:style][panbkg:class]:div]|[panart:class]:div]:hurl]';}
 static function cover(){return '[[{url}|[[[{auteurs}|[small:class]:div]{suj}|[covertxt:class]:div]|[{sty}:style][coverbkg:class]:div]:url]|[cover:class]:div]';}
@@ -33,9 +33,9 @@ static function file(){return '[[{url}|{suj}:url]:h1] [{msg}[:clear]|[art{id}:id
 static function product(){return '[[[{id}|{suj}:url]|txtcadr:css]{thumb}[{price}:div][{add2cart}|[imgr txtsmall:class]:div]|[float:left; width:142px; margin:2px; padding:5px; border:1px solid black;:style]:div]';}
 
 static function vars(){
-$d='artedit pid id jurl purl url edit title suj cat msg img1 video btim back avatar author date day nbarts tag priority words search parent rss social open tracks source length player lang artlang opt css sty addclr thumb trkbk float js auteurs btrk btxt '.str::eradic_acc(prmb(18)); $r=explode(' ',$d);
-foreach($r as $v)if($v)$ret[$v]='_'.strtoupper($v);
-return $ret;}
+$d='artedit pid id jurl purl hurl url edit title suj cat msg img1 video btim back avatar author date day nbarts tag priority words search parent rss social open tracks source length player lang artlang opt css sty addclr thumb trkbk float js auteurs btrk btxt '.str::eradic_acc(prmb(18)); $r=explode(' ',$d); $rt=[];
+foreach($r as $v)$rt[$v]='';
+return $rt;}
 
 //renove
 static function patch($c='art'){$ret='';

@@ -46,4 +46,5 @@ $r=["_"=>['titre','description'],
 "44"=>['addition','somme d\'une colonne'],
 "45"=>['moyenne','moyenne d\'une colonne'],
 "46"=>['friends','amis twitter'],
-"47"=>['connexions','amis tw communs à deux tables']];
+"47"=>['connexions','amis tw communs à deux tables'],
+"48"=>['translate','traduit depuis lang system']];

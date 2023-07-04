@@ -399,7 +399,7 @@ static function playtxt($id){
 return sql('text','qdtw','v','twid="'.$id.'"',0);}
 
 #cache
-static function play($id,$r,$q='',$o=''){
+static function play($id,$r,$q='',$o='',$aid=0){
 [$nm,$date,$rplid,$favs,$favd,$rtw,$rtwd,$flw,$friends,$txt,$med,$mnt,$quoid,$lg]=vals($r,['screen_name','date','reply_id','favs','favorited','retweets','retweeted','followers','friends','text','media','mentions','quote_id','lang']);
 $url=self::lk($nm);
 $own=msql::val('',nod('twit_'.ses('apk')),5);
@@ -449,7 +449,7 @@ if($rb)foreach($rb as $v)if($v){$v=trim($v);
 	elseif(strpos($v,'.pdf'))$txt.=mk::pdfdoc($v,0,640);
 	elseif(strpos($v,'t.co/'))$txt.='';//lka($v);
 	elseif(substr($v,0,4)=='http')$txt.=web::call($v,'');
-	else $txt.=br().video::play($v,$id,1);}
+	else $txt.=br().video::play($v,$aid,1);}
 if($quoid){$txt.=br().self::cache($quoid,$id);}
 //elseif($r['retweeted']){$txt.=br().self::cache($r['retweeted'],$id);}
 $ret.=divc('panel',$txt);
@@ -549,7 +549,7 @@ elseif($r){$r=array_combine($ra,$r);
 		$rb['favs']=$q['favorite_count']??0; $rb['retweets']=$q['retweet_count']??0;
 		//$rb['user_id']=$q['user']['id'];
 		sqlup('qdtw',$rb,['twid'=>$k],0);}}
-return self::play($k,$r,$q,$o);}
+return self::play($k,$r,$q,$o,$id);}
 
 static function recache($k,$id){
 return self::cache($k,$id,1);}

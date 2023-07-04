@@ -1,38 +1,45 @@
 <?php //msql/connectors_basic
 $r=["_"=>['description'],
-"conn"=>['image/link'],
-"url"=>['[url|text] apply the URL to the selected text'],
-"img"=>['upload image'],
-"video"=>['video : youtube, dailymotion, google, ted, livestream, rutube'],
+"conn"=>['detección : url, imagen o media (jpg,mp3,mp4,flv...)'],
+"url"=>['[url|texto] aplica una Url al texto seleccionado'],
+"img"=>['imagen'],
+"video"=>['video (youtube etc.)'],
 "iframe"=>['iframe'],
-"h"=>['balise: h3'],
-"b"=>['balise: bold'],
-"i"=>['balise: italic'],
-"u"=>['balise: underline'],
-"k"=>['balise: strike'],
-"s"=>['css: \'stabilo\''],
-"q"=>['blockquote'],
-"list"=>['list (for each line)'],
-"nh"=>['nota'],
-"web"=>['web'],
-"twitter"=>['Twitter Api'],
-"art"=>['Open an article : 
-- [1234|title:art]
-- [1234:art] or [1234|(1-4):art] auto title + display options 1 to 4
-- [title:art] : fin article in current language'],
-"msql"=>['Msql'],
-"table"=>['table (option = vertical separator)'],
-"center"=>['align to center'],
-"right"=>['align to right'],
-"--"=>['horizontal line'],
-"nbsp"=>['indivisible space'],
-"quo"=>['quote'],
-"|"=>['conn splitter'],
-"select"=>['select all'],
-"copy"=>['copy'],
-"paste"=>['paste'],
-"deline"=>['reduce new lines'],
-"delconn"=>['delete connector'],
-"findconn"=>['select connector'],
-"del"=>['delete'],
-"nl"=>['new line']];
+"h"=>['grande'],
+"b"=>['negrita'],
+"i"=>['cursiva'],
+"u"=>['subrayado'],
+"k"=>['trazo'],
+"s"=>['pequeño'],
+"q"=>['comillas'],
+"list"=>['lista con viñetas (para cada salto de línea)'],
+"nh"=>['nota a pie de página'],
+"web"=>['Muestra la descripción de una página web'],
+"twitter"=>['Twitter API:
+-[123456789:twitter] devuelve un twit
+-[text|search:twitter] resultado de búsqueda
+-[123456789|thread:twitter] hilo de una discusión (yendo hacia atrás)'],
+"art"=>['Apunta a un artículo: 
+-[1234:art] devuelve un botón al artículo con su título
+-[1234|title:art] fija el botón a un título
+-[title:art]: encuentra el artículo en el idioma actual'],
+"msql"=>['Enviar datos de una tabla: 
+[hub_table_(version)-(clave)|(fila)|opcion:microsql];
+Opciones: pop, read, conn, last, count, graph, form, tmp'],
+"table"=>['- columnas: | o comas
+- filas: Â¬ o salto de línea
+- cabeceras: |1'],
+"center"=>['alineado centro'],
+"right"=>['alineado a la derecha'],
+"--"=>['línea horizontal'],
+"nbsp"=>['espacio interlineal'],
+"quo"=>['comillas tipográficas'],
+"select"=>['seleccionar todo'],
+"copy"=>['copiar'],
+"paste"=>['pegar'],
+"deline"=>['reducir saltos de línea'],
+"delconn"=>['borrar conector'],
+"findconn"=>['seleccionar conector'],
+"del"=>['borrar'],
+"nl"=>['a línea'],
+"|"=>['conector aislante']];

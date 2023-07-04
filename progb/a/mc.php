@@ -113,7 +113,7 @@ $ret.=self::assistant('cnv','insert_conn',$d,'','');
 return $ret;}
 
 static function color($cnn){
-$klr=msql::kv('system','edition_colors','',1); $ret='';
+$klr=msql::kv('system','edition_colors'); $ret='';
 $sty='padding:0 5px; background-color:#'; foreach($klr as $k=>$v){
 	$ret.=ljb($k,'jumpvalue',['cnp',$k],bts($sty.$v,'.')).' ';}
 return $ret.br().br().self::assistant('cnv','insert_conn',$cnn,'','');}
@@ -316,7 +316,7 @@ return $ret;}
 static function conn_props_b($d,$b){$ret=''; $rb=[];
 $r=msql::read('system','connectors_'.$b,1); ksort($r);
 foreach($r as $k=>$v)if($v[2]==$d)$rb[$k]=[$v[0],$v[1]];
-$help=msql::kv('lang','connectors_'.$b,'');
+$help=msql::kv('lang','connectors_'.$b);
 if($rb)foreach($rb as $k=>$v){
 	if($help[$k])$hlp=stripslashes($help[$k]); else $hlp='';
 	if($v[0]=='embed'){if($v[1])$v[0]='embedslct'; else $v[1]=$k;}
@@ -369,9 +369,9 @@ elseif($op=='pictos'){$r=msql::read('system','edition_pictos',1);
 	foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$k.'|16:picto]',$id],picto($k),att($k)).' ';
 	$ret.=lj('txtx','popup_pictocss,home','table');
 	if(auth(6))$ret.=msqbt('system','edition_pictos');}
-elseif($op=='glyphs'){$r=msql::kv('system','edition_glyphes_1','',1);
+elseif($op=='glyphs'){$r=msql::kv('system','edition_glyphes_1');
 	if($r)foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$v.'|32:glyph]',$id],glyph($k)).' ';}
-elseif($op=='oomo'){$r=msql::kv('system','edition_pictos_2','',1);
+elseif($op=='oomo'){$r=msql::kv('system','edition_pictos_2');
 	if($r)foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$k.'|32:oomo]',$id],oomo($k,32),att($k.' ('.$v[1].')')).' ';}
 elseif($op=='uc'){$r=msql::read('',nod('connectors_1'),1);
 	if($r)foreach($r as $k=>$v)$ret.=ljb('','insertmbd',['[','',':'.$k.']'],$k).' ';}
@@ -380,8 +380,8 @@ elseif($op=='sc'){$r=msql::read('','public_connectors',1);
 elseif($op=='trk'){$r=['stabilo','art','web','video','twitter','toggle','appbt'];//'connbt',
 	if($r)foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[',':'.$v.']',$id],$v).' ';}
 elseif($op=='conb'){$bt='';
-	$r=msql::kv('system','connectors_conb','',1); ksort($r);
-	$rb=msql::kv('lang','connectors_conb','',1);
+	$r=msql::kv('system','connectors_conb'); ksort($r);
+	$rb=msql::kv('lang','connectors_conb');
 	if($r)foreach($r as $k=>$v){$tt=isset($rb[$k])?att($rb[$k]):'';
 		$ret.=ljb('','insert_b',['['.$v.':'.$k.']',$id],$k,$tt).' ';}}
 elseif($op=='backup'){

@@ -1,4 +1,4 @@
-<?php //msql/admin_restrictions
+<?php //admin_restrictions
 $r=["_"=>['name','description'],
 "1"=>['commentaires','ouverture des commentaires au public'],
 "2"=>['modération','modération des commentaires (auth 4)'],
@@ -106,7 +106,7 @@ tente d\'abord d\'utiliser un template personnalisé, puis un template public, a
 "98"=>['masquer l\'admin','masque la barre d\'admin visible aux visiteurs'],
 "99"=>['api twitter','nécessite que le oAuth figure dans la table user_twit'],
 "100"=>['api tlex','nécessite que le oAuth figure dans la table user_tlex'],
-"101"=>['traduction','traduit le texte avec Yandex'],
+"101"=>['traduction','traduit le contenu'],
 "102"=>['panup','affiche les sous-menus en mode panneau'],
 "103"=>['user templates','templates utilisateur'],
 "104"=>['low case title','contrôle de la casse des titres'],
@@ -142,7 +142,7 @@ tente d\'abord d\'utiliser un template personnalisé, puis un template public, a
 "134"=>['ibarts','ordre des articles enfants'],
 "135"=>['surlignages','active le surlignage de notes, faits et citations (pour éditeur uniquement)'],
 "136"=>['op-pagup','popup en mode concentration'],
-"137"=>['headings','réduit h1,h2,h3,h4,h5 à :h'],
+"137"=>['titres H','réduit h1,h2,h3,h4,h5 à :h'],
 "138"=>['fullscreen','bascule l\'article en plein-écran'],
 "139"=>['notbigimg','réduit les grosses images'],
 "140"=>['cache','met les articles courants en cache'],
@@ -162,4 +162,5 @@ Si la rstr est désactivée, c\'est le contraire : seuls les url converties en c
 "153"=>['progc','dev2'],
 "154"=>['trace','backup les modifs'],
 "155"=>['dock','placer l\'article dans le dock'],
-"156"=>['reviews','révisions']];
+"156"=>['reviews','révisions (rstr 106 pour l\'afficher dans le menu social)'],
+"157"=>['switchnight','jour/nuit']]; ?>

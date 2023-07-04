@@ -1,4 +1,4 @@
-<?php //msql/default_apps
+<?php //default_apps
 $r=["_"=>['button','type','process','param','option','condition','root','icon','hide','private'],
 "1"=>['Desktop','ajax','page','desk,deskload__18_boot','','menu','os','desktop','',''],
 "2"=>['Root','ajax','desktop','desk,deskico___desk','','boot','os','desktop','',''],
@@ -32,8 +32,8 @@ $r=["_"=>['button','type','process','param','option','condition','root','icon','
 "28"=>['nouveau','ajax','popup','edit,artform____1','','desk menu','','add','1','2'],
 "29"=>['msql','app','iframe','/msql/index.php','740','menu desk','sys','msql','1','4'],
 "30"=>['pictos','admin','pictos','','','menu desk','sys','icons','1','4'],
-"31"=>['updates','ajax','popup','msql___system_program_updates*2306','','menu','dev','edit','','7'],
-"32"=>['update-notes','msql','system','program','updates*2306','menu desk','dev','msql','',''],
+"31"=>['updates','ajax','popup','msql___system_program_updates*2307','','menu','dev','edit','','7'],
+"32"=>['update-notes','msql','system','program','updates*2307','menu desk','dev','msql','',''],
 "33"=>['connectors list','ajax','popup','msql___system_connectors_all','','menu desk','sys','msql','1',''],
 "34"=>['nominations','ajax','popup','msql___lang_helps_nominations','','menu desk','sys','msql','1','7'],
 "35"=>['helps','ajax','popup','msql___lang_helps_txts','','menu desk','sys','msql','1','4'],
@@ -60,11 +60,11 @@ $r=["_"=>['button','type','process','param','option','condition','root','icon','
 "56"=>['genpassword','app','genpswd','','','menu desk','edit','unlock','',''],
 "57"=>['statsee','app','stats,statsee','','','menu','dev','stats','','4'],
 "58"=>['study','app','study','','','menu desk','edit','edit','','4'],
-"62"=>['tags','ajxlnk','','tag/Tags/lines/popapi////1:tags','','menu','medias','tag','','4'],
-"63"=>['videos','ajxlnk','','30/Vidéos/articles:video_playlist','','menu','medias','youtube','','4'],
-"64"=>['audios','ajxlnk','','60/Audio/articles:audio_playlist','','menu','medias','sound','','4'],
-"65"=>['pdf','ajxlnk','','90/Pdf/articles:pdf_playlist','','menu','medias','pdf','','4'],
-"66"=>['twits','ajxlnk','','/Fil Twitter/articles:twits','','menu','medias','tw','','4'],
-"67"=>['webs','ajxlnk','','/Liens web/articles:webs','','menu','medias','web','','4'],
-"69"=>['images','ajxlnk','','/Images/articles:img_playlist','','menu','medias','gallery2','','4'],
-"68"=>['exif','app','exif','','','menu','com','tools','','4']];
+"62"=>['tags','module','tags','p:tag,t:Tags,d:lines,o:popapi','','menu','medias','tag','','4'],
+"63"=>['videos','module','video_playlist','p:30,t:Vidéos,d:articles','','menu','medias','youtube','','4'],
+"64"=>['audios','module','audio_playlist','p:60,t:Audio,d:articles','','menu','medias','sound','','4'],
+"65"=>['pdf','module','pdf_playlist','p:90,t:Pdf,d:articles','','menu','medias','pdf','','4'],
+"66"=>['twits','module','twits','t:Fil Twitter,d:articles','','menu','medias','tw','','4'],
+"67"=>['webs','module','webs','t:Liens web,d:articles','','menu','medias','web','','4'],
+"69"=>['images','module','img_playlist','t:Images,d:articles','','menu','medias','gallery2','','4'],
+"68"=>['exif','app','exif','','','menu','com','tools','','4']]; ?>

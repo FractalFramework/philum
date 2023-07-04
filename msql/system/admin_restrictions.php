@@ -1,4 +1,4 @@
-<?php //msql/admin_restrictions
+<?php //admin_restrictions
 $r=["_"=>['category','name','defaults'],
 "1"=>['config','public trackbacks',''],
 "2"=>['config','open trackbacks',''],
@@ -155,4 +155,5 @@ $r=["_"=>['category','name','defaults'],
 "153"=>['local','progc','1'],
 "154"=>['save','trace updates','1'],
 "155"=>['social','dock it','1'],
-"156"=>['template','reviews','1']];
+"156"=>['template','reviews','1'],
+"157"=>['admin','switchnight','1']];

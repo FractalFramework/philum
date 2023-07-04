@@ -20,23 +20,6 @@ static function art(){return [
 ['article',['id'=>'art_{id}','class'=>'justy','onclick'=>'{js}'],'{msg}']
 ];}
 
-static function art2(){
-$r[]=['span','txtbox','{search}'];
-$r[]=['span','txtnoir','{nbarts}'];
-$r[]=['span','txtsmall2','{date}'];
-$r[]=['span','txtsmall','{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}'];
-$r=['header',['id'=>'meta{id}'],$r];
-$r[]=['span','right','{edit}'];
-$r[]=['','','{thumb}'];
-$r[]=['h4','','{parent}'];
-$r[]=['h1','','{suj}'];
-$r[]=['','','{artedit}{float}'];
-$r[]=['span','grey right','{artlang}{social}{words}{open}'];
-$r[]=['div','txtsmall','{tag}'];
-$r[]=['clear','',''];
-$r[]=['article',['id'=>'art_{id}','class'=>'justy','onclick'=>'{js}'],'{msg}'];
-return $r;}
-
 static function cat(){return [
 ['div','grid-art',[
 	['div','row1 col1',[
@@ -232,7 +215,7 @@ foreach($r as $k=>$v){[$c,$p,$d]=$v;
 	$pr=is_array($p)?$p:['class'=>$p];
 	if($pr)foreach($pr as $kp=>$vp)
 		$pr[$kp]=str_replace($rc,$ra,$vp);
-	$ret.=self::repl($c,$p,$pr,$d);}
+	if($d)$ret.=self::repl($c,$p,$pr,$d);}
 return $ret;}
 
 static function call($r,$ra){$rb=self::vars();

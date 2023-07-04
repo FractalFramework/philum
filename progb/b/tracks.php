@@ -110,12 +110,12 @@ elseif(!is_numeric($id)){$user=$id; $id=''; $nfo='private';}
 $use=ses('USE'); if(!$use)$use=cookie('use'); $ml=cookie('mail');
 if(!$use)[$use,$ml]=sql('name,mail','qdi','r',['host'=>hostname(),'_code'=>'order by id desc limit 1']);
 //mode
-if($nfo=='reply')$ret.=btn('txtred',nms(174).' '.sql('name','qdi','v',$ib));
-elseif($nfo=='quote')$ret.=btn('txtred',nms(190));
-elseif($nfo=='private')$ret.=btn('txtred',nms(84));
+if($nfo=='reply')ses::$r['popt']=nms(174).' '.sql('name','qdi','v',$ib);
+elseif($nfo=='quote')ses::$r['popt']=nms(190);
+elseif($nfo=='private')ses::$r['popt']=nms(84);
 //bt
 $rx=['trkname','trkmail','trkib']; $ids=implode(',',$rx); $rid='edtrk'.$id; 
-if($user)$ret.=lj('popdel','popup_tracks,save_'.$rid.','.$ids.'_x_'.$user,nms(34).' '.nms(36).' '.$user).' ';
+if($user)$ret.=lj('popdel','popup_tracks,save_'.$rid.','.$ids.'_x_'.$user,nms(28)).' ';
 else{$j='track'.$id.'_tracks,save_'.$rid.','.$ids;
 	$ret.=lj('popsav','track'.$id.'_tracks,save_'.$rid.','.$ids.'_14x_'.$id,picto('save')).' ';//nms(28)
 	$ret.=lj('','trkdsk_tracks,save_'.$rid.','.$ids.'_x_'.$id.'_1',picto('popup'),att(nms(198))).' ';}

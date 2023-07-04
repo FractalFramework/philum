@@ -63,7 +63,8 @@ $pm=opt($cnfg,'#',28);
 if(!$pm[1] or !is_numeric($pm[1]))$pm[1]='1';//mods
 if(!$pm[3])$pm[3]=400;//kmax
 if(!$pm[6])$pm[6]=20;//nb_arts_by_page
-if(!$pm[7])$pm[7]='1 2 3 4';//typarts
+if(!$pm[7])$pm[7]='1;2;3;4';//typarts
+$pm['typarts']=opt($pm[7],';',5);//typarts
 if(!$pm[8])$pm[8]='phi';//logo
 if(!$pm[9])$pm[9]='id desc';//order
 if(!$pm[10])$pm[10]=nms(21).'/'.nms(171).'/'.nms(91).'/'.nms(182);//tracks
@@ -219,7 +220,7 @@ return $ret;}
 
 #css
 static function define_clr(){$k=ses('prmd');
-$r=msql::kv('design',nod('clrset_'.$k),0,1);
+$r=msql::kv('design',nod('clrset_'.$k));
 $_SESSION['clrs'][$k]=$r; return $r;}
 
 static function auto_design(){$n=ses('prmd'); $phi=ses('philum'); $qb=ses('qb');

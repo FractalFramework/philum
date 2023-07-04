@@ -261,9 +261,11 @@ foreach($r as $k=>$v){$a=$fc($dr,$k,$v); if($a)$rb[]=$a;} return $rb;}
 function get_file($f){return curl_get_contents($f);}
 function read_file($f){$fp=false; if($f)$fp=fopen($f,'r') or die('er'); $ret='';//fgets
 if($fp){while(!feof($fp))$ret.=fread($fp,8192); fclose($fp);} return $ret;}
-function write_file($f,$t){$h=fopen($f,'w') or die('er'); $w=false;
-if($h){$w=fwrite($h,$t); fclose($h); opcache($f);}
-if($w===false)return 'error';}
+function write_file($f,$d){$h=fopen($f,'w') or die('er'); $w=false;
+if($h){$e=fwrite($h,$d); fclose($h); opcache($f);}
+if($e!==false)return 1;}
+function putfile($f,$d){$e=file_put_contents($f,$d,LOCK_EX); opcache($f);
+if($e!==false)return 1;}
 
 function read_file2($f){if(fex1($f))return read_file($f);}
 //function fex0($f){$fp=finfo_open(FILEINFO_MIME_TYPE); $d=finfo_file($fp,$f); finfo_close($fp); return $d;}

@@ -37,76 +37,79 @@ if($in!==false){
 else $end=$msg;
 return $deb.$mid.$end;}
 
-static function conns($da,$r){//v$p:c
-[$d,$p,$c]=self::readconn($da); $ret='';
-//echo utf8enc('--var:'.$d.' --opt:'.$p.' --conn:'.$c).br();//
+static function conns($da,$r){//p|o:c
+[$p,$o,$c]=self::readconn($da); $ret='';
+//echo utf8enc('--d:'.$p.' --p:'.$o.' --c:'.$c).br();//
 $ret=match($c){
 //elements
 'br'=>br(),
 'hr'=>hr(),
-'div'=>!$d?'':divp($p,$d),
-'divc'=>!$d?'':divc($p,$d),
-'divd'=>!$d?'':divd($p,$d),
-'span'=>!$d?'':btp($p,$d),
-'spanc'=>!$d?'':btn($p,$d),
-'css'=>!$d?'':btn($p,$d),
-'clear'=>divc($c,$d),
-'grid'=>!$d?'':divs(gridpos($p),$d),
-'img'=>!$d?'':img($d),
-'distimg'=>!$d?'':twit::img($d),
+'div'=>!$p?'':divp($o,$p),
+'divc'=>!$p?'':divc($o,$p),
+'divd'=>!$p?'':divd($o,$p),
+'span'=>!$p?'':btp($o,$p),
+'spanc'=>!$p?'':btn($o,$p),
+'css'=>!$p?'':btn($o,$p),
+'clear'=>divc($c,$p),
+'url'=>lka($p,$o?$o:preplink($p)),
+'hurl'=>lh($p,$o?$o:preplink($p)),
+'jurl'=>lj('',$p,$o),
+//conn
+'grid'=>!$p?'':divs(gridpos($o),$p),
+'img'=>!$p?'':img($p),
+'distimg'=>!$p?'':twit::img($p),
 //attributs
-'id'=>atd($d),
-'class'=>atc($d),
-'style'=>ats($d),
-'name'=>atn($d),
-'js'=>atk($d),
-'font-size'=>atb($c,$d),
-'font-family'=>atb($c,$d),
+'id'=>atd($p),
+'class'=>atc($p),
+'style'=>ats($p),
+'name'=>atn($p),
+'js'=>atk($p),
+//'onclick'=>atk($p),
+'font-size'=>atb($c,$p),
+'font-family'=>atb($c,$p),
 //apps
-'text'=>$d?$d:$p,
-'url'=>lka($d,$p?$p:preplink($d)),
-'lj'=>lj('',$d,$p),
-'link'=>md::special_link($d.'|'.$p),
-'anchor'=>'<a name="'.$d.'"></a>',
-'date'=>mkday(is_numeric($d)?$d:'',$p),
-'title'=>ma::suj_of_id($d),
-'read'=>ma::read_msg($d,3),
-'image'=>image($d),
-'thumb'=>mk::thumb_d($d,$p,''),
-'picto'=>picto($d,$p),
+'text'=>$p?$p:$o,
+'lj'=>lj('',$p,$o),
+'link'=>md::special_link($p.'|'.$o),
+'anchor'=>'<a name="'.$p.'"></a>',
+'date'=>mkday(is_numeric($p)?$p:'',$o),
+'title'=>ma::suj_of_id($p),
+'read'=>ma::read_msg($p,3),
+'image'=>image($p),
+'thumb'=>mk::thumb_d($p,$o,''),
+'picto'=>picto($p,$o),
 //high_level
-'split'=>explode($p,$d),
-'conn'=>conn::connectors($d.':'.$p,3,'','',''),//from pop
-//'exec'=>cbasic::run($d,$id),
-'app'=>appin($d,$p),
-'var'=>$r[$d]??'',//here is the core//str_replace('$',"&dollar;",$r[$d]??'')
-'getvar'=>self::$r[$d],
-'setvar'=>self::setvar($d),
-'setvars'=>self::setvars($d),
+'split'=>explode($o,$p),
+'conn'=>conn::connectors($p.':'.$o,3,'','',''),//from pop
+//'exec'=>cbasic::run($p,$id),
+'app'=>appin($p,$o),
+'var'=>$r[$p]??'',//here is the core
+'getvar'=>self::$r[$p],
+'setvar'=>self::setvar($p),
+'setvars'=>self::setvars($p),
 default=>''};
 if($ret)return $ret;
-if($c=='cut'){[$s,$e]=explode('/',$p); return between($d,$s,$e);}
-if($c=='each'){foreach($d as $v)$ret.=conb::exec($v,'','',''); return $ret;}
-if($c=='core'){if(is_array($d))return call_user_func($p,$d,'','');
-	else{$db=explode('/',$d); return call_user_func_array($p,$db);}}
-if(strpos($p,',')){[$css,$sty,$id]=expl(',',$p,3);
-	if($css)$rb['class']=$css; if($sty)$rb['style']=$sty; if($id)$rb['id']=$id;
-	return tag($c,$rb,$d);}
-//if(function_exists($c))return call_user_func_array($c,opt(',',$d));
-if($d && $c)return tagb($c,$d);
-return $d;}
+if($c=='cut'){[$s,$e]=explode('/',$o); return between($p,$s,$e);}
+if($c=='each'){foreach($p as $v)$ret.=conb::exec($v,'','',''); return $ret;}
+if($c=='core'){if(is_array($p))return call_user_func($o,$p,'','');
+	else{$pb=explode('/',$p); return call_user_func_array($o,$pb);}}
+if(strpos($o,',')){$rp=array_combine(['class','id','style'],expl(',',$o,3)); return tag($c,$rp,$p);}//mmh
+if($p && $o && $c)return '<'.$c.' '.$o.'>'.$p.'</'.$c.'>';
+if($p && $c)return tagb($c,$p);
+return $p;}
 
-static function build($tmp,$r){
+static function build($tmp,$r){//self::$r=$r;
 //$tmp=str_replace('|','$',$tmp);//patch
 //foreach($r as $k=>$v){$tmp=str_replace('['.$k.':var]','{'.$k.'}',$tmp);}//patch
-foreach($r as $k=>$v)if(!$v)$tmp=str_replace($v,'',$tmp);//del empty
-$tmp=str::repair_tags($tmp); $d=delsp($tmp); $tmp=str::clean_lines($tmp); $tmp=delnl($tmp);
-$d=self::parser($tmp,$r);
-foreach($r as $k=>$v)$d=str_replace('{'.$k.'}',$v,$d);
+$rb=sesmk2('cltmp2','vars','',1);
+$r+=$rb; $rc=[]; foreach($r as $k=>$v)$rc[$k]='{'.$k.'}';//mkvars
+foreach($r as $k=>$v)if(!$v)$tmp=str_replace('{'.$k.'}','',$tmp);//delempty
+$d=self::parser($tmp,$r); //eco($d);
+foreach($r as $k=>$v)if($v)$d=str_replace('{'.$k.'}',$v,$d);
 return nl2br($d);}
 
-static function call($tmp,$r){$ret='';//self::$r=$r;
-//$r=array_chunk($r,100); $r=$r[7];
+static function call($tmp,$r){$ret='';
+//$r=array_chunk($r,100);
 foreach($r as $k=>$v)$ret.=self::build($tmp,$v);
 return $ret;}
 

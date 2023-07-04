@@ -125,7 +125,7 @@ $numb=sesb('desgn',$_SESSION['prmd']);
 //$numb=get('desgn');
 if($numb && $numb!='='){$_SESSION['desgn']=$numb;
 	$_SESSION['clrset']=$numb; $_SESSION['prmd']=$numb;
-	$_SESSION['clrs'][$numb]=msql::kv('design',$qb.'_clrset_'.$numb,'');
+	$_SESSION['clrs'][$numb]=msql::kv('design',$qb.'_clrset_'.$numb);
 	$defs=msql::read('design',$qb.'_design_'.$numb,'',$defsb);}
 $prmd=$_SESSION['prmd']; $desgn=$_SESSION['desgn']; //if(strpos($desgn,'_neg'))$desgn=substr($desgn,0,-4);
 $clrset=sesb('clrset',$prmd);
@@ -271,7 +271,7 @@ return hidden('zero','init').btd($id,$ret);}
 
 #select_design
 static function clrset_view($d){
-$r=msql::kv('design',$d,''); $ret='';
+$r=msql::kv('design',$d); $ret='';
 if(is_array($r))foreach($r as $k=>$v){
 if($k>0){$sty='color:#'.invert_color($v,1).'; background-color:#'.$v.'; ';
 if(!$v)$v='none'; $ret.=bts($sty,'__').' ';}}
@@ -301,7 +301,7 @@ return scroll($tab,tabler($tab),20,320,320);}//txtblc//txtx
 
 static function clrset_edit(){$ret='';
 $ndc=$_SESSION['clrset']?$_SESSION['clrset']:$_SESSION['prmd'];
-$clr=msql::kv('design',nod('clrset_'.$ndc),''); $nb=count($clr);
+$clr=msql::kv('design',nod('clrset_'.$ndc)); $nb=count($clr);
 $clrn=['','bkg','border','bloc','identity','active','art_bkg','art_txt','txt'];
 for($i=1;$i<=$nb;$i++){$name=$i.(isset($clrn[$i])?':'.$clrn[$i]:'');
 $bt=divs('background-color: #'.$clr[$i].';',$name.input('colorpickerField'.$i,$clr[$i],5));
@@ -325,8 +325,8 @@ return $ret;}
 static function name_line_j($k,$p,$op,$clrb=''){
 $csa='txtnoir'; $t=self::name_classe($p);
 $css=get('edit_css')==$k?' active':'';
-if($clrb==1)$clr=msql::kv('system','default_clr_1','');
-elseif($clrb==2)$clr=msql::kv('system','default_clr_2','');
+if($clrb==1)$clr=msql::kv('system','default_clr_1');
+elseif($clrb==2)$clr=msql::kv('system','default_clr_2');
 else $clr=getclrs();
 $s='float:left; text-align:left; margin:1px; width:';
 if($k)$ret=toggle($csa.$css,'css'.$k.'_sty,editcss___'.$k,$t,'',ats($s.'190px;'));

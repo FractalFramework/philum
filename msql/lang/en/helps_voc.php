@@ -1,5 +1,5 @@
-<?php //msql/helps_voc
+<?php //helps_voc
 $r=["_"=>['txt'],
 "save"=>['save'],
 "del_submods"=>['erase all submodules'],
-"del_module"=>['erase module']];
+"del_module"=>['delete module']];

@@ -37,8 +37,8 @@ $r=view::read();//template
 $ra=art::test($id,'');
 //$r=self::jron($r);
 //$d=self::jcon($d);
-$d=json_encode($r);
-$r=json_decode($d,true);
+//$d=json_encode($r);
+//$r=json_decode($d,true);
 chrono();
 //for($i=0;$i<100;$i++)
 $d=view::call($r,$ra);

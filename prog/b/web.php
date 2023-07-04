@@ -15,15 +15,13 @@ static function imgyt($u){return 'https://img.youtube.com/vi/'.strin($u,'=','&')
 static function metas2($f,$d,$dom){$ti=''; $tx='';
 [$defid,$defs]=conv::verif_defcon($f);//defcons
 if(!empty($defs[2])){
-	//if(strpos($defs[2],':')!==false)$ti=dom::detect($d,$defs[2]);
-	if(strpos($defs[2],':')!==false)$ti=dom::extract($dom,$defs[2]);
-	elseif(empty($defs[3]))$ti=conv::html_detect($d,$defs[2]);
-	else $ti=str::embed_detect($d,$defs[2],$defs[3]);
-	$ti=str::del_n($ti); $ti=strip_tags(trim($ti??''));}
+	if(strpos($defs[2],':')!==false)$ti=dom::detect($d,$defs[2]);
+	//if(strpos($defs[2],':')!==false)$ti=dom::extract($dom,$defs[2]);//let utf-errors
+	if(!$ti)$ti=str::embed_detect($d,$defs[2],$defs[3]);
+	if($ti){$ti=str::del_n($ti); $ti=strip_tags(trim($ti??''));}}
 if(!empty($defs[0])){
-	//if(strpos($defs[0],':')!==false)$tx=dom::detect($d,$defs[0]);
-	if(strpos($defs[2],':')!==false)$rec=dom::extract($dom,$defs[0]);
-	elseif(empty($defs[1]))$tx=conv::html_detect($d,$defs[0]);
+	if(strpos($defs[0],':')!==false)$tx=dom::detect($d,$defs[0]);
+	//if(strpos($defs[2],':')!==false)$rec=dom::extract($dom,$defs[0]);
 	else $tx=str::embed_detect($d,$defs[0],$defs[1]); $tx=strip_tags($tx??'');}
 return [$ti,$tx];}
 
@@ -45,9 +43,9 @@ if(!$im)$im=dom::extract($dom,'og(ddot)image:itemprop:meta');
 if(!$im)$im=dom::extract($dom,'thumbnailUrl:itemprop:link:href');
 if(strpos($u,'youtube')!==false)$im=self::imgyt($u);
 $tx=str::clean_br($tx);
-return [$ti,($tx),$im];}//etc
+return [etc($ti,250),etc($tx),$im];}
 
-static function read($u,$o='',$id=0){
+static function read($u,$o='',$id=0){if($id=='test')$id=0;
 $u=nohttp(utmsrc($u)); if(strpos($u,'&t='))$u=struntil($u,'&t');
 $r=sql('tit,txt,img,ib,id','qdw','w',['url'=>$u,'_limit'=>'1'],0);
 if(!$r or $o==1){$ra=$r?$r:[];
@@ -57,8 +55,8 @@ if(!$r or $o==1){$ra=$r?$r:[];
 	if(!$ti && rstr(133) && substr($u,0,7)=='youtube')$r=self::kit($u,$id);
 	if($ti)$ti=strip_tags($ti); if($tx)$tx=strip_tags($tx);
 	//json::add('','web'.mkday(),[$ti,$tx,$im,$id,mkday('','Ymd:His')]);
-	if($ra && $ti)sqlup('qdw',['tit'=>$ti,'txt'=>$tx,'img'=>$im],['url'=>$u],0,1);
-	elseif(!$ra)sqlsav('qdw',['ib'=>$id,'url'=>$u,'tit'=>$ti,'txt'=>$tx,'img'=>$im],0,1);
+	if($ra && $ti)sqlup('qdw',['tit'=>$ti,'txt'=>$tx,'img'=>$im],['url'=>$u]);
+	elseif(!$ra)sqlsav('qdw',['ib'=>$id?$id:0,'url'=>$u,'tit'=>$ti,'txt'=>$tx,'img'=>$im]);
 	if($ti)$r=[$ti,$tx,$im,$id];}
 if(!$r)$r=['','','',$id];
 return $r;}
@@ -82,20 +80,21 @@ $u=nohttp(utmsrc($u));
 if($o)$r=self::read($u,$o);
 if($u){[$ti,$tx,$im,$ib]=arr($r,4);
 	$ex=sql('id','qdw','v',['url'=>$u],0);
-	$rs=['ib'=>$ib,'url'=>$u,'tit'=>($ti),'txt'=>($tx),'img'=>$im];
+	$rs=['ib'=>$ib?$ib:0,'url'=>$u,'tit'=>($ti),'txt'=>($tx),'img'=>$im];
 	if($ex)sqlup('qdw',$rs,['url'=>$u]);
 	else sqlsav('qdw',$rs);}
 if(strpos($u,'youtube.com')!==false)return video::any(strfrom($u,'='),$ib,3);
 return self::com($u);}
 
-static function redit($u,$rid,$id){$r=self::read($u,'',$id);
-$ret=lj('popbt',$rid.'_web,com___'.ajx($u).'__'.$id,picto('back'));
-$ret.=lj('popbt',$rid.'_web,resav___'.ajx($u).'_1',picto('refresh'));
-$ret.=lj('popsav',$rid.'_web,resav_edtit,edtxt,edtim,edtid__'.ajx($u),pictxt('save',nms(27))).br();
+static function redit($u,$rid,$id){
+$r=self::read($u,'',$id); $ub=ajx(nohttp($u));
+$ret=lj('popbt',$rid.'_web,com___'.$ub.'__'.$id,picto('sclose'));
+$ret.=lj('popbt',$rid.'_web,resav___'.$ub.'_1',picto('refresh'));
+$ret.=lj('popsav',$rid.'_web,resav_edtit,edtxt,edtim,edtid__'.$ub,pictxt('save',nms(27))).br();
 $ret.=goodarea('edtit',$r[0]).'tit'.br();
 $ret.=goodarea('edtxt',$r[1]).'txt'.br();
-$ret.=input('edtim',$r[2]).'img'.br();
-$ret.=input('edtid',$r[3]?$r[3]:($id?$id:0)).'ib';
+$ret.=input('edtim',$r[2],32).'img'.br();
+$ret.=input('edtid',$r[3]?$r[3]:($id?$id:0),4).'ib';
 return $ret;}
 
 static function del($u,$d){$u=nohttp(utmsrc($u));
@@ -109,7 +108,7 @@ if(auth(4))$bt.=lj('',$rid.'_web,redit___'.ajx($p).'_'.$rid.'_'.$id,picto('editx
 if(auth(6))$bt.=lj('',$rid.'_web,del___'.ajx($p).'_'.$rid,picto('del')).' ';
 return $bt;}
 
-static function com($u,$o='',$id=''){
+static function com($u,$o='',$id=''){$u=http($u);
 if(strpos($u,'pbs.twimg')!==false)return;
 $r=self::read($u,$o,$id);
 $ret=self::pao($r,$u);

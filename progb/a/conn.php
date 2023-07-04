@@ -47,7 +47,7 @@ $d=nl2br($d);
 return $d;}
 
 static function connbr($msg){return $msg;
-$r=[':q]',':h]',':h1]',':h2]',':h3]',':h4]',':ul]',':ol]',':table]',':figure]',':video]',':php]',':photo]',':iframe]']; $n=count($r);
+$r=[':q]',':h]',':h1]',':h2]',':h3]',':h4]',':ul]',':ol]',':pre]',':table]',':figure]',':video]',':php]',':photo]',':iframe]']; $n=count($r);
 for($i=0;$i<$n;$i++)$msg=str_replace($r[$i]."\n\n",$r[$i]."\n",$msg);
 return $msg;}
 
@@ -191,12 +191,12 @@ return $ret;}//.$br
 
 #connectors
 static function connectors($da,$m,$id='',$nl=''){
-$pw=$_SESSION['prma']['content'];
+$pw=$_SESSION['prma']['content']; $ret='';
 $xt=strtolower(strrchr($da,'.'));
 $cp=strrpos($da,':'); $c=substr($da,$cp); $d=substr($da,0,$cp);
 //[$d,$o,$c]=poc($da);
 if(rstr(70))$c=self::detect_retape($c,$id);
-$ret=match($c){
+if($c)$ret=match($c){
 ':br'=>br(),
 ':p'=>'<p>'.$d.'</p>',
 ':u'=>'<u>'.$d.'</u>',
@@ -368,7 +368,7 @@ $ret=match($c){
 ':contact'=>contact($d,''),
 ':bubble'=>md::bubble_menus($d,'inline'),//old
 ':submenus'=>md::bubble_menus($d,'inline'),
-':template'=>conb::parse('['.$da.']','template'),
+//':template'=>conb::parse('['.$da.']','template'),
 ':version'=>$_SESSION['philum'],
 ':flag'=>flag($d),
 ':nms'=>nms($d),
@@ -394,7 +394,7 @@ $ret=match($c){
 ':typo'=>mk::typo($p,$o),
 default=>''};
 if($ret)return $ret;
-switch($c){
+if($c)switch($c){
 case(':app'):[$p,$o,$fc]=unpack_conn($d); return appin($fc,'home',$p,$o); break;
 case(':header'):head::add($o?$o:'code',delbr($p,"\n")); return; break;
 case(':jscode'):head::add('jscode',delbr($d,"\n")); return; break;
@@ -402,6 +402,7 @@ case(':jslink'):head::add('jslink',delbr($d,"\n")); return; break;
 case(':private'):if(auth(6))return $d.' '.picto('secret'); break;
 case(':dev'):if(auth(4))return $d; break;
 case(':no'):return ''; break;}
+[$p,$o]=cprm($da);
 if($da=='--')return hr();
 elseif($xt=='.pdf')return mk::pdfdoc($da,$nl,$pw);
 elseif($xt=='.epub')return lkt('',$p,pictxt('book2',$o?$o:strend($p,'/')));
@@ -411,7 +412,7 @@ elseif($xt=='.gz')return mk::download($da);
 elseif($xt=='.m3u8')return twit::upvideo_m3u8($da);
 elseif($xt=='.mp3'||$xt=='.m4a')return pop::getmp3(goodroot($da),$id,rstr(145));
 elseif($xt=='.mp4'||$xt=='.ogg'||$xt=='.webm'){$t=$o?$o:$p;//.h264
-	if($m!=3)return lj('txtx','pagup_usg,video___'.ajx($p),pictxt('video',strend($t,'/')));
+	if($m!=3)return lj('txtx','popup_usg,video___'.ajx($p),pictxt('video',strend($t,'/')));
 	else{
 		if(is_img($o))return lkt('',goodroot($p),img('img/'.$o));
 		elseif($o)return lkt('',goodroot($p),$o);
@@ -419,7 +420,7 @@ elseif($xt=='.mp4'||$xt=='.ogg'||$xt=='.webm'){$t=$o?$o:$p;//.h264
 //links
 $res=self::connlk($da,$id,$m,$pw,$nl); if($res=='-')return; if($res)return $res;
 $cn=substr($c,1);
-if(method_exists($cn,'call') && isset($cn::$conn)){[$p,$o]=cprm($d); return $cn::call($p,$o);}
+if(method_exists($cn,'call')){return $cn::call($p,$o);}// && isset($cn::$conn)
 //if($cn){$ret=conb::mod_basic($cn,$d); if($ret)return $ret;}
 return '['.$da.']';}
 

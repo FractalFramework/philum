@@ -87,7 +87,7 @@ if($r){$ra[msql::$m]=['url','vurl']; $ra+=$r;
 msql::modif($dr,$nod,$ra,'arr');}}
 
 static function shared_files(){
-$r=msql::kv('',nod('shared'),'',1); $rb=self::unset_nofile($r);
+$r=msql::kv('',nod('shared')); $rb=self::unset_nofile($r);
 if(count($r)>count($rb))msql::modif('',nod('shared'),$rb,'arr');
 $_SESSION['curdir']=$rb;}
 
@@ -96,7 +96,7 @@ $_SESSION['curdir']=msql::modif('',nod('shared'),[$d,$p],$b,$h,$b=='del'?$p:0);
 self::distrib_share();}
 
 static function share_rename($d,$old){$h=['url','vurl']; 
-$r=msql::kv('',nod('shared'),'');
+$r=msql::kv('',nod('shared'));
 if($r)foreach($r as $k=>$v){$ret[$k]=[str_replace($old,$d,$v[0]),$v[1]];}
 $_SESSION['curdir']=msql::modif('',nod('shared'),$ret,'mdf',$h,'');
 self::distrib_share();}
@@ -125,7 +125,7 @@ return self::distant($_SESSION['prmb'][24],'addserver',$_SERVER['HTTP_HOST']);}
 
 static function dist_list(){$h=$_SERVER['HTTP_HOST'];
 $rt=self::distant($_SESSION['prmb'][24],'getservers','=');
-$r=explode(';',$rt); $cur=''; $ret=''; //$r=msql::kv('server','shared_servers','',1); 
+$r=explode(';',$rt); $cur=''; $ret=''; //$r=msql::kv('server','shared_servers'); 
 if($r)foreach($r as $k=>$v){if($v==$h)$cur='ok';
 	if($v)$ret.=divc('fipop',lj('popbt','fndr_finder,home___'.$v.'_auto',$v));}
 if(!$cur)$ret.=blj('','fisrv','finder,dist*reg',self::pic('register')).' ';

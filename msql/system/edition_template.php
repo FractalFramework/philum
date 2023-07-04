@@ -1,0 +1,16 @@
+<?php //edition_template
+$r=["_"=>['note'],
+"art"=>['generic article'],
+"cat"=>['preview2'],
+"read"=>['specific article'],
+"simple"=>['simple article'],
+"fast"=>['little article'],
+"tracks"=>['trackbacks'],
+"titles"=>['title of page'],
+"pubart"=>['link as pub'],
+"panart"=>['link as pane'],
+"cover"=>['cover of article'],
+"book"=>['book of articles'],
+"link"=>['decorated link'],
+"file"=>['file'],
+"product"=>['commercial object']];

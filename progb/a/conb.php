@@ -113,33 +113,33 @@ elseif($op==$c){
 return '['.$da.']';}
 
 #conndefs
-static function sconn_html($d,$p,$c){
+static function sconn_html($p,$o,$c){
 return match($c){
 ':br'=>br(),
 ':hr'=>hr(),
-':p'=>'<p>'.$d.'</p>',
-':u'=>'<u>'.$d.'</u>',
-':i'=>'<i>'.$d.'</i>',
-':b'=>'<b>'.$d.'</b>',
-':h'=>'<big>'.$d.'</big>',
-':h1'=>'<h1>'.$d.'</h1>',
-':h2'=>'<h2>'.$d.'</h2>',
-':h3'=>'<h3>'.$d.'</h3>',
-':h4'=>'<h4>'.$d.'</h4>',
-':h5'=>'<h5>'.$d.'</h5>',
-':e'=>'<sup>'.$d.'</sup>',
-':n'=>'<sub>'.$d.'</sub>',
-':s'=>'<small>'.$d.'</small>',
-':k'=>'<strike>'.$d.'</strike>',
-':q'=>'<blockquote>'.$d.'</blockquote>',
-':center'=>'<center>'.$d.'</center>',
-':header'=>'<header'.$p.'>'.$d.'</header>',
-':section'=>'<section'.$p.'>'.$d.'</section>',
-':article'=>'<article'.$p.'>'.$d.'</article>',
-//':stabilo'=>'<stabilo>'.$d.'</stabilo>',
-':quote'=>'<quote>'.$d.'</quote>',
-':fact'=>'<fact>'.$d.'</fact>',
-':qu'=>'<q>'.$d.'</q>',
+':p'=>'<p>'.$p.'</p>',
+':u'=>'<u>'.$p.'</u>',
+':i'=>'<i>'.$p.'</i>',
+':b'=>'<b>'.$p.'</b>',
+':h'=>'<big>'.$p.'</big>',
+':h1'=>'<h1>'.$p.'</h1>',
+':h2'=>'<h2>'.$p.'</h2>',
+':h3'=>'<h3>'.$p.'</h3>',
+':h4'=>'<h4>'.$p.'</h4>',
+':h5'=>'<h5>'.$p.'</h5>',
+':e'=>'<sup>'.$p.'</sup>',
+':n'=>'<sub>'.$p.'</sub>',
+':s'=>'<small>'.$p.'</small>',
+':k'=>'<strike>'.$p.'</strike>',
+':q'=>'<blockquote>'.$p.'</blockquote>',
+':center'=>'<center>'.$p.'</center>',
+':header'=>'<header'.$o.'>'.$p.'</header>',
+':section'=>'<section'.$o.'>'.$p.'</section>',
+':article'=>'<article'.$o.'>'.$p.'</article>',
+//':stabilo'=>'<stabilo>'.$p.'</stabilo>',
+':quote'=>'<quote>'.$p.'</quote>',
+':fact'=>'<fact>'.$p.'</fact>',
+':qu'=>'<q>'.$p.'</q>',
 default=>''};}
 
 static function sconn_links_2($d,$p,$o,$c,$xt,$b){
@@ -161,7 +161,7 @@ static function sconn_links($d,$p,$o,$c,$xt,$b){
 if(is_img($p)){//image|text
 	if(!$o)return image(goodroot($p));
 	if(is_img($o))return lkt('',goodroot($p),image(goodroot($o)));
-	return lkt('',goodroot($o),image(goodroot($p)));}
+	return mk::popim($p,pictxt('img',$o),'test');}
 elseif(is_img($o)){//link|image
 	return lkt('',goodroot($p),image(goodroot($o)));}
 elseif(substr($p,0,1)=='/')return lka($p,$o);
@@ -171,7 +171,7 @@ static function scapp_app($d){[$p,$o,$fc]=unpack_conn($d); return appin($fc,'cal
 static function scapp_tag($d){[$p,$o]=cprm($d); if(!$o)$o=sql('cat','qdt','v',['tag'=>$p]);
 	return lj('txtx','popup_api__3_'.$o.':'.ajx($p),pictxt('tag',$p));}
 
-static function sconn_app($d,$o,$c,$xt,$b){
+static function sconn_app($d,$p,$o,$c,$xt,$b){
 $ret=match($c){
 ':pub'=>pop::pubart($d),
 ':art'=>pop::pubart($d),
@@ -186,11 +186,11 @@ $ret=match($c){
 //':poptwit'=>pop::poptwit($d),
 ':search'=>lj('popw','popup_search,home___'.ajx($d),pictxt('search',$d)),
 ':video'=>$b=='epub'?video::titlk($d,''):video::any($d,$b,3,''),
-':tag'=>self::scapp_tag($d.'|'.$o),
-':app'=>self::scapp_app($d.'|'.$o),
-':appbt'=>pop::btapp($d.'|'.$o,''),
-':connbt'=>pop::connbt($d.'|'.$o,''),
-':bt'=>pop::connbt($d.'|'.$o,''),
+':tag'=>self::scapp_tag($d),
+':app'=>self::scapp_app($d),
+':appbt'=>pop::btapp($d,''),
+':connbt'=>pop::connbt($d,''),
+':bt'=>pop::connbt($d,''),
 ':ascii'=>ascii($p,$o),
 ':picto'=>picto($d),
 ':oomo'=>oomo($d),
@@ -208,14 +208,14 @@ $ret=match($c){
 default=>''};
 if($ret)return $ret;
 $a=substr($c,1);
-if(method_exists($a,'call') && isset($a::$conn)){[$p,$o]=cprm($d); return $a::call($p,$o);}}
+if(method_exists($a,'call')){return $a::call($p,$o);}}// && isset($a::$conn)
 
 #wygsyg
 static function sconn($da,$b,$a=''){if(!$da)return;
 //[$d,$c,$xt]=getconn($da); [$p,$o]=cprm($d);
 [$p,$o,$c]=poc($da); $xt=xt($p); $d=$p.'|'.$o;
 $ret=self::sconn_html($p,$o,$c);
-if(!$ret && $a==1)$ret=self::sconn_app($p,$o,$c,$xt,$b);
+if(!$ret && $a==1)$ret=self::sconn_app($d,$p,$o,$c,$xt,$b);
 if(!$ret)$ret=match($c){
 ':c'=>'<txtclr>'.$p.'</txtclr>',
 ':stabilo'=>'<stabilo>'.$p.'</stabilo>',
@@ -268,13 +268,6 @@ if($d=='http'||$d=='https')return $da;
 return $da;}
 
 #correctors
-/*static function savimg0($da,$id){
-[$p,$o,$c]=poc($da); $p2=''; $o2='';
-if(substr($p,0,4)=='http' && is_img($p) && !$o)$p2=conn::getimg($p,$id);
-if(substr($o,0,4)=='http' && is_img($o))$o2=conn::getimg($o,$id);
-$ret=$p2?$p2:$p; if($o)$ret.='|'.($o2?$o2:$o); if($c)$ret.=$c;
-return '['.$ret.']';}*/
-
 static function savimg($da,$id){
 [$d,$o]=prepdlink($da); [$p,$o]=cprm($d); $_SESSION['read']=$id;
 if(is_img($p) && substr($d,0,4)=='http')

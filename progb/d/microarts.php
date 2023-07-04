@@ -33,7 +33,7 @@ $ret.=editarea('minp','',64,8);
 return $ret;}
 
 static function tmp(){
-return '[[[{tit}|txtcadr:span] {edt}{del}:div]{txt}|[track panel:class][{id}:id]:div]';}
+return '[[[{tit}|[txtcadr:class]:span] {edt}{del}:div]{txt}|[track panel:class][{id}:id]:div]';}
 
 static function read($v,$p){$id=$v[0]; $edt=''; $del='';
 if(auth(6)){$del=lj('',$id.'_microarts,del___'.ajx($p).'_x'.$id,picto('del')).btd('x'.$id,'');

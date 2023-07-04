@@ -1,4 +1,4 @@
-<?php //msql/default_clr_1
+<?php //default_clr_1
 $r=["1"=>['f2f2f2'],
 "2"=>['dcdcdc'],
 "3"=>['ededed'],
