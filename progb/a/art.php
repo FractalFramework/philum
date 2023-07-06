@@ -425,17 +425,19 @@ foreach($r as $k=>$v){$pos=$k; $ba=0; $bb=0; $nb+=1; //$sz=mb_strlen($v);
 return $ret.$end;}
 
 static function find_word($msg,$rch,$n,$id){
-$len=mb_strlen($rch); $lenmsg=mb_strlen($msg); $sz=100; $ret=''; $nd=0; $seg=ses::r('seg');
+$len=strlen($rch); $lenmsg=strlen($msg); $sz=100; $ret=''; $nd=0; $seg=ses::r('seg');
 $r=str::detect_words($msg,$rch,$seg); $n=count($r); ses::$n+=$n; $look=$seg?'find':'look';
 foreach($r as $k=>$v){$pos=$k; $nd+=1; //$len=mb_strlen($v);
 	$prev=$pos-$sz; $next=$pos+$len; if($prev<0)$prev=0; if($next>$lenmsg)$next=$lenmsg;
-	$reta=mb_substr($msg,$prev,$pos-$prev); $retb=mb_substr($msg,$next,$sz);
-	$posa=mb_strrpos($reta,'. '); if(!$posa)$posa=mb_strpos($reta,"\n"); if(!$posa)$posa=mb_strpos($reta,' ');
-	if($posa<0)$posa=0; if($posa)$reta=trim(mb_substr($reta,$posa+1));
-	$posb=mb_strrpos($retb,'. '); if(!$posb)$posb=mb_strrpos($retb,"\n"); if(!$posb)$posb=mb_strrpos($retb,' ');
-	if($posb>$lenmsg)$posb=false; if($posb)$retb=trim(mb_substr($retb,0,$posb+1));
-	$bt=lkt('stabilo','/'.$id.'/'.$look.'/'.$rch.'#'.$nd,picto('chain'));
-	$bt.=lj('stabilo','popup_art,look___'.$id.'_'.ajx($rch).'_'.$nd,mb_substr($msg,$pos,$len));
+	$reta=substr($msg,$prev,$pos-$prev); $retb=substr($msg,$next,$sz);
+	$posa=strrpos($reta,'. '); if(!$posa)$posa=strpos($reta,' ');
+	if($posa<0)$posa=0; if($posa)$reta=substr($reta,$posa+1);
+	if(!$posa)$posa=strpos($reta,"\n"); if($posa<0)$posa=0; if($posa)$reta=substr($reta,$posa+2);
+	$posb=strrpos($retb,'. '); if(!$posb)$posb=strrpos($retb,' ');
+	if($posb>$lenmsg)$posb=false; if($posb)$retb=substr($retb,0,$posb+1);
+	if(!$posb)$posb=strrpos($retb,"\n"); if($posb>$lenmsg)$posb=false; if($posb)$retb=substr($retb,0,$posb+2);
+	//$bt=lkt('stabilo','/'.$id.'/'.$look.'/'.$rch.'#'.$nd,picto('chain'));
+	$bt=lj('stabilo','popup_art,look___'.$id.'_'.ajx($rch).'_'.$nd,substr($msg,$pos,$len));
 	$ret.=divc('trkmsg',$reta.''.$bt.''.$retb);}
 return $ret;}
 

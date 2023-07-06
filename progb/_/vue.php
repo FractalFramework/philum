@@ -106,7 +106,7 @@ $r+=$rb; $rc=[]; foreach($r as $k=>$v)$rc[$k]='{'.$k.'}';//mkvars
 foreach($r as $k=>$v)if(!$v)$tmp=str_replace('{'.$k.'}','',$tmp);//delempty
 $d=self::parser($tmp,$r); //eco($d);
 foreach($r as $k=>$v)if($v)$d=str_replace('{'.$k.'}',$v,$d);
-return nl2br($d);}
+return $d;}
 
 static function call($tmp,$r){$ret='';
 //$r=array_chunk($r,100);

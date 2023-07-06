@@ -109,7 +109,7 @@ if($rta)$sq[]=$col.' in ("'.implode('","',$rta).'")';
 if($rtb)$sq[]=$col.' not in ("'.implode('","',$rtb).'")';
 return $sq;}
 
-static function call($rch,$days=''){$rp=self::$rp;
+static function call($rch,$days=''){$rp=self::$rp; $rch=htmlspecialchars($rch);//sql::qres($rch);
 [$rech,$dig,$bol,$ord,$tit,$seg,$pag,$cat,$tag,$lim,$lng,$pri,$len]=arb(self::$rp);
 $tit=$tit?1:0; //if($tag=='tag')$tag='';
 $qb=ses('qb'); $qda=db('qda'); $qdm=db('qdm'); $qdt=db('qdt'); $qdta=db('qdta');

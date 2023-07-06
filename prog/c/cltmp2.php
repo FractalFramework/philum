@@ -10,11 +10,7 @@ static function cat(){return '[[{thumb}[{tag}|panel txtsmall scrollb:divc]|row1 
 static function read(){return '[[{avatar}[{search}|txtbox:css]{cat} {back} [{date}|txtsmall2:css] [{nbarts}|txtnoir:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:div]
 [{parent}:h4][{edit}|right:css][{title}:h1]
 [{artlang} {social} {words} {open}|grey right:css][:clear]{float}[{tag}|panel txtsmall:divc]:header]{artedit}[{msg}[:clear]|[art{id}:id][justy:class][{js}:onclick]:article]';}
-static function simple(){return '[[{cat} {back} {avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:div]
-[{parent}:h4]
-[{edit} {artlang} {open}|right:css][{title}:h2]
-:header]
-[{msg}|[art{id}:id][panel:class]:article]';}
+static function simple(){return '[[{cat} {back} {avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:div][{parent}:h4][{edit} {artlang} {open}|right:css][{title}:h2]:header][{msg}|[art{id}:id][panel:class]:article]';}
 static function fastart(){return '[[[{url}|{suj}:url]:h3]:div]
 [{msg}[:clear]|[art{id}:id][justy:class]:article]';}
 static function tracks(){return '[[[trk{id}:anchor]{avatar}{author} [{date} #{id}|txtsmall2:css]{edit}:div][{msg}|[trkmsg:class]:div]|[art{id}:id][{css}:class][{sty}:style]:div]';}
