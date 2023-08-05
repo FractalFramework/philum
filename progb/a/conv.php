@@ -51,7 +51,7 @@ if($r)foreach($r as $k=>$v){
 	[$cl,$at,$tag]=opt(':',$v,3); if(!$at)$at='class';
 	//$ex=dom::capture($dom,$v,$rec)->saveHTML();
 	//$ex=dom::detect($d,$v);
-	if(strpos($d,$at.'="'.$cl) && !$ret)$ret=$v;
+	if($d && strpos($d,$at.'="'.$cl) && !$ret)$ret=$v;
 	//elseif($ex && !$ret)$ret=$v;
 	}
 return $ret;}
@@ -348,7 +348,8 @@ case('a'):$b=self::treat_link($bin,$b); break;
 case('img'):$b=$n.self::treat_img($bin,$b,$fig); break;
 //case('picture'):$b=str::prop_detect($bin,'src'); break;
 case('blockquote'):
-	if(strpos($bin,'twitter-')!==false){$d=between($b,'status/','|'); if($d && strpos($d,'?'))$d=strto($d,'?');}
+	//if(strpos($bin,'twitter-')!==false){$d=between($b,'status/','|'); if($d && strpos($d,'?'))$d=strto($d,'?');}
+	if(strpos($bin,'twitter-')!==false){$d=$b; if(strpos($d,'?'))$d=strto($d,'?');}
 	if(isset($d))$b='['.$d.':twitter]'.$n;
 	elseif(self::notin($b,':q]'))$b=$n.$n.'['.$b.':q]'.$n.$n; break;
 case('p'):$b=$n.$n.$b.$n.$n; break;

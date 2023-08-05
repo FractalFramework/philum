@@ -402,7 +402,7 @@ case(':jslink'):head::add('jslink',delbr($d,"\n")); return; break;
 case(':private'):if(auth(6))return $d.' '.picto('secret'); break;
 case(':dev'):if(auth(4))return $d; break;
 case(':no'):return ''; break;}
-[$p,$o]=cprm($da);
+//[$p,$o]=cprm($da);
 if($da=='--')return hr();
 elseif($xt=='.pdf')return mk::pdfdoc($da,$nl,$pw);
 elseif($xt=='.epub')return lkt('',$p,pictxt('book2',$o?$o:strend($p,'/')));

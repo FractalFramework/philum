@@ -189,9 +189,9 @@ $d=self::clean_acc($d);
 $d=self::clean_whitespaces($d);
 $d=delsp($d);
 $d=self::clean_punctuation($d);
+if(rstr(104))$d=self::lowercase($d);
 $d=self::add_nbsp($d,1);
 $d=self::trim($d);
-if(rstr(104))$d=self::lowercase($d);
 $d=self::clean_inclusive($d);
 $d=self::nicequotes($d);
 $d=delsp($d);
@@ -245,7 +245,7 @@ return $d;}
 
 static function add_nbsp($d){if(!$d)return;
 $a=['( ',' )',' ,',' .',' ;',' :',' !',' ?','« ',' »','&laquo; ',' &raquo;','0 0','<<','>>'];
-$b=['(',')',',','.',"&nbsp;;","&nbsp;:","&nbsp;!","&nbsp;?","&laquo;&nbsp;","&nbsp;&raquo;","&laquo;&nbsp;","&nbsp;&raquo;",'0&nbsp;0','"','"'];
+$b=['(',')',',','.',"&nbsp;;","&nbsp;:","&nbsp;!","&nbsp;?","«&nbsp;","&nbsp;»","«&nbsp;","&nbsp;»",'0&nbsp;0','"','"'];
 return str_replace($a,$b,$d);}
 
 static function stupid_acc($d){if(!$d)return;//,'<!-->':kill utf8
@@ -271,14 +271,15 @@ return mb_substr($d,0,1,$e).mb_strtolower(mb_substr($d,1,mb_strlen($d,$e),$e));}
 static function lowcase($d){[$a,$b]=self::acc();
 return str_replace($a,$b,$d);}
 
-static function letcase($d){//unused
+static function letcase($d){
 $n=mb_strlen($d); $ret=''; $y=1; $o=0;
 for($i=0;$i<$n;$i++){$c=mb_substr($d,$i,1);
 	if(!$y)$c=mb_strtolower($c); $ret.=$c;//if($i>0)$o=1; 
-	if($c==' ' or $c=="&nbsp;" or $c=="'" or $c=='"' or $c=='«' or $c=='-' or $c=='[' or $c=='(')$y=1; else $y=0;}
+	if($c==' ' or $c==" " or $c=="'" or $c=='"' or $c=='«' or $c=="&laquo;" or $c=='-' or $c=='[' or $c=='(')$y=1; else $y=0;}// or $c=="&nbsp;"
 return $ret;}
 
 static function lowercase($d){if(!$d)return;
+//$d=hed($d); eco($d);
 $r=explode(' ',$d); $rt=[];
 foreach($r as $k=>$v)$rt[]=self::letcase($v);
 return join(' ',$rt);}

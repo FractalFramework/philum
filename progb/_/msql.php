@@ -17,7 +17,7 @@ static function menus($r){$rt=[];
 if(isset($r['_']))return $r['_']; $n=count($r); if($r)$r=current($r);
 if(is_array($r))foreach($r as $k=>$v)$rt['_'][]=$k; return $rt;}
 
-static function dump($r,$p=''){$rc=[];
+static function dump($r,$p=''){$rc=[]; $rt=[];
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
 	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?addslashes(stripslashes($va)):'')."'";
 		if($rb)$rc[]=('"'.$k.'"').'=>['.implode(',',$rb).']';}
@@ -63,6 +63,7 @@ static function inc($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak); $r=[];
 if(is_file($f)){try{include $f;}catch(Exception $e){echo 'bruu: '.$nod;}}
 //if(is_file($f))include $f;
 elseif($rh)self::save($dr,$nod,[],$bak);
+$r=self::sl($r);
 return $r;}
 
 static function rollback($f){$r=self::read($dr,$nod,'',[],1); self::save($dr,$nod,$r);}
@@ -160,6 +161,7 @@ if($r)foreach($r as $k=>[$ka,$va])$rb[$ka]=$va; return $rb;}
 
 static function rk($b,$d){$r=self::read($b,$d,'',1); return $r?array_keys($r):[];}
 static function kv($b,$d){return self::col($b,$d,0,1);}
+static function rv($b,$d){$r=self::col($b,$d,0,0); return array_values($r);}
 static function kx($b,$d,$n=0,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];//like col
 if($r)foreach($r as $k=>$v)$rb[$k]=$v[$n]; return $rb;}
 static function kn($b,$d,$n=0,$n2=1,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];

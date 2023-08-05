@@ -26,7 +26,7 @@ self::$rha[$t]=$i; $c=active($i,$ni);
 return tag('a',['onclick'=>'SaveBg('.$i.')','data-g'=>$g,'class'=>$c,'id'=>'n'.$i],$t);}
 
 //a:p1,b:p2|bt:m//compatible p/t:m|bt:module
-static function callmod($p){$r=self::mkcmd($p,[],0);
+static function callmod($p){$r=self::mkcmd($p,[],0); //pr($r);
 //if(is_numeric($r['m']))$p=$r['m'];
 if(is_numeric($p)){$r=msql::row('',nod('mods_'.prmb(1)),$p);
 	if($r){array_shift($r); return self::build($r);}}
@@ -440,5 +440,15 @@ return divb($t,'banim','','background-image:url('.$im.'); height:'.$h.'px;');}
 static function footer(){
 ses::$r['curdiv']='footer';
 return self::call(':credits;:chrono;:log-out');}
+
+//p:D,d:lines,o:lg=fr,tp:pubart2,m:catarts
+
+static function menu($p){
+$j='mds_mod,call_inp_3__';
+return inputj('inp',$p,$j).lj('',$j,picto('ok'));}
+
+static function home($p,$o){$ret='';
+if($p)$ret=self::callmod($p);
+return self::menu($p).divd('mds',$ret);}
 }
 ?>

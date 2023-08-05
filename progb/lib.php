@@ -121,7 +121,7 @@ function hidden($d,$v){return '<input type="hidden"'.atd($d).atn($d).atv($v).'/>
 function checkbox($n,$v,$t,$ck=''){$pr=['type'=>'checkbox','checked'=>$ck?'checked':''];
 return input($n,$v,'',$pr).($t?label($n,$t,'txtsmall2').' ':'');}
 function checkbox_j($id,$v,$t='',$ti='',$j=''){$h=hidden($id,$v?$v:0);
-return ljb('small'.$ti,'checkbox',[$id,$t,$j],valid($v,$t),atd('bt'.$id).att($ti)).$h;}
+return ljb('small','checkbox',[$id,$t,$j],valid($v,$t),atd('bt'.$id).att($ti)).$h;}
 function checkact($id,$v,$t){$h=hidden($id,$v?$v:0);
 return ljb($v?'active':'','checkact',$id,$t,atd('bt'.$id)).$h;}
 function label($id,$t,$c='',$ida=''){return '<label'.atb('for',$id).atc($c).atd($ida).'>'.$t.'</label>';}
@@ -548,8 +548,8 @@ function sesg($v,$d){$s=ses($v); $g=get($v); return $g?$g:($s?$s:$d);}
 function sesk($d,$v){$_SESSION[$d][]=$v; return $_SESSION[$d];}
 function sesmk($v,$p='',$b=''){if(!isset($_SESSION[$v.$p]) or $b)
 if(function_exists($v))$_SESSION[$v.$p]=call_user_func($v,$p); return $_SESSION[$v.$p]??[];}
-function sesmk2($a,$m,$p='',$b=''){if(empty($_SESSION[$a.$m]) or $b)
-if(method_exists($a,$m))$_SESSION[$a.$m]=$a::$m($p); return $_SESSION[$a.$m]??'';}
+function sesmk2($a,$m,$p='',$b=''){if(empty($_SESSION[$a.$m.$p]) or $b)
+if(method_exists($a,$m))$_SESSION[$a.$m.$p]=$a::$m($p); return $_SESSION[$a.$m.$p]??'';}
 function setses($d,$o=''){return !isset($_SESSION[$d])?$_SESSION[$d]=$o:$_SESSION[$d];}
 
 #csv

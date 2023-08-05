@@ -238,10 +238,10 @@ return $ret;}
 
 //desk
 //'button','type','process','param','option','condition','root','icon','hide','private'
-static function menubub($d,$n){//root,action,type,button,icon,auth
+static function menubub($d,$n){
 $r=msql::read('',nod('menubub_'.($n?$n:'1')),1); $ret=[];
 if($r)foreach($r as $k=>$v){//if(strpos($v[0],$d)!==false)
-	[$v0,$v1,$v2,$v3,$v4,$v5]=arr($v,6);
+	[$v0,$v1,$v2,$v3,$v4,$v5]=arr($v,6);//root,action,type,button,icon,auth
 	$bt=$v[3]?$v[3]:$v[1];
 	if($v[2]=='app')$ret[]=[$v[3],$v[2],$v[1],'','','',$v[0],$v[4],'',$v[5]];
 	elseif($v[2]=='appjs')$ret[]=[$v[3],$v[2],$v[1],'','','',$v[0],$v[4],'',$v[5]];
@@ -335,7 +335,7 @@ return $ret;}
 //apps=['button','type','process','param','option','condition','root','icon'];
 //$rc=[$v[0],$v[1],$v[2],$v[3],$v[4],$v[5],$v[6],$v[7]];
 static function apps($r,$d,$dir,$cond){//$r,,dir,cond
-if($dir=='zero'){$dir=''; $dd='d';} else $dd=''; $rb=[]; $ret=''; //p($r);
+if($dir=='zero'){$dir=''; $dd='d';} else $dd=''; $rb=[]; $ret='';
 $dr=explode('/',$dir); $nd=$dir?count($dr):0;
 if($r)foreach($r as $k=>$v){$rc=array_flip(explode(' ',' '.$v[5]));
 if($rc[$cond?$cond:'menu']??'' or !$v[5]){$t=$v[0];
@@ -358,7 +358,7 @@ if($rc[$cond?$cond:'menu']??'' or !$v[5]){$t=$v[0];
 		elseif($v[1]=='bub')$rb[$t]=popbub($v[2],$v[3],$ico.$t,'c',1);//d
 		elseif($v[1]=='arts')$rb[$t]=popbub('','arts',$ico.$t,'d',0);
 		elseif($v[1]=='art')$rb[$t]=lh($v[3],$ico.$t);
-		elseif($v[1]=='mod')$rb[$t]=mod::callmod($v[3]);
+		elseif($v[1]=='mod'){$rb[$t]=mod::callmod($v[3]);}
 		elseif($v[1]=='modbt')$rb[$t]=mod::btmod($v[3].',t:'.$t);//,bt:1
 		else{$j=desk::read($v); $rb[$t]=ljbub($ico.$t,'',sj($j));}}}}
 if($rb)$ret=implode('',$rb);

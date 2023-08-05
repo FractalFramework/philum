@@ -213,7 +213,7 @@ if(method_exists($a,'call')){return $a::call($p,$o);}}// && isset($a::$conn)
 #wygsyg
 static function sconn($da,$b,$a=''){if(!$da)return;
 //[$d,$c,$xt]=getconn($da); [$p,$o]=cprm($d);
-[$p,$o,$c]=poc($da); $xt=xt($p); $d=$p.'|'.$o;
+[$p,$o,$c]=poc($da); $xt=xt($p); $d=$p.($o?'|'.$o:'');
 $ret=self::sconn_html($p,$o,$c);
 if(!$ret && $a==1)$ret=self::sconn_app($d,$p,$o,$c,$xt,$b);
 if(!$ret)$ret=match($c){

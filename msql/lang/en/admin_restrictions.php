@@ -159,4 +159,5 @@ If rstr is deactivated, the opposite is true: only urls converted to connectors 
 "154"=>['trace','backup modifs'],
 "155"=>['dock','put art in dock'],
 "156"=>['reviews','reviews'],
-"157"=>['switchnight','day/night']];
+"157"=>['switchnight','day/night'],
+"158"=>['twdie','alternative to the twapi']]; ?>

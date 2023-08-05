@@ -27,7 +27,8 @@ elseif($p=='Oolga Waam'){$d='OW'; $nm='olga_waam';}
 elseif($p=='Oomo Toa'){$d='OT'; $nm='oomo_toa';}
 elseif($p=='Oyagaa Ayoo Yissaa'){$d='OAY'; $nm='oyagaaayuyisaa';}
 elseif($p=='312oay'){$d='312'; $nm='312oay';}
-elseif($p=='Unio Mentalis'){$d='Um'; $nm='unio_mentalis';}
+elseif($p=='Unio_Mentalis'){$d='Um'; $nm='Unio_Mentalis';}
+elseif($p=='EpheHellenica'){$d='Eh'; $nm='EpheHellenica';}
 $rk=['title','temp title','new title','diff date','msg','diff link'];
 //$na=0; $nac=0; $nad=0; $nae=0; 
 $nb0=0; $nb1a=0; $nb1b=0; $nb2=0; $nb3=0; $time=''; $nf1=1; $nf2=1; $nf3=1; $nf4=1;
@@ -52,7 +53,7 @@ if($r)foreach($r as $k=>$v){
 		else{$newtit='['.$d.'-'.$na.']';}//.$date
 	}
 	else*/
-	if($d=='OT' or $d=='OAY' or $d=='O6' or $d=='OW' or $d=='312' or $d=='Um'){//
+	if($d=='OT' or $d=='OAY' or $d=='O6' or $d=='OW' or $d=='312' or $d=='Um' or $d=='Eh'){//
 		if(valr($rb,'info','favoris')){$nb1a++;
 			if($date2a==$date2b1){$nf1++; $date2=$date2a.'-'.$nf1;} else{$nf1=1; $date2=$date2a;}
 			$newtit='['.$d.'-Like '.$nb1a.'] '.$date2; $newtit2=$newtit;

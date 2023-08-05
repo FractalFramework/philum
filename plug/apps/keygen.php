@@ -1,10 +1,11 @@
 <?php 
-class genpswd{
+class keygen{
 
 static function build($p,$o){$ret='';
 $a='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789012345678901234567890123456789'; 
-if($o==1)$a.='$£%*µ,?;.:/!&#{[-|_)]=}+';
+if($o==1)$a.=',?;.:/!&#{[-|_)]=}+';
 $r=str_split($a); $n=count($r)-1;
+if($o==1)$r+=['$','Â£','%','*','Âµ'];
 for($i=0;$i<$p;$i++)$ret.=$r[rand(0,$n)];
 return $ret;}
 
@@ -15,7 +16,7 @@ return $ret;}
 
 static function menu($p,$o,$rid){
 $ret=input('inp',$p).' '.checkbox_j('opt',$o,'complexity').' ';
-$ret.=lj('',$rid.'_genpswd,call_inp,opt',picto('ok')).' ';
+$ret.=lj('',$rid.'_keygen,call_inp,opt',picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid='plg'.randid(); if(!$p)$p=16;

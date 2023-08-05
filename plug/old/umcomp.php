@@ -1,7 +1,9 @@
-<?php //umcomp
+<?php 
 class umcomp{
+static $cl='Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa,312oay';
+
 static function req_artrk($p){//relations art-trk
-if($p=='All')$p='Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa';
+if($p=='All')$p=self::$cl;
 $qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi');
 $sql='select '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,lg,'.$qdi.'.id as idb from '.$qda.'
 inner join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id 
@@ -11,7 +13,7 @@ $r=sql::call($sql,'index',0); //pr($r);
 return $r;}
 
 static function req_trnart($p,$lg){//relation art-trn
-if($p=='All')$p='Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa';
+if($p=='All')$p=self::$cl;
 $qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $trn=ses('trn');
 $sql='select '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,lg,'.$trn.'.txt from '.$qda.' 
 inner join '.$trn.' on substring('.$trn.'.ref,1,3)="art" and substring('.$trn.'.ref,4)='.$qda.'.id and '.$trn.'.lang="'.$lg.'" where '.$qda.'.frm in ("'.implode('","',explode(',',$p)).'") 
@@ -20,7 +22,7 @@ $r=sql::call($sql,'index',0); //pr($r);
 return $r;}
 
 static function req_trntrk($p,$lg){//relation trk-trn
-if($p=='All')$p='Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa';
+if($p=='All')$p=self::$cl;
 $qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi'); $trn=ses('trn');
 $sql='select '.$qda.'.id,'.$qdi.'.id as idb,'.$trn.'.txt as trk from '.$qda.'
 inner join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id 
@@ -78,13 +80,13 @@ return btn('nbp',$ret);}
 
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$p; $ret=''; if(!$o)$o='fr';
-$bt=self::lng($p,$o);
+$bt=self::lng($p,$o); $r=[];
 if($p)$r=self::compile($p,$o); //pr($r);
 if($r)foreach($r as $k=>$v)$ret.=self::ret($v);
 return $bt.conn::read($ret);}
 
 static function r(){
-$r=['O6'=>'Oaxiiboo 6','Oolga Waam','Oomo Toa','Oyagaa Ayoo Yissaa','All'];
+$r=['Oaxiiboo 6','Oolga Waam','Oomo Toa','Oyagaa Ayoo Yissaa','312oay','All'];
 foreach($r as $v)$ret[$v]=$v;
 return $ret;}
 
