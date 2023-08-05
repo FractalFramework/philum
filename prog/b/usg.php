@@ -73,7 +73,7 @@ return divs($s,image($img,'auto','100%'));}
 static function overim($im,$dim,$sz,$id){$bt='';
 $img=goodroot($im); [$w,$h]=self::bestdim($dim,$sz,$img,0);
 $bt=lj('','popup_usg,photo__x_'.ajx($im).'_'.$dim.'_'.$sz.'_'.$id,picto('popup'));
-if($id)$bt.=self::photosbt($im,$sz,$id,'pagup_usg,overim__x_');
+if(is_numeric($id))$bt.=self::photosbt($im,$sz,$id,'pagup_usg,overim__x_');
 ses::$r['popm']=$bt; ses::$r['popw']=$w; ses::$r['popt']=sql('dc','qdg','v','im="'.$im.'"');
 $s='overflow:auto; width:100%; height:'.($h+4).'px;';
 return divs($s,image($img,'100%','auto'));}

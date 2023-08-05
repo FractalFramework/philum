@@ -13,7 +13,7 @@ return match($v[1]){//p/t/d/o/c/h/tp/br
 'art'=>$rid.'_popart__3_'.$v[3].'_3_'.$v[4],
 'ajax'=>$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
 'popup'=>'popup_'.$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
-'desktop'=>$tg.'_desk,deskroot__15_'.$v[2].'_'.$v[3].'_'.$v[4].'_'.$tg,//type
+'desktop'=>($tg?$tg:'popup').'_desk,deskroot__15_'.$v[2].'_'.$v[3].'_'.$v[4].'_'.$tg,//type
 'module'=>$rid.'_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]),
 'modin'=>'content_mod,callmod__3_'.ajx($v[3]),//alias of module not in desk
 'modpop'=>'popup_mod,callmod__3_'.ajx($v[3]),//alias of module in desk
@@ -246,7 +246,8 @@ for($i=0;$i<$n;$i++){$dir=ajx(implode('/',array_slice($r,0,$i)));
 	$rt[]=lj('',$tg.'_desk,deskroot__15_'.$p.'_'.$dir.'_'.$opt.'_'.$tg,$r[$i]);}
 return divb(join(' ',$rt),'menus');}
 
-static function deskroot($p,$dr,$opt,$optb){self::poplist(); $optb=$optb?$optb:randid('dk');
+static function deskroot($p,$dr,$opt,$optb){
+self::poplist(); $optb=$optb?$optb:randid('dk');
 $r=self::desktop($p,$dr,$opt,$optb);
 if($optb)$bt=self::deskmenu($dr,$p,$opt,$optb);
 $ret=self::pane_icons($r,'icones');

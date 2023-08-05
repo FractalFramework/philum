@@ -95,7 +95,7 @@ $ra=sql('ib,day,name,nod,mail,suj,frm,img,thm,re,lg','qda','r',$id);
 [$ib,$day,$name,$hub,$src,$suj,$frm,$img,$url,$re,$lg]=$ra; if(!$lg)$lg=ses('lng');
 if(rstr(38))$ret.=btn('txtsmall2','#'.$id).' ';
 $ret.=toggle('','cbk'.$id.'_usg,getparent___'.$id,picto('topo'));
-$ret.=input('ib'.$id,$ib,3);
+$ret.=input('ib'.$id,$ib,5);
 $ret.=ljb($css,'jumpvalue',['ib'.$id,''],ascii(10006));
 $ret.=lj($css,'popup_tracks,form___'.$id,picto('forum'));
 //$ret.=lj($css,'popup_deploy,home___'.$id,picto('maillist'),att('deploy by mail list'));
@@ -151,7 +151,7 @@ if(auth(4)){sql::upd('qda',['frm'=>$frm],$id); ma::cacheval($id,1,$frm);}
 return self::catedit($id,$frm);}
 
 static function catslctm($id,$frm,$r=[]){$ret='';
-if(!$r)$r=sql('distinct(frm)','qda','k',['nod'=>ses('qb'),'-frm'=>'_','>day'=>timeago('360'),'_order'=>'frm']);
+if(!$r)$r=sql('distinct(frm)','qda','k',['nod'=>ses('qb'),'-frm'=>'_','_order'=>'frm']);
 if($r)foreach($r as $k=>$v)
 	$ret.=lj('','frm'.$id.'_meta,catsav_frm1'.$id.'__'.$id.'_'.ajx($k),$k).' ';//catpic($k,20).
 return $ret;}

@@ -119,7 +119,7 @@ if(substr($p,0,4)!='http')$p=http($p);
 if(!is_url($p))return 'nothing';
 $ret=self::com($p,$o,$id);
 $bt=self::wmenu($p,$rid,$id);
-return $bt.divb(divb($ret,'',$rid,'min-width:320px;'));}
+return divb(divb($ret,'',$rid,'min-width:320px;').$bt);}
 
 static function j($p,$o,$prm=[]){$p=$prm[0]??$p;
 return self::call($p,$o);}

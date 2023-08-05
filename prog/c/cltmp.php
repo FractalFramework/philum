@@ -22,6 +22,7 @@ static function fastart(){return '[[[_URL|_SUJ:url]:h3]:div]
 static function tracks(){return '[[[trk_ID:anchor]_AVATAR _AUTHOR [_DATE #_ID|txtsmall2:css] _EDIT:div][_MSG|[trkmsg:class]:div]|[art_ID:id][_CSS:class][_STY:style]:div]';}
 static function titles(){return '_FLOAT[[_TITLE:h3] [_NBARTS|txtblc:css] _DATE _OPT _PARENT _TAG:div]';}
 static function pubart(){return '[[_IMG1|44/44:thumb]|[imgl:class]:div][_AUTEURS|small:css] [[_URL|_SUJ:hurl]:h4]_VIDEO[:clear]';}
+static function pubart2(){return '[{purl}|{suj}:jurl]';}//menubub
 static function pubart_j(){return '[[_IMG1|44/44:thumb]|[imgl:class]:div][_AUTEURS|small:css] [[_PURL|_SUJ:jurl]:h4]_VIDEO[:clear]';}
 static function pubart_b(){return '[_URL|[_IMG1|200/100:thumb]:url][_AUTEURS|small:css]
 [[_URL|_SUJ:hurl]:h4]_VIDEO';}

@@ -322,7 +322,9 @@ static function same_title($id){if(!$id)$id=ses('read');
 return sql('id','qda','k',['suj'=>$id,'nod'=>ses('qb'),'!id'=>$id,'_order'=>prmb(9)]);}
 
 static function call_context($cntx){$r=$_SESSION['mods']; $ret='';//context as module
-if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)if($va[7]!=1 && $va[3]==$cntx)$ret.=mod::build($va);
+if($r)foreach($r as $k=>$v)
+if(is_array($v))foreach($v as $ka=>$va)
+if($va[7]!=1 && $va[3]==$cntx)$ret.=mod::build($va);
 return $ret;}
 
 static function see_also_rub($frm){

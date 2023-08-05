@@ -257,7 +257,8 @@ return twit::call($p,$o);}
 static function poptwit($d,$o='',$nl=''){[$n,$nm]=cprm($d);
 if(substr($n,-8)=='/photo/1')$n=substr($n,0,-8);
 //{$im=twit::getimg($n,1); return mk::popim($im,pictxt('img',$nm));}
-if(strpos($n,'/'))$n=strend($n,'/'); if(strpos($n,'?'))$n=strto($n,'?'); $bt=$nm?$nm:$n;
+//if(strpos($n,'/'))$n=strend($n,'/'); //let fullurl
+if(strpos($n,'?'))$n=strto($n,'?'); $bt=$nm?$nm:$n;
 $o=$o?$o:'ban'; if(is_numeric($n))$o='tweet';
 elseif(substr($n,0,1)=='@')$o='ban'; elseif(substr($n,0,1)=='#')$o='search';//stream
 //if($o=='ban')$bt=pictxt('arobase',$bt); elseif($o=='search')$bt=pictxt('diez',$bt); else 
@@ -265,7 +266,9 @@ if($o=='tweet')$bt=pictxt('tw',$bt,16);
 return lj('txtx','popup_twit,call__3_'.ajx($n).'_'.$o,$bt);}
 
 static function twitart($d,$id,$ty='',$nl=''){[$k,$nm]=cprm($d);
-if(substr($k,0,4)=='http')$k=strend($k,'/'); if($nm==1)$nm=$k;
+//if(rstr(158))return twit::twalter($d,$id);//twdie
+if(substr($k,0,4)=='http')$k=strend($k,'/'); //let fullurl
+if($nm==1)$nm=$k;
 if($nm=='thread')return self::twitapi($d);
 if($nm=='users')return twit::play_usrs($d);
 if(strpos($k,' '))return self::twits($d,$id);

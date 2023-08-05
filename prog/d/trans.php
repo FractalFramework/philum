@@ -36,8 +36,9 @@ $a='trans_'.self::$motor;
 return $a::detect($p,$o,$prm);}
 
 #translate
-static function build($txt,$from,$to,$format){
+static function build($txt,$from,$to,$format,$ref){
 $a='trans_'.self::$motor;
+json::add('','trans'.mkday(),[$txt,strlen($txt),$ref,mkday('','His'),hostname()]);//
 return $a::build($txt,$from,$to,$format);}
 
 static function cut($txt){
@@ -66,8 +67,8 @@ $d=str::post_treat_repair($d); //$d=str::clean_prespace($d);
 return $d;}
 
 #translate
-static function read($txt,$from='',$to='',$format='off'){
-$r=self::build($txt,$from,$to,$format);
+static function read($txt,$from='',$to='',$format='off',$ref=''){
+$r=self::build($txt,$from,$to,$format,$ref);
 $ret=$r['text'];
 $ret=self::correct($ret);
 return ($ret);}
@@ -78,7 +79,7 @@ if(!$to)$to=ses('lng');//$to=setlng($to);
 $ex=sql('id','trn','v',['ref'=>$ref,'lang'=>$to],'');
 if(!$from)$from=self::detect('','',$d);
 if($from!=$to){
-	$b=self::read($d,$from,$to,'xml');
+	$b=self::read($d,$from,$to,'xml',$ref);
 	if($b){
 		if($ex)self::update($b,$ref,$to);
 		else sql::sav('trn',[$ref,$b,$to]); $d=$b;}
@@ -123,7 +124,7 @@ if(!$ret)return 'empty ref'; if(!$lg)$lg=prmb(25);
 if($o && $lg!=$to)$ret=self::com($ref,$ret,$to,$lg);//new
 elseif($lg!=$to){//eco($ret);
 	if(!$lg)$lg=self::detect('','',$ret);
-	if($lg!=$to)$retb=self::read($ret,$lg,$to,'html');
+	if($lg!=$to)$retb=self::read($ret,$lg,$to,'html',$ref);
 	if($retb){$ret=$retb; self::update($ret,$ref,$to);}}
 elseif($o){$id=sql::sav('trn',[$ref,$ret,$lg],0);}
 elseif($lg==$to)self::update($ret,$ref,$to);//restore original
@@ -208,7 +209,7 @@ return $ret;}
 static function redoxt($ref,$setlg){
 [$to,$from]=explode('-',$setlg);
 $d=self::original('',$ref,$from);
-$d=self::read($d,$from,$to,'html');
+$d=self::read($d,$from,$to,'html',$ref);
 self::update($d,$ref,$to);
 return self::playxt($ref,$setlg,'');}
 
@@ -266,11 +267,11 @@ if($ret)return divd('trn'.$ref,$bt.$ret);}
 static function callin($p,$o,$prm=[]){
 [$txt,$to]=prmp($prm,$p,$o); //echo $txt.'-'.$to;
 //return self::call($txt,$setlg='',$edt='');
-return self::read($txt,'',$to,'plain');}
+return self::read($txt,'',$to,'plain','');}
 
 static function callr($r,$lg,$lga=''){
 $d=implode_k($r,n(),'#');
-$d=self::read($d,$lga,$lg,'');
+$d=self::read($d,$lga,$lg,'','');
 return explode_k($d,n(),'#');}
 
 static function menu($p){

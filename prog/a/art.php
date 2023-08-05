@@ -2,32 +2,6 @@
 class art{
 
 #template
-static function mktmp($ret,$p){$r=sesmk2('cltmp','vars','',0); $rb=[]; $rc=[]; $rd=[];
-foreach($r as $k=>$v)if(!isset($p[$k]))$rb[]=$v; else{$rc[]=$v; $rd[]=$p[$k];}
-$ret=str_replace($rb,'',$ret);//del_empty
-if(isset($p['img1']))$ret=str_replace('_IMG1',$p['img1'],$ret);
-$ret=conb::parse($ret,'template');//build
-return str_replace($rc,$rd,$ret);}
-
-static function tmpu($tpl){$tmp='';
-if(!$tpl){$r=ses('tmpc'); $c=$_SESSION['cond'][0]; $tpl=$r[$c]??'';}//from context
-if(rstr(103))$tmp=msql::val('',nod('template'),$tpl);//from user
-if(!$tmp && $tpl && method_exists('cltmp',$tpl))$tmp=cltmp::$tpl();//from sys
-if(!$tmp)$tmp=msql::val('system','default_template',$tpl);//default
-//if(!$tmp)$tmp=msql::val('system','default_template_'.$tpl,1);//default
-return $tmp;}
-
-static function template0($p,$tpl){
-if(!$tpl)$tpl=prma('template');//from mod
-$tmp=sesmk2('art','tmpu',$tpl,1);
-$rs=['read'=>88,'art'=>55,'pubart'=>55,'pubart_j'=>55,'pubart_b'=>55,'titles'=>65,'tracks'=>66,'book'=>67];
-$opt=$rs[$tpl]??'';
-if($tpl && $opt && !rstr($opt))$tmp=cltmp::$tpl();
-if(!$tmp){
-	if(!empty($_SESSION['simplified']))$tmp=cltmp::simple();
-	elseif(rstr(88))$tmp=cltmp::cat();
-	else $tmp=cltmp::art();}
-return self::mktmp($tmp,$p);}
 
 //tmp_common
 static function decide_tpl(){$tpl=prma('template');//from mod
@@ -41,17 +15,11 @@ return $tpl;}
 static function decide_tmp($tpl){$tmp='';
 if(rstr(103)){//from usr
 	$rs=['read'=>88,'art'=>55,'pubart'=>55,'pubart_j'=>55,'pubart_b'=>55,'titles'=>65,'tracks'=>66,'book'=>67];
-	$opt=$rs[$tpl]??'';
-	if($tpl && $opt && !rstr($opt))$tmp=$tmp=msql::val('',nod('template_'.$tpl),1);}//from usr
+	$opt=$rs[$tpl]??''; //msql::val('',nod('template_'.$tpl),1);
+	if($tpl && $opt && !rstr($opt))$tmp=msql::val('',nod('template'),$tpl,1);}//from usr
 if(!$tmp && method_exists('cltmp2',$tpl))$tmp=cltmp2::$tpl();//from cnfg
 if(!$tmp)$tmp=msql::val('system','edition_template_'.$tpl,1);//default
 return $tmp;}
-
-//tmp1
-static function template1($p,$tpl){
-if(!$tpl)$tpl=self::decide_tpl($tpl);
-$tmp=self::decide_tmp($tpl);
-return self::mktmp($tmp,$p);}
 
 #template2
 static function decide_view($tpl){$r=[];
@@ -60,11 +28,12 @@ return $r;}
 
 static function template2($ra,$tpl){$rt=[];
 if(!$tpl)$tpl=self::decide_tpl($tpl);
-$tmp=self::decide_tmp($tpl);
+//$tmp=self::decide_tmp($tpl);
+$tmp=sesmk2('art','decide_tmp',$tpl,1);
 return vue::build($tmp,$ra);}
 
 //tmp3
-/**/static function build_view($tmp){//buikd r from tmp or json
+static function build_view($tmp){//buikd r from tmp or json
 return view::bridge($tmp);}
 
 static function template3($ra,$tpl){$rt=[];
@@ -145,6 +114,7 @@ return $rn;}
 static function tags($id,$o='',$lg=''){
 $r=ma::art_tags($id); if(!$r)return; $sep=sti(); $ret=[]; $lga=prmb(25);
 $ica=explode(' ',prmb(18)); $ico=explode(' ',prmb(19)); if($lg)$rn=self::tagn();
+if($r['auteurs']??'')ses::$r['descr']='['.key($r['auteurs']).'] '.(ses::$r['descr']??'');
 if(count($ica)==count($ico))
 $rico=['tag'=>'tag']+array_combine($ica,$ico); $rico['utag']='like';
 if($r)foreach($rico as $cat=>$ico){$rt=[]; if(is_numeric($cat))$cat='utag';

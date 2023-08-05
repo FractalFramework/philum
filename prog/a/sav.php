@@ -353,7 +353,7 @@ return $ret;}
 
 //upload
 static function uploadsav($id,$type,$dsk){$rid='upfile'.$id;
-$f=$_FILES[$rid]['name']; $f_tmp=$_FILES[$rid]['tmp_name'];
+$f=$_FILES[$rid]['name']??''; $f_tmp=$_FILES[$rid]['tmp_name']??'';
 if(!$f)return 'no file uploaded '; $er=''; $rep=''; $w='';
 $f=str::normalize($f); $xt=xt($f); $qb=ses('qb'); if(!auth(4))return;
 $goodxt='.mp4.m4a.mov.mpg.mp3.mkv.mid.wav.jpg.png.gif.pdf.txt.docx.rar.zip.tar.gz.svg.webp.webm.ods.odt';

@@ -153,7 +153,7 @@ return bubslct($j,$t).$h.$t;}
 function select_j($id,$f,$v='',$o='',$t='',$ty=''){$rid=randid();//hidslct_j
 $hid='bt'.$id; $j=$id.'_'.$f.'_'.ajx($v).'_'.ajx($o);
 $c=$v?'active':''; $t=$t?$t:($v?$v:'select...');
-if($ty==1)$h=input($id,$v,3); elseif($ty!=2)$h=hidden($id,$v); else $h='';
+if($ty==1)$h=input($id,$v,5); elseif($ty!=2)$h=hidden($id,$v); else $h='';
 //return togbub('hidj',$j,$t,$c).$h; //return lj('popbt','bubble_usg,hidslct___'.$j,$t,atd($hid)).$h;
 return lj('txtx','popup_hidj_'.$id.'_'.$hid.'_'.$j,$t,atd($hid)).$h;}//$hid déclenche bub
 
