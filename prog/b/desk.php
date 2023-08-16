@@ -217,7 +217,7 @@ static function randimg($dr){
 $r=explore($dr); $n=count($r);
 return $dr.'/'.($r[rand(0,$n-1)]??'');}
 
-static function deskbkg(){$klr='';
+static function deskbkg(){$klr=0;
 $prmd=$_SESSION['prmd']; if(isset($_SESSION['negcss']))$prmd.='_neg';
 $clr=getclrs($prmd); $g=prma('desktop'); ses::$r['popm']=lj('','page_desk,deskbkg',picto('desktop'));//
 if($g)$g=goodroot($g); if(!$g)$g='top,#_4,#_2';

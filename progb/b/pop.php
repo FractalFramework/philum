@@ -273,8 +273,8 @@ if($nm=='thread')return self::twitapi($d);
 if($nm=='users')return twit::play_usrs($d);
 if(strpos($k,' '))return self::twits($d,$id);
 if($nm or !is_numeric($k))return self::poptwit($k.'|'.$nm,$ty,$nl);
-if($nl)return lka($k);
-//if($k && rstr(158))return twit::twalter($k,$id);//twdie
+//if($nl)return lk(twit::lk('z',$k),$k);
+if($k && rstr(158))return twit::twalter($k,$id);//twdie
 if($k)return twit::cache($k,$id);}
 
 static function twitxt($d,$id,$tx=''){[$k,$nm]=cprm($d);//totest

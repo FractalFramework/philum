@@ -97,7 +97,7 @@ return $ret;}
 //datas
 static function datas($r,$lang,$mode='',$q2=''){
 [$id,$day,$suj,$msg,$lk,$lg]=$r;
-if(!$lg)$lg='fr'; $nl=0;
+if(!$lg)$lg='fr'; $nl=1;
 $rb=['id'=>$id,'suj'=>$suj,'day'=>date('d-m-Y',$day),'source'=>'','author'=>'','tracks'=>'','player'=>''];
 $rb['url']='/'.$id;//'/app/umcom/'.$id;
 $msgb=str::stripconn($msg); $msgb=trim($msgb); $from='';
@@ -122,7 +122,7 @@ elseif(!$from && $nm)$from=$nm;
 	$msg=trans::callum('art'.$id,$lang.'-'.$lg,$edt,$q2?$msg:'');//,$msg
 	//$msg=divd('art'.$id,$msg);
 if($mode=='com2')$msg=str_replace(':video',':videourl',$msg);
-//$rb['msg']=conn::read($msg,'','',$nl);
+$msg=conn::read2($msg,'',1,$nl);
 $rb['msg']=$msg;//divd('umart'.$id,$msg);
 $rb['txtbrut']=$msg;
 if($from && $idy && $n>1){$rb['source']='Questions'; $rb['author']='';}//nms(171);
@@ -243,9 +243,11 @@ elseif($o=='ebook'){$t='Twits_'.$lang; $f='_datas/'.$t.'.epub'; $b=1;
 	else $ret=mkbook::build($rc,$t);}
 if($o=='list')$bt=self::pages($p,$pg); else $bt='';
 if($save){$f='_datas/twits_'.$o.'_'.ses('umrlg').'.htm';
-	$doc='<head><style type="text/css">img{max-width:100%;} table,td,th{border:2px solid gray; border-collapse:collapse;}</style></head>
-	<body>'.($ret).'</body>';//str_replace('img/',host().'/img/',
-	write_file($f,$doc); $bt.=lkt('popbt','/'.$f,pictxt('file-word','html'));}
+	//$ret=str_replace('/img/',host().'/img/',$ret);
+	//$ret=str_replace('video/',host().'video/',$ret);
+	$doc=wpg($ret,$t='',$s='',$lg='fr');
+	write_file($f,$doc);
+	$bt.=lkt('popbt','/'.$f,pictxt('file-word','html'));}
 return $bt.$ret.$bt;}
 
 static function date2id($p){

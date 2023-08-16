@@ -33,9 +33,10 @@ if(rstr(70))self::art_retape($d,$id);
 $d=nl2br($d);
 return $d;}
 
-static function read2($d,$p='',$o=''){
+static function read2($d,$p='',$o='',$nl=''){
+self::$nl=$nl;
 if($p)$d=self::connbr($d);
-$ret=self::parser($d);
+$ret=self::parser($d,3,'',$nl);
 if(!$p)$ret=embed_p($ret);
 if(!$o)$ret=nl2br($ret);
 return $ret;}
@@ -180,11 +181,12 @@ if(!$w){$da=self::recup_image($da,$id,$m);}
 if(!$da)return picto('img2');
 if(!$w && !$pre){$dca=$da; $w=$pwb;}
 if(rstr(17))$pwb/=2;
+if($nl)$p['style']='max-width:100%';
 //if(rstr(9) && $w<$pwb)$p['style']='float:left; margin-right:10px;';
 //if($w && $w<$pwb)$p['style'].=' width:'.$w.'px;';
 $p['src']=$http.'/'.$dca; //if(!rstr(9) && $h>40)$br="\n\n";
 $p['title']=ses::adm('alert');
-$ret='<img'.prr($p).' />';//image()
+$ret='<img'.atr($p).' />';//image()
 if($w>$pw && $pw && !$nl)$ret=ljb('','SaveBf',ajx($da).'_'.$w.'_'.$h.'_'.$id,$ret).$br;
 if(auth(6) && rstr(121) && !$nl)$ret=self::rzim($ret,$da,$dca,$id,$w,$h);
 return $ret;}//.$br

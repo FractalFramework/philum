@@ -156,4 +156,5 @@ $r=["_"=>['category','name','defaults'],
 "154"=>['save','trace updates','1'],
 "155"=>['social','dock it','1'],
 "156"=>['template','reviews','1'],
-"157"=>['admin','switchnight','1']];
+"157"=>['admin','switchnight','1'],
+"158"=>['config','twdie','1']]; ?>

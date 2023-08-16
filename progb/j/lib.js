@@ -1,4 +1,5 @@
 //lib
+oldj='';
 
 //states
 function updateurl(a,j,io,b){
@@ -13,7 +14,8 @@ else if(a=='menu'){
 	else var u='/module/'+dn[3];}
 else var u='/'+dn[4]+(dn[5]?'/'+ajx(dn[5],1)+(dn[6]?'/'+ajx(dn[6],1):''):'');
 var r={u:u,a:a,j:j,i:io,t:''};
-if(!b)window.history.pushState(r,a,u);// && r.j!=event.state.r.j
+if(j!=oldj)window.history.pushState(r,a,u);// && r.j!=event.state.r.j
+oldj=j; pr(j);
 if('scrollRestoration' in history)history.scrollRestoration='manual';}
 
 function restorestate(st){if(!st)return;

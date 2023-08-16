@@ -163,4 +163,5 @@ Si la rstr est désactivée, c\'est le contraire : seuls les url converties en c
 "154"=>['trace','backup les modifs'],
 "155"=>['dock','placer l\'article dans le dock'],
 "156"=>['reviews','révisions (rstr 106 pour l\'afficher dans le menu social)'],
-"157"=>['switchnight','jour/nuit']]; ?>
+"157"=>['switchnight','jour/nuit'],
+"158"=>['twdie','alternative à l\'api twitter']]; ?>

@@ -436,10 +436,10 @@ return $txt;}
 
 #cache
 static function play($id,$r,$q='',$o='',$aid=0){
-[$nm,$date,$rplid,$favs,$favd,$rtw,$rtwd,$flw,$friends,$txt,$med,$mnt,$quoid,$lg]=vals($r,['screen_name','date','reply_id','favs','favorited','retweets','retweeted','followers','friends','text','media','mentions','quote_id','lang']);
-$url=self::lk($nm);
+[$nm,$sn,$date,$rplid,$favs,$favd,$rtw,$rtwd,$flw,$friends,$txt,$med,$mnt,$quoid,$lg]=vals($r,['name','screen_name','date','reply_id','favs','favorited','retweets','retweeted','followers','friends','text','media','mentions','quote_id','lang']);
+$url=self::lk($sn);
 $own=msql::val('',nod('twit_'.ses('apk')),5);
-//$ret=lkt('popbt',$url,pictxt('tw',$nm));
+//$ret=lkt('popbt',$url,pictxt('tw',$sn));
 $ret=self::banner($r,0).' '; $j='popup_twit,call__3_';
 //if(isset($q['retweeted_status']['id']))$ret.=btn('small','(retweet)').' ';
 if($rtwd)$ret.=lj('','popup_twit,call___'.$rtwd,'(retweet)').'';
@@ -456,14 +456,14 @@ if($rtwd)$ret.=btd('rtw'.$id,self::btrtw($id,$rtw,$rtwd)).' ';
 if($friends)$ret.=pictxt('users',$flw.'/'.$friends).'';
 if(auth(6)){
 	$ret.=lj('',$id.'_twit,recache___'.$id.'_'.$aid,picto('reload'));
-	if($nm==$own)$ret.=lj('',$id.'_twit,call___'.$id.'_del',picto('del'));
+	if($sn==$own)$ret.=lj('',$id.'_twit,call___'.$id.'_del',picto('del'));
 	$ret.=lj('','popup_twit,call___'.$id.'_eco',picto('code'));
 	$ret.=lj('','popup_twit,edit___'.$id.'_eco',picto('editxt'));
 	$ret.=lj('',$id.'_twit,call___'.$id.'_erz',picto('erase'));}
 $ref='twt'.substr($id,-8); $lng=ses('lng');
 //if($lg!=$lng)$ret.=lj('',$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,picto('translate'));
 if($lg!=$lng)$ret.=ljtog('','trn'.$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,'trn'.$ref.'_twit,playtxt___'.$id,picto('language'));
-//$ret.=lkt('',self::lk($nm,$id),picto('chain'));
+//$ret.=lkt('',self::lk($sn,$id),picto('chain'));
 $ret.=lkt('','app/twit/'.$id,picto('url'));
 $ret=divc('nbp',$ret);
 $txt=divd('trn'.$ref,str_replace('|','-',$txt));//nl2br
@@ -474,13 +474,13 @@ $ret.=divc('panel',$txt);
 if($o)return $ret;
 return divb($ret,'twit',$id);}
 
-static function playxt($k){
+/**/static function playxt($k){
 $ra=['name','screen_name','user_id','date','text','media','mentions','reply_id','reply_name','favs','retweets','followers','friends','quote_id','quote_name','retweeted','lang'];//ib,twid,
-$r=sql(implode(',',$ra),'qdtw','w','twid="'.$k.'"',0);
-[$nm,$date,$rplid,$favs,$favd,$rtw,$rtwd,$flw,$friends,$txt,$med,$mnt,$quoid,$lg]=vals($r,['screen_name','date','reply_id','favs','favorited','retweets','retweeted','followers','friends','text','media','mentions','quote_id','lang']);
-$url=self::lk($nm); $ret='@'.$nm;
+$r=sql(implode(',',$ra),'qdtw','a',['twid'=>$k],0);
+[$nm,$sn,$date,$rplid,$favs,$favd,$rtw,$rtwd,$flw,$friends,$txt,$med,$mnt,$quoid,$lg]=vals($r,$ra);
+$url=self::lk($sn); $ret=spn('@'.$sn,'popbt').' ';
 $ret.=lkt('small',$url.'/status/'.$k,pictxt('chain',date('d/m/Y H:i:s',$date))).'';
-$ret.=divc('',$txt);
+$ret.=blockquote($txt);
 return $ret;}
 
 static function urls($r,$rtw,$id){$rb=[];
@@ -552,7 +552,7 @@ return $ret;}
 static function twalter($u,$id,$o=''){$sn='';
 if(strpos($u,'/')){$ra=explode('/',$u); $sn=$ra[3]??''; $twid=$ra[5]??'';} else $twid=$u;//forbidden situation
 $ra=['name','screen_name','user_id','date','text','media','mentions','reply_id','reply_name','favs','retweets','followers','friends','quote_id','quote_name','retweeted','lang'];//ib,twid,
-$r=sql(implode(',',$ra),'qdtw','w',['twid'=>$twid],0);
+$r=sql(implode(',',$ra),'qdtw','a',['twid'=>$twid],0);
 if($r && !$o)return self::play($twid,$r,[],0,$id);
 $rb=self::r(); foreach($rb as $k=>$v)$rb[$k]=$v=='int'||$v=='bint'?0:'';
 $rb['twid']=$twid; if($id)$rb['ib']=$id; $rb['date']=time(); if($sn)$rb['screen_name']=$sn;
@@ -562,8 +562,8 @@ $ret=lkt('txtx',$lk,pictxt('url',$sn));
 [$txt,$med]=self::clean($res); $med=utmsrc($med);
 $rb['text']=$txt; if($nm)$rb['name']=$nm; $rb['media']=$med; $rb['screen_name']=$sn;
 if($o && $r)sqlup('qdtw',$rb,['twid'=>$twid],0);
-elseif($txt && auth(6))sqlsav('qdtw',$rb,0,0);
-return self::play($twid,$rb,[],0,$id);}
+elseif($txt && auth(6) && $id!='test')sqlsav('qdtw',$rb,0,0);
+return self::play($twid,$rb,[],$o,$id);}
 
 #read
 static function cache($k,$id,$o='',$q=[]){if(!$id)$id=0;
@@ -572,7 +572,7 @@ $r=sql(implode(',',$ra),'qdtw','w',['twid'=>$k],0);
 if(auth(4) && ((!$r && $o!=2) or $o==1)){$r0=$r;
 	if(!rstr(158))$q=$q?$q:self::read($k);
 	$er=self::error($q);
-	if(!$er && $q)$r=self::datas($q); pr($er);
+	if(!$er && $q)$r=self::datas($q);
 	if($er)$r['text']=$er;
 	elseif($r0 && $r)sqlup('qdtw',$r,['twid'=>$k],0);
 	elseif($r && $k && is_numeric($k) && $id!='test'){

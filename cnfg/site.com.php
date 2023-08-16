@@ -4,5 +4,6 @@ ini_set('default_charset',$enc);
 mb_internal_encoding($enc);
 mb_http_output($enc);
 ses::$enc=$enc;
+ses::$twitter=1;
 ses::$local=0;
 ?>

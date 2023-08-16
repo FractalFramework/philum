@@ -184,14 +184,17 @@ function gcim($im,$o=''){return jcim($im,$o).$im;}
 function goodroot($f,$h=''){
 if($h==1)$h=host().'/'; elseif($h)$h=http($h).'/';
 if(substr($f,0,4)=='http')return $f;
-elseif(substr($f,0,1)=='/')return substr($f,1);
-elseif(substr($f,0,3)=='../')return $f;
-elseif(substr($f,0,6)=='video/')return $h.''.$f;
-elseif(strpos($f,'img/')!==false)return $h.$f;
-elseif(strpos($f,'app/')!==false)return $h.$f;
-elseif(strpos($f,'_datas/')!==false)return '/'.$h.''.$f;
-elseif(strpos($f,'/')!==false)return $h.'users/'.$f;
+elseif(substr($f,0,6)=='/video/')return $h.substr($f,1);
+elseif(substr($f,0,5)=='video/')return $h.$f;
+elseif(substr($f,0,5)=='/img/')return $h.substr($f,1);
+elseif(substr($f,0,4)=='img/')return $h.$f;
+elseif(substr($f,0,4)=='app/')return $h.'/'.$f;
+elseif(substr($f,0,8)=='/_datas/')return $h.substr($f,1);
+elseif(substr($f,0,7)=='_datas/')return $h.$f;
+elseif(strpos($f,'/'))return $h.'users/'.$f;
 elseif(strpos($f,'/')===false)return $h.'img/'.$f;
+//elseif(substr($f,0,1)=='/')return substr($f,1);
+//elseif(substr($f,0,3)=='../')return $f;
 //elseif(strpos($f,'<img')!==false)return between($o,'src="','"');
 else return $f;}
 
