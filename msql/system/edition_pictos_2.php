@@ -1,5 +1,5 @@
-<?php //msql/edition_pictos_2
-$r=["_"=>['hex','fr','ref'],
+<?php 
+return ["_"=>['hex','fr','ref'],
 "OU-O"=>['0030','zéro',''],
 "OU-O_2"=>['00b0','zéro',''],
 "I-AS"=>['0031','un',''],
@@ -135,4 +135,4 @@ $r=["_"=>['hex','fr','ref'],
 "22b"=>['0101','symbole d\'égalité','d45'],
 "23"=>['00a2','(apparemment \"nombre\")','d45'],
 "24"=>['00a3','symbole \"racine\"','d45'],
-"24b"=>['0103','symbole \"racine\"','d45']];
+"24b"=>['0103','symbole \"racine\"','d45']]; ?>

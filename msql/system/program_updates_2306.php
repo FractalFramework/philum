@@ -1,5 +1,5 @@
-<?php //program_updates_2306
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0601','publication'],
 "2"=>['0602','- nettoyage d\'un paquet de process mis en commentaire dans sav
 - introduction de sqb, une seconde ligne de requêtes sql en pdo

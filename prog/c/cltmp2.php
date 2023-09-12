@@ -1,7 +1,7 @@
-<?php //template
+<?php 
 class cltmp2{
 static function art(){return '[{cat}{back}{avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:header][{edit}|right:css]{thumb}[{parent}:h4][{title}:h1]{artedit} {float}[{artlang} {social} {words} {open}|grey right:css][{tag}|txtsmall:divc] [:clear][{msg}|[art{id}:id][justy:class]{js}:article]';}
-static function cat(){return '[[{thumb}[{tag}|panel txtsmall scrollb:divc]|row1 col1:divc]
+static function cat(){return '[[{thumb}[{tag}|panel txtsmall:divc]|row1 col1:divc]
 [[[{cat} {back} {avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:div]
 [{parent}:h4]
 [{edit}|right:css][{title}:h2]

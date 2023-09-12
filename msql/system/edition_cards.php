@@ -1,8 +1,8 @@
-<?php //msql/edition_cards
-$r=["_"=>['value'],
+<?php 
+return ["_"=>['value'],
 "card_width"=>['241'],
 "card_height"=>['157'],
 "card_margin"=>['14'],
 "card_border"=>['1px dotted grey'],
 "page_width"=>['594'],
-"page_padding"=>['28']];
+"page_padding"=>['28']]; ?>

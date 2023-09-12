@@ -1,5 +1,5 @@
-<?php //msql/public_atomic_2
-$r=["_"=>['Nom','Symbole','Famille','Couche','Niveau orbital','Fusion','Ebulition (C°)','Découverte','Masse','Masse atomique (u)','Isotopes','Numéro atomique','clr','pos','free','deg','clr2'],
+<?php 
+return ["_"=>['Nom','Symbole','Famille','Couche','Niveau orbital','Fusion','Ebulition (C°)','Découverte','Masse','Masse atomique (u)','Isotopes','Numéro atomique','clr','pos','free','deg','clr2'],
 "1"=>['Hydrogène','H','Nonmetals','1','1s1','-259,14','-252,87','Cavendish, 1766, Grande-Bretagne','0,0899 g/L','1,008','3','1','5FA92E','1','1','0.5','ffbb00'],
 "2"=>['Hélium','He','Nobles Gasses','2','1s2','-272@26ATM','-268,6','Ramsay, Langlet et Cleve, 1895, Grande-Bretagne','0,1785 g/L','4,002602','5','2','00D0F9','2','','1','84ff00'],
 "3"=>['Lithium','Li','Alkali Metals','2-1','2s1','180,54','1347','Arfvedson, 1817, Suède','0,534','6,94','5','3','FF0008','1','1','0.5','ffbb00'],
@@ -121,4 +121,4 @@ et IURN, 2010','---','288','---','115','999999','3','3','0.5','40bf5e'],
 "118"=>['Oganesson','Og','Nobles Gasses','2-8-18-32-32-18-8','7p6','N/A','N/A','Oganessian, Laboratoire national de Lawrence Livermore
 et IURN, 2006','---','294','---','118','00D0F9','6','','1','40bfbd'],
 "119"=>['Ununennium','Uue','Alkali Metals','2-8-18-32-32-18-8-1','8s1','N/A','N/A','---','---','295','---','119','FF0008','1','1','0.5','ffbb00'],
-"120"=>['Unbinilium','Ubn','Alkali Earth Metals','2-8-18-32-32-18-8-2','8s2','N/A','N/A','---','---','297','---','120','FF00FF','2','','1','84ff00']];
+"120"=>['Unbinilium','Ubn','Alkali Earth Metals','2-8-18-32-32-18-8-2','8s2','N/A','N/A','---','---','297','---','120','FF00FF','2','','1','84ff00']]; ?>

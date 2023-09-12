@@ -1,5 +1,5 @@
-<?php //admin_restrictions
-$r=["_"=>['name','description'],
+<?php 
+return ["_"=>['name','description'],
 "1"=>['commentaires','ouverture des commentaires au public'],
 "2"=>['modération','modération des commentaires (auth 4)'],
 "3"=>['champ temporel','système de champ temporel (périodicité), d\'après param16'],

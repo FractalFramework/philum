@@ -1,5 +1,5 @@
-<?php //msql/edition_ascii_11
-$r=["1"=>['zwj','useful'],
+<?php 
+return ["1"=>['zwj','useful'],
 "2"=>['9671','useful'],
 "3"=>['rArr','useful'],
 "4"=>['9744','useful'],
@@ -4920,4 +4920,4 @@ $r=["1"=>['zwj','useful'],
 "4919"=>['129000','symbols'],
 "4920"=>['129001','symbols'],
 "4921"=>['129002','symbols'],
-"4922"=>['129003','symbols']];
+"4922"=>['129003','symbols']]; ?>

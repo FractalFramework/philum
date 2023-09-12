@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1202
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0201','correctifs sur le plugin \'share\''],
 "2"=>['0202','ajout du module \'share\' pour rendre publics les fichiers partagés'],
 "3"=>['0205','correctif de l\'empêcheur de faire des titres en majuscules pour supporter les noms composés ou apostrophés'],
@@ -21,4 +21,4 @@ $r=["_"=>['day','text'],
 "10"=>['0227','- petits correctifs lors de l\'appel en ajax pour les caractères non supportés ;
 - suppression des tirets-longs dans le système de contention (non supportés en ajax) ;
 - ouvrir/fermer un article qui comporte une vidéo de supprime plus l\'instruction \'clear:left\' ;
-- le filtre de post-traitement après import \'del-link\' permet de supprimer les liens non désirés (de façon radicale et grossière), par exemple pour les sites qui ont la stupide idée de mettre un lien vers la définition de chaque mot utilisé, comme futura-sciences et le monde, depuis peu']];
+- le filtre de post-traitement après import \'del-link\' permet de supprimer les liens non désirés (de façon radicale et grossière), par exemple pour les sites qui ont la stupide idée de mettre un lien vers la définition de chaque mot utilisé, comme futura-sciences et le monde, depuis peu']]; ?>

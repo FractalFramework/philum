@@ -88,7 +88,7 @@ foreach($r as $k=>$v)$rt[]=bts('background:#'.$v.'; '.$s,$k);
 if($o==5 or $o==6)$bt='C°'; elseif($o==8)$bt='g/L'; elseif($o==9)$bt='g/Mol';
 elseif($o==10)$bt='isotopes'; elseif($o==2)$bt='positions'; elseif($o==12)$bt='origin';
 if($bt)$rt[]=bts('background:#ffffff; '.$s,$bt);
-return divb(join('',$rt));}
+return div(join('',$rt));}
 
 //atom
 static function atompos($ring,$sub,$pos,$i,$v,$o){
@@ -294,6 +294,6 @@ head::add('csscode',self::css());
 head::add('jscode',self::js($p,$o));
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
-return $bt.divb($ret,'small',$rid);}
+return $bt.div($ret,'small',$rid);}
 }
 ?>

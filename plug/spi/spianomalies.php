@@ -38,7 +38,7 @@ foreach($rb as $k=>$v){//$k=ring
 $bt=lj('',$o.'_spianomalies,call___'.($p-1).'_'.$o,ascii(129144));
 $bt.=lj('',$o.'_spianomalies,call___'.($p+1).'_'.$o,ascii(129146)).' ';
 $bt.=btn('txtx',$r[0].' '.$r[1].' '.$p.' ('.$r[2].')').br();
-if($ret)return $bt.divb(implode(br(),$ret));}
+if($ret)return $bt.div(implode(br(),$ret));}
 
 static function call($p,$o,$prm=[]){
 $ret=self::build($p,$o);

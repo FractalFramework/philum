@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1209
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0801','améliorations css global et classic, compatibilité et design avec des dégradés'],
 "2"=>['0802','la restriction 55 active les templates personnalisés, pour les titres de page et les commentaires ; ça permet d\'économiser des ressources quand ces fonctions ne sont pas utilisées'],
 "3"=>['0803','- résolution des problèmes d\'importation des e dans l\'o (&#339;)
@@ -98,4 +98,4 @@ amélioration de l\'upload de sorte à ne pas avoir à relancer la page ;
 - permet d\'éditer le site depuis un bureau où les fenêtres ouvertes restent statiques, l\'ensemble du site étant dans une iframe ;
 
 - iconographie du Finder utilise Picol ;
-- mise à jour des icones de Picol']];
+- mise à jour des icones de Picol']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/public_numbers_1
-$r=["_"=>['intitulé','valeur','commentaire'],
+<?php 
+return ["_"=>['intitulé','valeur','commentaire'],
 "1"=>['timestamp 0','mktime(1,0,0,1,1,1970)',''],
 "2"=>['équinoxe du point vernal','mktime(8,35,0,3,20,1970)','+1 h à cause du timestamp 0'],
 "3"=>['équinoxe du point vernal','mktime(7,35,0,3,20,1970)',''],
@@ -19,4 +19,4 @@ $r=["_"=>['intitulé','valeur','commentaire'],
 "17"=>['centre galactique','17h45m37.2245 -28d56m10.23s',''],
 "18"=>['décalage du soleil du centre galactique','3 min d\'arc','à 17h44m40.04 -29d00m28.1s'],
 "19"=>['formule de déclinaison','sin($i/($n/(M_PI/2)))*$a;','où $n est la longueur d\'une saison (jours) et $a=23.44'],
-"20"=>['formule de placement des mois sur le plan équatorial','$a=180+$eq-(30*$k); if($a<0)$a+=360;','où $eq=77.19 (angle vernal), $k=jour. Reste à projeter en 2d : $b=$a*$ratio;']];
+"20"=>['formule de placement des mois sur le plan équatorial','$a=180+$eq-(30*$k); if($a<0)$a+=360;','où $eq=77.19 (angle vernal), $k=jour. Reste à projeter en 2d : $b=$a*$ratio;']]; ?>

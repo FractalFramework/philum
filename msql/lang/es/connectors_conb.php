@@ -1,5 +1,5 @@
-<?php //msql/connectors_codeline
-$r=["_"=>['value'],
+<?php 
+return ["_"=>['value'],
 "balise"=>['html balise with ID and class : value|balise|id|class ; this one accept empty content'],
 "html"=>['balise'],
 "div"=>['div with attributs'],
@@ -22,4 +22,4 @@ $r=["_"=>['value'],
 "cut"=>['return the part of memorized text after and before the two parameters'],
 "conn"=>['return a connector'],
 "plug"=>['return a plug-in'],
-"core"=>['access to algorithms of core']];
+"core"=>['access to algorithms of core']]; ?>

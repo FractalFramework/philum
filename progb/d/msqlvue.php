@@ -7,7 +7,7 @@ static function viewer($p,$i,$n){$bt=''; $p=ajx($p);
 if($i>1)$bt=lj('',self::$cb.'_msqlvue,build___'.$p.'_'.($i-1),picto('previous'));
 $bt.=lj('',self::$cb.'_msqlvue,build___'.$p.'_'.($i),picto('refresh'));
 if($i<$n)$bt.=lj('',self::$cb.'_msqlvue,build___'.$p.'_'.($i+1),picto('next'));
-return divb($bt);}
+return div($bt);}
 
 static function build($p,$tmp){
 [$nd,$k]=expl('|',$p,2); if(!$k)$k=1; $r=msql::row('',$nd,$k,1); $n=$r?count($r):0;

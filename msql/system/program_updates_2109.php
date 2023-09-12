@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2109
-$r=["1"=>['0904','publication'],
+<?php 
+return ["1"=>['0904','publication'],
 "2"=>['0911','ajout de treat_img en supplétif à treat_links dans conv'],
 "3"=>['0912','- correctif de msql_read vers msql::col
 - ajout du conn :math et des balises associtées à matl.ml
@@ -13,4 +13,4 @@ $r=["1"=>['0904','publication'],
 "5"=>['0916','- réfection de starmap2'],
 "6"=>['0917','ajout des conn :
 - bt : appelle un connecteur sur place (remplace la commodité conflictuelle qui consistait à rajouter |bt après le connecteur habituel)
-- appbt :lien vers une app']];
+- appbt :lien vers une app']]; ?>

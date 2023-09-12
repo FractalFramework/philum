@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2110
-$r=["1"=>['1006','publication'],
+<?php 
+return ["1"=>['1006','publication'],
 "2"=>['1020','- ajout du support de rumble'],
 "3"=>['1021','- fix conn edit video (comportement de extractid)
 - fix refresh img réduite
@@ -11,4 +11,4 @@ $r=["1"=>['1006','publication'],
 "6"=>['1031','- et tout d\'un coup le truc a décidé de ne plus supporter les trop longs bouts sans sauts de lignes. Ajout de sauts de lignes dans l\'enregistrement des tables msql.
 - (le serveur a marqué toutes les pages comme modifiées à distance, sûrement une migration interne ; depuis le serveur a des lentouilles, dont la précédente erreur)
 - réparation de la capture de figures à travers l\'usage de dd/dt
-- rénovation du nettoyeur de balises rejetées, rendu \"plus itératif\"']];
+- rénovation du nettoyeur de balises rejetées, rendu \"plus itératif\"']]; ?>

@@ -114,20 +114,20 @@ if($p=='youtube' or $p=='vimeo')$ic=$p; else $ic='video';
 $lk=lkt('',http($u),$t).' ';
 if($im && ((!$o && $m>2) or $m=='vd'))$ic=image($im); else $ic=picto($ic,28);
 $bt=lj('',$j,$ic).sti();
-//if($tx)$lk.=' '.pop::bubble_note($tx,picto('lys')).' ';//toggle_note//togbth//togbt//pop::toggle_div($tx,1)
+//if($tx)$lk.=' '.pop::bubble_note($tx,picto('lys')).' ';//toggle_note//togbth//togbt//pop::divtog($tx,1)
 if($tx)$lk.=togbub('video,txt',ajx($d).'_'.$id,picto('bubble'));
 //if(auth(4))$lk.=lj('','popup_web,redit___'.ajx($u).'_'.$rid.'_'.$id,picto('editxt'));
 if(auth(4))$lk.=togbub('web,redit',ajx($u).'_'.$rid.'_'.$id,picto('editxt'));
-if($m=='vd')$ret=divb($bt,'video',$rid).$lk;
+if($m=='vd')$ret=div($bt,'video',$rid).$lk;
 elseif($o)$ret=btp(att($ti).atd($rid),$bt.$lk);
 elseif($m<3 or $m=='noimages')$ret=btd($rid,$bt.$lk);
-else $ret=divb($bt.divc('small',$lk),'video',$rid);
+else $ret=div($bt.divc('small',$lk),'video',$rid);
 return $ret;}
 
 static function any($d,$id,$m,$nl=''){//p|w/h
 if($nl)return self::lk($d);
-if(strpos($d,'.mp4') or strpos($d,'.m3u8'))return video($d);//if(!$d2)
-if(rstr(132) or $id=='epub')return self::player($d2,$id);
+if(strpos($d,'.mp4') or strpos($d,'.m3u8'))return video($d);
+if(rstr(132) or $id=='epub')return self::player($d,$id);
 if(substr($d,0,4)=='http'){[$d,$tx]=cprm($d);//contourne procédure
 	$pr=self::extractpr($d); $d2=self::detect($d,$m,'',2);
 	if($tx)return self::play($d,$id,$m?$m:3);

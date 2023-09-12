@@ -1,5 +1,5 @@
-<?php //msql/edition_ascii_5
-$r=["_"=>['Description','Code HTML'],
+<?php 
+return ["_"=>['Description','Code HTML'],
 "32"=>['Espace',''],
 "33"=>['Point d\'exclamation',''],
 "35"=>['# (carré ou dièse)',''],
@@ -305,4 +305,4 @@ $r=["_"=>['Description','Code HTML'],
 "9829"=>['Coeligur noir','hearts'],
 "9830"=>['Carreau noir','diams'],
 "9834"=>['Note croche',''],
-"9835"=>['Deux croches ramées','']];
+"9835"=>['Deux croches ramées','']]; ?>

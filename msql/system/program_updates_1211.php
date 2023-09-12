@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1211
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['1101','- réparation de la restriction 57 \'save_in_popup\', pour ne pas ; - ajout du submodule \'link\', ouvre l\'url dans une iframe ; - ajout du plugin ixquick, permet de faire une recherche ; - fix conflit provoquant erreur d\'enregistrement du paramètre trackback des articles ; - l\'éditeur des commentaires est placé dans une popup ;'],
 "2"=>['1102','- ajout d\'un éditeur pour les sous-modules ;
 - dans user_menu le bouton \'tools\' renvoie un accès à la racine du desktop, nommée \'tools\' ;
@@ -44,4 +44,4 @@ $r=["_"=>['day','text'],
 "27"=>['1127','finder : correctif renommage, francisation, système d\'icônes à bulles'],
 "28"=>['1128','petite rénovation du chat et de l\'outil public de mails'],
 "29"=>['1129','rénovation du login, ajout d\'une option \'rester logué\' utilisant les cookies, activée par une restriction \'permalog\' (59) ;'],
-"30"=>['1130','ajout du module \'bridge\' qui permet d\'importer un article au travers d\'un autre serveur philum ;']];
+"30"=>['1130','ajout du module \'bridge\' qui permet d\'importer un article au travers d\'un autre serveur philum ;']]; ?>

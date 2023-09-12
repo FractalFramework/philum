@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1804
-$r=["_"=>['_menus_','date','text'],
+<?php 
+return ["_"=>['_menus_','date','text'],
 "1"=>['0401','publication'],
 "2"=>['0404','changelog de la picto-font philum en version 11 (188 glyphes)'],
 "3"=>['0405','mutation de la rstr53 (save in ajax, obsolète car définitif) en \'default lang\', détecte la langue du navigateur.'],
@@ -18,4 +18,4 @@ Le moteur de recherche prend en compte les langues, exclusives ou inclusives, pa
 "8"=>['0412','- réfection profonde du dispositif yandex, calqué sur l\'extraordinaire et magnifique dispositif \'voc\' de tlex.fr : l\'ensemble des contenus sont gérés par une table multilingue globale (table des contenus). Prospectivement, toutes les portions de site peuvent être traduites, dans toutes les langues. Les commentaires sont multilingues.'],
 "9"=>['0416','- ajout du support Deepl pour la traduction'],
 "11"=>['0419','- amélioration du support des langues (tables msql)'],
-"10"=>['0420','- ajout de la compétence de traduction pour les commentaires (la table \'tracks\' est renommée \'trk\')']];
+"10"=>['0420','- ajout de la compétence de traduction pour les commentaires (la table \'tracks\' est renommée \'trk\')']]; ?>

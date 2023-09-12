@@ -32,9 +32,8 @@ if(!$tpl)$tpl=self::decide_tpl($tpl);
 $tmp=sesmk2('art','decide_tmp',$tpl,1);
 return vue::build($tmp,$ra);}
 
-//tmp3
-static function build_view($tmp){//buikd r from tmp or json
-return view::bridge($tmp);}
+//build r from tmp or json
+//static function build_view($tmp){return view::bridge($tmp);}
 
 static function template3($ra,$tpl){$rt=[];
 if(!$tpl)$tpl=self::decide_tpl($tpl); //echo $tpl;
@@ -57,7 +56,7 @@ if(get('search') && $auth>4)
 if(($USE==$kem) or $auth>3){
 	$ret.=togbub('meta,metall',$id.'_'.$prw.'_'.$rech,picto('tag')).' ';
 	$ret.=togbub('meta,titedt',$id.'_'.$prw.'_'.$rech,picto('meta')).' ';
-	$ret.=toggle('','edt'.$id.'_edit,call____'.$id.'',picto('editxt')).' ';
+	//$ret.=toggle('','edt'.$id.'_edit,call____'.$id.'',picto('editxt')).' ';
 	$ret.=lj('','popup_edit,call____'.$id,picto('edit')).' ';
 	$ret.=btd('adt'.$id,btj(picto('edit2'),atj('editart',$id)));}
 return btd('artmnu'.$id,$ret);}
@@ -123,8 +122,8 @@ if($r)foreach($rico as $cat=>$ico){$rt=[]; if(is_numeric($cat))$cat='utag';
 			foreach($rb as $k=>$v)if(in_array($k,$r[$cat]))$rc[$v]=$k; if($rc)$r[$cat]=$rc;}
 		foreach($r[$cat] as $ka=>$va)
 		$rt[$ka]=lj('','popup_api__3_'.$cat.':'.$va.',t:'.ajx($ka),$ka);}
-	if($rt)$ret[$cat]=divb(picto($ico,16).$sep.implode(' ',$rt));}
-if(rstr(150))$ret['clusters']=divb(self::clusters($id,$r));
+	if($rt)$ret[$cat]=div(picto($ico,16).$sep.implode(' ',$rt));}
+if(rstr(150))$ret['clusters']=div(self::clusters($id,$r));
 if($ret)return $o?$ret:join('',$ret);}
 
 static function clusters($id,$r){$rt=[]; $rb=[]; $rc=[];
@@ -237,7 +236,7 @@ case('img1'):$rb[$v]=pop::art_img($r['img'],$id); break;
 case('priority'):$rb[$v]=self::priority_hands($r['re']); break;
 case('back'):$rb[$v]=self::back($id,$ib); break;
 case('cat'):$rb[$v]=self::backcat($r['frm'],$rst[112]); break;
-case('artedit'):$rb[$v]=divb('','sticky','edt'.$id); break;//diveditbt
+case('artedit'):$rb[$v]=div('','sticky','edt'.$id); break;//diveditbt
 case('btim'):$rb[$v]=lj('','popup_sav,art*gallery___'.$id.'_gallery',picto('img')); break;
 case('author'):$rb[$v]=lj('','popup_api___owner:'.ajx($r['name']),'@'.$r['name']); break;
 case('pid'):$rb[$v]=btn('txtsmall2','#'.$id); break;
@@ -293,7 +292,7 @@ static function ibload($id,$ord){//$r=ma::id_of_ib($ib);
 $w=auth(4)?'':'and re>="1" and substring(frm,1,1)!="_"'; $bt='';
 $load=sql('id','qda','k','ib="'.$id.'" '.$w.' order by id '.($ord?'desc':'asc'));
 if(count($load)>1)$bt=lj('txtbox','ch'.$id.'_art,ibload___'.$id.'_'.yesno($ord),nms($ord?41:40),att(nms($ord?40:41)));
-if(rstr(43))$bt=hr().divb(btn('txtcadr',nms(39)).' '.$bt);
+if(rstr(43))$bt=hr().div(btn('txtcadr',nms(39)).' '.$bt);
 if($load)return $bt.ma::output_arts($load,'flow','');}
 
 static function ib_arts($id,$prw){//child
@@ -324,9 +323,9 @@ static function prepare_thumb($d,$id,$nl){
 if($_SESSION['rstr'][30]=='1')return; $im=''; $pr='';
 if(rstr(93)){$mg=pop::art_img($d,$id);
 	if($mg)$im=self::make_thumb_css($mg);
-	if($im)$ret=divb('','thumb','','background-image:url(/imgc/'.$im.');');
+	if($im)$ret=div('','thumb','','background-image:url(/imgc/'.$im.');');
 	else $ret=divc('thumb',' ');}
-else $ret=minimg($d,$pr,$nl);
+else $ret=pop::minimg($d,$pr,$nl);
 $ret=lj('','popup_popart__3_'.$id.'_3',$ret);
 return $ret;}
 

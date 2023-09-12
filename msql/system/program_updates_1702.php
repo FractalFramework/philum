@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1702
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0201','publication'],
 "2"=>['0206','- correctif du traitement commit par le bouton de création de lien url : il fait appel au connecteur :url, capable de s\'appliquer à une image.
 C\'est plus clair pour les novices que le connecteur vide [] qui permet des astuces comme img|txt (affiche un bouton vers une image), là où url|img affiche une image linkée.'],
@@ -30,4 +30,4 @@ C\'est plus clair pour les novices que le connecteur vide [] qui permet des astu
 "12"=>['0225','- ajout de savtagall(), permet d\'appliquer en masse un nouveau meta depuis le moteur de recherche'],
 "13"=>['0226','- le sélecteur de langue de l\'article passe dans le menu tags, est rendu plus pratique (ne fait plus partie du formulaire des métas)'],
 "14"=>['0228','- correctif gestionnaire de mise en cache avant import d\'article
-- correctif moteur de recherche, conserve le bouton title']];
+- correctif moteur de recherche, conserve le bouton title']]; ?>

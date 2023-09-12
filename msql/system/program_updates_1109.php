@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1109
-$r=["_"=>['day','txt'],
+<?php 
+return ["_"=>['day','txt'],
 "1"=>['110901','ajout du composant Flash \'viewer\' qui est appelé lors de l\'affichage d\'une image en popup: permet de passer en plein écran, zoomer et naviguer dans l\'image'],
 "2"=>['110902','ajout du connecteur \':pdf\' qui ouvre un lecteur PDF'],
 "3"=>['110902','amélioration de embed_p : h3, table, blockquote, ul, li et div n\'engendrent plus de balise p impromptues (que le navigateur ignore)'],
@@ -41,4 +41,4 @@ retire l\'article en cours des résultats de la requête.'],
 un module public nommé \'streams\' permet de joindre une chaîne livestream dans un module'],
 "34"=>['110926','par économie le sélecteur désigne comme miniature la première image de la liste (et ne cherche plus les suivantes), ce qui permet de n\'avoir aucune miniature à l\'article si on place un élément vide au début de la liste : \'//image...\' ;
 par surprise, l\'aspirateur d\'image mettait les png en jpg ce qui provoquait des problèmes de construction de miniatures'],
-"35"=>['110927','google.video, youtobe, dailymotion et livestream sont reconnus et renvoie directement la syntaxe de vidéo déjà rédigée ; on peut ajouter des vidéos en un clic (import)']];
+"35"=>['110927','google.video, youtobe, dailymotion et livestream sont reconnus et renvoie directement la syntaxe de vidéo déjà rédigée ; on peut ajouter des vidéos en un clic (import)']]; ?>

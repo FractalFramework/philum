@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2202
-$r=["_"=>[''],
+<?php 
+return ["_"=>[''],
 "1"=>['0201','publication'],
 "2"=>['0201','- fix pb styl::dsnam
 - suppression de scroll_b(), qui servait à éviter le scrollbar dans une aire navigable, très joli, mais inutile depuis qu\'est (ré)apparu le scroll thin.
@@ -23,4 +23,4 @@ $r=["_"=>[''],
 "11"=>['0212','- fix pb (récent) de ? dans l\'enregistrement des titres'],
 "12"=>['0219','- ajout de contrôleurs externalisés de min-width et min-height dans le gestionnaire de popups'],
 "13"=>['0227','- ajout d\'un moyen de contourner les proxy, en collant directement le contenu de la source à la place de ce que récolte le robot'],
-"14"=>['0228','- correctif du titrage des ebooks fabriqués par l\'utilisateur']];
+"14"=>['0228','- correctif du titrage des ebooks fabriqués par l\'utilisateur']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2211
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['1101','publication'],
 "2"=>['1101','- réfection de tracks : on peut envoyer l\'éditeur dans une colonne fixe pour continuer à prendre des notes pendant la lecture de l\'article. Cela invoque les nouveaux indicateurs xk et 14xk, qui sont dédiés à l\'utilisation du nouveau contenant \"trkdsk\". Il avait déjà été prémédité pour y faire apparaître les notes de bas de page à côté du texte.
 - extension de la compétence de la navigation par états, à /art*, /cat, /search, et en principe /n. On supprime le service des diez (cibler l\'article parmi ses frères), pas souvent  fonctionnel, mais qui complique trop la mécanique. Seul /look reste encore à tester, puisqu\'il utilise les diez.
@@ -40,4 +40,4 @@ $r=["_"=>['date','text'],
 - réfection des valeurs de config par défaut
 - rstr150 éteint les clusters'],
 "19"=>['1126','- réfection du système de traductions, \'yandex\' est divisé en trois parties : \'translations\', \'trans_yandex\' et \'trans_deepl\'.'],
-"20"=>['1127','- troisième tentative infructueuse de faire passer l\'ensemble du système en utf8']];
+"20"=>['1127','- troisième tentative infructueuse de faire passer l\'ensemble du système en utf8']]; ?>

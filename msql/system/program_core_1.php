@@ -1,5 +1,5 @@
-<?php //msql/program_core_1
-$r=["_"=>['function','variables','usage','return','context'],
+<?php 
+return ["_"=>['function','variables','usage','return','context'],
 "1"=>['p','r','print_r','echo array','utils'],
 "2"=>['br','','','','html'],
 "3"=>['hr','','','','html'],
@@ -443,4 +443,4 @@ or only the value there is only one range','msql'],
 "415"=>['chrono','d','','',''],
 "416"=>['pr','r','','',''],
 "417"=>['window','d','','',''],
-"418"=>['eco','d,o=\'\'','','','']];
+"418"=>['eco','d,o=\'\'','','','']]; ?>

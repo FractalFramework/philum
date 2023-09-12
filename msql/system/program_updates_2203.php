@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2203
-$r=["_"=>[''],
+<?php 
+return ["_"=>[''],
 "1"=>['0301','publication'],
 "2"=>['0316','correctif taille de l\'article vide : ajout d\'un popwm (largeur min) dans le gestionnaire de popup, laissé inusité (un seul cas). Le pb est réglé en aval.'],
 "3"=>['0321','fix pb titre type tag numeric'],
@@ -10,4 +10,4 @@ $r=["_"=>[''],
 "7"=>['0326','ajout d\'un delr_r en input de $prm et à la place des appendices'],
 "8"=>['0327','ajout du btn d\'édition \'tag\' dans l\'éditeur de commentaires, il détecte tout seul la classe de tag concernée'],
 "9"=>['0329','- reflifting nbp
-- fix pb ciblage des visiteurs par articles']];
+- fix pb ciblage des visiteurs par articles']]; ?>

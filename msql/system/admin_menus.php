@@ -1,7 +1,7 @@
-<?php //msql/admin_menus
-$r=["_"=>['category'],
+<?php 
+return ["_"=>['category'],
 "Global"=>['Global'],
 "Builders"=>['Builders'],
 "Microsql"=>['Microsql'],
 "Articles"=>['Articles'],
-"User"=>['Users']];
+"User"=>['Users']]; ?>

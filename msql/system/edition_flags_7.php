@@ -1,5 +1,5 @@
-<?php //msql/edition_flags_7
-$r=["_"=>['Nom
+<?php 
+return ["_"=>['Nom
 (dans la langue correspondante)'],
 "fr"=>['Français'],
 "en"=>['English'],
@@ -187,4 +187,4 @@ $r=["_"=>['Nom
 "yo"=>['Yorùbá'],
 "za"=>['Sa&#623; cue&#331;&#389;'],
 "zh"=>['&#20013;&#25991;, &#27721;&#35821;, &#28450;&#35486;'],
-"zu"=>['isiZulu']];
+"zu"=>['isiZulu']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1606
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0601','publication'],
 "2"=>['0601','- ajout des options csslink, jslink, csscode, jscode au connecteur headers
 - les résultats de menubub sont mis en cache
@@ -40,4 +40,4 @@ $r=["_"=>['date','text'],
 - ajout du connecteur slides (crée une table à partir des données du connecteur, puis appelle l\'app avec l\'id de l\'article, auquel est associé la table)'],
 "17"=>['0629','- les options de modules utilisent le même séparateur que les params (l\'espace au lieu de |)
 - l\'option template des sub-modules est rendue opérationnelle, à l\'occasion de 
-- l\'ajout d\'un template pubart_b, qui utilise conjointement une miniature de 200 et une largeur de colonne par défaut de 200 (pubs d\'articles avec grande miniature)']];
+- l\'ajout d\'un template pubart_b, qui utilise conjointement une miniature de 200 et une largeur de colonne par défaut de 200 (pubs d\'articles avec grande miniature)']]; ?>

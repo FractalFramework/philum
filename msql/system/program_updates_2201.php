@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2201
-$r=["_"=>[''],
+<?php 
+return ["_"=>[''],
 "1"=>['0101','publication'],
 "2"=>['0101','- correctifs admin msql dû à la réforme du moteur ajax'],
 "3"=>['0102','- correctifs annuels de l\'installateur, cette fois il sera entièrement utf8/innodb
@@ -119,4 +119,4 @@ Normalement on est bien contents là :)
 - les plugins ont été révoqués au profit des apps
 - la répartition des charges a divisé par deux à quatre le temps d\'exécution (sans encore passer à php8)
 - le moteur ajax a été entièrement réformé, restreint, et une deuxième voie a été ouverte pour les cas rares
-- les nouveaux protocoles continueront à être déployés pour les recoins du logiciel et sa stabilisation.']];
+- les nouveaux protocoles continueront à être déployés pour les recoins du logiciel et sa stabilisation.']]; ?>

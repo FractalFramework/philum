@@ -1,5 +1,5 @@
-<?php //default_css_1
-$r=["1"=>['','','*, *:before, *:after','','','','/*box-sizing:border-box;*/'],
+<?php 
+return ["1"=>['','','*, *:before, *:after','','','','/*box-sizing:border-box;*/'],
 "2"=>['','','body','||','||','||','font-family:sans-serif; border:0; margin:0; padding:0; height:100%;'],
 "3"=>['','','a','||','||','||','cursor:pointer; text-decoration:none;'],
 "4"=>['','','h1,h2,h3,h4,h5','||','||','||',''],
@@ -266,4 +266,4 @@ grid-column-end:4;'],
 "262"=>['','rowspan2','','||','||','||','grid-row-start:1;
 grid-row-end:3;'],
 "263"=>['','row5','','||','||','||','grid-row:5;'],
-"264"=>['','row6','','||','||','||','grid-row:6;']];
+"264"=>['','row6','','||','||','||','grid-row:6;']]; ?>

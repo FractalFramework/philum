@@ -1,5 +1,5 @@
-<?php //connectors_tools
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "add_lines"=>['añade líneas al final de cada frase'],
 "ajax"=>['botón que devuelve el resultado de un módulo o conector en el lugar (o a un div de destino). 
 
@@ -47,4 +47,4 @@ try: [id:read|screen:ajax] que devuelve el contenido de un artículo.'],
 "mktable"=>['formatea datos csv en una tabla (coma y salto de línea)'],
 "clean_h"=>['limpia las etiquetas h'],
 "cita_italics"=>['coloca la cursiva entre comillas'],
-"cita_quotes"=>['coloca comillas en los bloques']];
+"cita_quotes"=>['coloca comillas en los bloques']]; ?>

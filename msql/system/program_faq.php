@@ -1,5 +1,5 @@
-<?php //msql/program_faq
-$r=["_"=>['question','answer','val3','val4'],
+<?php 
+return ["_"=>['question','answer','val3','val4'],
 "1"=>['supprimer un article','les différents niveaux de dissipation d\'un article sont :
 - on peut le dépublier ;
 - on peut le mettre dans une catégorie non publique (catégorie précédée d\'un \'_\' comme \'_system\') ;
@@ -52,4 +52,4 @@ Un Cron peut appeler la page /plug/instat_reflush toutes les 24 heures par exemp
 
 et aussi :
 login : connexion classique (cookie ou formulaire)
-logon : connexion par IP','','']];
+logon : connexion par IP','','']]; ?>

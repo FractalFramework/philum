@@ -25,10 +25,10 @@ $bt.=btj(picto('less'),'reduce()');
 //$bt.=btj(picto('fix'),'fixelem()');
 $bt.=ses::r('popm').' ';
 $bt.=tagb('small',$t);//.atmd('noslct(0);')
-return divb(divb($bt,'popa','popa').divb($d,'popu','popu'),'popup','',$s);}
+return div(div($bt,'popa','popa').div($d,'popu','popu'),'popup','',$s);}
 
 function pagup($d,$t){$t=ses::$r['popt']??$t; $w=ses::$r['popw']??cw(); $m=ses::r('popm');
-return divb(divb(ljb('','Close','popup',picto('close')).$m.tagb('small',$t),'popa','popa').divb($d,'','popu'),'','','margin:auto; max-width:'.$w.'px;');}
+return div(div(ljb('','Close','popup',picto('close')).$m.tagb('small',$t),'popa','popa').div($d,'','popu'),'','','margin:auto; max-width:'.$w.'px;');}
 
 function tit($a,$b,$g1,$g2){$k=$a.'::'.$b;
 $r=['edit::call'=>107,'art::trkone'=>65,'tracks::form'=>21,'meta::catslct'=>9,'usg::artmod'=>39,'mod::callmod'=>187,'mod::playmod'=>187,'conn::read2'=>65,'usg::trkplay'=>22,'tracks::redit'=>107,'sav::batchpreview'=>65,'deploy::home'=>28,'art::social'=>47,'mails::sendart'=>28,'desk::deskroot'=>196,'finder::home'=>197,'search::home'=>24,'microarts::home'=>$g1,'umrec::home'=>206,'api'=>$g1,'app'=>$g1,'msql'=>$g2,'chkj'=>$g2,'jump'=>$g2,'lj'=>$g2];

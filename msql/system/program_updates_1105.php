@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1105
-$r=["_"=>['day','txt'],
+<?php 
+return ["_"=>['day','txt'],
 "1"=>['110501','système de sauvegardes multiples d\'un article : ajout de l\'onglet \'backup\' (dans l\'édition d\'articles) qui propose \'backup\', \'restore\' et \'delete\', valable pour chacune des sauvegardes d\'un articles, qui sont d\'un nombre illimité.
 Initiation d\'une nouvelle architecture pour dépasser certains problèmes de ajax (impossibilité de modifier un document qu\'on a modifié !)'],
 "2"=>['110501','amélioration du filtre automatique \'clean_punct\' (qui applique les règles typographiques) : désormais capable d\'interpréter le texte pour réparer les guillemets précédés et suivis d\'un espace (la règle c\'est pas d\'espaces à l\'intérieur des guillemets)'],
@@ -75,4 +75,4 @@ gestion globale des systèmes de protection des caractères joker de mysql (dont
 "52"=>['110530','- les transports de fichiers se font au format .gz : gain de fiabilité et de vitesse lors des mises à jour ;
 - la fonction \'update_all\' transporte les fichiers récents au format GNU .tar.gz : la mise a jour du logiciel peut devenir entièrement automatique'],
 "53"=>['110531','mise à niveau de linstallateur avec les nouveaux protocoles de transport de données : l\'ensemble du logiciel se télécharge sur le serveur d\'une traite.'],
-"54"=>['110531','amélioration des tickets : possibilité de répondre à un message']];
+"54"=>['110531','amélioration des tickets : possibilité de répondre à un message']]; ?>

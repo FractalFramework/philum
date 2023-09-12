@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1904
-$r=["1"=>['0401','publication'],
+<?php 
+return ["1"=>['0401','publication'],
 "2"=>['0407','introduction de xss, plugin permettant de capter le dom des flux des sites qui n\'ont pas (la bonne idée d\'avoir) de flux rss'],
 "3"=>['0407','amélioration du rss_input, rendu capable d\'interpréter correctement des flux en forme d\'objets'],
 "4"=>['0415','ajout des connecteurs :
@@ -33,4 +33,4 @@ en supplément des connecteurs similaires :
 - correctif sitemap
 - ajout d\'une entrée pour les plugins externalisés (accès direct au build)
 - rénovation du gestionnaire de hubs'],
-"13"=>['0430','- ajout du dispositif tweetfeed, permet, comme la newsletter, d\'envoyer périodiquement un fil d\'articles, définit par une bloc de modules, contenant un ou des modules \'api_arts\', de l\'envoyer via l\'api twitter']];
+"13"=>['0430','- ajout du dispositif tweetfeed, permet, comme la newsletter, d\'envoyer périodiquement un fil d\'articles, définit par une bloc de modules, contenant un ou des modules \'api_arts\', de l\'envoyer via l\'api twitter']]; ?>

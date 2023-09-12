@@ -1,5 +1,5 @@
-<?php //msql/helps_css
-$r=["_"=>['title_1'],
+<?php 
+return ["_"=>['title_1'],
 "1"=>['save condition'],
 "2"=>['specific condition'],
 "3"=>['herit'],
@@ -10,4 +10,4 @@ $r=["_"=>['title_1'],
 "8"=>['make admin'],
 "9"=>['inject globals'],
 "10"=>['saved css'],
-"11"=>['dev css']];
+"11"=>['dev css']]; ?>

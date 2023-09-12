@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1807
-$r=["_"=>['date','txt'],
+<?php 
+return ["_"=>['date','txt'],
 "1"=>['0701','publication'],
 "2"=>['0702','- ajout du support de lien vers des pages qui s\'expriment comme des images, alors que ce n\'en sont pas...
 - fix pb édition d\'une cellule msql inexistante préalablement
@@ -40,4 +40,4 @@ $r=["_"=>['date','txt'],
 "14"=>['0726','- le paramètre \'option\' dans l\'éditeur d\'apps permet est auto-supplète le paramètre \'command\', en ajoutant un \'/\' à la fin de la commande, avant l\'option. utile pour les apps de type \'mod\'.'],
 "15"=>['0728','- ajout du dispositif pictocat, capable de lier des pictos aux catégories (dans admin/articles)'],
 "16"=>['0729','- version 14 de la typo de pictos \'philum\' qui passe de 182 à 263 glyphes (la version 13 contient 224 glyphes mais avec la dernière version on a changé le pas de la grille de base de 1024 à 2048 comme dans une vraie webding).'],
-"17"=>['0729','- version 14.19 de la typo \'philum\' qui passe à 298 glyphes (merci webdings)']];
+"17"=>['0729','- version 14.19 de la typo \'philum\' qui passe à 298 glyphes (merci webdings)']]; ?>

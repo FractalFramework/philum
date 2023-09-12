@@ -1,5 +1,5 @@
-<?php //public_defcons_tt
-$r=["1"=>['::h1'],
+<?php 
+return ["1"=>['::h1'],
 "2"=>['title::h1'],
 "3"=>['post-title entry-title::h3'],
 "4"=>['post-title entry-title::h3'],

@@ -1,5 +1,5 @@
-<?php //msql/edition_pictos_4
-$r=["_"=>['emoji'],
+<?php 
+return ["_"=>['emoji'],
 "alert"=>['&#9888;'],
 "quote"=>['&#128631;'],
 "trash"=>['&#128465;'],
@@ -713,4 +713,4 @@ $r=["_"=>['emoji'],
 "fscreen2-op"=>[''],
 "fscreen2-cl"=>[''],
 "gradient-top"=>[''],
-"gradient-bot"=>['']];
+"gradient-bot"=>['']]; ?>

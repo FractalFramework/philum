@@ -42,7 +42,7 @@ if($r)foreach($r as $k=>$v){if($k==$p)$f=$v[1];
 	$ret.=lj('',$rid.'_radio,play___'.ajx($nod).'_'.$k,$v[3]).br();}
 if(!$r && strpos($d,'/'))$dr=$d; else $dr='';
 if(auth(4))$add=lj('','popup_radio,edit___'.$nod.'_'.ajx($dr).'__'.$id,picto('edit'));
-return divb(audio($r[1][1],$rid),'nbp',$rid).$add.$ret;}
+return div(audio($r[1][1],$rid),'nbp',$rid).$add.$ret;}
 
 static function edit($nod,$dr,$md,$id=''){
 $id=$id?$id:ses('read'); $ret=''; $edit=''; $datas=[]; $ky='';

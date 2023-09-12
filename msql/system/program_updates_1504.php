@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1504
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0401','publication'],
 "2"=>['0402','- renommages massifs
 - révision de la table program_core et de son générateur, coreflush, pour une plus grande clarté dans léditeur de code '],
@@ -15,4 +15,4 @@ $r=["_"=>['date','text'],
 "5"=>['0409','fix pb affichage des résultats détaillés dune recherche'],
 "6"=>['0427','- fix pb affichage de limage dun lien
 - suppression de dispositifs antiques de root dimages
-- décrassage : acte de mettre des simples au lieu des doubles quotes']];
+- décrassage : acte de mettre des simples au lieu des doubles quotes']]; ?>

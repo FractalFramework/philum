@@ -162,10 +162,10 @@ return '[[{url}|{suj}:url]:h2]
 static function text($r){//umcom
 $ret=divc('nbp',$r['lang']);
 $ret.=tagb('h2',$r['suj']).' '.$r['social'].' '.btn('small','#'.$r['pid']).' '.$r['tag'];
-$ret.=divb(tagb('b',$r['source']).' '.tagb('u',$r['author']));//.' '.$r['btrk']
-$ret.=divb($r['tracks']);
-$ret.=divb(tagb('b',$r['opt']).' '.tagb('u',$r['player']).' ('.$r['day'].')');//.' '.$r['btxt']
-$ret.=divb($r['msg']);
+$ret.=div(tagb('b',$r['source']).' '.tagb('u',$r['author']));//.' '.$r['btrk']
+$ret.=div($r['tracks']);
+$ret.=div(tagb('b',$r['opt']).' '.tagb('u',$r['player']).' ('.$r['day'].')');//.' '.$r['btxt']
+$ret.=div($r['msg']);
 return $ret;}
 
 static function text_b($r){//brut/com2
@@ -221,7 +221,7 @@ if($r)foreach($r as $k=>$v){
 		$rb['msg']=conb::parse($rb['msg'],'sconn'); $rc[]=$rb;}*/
 	elseif($o=='ebook')$rc[]=[$id,$day,$suj.' ('.($lg?$lg:'fr').')',self::brut($rb),$lg];
 	elseif($o=='table'){$t=tag('b',[],strin($rb['suj'],'[',']')); //pr($rb);
-		$trk=''; if($rb['author'])$trk=divb(tag('b',[],$rb['author']).' : '); $trk.=$rb['tracks']??'';
+		$trk=''; if($rb['author'])$trk=div(tag('b',[],$rb['author']).' : '); $trk.=$rb['tracks']??'';
 		$rc[$day]=[$t,$rb['day'],$trk,$rb['msg'],$rb['tag']];}
 	elseif($o=='tags')$rc[$day]=$rb;
 	if(auth(6))echo self::twit_mem(strend($lk,'/'));}
@@ -349,7 +349,7 @@ if($p)$ret=self::callint($p,$o,[]);
 else{
 	if(!$p && !$o){$p='All'; $o='list';}
 	$ret=self::callj($p,$o);}
-return $bt.divb($ret,$c,$rid);}
+return $bt.div($ret,$c,$rid);}
 
 }
 ?>

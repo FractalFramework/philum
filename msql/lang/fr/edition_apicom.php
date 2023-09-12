@@ -1,5 +1,5 @@
-<?php //edition_apicom
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "auteurs"=>[''],
 "avoid"=>['ne contenant pas les termes'],
 "cat"=>['catégorie'],

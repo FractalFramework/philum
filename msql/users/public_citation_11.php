@@ -1,5 +1,5 @@
-<?php //msql/public_citation_11
-$r=["_"=>['Traité sur l\'Espace'],
+<?php 
+return ["_"=>['Traité sur l\'Espace'],
 "1"=>['Article 1 (1) : L\'exploration et l\'utilisation de l\'espace extra-atmosphérique, y compris la Lune et les autres corps célestes, doivent se faire pour le bien et dans l\'intérêt de tous les pays, quelque soit le stade de leur développement économique ou scientifique; elles sont l\'apanage de l\'humanité tout entière.'],
 "2"=>['Article 1 (2) : L\'espace extra-atmosphérique, y compris la Lune et les autres corps célestes, peut être exploré et utilisé librement par tous les États sans aucune discrimination, dans des conditions d\'égalité et conformément au droit international, toutes les régions des corps célestes devant être librement accessibles.'],
 "3"=>['Article 1 (3) : Les recherches scientifiques sont libres dans l\'espace extra-atmosphérique, y compris la Lune et les autres corps célestes, et les États doivent faciliter et encourager la coopération internationale dans ces recherches.'],
@@ -11,4 +11,4 @@ $r=["_"=>['Traité sur l\'Espace'],
 "9"=>['Article 5 (2) : Lorsqu\'ils poursuivront des activités dans l\'espace extra-atmosphérique et sur les corps célestes, les astronautes d\'un État partie au Traité prêteront toute l\'assistance possible aux astronautes des autres États parties au Traité.'],
 "10"=>['Article 5 (3) : Les États parties au Traité porteront immédiatement à la connaissance des autres États parties au Traité ou du Secrétaire général de l\'Organisation des Nations Unies tout phénomène découvert par eux dans l\'espace extra-atmosphérique, y compris la Lune et les corps célestes, qui pourrait présenter un danger pour la vie ou la santé des astronautes.'],
 "11"=>['Article 8 : L\'État partie au Traité sur le registre duquel est inscrit un objet lancé dans l\'espace extra-atmosphérique conservera sous sa juridiction et son contrôle ledit objet et tout le personnel dudit objet, alors qu\'ils se trouvent dans l\'espace extra-atmosphérique ou sur un corps céleste. Les droits de propriété sur les objets lancés dans l\'espace extra-atmosphérique, y compris les objets amenés ou construits sur
-un corps céleste, ainsi que sur leurs éléments constitutifs, demeurent entiers lorsque ces objets ou éléments se trouvent dans l\'espace extra-atmosphérique ou sur un corps céleste, et lorsqu\'ils reviennent sur la Terre.']];
+un corps céleste, ainsi que sur leurs éléments constitutifs, demeurent entiers lorsque ces objets ou éléments se trouvent dans l\'espace extra-atmosphérique ou sur un corps céleste, et lorsqu\'ils reviennent sur la Terre.']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/public_countries_3
-$r=["_"=>['rang','code','pays','population','indice de mortalité prévu','mortalité','natalité','population prévue','représentatif selon ONU'],
+<?php 
+return ["_"=>['rang','code','pays','population','indice de mortalité prévu','mortalité','natalité','population prévue','représentatif selon ONU'],
 "1"=>['2','IN','Inde','1 330 783 327','5.65','','','',''],
 "2"=>['51','KR','Corée du Nord','24 851 627','5.56','','','','n'],
 "3"=>['27','KR','Corée du Sud','51 541 582','5.56','','','','n'],
@@ -20,4 +20,4 @@ $r=["_"=>['rang','code','pays','population','indice de mortalité prévu','morta
 "18"=>['41','SA','Arabie saoudite','30 770 375','1.24','','','',''],
 "19"=>['9','RU','Russie','146 544 710','1.16','','','',''],
 "20"=>['52','AU','Australie','24 000 300','1.08','','','',''],
-"21"=>['38','CA','Canada','36 155 487','1.08','','','','']];
+"21"=>['38','CA','Canada','36 155 487','1.08','','','','']]; ?>

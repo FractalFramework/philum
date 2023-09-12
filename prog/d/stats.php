@@ -88,7 +88,7 @@ return image('/'.$f.'?'.randid(),'','');}
 static function graph($c,$n,$prm){
 [$r,$w,$h]=self::boot($c,$n,$prm);
 $t=array_sum($r).' '.($c=='nbp'?'vues':'visitors').' / '.count($r).' '.nms(4);
-if($r)return self::graph_mk($r,$w,$h).divb($t);}
+if($r)return self::graph_mk($r,$w,$h).div($t);}
 
 //list
 static function list_sql($c,$n){
@@ -155,7 +155,7 @@ foreach($nbr as $v)$ret.=lj(active($v,$n),'stat_stats,home__3_'.$c.'_'.$v,$v).' 
 if(auth(6))$ret.=lj('','popup_stats,statlist__3_'.$c.'_'.$n,picto('filelist'));
 if(auth(6))$ret.=lj('','popup_stats,lightlive__3_','cleaner');
 if(auth(6))$ret.=lj('','popup_stats,statsee__js_','live');
-return divb($ret,'nbp','stt');}
+return div($ret,'nbp','stt');}
 
 static function daytime($d){
 return mktime(0,0,0,substr($d,2,2),substr($d,4,2),substr($d,0,2));}

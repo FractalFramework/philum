@@ -1,5 +1,5 @@
-<?php //msql/public_citation_9
-$r=["_"=>['Code de Nuremberg'],
+<?php 
+return ["_"=>['Code de Nuremberg'],
 "1"=>['Article 1 : « Le consentement volontaire du sujet humain est absolument essentiel. Cela veut dire que la personne intéressée doit jouir de capacité légale totale pour consentir ; qu\'elle doit être laissée libre de décider, sans intervention de quelque élément de force de fraude, de contrainte, de supercherie, de duperie ou d\'autres formes de contraintes ou de coercition. »'],
 "2"=>['Article 1 (suite) : « L\'obligation et la responsabilité d\'apprécier les conditions dans lesquelles le sujet donne son consentement incombent à la personne qui prend l\'initiative et la direction de ces expériences ou qui y travaille. Cette obligation et cette responsabilité s\'attachent à cette personne, qui ne peut les transmettre à nulle autre sans être poursuivie. »'],
 "3"=>['Article 2 : « L\'expérience doit avoir des résultats pratiques pour le bien de la société impossibles à obtenir par d\'autres moyens ; elle ne doit pas être pratiquée au hasard et sans nécessité. »'],
@@ -10,4 +10,4 @@ $r=["_"=>['Code de Nuremberg'],
 "8"=>['Article 7 : « On doit faire en sorte d\'écarter du sujet expérimental toute éventualité, si mince soit-elle, susceptible de provoquer des blessures, l\'invalidité ou la mort. »'],
 "9"=>['Article 8 : « L\'expérience ne devrait être menée que par des personnes scientifiquement qualifiées. Le plus haut degré de compétence et de soin devrait être exigé à toutes les étapes de l\'expérience de ceux qui mènent ou s\'engagent dans l\'expérience. »'],
 "10"=>['Article 9 : « L\'expérience ne devrait être menée que par des personnes scientifiquement qualifiées. Le plus haut degré de compétence et de soin devrait être exigé à toutes les étapes de l\'expérience de ceux qui mènent ou s\'engagent dans l\'expérience. »'],
-"11"=>['Article 10 : « Le scientifique chargé de l\'expérience doit être prêt à l\'interrompre à tout moment, s\'il a une raison de croire que sa continuation pourrait entraîner des blessures, l\'invalidité ou la mort pour le sujet expérimental. »']];
+"11"=>['Article 10 : « Le scientifique chargé de l\'expérience doit être prêt à l\'interrompre à tout moment, s\'il a une raison de croire que sa continuation pourrait entraîner des blessures, l\'invalidité ou la mort pour le sujet expérimental. »']]; ?>

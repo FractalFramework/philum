@@ -1,5 +1,5 @@
-<?php //msql/program_plugs_public
-$r=["_"=>['name','usage','kljljk'],
+<?php 
+return ["_"=>['name','usage','kljljk'],
 "1"=>['editor','external','convert html to connectors'],
 "2"=>['ascii','external',''],
 "3"=>['backup_msql','system',''],
@@ -90,4 +90,4 @@ $r=["_"=>['name','usage','kljljk'],
 "88"=>['pi','plug','give number pi'],
 "89"=>['session','dev','option:call'],
 "90"=>['tools','system','tags and meta tools'],
-"91"=>['mail','internal','send mail']];
+"91"=>['mail','internal','send mail']]; ?>

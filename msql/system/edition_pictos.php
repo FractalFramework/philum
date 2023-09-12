@@ -1,5 +1,5 @@
-<?php //msql/edition_pictos
-$r=["_"=>['hex','fam'],
+<?php 
+return ["_"=>['hex','fam'],
 "alert"=>['0021','sys'],
 "quote"=>['0022','edit'],
 "trash"=>['0023','sys'],
@@ -713,4 +713,4 @@ $r=["_"=>['hex','fam'],
 "fscreen2-op"=>['0533','signs'],
 "fscreen2-cl"=>['0534','signs'],
 "gradient-top"=>['0535','inkart'],
-"gradient-bot"=>['0536','inkart']];
+"gradient-bot"=>['0536','inkart']]; ?>

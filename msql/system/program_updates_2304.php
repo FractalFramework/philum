@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2304
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0401','publication'],
 "2"=>['0403','- correctifs utf8- nouveaux utfenc/dec, nouvelle gestion des encodages'],
 "3"=>['0404','- préparatifs dom2conn'],
@@ -87,4 +87,4 @@ merge des branches utf et main :
 - le splitter | est abandonné et à la place on utilise |
 - les bases msql reçoivent un patch de conversion
 - la base de donnée doit recevoir un patch de conversion de son encodage vers utf8_unicode_ci et un patch pour les splitters
-la majorité des fichiers sont modifiés']];
+la majorité des fichiers sont modifiés']]; ?>

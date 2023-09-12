@@ -1,5 +1,5 @@
-<?php //msql/edition_ascii_10
-$r=["_"=>['name','start','end','cat'],
+<?php 
+return ["_"=>['name','start','end','cat'],
 "1"=>['Commandes C0 et latin de base (Latin de base)','0000','007F','latin'],
 "2"=>['Commandes C1 et supplément Latin-1 (Supplément Latin-1)','0080','00FF','latin'],
 "3"=>['Latin étendu A','0100','017F','latin'],
@@ -302,4 +302,4 @@ $r=["_"=>['name','start','end','cat'],
 "300"=>['Supplément D aux idéogrammes unifiés CJC','2B740','2B81F','CJC'],
 "301"=>['Supplément E aux idéogrammes unifiés CJC','2B820','2CEAF','CJC'],
 "302"=>['Supplément F aux idéogrammes unifiés CJC','2CEB0','2EBEF','CJC'],
-"303"=>['Supplément aux idéogrammes de compatibilité CJC','2F800','2FA1F','CJC']];
+"303"=>['Supplément aux idéogrammes de compatibilité CJC','2F800','2FA1F','CJC']]; ?>

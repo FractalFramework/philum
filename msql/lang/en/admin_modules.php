@@ -1,5 +1,5 @@
-<?php //admin_modules
-$r=["_"=>['description','param','option','command'],
+<?php 
+return ["_"=>['description','param','option','command'],
 "All"=>['All articles','Give a title','preview : 1,2,3,auto',''],
 "LOAD"=>['Component who give the result of the page (home, category, read)','','preview : 1,2,3,auto','order'],
 "BLOCK"=>['Call a block of modules.
@@ -189,4 +189,4 @@ three
 - cat-public : articles in \'public\' ;
 - cat-1 : current category','',''],
 "microarts"=>['short articles','specify a thread','',''],
-"vacuum"=>['open art from web via Vacuum','','','']];
+"vacuum"=>['open art from web via Vacuum','','','']]; ?>

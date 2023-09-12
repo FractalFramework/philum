@@ -103,6 +103,6 @@ head::add('csscode',self::css());
 //$bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 //$bt.=msqbt('',nod('public_atomic'));
-return divb($ret,'panel small',$rid);}
+return div($ret,'panel small',$rid);}
 }
 ?>

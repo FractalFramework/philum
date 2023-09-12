@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1503
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0301','publication'],
 "2"=>['0302','- nouvelle console, mieux intégrée'],
 "3"=>['0309','- module prevnext sensible à prmb9'],
@@ -19,4 +19,4 @@ $r=["_"=>['date','text'],
 "13"=>['0327','- maintenance des miniconn (interprétation sans connecteurs)'],
 "14"=>['0328','- réparation upload img depuis larticle'],
 "15"=>['0329','- révision de linstallateur'],
-"16"=>['0330','- révision : la taille des vidéos dépend de la fenêtre']];
+"16"=>['0330','- révision : la taille des vidéos dépend de la fenêtre']]; ?>

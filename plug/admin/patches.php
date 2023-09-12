@@ -106,6 +106,12 @@ if(!auth(6))return;
 msqa::tools($dr,$nod,'patch_s','');
 return $nod;}
 
+static function renove_return($dr,$k,$v){
+if(!auth(6))return;
+[$dr,$nod]=self::nod($dr,$k,$v);
+msqa::tools($dr,$nod,'patch_ret','');
+return $nod;}
+
 #call
 static function call($p,$o,$prm=[]){$r=[];
 [$p1,$o]=prmp($prm,$p,$o);
@@ -117,11 +123,12 @@ return implode(' ',$r);}
 
 static function menu($p){
 $ret=inputb('fto',$p,18,'directory');
-$rok=[11];//0,1,3,4,6,
+$rok=[12];//0,1,3,4,6,
 $rt[0]='msql: ';
 $rt[1]=lj('popbt','fut_patches,call_fto_3_utf','msqutf');
 $rt[2]=lj('popbt','fut_patches,call_fto_3_headers','headers');
 $rt[3]=lj('popbt','fut_patches,call_fto_3_splitters','splitters_msql');
+$rt[12]=lj('popbt','fut_patches,call_fto_3_return','msqlreturns');
 $rt[4]=' | mysql: ';
 $rt[5]=lj('popbt','fut_patches,call2_fto_3_dbutf','mysqlutf');
 $rt[6]=lj('popbt','fut_patches,call2_fto_3_dbsplitters','splitters_mysql');

@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2003
-$r=["1"=>['0301','publication'],
+<?php 
+return ["1"=>['0301','publication'],
 "2"=>['0301','- rectification de l\'affichage des traduction - équivalence ou bien traductions enregistrées - de sorte à s\'épargner du calcul ; 
 - apparition de lj2(), agit comme un toggle entre deux commandes ajax - en complétement ) toggle() qui affiche ou éteint une commande
 - portée de dispositif aux traductions de :lang et twits, de sorte à déplacer le menu des traductions disponibles dans le résultat plutôt que sur le bouton'],
@@ -82,4 +82,4 @@ $r=["1"=>['0301','publication'],
 "29"=>['0329','- rénovation de timetravel, qui passe par l\'api'],
 "30"=>['0330','- fix pb module twits, qui répertorie les twits des articles, hors de la méthode moderne via le dispositif de médias d\'articles play_conn()
 - ajout du module webs, permet de répertorier les liens web des articles d\'après la base et l\'app web
-- améliorations de l\'app web, renommages, ajout de filtres, suppressions en masse']];
+- améliorations de l\'app web, renommages, ajout de filtres, suppressions en masse']]; ?>

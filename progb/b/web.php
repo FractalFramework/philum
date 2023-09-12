@@ -56,7 +56,7 @@ if(!$r or $o==1){$ra=$r?$r:[];
 	if($ti)$ti=strip_tags($ti); if($tx)$tx=strip_tags($tx);
 	//json::add('','web'.mkday(),[$ti,$tx,$im,$id,mkday('','Ymd:His')]);
 	if($ra && $ti)sqlup('qdw',['tit'=>$ti,'txt'=>$tx,'img'=>$im],['url'=>$u]);
-	elseif(!$ra)sqlsav('qdw',['ib'=>$id?$id:0,'url'=>$u,'tit'=>$ti,'txt'=>$tx,'img'=>$im]);
+	elseif(!$ra)sqlsav('qdw',['ib'=>$id?$id:0,'url'=>etc($u,250),'tit'=>$ti,'txt'=>$tx,'img'=>$im]);
 	if($ti)$r=[$ti,$tx,$im,$id];}
 if(!$r)$r=['','','',$id];
 return $r;}
@@ -119,7 +119,7 @@ if(substr($p,0,4)!='http')$p=http($p);
 if(!is_url($p))return 'nothing';
 $ret=self::com($p,$o,$id);
 $bt=self::wmenu($p,$rid,$id);
-return divb(divb($ret,'',$rid,'min-width:320px;').$bt);}
+return div(div($ret,'',$rid,'min-width:320px;').$bt);}
 
 static function j($p,$o,$prm=[]){$p=$prm[0]??$p;
 return self::call($p,$o);}

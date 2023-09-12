@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1612
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['1201','publication'],
 "2"=>['1204','ajout du plug et du gestionnaire d\'Api tlex (publier articles sur tlex.fr)'],
 "3"=>['1205','résolution petit pb de compatibilité en mode utf8'],
@@ -22,4 +22,4 @@ Les modes sont disponibles dans le menu Phi (généralement public).
 - éradication des anciens connecteurs obsolètes :microsql, microtemplate
 - ajout du connecteur :sigle (certifie l\'affichage des monnaies)
 - suppression du module search (y\'a qu\'à /search/) et conversion du module search_form vers search (ouverture du formulaire de recherche)'],
-"11"=>['1225','réhabilitation du connecteur twitter_cache, renommé twitter_stored (met le résultat du twit en cache)']];
+"11"=>['1225','réhabilitation du connecteur twitter_cache, renommé twitter_stored (met le résultat du twit en cache)']]; ?>

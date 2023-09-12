@@ -1,5 +1,5 @@
-<?php //msql/admin_config
-$r=["_"=>['retrato'],
+<?php 
+return ["_"=>['retrato'],
 "1"=>['htaccess'],
 "2"=>['los visitantes pueden crear blogs'],
 "3"=>['concentrador predeterminado'],
@@ -12,4 +12,4 @@ $r=["_"=>['retrato'],
 "10"=>['buffer ajax (nº de caracteres por hilo)'],
 "12"=>['carga max'],
 "13"=>['actualizaciones, 1=desactivado'],
-"11"=>['1=utf8']];
+"11"=>['1=utf8']]; ?>

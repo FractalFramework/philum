@@ -1,5 +1,5 @@
-<?php //msql/edition_flags
-$r=["_"=>['country','flag'],
+<?php 
+return ["_"=>['country','flag'],
 "1"=>['afghanistan','fa'],
 "2"=>['afrique-du-sud','za'],
 "3"=>['albanie','sq'],
@@ -201,4 +201,4 @@ $r=["_"=>['country','flag'],
 "198"=>['viet-nam','vi'],
 "199"=>['yemen',''],
 "200"=>['zambie',''],
-"201"=>['zimbabwe','sn']];
+"201"=>['zimbabwe','sn']]; ?>

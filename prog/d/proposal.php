@@ -50,7 +50,7 @@ $ret.=inputj('inp1','',$j,'msg',48).$inp2.lj('popbt',$j,picto('save'));
 if(auth(6))$ret.=lj('',$o.'_proposal,delok__3_'.$p.'_'.$o,picto('del'));
 if(auth(6))$ret.=msqbt('',nod('proposal_'.$p)); $ret.=hlpbt('purpose');
 $rf=sql('ib,poll','qdf','v',['type'=>'agree','iq'=>ses('iq')]);
-if($r)foreach($r as $k=>$v){$id=self::valid($p.$v[1]); $edt=art::favs_edt($id,'agree',$rf[$id]??''); $del='';
+if($r)foreach($r as $k=>$v){$id=self::valid($p.$v[1]); $edt=social::edt($id,'agree',$rf[$id]??''); $del='';
 	if($v[0]==$usr && $v[2]==$day)$del=lj('',$o.'_proposal,rm__3_'.$p.'_'.$o.'-'.$k,picto('del'));
 	if(!empty($v[3]))$del.=' '.picto('valid');
 	if($ord==2)$rb[$k]=$v[2];
@@ -86,7 +86,7 @@ $ret=msqbt('',$nod);
 $ret.=input('inp',$p);
 $ret.=lj('popbt',$rid.'_proposal,add_inp_3__'.$rid,pictxt('add','new job'));
 $ret.=lj('popbt',$rid.'_proposal,stream____'.$rid,picto('menu'));
-return divb($ret);}
+return div($ret);}
 
 static function stream($p,$rid){
 $b='proposal'; $nod=nod($b); $rt=[];

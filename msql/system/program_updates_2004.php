@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2004
-$r=["1"=>['0402','publication'],
+<?php 
+return ["1"=>['0402','publication'],
 "2"=>['0403','les traductions disponibles sont rendues visibles d\'office, plutôt que de n\'être sollicitées que par le contexte de la langue utilisateur'],
 "3"=>['0404','réforme graduelle de msql, pour distinguer les appels entre :
 ::read (tout, opt menu et row), array 2D
@@ -44,4 +44,4 @@ pas de push avant plus de débug'],
 - amélioration du comportement de poll et de mood'],
 "19"=>['04030','- prmb8 (config) : logo d\'après un picto
 - ajout du gestionnaire \'poll\' dans l\'api, permet de trier les résultats selon les différentes sortes de votes d\'articles
-- ajout de l\'app score, permet de juguler un tri selon différents paramètres médiamétriques']];
+- ajout de l\'app score, permet de juguler un tri selon différents paramètres médiamétriques']]; ?>

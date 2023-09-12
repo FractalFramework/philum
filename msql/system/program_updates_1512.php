@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1512
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['1202','publication'],
 "2"=>['1203','- disjonction du titre depuis son param du module link (optique d\'éclaircissement des usage)
 - ajout de la commande ajax pagup (full page)'],
@@ -34,4 +34,4 @@ $r=["_"=>['date','text'],
 "18"=>['1231','nouveau gestionnaire de tags (part 3/3) : 
 - gestionnaire de titres d\'articles ; les templates ne reçoivent plus les utags (ils sont tous dans \"tags\")
 - suppression des tags préparés dans une session
-- gestionnaires des modules']];
+- gestionnaires des modules']]; ?>

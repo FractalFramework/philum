@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1203
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0301','ajout du plugin \'spitable\' qui utilise la table publique des éléments atomiques, qui a été mise à jour
 le paramètre limite la croissance, 118 par défaut'],
 "2"=>['0302','l\'index du répertoire \'plug\' est destiné à afficher le résultat d\'un plugin, dans une iframe, à destination de n\'importe quel site.
@@ -23,4 +23,4 @@ ex: http://philum.fr/plug/index.php?call=spitable&p=118'],
 "16"=>['0308','le module \'video_viewver\' affiche le titre de l\'article avec la balise \'h3\''],
 "17"=>['0315','tous les glyphes (arabe, chinois, et quelque 774 000 autres caractères sont supportés après une transaction ajax (caractères arrivant sous forme de %uxxxx)'],
 "18"=>['0325','gestion un peu meilleure de l\'interprétation des liens vers une images ou des liens redondants (genre spip qui place des \'...\')'],
-"19"=>['0327','les video de Ted sont du type \'http://ted.com/.../.mp4&1234 où l\'ID, si elle est spécifiée, permet d\'obtenir les sous-titres, qui sont dans la langue de l\'article ; ceci n\'est pas documenté en attendant de trouver une meilleure procédure']];
+"19"=>['0327','les video de Ted sont du type \'http://ted.com/.../.mp4&1234 où l\'ID, si elle est spécifiée, permet d\'obtenir les sous-titres, qui sont dans la langue de l\'article ; ceci n\'est pas documenté en attendant de trouver une meilleure procédure']]; ?>

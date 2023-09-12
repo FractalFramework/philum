@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1201
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0101','- le module LOAD accepte les options \'preview\', \'full\' et \'false\' pour déterminer localement le niveau d\'affichage de la préview qui est déterminé globalement dans les restrictions ;
 - le module \'articles\' avec la commande \'article\' prend en compte le niveau d\'affichage demandé dans le script'],
 "2"=>['0102','- les modules \'system\' deviennent sensibles à l\'attribut \'hide\' ; 
@@ -98,4 +98,4 @@ de menu li a
 vers menu li'],
 "29"=>['0130','- la page css/_menus contient les aspects par défaut et est loadée par défaut'],
 "30"=>['0131','ajout du design \'cloud\' (2) devient celui par défaut, \'classic\' (1) est entretenu, les designs basiques sont ceux du node \'public\' (accessible à tous les hubs), et parfois le mod associé est celui de même valeur (design2 va avec mods2) '],
-"31"=>['0131','finalisation (beta) de l\'aptitude du plugin \'share\' à inspecter des sites distants ; le partage de fichiers devient capable de chercher les fichiers partagés sur d\'autres serveurs.']];
+"31"=>['0131','finalisation (beta) de l\'aptitude du plugin \'share\' à inspecter des sites distants ; le partage de fichiers devient capable de chercher les fichiers partagés sur d\'autres serveurs.']]; ?>

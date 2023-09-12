@@ -1,5 +1,5 @@
-<?php //msql/public_citation_7
-$r=["_"=>['Santé publique'],
+<?php 
+return ["_"=>['Santé publique'],
 "1"=>['« Je ne remettrai à personne du poison, si on m\'en demande, ni ne prendrai l\'initiative d\'une telle suggestion. »
 Serment d\'Hippocrate (-460//377)'],
 "2"=>['Article R4127-36 du Code de santé publique: « Le consentement de la personne examinée ou soignée doit être recherché dans tous les cas. Lorsque le malade, en état d\'exprimer sa volonté, refuse les investigations ou le traitement proposé, le médecin doit respecter ce refus après avoir informé le malade de ses conséquences »'],
@@ -15,4 +15,4 @@ Article 16-1 : « Chacun a le droit au respect de son corps. Le corps est inviol
 "9"=>['Résolution 2361 du Conseil de l\'Europe (28 janvier 2021) : Avis consultatif : l\'Assemblée demande instamment aux États membres et à l\'Union européenne :
 Article 731 : « De s\'assurer que les citoyennes et les citoyens sont informés que la vaccination n\'est pas obligatoire et que personne ne subit de pressions politiques, sociales ou autres pour se faire vacciner, s\'il ou elle ne souhaite pas le faire personnellement »'],
 "10"=>['Résolution 2361 du Conseil de l\'Europe (28 janvier 2021) : Avis consultatif : l\'Assemblée demande instamment aux États membres et à l\'Union européenne :
-Article 732 : « De veiller à ce que personne ne soit victime de discrimination pour ne pas avoir été vacciné, en raison de risque potentiel pour la santé ou pour ne pas vouloir se faire vacciner »']];
+Article 732 : « De veiller à ce que personne ne soit victime de discrimination pour ne pas avoir été vacciné, en raison de risque potentiel pour la santé ou pour ne pas vouloir se faire vacciner »']]; ?>

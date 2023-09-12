@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1303
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0301','- la détection des définitions génériques est rendue secondaire après les définitions locales (c\'est plus logique) ;
 - le menu Apps est rendu sensible au paramètre \'hide\''],
 "2"=>['0302','- petites améliorations de l\'ordre du confort lors de l\'usage du moteur de recherche ;
@@ -83,4 +83,4 @@ $r=["_"=>['day','text'],
 - le bouton \'épingler\' de la popup sert aussi à la garder au premier plan'],
 "33"=>['0331','- correctifs de la génération de largeur du constructeur css (content padding compté deux fois, et ignorer les divs inusitées dans le module \'blocks\')
 - correctifs book : multi-fenêtres, pb de largeur due au scroll
-- les icones des tags renvoient le résultat dans une popup ;']];
+- les icones des tags renvoient le résultat dans une popup ;']]; ?>

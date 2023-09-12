@@ -67,7 +67,7 @@ static function bin2datas($p,$o,$prm=[]){
 $r=msql::col('','ummo_carbin',0);
 foreach($r as $k=>$v)if($n=substr_count($v,$p))$rb[$k]=$n; //pr($r);
 //$ret=tabler($rb);
-foreach($rb as $k=>$v)$ret.=divb(lj('','b2d_bincode,bin2txt___'.$k.'_'.$p,pictxt('view',$k.' ('.$v.')')));
+foreach($rb as $k=>$v)$ret.=div(lj('','b2d_bincode,bin2txt___'.$k.'_'.$p,pictxt('view',$k.' ('.$v.')')));
 $ret.=divd('b2d','');
 return $ret;}
 

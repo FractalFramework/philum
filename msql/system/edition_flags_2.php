@@ -1,5 +1,5 @@
-<?php //msql/edition_flags_2
-$r=["_"=>['img','name'],
+<?php 
+return ["_"=>['img','name'],
 "1"=>['Argentina.gif',''],
 "2"=>['Australia.gif',''],
 "3"=>['Austria.gif',''],
@@ -52,4 +52,4 @@ $r=["_"=>['img','name'],
 "50"=>['Ukraine.gif',''],
 "51"=>['Uruguay.gif',''],
 "52"=>['Venezuela.gif',''],
-"53"=>['Virgin Islands.gif','']];
+"53"=>['Virgin Islands.gif','']]; ?>

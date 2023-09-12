@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1204
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0401','on peut modifier la date d\'un article dans l\'éditeur des meta'],
 "2"=>['0404','tools/paste (édition) : permet de coller du code html éditable et de le convertir'],
 "3"=>['0406','amélioration de l\'éditeur :
@@ -31,4 +31,4 @@ propose d\'importer (en série ou individuellement) les articles des flux sélec
 "17"=>['0429','amélioration de la présentation des modules lors de l\'ajout : ils sont classés par catégorie et une aide les explique'],
 "18"=>['0430','introduction du panneau d\'admin \'builders/tools\' (niveau 7 - superadmin) : permet d\'ajouter facilement des outils qui iront affecter les bases. Deux outils ont été ajoutés : 
 - del-file : permet d\'effacer un fichier ou les fichiers d\'un répertoire sur le serveur ;
-- modif_usertags : pemret de transférer un utag d\'un champ ) un autre ou de renommer des champs de tags utilisateur ;']];
+- modif_usertags : pemret de transférer un utag d\'un champ ) un autre ou de renommer des champs de tags utilisateur ;']]; ?>

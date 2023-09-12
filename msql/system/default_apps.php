@@ -1,5 +1,5 @@
-<?php //default_apps
-$r=["_"=>['button','type','process','param','option','condition','root','icon','hide','private'],
+<?php 
+return ["_"=>['button','type','process','param','option','condition','root','icon','hide','private'],
 "1"=>['Desktop','ajax','page','desk,deskload__18_boot','','menu','os','desktop','',''],
 "2"=>['Root','ajax','desktop','desk,deskico___desk','','boot','os','desktop','',''],
 "3"=>['Root Folder','ajax','popup','desk,deskroot___desk','','menu','os','folder2','',''],
@@ -33,8 +33,8 @@ $r=["_"=>['button','type','process','param','option','condition','root','icon','
 "28"=>['nouveau','ajax','popup','edit,artform____1','','desk menu','','add','1','2'],
 "29"=>['msql','app','iframe','/msql/index.php','740','menu desk','sys','msql','1','4'],
 "30"=>['pictos','admin','pictos','','','menu desk','sys','icons','1','4'],
-"31"=>['updates','ajax','popup','msql___system_program_updates*2308','','menu','dev','edit','','7'],
-"32"=>['update-notes','msql','system','program','updates*2308','menu desk','dev','msql','',''],
+"31"=>['updates','ajax','popup','msql___system_program_updates*2309','','menu','dev','edit','','7'],
+"32"=>['update-notes','msql','system','program','updates*2309','menu desk','dev','msql','',''],
 "33"=>['connectors list','ajax','popup','msql___system_connectors_all','','menu desk','sys','msql','1',''],
 "34"=>['nominations','ajax','popup','msql___lang_helps_nominations','','menu desk','sys','msql','1','7'],
 "35"=>['helps','ajax','popup','msql___lang_helps_txts','','menu desk','sys','msql','1','4'],

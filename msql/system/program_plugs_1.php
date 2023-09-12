@@ -1,5 +1,5 @@
-<?php //msql/program_plugs_1
-$r=["_"=>['usage','tag','boot','public'],
+<?php 
+return ["_"=>['usage','tag','boot','public'],
 "__model"=>['','','no','secret'],
 "_authtest"=>['','','no','secret'],
 "_backup_mysql"=>['','','no','secret'],
@@ -149,4 +149,4 @@ $r=["_"=>['usage','tag','boot','public'],
 "twitter"=>['','system','yes',''],
 "upload"=>['','','yes',''],
 "userdl.ta"=>['','','no',''],
-"xmlbook"=>['','external','no','']];
+"xmlbook"=>['','external','no','']]; ?>

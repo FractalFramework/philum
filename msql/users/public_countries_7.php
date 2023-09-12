@@ -1,5 +1,5 @@
-<?php //msql/public_countries_7
-$r=["_"=>['pays','mortalité','année'],
+<?php 
+return ["_"=>['pays','mortalité','année'],
 "1"=>['République centrafricaine','15.00','2013'],
 "2"=>['Lesotho','14.99','2013'],
 "3"=>['Ukraine','14.60','2013'],
@@ -189,4 +189,4 @@ $r=["_"=>['pays','mortalité','année'],
 "187"=>['Oman','2.71','2013'],
 "188"=>['Bahreïn','2.32','2013'],
 "189"=>['Emirats Arabes Unis','1.55','2013'],
-"190"=>['Qatar','1.48','2013']];
+"190"=>['Qatar','1.48','2013']]; ?>

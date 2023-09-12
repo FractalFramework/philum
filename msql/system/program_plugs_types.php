@@ -1,5 +1,5 @@
-<?php //msql/program_plugs_types
-$r=["_"=>['name','usage'],
+<?php 
+return ["_"=>['name','usage'],
 "1"=>['external','call directly the page'],
 "2"=>['system','used by software'],
 "3"=>['plug','connector [param|plugin:plug] or [param|option:plugin] '],
@@ -9,4 +9,4 @@ $r=["_"=>['name','usage'],
 "7"=>['callable','iframe src : /plug/index.php?call=plugin&p=param&o=option'],
 "8"=>['server','client-server application'],
 "9"=>['internal','php library'],
-"10"=>['dev','php example']];
+"10"=>['dev','php example']]; ?>

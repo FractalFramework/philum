@@ -1,5 +1,5 @@
-<?php //msql/edition_typos
-$r=["_"=>['name','category','accents','fav','fam'],
+<?php 
+return ["_"=>['name','category','accents','fav','fam'],
 "1"=>['FLORLI__-webfont','calligraphic','','1','1'],
 "2"=>['Chantelli_Antiqua-webfont','calligraphic','1','','1'],
 "3"=>['FLORLRG_-webfont','calligraphic','','','1'],
@@ -1683,4 +1683,4 @@ $r=["_"=>['name','category','accents','fav','fam'],
 "1791"=>['Lobster','user','','',''],
 "1792"=>['Roboto-Regular','google','1','',''],
 "1793"=>['Dosis','user','','',''],
-"1794"=>['Parisienne','user','1','','']];
+"1794"=>['Parisienne','user','1','','']]; ?>

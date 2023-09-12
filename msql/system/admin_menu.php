@@ -1,5 +1,5 @@
-<?php //msql/admin_menu
-$r=["1"=>['admin'],
+<?php 
+return ["1"=>['admin'],
 "2"=>['actions'],
 "3"=>['desktop'],
 "4"=>['arts'],
@@ -12,4 +12,4 @@ $r=["1"=>['admin'],
 "12"=>['cache'],
 "13"=>['design'],
 "14"=>['dev'],
-"15"=>['time']];
+"15"=>['time']]; ?>

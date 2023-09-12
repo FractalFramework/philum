@@ -1,5 +1,5 @@
-<?php //msql/newsnet_twit
-$r=["_"=>['authenticication (à mettre dans des sous-tables 1, 2, 3...)'],
+<?php 
+return ["_"=>['authenticication (à mettre dans des sous-tables 1, 2, 3...)'],
 "1"=>['oauth_token'],
 "2"=>['oauth_token_secret'],
 "3"=>['oauth_consumer_key'],
@@ -10,4 +10,4 @@ $r=["_"=>['authenticication (à mettre dans des sous-tables 1, 2, 3...)'],
 "8"=>['AppId'],
 "9"=>['AppName'],
 "10"=>['Bearer token'],
-"11"=>['not works']];
+"11"=>['not works']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1107
-$r=["_"=>['day','txt'],
+<?php 
+return ["_"=>['day','txt'],
 "1"=>['110702','la fonction media_trap de l\'importateur d\'articles supporte les url encodées (bêtement) en base64'],
 "2"=>['110703','l\'option \'nobr\' des modules (qui sert à ne pas ajouter un saut de ligne après un module) devient conformiste : ajout d\'une colonne dans la table des modules, n\'entre plus en contradiction avec d\'autres options.
 Un patch doit être exécuté pour la mise en conformité'],
@@ -35,4 +35,4 @@ Les fichiers partagés utilisent un répertoire virtuel que l\'administrateur pe
 - capacité à ouvrir/fermer les noeuds en ajax ;
 - capacité à creuser dans le temps pour chercher des parents éloignés et ainsi produire une taxonomie plus développée'],
 "21"=>['110731','ajout du connecteur msq_template qui permet de lire les données d\'une table microsql en utilisant la mise en forme spécifiée dans un template, comme cela : [table|template:msq_template ]'],
-"22"=>['110731','le connecteur \':form\' devient \':formail\' puisqu\'il est dédié uniquement à l\'envoi de mails, et hérite des nouvelles dispositions pour la génération de formulaires']];
+"22"=>['110731','le connecteur \':form\' devient \':formail\' puisqu\'il est dédié uniquement à l\'envoi de mails, et hérite des nouvelles dispositions pour la génération de formulaires']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/edition_ascii_7
-$r=["_"=>['col_1'],
+<?php 
+return ["_"=>['col_1'],
 "128"=>['Symbole Euro'],
 "131"=>['Symbole Florin'],
 "134"=>['Obèle'],
@@ -782,4 +782,4 @@ $r=["_"=>['col_1'],
 "128941"=>['close2'],
 "128954"=>['asterix2'],
 "129052"=>['previous'],
-"129054"=>['next']];
+"129054"=>['next']]; ?>

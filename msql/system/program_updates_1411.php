@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1411
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['1106','correctif prise en charge de search dans le coupeur par pages, en mode non-ajax'],
 "2"=>['1107','réforme de l\'écriture des modules dans la console url : /module/nom/p/o/c/page/1 (modif htaccess)'],
 "3"=>['1110','- réforme u sélecteur d\'étendue temporelle quand param16=auto
@@ -27,4 +27,4 @@ saveBe() rendu obsolète'],
 "18"=>['1128','réfection de batch_fbi, qui recense les nouveaux articles des flux sélectionnés'],
 "19"=>['1129','meilleur appellation des modules, un algo trouve l\'indice marquant dans les paramètres'],
 "20"=>['1130','rénovation du boot et on empêche les sources inutiles de se loader avec les appels ajax de menus ou de plugins
-amélioration résolution urls de msql']];
+amélioration résolution urls de msql']]; ?>

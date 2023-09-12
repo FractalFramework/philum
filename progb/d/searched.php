@@ -7,7 +7,7 @@ if($r)foreach($r as $k=>$v)meta::sav_tag('',$k,$cat,$tag);}
 
 static function tagfull_slct($srch,$rid){$r=explode(' ','tag '.prmb(18)); $ret='';
 foreach($r as $v)$ret.=lj('',$rid.'_searched,tagfull___'.ajx($v).'_'.ajx($srch),$v);
-return divc('list',$ret).divb('','alert','svtg');}
+return divc('list',$ret).div('','alert','svtg');}
 
 static function markers($n){$days=$n?$n:ses('nbj');
 if(!rstr(3))return [0,ma::lastartid()];
@@ -94,7 +94,7 @@ if($r)foreach($r as $k=>$v)if($v){$re='';
 	if(auth(4))$re.=lj('','popup_searched,call__3_'.$va,picto('search')).' ';
 	if(auth(4))$re.=lj('','socket_searched,del___'.$k,picto('del')).' ';
 	if(auth(6))$re.=lj('','popup_searched,save__3_'.$va,picto('save2'));
-	$rd[$k]=divb($re);}}}
+	$rd[$k]=div($re);}}}
 if($rd){arsort($rc); foreach($rc as $k=>$v)$ret.=$rd[$k];}
 else $ret.=btn('txtx',nmx([11,16]));
 return divs('text-align:left',$ret);}

@@ -1,5 +1,5 @@
-<?php //msql/admin_modules_2210
-$r=["_"=>['category','param','title','command','option','cache','template','bt','div','prv','pop'],
+<?php 
+return ["_"=>['category','param','title','command','option','cache','template','bt','div','prv','pop'],
 "All"=>['api','','','','preview full false auto read','','','','','',''],
 "LOAD"=>['content','','','id-desc day-asc','preview full false auto read','','1','','','',''],
 "BLOCK"=>['multi','','','','','','','','','',''],
@@ -154,4 +154,4 @@ $r=["_"=>['category','param','title','command','option','cache','template','bt',
 "conn_playlist"=>['api','','','articles','cols','','','','','',''],
 "video_viewer"=>['articles','','','cols','','','','','','',''],
 "microarts"=>['apps','','','','','','','','','',''],
-"vacuum"=>['apps','','','','','','','','','','']];
+"vacuum"=>['apps','','','','','','','','','','']]; ?>

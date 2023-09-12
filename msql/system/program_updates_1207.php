@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1207
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0701','introduction du connecteur \':book\' :
 - reçoit en paramètre :
 -- une ou plusieurs lignes de commande d\'articles ;
@@ -65,4 +65,4 @@ Pour les listes d\'ID il est possible d\'en créer en utilisant le plugin \'favs
 "22"=>['0729','résolution des défauts d\'affichage des couleurs contradictoires dans les popups (qui est un mix des classes globales et des classes utilisateur, donc imprévisible)'],
 "23"=>['0730','la commande qui génère des requêtes (connecteur :article entre autres) peut recevoir un paramètre multiple pour la catégorie (sans quoi il était illogique d\'appeler deux catégories, car aucune réponse n\'est dans les deux) : \"~cat=categorie1|categorie2\"'],
 "24"=>['0731','- ajout du paramètre \'list\' comme commande de requêtes, permet d\'appeler des articles ciblés : ~list=123|124|125...
-- résurrection du plugin xmlbook, permet de fabriquer le fichier xml qui va dans indesign à partir d\'une liste d\'articles, qui peut en plus être appelée par une commande de requête.']];
+- résurrection du plugin xmlbook, permet de fabriquer le fichier xml qui va dans indesign à partir d\'une liste d\'articles, qui peut en plus être appelée par une commande de requête.']]; ?>

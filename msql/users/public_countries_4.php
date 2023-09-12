@@ -1,5 +1,5 @@
-<?php //msql/public_countries_4
-$r=["_"=>['coutry','code'],
+<?php 
+return ["_"=>['coutry','code'],
 "1"=>['AFGHANISTAN','AF'],
 "2"=>['AFRIQUE DU SUD','ZA'],
 "3"=>['ÅLAND, ÎLES','AX'],
@@ -249,4 +249,4 @@ $r=["_"=>['coutry','code'],
 "247"=>['WALLIS ET FUTUNA','WF'],
 "248"=>['YEMEN','YE'],
 "249"=>['ZAMBIE','ZM'],
-"250"=>['ZIMBABWE','ZW']];
+"250"=>['ZIMBABWE','ZW']]; ?>

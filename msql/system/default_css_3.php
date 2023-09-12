@@ -1,5 +1,5 @@
-<?php //msql/default_css_3
-$r=["1"=>['','','a','8||','||','||',''],
+<?php 
+return ["1"=>['','','a','8||','||','||',''],
 "2"=>['','','body','8||','1||','||','font-family:sans-serif;'],
 "3"=>['','','a:active','||','||','||','outline:none;'],
 "4"=>['','','h1,h2,h3,h4,h5','8||','||','||','margin:0;'],
@@ -293,4 +293,4 @@ $r=["1"=>['','','a','8||','||','||',''],
 "292"=>['popup','','article','7||','||','||','margin:8px 0; '],
 "293"=>['','','@media only screen and (min-width: 980px)','','','','#bub{font-size:normal;} #bub li a{padding:2px 2px 1px;} #page{max-width:920px;} #menu li a{font-size:normal;} #artmod{display:block;} #rightbar{display:block;} .admnu{height:32px;} .philum {font-size:22px;} input{font-size:normal;} .justy{font-size:20px;}'],
 "294"=>['','','@media only screen and (min-width: 1400px)','','','',''],
-"295"=>['','','@media only screen and (max-width: 640px)','','','','']];
+"295"=>['','','@media only screen and (max-width: 640px)','','','','']]; ?>

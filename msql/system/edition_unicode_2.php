@@ -1,5 +1,5 @@
-<?php //msql/edition_unicode_2
-$r=["xc2xa1"=>['¡'],
+<?php 
+return ["xc2xa1"=>['¡'],
 "xc2xa2"=>['¢'],
 "xc2xa3"=>['£'],
 "xc2xa4"=>['¤'],
@@ -93,4 +93,4 @@ $r=["xc2xa1"=>['¡'],
 "xc3xbc"=>['ü'],
 "xc3xbd"=>['ý'],
 "xc3xbe"=>['þ'],
-"xc3xbf"=>['ÿ']];
+"xc3xbf"=>['ÿ']]; ?>

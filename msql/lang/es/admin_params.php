@@ -1,5 +1,5 @@
-<?php //msql/admin_params
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "1"=>['version de la tabla de módulos (1 por defecto)'],
 "2"=>['ID del artículo que se muestra a los visitantes que no forman parte de la lista permitida en la tabla users/hub_authip'],
 "3"=>['nb max characters in preview'],
@@ -20,4 +20,4 @@ valor][auto = frecuencia: 50 arts/period]'],
 usado para actualización, tickets, y artículos en miniatura de chatXml'],
 "25"=>['language system'],
 "26"=>['language (2 letter convention)'],
-"27"=>['- especificar: ancho/alto']];
+"27"=>['- especificar: ancho/alto']]; ?>

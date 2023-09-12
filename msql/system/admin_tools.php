@@ -1,5 +1,5 @@
-<?php //msql/admin_tools
-$r=["_"=>['process','param','option'],
+<?php 
+return ["_"=>['process','param','option'],
 "ajax"=>['target','app___param_option',''],
 "finder"=>['','','shared/global//icons///mini_1'],
 "admin"=>['menu','',''],
@@ -7,4 +7,4 @@ $r=["_"=>['process','param','option'],
 "msql"=>['base','prefix','table_version'],
 "mod"=>['module name','','title'],
 "art"=>['auto title','ID of article',''],
-"link"=>['','url','']];
+"link"=>['','url','']]; ?>

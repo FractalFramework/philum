@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1108
-$r=["_"=>['day','txt'],
+<?php 
+return ["_"=>['day','txt'],
 "1"=>['110803','réparation de admin/fonts qui met à jour la base serveur des typos réellement présentes par rapport à la base system des typos disponibles et aux fichiers détectés dans /fonts'],
 "2"=>['110803','ajout du support d\'update du répertoire \'bkg\''],
 "3"=>['110803','nouveau design par défaut, n°8 dans les designs publiques'],
@@ -78,4 +78,4 @@ les nominations actuelles sont préliminaires.'],
 "47"=>['110830','petites améliorations dans les templates d\'article et de commentaire (classes éditables, dates relatives)'],
 "48"=>['110831','admin/banner obtient un champ qui s\'informe d\'un chemin vers un dossier de l\'EDU (ex: \'images/ban\') ou de l\'ID d\'un article pour produire des miniatures et les proposer pour se faire élire \"bannière\"'],
 "49"=>['110831','la taille de l\'image de la bannière s\'adapte à la largeur indiquée dans le module system \'banner\''],
-"50"=>['110831','nouveau logo nuque dégagée pour la rentrée']];
+"50"=>['110831','nouveau logo nuque dégagée pour la rentrée']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2210
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['1001','publication'],
 "2"=>['1001','- les modules itératifs sont bien plus plaisants à l\'usage que les modules armés de sous-modules. Ce dispositif va être retiré.
 - réhabilitation de most-read, qui quitte l\'ancien protocole
@@ -150,4 +150,4 @@ $r=["_"=>['date','text'],
 - laborieux succès à généraliser la reconnaissance par le state de toute requête url, pour retrouver la page initiale, lors du retour sur la navigation, dans le cas d\'un search via get par exemple
 = la navigation par states implique qu\'on peut emprunter une route (root) dans les deux sens
 - en l\'état (ça va changer) l\'appel d\'un article affecte le content, forcément ; l\'appel d\'un contexte appelle la page.
-- textarea() est le premier à subir la modernisation qui consiste à se comporter comme tag(), issu de fractal. Les microfonctions de facilitation seront abandonnées au profit de tableaux.']];
+- textarea() est le premier à subir la modernisation qui consiste à se comporter comme tag(), issu de fractal. Les microfonctions de facilitation seront abandonnées au profit de tableaux.']]; ?>

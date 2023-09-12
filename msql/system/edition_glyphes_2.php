@@ -1,5 +1,5 @@
-<?php //msql/edition_glyphes_2
-$r=["glass"=>['f000'],
+<?php 
+return ["glass"=>['f000'],
 "music"=>['f001'],
 "search"=>['f002'],
 "envelope-o"=>['f003'],
@@ -673,4 +673,4 @@ $r=["glass"=>['f000'],
 "snowflake-o"=>['f2dc'],
 "superpowers"=>['f2dd'],
 "wpexplorer"=>['f2de'],
-"meetup"=>['f2e0']];
+"meetup"=>['f2e0']]; ?>

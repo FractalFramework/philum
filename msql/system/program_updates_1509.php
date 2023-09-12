@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1509
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0901','publication'],
 "2"=>['0901','- correctif friend_rub pour qu\'il prenne en compte les articles _system
 - correctif id_of_urlsuj(), qui, sans condition, permet à sql de s\'arrêter sur l\'occurrence la plus pertinente'],
@@ -32,4 +32,4 @@ $r=["_"=>['date','text'],
 permet de lancer le module via javascript, après le lancement de la page
 - amélioration gestionnaire de modules de sorte à supporter le nouveau dispositif à retardateur : rendu responsable des requires'],
 "13"=>['0920','- fix pb controls lecteur mp4 html5'],
-"14"=>['0925','- réforme de l\'outil de tags, ajout de la suppression']];
+"14"=>['0925','- réforme de l\'outil de tags, ajout de la suppression']]; ?>

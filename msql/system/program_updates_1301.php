@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1301
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0101','- amélioration de la présentation des versions d\'une table dans l\'admin msql ;
 - réparation du filtre \'rename_img\' (importation renomée d\'image) ;'],
 "2"=>['0102','- la fonction \'coller html\' reçoit le contenu courant (éditeur wyswyg d\'articles, version préliminaire) ;
@@ -53,4 +53,4 @@ exemples :
 "24"=>['0128','- auto-reboot si on appelle ajax après la fermeture des sessions ;
 - design de la popup ;'],
 "25"=>['0130','- amélioration du killeur de lignes dans l\'éditeur, réduit de 2 à 1 saut de lignes, mais aussi de 1 à 0 si aucun double-saut est détecté, de façon à émuler le filtre \'clean_mail\' ;
-- clean_mail est plus pratique pour les réduire les sauts de lignes inutiles sans réduire les double-sauts de ligne, dans le texte sélectionné ;']];
+- clean_mail est plus pratique pour les réduire les sauts de lignes inutiles sans réduire les double-sauts de ligne, dans le texte sélectionné ;']]; ?>

@@ -5,12 +5,12 @@ static $conn=1;
 static function fa(){$ret='';
 $r=msql::col('system','edition_glyphes_2',0,1);
 if($r)foreach($r as $k=>$v)$ret.=divs('padding:4px;',fa($k,24).' '.$k);
-return divb($ret,'cols','','line-height:1.6em;');}
+return div($ret,'cols','','line-height:1.6em;');}
 
 static function glyphes(){$ret='';
 $r=msql::col('system','edition_glyphes_1',0,1);
 if($r)foreach($r as $k=>$v)$ret.=divs('padding:4px;',glyph($k,24).' '.$k);
-return divb($ret,'cols','','line-height:1.6em;');}
+return div($ret,'cols','','line-height:1.6em;');}
 
 static function ascii(){$ret='';
 $r=msql::col('system','edition_ascii_2',0,1);
@@ -26,14 +26,14 @@ return divc('cols',$ret);}
 static function pictos0(){$ret='';
 $r=msql::col('system','edition_pictos',0,1);
 if($r)foreach($r as $k=>$v)$ret.=divc('',pictit($k,$v,36).' '.$k);
-return divb($ret,'cols','','columns:auto 200px; line-height:1.6em;');}
+return div($ret,'cols','','columns:auto 200px; line-height:1.6em;');}
 
 static function pictos(){$ret=''; $rb=[];
 $r=msql::read('system','edition_pictos',1); $s='columns:auto 180px; line-height:1.6em;';
 if($r)foreach($r as $k=>$v)$rb[$v[1]][]=[$k,$v[0]];
 if($rb)foreach($rb as $k=>$v){$ret.=tagb('h2',$k); $bt='';
-	foreach($v as $ka=>$va)$bt.=divb(pictit($va[0],$va[1],36).' '.$va[0]);
-	$ret.=divb($bt,'cols','',$s);}
+	foreach($v as $ka=>$va)$bt.=div(pictit($va[0],$va[1],36).' '.$va[0]);
+	$ret.=div($bt,'cols','',$s);}
 return $ret;}
 
 static function pictos_mimes(){$rb=[];

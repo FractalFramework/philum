@@ -1,5 +1,5 @@
-<?php //admin_modules
-$r=["_"=>['description','param','option','command'],
+<?php 
+return ["_"=>['description','param','option','command'],
 "All"=>['Todos los artículos','Dar un título','vista previa: 1,2,3,auto',''],
 "LOAD"=>['Componente principal que recibe una lista de artículos o un artículo entero','','vista previa: 1,2,3,auto','orden de los artículos'],
 "BLOCK"=>['Llama a un bloque de módulo','nombre del bloque de módulo','',''],
@@ -187,4 +187,4 @@ ej: tag:class','',''],
 - cat-public : articles dans \'public\' ;
 - cat-1 : catÃ©gorie en cours','',''],
 "microarts"=>['microartículos con un solo campo y fecha','nombre del hilo','',''],
-"vacuum"=>['abre un artículo web a través del motor de vacío','url','','']];
+"vacuum"=>['abre un artículo web a través del motor de vacío','url','','']]; ?>

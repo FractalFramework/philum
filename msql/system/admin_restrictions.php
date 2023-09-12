@@ -1,5 +1,5 @@
-<?php //admin_restrictions
-$r=["_"=>['category','name','defaults'],
+<?php 
+return ["_"=>['category','name','defaults'],
 "1"=>['config','public trackbacks',''],
 "2"=>['config','open trackbacks',''],
 "3"=>['config','time system','1'],

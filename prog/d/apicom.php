@@ -21,14 +21,14 @@ foreach($rt as $k=>$v){$val=$ra[$k]??'';
 	//select_j('inp'.$k,'vfld',$k,$k,'','2');
 	else $bt=$k;
 	$btn=tag('span',['class'=>'small','title'=>$rh[$k]??''],$bt);
-	$ret.=divb(input('inp'.$k,$val,'',$pr).$btn);}
+	$ret.=div(input('inp'.$k,$val,'',$pr).$btn);}
 $bt=lj('','apcf_apicom,form___'.ajx($p).'_'.$id.'_'.($a==1?2:1),picto($a==1?'right':'left'));
-return divb($bt).divb($ret,'cols');}
+return div($bt).div($ret,'cols');}
 
 static function build($p,$id,$a=1){
 $p=str_replace(';',',',$p); if(!$a)$a=1;
 $ret=self::form($p,$id,$a);
-return divb($ret,'','apcf');}
+return div($ret,'','apcf');}
 
 static function search($p,$id){
 $ra=['search','title','cat','nocat','tag','folder','lang','date','priority'];
@@ -53,7 +53,7 @@ $ret.=hlpbt('api').' ';
 //$ret.=ljb('','apijumpall',implode_k($r,',',':'),picto('after')).br();
 $ret.=divd('loadself','');
 $rt=self::build($p,'inp');
-$ret.=divb($rt,'','','min-width:720px;');
+$ret.=div($rt,'','','min-width:720px;');
 return $ret;}
 
 static function home($p,$o){$rid='plg'.randid();

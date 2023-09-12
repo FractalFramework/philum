@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1304
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0401','- externalisation dans un plugin de tout ce qui concerne les stats (8Ko) ;
 - une milliseconde est ajoutée entre chaque enregistrement du batch (évite les mauvais tris, quand param/art_order est sur DAY au lieu de ID) ;
 - amélioration de la détection d\'ancres : appliquée d\'office par défaut, prend en compte de nouveaux patterns ;
@@ -125,4 +125,4 @@ $r=["_"=>['day','text'],
 - la popup d\'édition des css se relance quand on recherge la page (commodité)
 - les css rendus publics n\'étaient pas visibles dans le sélecteur de design parce que leur nom n\'était pas signalé enregistré ;
 - un module très inutile, csscode, permet d\'appeler des fonction prédéfinies (pour la dev des pictos) ;
-- fond d\'écran : on peut signaler une image dans l\'option du desktop au lieu des couleurs']];
+- fond d\'écran : on peut signaler une image dans l\'option du desktop au lieu des couleurs']]; ?>

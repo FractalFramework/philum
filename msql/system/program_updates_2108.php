@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2108
-$r=["1"=>['0801','publication'],
+<?php 
+return ["1"=>['0801','publication'],
 "2"=>['0812','l\'option |1 dans :iframe permet de la contenir dans un bouton'],
 "3"=>['0814','correctif del_inclusive, qui transformait les \'week-end\' en \'weeknd\''],
 "4"=>['0817','correctif erreur d\'interprétation dûe au fait que les gens utilisent des images dans des liens vers des images dans une figure, qui provoquait un dédoublement de la mention figcaption. L\'erreur était dans la capacité du détecteur d\'image à tenir compte des liens vers des images. Donc is_image() obtient la propriété de concerner ces types de données.'],
@@ -19,4 +19,4 @@ L\'ajout barbare d\'attributs à rallonge provoque des problèmes, notamment qua
 - ajout de export_csv dans admin msql
 - export csv attaché aux tables'],
 "11"=>['0826','- correctif étendue du thread de twits jusqu\'au twit d\'où part la recherche (il s\'arrêtait avant en croyant que c\'était intelligent de le faire)
-- réforme du distributeur de ascii unicode (là, y\'a tout)']];
+- réforme du distributeur de ascii unicode (là, y\'a tout)']]; ?>

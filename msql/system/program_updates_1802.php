@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1802
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0202','publication'],
 "2"=>['0204','ajout de la restriction 108, permet d\'ouvrir la source dans une iframe dans une popup'],
 "3"=>['0206','rénovation du rendu du moteur de recherche : exit l\'ancien découpeur de phrase qui faisait perdre la moitié des résultats'],
@@ -22,4 +22,4 @@ ajout des boutons \"score\" (classement par le nombre de résultats) et \"langue
 "12"=>['0219','- réparation du parseur xml rss, qui était secouru par l\'ancien dispositif'],
 "13"=>['0220','- réparation de petites imperfections de l\'encodage au moment de la transition paf javascript, qui affectaient les caractères moldaves (Chi&#537;in&#259;u)'],
 "14"=>['0222','- introduction du dispositif \'quote\', de la rstr109 globale et pontcuelle, et des comportements associés : permet de créer des commentaires attachés à une portion de texte surlignée.'],
-"15"=>['0227','- remaniement du dispositif \'quote\', de sorte à ne l\'allumer que sur demande (c\'est un peut chiant sinon) et à pouvoir accumuler les notes au long du même commentaire.']];
+"15"=>['0227','- remaniement du dispositif \'quote\', de sorte à ne l\'allumer que sur demande (c\'est un peut chiant sinon) et à pouvoir accumuler les notes au long du même commentaire.']]; ?>

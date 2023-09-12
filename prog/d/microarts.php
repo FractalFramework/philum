@@ -43,7 +43,7 @@ return ['tit'=>$v[1],'del'=>$del,'edt'=>$edt,'txt'=>$txt,'id'=>$id];}
 
 static function one($p,$id){
 $r=sql('id,day,msg,name','qdi','','id="'.$id.'"');
-$rb[]=read($r,$p); $tmp=self::tmp();
+$rb[]=self::read($r,$p); $tmp=self::tmp();
 return vue::call($tmp,$rb);}
 
 static function build($p,$o=1){$rid=self::$cb;

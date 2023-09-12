@@ -1,5 +1,5 @@
-<?php //msql/helps_petition
-$r=["_"=>['txt'],
+<?php 
+return ["_"=>['txt'],
 "confirm_before"=>['Merci d\'avoir signé la pétition !
 Vous allez recevoir un mail de confirmation :
 Cliquez sur le lien pour valider votre signature.'],
@@ -14,4 +14,4 @@ Merci de votre participation'],
 "legal_msg"=>['Les informations transmises ne seront pas commercialisées ou distribuées'],
 "sign"=>['Signer la pétition'],
 "actually"=>['Actuellement _NB signatures'],
-"entries"=>['nom,mail,web,ville,pays']];
+"entries"=>['nom,mail,web,ville,pays']]; ?>

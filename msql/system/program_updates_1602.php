@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1602
-$r=["1"=>['0201','publication'],
+<?php 
+return ["1"=>['0201','publication'],
 "2"=>['0203','- amélioration du mode pagup, utilisé pour les vidéos
 - le module videoplayer prend en compte les connecteurs :popvideo'],
 "3"=>['0205','- pré-finalisation de la nouvelle api (prend le relais des principaux appels : load et module articles
@@ -41,4 +41,4 @@ finalisation de l\'API :
 - fix anomalie detect get
 - ajout d\'un capteur dans ajax pour la lecture des articles (du coup les résultats bondissent)'],
 "14"=>['0223','- ce matin la config a souffert (sûrement lors d\'un passage en mode lab) : les tags ne répondaient plus
-- modif protocole api, les | remplacent les - pour scinder en multivars']];
+- modif protocole api, les | remplacent les - pour scinder en multivars']]; ?>

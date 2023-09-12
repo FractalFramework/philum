@@ -23,7 +23,7 @@ static function art(){return [
 static function cat(){return [
 ['div','grid-art',[
 	['div','row1 col1',[
-		['div','panel txtsmall scrollb','{tag}']]],
+		['div','panel txtsmall','{tag}']]],
 	['div','row1 col2',[
 		['header','',[
 			['div',['id'=>'meta{id}'],[

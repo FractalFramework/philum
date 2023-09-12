@@ -56,15 +56,15 @@ if($r)foreach($r as $k=>$v){if(!$v[7] && (!$v[11] or $ath)){//hide/private
 	//elseif($v[11]??'')$rt[$k]=divd('mod'.$k,lj('txtcadr','mod'.$k.'_md::modj___'.$k.'_'.$va,$v[2]));
 	elseif($v[12]??''){$rt[$k]=divd('mod'.$k,''); head::add('jscode',sj('mod'.$k.'_mod,callmod___'.$k));}
 	else $rt[$k]=self::build($v);}}
-if($rl)$ret=implode(thin(),$rl);
+if($rl)$ret=implode('',$rl);
 if($rt)$ret.=implode(n(),$rt);
 ses::$r['curdiv']='content'; $h='';
 if(self::$rha){$h=self::jsmap('rha'); self::$rha=[];}
-return divd($va,$ret.$h);}
+return $ret.$h;}
 
 static function blocks(){
 $r=explode(' ',prma('blocks'));
-foreach($r as $k=>$v)$ret[$v]=self::block($v,'');
+foreach($r as $k=>$v)$ret[$v]=divd($v,self::block($v,''));
 return $ret;}
 
 static function playmod($g1,$g2,$prm){ses('frm','');
@@ -309,7 +309,7 @@ if($d=='read')foreach($load as $id=>$prw)$ret.=divc('justy',ma::read_msg($id,3))
 elseif($d=='articles')$ret=ma::output_arts($load,$prw,$tp);
 elseif($d=='viewer')$ret=md::art_viewer($load);
 elseif($d=='multi'){geta('flow',1); $nl=get('nl'); $i=0; foreach($load as $id=>$md){$i++;
-	if($i<$mx)$ret.=art::playb($id,$md,$tp,$nl,''); else $ret.=divb('',$md,$id);}}
+	if($i<$mx)$ret.=art::playb($id,$md,$tp,$nl,''); else $ret.=div('',$md,$id);}}
 elseif($d=='api')$ret=api::mod_call($load);
 elseif($d=='icons')$ret=desk::pane_icons($load,'icones').divc('clear','');
 elseif($d=='panel' && is_array($load))foreach($load as $k=>$v)$ret.=self::pane_art($k,$o,$tp,$pp);
@@ -435,7 +435,7 @@ return $bt.divd($rid.'cb','');}
 static function make_ban($p,$o,$t){
 $t=divc('bantxt',conn::parser($t));
 $im=$p?goodroot($p):'imgb/usr/'.ses('qb').'_ban.jpg'; $h=is_numeric($o)?$o:'120';
-return divb($t,'banim','','background-image:url('.$im.'); height:'.$h.'px;');}
+return div($t,'banim','','background-image:url('.$im.'); height:'.$h.'px;');}
 
 static function footer(){
 ses::$r['curdiv']='footer';

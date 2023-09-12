@@ -38,7 +38,7 @@ if(!$lang)$lang=prmb(25); $r=explode(' ',prmb(26));
 foreach($r as $k=>$v){$c=active($v,$lang);
 	$ret.=lj($c,'trklg'.$id.'_tracks,trklang___'.$id.'_'.$v,$v).' ';}
 $ret.=lj('','trklg'.$id.'_tracks,trklang___'.$id.'_find',picto('finder'));
-return divb($ret,'list','trklg'.$id);}
+return div($ret,'list','trklg'.$id);}
 
 static function trash($id,$ok){
 if(!$ok)return lj('txtyl','trk'.$id.'_tracks,trash__xd_'.$id.'_x',nms(43));

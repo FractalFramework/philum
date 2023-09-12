@@ -38,7 +38,8 @@ return $a::detect($p,$o,$prm);}
 #translate
 static function build($txt,$from,$to,$format,$ref){
 $a='trans_'.self::$motor;
-json::add('','trans'.mkday(),[$txt,strlen($txt),$ref,mkday('','His'),hostname()]);//
+if(boot::auth())//
+if($txt)json::add('','trans'.mkday(),[$txt,strlen($txt),$ref,mkday('','His'),hostname()]);
 return $a::build($txt,$from,$to,$format);}
 
 static function cut($txt){

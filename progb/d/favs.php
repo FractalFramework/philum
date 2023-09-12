@@ -9,7 +9,7 @@ return desk::pane_icons($r,'icones').divc('clear','');}
 
 static function cols($r){$ret='';
 if($r)foreach($r as $id=>$v)$ret.=self::art($id);
-return divb($ret,'cols','','width:640px;');}
+return div($ret,'cols','','width:640px;');}
 
 static function reload($r){
 foreach($r as $k=>$v)if($v[0]==ses('iq'))$rb[$k]=$v;
@@ -130,12 +130,12 @@ $r=sql('id,poll','qdf','w',['ib'=>$id,'type'=>$type,'iq'=>$iq]); [$ex,$d]=arr($r
 if($ex)sql::del('qdf',$ex);}
 
 static function dock(){$r=self::cart('dock'); $ret='';
-if($r)foreach($r as $k=>$v)$ret.=divb(desk::icoart($k,$v,''));
+if($r)foreach($r as $k=>$v)$ret.=div(desk::icoart($k,$v,''));
 return $ret;}
 
 //read
 static function art($id,$rtg=''){
-$im=minimg(sql('img','qda','v',$id),'h');
+$im=pop::minimg(sql('img','qda','v',$id),'h');
 $day=sql('day','qda','v',$id); $dat=mkday($day).' ';
 if($rtg)$tag=self::mktag($rtg).' ';
 $suj=tagb('h4',ma::suj_of_id($id).' ');
@@ -144,7 +144,7 @@ if($id)return divc('txtcadr',$im.$dat.$tag.lj('','popup_popart__3_'.$id.'_3',$su
 //menus
 static function log(){
 $iqb=ses('iq');//base64_encode
-$ret=divb(helps('flog'),'frame-blue');
+$ret=div(helps('flog'),'frame-blue');
 $ret.=input('favid',$iqb,'4');
 $ret.=lj('popbt','fvwrp_favs,home_favid',picto('ok')).' ';
 if(auth(4))$ret.=msqbt('',nod('coms'));
@@ -189,7 +189,7 @@ elseif($p=='shar')$ret=self::shar($o);
 if(isset($r))$ret=self::icons($r);
 //if($r)$ret=self::cols($r);
 if($p=='dock' && $r)$ret.=lj('popbt','desktop_favs,dock','put in dock');
-return $menu.divb($ret,'','fvcnt');}
+return $menu.div($ret,'','fvcnt');}
 
 static function home($p,$o,$prm=[]){$res=$prm[0]??'';
 if($res)self::flog($res);

@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1208
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0807','- ajout des filtres de post-traitement \'delblocks\' et \'striplink\', et réparation du \'deltables\' ;
 \'striplink\' est utilisé dans le plugin \'xmlbook\', permet de séparer le texte de son lien en le mettant en dur entre parenthèses à côté.'],
 "2"=>['0809','- on fait en sorte que la commande \'rebuild_img\' marche quand il s\'agit de reconstruire une miniature créée par le connecteur \':thumb\', c\'est à dire pendant la lecture d\'un article ;'],
@@ -13,4 +13,4 @@ $r=["_"=>['day','text'],
 "6"=>['0827','les popups sont déplaçables'],
 "7"=>['0830','- usage des termes \'appliquer\' et \'enregistrer\' au lieu de \'sauver\' et \'sauver/fermer\'\' ;
 - réparation champ temporel infini impromptu ;
-- petites améliorations css (relookage de la rentrée) ;']];
+- petites améliorations css (relookage de la rentrée) ;']]; ?>

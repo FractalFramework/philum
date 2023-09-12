@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1501
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0101','publication'],
 "2"=>['0101','- correctifs comportement msql_read, boot des plugins, assistant de création de connecteurs
 - correctifs liés à de récents correctifs... format d\'up-date
@@ -50,4 +50,4 @@ $r=["_"=>['date','text'],
 - amélioration ui de togpub 
 - fix artmod->usertags'],
 "22"=>['0131','- maintenance des commandes tabmods et menusJ du module artmod
-- ajout d\'une recherche imbriquée article-thèmes-articles dans un menu \'seek\', via les bubs (sera plus facile d\'amener les articles liés à un second ou troisième niveau de relations)']];
+- ajout d\'une recherche imbriquée article-thèmes-articles dans un menu \'seek\', via les bubs (sera plus facile d\'amener les articles liés à un second ou troisième niveau de relations)']]; ?>

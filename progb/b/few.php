@@ -60,7 +60,7 @@ return tagc('code','console',$d);}
 
 static function insrc($f){
 $bt=lj('popsav','popup_edit,com_insrc_x_'.ajx($f),pictxt('save','take it'));
-return divb($bt).textarea('insrc','',64,8);}
+return div($bt).textarea('insrc','',64,8);}
 
 static function progcode($d){$d=delbr($d,"\n");
 ini_set('highlight.comment','orange');
@@ -99,7 +99,7 @@ $ret.='</tr></table>';
 return $ret;}
 
 static function archives($cyear){
-$first=ma::firstartrq(); $ret='';
+$first=ma::oldestart(); $ret='';
 //$last=ma::lastartid();
 if(!$first)$first=0; 
 $first_year=date('y',$first); 

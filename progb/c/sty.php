@@ -145,7 +145,7 @@ $rt[]=msqbt('design',$qb.'_design_'.$desgn).' ';
 $rt[]=self::cssactbt('exit_design',pictxt('logout',nms(112)),'url','','');//'','','');
 if(prmb(5))$rt[]=picto('alert').helps('prmb5').' ';
 $rt[]=hlpbt('designcond');
-$ret=divb(implode('',$rt)); $rt=[];
+$ret=div(implode('',$rt)); $rt=[];
 $rt[]=lj('txtbox','popup_sty,chargesets','design:'.$desgn.'/clrset:'.$clrset).' ';
 $rt[]=self::cssactbt('backup','backup','self','','');//'','',''
 if(is_file(msql::url('design',$nod))){
@@ -158,7 +158,7 @@ if($_SESSION['desgn']!=$_SESSION['prma']['design'])
 $rt[]=self::cssactbt('save',nms(27),'','','').' ';
 $rt[]=spn('','','alertmsg');
 //$rt[]=self::cssactbt('build_css',nms(93),'','');//rebuild
-$ret.=divb(implode('',$rt)); $rt=[];
+$ret.=div(implode('',$rt)); $rt=[];
 $rt[]=self::cssactbt('new_from',nms(44),'url','');//url
 $rt[]=self::cssactbt('empty_design',nms(46),'self','');
 $rt[]=self::cssactbt('invert_clr',nms(115),'self','');
@@ -170,7 +170,7 @@ if($_SESSION['auth']>5){$r=msql::row('',$qb.'_design',$desgn);
 	elseif($desgname=='global')$make='make_global';
 	else $make='make_default';
 	$rt[]=self::cssactbt($make,$make,'','','');}
-$ret.=divb(implode('',$rt)); $rt=[];
+$ret.=div(implode('',$rt)); $rt=[];
 $rt[]=self::cssactbt('reset_default',nms(96).' design','self','');
 $rt[]=self::cssactbt('reset_clr',nms(96).' clr','self','');
 $rt[]=self::cssactbt('reset_global','global design','self','');
@@ -180,7 +180,7 @@ $rt[]=self::cssactbt('public_clr','classic clr','self','2');
 $rt[]=self::cssactbt('null_design','null','self','');
 $rt[]=self::cssactbt('null_clr','clr','self','2');
 $rt[]=lj('txtx','popup_fontface___1','@font-face');
-$ret.=divb(implode('',$rt)); $rt=[];
+$ret.=div(implode('',$rt)); $rt=[];
 $rt[]=self::cssactbt('append',nms(92).' defaults','self','');
 $rt[]=self::cssactbt('append_global',nms(92).' global','self','');
 $rt[]=self::cssactbt('inject_global',$lh[9],'self','');
@@ -189,8 +189,8 @@ $rt[]=self::cssactbt('displaycsstmp',$lh[11],'3','');
 $rt[]=lj('txtx','popup_sty,chargeclr','clrset').' ';
 $rt[]=btn('txtx',count($defs).' '.nms(117)).' ';
 $rt[]=btn('txtx',mkday(filemtime(msql::url('design',$nod)))).' ';
-$ret.=divb(implode('',$rt)).br();
-$ret.=divb(self::clrset_edit()).br();//colors
+$ret.=div(implode('',$rt)).br();
+$ret.=div(self::clrset_edit()).br();//colors
 if($defs)$ret.=self::design_edit($defs,$defsb,'',1).br();
 return $ret;}
 
@@ -305,7 +305,7 @@ $clr=msql::kv('design',nod('clrset_'.$ndc)); $nb=count($clr);
 $clrn=['','bkg','border','bloc','identity','active','art_bkg','art_txt','txt'];
 for($i=1;$i<=$nb;$i++){$name=$i.(isset($clrn[$i])?':'.$clrn[$i]:'');
 $bt=divs('background-color: #'.$clr[$i].';',$name.input('colorpickerField'.$i,$clr[$i],5));
-$ret.=divb($bt,'clrp','colorpick'.$i,'color:#'.invert_color($clr[$i],1));}
+$ret.=div($bt,'clrp','colorpick'.$i,'color:#'.invert_color($clr[$i],1));}
 return $ret.br().ljb('txtbox','SaveClr',$nb,nms(27)).divd('clrreponse','');}
 
 #editor
@@ -423,7 +423,7 @@ return $defs;}
 
 static function save_css_tst($r,$k,$va){
 $va=self::affect_rgba($va,getclrs()); $ret=divc('console',$va);
-$ret.=divb($va,$r[1],$r[0]).divc('clear','');
+$ret.=div($va,$r[1],$r[0]).divc('clear','');
 return $ret;}
 
 static function savcss($k,$c,$prm=[]){//facil_css//stylsav
@@ -548,7 +548,7 @@ $prp.=lj((isset($pp['fav'])?$csb:$csa),$go.'_fav'.(isset($pp['fav'])?'':1),'favs
 //render
 $max=$p*$no; $min=$max-$no; $ia=0; $rta=''; $rtb='';
 if($rc)foreach($rc as $k=>$v){$ia++; if($ia>=$min && $ia<$max && $v[0]){
-	$rta.='@font-face {'.self::css_ff($v[0]).'}'."\n"; $rtb.=preview_ff($k,$v,$c);}}
+	$rta.='@font-face {'.self::css_ff($v[0]).'}'."\n"; $rtb.=self::preview_ff($k,$v,$c);}}
 $ret.=head::csscode($rta).$mnu.$hlp.$siz.$prp.$srch.br().br();
 $ret.=input('ffwr',$_SESSION['ffstr']??'AaBbCcDdEe0123éà','44');
 $ret.=lj('txtx','ffwr_sesmake_ffwr__ffstr','set');
@@ -685,7 +685,7 @@ $rt['name']=self::facil_names($defs,$k);//classname
 $rt['tools']=self::facil_pos($defs,$k).$end;//pos
 //$ret.=divc('imgr',self::facil_pos($defs,$k));
 $ret.=tabs($rt,'csf'.$k);
-return divb($ret,'clear','','padding:10px; width:550px;');}
+return div($ret,'clear','','padding:10px; width:550px;');}
 
 static function form_edit_css($d){
 $ret=lj('','popup_cssedt,home__'.$d.'_330',picto('plus')).' ';

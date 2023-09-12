@@ -221,7 +221,7 @@ if($r)foreach($r as $k=>$v)if(is_img($v)){$bt=''; $f='img/'.$v; $fc='imgc/'.$v; 
 		$bt.=lj('popdel','pim'.$id.',img'.$id.'_sav,placeimdel__json_'.$id.'_'.ajx($v),picto('del'));
 		if(is_file($fc))[$w,$h]=getimagesize($fc); $tt='rebuild_mini: '.$w.'/'.$h;
 		$bt.=blj('popbt','btrb'.$id.'-'.$k,'sav,remini__okbt_'.ajx($v),picto('file-img'),att($tt));}
-	$ret.=divb($bt,'');}
+	$ret.=div($bt,'');}
 return scroll($r,$ret,12,'',240);}
 
 static function placeimtrk($f,$id){$ret=''; $fb=img::thumbname($f,72,72);
@@ -306,7 +306,7 @@ if($r)foreach($r as $k=>$v){$i++;
 	if($u)$btb.=lkt('small',$u,pictxt('url',domain($u)),att(preplink($u).' '.$suj));
 	$btb.=lj('',$idt.'_sav,batch___'.$kb.'_x',picto('del')).br();
 	$ret.=divc('small',$btb.$suj);}
-if($d!='in')$ret=divb($ret,'',$idt,'padding:2px; min-width:320px;');
+if($d!='in')$ret=div($ret,'',$idt,'padding:2px; min-width:320px;');
 return scroll($i,$ret,10);}
 
 static function slct_cat($id,$t,$n){//dropmenu_jb//catslct

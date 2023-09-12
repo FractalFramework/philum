@@ -1,5 +1,5 @@
-<?php //msql/program_credits
-$r=["_"=>['label','url','license','usage'],
+<?php 
+return ["_"=>['label','url','license','usage'],
 "1"=>['philum','http://philum.fr','GPL','CMS'],
 "2"=>['jQuery 1.7','http://jquery.com','MIT and GPL','css_builder'],
 "3"=>['ColorPicker','http://eyecon.ro','MIT and GPL','css_builder'],
@@ -13,4 +13,4 @@ $r=["_"=>['label','url','license','usage'],
 "11"=>['picol','http://picol.org','Creative Commons','icons'],
 "12"=>['thenounproject','http://thenounproject.com','CC BY 3.0','icons'],
 "13"=>['FontForge','http://fontforge.org/','revised BSD','éditeur typographique'],
-"14"=>['typo Philum','philum.fr','GPL','pictographie']];
+"14"=>['typo Philum','philum.fr','GPL','pictographie']]; ?>

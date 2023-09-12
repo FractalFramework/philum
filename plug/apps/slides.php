@@ -17,7 +17,7 @@ else $bt2=btn('grey',picto('after'));
 $bt=divc('',$bt1.$bt2);
 $ret=nl2br(stripslashes_b($v[0]??''));
 $cell=divs($ret,'margin:auto;');
-$ret=$bt.divb($cell,'book','','display:flex; min-height:300px; width:94%;');
+$ret=$bt.div($cell,'book','','display:flex; min-height:300px; width:94%;');
 return $ret;}
 
 static function build($p,$rid){if(!$p)$p=1;

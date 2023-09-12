@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1210
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['1001','- les popups slident dans l\'éditeur externe ;
 - compatibilité multifenêtrage de l\'éditeur msql ;
 - editmsql : l\'ajout d\'une table peut s\'inspirer de celle en cours (numéro de version incrémenté, en-têtes) ;
@@ -97,4 +97,4 @@ fin de l\'étape 2/3 de la réforme de l\'admin ;
 Apps permet de présenter les applications ou documents à présenter dans le lanceur du menu admin et celui du desktop ; '],
 "31"=>['1031','- réécriture du gestionnaire d\'enregistrement des meta (vieux de cinq ans) de façon à les éditer dans une popup (et supprimer toute un pavé de code) ;
 - les titres sont modifiés sitôt après l\'enregistrement des metas ;
-- Desktop : on peut classer les sous-modules dans des répertoires virtuels, afin de créer une structure de fichiers ;']];
+- Desktop : on peut classer les sous-modules dans des répertoires virtuels, afin de créer une structure de fichiers ;']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/helps_typos
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "30s"=>['Simplification des écritures classiques, pleins et déliers très accentués, post-romantique : banc public, théâtre, films muets'],
 "50s"=>['Début du matérialisme et de l\'individualisme, époque où l\'idée devient réalité, la ligne de base est matérialisée et la typo souvent écrasée et étirée, tout en conservant les variations des années 30, qui sont leur base classique : Chevrolet, Cadillac, Frigidère...'],
 "70s"=>['Expérimental, courbes omniprésentes, répétition des lignes, parallélismes et imbrication, comme si la typographie est libérée des règles de la typographie et découvre l\'infinité des variantes possibles : psychedelic, power flower...'],
@@ -32,4 +32,4 @@ $r=["_"=>['description'],
 "superfine"=>['variantes extra fines, cosmétiques, pointillées'],
 "trombone"=>['faites d\'un seul trait, parfois post-modernes'],
 "typewriter"=>['machines à écrire, défauts des galets, machines classiques, tâches d\'encre, usure, vieillement'],
-"pixel"=>['LCD, diodes, LED, oldschool']];
+"pixel"=>['LCD, diodes, LED, oldschool']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/connectors_codeline
-$r=["_"=>['value'],
+<?php 
+return ["_"=>['value'],
 "balise"=>['balise html spécifiant un ID et une classe : value|balise|id|class ; accepte les contenus vides'],
 "html"=>['balise'],
 "div"=>['balise div, params = attributs'],
@@ -22,4 +22,4 @@ $r=["_"=>['value'],
 "cut"=>['renvoie la partie située entre deux repères [abcdef|b/e:cut] (renvoie cd)'],
 "conn"=>['renvoie un connecteur [hello|b:conn]'],
 "plug"=>['renvoie un plug-in \'name\' (et sa fonction \'plug_name\') avec ses paramètres [login|register:plug]'],
-"core"=>['résultat d\'un algorithme du noyau']];
+"core"=>['résultat d\'un algorithme du noyau']]; ?>

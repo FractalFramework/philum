@@ -1,5 +1,5 @@
-<?php //edition_mimes
-$r=["_"=>['val0'],
+<?php 
+return ["_"=>['val0'],
 ".7z"=>['meet'],
 ".ai"=>['img'],
 ".bz3"=>['zip'],
@@ -129,4 +129,6 @@ $r=["_"=>['val0'],
 "ARTMOD"=>['submenu'],
 "TABMOD"=>['category'],
 "images"=>['img2'],
-"reviews"=>['tornado']];
+"reviews"=>['tornado'],
+"json"=>['file-json'],
+"jsonadm"=>['file-json']]; ?>

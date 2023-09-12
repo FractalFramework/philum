@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2005
-$r=["1"=>['0501','publication'],
+<?php 
+return ["1"=>['0501','publication'],
 "4"=>['0502','introduction de l\'app score, permet de créer des classements à partir de paramètres multiples, telles que les appréciations (like, poll, agree), les réactions (trkagree), le nombre et la portée des tags.'],
 "2"=>['0503','- ajout de rstr125 agree, approbation (+ ou -) d\'un article
 - ajout de rstr126 trkagree, approbation des commentaires
@@ -13,4 +13,4 @@ $r=["1"=>['0501','publication'],
 "7"=>['0507','- ajout du module same_tags : recherche d\'articles ayant des tags similaires (remplace cluster_tags, dans la rstr127)'],
 "8"=>['0526','- on a calé le temps de lecture d\'un article sur le même que Medium.com, 2000 signes par minute, au lieu de 1300.'],
 "9"=>['0529','- implémentation du gestionnaire d\'autorisation d\'envoyer des cookies, en respect de la loi made in fr.- - ajout de la table pub_iq (qdk) gestionnaire des préférences sur les cookies
-- patch pub_iq']];
+- patch pub_iq']]; ?>

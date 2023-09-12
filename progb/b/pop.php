@@ -45,7 +45,7 @@ if(auth(6) or $dev)$rt['dev']=popbub('dev','dev',$ic,$top,$hv);//dev
 $rt['fixit']=spn(' ','etc','fixtit');
 $chrono=round(microtime(1)-$st,3); 
 if(ses('dev'))$rt['chrono']=btj($chrono,'relj()','popbt');
-if(ses::r('er'))$rt['err']=divb(rdiv(ses::$er),'small');
+if(ses::r('er'))$rt['err']=div(div_r(ses::$er),'small');
 return $rt;}
 
 //poplinks
@@ -136,7 +136,7 @@ $div=spn($v,'twit panel',$rid,'display:none;');
 if($nl)return '['.$t.': '.$v.']';
 return ljb('','toggle_block',$rid,$t?$t:'(*)',atd('bt'.$rid)).$div;}
 
-static function toggle_div($d,$o,$nl=''){[$v,$t]=cprm($d);
+static function divtog($d,$o,$nl=''){[$v,$t]=cprm($d);
 if($o)$v=tagb('blockquote',$v); if($nl)return tagb('h4',$t).$v;
 return togbt($v,pictxt('lys',$t));}
 
@@ -224,7 +224,7 @@ return $ret;}
 static function columns($re,$o,$id='',$b=''){
 $ret=is_array($re)?implode('',$re):$re;
 if($o>10)$s='auto '.$o.'px;'; else $s=(is_numeric($o)?$o:3).' auto;';
-return divb($ret,'cols'.$b,$id,'columns:'.$s.'; column-gap:16px:');}
+return div($ret,'cols'.$b,$id,'columns:'.$s.'; column-gap:16px:');}
 
 #img
 static function art_img($d,$id='',$n=''){if(!$d)return;

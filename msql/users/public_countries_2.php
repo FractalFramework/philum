@@ -1,5 +1,5 @@
-<?php //msql/public_countries_2
-$r=["_"=>['country','OCDE 2011 Rate ','rank','CIA 2014 Rate ','rank'],
+<?php 
+return ["_"=>['country','OCDE 2011 Rate ','rank','CIA 2014 Rate ','rank'],
 "1"=>['World','8.30','','7.99',''],
 "2"=>[' Afghanistan','18.20','2','14.12','7'],
 "3"=>[' Albania','6.90','144','6.47','152'],
@@ -237,4 +237,4 @@ $r=["_"=>['country','OCDE 2011 Rate ','rank','CIA 2014 Rate ','rank'],
 "235"=>[' Turks and Caicos Islands (UK)','2.30','232','3.08','221'],
 "236"=>[' British Virgin Islands','3.50','222','4.93','190'],
 "237"=>[' U.S. Virgin Islands','7.40','126','8.24','91'],
-"238"=>[' Wallis and Futuna (France)','6.60','150','4.95','188']];
+"238"=>[' Wallis and Futuna (France)','6.60','150','4.95','188']]; ?>

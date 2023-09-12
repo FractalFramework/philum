@@ -11,8 +11,12 @@ $a=['À','Á','Â','Ã','Ä','Å','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','
 $b=['A','A','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y'];
 return str_replace($a,$b,$d);}
 
-static function normalize_alpha($d,$o=''){if(!$d)return;
-$r=[' ','-','&nbsp;',"'",'"','/',',',';',':','|','§','%','&','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','«','»']; if($o)unset($r[$o]); return str_replace($r,'',$d);}
+static function eradic_punct($d){
+$r=['/','.',',',';',':','|','§','%','&','$','#','_','!','+','=','?','\n','\\','~','(',')','[',']','{','}','«','»'];
+return str_replace($r,'',$d);}
+
+static function normalize_alpha($d,$o=''){if(!$d)return; $d=self::eradic_punct($d);
+if($o)$d=str_replace([' ','&nbsp;','-',"'",'"'],'',$d); return $d;}
 
 static function normalize_ext($d){if(!$d)return;
 return str_replace(['.JPG','.JPEG','.jpeg','.GIF','.PNG'],['.jpg','.jpg','.jpg','.gif','.png'],$d);}
@@ -31,7 +35,7 @@ return $ret;}
 
 #filters
 static function hardurl($d){
-$d=self::eradic_acc($d); $d=mb_strtolower($d); $d=str_replace("&nbsp;",' ',$d); $d=hed($d);
+$d=self::eradic_acc($d); $d=mb_strtolower($d); $d=str_replace("&nbsp;",' ',$d); $d=hed($d); if(!$d)return;
 $r=['/','«','»',',','.',';',':','!','?','|','§','%','&','$','#','_','+','=','\n','\\','~','(',')','[',']','{','}'];
 $d=str_replace($r,'',$d);
 $d=str_replace([' ',"'",'"'],'-',trim($d));

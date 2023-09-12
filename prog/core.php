@@ -31,7 +31,7 @@ return $ret;}
 function search_btn($o=''){
 $id='srch'; $t=nms(24); $s=12; $j=atj('SearchT',$id);
 $ret=input($id,'',12,['type'=>'search','onclick'=>$j,'onkeyup'=>$j,'oncontextmenu'=>$j,'role'=>'search','placeholder'=>$t]);
-return $o?$ret:divb($ret,'search','ada');}
+return $o?$ret:div($ret,'search','ada');}
 
 #edit
 function connbt($id,$o=''){$ret='';
@@ -50,7 +50,7 @@ return btn('nbp',$ret);}
 
 function editarea($rid,$d='',$w=80,$h=16,$js=[],$o=''){$ret=connbt($rid,$o);
 //$ret.=lj('','popup_tracks,preview_'.$rid,picto('view'),att(nms(65))).' ';;
-$ret.=divb(textarea($rid,$d,$w,$h,['class'=>'console']+$js));
+$ret.=div(textarea($rid,$d,$w,$h,['class'=>'console']+$js));
 return $ret;}
 
 #msql
@@ -110,7 +110,7 @@ function bubjs($v,$t,$c=''){return tag('a',['onmouseover'=>'bubjs(this,1)','onmo
 function bubj($j,$t,$c=''){return tag('a',['onclick'=>'sj(this)','data-j'=>'popup_'.$j,'onmouseover'=>'bubj(this,1)','onmouseout'=>'bubj(this,0)','data-ja'=>$j,'class'=>$c],$t);}
 function bubj2($tx,$j,$t,$c=''){return tag('a',['onclick'=>'sj(this)','data-j'=>'popup_'.$j,'onmouseover'=>'bubj(this,1)','onmouseout'=>'bubj(this,0)','data-tx'=>$tx,'class'=>$c],$t);}
 function togbt($v,$t){$id=randid('tg'); $ret=ljb('','toggle_block',$id,$t,atd('bt'.$id));
-$ret.=divb($v,'',$id,'display:none;'); return $ret;}
+$ret.=div($v,'',$id,'display:none;'); return $ret;}
 function togbth($v,$t){$id=randid('tg');
 $ret=ljb('','toggle_hidden',$id,$t,atd('bt'.$id));
 $ret.=btp(atd($id),'').hidden('hid'.$id,htmlentities($v));
@@ -233,8 +233,8 @@ if(is_array($r))foreach($r as $k=>$v){$td=''; $i++;
 	if($td)$ret.=bts($cr,$td);}
 return divc('small',$ret);}
 
-function rdiv($r){$rt=[];
-foreach($r as $k=>$v)$rt[]=divb($v);
+function div_r($r){$rt=[];
+foreach($r as $k=>$v)$rt[]=div($v);
 return implode('',$rt);}
 
 function playr($r,$c='',$o=''){$ret='';
@@ -244,7 +244,7 @@ if(is_array($r))foreach($r as $k=>$v){
 return ul($ret,$c?'on':'off');}
 
 function tree($r,$c='',$o=''){
-return divb(playr($r,$c,$o),'topology');}
+return div(playr($r,$c,$o),'topology');}
 
 //tabs
 function tabs($r,$ud='',$c=''){
@@ -255,8 +255,8 @@ foreach($r as $k=>$v){$b++; if(is_array($v))$v=join('',$v);
 	$dsp=$b==$ib?'block':'none'; $cs=$b==$ib?'txtaa':'txtab';
 	$menu.=ljb($cs,'toggle_tab',[$id,$b],$k).$sp;
 	if(is_array($v))$v=divc('list',onxcols($v,3,''));//implode(' ',$v);
-	$divs.=divb($v,$c,'div'.$id.$b,'display:'.$dsp);}
-return divb($menu,'','mnuab'.$id,'margin-bottom:4px').$divs;}
+	$divs.=div($v,$c,'div'.$id.$b,'display:'.$dsp);}
+return div($menu,'','mnuab'.$id,'margin-bottom:4px').$divs;}
 
 #conn
 function embed_p($d){
@@ -336,7 +336,7 @@ function flags(){return msql::kn('system','edition_flags_8',2,1);}
 
 //mimes
 function msqmimes(){return msql::kv('system','edition_mimes');}
-function mime($d,$o='less'){$r=sesmk('msqmimes','',0); return $r[$d]??$o;}
+function mime($d,$o='less'){$r=sesmk('msqmimes','',1); return $r[$d]??$o;}
 function mimes($d,$t='',$sz=''){$ta=mime($d,$t);
 if($ta && $ta!='less')$t=$ta; if(!$t)$t='file'; if($t)return picto($t,$sz);}
 
@@ -457,7 +457,8 @@ function forbidden_img($nm){$r=explode(' ',prmb(21));
 if($r)foreach($r as $v)if($v && strpos($nm,$v)!==false)return false; return $nm;}
 function antipuces($v){if(forbidden_img($v)!==false && strpos($v,'puce')===false)return $v;}
 function opcache($d){if(!ses::$local)opcache_invalidate($d);}
-function rm($f){if(!is_dir($f) && auth(6)){unlink($f); json::add('','rmim',[$f=>hostname()]);}}
+function unlinkb($f){$fb='_backup/imtrash/'.$f; mkdir_r($fb); copy($f,$fb); unlink($f);}
+function rm($f){if(!is_dir($f) && boot::auth()){unlinkb($f); json::add('','rmim',[$f,hostname(),mkday()]);}}
 
 function alert($d){if(ses('dev'))head::add('jscode',sj('popup_alert___'.ajx($d))); geta('er',$d);}
 function patch_replace($bs,$in,$wh,$repl){$rq=sql('id',$bs,'q',$in.'="'.$wh.'"');

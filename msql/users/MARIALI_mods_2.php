@@ -1,5 +1,5 @@
-<?php //msql/MARIALI_mods_2
-$r=["_"=>['block','module','param','title','condition','command','option','cache','hide','template','nobr','div','priv'],
+<?php 
+return ["_"=>['block','module','param','title','condition','command','option','cache','hide','template','nobr','div','priv'],
 "1"=>['system','blocks','banner menu  content footer ','','','','','','','','','',''],
 "2"=>['system','design','2','','','','','','','','','',''],
 "3"=>['system','content','800','','','','','','','','','',''],
@@ -34,4 +34,4 @@ lié par:related_by','','','','160','','1','','','',''],
 "31"=>['footer','chrono','','','','','','','','','1','',''],
 "32"=>['footer','log-out','','','','','','','1','','1','',''],
 "33"=>['footer','contact','','','','','','1','','','1','',''],
-"34"=>['newsletter','articles','nbdays=7~preview=false','','','','','','','','','','']];
+"34"=>['newsletter','articles','nbdays=7~preview=false','','','','','','','','','','']]; ?>

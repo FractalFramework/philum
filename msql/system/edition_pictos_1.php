@@ -1,5 +1,5 @@
-<?php //msql/edition_pictos_1
-$r=["close"=>['002a'],
+<?php 
+return ["close"=>['002a'],
 "plus"=>['002b'],
 "builders"=>['002c'],
 "forbidden"=>['002d'],
@@ -520,4 +520,4 @@ $r=["close"=>['002a'],
 "asia"=>['040c'],
 "power"=>['040d'],
 "indice"=>['040e'],
-"joker"=>['040f']];
+"joker"=>['040f']]; ?>

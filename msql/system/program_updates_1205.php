@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1205
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0501','mise à jour de toutes les aides pour les 219 functions publiques du noyau (base program_core)'],
 "2"=>['0502','- introduction du paramètre \'auto_member\' : permet de déléguer des privilèges au visiteur (de 1 à 4) et faire de lui un membre automatiquement au moment où il poste un article ;
 - les privilèges ont été un peu réorganisés pour que :
@@ -127,4 +127,4 @@ de façon à renvoyer des résultats comparables en utilisant ou non les balises
 "31"=>['0530','- finalisation de la jonction entre l\'admin msql et msql dans l\'admin : l\'édition peut se faire à la volée en ajax (ça marche !) ; 
 - ajout de la restriction 48 : \'check_update\' pour empêcher l\'appel du numéro de version ;
 - confort d\'utilisation du batch : popups éphémères, égronomie ;
-- les dates sont supprimées des titres ;']];
+- les dates sont supprimées des titres ;']]; ?>

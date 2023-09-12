@@ -1,5 +1,5 @@
-<?php //msql/public_design_95
-$r=["1"=>['','','@font-face','','','','font-family: \'newsnet\'; src: url(\'/fonts/newsnet.woff2\') format(\'woff2\'), url(\'/fonts/newsnet.woff\') format(\'woff\'), url(\'/fonts/newsnet.svg#nn\') format(\'svg\');'],
+<?php 
+return ["1"=>['','','@font-face','','','','font-family: \'newsnet\'; src: url(\'/fonts/newsnet.woff2\') format(\'woff2\'), url(\'/fonts/newsnet.woff\') format(\'woff\'), url(\'/fonts/newsnet.svg#nn\') format(\'svg\');'],
 "2"=>['','','a','||','||','||',''],
 "3"=>['','','body','8||','1||','||','font-family:sans-serif;'],
 "4"=>['','','a:active','||','||','||','outline:none;'],
@@ -301,4 +301,4 @@ $r=["1"=>['','','@font-face','','','','font-family: \'newsnet\'; src: url(\'/fon
 "300"=>['','','@media only screen and (min-width: 980px)','','','','#bub li a{padding:2px 2px 1px; }#page{max-width:920px; }#menu li a{font-size:normal; }#artmod{display:block; }#rightbar{display:block; }.admnu{height:32px; }.philum {font-size:22px; }input{font-size:normal; }.justy{
 }'],
 "301"=>['','','@media only screen and (min-width: 1400px)','','','',''],
-"302"=>['','','@media only screen and (max-width: 640px)','','','','#page{margin:0; }article{margin:0; }.thumb{width:100%; margin:0 0 5px; float:none; }.justy{text-align:left; }.grid-art{display:block; }.panbkg{height:200px; }.pantxt{font-size:medium; }']];
+"302"=>['','','@media only screen and (max-width: 640px)','','','','#page{margin:0; }article{margin:0; }.thumb{width:100%; margin:0 0 5px; float:none; }.justy{text-align:left; }.grid-art{display:block; }.panbkg{height:200px; }.pantxt{font-size:medium; }']]; ?>

@@ -51,7 +51,7 @@ if(strlen($idm)==6 && !$idx){$kb=ma::popart($k,$k);
 	elseif($imdb=='not'){if($ob)$bt=self::reimportim($k); else
 		$bt=lj('popdel','bt'.$idm.'_adimg,reimportim__3_'.$k,picto('cycle'));}
 if($imdb=='not' or $imex=='not')$rf[]=[$kb,$va,$imdb,$imex,btd('bt'.$idm,$bt)];}}
-$ret=divb('rollbacks: '.count(self::$rc['rollback']).' - reimport: '.count(self::$rc['reimport']),'frame-blue');
+$ret=div('rollbacks: '.count(self::$rc['rollback']).' - reimport: '.count(self::$rc['reimport']),'frame-blue');
 $ret.=tabler($rf,1);
 return $ret;}
 

@@ -51,7 +51,7 @@ if($cac)$rt1.=blj('popbt','srcac','search,rech___'.$vrf,picto('del'),att('del ca
 if($rech && strpos($rech,','))$api='search:'.$rech; else $api='search:'.$rech.',cat:'.str_replace('+','|',$cat).',tag:'.str_replace('+','|',$tag);
 $rt1.=toggle('txtx','apicom_apicom,build___'.ajx($api).'_'.$rid,pictxt('atom','Api')).' ';
 if($load)$rt1.=btn('txtnoir',nbof(count($load),1));//if(auth(6))$rt1.=nbof(array_sum_r($load),16);
-$ret=divb($rt1);
+$ret=div($rt1);
 //2
 $bt=checkact('srord',$ord,nms(165)).' ';
 $bt.=checkact('srtit',$tit,nms(72)).' ';
@@ -71,7 +71,7 @@ $rt2.=slct_cases('srpri','pri',$pri,'','stars').' ';
 if(auth(4))$rt2.=togbub('meta,tagall*slct',ajx($vrf).'_'.ajx($rech),picto('paste')).' ';
 if(auth(4))$rt2.=lj('','popup_searched,home__3_'.ajx($rech),picto('enquiry'));
 if($nboc=ses::$nb)$rt2.=btn('txtbox',nbof($nboc,16));
-$ret.=divb($rt2);
+$ret.=div($rt2);
 //3
 if(rstr(3) && !isset(self::$rp['nodig']))$rt3=self::dig($dig,$rid); else $rt3.=hidden('srdig','');//days//ma::maxdays()
 if(!isset($_SESSION['rstr62']))$_SESSION['rstr62']=rstr(62);
@@ -80,8 +80,8 @@ if(rstr(3))$rt3.=togses('rstr62',pictit('after',nms(134),16)).' ';//dig
 if($rech)$rt3.=lh('search/'.$rech.($dig?'/'.$dig:''),picto('link',16)).' ';//.$urg
 if(ses('qb')=='ummo'){$rt3.=lj('popbt','popup_umvoc,home___'.ajx($rech).'_1','vocables');//bdvoc
 	$rt3.=lj('popbt','popup_umrec,home__3_'.ajx($rech),'twits');}
-	$ret.=divb($rt3);
-$ret.=divb(self::pages($tot,$rid));//pages
+	$ret.=div($rt3);
+$ret.=div(self::pages($tot,$rid));//pages
 return $ret;}
 
 //motor
@@ -130,7 +130,7 @@ if(!$tit && $rch){
 	$sqin['msg']='natural join '.$qdm;
 	if($ft)$sqnd['msg']=$ft;
 	elseif($seg)$sqnd['msg']=$qdm.'.msg REGEXP "[[:<:]]'.$rch.'[[:>:]]"';
-	else $sqnd['msg']=$qdm.'.msg like "%'.$rch.'%" ';}
+	else $sqnd['msg']=$qdm.'.msg like "%'.html_entity_decode($rch).'%" ';}//COLLATE utf8mb4_unicode_ci
 if($cat){
 	$rcat=explode('~',$cat); $rca=[]; $rcb=[];
 	foreach($rcat as $v){$ad=substr($v,0,1);
@@ -183,11 +183,11 @@ if(isset($_SESSION['recache'][$p])){$_SESSION['recache'][$p]=[]; return 'x';}
 elseif(isset($_SESSION['recache']))$_SESSION['recache']=[]; return 'xx';}
 
 static function good_rech($d){if(!$d)return; $d=str::clean_acc($d);//$d=str::utflatindecode($d); 
-$d=str_replace("&nbsp;",' ',$d); $d=strip_tags($d); $d=stripslashes($d); return trim($d);}
+$d=str_replace("&nbsp;",' ',$d); $d=strip_tags($d); $d=stripslashes($d); return trim(urldecode($d));}
 
 static function home($d0,$n0,$prm=[]){chrono(); $load=[]; $ret='';
 [$d,$n,$b,$o,$t,$sg,$pg,$cat,$tag,$lim,$lng,$pri,$len]=arr($prm,13); $d=$d?$d:$d0; $n=$n?$n:$n0;
-$rech=self::good_rech($d); $pg=$pg?$pg:1; if(!$n)$n=ses('nbj'); $cac=''; $nb=0;
+$rech=self::good_rech($d); $pg=$pg?$pg:1; if(!$n)$n=ses('nbj'); $cac=''; $nb=0; //eco(htmlentities($d));
 if($lim=='-')$lim=''; if($lng=='-')$lng=''; if($pri=='-')$pri=''; if($len=='-')$len='';
 geta('search',$rech); geta('page',$pg); ses('rech',$rech);
 self::$rp=['rech'=>$rech,'dig'=>$n,'bool'=>$b,'ord'=>$o,'titles'=>$t,'seg'=>$sg,'page'=>$pg,'cat'=>$cat,'tag'=>$tag,'lim'=>$lim,'lng'=>$lng,'pri'=>$pri,'len'=>$len];

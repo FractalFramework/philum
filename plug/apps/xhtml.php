@@ -63,7 +63,7 @@ return $ret;}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o); $ret='';
-if($o=='c2x')$ret=divb(conb::parse($p,'conn2xhtml',$o));
+if($o=='c2x')$ret=div(conb::parse($p,'conn2xhtml',$o));
 if($o=='x2c')$ret=self::xhtml2conn($p);
 return eco($ret,1);}
 

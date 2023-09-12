@@ -1,5 +1,5 @@
-<?php //msql/helps_newsletter
-$r=["_"=>['txt'],
+<?php 
+return ["_"=>['txt'],
 "register"=>['register to the newsletter'],
 "see_newsletter"=>['actually sent newsletter'],
 "answer_success"=>['a mail for confirmation have been sent'],
@@ -13,4 +13,4 @@ $r=["_"=>['txt'],
 "unregister"=>['Unsubscribe'],
 "unregister_success"=>['Your mail have been deleted'],
 "adios_mail"=>['clic the link to confirm'],
-"uns_mail"=>['mail for unsubscribe sent to']];
+"uns_mail"=>['mail for unsubscribe sent to']]; ?>

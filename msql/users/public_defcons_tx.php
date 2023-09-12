@@ -1,5 +1,5 @@
-<?php //public_defcons_tx
-$r=["1"=>['entry-content::'],
+<?php 
+return ["1"=>['entry-content::'],
 "2"=>['entry::'],
 "3"=>['texte::'],
 "4"=>['contenuArticle::'],

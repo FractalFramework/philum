@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1502
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0201','publication'],
 "2"=>['0202','- mise au rebut des antiques validateurs de chemins
 - la langue de larticle est signalée quand elle est différente de la langue en cours'],
@@ -38,4 +38,4 @@ $r=["_"=>['date','text'],
 "24"=>['0226','- correctifs select_j (le protocole se simplifie)
 - fix (petit) pb de réaffichage après save module
 - qq correctifs nouveau protocole conditionnel'],
-"25"=>['0228','- finder : ajout du support dimport dimage depuis son url',' dans le dossier en cours']];
+"25"=>['0228','- finder : ajout du support dimport dimage depuis son url',' dans le dossier en cours']]; ?>

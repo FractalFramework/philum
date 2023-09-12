@@ -1,5 +1,5 @@
-<?php //msql/connectors_basic
-$r=["_"=>['type','param'],
+<?php 
+return ["_"=>['type','param'],
 "conn"=>['embedslct','[\',\']'],
 "url"=>['embed',''],
 "img"=>['embed',''],
@@ -32,4 +32,4 @@ $r=["_"=>['type','param'],
 "delconn"=>['conn','_delconn'],
 "findconn"=>['autoslct','txtarea'],
 "del"=>['conn','_del'],
-"nl"=>['insert','n']];
+"nl"=>['insert','n']]; ?>

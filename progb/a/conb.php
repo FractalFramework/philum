@@ -28,7 +28,7 @@ if($in!==false){
 		'corrfastb'=>self::corrfastb($mid,$op),
 		'stripconn'=>self::stripconn($mid,$op),
 		'striptw'=>self::striptw($mid,$op),
-		'clpreview'=>clpreview($mid),
+		//'clpreview'=>adm::clpreview($mid),
 		'delconn'=>self::delconn($mid),
 		'importim'=>self::importim($mid,$op),
 		'extractimg'=>self::extractimg($mid,$op),
@@ -88,7 +88,7 @@ elseif($op=='webp2jpg'){$id=get('read'); $xt=is_img($p);
 	if($xt=='.webp' && $id)return conn::webp2jpg($p,$id);}
 elseif($op=='forcewebp2jpg'){$id=get('read'); $xt=is_img($p);
 	if($xt){$c=read_file('img/'.$p); if(strpos($c,'WEBP') or strpos($c,'JFIF')){
-		$res=img::webp2jpg($p,$id); return conn::mkimg($b,3,920,$id,'');}}}
+		$res=img::webp2jpg($p,$id); return conn::mkimg($p,3,920,$id,'');}}}
 elseif($op=='stripimg'){if(!is_img($p))return '['.$p.']';}
 elseif($op=='stripvideo'){if($c==':video')return '['.$p.'|1:video]';}
 elseif($op=='striplink'){
@@ -195,10 +195,10 @@ $ret=match($c){
 ':picto'=>picto($d),
 ':oomo'=>oomo($d),
 ':msql'=>mk::msqcall($d,'',''),
-':popimg'=>mk::mini_d($d),
+':popimg'=>mk::mini_d($d,$b,''),
 ':quote'=>mk::quote2($d,$c),
 ':lang'=>mk::translate($d,3),
-':toggle'=>pop::toggle_div($d,0,''),
+':toggle'=>pop::divtog($d,0,''),
 ':callquote'=>mk::callquote($d,$b,''),
 ':umrec'=>umrec::callint($d,''),
 ':caviar'=>mk::caviar($d),
@@ -422,7 +422,7 @@ if(!$ret)$ret=match($c){
 ':url'=>lka($p,$o?$o:preplink($p)),
 ':hurl'=>lh($p,$o?$o:preplink($p)),
 ':jurl'=>lj('',$p,$o),
-':link'=>md::special_link($p.'|'.$o),
+//':link'=>md::special_link($p.'|'.$o),
 ':anchor'=>lkn($p),
 ':date'=>mkday(is_numeric($o)?$o:'',$p),
 ':title'=>ma::suj_of_id($p),
@@ -459,7 +459,7 @@ static function home($p,$o){
 $rid='plg'.randid();
 $j=$rid.'_conb,calli_inp'.$rid.',chk'.$rid;
 $js=['onkeyup'=>sj($j),'onclick'=>sj($j)];
-$bt=divb(checkbox_j('chk'.$rid,'','template'));
+$bt=div(checkbox_j('chk'.$rid,'','template'));
 $bt.=editarea('inp'.$rid,$p,54,8,$js,1);
 $ret=self::calli($p,$o);
 return $bt.divd($rid,$ret);}

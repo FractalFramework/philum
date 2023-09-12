@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1905
-$r=["1"=>['0501','publication'],
+<?php 
+return ["1"=>['0501','publication'],
 "2"=>['0503','mise en conformité de  l\'ensemble du logiciel en vue de php7 (centaine de changements, mise à jour critique)
 - introduction d\'une série de fonctions de FractalFramework, propres aux gestionnaires de validation de variables et de tableaux'],
 "3"=>['0504','phase 2 de la mise en conformité de l\'ensemble du logiciel en vue de php7 (processus ajax)'],
@@ -40,4 +40,4 @@ $r=["1"=>['0501','publication'],
 "23"=>['0531','- ajout des typos modernes de new york times qui sont vraiment pas mal (imperial, cheltenham et frankiln)
 - les grands titres de page passe en h1 (au lieu de h2), avec révision des css global et admin
 - encore qq correctifs de notices php7.3.5 
-- révision du système de fabrication de pictogrammes']];
+- révision du système de fabrication de pictogrammes']]; ?>

@@ -14,7 +14,7 @@ self::send_mail('html',$to,$suj,$msg,$from?$from:hostname(),$htacc);
 return btn('popbt',nms(34).' '.nms(79).' '.nms(36).': '.$to);}
 else return btn('popdel','error:'.$to);}
 
-static function slct($id){$r=mail_mails(); $ret='';
+static function slct($id){$r=self::datas(); $ret='';
 if($_SESSION['auth']<3)$r=[$_SESSION['qbin']['adminmail']=>1];
 if($r){ksort($r); foreach($r as $k=>$v){
 	$ret.=ljb('txtx','jumpvalue',[$id,$k,1],strto($k,'@')).' ';}
@@ -29,8 +29,8 @@ $ret.=input('vmfrom'.$id,24).br();}
 if(auth(4))$ret.=lj('txtbox','popup_mails,slct_vmto'.$id,nms(36));
 else $ret.=btn('txtx',nms(36));
 $ret.=inpmail('vmto'.$id,'to');
-$ret.=divb(inpmail('vmsuj'.$id,'email'));
-$ret.=divb(textarea('vmsg'.$id,'',44,2));
+$ret.=div(inpmail('vmsuj'.$id,'email'));
+$ret.=div(textarea('vmsg'.$id,'',44,2));
 return divd('vsd'.$id,$ret);}
 
 //send track

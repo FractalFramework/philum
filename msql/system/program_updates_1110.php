@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1110
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['111001','le bouton \'mod\' dans user_menus permet d\'utiliser une autre table de modules (qui peut pointer vers un autre css). ex: \'mod|2\' peut renvoyer un template pour les GSM'],
 "2"=>['111004','la feuille utils.js est loadée sans condition ;
 augmentation de l\'imprégnation des nominations ainsi rendues relatives (poésie geek)'],
@@ -30,4 +30,4 @@ et si l\'image est plus petite que la taille demandée dans le cadre d\'un \'ins
 - nombreux nettoyages et affinements'],
 "17"=>['111020','- ajout d\'un bouton \'+\' pour ajouter des articles des flux rss dans le Batch
 - amélioration support caractères spéciaux dans les transactions javascript ;'],
-"18"=>['111020','- ajout du support \'save_all\' dans le batch_process : les articles ajoutés au batch sont importés à la chaîne, dans la section \'public\' et en mode non publié.']];
+"18"=>['111020','- ajout du support \'save_all\' dans le batch_process : les articles ajoutés au batch sont importés à la chaîne, dans la section \'public\' et en mode non publié.']]; ?>

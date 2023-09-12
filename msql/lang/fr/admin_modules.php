@@ -1,5 +1,5 @@
-<?php //admin_modules
-$r=["_"=>['description','param','option','command'],
+<?php 
+return ["_"=>['description','param','option','command'],
 "All"=>['Tous les articles','Donner un titre','prévisualisation : 1,2,3,auto',''],
 "LOAD"=>['Composant principal qui reçoit un déroulé d\'articles ou un article entier','','prévisualisation :1,2,3,auto','ordre des articles'],
 "BLOCK"=>['Appelle un Bloc de modules','nom du bloc de modules','',''],
@@ -187,4 +187,4 @@ ex: tag:classe','',''],
 - cat-public : articles dans \'public\' ;
 - cat-1 : catégorie en cours','',''],
 "microarts"=>['micro articles avec un seul champ et la date','nom du thread','',''],
-"vacuum"=>['ouvre un article du web via le moteur Vacuum','url','','']];
+"vacuum"=>['ouvre un article du web via le moteur Vacuum','url','','']]; ?>

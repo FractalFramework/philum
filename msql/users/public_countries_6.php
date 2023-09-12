@@ -1,5 +1,5 @@
-<?php //msql/public_countries_6
-$r=["_"=>['pays','natalité','année'],
+<?php 
+return ["_"=>['pays','natalité','année'],
 "1"=>['Monde','19,14 (2,47 enfants par femme)','2012 est.'],
 "2"=>['Niger','49,62','2008 est.'],
 "3"=>['Mali','49,38','2008 est.'],
@@ -226,4 +226,4 @@ $r=["_"=>['pays','natalité','année'],
 "224"=>['Italie','8,54','2007 est.'],
 "225"=>['Andorre','8,45','2007 est.'],
 "226"=>['Allemagne','8,20','2007 est.'],
-"227"=>['Japon','8,10','2007 est.']];
+"227"=>['Japon','8,10','2007 est.']]; ?>

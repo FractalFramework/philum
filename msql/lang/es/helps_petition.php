@@ -1,5 +1,5 @@
-<?php //msql/helps_petition
-$r=["_"=>['txt'],
+<?php 
+return ["_"=>['txt'],
 "confirm_before"=>['You will receive a mail :
 Call the link to confirmate'],
 "confirm_mail"=>['Hello _NAME,
@@ -13,4 +13,4 @@ To validate the signature, please call this link :
 "sign"=>['Sign the petition'],
 "actually"=>['Actually _NB signatures'],
 "entries"=>['name,mail,web,city,country'],
-"1"=>['']];
+"1"=>['']]; ?>

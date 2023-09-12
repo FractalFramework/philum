@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2208
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0801','publication'],
 "2"=>['0801','- fix digger \'all\' (php8.1.8 estime les strings comme des nombres infinis)
 - fix notices lors de l\'usage du desktop
@@ -26,4 +26,4 @@ $r=["_"=>['date','text'],
 - mise en conformité de sqldel avec fractal
 - mise en conformité de sql_inner avec fractal
 - déplacement des objets sql dans leur classe dédiée (inusités)
-- remplacement des fonction antiques insert, update, delete par leur nouveaux équivalents conformes (meilleure sécurité)']];
+- remplacement des fonction antiques insert, update, delete par leur nouveaux équivalents conformes (meilleure sécurité)']]; ?>

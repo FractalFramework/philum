@@ -1,5 +1,5 @@
-<?php //msql/edition_ascii_8
-$r=["_"=>['col_1','val2'],
+<?php 
+return ["_"=>['col_1','val2'],
 "1"=>['119808','script bold'],
 "2"=>['119860','script italic'],
 "3"=>['119964','script bold italic'],
@@ -34,4 +34,4 @@ $r=["_"=>['col_1','val2'],
 "33"=>['9312','nb circle'],
 "32"=>['10241','dots'],
 "34"=>['128592','dingbats'],
-"35"=>['9484','struct']];
+"35"=>['9484','struct']]; ?>

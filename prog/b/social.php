@@ -97,7 +97,7 @@ if(rstr(58))$ret.=lj('','popup_usg,editbrut___'.$id,picto('conn'));
 if(rstr(141))$ret.=lj('','pagup_book,read__css_'.$id.'__1',picto('book')).' ';
 //if(!$rst[155])$ret.=btj(picto('input'),atj('dock',$id)).' ';
 if(!$rst[155])$ret.=self::edt($id,'dock',$rf['dock']).' ';
-if(self::rstopt($rst[106],$ro['bckp']))$ret.=divb(art::reviews($id,$ro['review']));//156
+if(self::rstopt($rst[106],$ro['bckp']))$ret.=div(art::reviews($id,$ro['review']));//156
 return $ret;}
 
 static function call($id,$prw){

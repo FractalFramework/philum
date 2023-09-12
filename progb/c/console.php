@@ -100,7 +100,7 @@ if($p && !is_numeric($p))return divd('mdls'.$p,self::block($p,1));
 $ret=self::select_mods_m();//mods
 if(auth(6))$ret.=self::backup_console_bt();
 $ret.=self::see_conds_b();//conditions
-$ret.=divb(self::console_nav()).divc('clear','');
+$ret.=div(self::console_nav()).divc('clear','');
 return $ret;}
 
 #actions

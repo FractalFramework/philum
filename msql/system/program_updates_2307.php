@@ -1,5 +1,5 @@
-<?php //program_updates_2307
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0701','publication'],
 "2"=>['0701','- abandon progressif du templater de conb au profit de vue : l\'ancien est le tmp0, tmp1 est l\'ancien avec les nouveaux dispositifs, tmp2 est celui sélectionné qui utilise vue au lieu de conb, et tmp3 est le nouveau système de template pas plus rapide que vue, mais plus facilement éditable, qui a encore besoin de maturer.- putfile se substitue à write_file pour ajouter un lock durant l\'écriture, qui causait des problèmes aux tables msql lourdes et très actives'],
 "3"=>['0702','- retouches nouveaux templates

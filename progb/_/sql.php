@@ -173,7 +173,7 @@ static function rename($b,$bb){self::qr('rename table '.$b.' to '.$bb.';');}
 static function cols($b){return self::call('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from INFORMATION_SCHEMA.COLUMNS where table_name="'.db($b).'"','rr');}
 
 static function replace($b,$c,$a,$ab){
-return qr('update '.db($b).' set '.$c.'=REPLACE('.$c.',"'.$a.'","'.ab.'");');}
+return qr('update '.db($b).' set '.$c.'=REPLACE('.$c.',"'.$a.'","'.$b.'");');}
 
 static function optimize($db){$b=db($db); 
 self::qr('rename table '.$b.' to '.$b.'a;');

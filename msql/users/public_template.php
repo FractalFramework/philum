@@ -1,5 +1,5 @@
-<?php //public_template
-$r=["_"=>['code'],
+<?php 
+return ["_"=>['code'],
 "gsm"=>['[_ID:anchor] [_EDIT|[text-align:right;:style]:div] [_RECH|txtred:css][_ARTEDIT|[reponse_ID:id]:div] 
 [_BACK|txtx:css] [Par: _AUTHOR|txtsmall:css]
 [
@@ -29,4 +29,4 @@ _THUMB[_PRICE:div][_ADD2CART|[imgr txtsmall:class]:div]
 "pubart"=>['[_CAT|txtx:css] [_DATE _TAG|txtsmall2:css]
 [[_IMG1|44/44:thumb]|[float:left:style]:div][[_URL|_SUJ:url]|div||:balise][:clear]'],
 "panart"=>['[[[_AUTEURS|[small:class]:div][_URL|_SUJ:url]|[panart:class]:div]
-|[background:url(/img/_IMG1) center; background-size:cover; margin:10px 0;:style]:div]']];
+|[background:url(/img/_IMG1) center; background-size:cover; margin:10px 0;:style]:div]']]; ?>

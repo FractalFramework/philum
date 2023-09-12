@@ -64,6 +64,6 @@ $bt.=lj('popsav',$j,'exec');
 $ret=head::jscode(self::js());
 $sj=atjr('SaveJtim',[$j,1000]); //$onk=atjr('autocomp','codarea');
 $ret.=textarea('codarea',$p?$p:'$d=\'hello\';',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);
-return $bt.divb(divc('col1',$ret).divb('','col2 scroll',$rid),'grid-pad','','min-width:640px');}
+return $bt.div(divc('col1',$ret).div('','col2 scroll',$rid),'grid-pad','','min-width:640px');}
 }
 ?>

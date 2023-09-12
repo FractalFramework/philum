@@ -75,7 +75,7 @@ function tag($b,$p,$d){return '<'.$b.atr($p).'>'.$d.'</'.$b.'>';}
 function taga($b,$p){return '<'.$b.atr($p).' />';}
 function tagb($b,$d){return '<'.$b.'>'.$d.'</'.$b.'>';}
 function tagc($b,$c,$d){return '<'.$b.atc($c).'>'.$d.'</'.$b.'>';}
-function divb($v,$c='',$id='',$s=''){return tag('div',['class'=>$c,'id'=>$id,'style'=>$s],$v);}
+function div($v,$c='',$id='',$s=''){return tag('div',['class'=>$c,'id'=>$id,'style'=>$s],$v);}
 function spn($v,$c='',$id='',$s='',$t=''){return tag('span',['class'=>$c,'id'=>$id,'style'=>$s],$v);}
 function btj($t,$j,$c='',$id='',$p=[]){return tag('a',['onclick'=>$j,'class'=>$c,'id'=>$id]+$p,$t);}
 
@@ -276,7 +276,7 @@ $d=curl_getinfo($fp,CURLINFO_HTTP_CODE); curl_close($fp); return $d==200?1:0;}
 function writecsv($f,$r){
 file_put_contents($f,'');
 if(($h=fopen($f,'r+'))!==false){
-foreach($r as $k=>$v)fputcsv($h,$v); fclose($h);}}
+foreach($r as $k=>$v)if(is_array($v))fputcsv($h,$v); fclose($h);}}
 
 function readcsv($f){$rb=[];
 if(($h=fopen($f,'r'))!==false){$k=0;
@@ -619,13 +619,13 @@ return implode(', ',$rt);}
 #builders
 function scroll($r,$d,$max=10,$w='',$h='',$id=''){$h=is_numeric($h)?$h.'px':$h;
 $n=is_array($r)?count($r):$r; $s=$w?'width:'.$w.'px; ':''; $s.='max-height:'.($h?$h:'420px').';';
-if($n>$max or !$n)return divb($d,'scroll','scrll'.$id,$s); else return $d;}
+if($n>$max or !$n)return div($d,'scroll','scrll'.$id,$s); else return $d;}
 
 function on2cols($r,$w,$p){$w1=round($w/$p); $w2=round($w-$w1); $ret='';
 $sc='display:table-cell; '; $sw1='width:'.$w1.'px;';
 $sr='display:table-row;'; $sw2='width:'.$w2.'px;';
 if($r)foreach($r as $k=>$v)
-	$ret.=divs($sr,divb($k,'txtsmall grey','',$sc.$sw1).divs($sc.$sw2,$v?$v:'-'));
+	$ret.=divs($sr,div($k,'txtsmall grey','',$sc.$sw1).divs($sc.$sw2,$v?$v:'-'));
 return divs('display:table;',$ret);}
 
 function onxcols($re,$prm,$w,$h=''){//colonize
@@ -651,10 +651,9 @@ return '<audio controls><source src="'.$f.'" type="audio/mpeg"></audio>'.$bt;}
 function video($d,$w='',$h='',$o=''){
 [$d,$t]=cprm($d); $d=goodroot($d); $ty='type="video/'.xtb($d,1).'"';
 if($t)return lj('','popup_usg,video___'.ajx($d),pictxt('movie',$t!=1?$t:strend($d,'/')));
-//if(!urlcheck($d))return lkt('',$d,pictxt('movie'),domain($d));
-if(strpos($d,'.mp4'))$xt='mp4'; else $xt=xtb($d,1); if($o)$h.=' poster="'.$o.'"';
+if($o)$h.=' poster="'.$o.'"';
 if($w)$w.='px'; else $w='100%'; if($h)$h=' height="'.$h.'px"'; else $h=' height="440px"';
-return '<video src="'.$d.'" width="'.$w.'"'.$h.$ty.' controls autobuffer></video>';}//loop
+return '<video src="'.$d.'" width="'.$w.'"'.$h.$ty.' controls autobuffer></video>';}
 
 #img
 function img64($d,$m=''){$m=$m?$m:'jpeg';
@@ -725,22 +724,25 @@ function excget($u,$f){$e='wget -P '.excdir().'/'.$u.' '.$f; exc($e);}
 function pr($r){echo '<pre>'.print_r($r,true).'</pre>';}
 function code($d){echo '<code><pre>'.$d.'</pre></code>';}
 function vd($r){is_object($r)?var_dump($r):pr($r);}
-function ret(...$r){return join(' ',$r);}
+//function ret(...$r){return join(' ',$r);}
 function backtrace(){var_dump(debug_backtrace());}
 function dump($r,$o=''){$rb=[]; $i=0; if(is_array($r))foreach($r as $k=>$v){$ka='';
 if(is_array($v))$va=dump($v,$o); else $va='\''.addslashes(stripslashes($v)).'\'';
 if($k!=$i or $o)$ka=is_numeric($k)?$k:'\''.addslashes(stripslashes($k)).'\''; $rb[]=($ka?$ka.'=>':'').$va; $i++;}
 return '['.implode(',',$rb).']';}
-function ecko($d){if(auth(6))echo is_array($d)?implode('-',$d):$d.br();}
-function echor($r){if($r)foreach($r as $k=>$v){
+//function ecko($d){echo is_array($d)?implode('-',$d):$d.br();}
+/*function echor($r){if($r)foreach($r as $k=>$v){
 $rb[]="'".$k."'=>".(is_array($v)?echor($v):"'".$v."'");}
-if($rb??[])return '['.implode(',',$rb).']';}
+if($rb??[])return '['.implode(',',$rb).']';}*/
 function chrono($d=''){static $s; $ret=microtime(true)-($s?$s:$_SERVER['REQUEST_TIME_FLOAT']); $s=microtime(true);
 if($d)return btn('small',$d.':'.round($ret,5));}
+function chrono_average($o=''){static $r=[]; static $t0; static $i; if($o){$r=[]; $i=0;}
+if(!$t0)$t0=$_SERVER['REQUEST_TIME_FLOAT']; $t1=microtime(true); $r[$i]=$t1-$t0;
+$ret=$i.'. '.round(array_sum($r)/count($r),5); $t0=$t1; $i++; return $ret;}//.$r[$i].': '
 function window($d){return divr($d,['contenteditable'=>'true','s'=>'overflow:auto; height:300px;']);}
 function eco($d,$o=''){if(is_array($d))$d='<pre>'.print_r($d,true).'</pre>';
 elseif(is_object($d))$d=var_dump($d,true);
-$ret=textarea('',str::htmlentities_b($d),44,12); if($o)return $ret; elseif(auth(6))echo $ret.br();}
+$ret=textarea('',htmlspecialchars($d),44,12); if($o)return $ret; elseif(auth(6))echo $ret.br();}
 function verbose($r){echo implode(br(),$r).hr();}
 function funcs(){pr(get_defined_functions());}
 function trace(){pr(debug_backtrace());}

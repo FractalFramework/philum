@@ -1,5 +1,5 @@
-<?php //msql/helps_txts
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "philum_pub_txt"=>['[http://philum.fr/2|[phi1|32::picto]:popart] [v[:ver]|txtsmall2:css] [http://philum.fr|[philum:picto]]'],
 "update_ok_alert"=>['mettre à jour le htaccess /ajax.php et le server param 5 (141201)'],
 "conn_help_txt"=>['General Principle
@@ -403,4 +403,4 @@ All activities on the site are cancelled on average every year.'],
 e.g. HD 150680, hd150680, hip99461, 88601, 2021
 pre-set commands: knownstars, allstars
 Accepts Star requests (ra, dc, dist, radius)'],
-"tag_pictos"=>['backup config in an msql table']];
+"tag_pictos"=>['backup config in an msql table']]; ?>

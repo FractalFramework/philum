@@ -1,5 +1,5 @@
-<?php //connectors_all
-$r=["_"=>['type','param','category'],
+<?php 
+return ["_"=>['type','param','category'],
 "h"=>['embed','','html'],
 "b"=>['embed','','html'],
 "i"=>['embed','','html'],
@@ -147,4 +147,4 @@ $r=["_"=>['type','param','category'],
 "look"=>['embed','','arts'],
 "lang"=>['embed','','media'],
 "vid"=>['embed','','media'],
-"private"=>['embed','','media']];
+"private"=>['embed','','media']]; ?>

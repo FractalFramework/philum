@@ -1,5 +1,5 @@
-<?php //msql/public_connectors
-$r=["_"=>['function'],
+<?php 
+return ["_"=>['function'],
 "count"=>['/nb de defcons
 users/public_defcons|msq_count:conn'],
 "cut"=>['//:cut return older connector
@@ -66,4 +66,4 @@ _PARAM:text
 /!_2=_1
 /-_2
 
-txtx/popup_text___hello_1/hello|lj:core']];
+txtx/popup_text___hello_1/hello|lj:core']]; ?>

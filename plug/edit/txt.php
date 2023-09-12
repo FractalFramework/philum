@@ -20,12 +20,15 @@ if($r)foreach($r as $k=>$i){$txt=msql::val('',$nd.'_txt_'.$i,1);
 return divc('list',$ret);}
 
 //html
-static function area($p,$o,$prm){[$d]=$prm;
+static function wyg($p,$o,$prm=[]){$d=$prm[0]??'';
 if($p=='conn2html')$d=self::act('conn2html','',$prm);
+$ret=divd('wyswyg',divr($d,['contenteditable'=>'true','id'=>'txtareb','c'=>'wyg','s'=>'min-height:400px; border:1px dotted silver; margin:2px 0; padding:4px;']));
+return $ret;}
+
+static function area($p,$o){
 $ret=lj('popbt','txtarea_txt,act_txtareb_23_html2conn',picto('before'));
 $ret.=lj('popbt','txtarea_txt,act_txtareb_23_code',picto('code'));
-$ret.=diveditbt('').' ';
-$ret.=divr($d,['contenteditable'=>'true','id'=>'txtareb','c'=>'panel','s'=>'min-height:400px; border:1px dotted silver; margin:2px 0; padding:4px;']);
+$ret.=diveditbt('').self::wyg($p,$o,$prm=[]);
 return $ret;}
 
 static function mkquotes($d){$ret=''; $r=explode("\n",$d);
@@ -79,7 +82,7 @@ $reb=divd('rpl','');
 $reb.=inputj('url','','txtarea_txt,act_url_23_src','url');//import
 $reb.=lj('popsav','txtarea_txt,act_url_23_src',nms(132)).' ';
 $reb.=lj('popbt','txtarea_txt,act_url_23_brut','brut').' ';
-$reb.=lj('popbt','wyswyg_txt,area_txtarea_3_conn2html',picto('after'),att('conn2html'));
+$reb.=lj('popbt','wyswyg_txt,wyg_txtarea_3_conn2html',picto('after'),att('conn2html'));
 return divc('nbp',$ret).$reb;}
 
 //call
@@ -109,13 +112,13 @@ if($d && !$ra && $nd)msql::modif('users',$nd.'_txt_'.$d,['title',''],'one','',1)
 $ret=self::paste($d).' ';
 if($d)$ret.=input('tit',stripslashes(valr($ra,1,0))).' ';
 $ret.=self::btn($d,$nd,$tx).br();
-$ret.=divb(edit::bt(''));//ats('width:630px;')
-$ret.=divb(self::btact('',''));
+$ret.=div(edit::bt(''));//ats('width:630px;')
+$ret.=div(self::btact('',''));
 $edt=divc('col1',textarea('txtarea',$msg,44,4,['class'=>'txar']));
-$edt.=divc('col2 tab',divd('wyswyg',''));
+$edt.=divc('col2',self::area('',''));
 $ret.=divc('grid-pad',$edt);
 $ret.=divd('bck','');
-$css='.tab{font-size:large; padding:6px; border:1px dotted silver; max-height:320px; word-wrap:break-word; overflow-y:auto;}
+$css='.wyg{font-size:large; padding:6px; border:1px dotted silver; max-height:320px; word-wrap:break-word; overflow-y:auto;}
 .txar{width:100%; min-height:360px; padding:4px 8px; margin-top:2px;}
 .grid-pad{grid-template-columns:auto 50%;}';
 $ret.=head::csscode($css); //head::add('csscode',$css);

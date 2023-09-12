@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1206
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0601','- la pubiication d\'un atricle se fait en ajax (l\'article perd sa transparence) ;
 - la hauteur du champ texte de l\'éditeur s\'adapte à la quantité de texte ;
 - le codeline (pour les connecteurs utilisateurs) peut recevoir du code sous forme de connecteurs (en codeline il n\'y a pas de crochets et les valeurs sont à la place des options) ;
@@ -92,4 +92,4 @@ propagation de AMT (et nouveau foisonnement de problèmes) :
 "29"=>['0629','correctif AMT supporte le transport du signe + (effacé par le GET)'],
 "30"=>['0630','- réparation de l\'envoi de message à l\'admin ; 
 - le champ temporel est connecté au détecteur \'dig\', afin de ne pas renvoyer de champ vide ;
-- l\'extension temporelle porte maintenant jusqu\'à 16 ans (la prochaine extension sera ajoutée en 2020 !) ;']];
+- l\'extension temporelle porte maintenant jusqu\'à 16 ans (la prochaine extension sera ajoutée en 2020 !) ;']]; ?>

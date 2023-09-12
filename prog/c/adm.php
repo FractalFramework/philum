@@ -80,7 +80,7 @@ if($type=='template'){$re['structure']=conb::parse($d,'clpreview');
 else{$re['core']=divd('crv',self::core_view('',''));}
 $re['connectors']=divd('cnv',self::conn_view('',''));
 $ret=tabs($re,'cdl');
-return divb($ret,'imgr','width:300px; padding:10px;');}
+return div($ret,'imgr','width:300px; padding:10px;');}
 
 //variables
 static function clview_vars(){$r=sesmk2('tmp','vars','',0); $ret='';
@@ -91,7 +91,7 @@ static function clpreview($v){$r=unpack_conn_b($v); $ret='';
 if($r[0])$ret.=divc('txtx',btn('txtblc','value').' '.$r[0]);
 if($r[1])$ret.=divc('txtx',btn('txtblc','option').' '.$r[1]);
 $ret.=divc('txtx',btn('txtblc','connector').' '.$r[2]);
-return divb($ret,'txtbox','','margin:4px;');}
+return div($ret,'txtbox','','margin:4px;');}
 //conb
 static function clview($v,$t){
 $p=msql::val('system','connectors_conb',$v); [$p,$o]=opt($p,'|');
@@ -559,7 +559,7 @@ else{
 	$qrt=['id'=>'ID','suj'=>'Title (edit)','frm'=>'Category','day'=>'Date','name'=>'Author','re'=>'Published'];
 	$dig=$dig?$dig:$_SESSION['nbj']; $nbj=$dig?$dig:9999;
 	$r=self::artlist($qr,$admin,$dig); if($r)$r=self::list_articles($r);
-	if(rstr(3))$ret.=divb(pop::dig_it_j($nbj,'admarts_adm,articles___'.ajx($admin).'_'));
+	if(rstr(3))$ret.=div(pop::dig_it_j($nbj,'admarts_adm,articles___'.ajx($admin).'_'));
 	$ret.=self::adminarts_pages($r,$qrt,$admin,$dig,$page);}
 return divd('admarts',divc('menus',$bt).$ret);}
 
@@ -657,7 +657,7 @@ static function adm_reviews(){$ret='';
 $r=sql('ib,id','qdmb','kv',['_order'=>'ib desc']);
 $ret=lj('','admarts_adm,reviewfromsq','get from msql');
 foreach($r as $k=>$v)$ret.=ma::popart($k,1).' ';
-return divb($ret,'list');}
+return div($ret,'list');}
 
 #admin
 static function adminauthes(){$rt=[];
@@ -677,7 +677,7 @@ return $ret;}
 
 static function fastmenus($o,$m){$rt=[];
 $r=self::authmenus(0); $tg=$o?'popup':'admcnt';//'modules','templates'
-if(!$m)$rm=['console','desktop','config','rstr','css','msql','articles','tags','api','images','pictos','finder','connectors','stats','software','twit','apps','txt','pad','exec','test','members'];
+if(!$m)$rm=['console','desktop','config','rstr','css','msql','articles','tags','api','images','pictos','finder','connectors','stats','software','twit','apps','txt','pad','exec','jsonadm','test','members'];
 else $rm=['nodes','newsletter','banner','favicon','dev','backup','htaccess','links','rssurl','mail','password','descrption','icons','pictography','authes','avatar','messages'];
 foreach($rm as $v){$j='admin___'.ajx($v);//'sty,home__head__'//
 	if($v=='css' && !$o)$j='admin__url_css_1';
@@ -686,7 +686,7 @@ return join('',$rt);}
 
 static function fastmenu($o='',$m=''){$ret=self::fastmenus($o,$m);
 $ret.=toggle('','admnu_adm,fastmenus___'.$o.'_1',pictxt(mime('others'),'others',22));
-$ret.=btd('admnu',''); //if($o)$ret=divb($ret,'list');
+$ret.=btd('admnu',''); //if($o)$ret=div($ret,'list');
 return $ret;}
 
 /**/static function ishub0(){//to redo
@@ -742,11 +742,11 @@ case('msql'):$ret=msqa::home(msqa::murlboot()); break;
 case('messages'):
 	if($qb==$usr or $auth>=$curauth)$ret=self::messages();
 	else $ret=contact(nms(84),'txtcadr'); break;
-case('hubs'):$ret=adm_hubs($auth); break;
+case('hubs'):$ret=self::adm_hubs($auth); break;
 case('nodes'):$ret=self::nodes(); break;
 case('stats'):[$pa,$oa]=explode('/',$set); $ret=stats::home($pa,$oa); break;
 case('newsletter'):$ret=self::newsletter(); break;
-case('tweetfeed'):$ret=tweetfeed::home(); break;
+case('tweetfeed'):$ret=tweetfeed::home(''); break;
 case('tickets'):$ret=tickets::home('',''); break;
 case('faq'):$r=msql::read('system','program_faq'); $ret=nl2br(stripslashes(divtable($r,1))); break;}
 if(ses('set')=='Articles')$ret=self::articles($admin,get('dig'),get('page'));//articles
@@ -758,14 +758,14 @@ case('avatar'):if($usr)$ret=self::avatar(0); break;
 case('mail'):$ret=self::admail($usr); break;
 case('password'):$ret=self::password($usr); break;
 case('banner'):$ret=self::set_ban(); break;
-case('favicon'):$ret=self::set_favicon(); break;
+case('favicon'):$ret=self::favicon(); break;
 case('description'):$ret=self::hubprm($admin); break;
 case('google'):$ret=self::hubprm($admin); break;
 case('members'):$ret=self::members(); break;
 case('authes'):$ret=self::adm_authes(); break;
 //apps
 case('shop'):$ret=helps('shop_class'); break;//unused
-case('book'):$ret=book::home(); break;
+case('book'):$ret=book::home('',''); break;
 case('discussions'):$ret=chat::home('',''); break;
 //constructors
 case('css'):$ret=sty::home(1); break;
@@ -773,8 +773,8 @@ case('fonts'):$ret=few::edit_fonts(); break;
 case('connectors'):$ret=self::connectors(); break;
 case('templates'):$ret=self::templates(); break;
 case('modules'):$ret=self::modules(); break;
-case('apps'):$ret=plugin::home(); break;
-case('msql'):$ret=self::msql(); break;
+case('apps'):$ret=plugin::home('',''); break;
+case('msql'):$ret=self::msql(''); break;
 case('dev'):$ret=dev::home('',''); break;
 case('tags'):$ret=meta::admin_tags(get('set')); break;
 case('finder'):$ret=finder::home($qb,'disk'); break;

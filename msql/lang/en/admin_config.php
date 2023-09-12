@@ -1,5 +1,5 @@
-<?php //msql/admin_config
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "1"=>['htaccess'],
 "2"=>['visitor allowed to create blogs'],
 "3"=>['default hub'],
@@ -12,4 +12,4 @@ $r=["_"=>['description'],
 "10"=>['buffer ajax'],
 "11"=>['1=utf8'],
 "12"=>['upload max'],
-"13"=>['updates, 1=no']];
+"13"=>['updates, 1=no']]; ?>

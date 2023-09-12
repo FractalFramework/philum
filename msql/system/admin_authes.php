@@ -1,5 +1,5 @@
-<?php //admin_authes
-$r=["_"=>['category','auth_level'],
+<?php 
+return ["_"=>['category','auth_level'],
 "console"=>['Global','5'],
 "rstr"=>['Global','5'],
 "config"=>['Global','5'],
@@ -63,4 +63,5 @@ $r=["_"=>['category','auth_level'],
 "others"=>['Tools','6'],
 "api"=>['Builders','1'],
 "images"=>['Builders','5'],
-"reviews"=>['Articles','4']];
+"reviews"=>['Articles','4'],
+"jsonadm"=>['Tools','4']]; ?>

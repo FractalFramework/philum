@@ -1,5 +1,5 @@
-<?php //connectors_tools
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "add_lines"=>['add lines at each sentences'],
 "ajax"=>['return (a button who return) a module or a connector :ajax
 where:
@@ -44,4 +44,4 @@ try [id:read|screen:ajax] give the content of an article '],
 "mktable"=>['format csv as table datas'],
 "clean_h"=>['clean up h tags'],
 "cita_italics"=>['places italics between quotes commas'],
-"cita_quotes"=>['places typographical quotes commas in blocks']];
+"cita_quotes"=>['places typographical quotes commas in blocks']]; ?>

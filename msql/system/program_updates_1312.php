@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1312
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['1206','ajout du module videoplayer, détecte les vidéos dans les articles, affiche les articles'],
 "2"=>['1207','le passage en mode d\'édition des css lance le Desktop avec deux popups : l\'édition des css et le site.
 - ajout du comportement \'multi\' dans bub_apps(), permet les commandes js multiples ;'],
@@ -13,4 +13,4 @@ $r=["_"=>['date','text'],
 - overpop : affiche un bouton à effet css3 à partir d\'une image, qui ouvre une popup de l\'image ;
 - photok : lit un répertoire d\'images (comme :photo) mais en choisissant une taille verticale ou horizontale ;
 - photovr : player d\'images d\'un répertoire qui fait appel à overpop ;
-- correctif sur la fonction invert_colors() ;']];
+- correctif sur la fonction invert_colors() ;']]; ?>

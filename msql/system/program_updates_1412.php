@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1412
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['1201','publication'],
 "2"=>['1203','révision rédaction composants msql'],
 "3"=>['1204','réfection de timetravel : (remarche), accessible depuis le menu admin'],
@@ -43,4 +43,4 @@ $r=["_"=>['date','text'],
 (admin sql, login, comportement des connecteurs et plugins, etc..., fix issue changement de contexte)
 - bug générés par les récentes rénovations
 - réparation comportement des connecteurs au noeud où il faut choisir entre conn public, privé, plugin ou codeline (ou basic)
-- réparation du rstr48 (login), dissocié du rstr51(apps publiques)']];
+- réparation du rstr48 (login), dissocié du rstr51(apps publiques)']]; ?>

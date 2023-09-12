@@ -220,8 +220,8 @@ return $res;}
 
 static function home(){
 $_SESSION['rec']=[];
-$ret=divb(self::edit('hello_world','progb','lib','p'),'','edc','display:inline-block; width:50%;');
-$ret.=divb('','','results','float:right; width:40%; margin-left:10px;');
+$ret=div(self::edit('hello_world','progb','lib','p'),'','edc','display:inline-block; width:50%;');
+$ret.=div('','','results','float:right; width:40%; margin-left:10px;');
 $ret.=divc('clear','');
 $ret.=lkc('txtx','/app/exec','exec').' ';
 $ret.=lkc('txtx','/app/codev','codev');

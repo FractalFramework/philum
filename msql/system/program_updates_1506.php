@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1506
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0601','publication'],
 "2"=>['0603','- ajout d\'un gestionnaire de favicons
 - favicons dédiés aux types de pages (admin, plug, base)
@@ -18,4 +18,4 @@ $r=["_"=>['date','text'],
 "7"=>['0618','- ajout du module popart
 - ajout du connecteur popmsql, affiche une table dans une popup
 - requalification du connecteur popmsqt : affiche le contenu d\'une cellule d\'une table'],
-"8"=>['0620','- rénovation logicielle du gestionnaire des rstr']];
+"8"=>['0620','- rénovation logicielle du gestionnaire des rstr']]; ?>

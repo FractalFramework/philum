@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2012
-$r=["1"=>['1202','publication'],
+<?php 
+return ["1"=>['1202','publication'],
 "2"=>['1205','amélioration des ancres, pour pallier aux sites qui font comme nous désormais (easy_footnotes) ; capacité à gérer plusieurs ancres similaires lors de la détection ; prise en charge des ancres logées dans un numlist (c\'est pas bien de faire ça)'],
 "3"=>['1206','amélioration du gestionnaire de recherches sauvegardées, dans le contexte sans champ temporel, pour réduire la recherche aux résultats inconnus'],
 "4"=>['1207','on peut exporter ses favoris au format .epub'],
@@ -23,4 +23,4 @@ $r=["1"=>['1202','publication'],
 "10"=>['1224','- ajout du plug reduceim, accessible depuis les outils courants, réduit en masse les grosses images'],
 "11"=>['1228','- correctif des liens sur-interprétés (provoquant une erreur grave d\'affichage) quand il contenaient des @ (initialement attriubés exclusivement aux mails)
 - correctif du masque de la recherche, protection des caractères réservés comme []'],
-"12"=>['1231','- ajout du connecteur :transcrit, permet de transcrire les lettres d\'un texte en 36 équivalences ascii [Hello world|4:transcrit]']];
+"12"=>['1231','- ajout du connecteur :transcrit, permet de transcrire les lettres d\'un texte en 36 équivalences ascii [Hello world|4:transcrit]']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/connectors_old
-$r=["_"=>['new'],
+<?php 
+return ["_"=>['new'],
 "{{"=>['['],
 "}}"=>[':q]'],
 ".tit"=>[':h'],
@@ -48,4 +48,4 @@ $r=["_"=>['new'],
 ":jopen"=>[':toggle_conn'],
 ":jconn"=>[':toggle_conn'],
 ":photo"=>[':photos'],
-":photo2"=>[':slider']];
+":photo2"=>[':slider']]; ?>

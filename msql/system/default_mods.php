@@ -1,5 +1,5 @@
-<?php //msql/default_mods
-$r=["_"=>['block','module','param','title','condition','command','option','cache','hide','template','bt','div','prv','pop'],
+<?php 
+return ["_"=>['block','module','param','title','condition','command','option','cache','hide','template','bt','div','prv','pop'],
 "2"=>['menu','link','home','home','cat','','1','','1','','','','',''],
 "3"=>['system','blocks','banner cover menu content footer','','','','','','','','','','',''],
 "4"=>['system','content','800','','','','','','','','','','',''],
@@ -83,4 +83,4 @@ $r=["_"=>['block','module','param','title','condition','command','option','cache
 "77"=>['content','read','514','Pro-Activité','pub','','','','','','','','',''],
 "78"=>['dev','articles','','','home','','','','','','','','',''],
 "79"=>['dev','api','relatedby:217172,nodig:1,seesql:1','','','','','','','','','','',''],
-"80"=>['contentmenu','rssin','','Flux Rss','home','','','','','','','','1','']];
+"80"=>['contentmenu','rssin','','Flux Rss','home','','','','','','','','1','']]; ?>

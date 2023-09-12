@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1112
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['111201','- bouton twitter envoie titre bien formaté
 - modif template (bouton open float right)
 - icônes non réécrites si dimensions inférieures à la celle des miniatures, dans l\'inspecteur d\'icônes, dans l\'éditeur
@@ -94,4 +94,4 @@ dev	php example'],
 "31"=>['111231','- nettoyages dus aux précédentes mutations, suppression de \'_mbr\' (répertoire et références dans le css, remplacé par \'shadows\'), aides contextuelles ;
 - finalement le connecteur microsql ne renvoie plus de tableau hors de la lecture de l\'article ;
 - rénovation des css, anciens inspirés de nouveaux ;
-- correctif lié au renouveau de la fonction tri_rqt (beaucoup de modules y font référence, fait des tri dans les articles en cache) ;']];
+- correctif lié au renouveau de la fonction tri_rqt (beaucoup de modules y font référence, fait des tri dans les articles en cache) ;']]; ?>

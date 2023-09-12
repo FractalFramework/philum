@@ -1,5 +1,5 @@
-<?php //msql/connectors_basic
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "conn"=>['link or image'],
 "url"=>['[url|text] apply the URL to the selected text'],
 "img"=>['upload image'],
@@ -42,4 +42,4 @@ options : pop, read, conn, last, count, graph, form, tmp'],
 "delconn"=>['delete connector'],
 "findconn"=>['select connector'],
 "del"=>['delete'],
-"nl"=>['new line']];
+"nl"=>['new line']]; ?>

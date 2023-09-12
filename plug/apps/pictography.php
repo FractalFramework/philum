@@ -34,7 +34,7 @@ foreach($r as $k=>$v){[$p,$c]=expl(':',$v);
 	if($c=='icon')$ico=icon($p,$k); elseif(is_numeric($c))$ico=icosys($p,$c);
 	elseif($c=='svg')$ico=svg($p); else $ico='';
 	$edit=lj('popbt','popup_pictography,edit___'.$k,$k).' ';
-	$rb[]=divb(picto($k,24).' '.$edit.btd('ico'.$k,$ico));}
+	$rb[]=div(picto($k,24).' '.$edit.btd('ico'.$k,$ico));}
 $ret.=onxcols($rb,4,680);
 return divd($rid,$ret);}
 }

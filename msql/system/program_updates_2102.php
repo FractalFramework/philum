@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2102
-$r=["1"=>['0202','publication'],
+<?php 
+return ["1"=>['0202','publication'],
 "2"=>['0202','fix :msql'],
 "3"=>['0204','- :mp3 et :audio backup les fichiers comme :mp4 et :vid
 - réparation de la captation des titres des vidéos yt, extrapolée rétroactivement par automatisme (abandon de la spécificité yt dans web::metas)'],
@@ -30,4 +30,4 @@ $r=["1"=>['0202','publication'],
 - ajout de définitions au filtre anti-écriture-inclusive, parce qu\'en plus il y en a de différentes sortes (quelle bande de guedins)'],
 "16"=>['0227','- condamnation de tout l\'arsenal lié au défunt flash, swf, flv, détections, importations, mises en forme, etc
 - réforme du nom des miniatures spéciales (type xsmall)
-- réforme des connecteurs liés aux galeries d\'images : :photo debient :photos, :slider disparait (il était en flash), :sliderJ est mis au banc, :slide aussi, :gallery est rénové, :photo2 devient :slider (nouveau). Les trois fonctionnels (photos, gallery et slider) ont la même source de données (catalogue d\'images de l\'article, images séparées par un espace, ou répertoire utilisateur).']];
+- réforme des connecteurs liés aux galeries d\'images : :photo debient :photos, :slider disparait (il était en flash), :sliderJ est mis au banc, :slide aussi, :gallery est rénové, :photo2 devient :slider (nouveau). Les trois fonctionnels (photos, gallery et slider) ont la même source de données (catalogue d\'images de l\'article, images séparées par un espace, ou répertoire utilisateur).']]; ?>

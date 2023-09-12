@@ -1,5 +1,5 @@
-<?php //msql/connectors_basic
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "conn"=>['détection : url, image ou média (jpg,mp3,mp4,flv...)'],
 "url"=>['[url|text] applique une Url au texte sélectionné'],
 "img"=>['image'],
@@ -42,4 +42,4 @@ Options : pop, read, conn, last, count, graph, form, tmp'],
 "delconn"=>['supprimer connecteur'],
 "findconn"=>['sélectionne connecteur'],
 "del"=>['effacer'],
-"nl"=>['à la ligne']];
+"nl"=>['à la ligne']]; ?>

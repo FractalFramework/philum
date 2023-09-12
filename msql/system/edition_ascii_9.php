@@ -1,5 +1,5 @@
-<?php //msql/edition_ascii_9
-$r=["1"=>['OElig','useful'],
+<?php 
+return ["1"=>['OElig','useful'],
 "2"=>['oelig','useful'],
 "3"=>['8364','useful'],
 "4"=>['zwj','useful'],
@@ -4469,4 +4469,4 @@ $r=["1"=>['OElig','useful'],
 "4466"=>['129000','symbols'],
 "4467"=>['129001','symbols'],
 "4468"=>['129002','symbols'],
-"4469"=>['129003','symbols']];
+"4469"=>['129003','symbols']]; ?>

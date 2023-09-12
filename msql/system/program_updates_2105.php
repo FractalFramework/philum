@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2105
-$r=["1"=>['0501','publication'],
+<?php 
+return ["1"=>['0501','publication'],
 "2"=>['0501','- correctif ra2deg dans maths
 - amélioration starmap4, prend en charge les données ajoutées à la main dans exo_4'],
 "3"=>['0502','- amélioration de l\'app graph (fractal) pour atomiser le code et permettre de produire des graphiques à échelles multiples
@@ -26,4 +26,4 @@ $r=["1"=>['0501','publication'],
 "16"=>['0522','- abandon du jeu de drapeaux en gif pour celui donné par un jeu de ascii (ajout de system/edition_flags_8)'],
 "17"=>['0524','- codeline accepte :code
 - fix :divtable
-- :table peut recevoir |esc pour échapper les ¬ qui veulent être rendus visibles (et se passer de :divtable)']];
+- :table peut recevoir |esc pour échapper les ¬ qui veulent être rendus visibles (et se passer de :divtable)']]; ?>

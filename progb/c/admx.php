@@ -257,9 +257,9 @@ foreach($rds as $k=>$v){$rvs[$k]=$k.$rid; $rc[$v]='';}//hidden($rvs[$k],$rm[$k]?
 $edit='';
 $edtapi=toggle('popbt','amc_apicom,build___'.ajx($p).'_'.$rvs['mp'],pictxt('emission','Api command')).divd('amc','');
 switch($mod){
-case('BLOCK'):$edit=divb(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
-case('MENU'):$edit=divb(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
-case('ARTMOD'):$edit=divb(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
+case('BLOCK'):$edit=div(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
+case('MENU'):$edit=div(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
+case('ARTMOD'):$edit=div(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
 case('submenus'):$edit=self::menus_h($mid); if($option)$p=self::menu_h_g($option);break;
 case('Banner'):$edit=lkc('popbt','/admin/banner','edit_banner');break;
 case('template'):$ra=msql::row('',nod('template'),'',1); 
@@ -365,7 +365,7 @@ $bt.=msqbt('',ses('modsnod'),$mid);
 $bt.=msqbt('system','admin_modules',$mod);
 //render
 $ret=on2cols($rd,680,5).$hid;
-$ret.=divb($bt);
+$ret.=div($bt);
 return $ret;}
 
 #retrictions
@@ -408,8 +408,8 @@ $h=msql::read('lang','admin_restrictions');
 foreach($r as $k=>$v)foreach($v as $ka=>$va){
 	$hlp=togbub('usg,popmsqt','lang_admin*restrictions_'.$ka.'_description',$ka,'txtsmall');
 	$t=$h[$ka][0]??$v; $na=rstr($ka); $n=$na?1:0;
-	$rb[$k][$ka]=divb(btd('rstr'.$ka,valid($n).' '.lj('','rstr'.$ka.'_admx,mdfrstr___'.$ka.'_'.$na,$t)).$hlp,'nbp');}
-foreach($rb as $k=>$v)$rt[$k]=divb(implode($v),'cols');
+	$rb[$k][$ka]=div(btd('rstr'.$ka,valid($n).' '.lj('','rstr'.$ka.'_admx,mdfrstr___'.$ka.'_'.$na,$t)).$hlp,'nbp');}
+foreach($rb as $k=>$v)$rt[$k]=div(implode($v),'cols');
 return tabs($rt,'rst');}
 
 static function getrstr($b){

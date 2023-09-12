@@ -1,5 +1,5 @@
-<?php //msql/program_mimes
-$r=["_"=>['val0'],
+<?php 
+return ["_"=>['val0'],
 "folder"=>['folder'],
 ".jpg"=>['photo'],
 ".png"=>['photo'],
@@ -80,4 +80,4 @@ $r=["_"=>['val0'],
 "desktop"=>['desktop'],
 "desk"=>['desktop'],
 "links"=>['url'],
-"rssurl"=>['rss']];
+"rssurl"=>['rss']]; ?>

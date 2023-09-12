@@ -116,7 +116,7 @@ $ret.=lj($css,$id.'_meta,addfoot___'.$id.'_'.$m,picto('anchor'),att('add anchors
 $ret.=lj($css,$id.'_meta,png2jpg___'.$id.'_'.$m,picto('gallery'),att('png2jpg'));
 //$ret.=lj($css,'popup_meta,artopt___'.$id.'_'.$m,picto('folder-tags'),att('metas'));
 $ret.=lj($css,'popup_meta,titedt___'.$id.'_'.$m,picto('popup'),att('detach'));
-$ret.=divb('','','cbk'.$id);
+$ret.=div('','','cbk'.$id);
 $ret.=tag('textarea',['id'=>'suj'.$id,'class'=>'console','style'=>'height:40px; width:100%;'],$suj).br();
 if(auth(6) && (rstr(6) or $name!=ses('USE'))){$ret.=picto('user').input('author'.$id,$name); $dn[]='author';
 	if($src)$ret.=lj('popbt','author'.$id.'_meta,recapauthor__4_'.$id,'twitter author'); $ret.=br();}
@@ -159,13 +159,13 @@ return $ret;}
 static function catslct($id,$frm){
 $r=sesmk2('boot','cats'); $ret=self::catslctm($id,$frm,$r);
 $ret.=lj('','ctslc'.$id.'_meta,catslctm___'.$id.'_'.ajx($frm),picto('plus',16));
-return divb($ret,'nbp','ctslc'.$id);}
+return div($ret,'nbp','ctslc'.$id);}
 
 static function catedit($id,$frm){
 $ret=toggle('','catslct'.$id.'_meta,catslct___'.$id.'_'.ajx($frm),picto('category',''));
 $ret.=input('frm1'.$id,$frm,'24');
 $ret.=divd('catslct'.$id,'');
-return divb($ret,'','frm'.$id);}
+return div($ret,'','frm'.$id);}
 
 static function hardurlsuj($id){
 $suj=ma::suj_of_id($id); return str::hardurl($suj);}
@@ -200,7 +200,7 @@ return divc('list scroll',$ret);}
 static function otherlangs($lng,$id){$r=self::langs();
 $ret=lj('','art'.$id.'_trans,play__3_art'.$id.'_'.$lng,flag($lng)).'&#8658';
 foreach($r as $k=>$v)if($v!=$lng)$ret.=lj('','art'.$id.'_trans,call__3_art'.$id.'_'.$v.'-'.$lng,flag($v)).' ';
-return divb(picto('language').' '.$ret);}
+return div(picto('language').' '.$ret);}
 
 static function autolang($id,$va){
 $lg=self::curlg($id); $ret='';
@@ -312,7 +312,7 @@ return $ret?$t.$ret:nmx([11,16]);}
 //save all from search
 static function tagall_slct($vrf,$srch){$r=self::catag(); $ret='';
 foreach($r as $v)$ret.=lj('','socket_meta,savtagall__xc_'.ajx($v).'_'.ajx($vrf).'_'.ajx($srch),$v);
-return divc('list',$ret).divb('','alert','svtg');}
+return divc('list',$ret).div('','alert','svtg');}
 
 static function savtagall($cat,$vrf,$tag){
 if(!self::tag_auth($cat))return;
@@ -323,7 +323,7 @@ return count($rn);}
 //save from search
 static function tag_slct($id,$srch){$r=self::catag(); $ret='';
 foreach($r as $v)$ret.=lj('','socket_meta,savtag__xc_'.ajx($v).'_'.$id.'_'.ajx($srch),$v);
-return divc('list',$ret).divb('','alert','svtg');}
+return divc('list',$ret).div('','alert','svtg');}
 
 static function savtag($cat,$id,$tag){
 if(!self::tag_auth($cat))return;
@@ -726,7 +726,13 @@ $nod=nod('tags_'.$n.$lg);
 $j='popup_meta,tagedit___';
 if($rc)foreach($rc as $idtag=>$v)$ret.=lj('txtx',$j.$idtag.'_'.$cat,pictxt('popup',$v)).' ';
 if($rc)$r=msql::modif('',nod('tags_'.$n.'fr'),$rc,'mdfv');
+$rx=array_diff_key($rb,$ra);//del orphelins
+if($rx)$r=msql::modif('',nod('tags_'.$n.'fr'),$rx,'delk');
+if($rx)$ret.=btn('txtyl',count($rx).' deletions in fr');
 $rd=msql::kx('',nod('tags_'.$n.$lg),0,['idtag',$cat]);
+$rx=array_diff_key($rd,$rb);//del orphelins
+if($rx)$r=msql::modif('',nod('tags_'.$n.$lg),$rx,'delk');
+if($rx)$ret.=btn('txtyl',count($rx).' deletions in '.$lg);
 $re=array_diff_key($rb,$rd);
 $ret.=divc('txtcadr',$n.':'.count($rb).'-'.count($rd).'='.count($re));
 $ret.=msqbt('',$nod);
@@ -752,7 +758,7 @@ $rb=msql::kx('',$nod,0);
 $rc=array_diff_key($rb,$ra);
 foreach($rc as $k=>$v)unset($rb[$k]);
 $r=msql::save('',$nod,$rb);
-return rdiv($rc);}
+return div_r($rc);}
 
 static function synedit($cat,$idtag){
 $ret=divc('txtcadr','add synonym for id:'.$idtag.''); $rid='synedt'.$idtag;
@@ -786,7 +792,7 @@ if(!$res){$r=sql('id,idart','qdta','kv',['idtag'=>$p]);
 	if($r)$res=count($r).' orphans'; $ret.=implode_k($r,';',':');
 	$ret.=lj('popdel','admtgid_meta,tagid_tgid___x',picto('del'));
 	if($r && $o=='x')foreach($r as $k=>$v)sql::del('qdta',$k);}
-$ret.=divb($res);
+$ret.=div($res);
 $ret.=lj('popx','admtgid_meta,tagid_tgid___m',picto('ambulance'));
 if($o=='m'){$r=sql::maintenance('idtag','tag','qdta','qdt');}
 return divd('admtgid',$ret);}

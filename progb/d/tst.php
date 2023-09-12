@@ -10,16 +10,16 @@ static function auth2($n){return (ses::$s['auth']??'')>=$n?true:false;}
 static function benchmark($p,$o){
 chrono();
 for($i=0;$i<100000;$i++)self::auth1(6);
-$ret=divb(chrono(1));
+$ret=div(chrono(1));
 for($i=0;$i<100000;$i++)self::auth2(6);
-$ret.=divb(chrono(2));
+$ret.=div(chrono(2));
 return $ret;}
 
 static function benchmark_see($p,$o){
 head::add('http-equiv',['refresh','1']);
 sesz('tst');
 sesk('tst',$chrono); $res=average(ses('tst'));
-ses::$adm['chrono'].=divb($res.playr(array_reverse(ses('tst'))),'small');
+ses::$adm['chrono'].=div($res.playr(array_reverse(ses('tst'))),'small');
 return $ret;}
 
 static function jron($r){$rt=[];

@@ -63,7 +63,7 @@ return divc('nbp',$ret);}
 static function tags_list_nb($cat,$nbday=30){
 $qdt=db('qdt'); $qdta=db('qdta'); $qda=db('qda');
 $w='inner join '.$qda.' on '.$qda.'.id='.$qdta.'.idart ';
-return self::artags('tag,count(idart) as c',$wh,'kv',0);}
+return ma::artags('tag,count(idart) as c',$w,'kv',0);}
 
 static function clustags($cat,$nbj=30,$limit=200){
 $qdt=db('qdt'); $qda=db('qda'); $qdta=db('qdta'); $qdtc=db('qdtc');
@@ -98,14 +98,14 @@ foreach($r as $k=>$v){$del='';
 	//$nm=togbub('clusters,dropmenu',$v[0][1].'_'.ajx($cat),$k);
 	$del.=togbub('clusters,dropmenu',$v[0][1].'_'.ajx($cat),picto('etc'));
 	$nm=lj('','edt'.$v[0][1].'_clusters,viewone___'.ajx($cat).'_'.$v[0][1],$k);
-	$ret.=divc('row',divc('cell',$nm).divb($del,'cell','edt'.$v[0][1]));}
+	$ret.=divc('row',divc('cell',$nm).div($del,'cell','edt'.$v[0][1]));}
 return divc('table',$ret);}
 
 static function viewart($id){//edit art
 $r=ma::art_tags($id,'krr'); $rt=[];//cat[tag=>idtag]
 foreach($r as $k=>$v)foreach($v as $ka=>$va){
 	$bt=self::viewone($id,$va[2]);
-	$rt[$k][]=divc('row',divc('cell',$va[1]).divb($bt,'cell','edt'.$va[2]));}
+	$rt[$k][]=divc('row',divc('cell',$va[1]).div($bt,'cell','edt'.$va[2]));}
 return tabs($rt);
 return divc('table',self::implode_b('',$rt));}
 

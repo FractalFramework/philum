@@ -1,5 +1,5 @@
-<?php //msql/edition_flags_6
-$r=["_"=>['Nom en anglais'],
+<?php 
+return ["_"=>['Nom en anglais'],
 "aa"=>['Afar'],
 "ab"=>['Abkhazian'],
 "ae"=>['Avestan'],
@@ -186,4 +186,4 @@ $r=["_"=>['Nom en anglais'],
 "yo"=>['Yoruba'],
 "za"=>['Zhuang'],
 "zh"=>['Chinese'],
-"zu"=>['Zulu']];
+"zu"=>['Zulu']]; ?>

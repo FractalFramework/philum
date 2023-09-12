@@ -349,6 +349,7 @@ case('repair_enc'):$r=utf_r($r); break;
 case('resav'):$r=self::resav($r); break;
 case('patch_m'):$r=self::patch_m($r); break;
 case('patch_s'):$r=self::patch_s($r); break;
+case('patch_ret'):$r=self::patch_ret($r); break;
 case('renove'):$r=self::import_defs($r,'msql/'.$dr.'/'.$nod); break;
 case('sort_table'):$r=self::sort_table($r,$d); break;
 case('sort1'):$r=self::sort_table($r,$d,1); $ok=1; break;
@@ -509,6 +510,8 @@ static function patch_s($r){$rt=[];//old splitter
 if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[$k][$ka]=str_replace('§','|',$va);
 return $rt;}
 
+static function patch_ret($r){return $r;}
+
 static function compare($ra,$d){
 $rh=$ra[msql::$m]; $n=1;
 if(isset($ra[msql::$m]))unset($ra[msql::$m]);
@@ -549,7 +552,7 @@ $r=explode(',',$d0.','.$d); $na=count($r);//echo self::opsup($d,'intersect');
 foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1); if(!$dr){$dr=$dr0; $nod=$nd.'_'.$nod;} $r[$k]=$dr.'/'.$nod;}
 [$rc,$rtb]=self::intersecter($r);
 $rid=substr(md5($d0.$d),0,6); $nodb=nod('frn_'.$rid); msql::save('',$nodb,$rtb);
-$ret=divb(substr(md5($d0.$d),0,6).' - '.count($rc).' results ','popbt'); 
+$ret=div(substr(md5($d0.$d),0,6).' - '.count($rc).' results ','popbt'); 
 $ret.=textarea('msqop2',$d).lj('','admsql_msqlops_msqop2__'.ajx($d0).'_intersect',picto('ok'));
 $ret.=lj('popbt','admsql_msqlops_msqop2_3_'.ajx($d0).'_connexions','iterate');
 $ret.=lj('popbt','popup_datavue,call__3_'.ajx($d0.','.$d).'_','datas');

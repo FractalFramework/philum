@@ -1,5 +1,5 @@
-<?php //msql/default_css
-$r=["1"=>['','','@font-face','','','','font-family: \'Titillium3\'; src: url(\'/fonts/Titillium3.eot?iefix\') format(\'eot\'), url(\'/fonts/Titillium3.woff\') format(\'woff\'), url(\'/fonts/Titillium3.svg#Titillium3\') format(\'svg\');'],
+<?php 
+return ["1"=>['','','@font-face','','','','font-family: \'Titillium3\'; src: url(\'/fonts/Titillium3.eot?iefix\') format(\'eot\'), url(\'/fonts/Titillium3.woff\') format(\'woff\'), url(\'/fonts/Titillium3.svg#Titillium3\') format(\'svg\');'],
 "2"=>['','','body','7||','1||','||','font-size:12px;'],
 "3"=>['','','a','||','||','||',''],
 "4"=>['','','a:active','||','||','||','outline:none;'],
@@ -138,4 +138,4 @@ $r=["1"=>['','','@font-face','','','','font-family: \'Titillium3\'; src: url(\'/
 "141"=>['','popup','','7||','1||','||',''],
 "142"=>['','popu','','7||','||','||',''],
 "143"=>['','','@media screen and (max-width: 640px)','','','','ul{width:401px;} .justy img#rez {width:400px;} iframe {width:600px;} .philum{font-size:24px; line-height:auto;}'],
-"144"=>['','','@media screen and (max-width: 400px)','','','','body{background-color:#_3;} .popup{background-color:#_3;} ul{width:320px;} button{font-size:16px;} .justy img#rez{width:330px;} iframe {width:320px;} .philum{font-size:24px; line-height:24px;} #bub .philum {font-size:28px;} #bub.inline ul ul ul{min-width:120px;}']];
+"144"=>['','','@media screen and (max-width: 400px)','','','','body{background-color:#_3;} .popup{background-color:#_3;} ul{width:320px;} button{font-size:16px;} .justy img#rez{width:330px;} iframe {width:320px;} .philum{font-size:24px; line-height:24px;} #bub .philum {font-size:28px;} #bub.inline ul ul ul{min-width:120px;}']]; ?>

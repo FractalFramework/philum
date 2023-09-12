@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1703
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0301','publication'],
 "2"=>['0303','- réfection du module tag_cloud (nuage de tags)
 - ajout du module frequent_tags : tags les plus fréquents, capable de prendre en compte toutes les classes de tags'],
@@ -33,4 +33,4 @@ $r=["_"=>['date','text'],
 - correctif statsee'],
 "23"=>['0330','- le dispositif sconn (connecteurs réduits) est annihilé (les commentaires et autres passent pas les connecteurs classiques) et réhabilité de façon à servir au futur type d\'éditeur composite
 - :radio accepte un chemin vers un répertoire au lieu de la table de la playlist, qui dans ce cas peut être fabriquée'],
-"24"=>['0330','- mise en place du dispositif du nouvel éditeur mixte. L\'article peut être édité directement sur place, dans changer la mise en forme, sauf pour les connecteurs logiciel']];
+"24"=>['0330','- mise en place du dispositif du nouvel éditeur mixte. L\'article peut être édité directement sur place, dans changer la mise en forme, sauf pour les connecteurs logiciel']]; ?>

@@ -23,7 +23,7 @@ if(is_array($r))foreach($r as $k=>$v){$rb=[];
 		if($rb)$rc[]=('"'.$k.'"').'=>['.implode(',',$rb).']';}
 	else $rc[$k]=('"'.$k.'"').'=>[\''.($v?addslashes(stripslashes($v)):'').'\']';}
 if($rc)$rt=implode(','.n(),$rc);
-return '<?php //'.$p."\n".'$r=['.$rt.']; ?>';}
+return '<?php '."\n".'return ['.$rt.']; ?>';}
 
 static function del($dr,$nod,$o=''){$f=self::url($dr,$nod,$o); if(is_file($f) && auth(4))unlink($f);}
 
@@ -48,6 +48,7 @@ elseif($act=='next'){$nx=self::nextentry($r); $r[$nx]=$ra;}
 elseif($act=='add'){foreach($ra as $k=>$v)$r[]=$v;}
 elseif($act=='mdf'){foreach($ra as $k=>$v)$r[$k]=$v;}
 elseif($act=='mdfv'){foreach($ra as $k=>$v)if($v)$r[$k]=[$v];}
+elseif($act=='delk'){foreach($ra as $k=>$v)unset($r[$k]);}
 elseif($act=='mdfk'){foreach($r as $k=>$v)if($k==$ra)$rb[$rh]=$v; else $rb[$k]=$v; $r=$rb;}
 elseif(substr($act,0,1)=='@'){$n=substr($act,1); $nx=self::nextentry($r);
 	if($r)foreach($r as $k=>$v){$rb[$k]=$v; if($k==$n)$rb[$nx]=$ra;} $r=$rb;}
@@ -60,13 +61,15 @@ self::save($dr,$nod,$rb);
 return $rb;}
 
 static function inc($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak); $r=[];
-if(is_file($f)){try{include $f;}catch(Exception $e){echo 'bruu: '.$nod;}}
-//if(is_file($f))include $f;
+if(is_file($f)){try{$ra=require($f);}catch(Exception $e){echo 'bruu: '.$nod;}}
 elseif($rh)self::save($dr,$nod,[],$bak);
-$r=self::sl($r);
+if(isset($ra) && is_array($ra) && !$r)$r=$ra;//patch
+//if(!isset($r)){echo $nod; $nd=strfrom($nod,'_'); $r=$$nd; echo $nd.' ';}//patch_old
+//$r=self::sl($r);
 return $r;}
 
-static function rollback($f){$r=self::read($dr,$nod,'',[],1); self::save($dr,$nod,$r);}
+static function rollback($dr,$nod){
+$r=self::read($dr,$nod,'',[],1); self::save($dr,$nod,$r);}
 
 static function read($dr,$nod,$u='',$rh=[],$bak=''){
 $r=self::inc($dr,$nod,$rh,$bak);
@@ -131,8 +134,7 @@ return $vn?$r[$vn]:$r;}
 
 static function goodtable_b($d){$da=''; $row=''; $ob=0; $dr='';//table|line|col
 if(strpos($d,'/'))[$dr,$p]=split_one('/',$d); else $p=$d;
-if(strpos($p,'|'))[$p,$row]=expl('|',$p); else $row='';//row
-if(strpos($row,'|'))[$row,$col]=expl('|',$row); else $col='';//col
+if(strpos($p,'|'))[$p,$row,$col]=expl('|',$p,3); else $row='';//row 
 [$bs,$nd,$nb]=expl('_',$p,3);
 if($nb)$da=$bs.'_'.$nd.'_'.$nb; else $da=$bs.'_'.$nd;
 if($row)$r=self::row($dr,$da,$row,0); else $r=self::read($dr,$da);

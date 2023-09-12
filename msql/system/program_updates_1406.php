@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1406
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0601','- le bouton \'tablet\' se réfère au plug \'tablet\' et le statut est conservé dans une session
 - dispositifs :
 -- yesno et yesnoses : switch état d\'une var/sess
@@ -57,4 +57,4 @@ la rstr63 permet de désactiver cette détection : negcss compare les dates des 
 "28"=>['0627','- amélioration du fonctionnement de l\'admin msql quand on crée des tables
 - app_menu peut recevoir en plus des modules, des plugs, des mods (switcher), des urls, et des noms de catégorie avec un espace'],
 "29"=>['0628','amélioration du rss, désormais joignable au /rss/hub'],
-"30"=>['0630','la session cl est rendue sensible à l\'état _neg (css négatifs)']];
+"30"=>['0630','la session cl est rendue sensible à l\'état _neg (css négatifs)']]; ?>

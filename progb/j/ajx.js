@@ -177,17 +177,18 @@ x=setTimeout(function(){el.innerHTML=bt},1500);
 }
 
 //new canal
-//target,tg2|app,mth|3|var1,var2|inp1,inp2 //tg;a;tp;g;p
+//target,tg2|app,mth|var1,var2|inp1,inp2|3 //tg;a;tp;g;p
 function bj(ob){var val=ob.dataset.bj; bjcall(val);}
 function bjcall(val){if(typeof x!='undefined')clearTimeout(x);
 var dn=val.split('|'); var tp,g,fd,vl,pp=''; var fd=new FormData();
 if(dn[0]=='popup'||dn[0]=='pagup')pp='&'+dn[0]+'==';
 //else if(dn[0]=='pop'){dn[0]='pop'+curid; var tp=12;}
 else if(dn[0].indexOf(',')!=-1)tp='json';
-else if(dn[2]){var dn2=dn[2].split(','); tp=dn2[0]; var tx=dn2[1];}
-//if(dn[3]!=undefined)g=dn[3];
-if(dn[3]){prm=dn[3].split(','); for(i=0;i<prm.length;i++)fd.append(i,prm[i]);}
-if(dn[4]){prm=dn[4].split(','); for(i=0;i<prm.length;i++)fd.append(prm[i],capture(prm[i]));}
+if(dn[1].indexOf('/')!=-1){var url=dn[1]; var sn=dn[1].split('/');
+	dn[1]=sn[0]+',call'; dn[2]='a='+sn[1]; if(sn[2])dn[2]+='b='+sn[2]; updateurl(url,dn);}
+if(dn[2]){prm=dn[2].split(','); for(i=0;i<prm.length;i++){var p=prm[i].split('='); fd.append(p[0],p[1]);}}
+if(dn[3]){prm=dn[3].split(','); for(i=0;i<prm.length;i++){var p=prm[i].split('='); fd.append(p[1]?p[0]:prm[i],capture(p[1]?p[1]:prm[i]));}}
+if(dn[4]){var dn4=dn[4].split(','); tp=dn4[0]; var tx=dn4[1];}
 new AJAX('/ajax.php?_a='+dn[1],dn[0],tp,fd);//+'&_g='+g
 if(tx=='x')Close('popup');
 else if(tx=='xc')clpop();//autoclose togbub

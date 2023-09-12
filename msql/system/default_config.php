@@ -1,5 +1,5 @@
-<?php //msql/default_config
-$r=["_"=>['name','default'],
+<?php 
+return ["_"=>['name','default'],
 "1"=>['htaccess','yes'],
 "2"=>['create_hub privilege to blogers','yes'],
 "3"=>['first_node','default_hub'],
@@ -15,4 +15,4 @@ $r=["_"=>['name','default'],
 "13"=>['updates',''],
 "14"=>['server mirror',''],
 "15"=>['server img',''],
-"27"=>['thumb size','240/100']];
+"27"=>['thumb size','240/100']]; ?>

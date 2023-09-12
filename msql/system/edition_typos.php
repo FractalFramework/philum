@@ -1,5 +1,5 @@
-<?php //msql/edition_typos
-$r=["_"=>['name','category','accents','fav','fam'],
+<?php 
+return ["_"=>['name','category','accents','fav','fam'],
 "1756"=>['philum','user','','',''],
 "1761"=>['microsys4l','user','','',''],
 "1775"=>['microsys4','user','','',''],
@@ -36,4 +36,4 @@ $r=["_"=>['name','category','accents','fav','fam'],
 "1820"=>['customicons','user','','',''],
 "1821"=>['GlyphiconsRegular','user','','',''],
 "1822"=>['glyphicons-regular','user','','',''],
-"1823"=>['edgeicons','user','','','']];
+"1823"=>['edgeicons','user','','','']]; ?>

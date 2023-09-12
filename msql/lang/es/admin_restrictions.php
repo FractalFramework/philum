@@ -1,5 +1,5 @@
-<?php //admin_restrictions
-$r=["_"=>['name','description'],
+<?php 
+return ["_"=>['name','description'],
 "1"=>['trackbacks','comments opened to public'],
 "2"=>['moderation','comments are moderated (auth 4)'],
 "3"=>['time system','time system : used for periodic revues'],
@@ -160,4 +160,4 @@ Si el rstr está desactivado, ocurre lo contrario: sólo las urls convertidas en
 "154"=>['trace','hacer copia de seguridad de los cambios'],
 "155"=>['dock','colocar artículo en el dock'],
 "156"=>['reviews','reviews (rstr 106 para mostrar en menú social)'],
-"157"=>['switchnight','día/noche']];
+"157"=>['switchnight','día/noche']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/public_citation_6
-$r=["_"=>['Bill of Rights'],
+<?php 
+return ["_"=>['Bill of Rights'],
 "1"=>['Ier amendement
 Le Congrès ne fera aucune loi qui touche l\'établissement ou interdise le libre exercice d\'une religion, ni qui restreigne la liberté de parole ou de la presse, ou le droit qu\'a le peuple de s\'assembler paisiblement et d\'adresser des pétitions au gouvernement pour le redressement de ses griefs.'],
 "2"=>['IIe amendement
@@ -19,4 +19,4 @@ Les cautions et les amendes excessives, ainsi que les châtiments cruels ou exce
 "9"=>['IXe amendement
 L\'énumération des droits dans les amendements précédents ne doit pas être interprétée comme niant l\'existence d\'autres droits.'],
 "10"=>['Xe amendement
-Les pouvoirs qui ne sont pas délégués aux États-Unis par la Constitution et dont l\'exercice n\'est pas interdit par elle aux États, sont réservés aux États respectivement, ou au peuple.']];
+Les pouvoirs qui ne sont pas délégués aux États-Unis par la Constitution et dont l\'exercice n\'est pas interdit par elle aux États, sont réservés aux États respectivement, ou au peuple.']]; ?>

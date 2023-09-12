@@ -108,7 +108,7 @@ return self::call($p,$p);}
 static function api($p,$o){
 $p=$p?$p:sesr('prms','default_hub'); $o=$o?$o:2;//prw
 $r=msql::read('',nod('cache'),1);
-$rt['channel']=self::datas($r,$o);
+$rt['channel']=self::datas($r,$o,[]);
 return json_encode($rt);}
 
 }

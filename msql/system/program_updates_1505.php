@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1505
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0502','publication'],
 "2"=>['0502','ajout de recenseimg, met à jour le catalogue d\'après les images détectées dans l\'article'],
 "3"=>['0503','- ajout plugin profil
@@ -28,4 +28,4 @@ $r=["_"=>['date','text'],
 - le form de commentaire est rétrogradé à sa version textarea (html5 pas dispo sur mobiles)
 - le titre de l\'article apparaît dans le menu admin quand il n\'est plus à l\'écran'],
 "17"=>['0530','- requalification de la rstr88 pour rendre activable le template dédié au mode lecture d\'un article
-- js informé du mode lecture, pour enclencher le visual']];
+- js informé du mode lecture, pour enclencher le visual']]; ?>

@@ -1,5 +1,5 @@
-<?php //connectors_all
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "h"=>['h2'],
 "b"=>['bold'],
 "i"=>['italic'],
@@ -170,4 +170,4 @@ options : pop, read, conn, last, count, graph, form, tmp'],
 "look"=>['opens an article by highlighting a term [id|word:look]'],
 "lang"=>['translation of text [text|(es/en/fr/...):lang]'],
 "vid"=>['play a video and import it if needed'],
-"private"=>['private elements']];
+"private"=>['private elements']]; ?>

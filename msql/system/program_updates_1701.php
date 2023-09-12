@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1701
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0101','publication'],
 "2"=>['0105','prise en charge de figure et figcaption lors de l\'import'],
 "3"=>['0108','ajout du plugin study, sert à faire une étude de texte'],
@@ -10,4 +10,4 @@ $r=["_"=>['date','text'],
 "6"=>['0122','- apport de précision du sélecteur de tags dans l\'Api, de sorte à viser les classes de tags au lieu de renvoyer confusément les réponses toutes classes comprises'],
 "7"=>['0123','- correctif système de boot de l\'Api via l\'url /api/(request,json:1)
 - ccorrectif de l\'Api, ne génère pas de bornes temorelles lors de l\'appel d\'un id
-- l\'Api Telex rendue capable de pointer vers différents comptes']];
+- l\'Api Telex rendue capable de pointer vers différents comptes']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1405
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0501','- nouveau plugin \'viewcode\', va remplacer \'cod2base\'
 - mise à jour des apps par défaut'],
 "2"=>['0505','- renommages : Admin->admin, set_admin->set
@@ -108,4 +108,4 @@ $r=["_"=>['date','text'],
 - fix pb dossiers vides dans les apps (où les branches topologiques se greffent à d\'autres)
 - révision du retape_conn (réparation des connecteurs obsolètes), les antiques conn pub1 pub2 et pub3 ne sont plus corrigés, et les écouteurs sont placés dans et hors des connecteurs.
 - ajout du plug \'retape\' pour retaper des articles en série et mettre l\'option à off
-- le mod prevnext marche avec les anciens articles (hors cache)']];
+- le mod prevnext marche avec les anciens articles (hors cache)']]; ?>

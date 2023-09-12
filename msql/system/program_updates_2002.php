@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2002
-$r=["1"=>['0201','publication'],
+<?php 
+return ["1"=>['0201','publication'],
 "2"=>['0201','- nouveaux mimes, accessibles depuis pictos
 - résolution confusion entre apps et app, qui devient appin
 - module app devient appin
@@ -74,4 +74,4 @@ $r=["1"=>['0201','publication'],
 "21"=>['0229','- rénovation du bouton \'back\', qui n\'est pas simple (incorporation de catpic mit en vitesse)
 - réparation du projecteur/navigateur d\'images par défaut
 - rénovation de auotolang, permet de définir pluri-réciproquement les langues alternatives d\'un article (signale la nouvelle à l\'ancienne et enquête sur les accointances pour étendre les signalements). Très drôle. Encore un bon mois.
-- ajout de l\'app frequency, permet à twit d\'avoir la fréquence d\'une mention (etc.)']];
+- ajout de l\'app frequency, permet à twit d\'avoir la fréquence d\'une mention (etc.)']]; ?>

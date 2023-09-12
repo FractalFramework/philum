@@ -97,7 +97,7 @@ static function vacuum_upsrv($f){
 $srv=struntil($f,'/'); $id=strend($f,'/');
 $f=$srv.'/apicom/id:'.$id.',json:1';//,conn:1
 $d=read_file($f); $r=json_decode($d,true);
-return [$ra['title'],$ra['content']];}
+return [$r['title'],$r['content']];}
 
 static function vacuum($f,$sj='',$h=''){//$f=https($f);
 $f=http($f); $f=utmsrc($f); $suj=''; $rec=''; $ret=''; $enc='';
@@ -213,6 +213,8 @@ if($bend===false && strlen($bin)>=$imnb+$nb)$bend=strpos($bin,'>',$imnb+$nb);
 $src=substr($bin,$imnb+$nb,$bend-$imnb-$nb);
 if(strpos($bin,'popup_usg,nbp'))$mid='['.$txt.':nh]';//anchor
 elseif(strpos($src,'base64') && !$im)$mid='['.($src).':b64]';//self::b64img
+elseif(strpos($src,'twitter.com')!==false && strpos($src,'status/')!==false){
+return '['.strto($src,'?').':twitter]';}
 elseif($src){$src=trim($src);
 	if(substr($src,0,19)=='data:image/svg+xml,')return;
 	$src=utmsrc($src); $src=preg_replace("/(\n)|(\t)/",'',$src); 
@@ -348,9 +350,9 @@ case('a'):$b=self::treat_link($bin,$b); break;
 case('img'):$b=$n.self::treat_img($bin,$b,$fig); break;
 //case('picture'):$b=str::prop_detect($bin,'src'); break;
 case('blockquote'):
-	//if(strpos($bin,'twitter-')!==false){$d=between($b,'status/','|'); if($d && strpos($d,'?'))$d=strto($d,'?');}
-	if(strpos($bin,'twitter-')!==false){$d=$b; if(strpos($d,'?'))$d=strto($d,'?');}
-	if(isset($d))$b='['.$d.':twitter]'.$n;
+	if(strpos($bin,'twitter-')!==false){$d=$b;
+		if(strpos($d,':twitter'))$d=between($d,'[https://twitter.com/',':twitter]',1);
+		if($d)$b='[https://twitter.com/'.$d.':twitter]'.$n;}
 	elseif(self::notin($b,':q]'))$b=$n.$n.'['.$b.':q]'.$n.$n; break;
 case('p'):$b=$n.$n.$b.$n.$n; break;
 case('strong'):if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
@@ -400,9 +402,9 @@ case('dl')://prevent double img from <a<img
 	if($dd && $dt)$b=$n.'['.self::delhook($dt).'|'.$dd.':figure]'.$n;//delhook
 	elseif($dt)$b=$n.$dt.$n; elseif($dd)$b=$n.$dd.$n;
 	$dt=''; $dd=''; break;
-case('figure'):if($fig){
+case('figure'):
 	if(strpos($b,':video')===false && is_img($b)){$b=self::delhook($b); if(strpos($b,'|'))$b=strto($b,'|');}
-	$b=$n.$n.'['.trim($b).'|'.$fig.':figure]'.$n.$n; $fig='';} break;
+	elseif($fig){$b=$n.$n.'['.trim($b).'|'.$fig.':figure]'.$n.$n; $fig='';} break;
 case('figcaption'):if(!$fig)$fig=trim($b); if(is_img($fig))$fig=self::delhook($b); $b='';break;
 //case('aside'):$b=$n.'['.$b.'|1:msq_graph]'.$n; break;
 //case('source'):$bim=self::treat_link($bin,'');//inside audio
@@ -485,7 +487,7 @@ return str_replace('|','&#9475;',$d);}//['§','|']
 static function whichsplit($d){
 if(strpos($d,"\n"))$d.='¬';
 else $d=preg_replace('/(\n){2,}/',"\n",$d);
-return $r;}
+return $d;}
 
 static function stripslashes_r($r){foreach($r as $k=>$v)$r[$k]=str_replace('\"','"',$v); return $r;}
 

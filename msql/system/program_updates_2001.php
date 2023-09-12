@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2001
-$r=["1"=>['0101','publication'],
+<?php 
+return ["1"=>['0101','publication'],
 "2"=>['0103','- ajout du support de format d\'arrays à la mode json dans msql (compatibilité d\'échanges manuels de données avec Fractal)'],
 "3"=>['0105','- réhabilitation du recap manuel d\'articles (vieux connecteurs)
 - amélioration de sql_inner()
@@ -77,4 +77,4 @@ $r=["1"=>['0101','publication'],
 - rénovation de l\'usage des pictos : bookmark, like, poll
 - correctif dans favs : affichage des articles votés'],
 "27"=>['0130','- ajout de 20 gyphes et midification de quelques autres dans la typos philum, version 17b'],
-"28"=>['0131','- réforme des polls, qui désormais prennent en charge les likes, les favs, les agree, et les autres futurs modes de classements utilisateur : patch 200131, modif nom de table poll->favs, ajout du dispositif poll dans art, suppression du plug poll, ajout d\'une charge de donnée des articles \'art_favs\' ; précédemment les données utilisateur étaient confondues avec les données système, de art_opts.']];
+"28"=>['0131','- réforme des polls, qui désormais prennent en charge les likes, les favs, les agree, et les autres futurs modes de classements utilisateur : patch 200131, modif nom de table poll->favs, ajout du dispositif poll dans art, suppression du plug poll, ajout d\'une charge de donnée des articles \'art_favs\' ; précédemment les données utilisateur étaient confondues avec les données système, de art_opts.']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/public_countries_1
-$r=["_"=>['rang','code','pays','population'],
+<?php 
+return ["_"=>['rang','code','pays','population'],
 "1"=>['1','CN','Chine','1 374 900 000'],
 "2"=>['2','IN','Inde','1 330 783 327'],
 "3"=>['3','US','États-Unis','324 757 000'],
@@ -23,4 +23,4 @@ $r=["_"=>['rang','code','pays','population'],
 "21"=>['41','SA','Arabie saoudite','30 770 375'],
 "22"=>['44','VE','Venezuela','30 206 307'],
 "23"=>['45','PE','Pérou','30 147 935'],
-"24"=>['52','AU','Australie','24 000 300']];
+"24"=>['52','AU','Australie','24 000 300']]; ?>

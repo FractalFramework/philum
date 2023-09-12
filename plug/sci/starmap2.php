@@ -152,6 +152,6 @@ if(!$p1)$p1=self::$default;
 $ret=self::call($p1,$p2);
 //ses::$r['popw']=self::$w+20;
 //$s='width:'.(self::$w+20).'px';
-return $bt.divb($ret,'',self::$rid);}
+return $bt.div($ret,'',self::$rid);}
 }
 ?>

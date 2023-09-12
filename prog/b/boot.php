@@ -275,14 +275,14 @@ case('on'): $usr=post('user','login');
 	$ret=login::call($usr,post('pass'),post('mail')); break;
 case('in'): $ret=login::form('','',''); break;
 case('out'): $_SESSION['USE']=''; $_SESSION['auth']=''; $dayz=$_SESSION['dayx']-86400;
-	setcookie('use',$use,$dayz); setcookie('uid',ses('uid'),$dayz); $_SESSION['nuse']=1;  relod('/'); break;
+	setcookie('use',$use,$dayz); setcookie('uid',ses('uid'),$dayz); $_SESSION['nuse']=1; head::relod('/'); break;
 case('reboot'): $r=['qd','qb','USE','uid','iq','dev']; $rb=[];
-	foreach($r as $v)$rb[$v]=ses($v); $_SESSION=$rb; boot::init(); relod('/'); break;
+	foreach($r as $v)$rb[$v]=ses($v); $_SESSION=$rb; boot::init(); head::relod('/'); break;
 case('create_hub'): $_POST['create_hub']=ses('qb'); 
 	$ret=login::call(ses('qb'),'pass',''); break;
 case('off'): $qd=db('qd'); $dev=$_SESSION['dev']; session_destroy();
-	$_SESSION['db']['qd']=$qd; $_SESSION['dev']=$dev; relod('/?qd='.$qd); break;
-case('down'): session_destroy(); relod('/'); break;}
+	$_SESSION['db']['qd']=$qd; $_SESSION['dev']=$dev; head::relod('/?qd='.$qd); break;
+case('down'): session_destroy(); head::relod('/'); break;}
 if($ret)alert($ret);}
 
 //auth
@@ -290,7 +290,7 @@ if($ret)alert($ret);}
 static function ismbr($d){return sql('auth','qdb','v',['hub'=>ses('qb'),'name'=>$d]);}
 static function define_auth(){$use=ses('USE');
 if(!ses('master'))$_SESSION['master']=sql('name','qdu','v',['name'=>prms('default_hub')]);
-if($use){if($use==$_SESSION['master'])$auth=7;
+if($use){if($use==ses('master'))$auth=7;
 	elseif($use==ses('qb'))$auth=6;
 	elseif($ath=self::ismbr($use))$auth=$ath;
 	else $auth=1;}
@@ -308,13 +308,21 @@ return btd('cook',$ret);}
 
 //stats
 static function define_iq(){$ip=sesmk('hostname');
-$iq=sql('id','qdp','v','ip="'.$ip.'" limit 1');
+$iq=sql('id','qdp','v',['ip'=>$ip,'_limit'=>'1']);
 if(!$iq){$iq=cookie('iq');
 	if($iq)sqlup('qdp',['ip'=>$ip],['id'=>$iq]);}
 if(!$iq){$nav=addslashes($_SERVER['HTTP_USER_AGENT']??''); $ref=$_SERVER['HTTP_REFERER']??'';
 	$iq=sql::sav('qdp',[$ip,$nav,$ref,1,'NOW()']);}
 $_SESSION['iqa']=sql('ok','qdk','v',['iq'=>$iq],0);
 $_SESSION['ip']=$ip; $_SESSION['iq']=$iq;}
+
+static function updateip(){$ip=sesmk('hostname'); $iq=ses('uid');
+$ex=sql('ip','qdu','v',['id'=>$iq,'_limit'=>'1']);
+if($ex && $ex!=$ip)sqlup('qdp',['ip'=>$ip],['id'=>$iq]);}
+
+static function auth(){
+$ex=sql('id','qdu','v',['ip'=>sesmk('hostname'),'_limit'=>'1']);
+if($ex==ses('uid'))return true;}
 
 #update
 static function verif_update(){

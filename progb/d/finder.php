@@ -294,7 +294,7 @@ $o=self::mkprm($rb,'alone',5); $ret='';
 foreach($r as $k=>$v){
 	[$url,$img,$j,$xt,$dist,$prop,$f,$typ,$id]=vals($v,['url','img','j','xt','dist','prop','f','typ','id']); 
 	$ico=$img?$img:mimes($typ,'',18);
-	$div=divb('','fisub',$id);
+	$div=div('','fisub',$id);
 	if($v['r'])$lk=toggle('',$v['id'].'_finder,home___'.$j.$o,$f);//'&#9658; '.
 	else{$lk=toggle('',$v['id'].'_finder,reader___'.$j.$dist,$f);}
 	$ret.=divc('fipop',$ico.' '.$lk.' '.$div);}//.' '.$v['opt']
@@ -323,7 +323,7 @@ $o=self::mkprm($rb,'alone',5); $ret='';
 foreach($r as $k=>$v){$id=str::normalize($p.$k);
 	$lk=toggle('',$id.'_finder,home___'.ajx($p.'/'.$k).'_'.$o,$k);
 	if(is_array($v))$rte=self::recursive($v,$p.'/'.$k,$rb); else $rte='';
-		$div=divb($rte,'fisub',$id);
+		$div=div($rte,'fisub',$id);
 	$ret.=divc('fipop',' &#9658; '.$lk.' '.$div);}
 return $ret;}
 
@@ -384,8 +384,8 @@ return $rt.$ret;}
 static function flap($r,$p,$rb){$o=self::mkprm($rb,'alone',5);
 $reta=self::flap_dirs($r,$p,$o);
 $rb=self::data($r,$p,$rb); $retb=self::flap_files($rb,$o,$p);
-$ret=divb(divd('fdirs',$reta),'flap','','width:140px; margin-right:10px;');
-$ret.=divb(divd('ffils',$retb),'flapf','','width:calc(100% - 160px);');
+$ret=div(divd('fdirs',$reta),'flap','','width:140px; margin-right:10px;');
+$ret.=div(divd('ffils',$retb),'flapf','','width:calc(100% - 160px);');
 return $ret;}
 
 //render
@@ -394,7 +394,7 @@ if($rb[4]!='conn')$ret=divc('fimnu imgr',$fi['menu'].hlpbt('finder'));
 [$u,$fl,$rg,$ac]=vals($fi,['url','flap','reg','act']);
 $ret.=$u.$fl.$rg.$ac;
 $ret.=($ret?br():'').($fi['win']??'');
-return divb($ret,'','fndr','');}//'width:640px;
+return div($ret,'','fndr','');}//'width:640px;
 
 static function plnk($p,$o){$o=self::mkprm($o,'',5); $rb='';//?
 if(strprm($o,0)=='')$o=self::mkprm($rb,'disk',0); $o=str_replace('/','|',$o);

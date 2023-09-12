@@ -1,5 +1,5 @@
-<?php //msql/edition_apicom
-$r=["_"=>['input','type'],
+<?php 
+return ["_"=>['input','type'],
 "auteurs"=>['word1|word2','1'],
 "avoid"=>['word1|word2','1'],
 "cat"=>['word1|word2','1'],
@@ -56,4 +56,4 @@ $r=["_"=>['input','type'],
 "type"=>['word1|word2','1'],
 "until"=>['2022-10-14','1'],
 "utag"=>['word1|word2','1'],
-"verbose"=>['1','2']];
+"verbose"=>['1','2']]; ?>

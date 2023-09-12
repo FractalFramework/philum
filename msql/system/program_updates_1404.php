@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1404
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0404','amélioration du responsive : 
 - les font-size sont variables
 - les images à redimensionner sont ciblées
@@ -23,4 +23,4 @@ $r=["_"=>['date','text'],
 - les menus admin sont en rollover'],
 "7"=>['0423','- résolution pb de qq paramètres de post-traitement qui étaient inactifs ;
 - les car. %u201C%u201D ne sont actuellement standardisés qu\'après une modif, pas à la sortie de l\'import ;
-- prise en charge du nouveau car venu ¨ ;']];
+- prise en charge du nouveau car venu ¨ ;']]; ?>

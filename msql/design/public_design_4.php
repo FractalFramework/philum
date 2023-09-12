@@ -1,5 +1,5 @@
-<?php //msql/public_design_4
-$r=["1"=>['','','@font-face','','','','font-family: \'Gibson\'; src: url(\'/fonts/Gibson.eot?iefix\') format(\'eot\'), url(\'/fonts/Gibson.woff\') format(\'woff\'), url(\'/fonts/Gibson.svg#Gibson\') format(\'svg\');'],
+<?php 
+return ["1"=>['','','@font-face','','','','font-family: \'Gibson\'; src: url(\'/fonts/Gibson.eot?iefix\') format(\'eot\'), url(\'/fonts/Gibson.woff\') format(\'woff\'), url(\'/fonts/Gibson.svg#Gibson\') format(\'svg\');'],
 "2"=>['','','body','8||','1||','||',''],
 "3"=>['','','a','||','||','||',''],
 "4"=>['','','a:active','||','||','||','outline:none;'],
@@ -163,4 +163,4 @@ $r=["1"=>['','','@font-face','','','','font-family: \'Gibson\'; src: url(\'/font
 "162"=>['','popu','','7||','1||','||',''],
 "163"=>['','','@media only screen and (min-width: 1000px), only screen and (min-height: 1000px)','','','','body {font-size:large;} h2 {font-size:x-large;} #bub .philum {font-size:24px;} #page {width:1000px;max-width:1000px;margin:0 auto;} .philum {font-size:28px;} #content .nb_pages a {border:0;padding:2px 4px;margin:0 2px;} .justy img#rez {max-width:100%;} .search input{font-size:medium;} #menu li a {font-size:medium;} #artmod {display:block;} .imgl {width:152px;}'],
 "164"=>['','','@media only screen and (max-width: 640px)','','','',''],
-"165"=>['','','@media only screen and (max-width: 440px)','','','','h2 {font-size:large;text-shadow:0px 2px 2px #_4.5;} .imgl {width:60px;}']];
+"165"=>['','','@media only screen and (max-width: 440px)','','','','h2 {font-size:large;text-shadow:0px 2px 2px #_4.5;} .imgl {width:60px;}']]; ?>

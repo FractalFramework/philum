@@ -1,9 +1,9 @@
-<?php //msql/helps_editors
-$r=["_"=>['title'],
+<?php 
+return ["_"=>['title'],
 "b"=>['gras'],
 "i"=>['italique'],
 "u"=>['souligné'],
 "h"=>['titre'],
 "q"=>['citation'],
 "list"=>['liste'],
-"pub"=>['article']];
+"pub"=>['article']]; ?>

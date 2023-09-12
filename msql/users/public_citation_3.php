@@ -1,5 +1,5 @@
-<?php //msql/public_citation_3
-$r=["_"=>['Droits de l\'Homme de 1948'],
+<?php 
+return ["_"=>['Droits de l\'Homme de 1948'],
 "1"=>['Article premier
 Tous les êtres humains naissent libres et égaux en dignité et en droits. Ils sont doués de raison et de conscience et doivent agir les uns envers les autres dans un esprit de fraternité.'],
 "2"=>['Article 2
@@ -79,4 +79,4 @@ Toute personne a droit à ce que règne, sur le plan social et sur le plan inter
 (2) Dans l\'exercice de ses droits et dans la jouissance de ses libertés, chacun n\'est soumis qu\'aux limitations établies par la loi exclusivement en vue d\'assurer la reconnaissance et le respect des droits et libertés d\'autrui et afin de satisfaire aux justes exigences de la morale, de l\'ordre public et du bien-être général dans une société démocratique.
 (3) Ces droits et libertés ne pourront, en aucun cas, s\'exercer contrairement aux buts et aux principes des Nations Unies.'],
 "30"=>['Article 30
-Aucune disposition de la présente Déclaration ne peut être interprétée comme impliquant pour un Etat, un groupement ou un individu un droit quelconque de se livrer à une activité ou d\'accomplir un acte visant à la destruction des droits et libertés qui y sont énoncés.']];
+Aucune disposition de la présente Déclaration ne peut être interprétée comme impliquant pour un Etat, un groupement ou un individu un droit quelconque de se livrer à une activité ou d\'accomplir un acte visant à la destruction des droits et libertés qui y sont énoncés.']]; ?>

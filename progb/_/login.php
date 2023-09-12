@@ -31,7 +31,7 @@ static function log_result($usr,$uid,$qb,$rl,$ck){
 $_SESSION['USE']=$usr; $_SESSION['uid']=$uid; $_SESSION['qb']=$qb;
 if($ck){$dayz=$_SESSION['dayx']+(86400*30); $_SESSION['nuse']='';
 	setcookie('use',$usr,$dayz); setcookie('uid',$uid,$dayz);}
-if($rl)relod('?hub='.$qb.'&refresh==&log=on');
+if($rl)head::relod('?hub='.$qb.'&refresh==&log=on');
 else return 'logon: '.$qb;}
 
 //call
@@ -129,8 +129,8 @@ return sql::sav('qdu',$rp);}
 static function ndprms_defaults(){
 $rstr=admx::defaults_rstr(0); $config='';
 //$r=msql::read('system','default_params',1); $rb=[]; foreach($r as $k=>$v)$rb[$k]=$v[0];
-$rb=msql::col('system','default_params',0,1);
-for($i=0;$i<=$k;$i++)$config.=($rb[$i]??'').'#';
+$rb=msql::col('system','default_params',0,1); $n=count($rb);
+for($i=0;$i<=$n;$i++)$config.=($rb[$i]??'').'#';
 $ln=explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 if($ln[0]=='fr')$lang='fr'; else $lang='en'; //$first_art=$lang=="fr"?236:253;
 $config=str_replace('LANG',$lang,$config);

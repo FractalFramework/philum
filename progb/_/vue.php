@@ -70,7 +70,7 @@ $ret=match($c){
 //apps
 'text'=>$p?$p:$o,
 'lj'=>lj('',$p,$o),
-'link'=>md::special_link($p.'|'.$o),
+//'link'=>md::special_link($p.'|'.$o),
 'anchor'=>'<a name="'.$p.'"></a>',
 'date'=>mkday(is_numeric($p)?$p:'',$o),
 'title'=>ma::suj_of_id($p),
@@ -90,7 +90,7 @@ $ret=match($c){
 default=>''};
 if($ret)return $ret;
 if($c=='cut'){[$s,$e]=explode('/',$o); return between($p,$s,$e);}
-if($c=='each'){foreach($p as $v)$ret.=conb::exec($v,'','',''); return $ret;}
+if($c=='each'){foreach($p as $v)$ret.=cbasic::exec($v,'','',''); return $ret;}
 if($c=='core'){if(is_array($p))return call_user_func($o,$p,'','');
 	else{$pb=explode('/',$p); return call_user_func_array($o,$pb);}}
 if(strpos($o,',')){$rp=array_combine(['class','id','style'],expl(',',$o,3)); return tag($c,$rp,$p);}//mmh

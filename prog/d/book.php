@@ -5,7 +5,7 @@ static function scroll0($msg,$rid){
 return scroll(strlen($msg)/80,$msg,16,'','100%',$rid);}
 static function scroll($d,$id){
 $s='overflow:auto; padding:20px; max-height:calc(100vh - 230px);';
-return divb($d,'','scrll'.$id,$s);}
+return div($d,'','scrll'.$id,$s);}
 
 static function css(){
 return '
@@ -41,7 +41,7 @@ return divs('',$ret);}
 static function cover($t,$id){$t=str_replace(' ',"\n",$t); //$w=$_SESSION['prma']['content'];
 $t=lj('','popup_book,home__3_'.ajx($_SESSION['book'][$id]).'_'.ses('boko'),$t);
 $bt=divs('background-color:#222; border:1px solid #fff; padding:5px; margin:auto; color:white; font-size:16px; text-align:center; text-decoration:none;',$t);
-return divb($bt,'book','','background-color:black; padding:10px; width:220px;');}
+return div($bt,'book','','background-color:black; padding:10px; width:220px;');}
 
 static function prevnxt($id,$rid){$r=ses('bookr');
 $j='book'.$rid.'_book,reload___'.$id; $i=0; $ok=0; $old=0;

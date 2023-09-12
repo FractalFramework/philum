@@ -25,7 +25,7 @@ else $sty.='background-color:#'.$_SESSION['clrs'][$_SESSION['prmd']][6].'; ';
 if($r[11]=='inside')$pos='position:absolute; margin-left:'.$wb.'px;';
 $ret=self::nav($_SESSION[$sdj],$na,$nb,$f);
 if($r[7])$ret=divs($sty.$width.$font.$color.$align.$alpha.$pos,$ret.$r[7]);
-return divb($ret.$im);}//style="text-align:center;"
+return div($ret.$im);}//style="text-align:center;"
 
 static function thumbs($r,$f,$a){$w=cw(); if($r)unset($r[msql::$m]);
 if($r)$rb=array_keys_r($r,5); if($rb)$wt=array_sum($rb); $limit=0-($wt-$w+22);
@@ -33,8 +33,8 @@ if($r)foreach($r as $k=>$v){$i++; $imn='gallery/mini/'.$v[1];
 	if(is_file($imn)){$im=image($imn,$v[5],$v[6]);
 	$gdp=(0-$wa+(($w/2)-($v[5]/2))); if($gdp<$limit)$gdp=$limit; if($gdp>0)$gdp=0;
 	$ret.=ljb('','sliderjnav_'.$a,[$gdp,$k],$im); $wa+=$v[5];}}
-$ret=divb($ret,'sdjv'.$a,'','margin-left:0px;',$ret);
-$ret=divb($ret,'','','overflow:hidden; width:'.($w).'px; height:75px;',$ret);
+$ret=div($ret,'sdjv'.$a,'','margin-left:0px;',$ret);
+$ret=div($ret,'','','overflow:hidden; width:'.($w).'px; height:75px;',$ret);
 return $ret;}
 
 static function js($f,$a){

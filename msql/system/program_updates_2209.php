@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2209
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0901','publication'],
 "2"=>['0901','- mise au rancart de la clique de fonctions mysql de la lib, qui se situe dans l\'objet sql, hormis quelques alias restants'],
 "3"=>['0902','- remplacement des dispositifs névrosés de where dans sql par ceux, élégants, de fractal'],
@@ -102,4 +102,4 @@ done: on peut placer des blocks dans des blocks pour créer une structure html']
 - l\'effacement d\'un module itératif enclenche une confirmation de l\'effacement de tous les modules associés.
 - adaptation, pour l\'autre module contenant des sous-modules virtuels, comme menusJ (les modules itératifs contiennent des modules objectifs), des branchements aux dispositifs posés.
 - quelques fixs sur l\'app twit, veille sur le cache, correctifs'],
-"27"=>['0930','exceptionnellement, la version 2210 est retardée de quelques jours le temps stabiliser les mutations opérées.']];
+"27"=>['0930','exceptionnellement, la version 2210 est retardée de quelques jours le temps stabiliser les mutations opérées.']]; ?>

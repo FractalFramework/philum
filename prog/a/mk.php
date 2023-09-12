@@ -274,7 +274,7 @@ $ret=match($oa){
 'twusr'=>self::msqusrs($d,$id),
 default=>''}; if($ret)return $ret;
 [$b,$nd]=split_right('/',$d);
-$r=msql::goodtable_b($com); $bt=msqbt($b,$nd).csvfile($com,$r);
+$r=msql::goodtable_b($com); $bt=msqbt($b,$nd); if(is_array($r))$bt.=csvfile($com,$r);
 if(is_array($r))return self::msqplay($r,$o).$bt; else return $r;}
 
 static function msqtwit($d,$id){

@@ -35,7 +35,7 @@ $bt.=bj('popsav',$rid.'|ajxtst,transmute|3','transmute');
 //$bt.=bj('popsav',$rid.','.$rid.'b-ajxtst,callr--h,é,l,l,ô,\'-inp1,inp2,inp3,inp4,inp5,inp6','json');
 //$bt.=bj('popsav',$rid.'-ajxtst,call-,xd-héll_ô','xd');
 //$bt.=bj('popsav',$rid.'-ajxtst,call2-3','...');
-return $bt.divb('','panel',$rid).divb('','panel',$rid.'b');}
+return $bt.div('','panel',$rid).div('','panel',$rid.'b');}
 
 }
 ?>

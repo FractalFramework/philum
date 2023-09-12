@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1212
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['1201','améliorations de commodité de l\'interface, 
 - des css, 
 - du traitement des popups qui ouvrent un objet de l\'admin, 
@@ -62,4 +62,4 @@ Par contre les pubs ne sont plus sensibles à la restriction \'ajax mode\' (8) d
 "29"=>['1229','- réécriture du plugin de gestion des inscriptions à la newsletter (plugin \'mailist\'), en ajax ;'],
 "30"=>['1230','- fix décalage horaire dans le système d\'envoi de mails ;
 - fix stupiderie dans l\'outil de tags ;'],
-"31"=>['1231','- rénovation du système d\'envoi de la newsletter (ajout d\'un plugin \'newsletter\') ;']];
+"31"=>['1231','- rénovation du système d\'envoi de la newsletter (ajout d\'un plugin \'newsletter\') ;']]; ?>

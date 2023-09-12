@@ -30,10 +30,10 @@ foreach($r as $ka=>$va){
 	if($va[2]==$p)$bt2=lj('',$j.$ka.'_'.$rid,pictxt('up',$ka)).' ';//begin
 	if($va[0]==$p)$bt4.=lj('',$j.$ka.'_'.$rid,pictxt('after',$ka)).' ';}
 $bt=divc('',$bt1.$bt2.$bt3.$bt4.$bt0);
-//$cell=divb($bt1.$bt2.$bt3.$bt4,'imgl','','width:36px');
+//$cell=div($bt1.$bt2.$bt3.$bt4,'imgl','','width:36px');
 $ret=nl2br(stripslashes_b($v[1]));
 $cell=divs('margin:auto;',$ret);
-$ret=$bt.divb($cell,'book','','display:flex; min-height:300px; width:94%;');
+$ret=$bt.div($cell,'book','','display:flex; min-height:300px; width:94%;');
 return $ret;}
 
 static function order($r){

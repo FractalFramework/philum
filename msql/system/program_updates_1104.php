@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1104
-$r=["_"=>['day','txt'],
+<?php 
+return ["_"=>['day','txt'],
 "1"=>['110401','mise en conformité avec les serveurs sous php4 (backslashes illégaux) ;'],
 "2"=>['110401','réforme de plug/rss1, [flux rss alternatif interrogeable par Flash:b]. Il est surtout \'interrogeable\' de sorte à produire des tris. Par défaut il se comporte comme \'rss\' en produisant une source issue du cache des articles, sans connexion à MySql. \'rss2\' disparaît.'],
 "3"=>['110402','renommage de \'radio\' en \'jukebox\' pour laisser la place à la future vraie \'radio\' (application Flash et nom du connecteur) ;'],
@@ -101,4 +101,4 @@ DONC (désolés !) il faut ajouter l\'option \'nobr\' sur chaque module du Foote
 - et ajout de la restriction 19 pour empêcher la préparation pour la fabrication de \'_IMG1\' ;
 
 ajout du connecteur de codeline \':img\' qui renvoie une image simple.'],
-"57"=>['10430','déplacement de la table des connecteurs de codeline avec les autres connecteurs']];
+"57"=>['10430','déplacement de la table des connecteurs de codeline avec les autres connecteurs']]; ?>

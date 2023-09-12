@@ -1,5 +1,5 @@
-<?php //msql/helps_api
-$r=["_"=>['txt'],
+<?php 
+return ["_"=>['txt'],
 "hub"=>['hub'],
 "section"=>['multi'],
 "nosection"=>['multi'],
@@ -33,4 +33,4 @@ $r=["_"=>['txt'],
 "nodig"=>['1'],
 "nopages"=>['1'],
 "template"=>['title'],
-"file"=>['1']];
+"file"=>['1']]; ?>

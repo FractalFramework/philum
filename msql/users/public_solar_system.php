@@ -1,5 +1,5 @@
-<?php //msql/public_solar_system
-$r=["_"=>['Planète','Demi grand axe (UA)','Excentricité','Inclinaison (°)','Période (années)','Rayon / Dimension (km)','rario dist/rev'],
+<?php 
+return ["_"=>['Planète','Demi grand axe (UA)','Excentricité','Inclinaison (°)','Période (années)','Rayon / Dimension (km)','rario dist/rev'],
 "2"=>['Mercure','0.38710','0.205631','7.0049','0.2408','2439','658300'],
 "3"=>['Vénus','0.72333','0.006773','3.3947','0.6152','6052','481528'],
 "4"=>['La Terre','1.00000','0.016710','0.00000','1.00000','6378','409575'],
@@ -12,4 +12,4 @@ $r=["_"=>['Planète','Demi grand axe (UA)','Excentricité','Inclinaison (°)','P
 "11"=>['Pluton planète naine','39.4817','0.248808','17.1417','248.4','1172','65364'],
 "12"=>['Haumea planète naine','43.2829','0.19089','28.2141','284.76','1960 x 1518 x 996',''],
 "13"=>['Makemake planète naine','45.64','0.15','29.00','308','750',''],
-"14"=>['éris planète naine','68.1461','0.432439','43.7408','562.55','1165','']];
+"14"=>['éris planète naine','68.1461','0.432439','43.7408','562.55','1165','']]; ?>

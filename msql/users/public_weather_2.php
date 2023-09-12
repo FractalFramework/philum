@@ -1,5 +1,5 @@
-<?php //msql/public_weather_2
-$r=["_"=>['Code temps','Description','picto'],
+<?php 
+return ["_"=>['Code temps','Description','picto'],
 "1"=>['','Soleil','sunshine'],
 "2"=>['1','Peu nuageux','smallclouds'],
 "3"=>['2','Ciel voilé','localclouds'],
@@ -87,4 +87,4 @@ $r=["_"=>['Code temps','Description','picto'],
 "85"=>['230','Pluie et neige mêlées','snowrain'],
 "86"=>['231','Pluie et neige mêlées','snowrain'],
 "87"=>['232','Pluie et neige mêlées','snowrain'],
-"88"=>['235','Averses de grêle','hailyrain']];
+"88"=>['235','Averses de grêle','hailyrain']]; ?>

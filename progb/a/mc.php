@@ -37,7 +37,7 @@ case("importart"):$ret=self::importart(); $t=helps('import_art'); break;////to d
 case('radio'):$ret=radio::select(); $t='mp3 directory '; break;
 case('module'):$ret=admx::modeditpop(1); break;
 case('ajax'):$ret=admx::modeditpop(0); break;//not public
-case('articles'):$ret=admx::artmod_edit($p); break;
+//case('articles'):$ret=admx::artmod_edit($p); break;
 //case('svg'):$ret=mbd_editsvg($p); break;
 case('search'):$t=nms(26); break;
 case('rss_art'):$t='xml_url'; break;
@@ -60,7 +60,7 @@ static function importart(){//to do
 	return self::assistant('urlsrc','SaveI','','','');}
 
 static function api_read($f){$r=conv::vacuum_upsrv($f);
-return divc('scroll',tagb('h2',$r[0]).divb($r[1],''));}
+return divc('scroll',tagb('h2',$r[0]).div($r[1],''));}
 
 static function msql(){//insert
 $r=explore('msql/users','files',1); $ret='';
@@ -130,7 +130,7 @@ return $d?$ret:'select text to replace';}
 
 static function book($cnn){
 $ret=btn('txtcadr','param [,]');
-$ret.=divd('amc',admx::artmodEditJ('cnv','',''));
+//$ret.=divd('amc',admx::artmodEditJ('cnv','',''));
 $ret.=self::assistant('cnv','insert_conn','book','','title/1/book');
 $ret.=br().helps('book');
 return $ret;}
@@ -329,7 +329,7 @@ $ret.=lj('','cnndl_mc,navs___del2_'.$id,'media');
 foreach($r as $k=>$v)if($v[2]==$d)$ret.=ljb('','conn','_delconn_'.$k,$k,att($hlp.' '.$k)).' ';
 $ret.=ljb('','captslct','delconn','any',att('del any'));
 $ret.=ljb('','conn','_delconn','all',att('del all'));
-return divb($ret,'nbp','cnndl');}
+return div($ret,'nbp','cnndl');}
 
 //ascii
 static function ascii($p,$id){
@@ -342,7 +342,7 @@ return $ret;}
 
 static function unicodeslct($p,$id){
 $r=msql::row('system','edition_ascii_10',$p);
-$ret=divb($r[0],'tit'); $a=hexdec($r[1]); $b=hexdec($r[2]);
+$ret=div($r[0],'tit'); $a=hexdec($r[1]); $b=hexdec($r[2]);
 for($i=$a;$i<=$b;$i++){$va='&#'.$i.'; ';
 $ret.=btj($va,atjr('insert',[$va,$id]),'ascii','').' ';}
 return $ret;}
@@ -392,11 +392,11 @@ elseif($op=='backup'){
 			$bt.=lj('popbt','bckp_mc,backup_txtarea_3_'.$id.'_'.$k,'save');
 			$bt.=lj('popbt','txarea_mc,restore___'.$k,'restore');
 			if(auth(6))$bt.=lj('popbt','bckp_mc,backdel___'.$k.'_'.$id,'delete');
-			$ret.=divb($bt);}
+			$ret.=div($bt);}
 		$ret.=lj('popsav','bckp_mc,backup_txtarea__'.$id,'+ new').' ';
 		$ret.=lj('popbt','txarea_mc,filters_txtarea__revert','revert').' ';
 		$ret.=btj('last saved','revert()','popbt').' ';}
-	if($ret)$ret=divb($ret,'','bckp'); else 'available only while editing';}
+	if($ret)$ret=div($ret,'','bckp'); else 'available only while editing';}
 elseif($op=='del')$ret=self::conn_del('html',$id);
 elseif($op=='del2')$ret=self::conn_del('media',$id);
 elseif($op=='disk')$ret=finder::home(ses('qb'),'disk///disk/conn//mini');
@@ -404,7 +404,7 @@ elseif($op=='icons')$ret=finder::home('','disk///icon/conn//mini');
 elseif($op=='filters')$ret=self::conn_props_b($op,'tools');
 elseif($op=='tools')$ret=self::conn_props_b($op,'tools');
 else $ret=self::conn_props_b($op,'all');
-return divb($ret,'nbp','nv'.$op);}//,'min-width:300px; max-width:680px;'
+return div($ret,'nbp','nv'.$op);}//,'min-width:300px; max-width:680px;'
 
 //backup_arts
 static function backup($g1,$g2,$prm=[]){$d=$prm[0]??''; if($d){

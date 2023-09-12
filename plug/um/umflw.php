@@ -37,7 +37,7 @@ $r=self::scan($p);//pr($r);
 foreach($r as $k=>$v){
 	$rt[1][]=lj(active($v,$a),$rid.'_umflw,call__2_'.$p.'_'.ajx($v).'|'.ajx($b),$v).' ';
 	$rt[2][]=lj(active($v,$b),$rid.'_umflw,call__2_'.$p.'_'.ajx($a).'|'.ajx($v),$v).' ';}
-return divb($ret).divc('nbp',join('',$rt[1])).divc('nbp',join('',$rt[2]));}
+return div($ret).divc('nbp',join('',$rt[1])).divc('nbp',join('',$rt[2]));}
 
 static function home($p,$o){
 $rid='ub'; $p=$p?$p:'OAY';

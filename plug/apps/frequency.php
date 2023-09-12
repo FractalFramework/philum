@@ -11,7 +11,7 @@ foreach($r as $k=>$v){$rb[$k]=round($v*$ratio);}
 return $rb;}
 
 static function render($r){$rb=[];
-foreach($r as $k=>$v){$rb[]=[$k,progress($v,self::$w,self::$w,$v)];}//divb($v,'bar','','width:'.$v.'px;')
+foreach($r as $k=>$v){$rb[]=[$k,progress($v,self::$w,self::$w,$v)];}//div($v,'bar','','width:'.$v.'px;')
 return $rb;}
 
 static function graph($r,$l=100){

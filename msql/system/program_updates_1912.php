@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1912
-$r=["1"=>['1201','publication'],
+<?php 
+return ["1"=>['1201','publication'],
 "2"=>['1201','- remplacement des fonctions str_extract, strchr_b, strrchr_b, substrpos, substrrpos (redondantes et peu lisibles) par strdeb et strend, puis ajout de struntil et strfrom'],
 "3"=>['1202','- ajout du plug crypt, permet de crypter et décrypter des messages'],
 "4"=>['1203','- amélioration de vitesse du Desktop, qui peut faire des tris préliminaires quand des indications le permettent
@@ -26,4 +26,4 @@ $r=["1"=>['1201','publication'],
 - ajout de l\'extension d\'enquête de référence dans une autre langue d\'un article par sauts consécutifs entre versions de différentes langues (par exploration itérative)'],
 "18"=>['1227','- la détection des tags de l\'article se rallie au nouveau procédé de détection detect_words()
 - amélioration du nettoyeur specialspace()'],
-"19"=>['1230','- réparation détection vignette dailymotion']];
+"19"=>['1230','- réparation détection vignette dailymotion']]; ?>

@@ -74,7 +74,7 @@ static function menu($p,$o,$rid){
 $bid='inp'.$rid; $cid='nav'.$rid;
 //$j=$rid.'_'.self::$a.',call_'.$bid.'_2__'.$rid;
 //$ret.=inputj($bid,$p,$j).lj('',$j,picto('ok')).' ';
-$ret=divb(self::nav('',$rid),'nbp',$cid);
+$ret=div(self::nav('',$rid),'nbp',$cid);
 return $ret;}
 
 static function home($p,$o){$rid=randid();

@@ -33,7 +33,7 @@ $ret.=self::img($q['profile_banner_url']??'',1);
 $ret.=divc('panel justy',($q['description']));
 $ret.=divc('frame-blue',($q['location']));
 $clr=$q['profile_link_color'];
-$ret.=divb('user color theme: '.$clr,'txtcadr','','background-color:#'.$clr.';');
+$ret.=div('user color theme: '.$clr,'txtcadr','','background-color:#'.$clr.';');
 $ret.=btn('small','id: '.$q['id']);
 return divs('',$ret);}
 
@@ -159,7 +159,7 @@ static function edit($p,$o){$rid=randid('tw');
 $cls=implode(',',array_keys(self::r())); $ret=''; $kr=[];
 $r=sql($cls,'qdtw','a',['twid'=>$p]);
 if($r)foreach($r as $k=>$v){$kb=$k.$rid;
-	$ret.=divb(goodarea($kb,$v,60).label($kb,$k,'small')); $kr[]=ajx($kb);}
+	$ret.=div(goodarea($kb,$v,60).label($kb,$k,'small')); $kr[]=ajx($kb);}
 $bt=lj('popsav',$p.'_twit,edtsav_'.implode(',',$kr).'__'.$p.'_'.$o,picto('save2'));
 return divd('edt'.$p,$bt.$ret);}
 
@@ -259,7 +259,7 @@ static function usrnfo($r){$ret='';
 $rh=['id','screen_name','name','location','description','profile_image_url','protected','verified','followers_count','friends_count','following','lang','created_at','profile_background_color','profile_text_color'];
 if($r)foreach($r as $k=>$v){
 	$rb=array_combine($rh,$v);
-	$ret.=divb(self::banner($rb,1));}
+	$ret.=div(self::banner($rb,1));}
 return $ret;}
 
 static function statuses($d){$rid=rid($d);//find
@@ -311,7 +311,7 @@ if(strpos($p,' ')){$ra=explode(' ',$p); foreach($ra as $v){
 $q=implode(' or ',$qr);}
 else $q='text like "%'.$p.'%" or mentions like "%'.$p.'%" ';
 $r=sql('name,screen_name','qdtw','ar',$q.'order by twid desc',0);
-if($r)foreach($r as $k=>$v){$ret[$v['screen_name']]=divb(self::banner($v,0));}
+if($r)foreach($r as $k=>$v){$ret[$v['screen_name']]=div(self::banner($v,0));}
 if($ret)return count($ret).' results'.implode('',$ret);}
 
 //img
@@ -472,7 +472,7 @@ if($quoid){$txt.=br().self::cache($quoid,$id);}
 //elseif($r['retweeted']){$txt.=br().self::cache($r['retweeted'],$id);}
 $ret.=divc('panel',$txt);
 if($o)return $ret;
-return divb($ret,'twit',$id);}
+return div($ret,'twit',$id);}
 
 /**/static function playxt($k){
 $ra=['name','screen_name','user_id','date','text','media','mentions','reply_id','reply_name','favs','retweets','followers','friends','quote_id','quote_name','retweeted','lang'];//ib,twid,

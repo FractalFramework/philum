@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1906
-$r=["1"=>['0601','publication'],
+<?php 
+return ["1"=>['0601','publication'],
 "2"=>['0602','- amélioration substantielle du système de maintenance backupim'],
 "4"=>['0603','- backupim extradie les images orphelines dans /imgx
 - les images ban_ passent de /img à /imgb, les cods sont mos dans imgb/cod'],
@@ -49,4 +49,4 @@ module :
 - :l evient :s'],
 "17"=>['0626','- réfection de suggest, le plugin du suggestion d\'article permet maintenant d\'en éditer un sur place, en plus de pouvoir en importer un depuis le web'],
 "18"=>['0629','- delete() devient sqldel() au format fractal'],
-"19"=>['0630','- fix pb d\'écriture de vignettes de vidéos dans le catalogue d\'images d\'un article qui provenait d\'autres articles, suite à une mauvaise détection de l\'éxistence de cette vignette']];
+"19"=>['0630','- fix pb d\'écriture de vignettes de vidéos dans le catalogue d\'images d\'un article qui provenait d\'autres articles, suite à une mauvaise détection de l\'éxistence de cette vignette']]; ?>

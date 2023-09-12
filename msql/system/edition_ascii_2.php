@@ -1,5 +1,5 @@
-<?php //msql/edition_ascii_2
-$r=["_"=>['value'],
+<?php 
+return ["_"=>['value'],
 "topo"=>['7'],
 "topo-open"=>['8'],
 "phi1"=>['934'],
@@ -288,4 +288,4 @@ $r=["_"=>['value'],
 "fb"=>['£'],
 "tw"=>['|'],
 "square"=>['­­­­9209'],
-"mini"=>['è']];
+"mini"=>['è']]; ?>

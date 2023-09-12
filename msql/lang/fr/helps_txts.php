@@ -1,5 +1,5 @@
-<?php //msql/helps_txts
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "philum_pub_txt"=>['[http://philum.fr/2|[phi1|32::picto]:popart] [v[:ver]|txtsmall2:css] [http://philum.fr|[philum:picto]]'],
 "update_ok_alert"=>[''],
 "conn_help_txt"=>['Principe général
@@ -501,4 +501,4 @@ ex : HD 150680, hd150680, hip99461, 88601, 2021
 commandes pré-établies : knownstars, allstars
 Accepte les requêtes de Star (ra, dc, dist, radius)'],
 "clusters"=>['Clusters de tags : catégories génériques obtenues par émergence'],
-"tag_pictos"=>['les définitions de la config peuvent &ecirc;tre sauvegardées dans une table msql']];
+"tag_pictos"=>['les définitions de la config peuvent &ecirc;tre sauvegardées dans une table msql']]; ?>

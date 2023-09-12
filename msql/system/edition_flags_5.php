@@ -1,5 +1,5 @@
-<?php //msql/edition_flags_5
-$r=["_"=>['639-1','639-2','639-3','Nom de la langue','Nom
+<?php 
+return ["_"=>['639-1','639-2','639-3','Nom de la langue','Nom
 (dans la langue correspondante)','Nom en anglais','Commentaire'],
 "1"=>['aa','aar','aar','Afar','Afaraf','Afar',''],
 "2"=>['ab','abk','abk','Abkhaze','&#1040;&#1191;&#1089;&#1091;&#1072;','Abkhazian',''],
@@ -187,4 +187,4 @@ $r=["_"=>['639-1','639-2','639-3','Nom de la langue','Nom
 "184"=>['yo','yor','yor','Yoruba','Yorùbá','Yoruba',''],
 "185"=>['za','zha','zha + 2','Zhuang','Sa&#623; cue&#331;&#389;&nbsp;; Saw cuengh','Zhuang',''],
 "186"=>['zh','chi/zho','zho + 13','Chinois','&#20013;&#25991;, &#27721;&#35821;, &#28450;&#35486;','Chinese',''],
-"187"=>['zu','zul','zul','Zoulou','isiZulu','Zulu','&nbsp;']];
+"187"=>['zu','zul','zul','Zoulou','isiZulu','Zulu','&nbsp;']]; ?>

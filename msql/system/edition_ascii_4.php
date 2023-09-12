@@ -1,5 +1,5 @@
-<?php //msql/edition_ascii_4
-$r=["_"=>['code clavier','Code ISO','Code HTML','Description'],
+<?php 
+return ["_"=>['code clavier','Code ISO','Code HTML','Description'],
 "2"=>['1','9786','','Smiley blanc souriant'],
 "3"=>['2','9787','','Smiley noir souriant'],
 "4"=>['3','9829','&hearts','Coeur noir'],
@@ -311,4 +311,4 @@ $r=["_"=>['code clavier','Code ISO','Code HTML','Description'],
 "310"=>['0253','253','&yacute','y accent aigü minuscule'],
 "311"=>['0254','254','&thorn','Thorn islandais minuscule'],
 "312"=>['0255','255','&yuml','y tréma minuscule'],
-"313"=>['','8471','','Protégé (enregistrements sonores)']];
+"313"=>['','8471','','Protégé (enregistrements sonores)']]; ?>

@@ -1,5 +1,5 @@
-<?php //admin_modules
-$r=["_"=>['category','param','title','command','option','cache','template','bt','div','prv','pop'],
+<?php 
+return ["_"=>['category','param','title','command','option','cache','template','bt','div','prv','pop'],
 "All"=>['Api','','','','preview full false auto read','','','','','',''],
 "LOAD"=>['component','','','id-desc day-asc','preview full false auto read','','1','','','',''],
 "BLOCK"=>['component','','','','','','','','','',''],
@@ -138,4 +138,4 @@ $r=["_"=>['category','param','title','command','option','cache','template','bt',
 "playconn"=>['Api','','','articles','cols','','','','','',''],
 "video_viewer"=>['articles','','','cols','','','','','','',''],
 "microarts"=>['app','','','','','','','','','',''],
-"vacuum"=>['com','','','','','','','','','','']];
+"vacuum"=>['com','','','','','','','','','','']]; ?>

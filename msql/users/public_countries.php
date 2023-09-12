@@ -1,5 +1,5 @@
-<?php //msql/public_countries
-$r=["_"=>['rang','pays','population','date','source'],
+<?php 
+return ["_"=>['rang','pays','population','date','source'],
 "1"=>['1','Chine','1 374 900 000','2016','Officielle'],
 "2"=>['2','Inde','1 330 783 327','2016','Officielle'],
 "3"=>['','Union européenne','510 056 011','2016','Officielle'],
@@ -203,4 +203,4 @@ $r=["_"=>['rang','pays','population','date','source'],
 "201"=>['200','Tuvalu','10 782','2014','CIA World Factbook'],
 "202"=>['201','Nauru','9 488','2014','CIA World Factbook'],
 "203"=>['202','Niue','1 611','2011','Officielle'],
-"204"=>['203','Vatican','921','2015','Officielle']];
+"204"=>['203','Vatican','921','2015','Officielle']]; ?>

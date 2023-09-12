@@ -24,7 +24,7 @@ if($o==2)$av=$av?$av:$p;//param on left (no |) //strpos($ap,'_PARAM')===false
 if(!is_array($av))$av=self::vars($av,$p,$r);
 if($ap)$ap=self::vars($ap,$p,$r);
 if($o==1)echo $av.'$'.$ap.':'.$c.br();
-return self::template($av,$ap,$c);}
+return conb::template($av,$ap,$c);}
 
 static function cbif($d,$p,$r,$o){[$va,$vb]=explode('=',$d);
 //if(strpos('+-*/',$vb)!==false)$vb=cbasic_mth($vb);
@@ -84,7 +84,6 @@ $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){
-head::add('jscode',self::js());
 $bt=self::menu($p,$o);
 $ret=self::call($p,$o);
 return $bt.divd(self::$cb,$ret);}

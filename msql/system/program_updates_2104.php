@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2104
-$r=["1"=>['0401','publication'],
+<?php 
+return ["1"=>['0401','publication'],
 "2"=>['0401','- le contenu du commentaire reste ouverte après une modif'],
 "3"=>['0402','- ajout des connecteurs, modules de playlist, et autres supports de gestion de :fact, :speech et :citation. Ces balises \"xlhtml\" sont des supports de contenu, qui permettent de créer des catalogues.
 - deuxième grosse phase de transposition du gestionnaire des connecteurs dans une classe dédiée, en laissant les subalternes dans pop. 20Ko de masse en moins au boot, ça se sent !
@@ -80,4 +80,4 @@ En gros on peut stabilobosser un texte en live.
 - retrait d\'un critère inusité de pictos
 - ajout d\'un intermédiaire à l\'ouverture des apps via les connecteurs, proposant d\'office que le |1 renvoie un bouton (au lieu de confier cela aux apps) ;
 - les pictos des apps via les conn sont ceux définis dans les mimes
-- ajout de picto2() qui passe par le mime']];
+- ajout de picto2() qui passe par le mime']]; ?>

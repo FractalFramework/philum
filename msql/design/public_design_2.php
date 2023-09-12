@@ -1,5 +1,5 @@
-<?php //msql/public_design_2
-$r=["1"=>['','','@font-face','','','','font-family: \"Open Sans\"; font-style: normal; font-weight: 300; src: local(\"Open Sans Light\"), local(\"OpenSans-Light\"), url(\"https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTZX5f-9o1vgP2EXwfjgl7AY.woff2\") format(\"woff2\"); unicode-range: U+400-45F, U+490-491, U+4B0-4B1, U+2116;'],
+<?php 
+return ["1"=>['','','@font-face','','','','font-family: \"Open Sans\"; font-style: normal; font-weight: 300; src: local(\"Open Sans Light\"), local(\"OpenSans-Light\"), url(\"https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTZX5f-9o1vgP2EXwfjgl7AY.woff2\") format(\"woff2\"); unicode-range: U+400-45F, U+490-491, U+4B0-4B1, U+2116;'],
 "2"=>['','','body','8||','1||','||',''],
 "3"=>['','','*::-moz-selection','3||','4||','||',''],
 "4"=>['','','a','||','||','||',''],
@@ -213,4 +213,4 @@ $r=["1"=>['','','@font-face','','','','font-family: \"Open Sans\"; font-style: n
 "212"=>['','','@media only screen and (min-width: 1000px)','','','','h2 {font-size:x-large;} #bub {font-size:normal;} #page {max-width:952px;} #content {width:712px;} #menu li a {font-size:medium;} #artmod {display:block;} #rightbar {display:block;} .philum {font-size:22px;} .admnu{height:32px;} input {font-size:normal;} input#srch{margin:0px 1px 2px 2px;padding:2px 3px 1px;}'],
 "213"=>['','','@media only screen and (min-width: 1200px)','','','','body {font-size:large;} #page {max-width:1152px;} h2 {font-size:28px;} .justy {font-size:1.1em;} #content {width:912px;}'],
 "214"=>['','','@media only screen and (min-width: 1400px)','','','','#page {max-width:1600px;} #content {width:calc(100% - 240px);}'],
-"215"=>['','','@media only screen and (max-width: 440px)','','','','h2{font-size:18px;} section{padding:0;background:none;box-shadow:0 0 0;}']];
+"215"=>['','','@media only screen and (max-width: 440px)','','','','h2{font-size:18px;} section{padding:0;background:none;box-shadow:0 0 0;}']]; ?>

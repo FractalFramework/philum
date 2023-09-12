@@ -1,5 +1,5 @@
-<?php //msql/edition_flags_4
-$r=["_"=>['iso-639-1','name'],
+<?php 
+return ["_"=>['iso-639-1','name'],
 "38"=>['en','English'],
 "48"=>['fr','French'],
 "40"=>['es','Spanish'],
@@ -186,4 +186,4 @@ $r=["_"=>['iso-639-1','name'],
 "183"=>['yi','Yiddish'],
 "184"=>['yo','Yoruba'],
 "185"=>['za','Zhuang'],
-"187"=>['zu','Zulu']];
+"187"=>['zu','Zulu']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/edition_glyphes_1
-$r=["glass"=>['E001'],
+<?php 
+return ["glass"=>['E001'],
 "leaf"=>['E002'],
 "dog"=>['E003'],
 "user"=>['E004'],
@@ -797,4 +797,4 @@ $r=["glass"=>['E001'],
 "dice-3"=>['E797'],
 "dice-4"=>['E798'],
 "dice-5"=>['E799'],
-"dice-6"=>['E800']];
+"dice-6"=>['E800']]; ?>

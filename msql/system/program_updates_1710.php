@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1710
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['1001','publication'],
 "2"=>['1004','fix pb affichage de vignettes dans desktop'],
 "3"=>['1007','- usage de /hub/ pour appeler un hub
@@ -19,4 +19,4 @@ $r=["_"=>['date','text'],
 "14"=>['1026','- rénovation des fonctions input()'],
 "16"=>['1029','le symbole &#8617; (ascii 8617) devient <- après un utf8_decode multibytes, et est confisqué pour éviter une erreur dans l\'interprétateur'],
 "17"=>['1030','l\'admin msql est entièrement rendue ajax ; tous les anciens dispositifs sont mis en obsolescence (disponibles, plus maintenus, et bientôt supprimés)'],
-"18"=>['1031','l\'éditeur msql d\'entrées est remanié pour pouvoir être appelé avec une clef inconnue, afin de rendre obsolètes les fonctions associées à l\'ancienne méthode']];
+"18"=>['1031','l\'éditeur msql d\'entrées est remanié pour pouvoir être appelé avec une clef inconnue, afin de rendre obsolètes les fonctions associées à l\'ancienne méthode']]; ?>

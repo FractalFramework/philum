@@ -1,5 +1,5 @@
-<?php //connectors_tools
-$r=["_"=>['description'],
+<?php 
+return ["_"=>['description'],
 "add_lines"=>['ajoute des lignes à la fin de chaque phrase'],
 "ajax"=>['bouton qui renvoie sur place (ou dans un div cible) le résultat d\'un module ou d\'un connecteur.
 
@@ -47,4 +47,4 @@ essayer : [id:read|screen:ajax] qui renvoie un contenu d\'article.'],
 "mktable"=>['formate les données csv en tableau (virgule et saut de ligne) '],
 "clean_h"=>['nettoie les balises h'],
 "cita_italics"=>['place des italiques entre les guillemets typographiques'],
-"cita_quotes"=>['place les guillemets typographiques dans des blocs']];
+"cita_quotes"=>['place les guillemets typographiques dans des blocs']]; ?>

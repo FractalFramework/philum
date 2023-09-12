@@ -1,5 +1,5 @@
-<?php //msql/program_urls
-$r=["_"=>['type','commands'],
+<?php 
+return ["_"=>['type','commands'],
 "1"=>['a','/hub'],
 "2"=>['1','/123'],
 "3"=>['aa','/section/public 
@@ -31,4 +31,4 @@ $r=["_"=>['type','commands'],
 /log/on (autolog)
 /log/out (close user)
 /log/off (close visitor)
-/log/down (shut down application)']];
+/log/down (shut down application)']]; ?>

@@ -1,5 +1,5 @@
-<?php //msql/connectors_codeline
-$r=["_"=>['value'],
+<?php 
+return ["_"=>['value'],
 "balise"=>['value|balise|id|class'],
 "html"=>['value|balise'],
 "div"=>['value|attributs'],
@@ -23,4 +23,4 @@ $r=["_"=>['value'],
 "cut"=>['text|start/end'],
 "conn"=>['connparams|conn'],
 "plug"=>['plug|param'],
-"core"=>['p1/p2/p3|function']];
+"core"=>['p1/p2/p3|function']]; ?>

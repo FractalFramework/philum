@@ -22,7 +22,7 @@ return $as?$as:picto($pc);}
 
 static function weather($r){$ret='';
 $rp=['smallclouds','localclouds','localfog','localwind','locallittlerain','localhail','localrain','localwindyrain','localstorms','localstormyrain'];
-$d1=strtotime($r['sunrise']); $d2=strtotime($r['sunset']); $dt=time(); $night=$dt>$d2||$dt<$d1?1:0;
+$d1=strtotime($r['sunrise']); $d2=strtotime($r['sunset']); $dt=time(); $night=$dt>$d2||$dt<$d1?1:0; $pc='';//?
 if($night){if($pc=='sunshine')$pc='moon'; elseif(in_array($pc,$rp))$pc.='2'; $ret=picto($pc);}
 ses::$r['night']=[$d1,$d2];//for boot::night()
 return $ret;}
@@ -31,7 +31,7 @@ static function weather2($ic){
 $ic=image('imgb/meteo/'.$ic.'.svg',32,32);//9729//b/w
 $ri=[127785=>'orage',127784=>'neige',127783=>'bruine',127783=>'pluie',127781=>'nuage',127780=>'soleil'];
 $ri=[9889=>'orage',10052=>'neige',128166=>'bruine',9748=>'pluie',9925=>'nuage',127774=>'soleil'];//color
-foreach($ri as $k=>$v)if(stripos($nm,$v)!==false)$ic='&#'.$k.';';
+//foreach($ri as $k=>$v)if(stripos($nm,$v)!==false)$ic='&#'.$k.';';
 return $ic;}
 
 static function render($r,$f){$ret=''; if(!$r)return;
@@ -82,7 +82,7 @@ if(!$d){$d=get_file($f); if($d)$r=json_decode($d,true); if(!is_array($r)){$d='';
 else $r=json_decode($d,true);
 if($r)$ret=self::render($r,$f);
 else $ret=lj('','mto_meteo,build___75101_1','-');
-return divb($ret,'panel','mto');}
+return div($ret,'panel','mto');}
 
 static function call($p,$o,$prm=[]){$p=$prm[0]??$p;
 if($o)cookie('insee',$p);

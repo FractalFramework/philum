@@ -1,5 +1,5 @@
-<?php //msql/program_lexical
-$r=["_"=>['word','definition'],
+<?php 
+return ["_"=>['word','definition'],
 "1"=>['Channels','Module permettant de joindre un autre site philum distant, et d\'en obtenir un déroulé d\'article correspondant à certaines règles de tris.'],
 "2"=>['Desktop','Le Desktop consiste à utiliser l\'espace comme le bureau d\'un système d\'exploitation (web-OS), en posant le site dans une fenêtre, de façon à conserver à l\'écran les autres popups ouvertes, pendant la confection du site.'],
 "3"=>['Finder','Le Finder est le gestionnaire de consultation et d\'organisation des fichiers de l\'espace disque utilisateur. 
@@ -74,4 +74,4 @@ Certains templates peuvent afférer spécifiquement à la présentation de bases
 "25"=>['tickets','Nom donné au forum multi-utilisateurs situé dans l\'admin, qui permet de discuter avec d\'autres utilisateurs et avec les développeurs du logiciel.'],
 "26"=>['tracks','Les commentaires associés à un contenu sont nommés Tracks (fil de discussion - \"ligne de chemin de fer\").'],
 "27"=>['update','Le cycle de développement est quotidien.
-Les mises à jour se font automatiquement.']];
+Les mises à jour se font automatiquement.']]; ?>

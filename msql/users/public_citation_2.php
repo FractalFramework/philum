@@ -1,5 +1,5 @@
-<?php //msql/public_citation_2
-$r=["_"=>['Droits de l\'Homme de 1793'],
+<?php 
+return ["_"=>['Droits de l\'Homme de 1793'],
 "1"=>['Article premier - Le but de la société est le bonheur commun. Le gouvernement est institué pour garantir à l\'homme la jouissance de ses droits naturels et imprescriptibles.'],
 "2"=>['Article 2 - Ces droits sont l\'égalité, la liberté, la sûreté, la propriété.'],
 "3"=>['Article 3 - Tous les hommes sont égaux par nature et devant la loi.'],
@@ -34,4 +34,4 @@ $r=["_"=>['Droits de l\'Homme de 1793'],
 "32"=>['Article 32 - Le droit de présenter des pétitions aux dépositaires de l\'autorité publique ne peut, en aucun cas, être interdit, suspendu ni limité.'],
 "33"=>['Article 33 - La résistance à l\'oppression est la conséquence des autres droits de l\'homme.'],
 "34"=>['Article 34 - Il y a oppression contre le corps social, lorsqu\'un seul de ses membres est opprimé. Il y a oppression contre chaque membre lorsque le corps social est opprimé.'],
-"35"=>['Article 35 - Quand le gouvernement viole les droits du peuple, l\'insurrection est, pour le peuple et pour chaque portion du peuple, le plus sacré des droits et le plus indispensable des devoirs.']];
+"35"=>['Article 35 - Quand le gouvernement viole les droits du peuple, l\'insurrection est, pour le peuple et pour chaque portion du peuple, le plus sacré des droits et le plus indispensable des devoirs.']]; ?>

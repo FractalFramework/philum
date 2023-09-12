@@ -1,5 +1,5 @@
-<?php //msql/public_weather_3
-$r=["_"=>['Code temps','Description','picto','soleil','stratus','cumulus','brouillard','pluie','givre','neige','grêle','orage','localisé','intermittent'],
+<?php 
+return ["_"=>['Code temps','Description','picto','soleil','stratus','cumulus','brouillard','pluie','givre','neige','grêle','orage','localisé','intermittent'],
 "1"=>['','Soleil','sunshine','1','','','','','','','','','',''],
 "2"=>['1','Peu nuageux','smallclouds','1','1','','','','','','','','',''],
 "3"=>['2','Ciel voilé','localclouds','1','2','','','','','','','','',''],
@@ -87,4 +87,4 @@ $r=["_"=>['Code temps','Description','picto','soleil','stratus','cumulus','broui
 "85"=>['230','Pluie et neige mêlées','snowrain','','1','2','','1','','1','','','',''],
 "86"=>['231','Pluie et neige mêlées','snowrain','','1','1','','2','','1','','','',''],
 "87"=>['232','Pluie et neige mêlées','snowrain','','1','1','','1','','','2','','',''],
-"88"=>['235','Averses de grêle','hailyrain','','1','2','','','','','2','','','']];
+"88"=>['235','Averses de grêle','hailyrain','','1','2','','','','','2','','','']]; ?>

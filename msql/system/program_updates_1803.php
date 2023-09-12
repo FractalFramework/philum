@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1803
-$r=["_"=>['_menus_','date','text'],
+<?php 
+return ["_"=>['_menus_','date','text'],
 "1"=>['0301','publication'],
 "2"=>['0303','ajout du connecteur :papi (pop api) renvoie le bouton qui renvoie le connecteur :api'],
 "3"=>['0305','ajout du connecteur :wiki, renvoie le contenu de wikipedia pour un mot dans une popup'],
@@ -34,4 +34,4 @@ De même que pour picto(), asciicss() permet d\'appeler un glyphe à partir de s
 - révision du système de mise en cache des options d\'articles, rendu individualisé plutôt que global (causait, au choix, selon la présence ou l\'absence du cache, une erreur d\'attribution dans les fils, ou une absence d\'articles liés)'],
 "13"=>['0329','- ajout de la picto-font \'oomo\''],
 "14"=>['0330','- révision 9.4 de la picto-font \'philum\''],
-"15"=>['0331','- révision 10.6 de la picto-font \'philum\', entièrement révisée sur une grille multiple de puissance 2 ; ajout de nombreux glyphes (174 au total)']];
+"15"=>['0331','- révision 10.6 de la picto-font \'philum\', entièrement révisée sur une grille multiple de puissance 2 ; ajout de nombreux glyphes (174 au total)']]; ?>

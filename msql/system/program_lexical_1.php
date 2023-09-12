@@ -1,5 +1,5 @@
-<?php //msql/program_lexical_1
-$r=["_"=>['syntax','usage'],
+<?php 
+return ["_"=>['syntax','usage'],
 "1"=>['_a','before current'],
 "2"=>['_b','after current'],
 "3"=>['_r','recursive'],
@@ -36,4 +36,4 @@ $r=["_"=>['syntax','usage'],
 "34"=>['w','width, where'],
 "35"=>['wh','where'],
 "36"=>['x','confiscated, eraser'],
-"37"=>['z','trash']];
+"37"=>['z','trash']]; ?>

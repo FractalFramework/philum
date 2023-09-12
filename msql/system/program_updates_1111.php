@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1111
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['111110','ajout d\'un bouton qui permet de choisir la chronologie des articles affiliés à un article parent'],
 "2"=>['111118','amélioration du confort de la visionneuse flash \'Slider\''],
 "3"=>['111119','correctifs détection de l\'ID des vidéos youtube et dailymotion'],
@@ -29,4 +29,4 @@ $r=["_"=>['day','text'],
 "12"=>['111201','- ajout d\'un design par défaut nommé \'monoblog\' (colonne unique, simplicité, efficacité !) ;
 - le template par défaut ajoute l\'ID \'article\' dans la balise \'article\', ce qui permet de le cerner graphiquement ;
 - la table \'design\' dans \'users\' permet d\'associer une table \'mods\' associée, pour ne pas avoir à reconstruire les largeurs ;
-- rénovation du design classic_3_gsm, et de sa table mods associée']];
+- rénovation du design classic_3_gsm, et de sa table mods associée']]; ?>

@@ -93,7 +93,7 @@ return btj($i,'icons_toggle(this,'.$i.')','bk'.$d);}
 static function icon($d,$id){
 $r=str_split($d); $n=16; $nb=$n*$n; $sz=16; $ret='';
 for($i=0;$i<$nb;$i++)$ret.=self::ljd(val($r,$i),$i);
-return divb($ret,'pixels','pct'.$id,'width:'.($n*$sz+32).'px;');}
+return div($ret,'pixels','pct'.$id,'width:'.($n*$sz+32).'px;');}
 
 static function edit($k){$id=randid();
 head::add('csscode',self::css()); 
@@ -132,7 +132,7 @@ $ret=head::jscode(self::js()).head::csscode(self::css());
 $ret.=lj('popbt','popup_icons,edit__js_new',picto('add'));
 $ret.=lj('popbt','pctpanel_icons,read __js',picto('ok'));
 $ret.=btd('cbk','').br();
-$ret.=divb(self::read(),'bkg','pctpanel').br();
+$ret.=div(self::read(),'bkg','pctpanel').br();
 $ret.=msqbt('system','program_icons');
 return $ret;}
 }

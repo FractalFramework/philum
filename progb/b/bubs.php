@@ -45,15 +45,14 @@ if(auth(4) or ses('dev')){
 	$ret[]=['prod','ajax','socket','dev__self_','','','dev','circle-empty'];}
 if(auth(6)){
 	if(rstr(99))$ret[]=['twitletter','ajax','popup','tweetfeed,batch__3','','','dev','tw2'];
-	if(prms('srvmirror'))
-	$ret[]=['transport','app','transport','','','','dev','exchange'];
+	if(prms('srvmirror'))$ret[]=['transport','app','transport','','','','dev','exchange'];
 	$ret[]=['push','ajax','popup','dev2prod,call__3xx','','','dev','upload'];
 	$ret[]=['publish','ajax','popup','pubdate,call','','','dev','export'];
-	if(!prms('aupdate'))
-	$ret[]=['update','ajax','popup','software,home','','','dev','update'];
+	if(!prms('aupdate'))$ret[]=['update','ajax','popup','software,home','','','dev','update'];
 	$ret[]=['cron','ajax','popup','cron,play','','','dev','bot'];
 	if(ses('rebuild_img')){$bt='-off'; $n=0;} else{$bt=''; $n=1;}
 	$ret[]=['mini'.$bt,'ajax','socket','sesmake___rebuild*img_'.$n,'','','dev','img'];
+	$ret[]=['updateip','ajax','socket','boot,updateip','','','dev','recycle'];
 	$ret[]=['refresh','ajax','socket','reset__self','','','dev','refresh'];}
 $ret[]=['cache','ajax','popup','rebuild__3','','','dev','reload'];
 if(auth(2))$ret[]=['push','ajax','popup','dev2prod,call__3xx','','','dev','down'];

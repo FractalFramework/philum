@@ -1,5 +1,5 @@
-<?php //msql/public_design_3
-$r=["1"=>['','','body','||','2||','||',''],
+<?php 
+return ["1"=>['','','body','||','2||','||',''],
 "2"=>['','','a','','','','transition: all 0.20s linear; -webkit-transition: all 0.20s linear; -moz-transition: all 0.20s linear 0s;'],
 "3"=>['','','h1','3|3|7','||','||','font-family:Tahoma, Verdana; text-shadow: 0px 0px 10px #777;'],
 "4"=>['','','h2','7|7|','||','||','font-family:Trebuchet MS;'],
@@ -84,4 +84,4 @@ $r=["1"=>['','','body','||','2||','||',''],
 "83"=>['','imgl','','','','',''],
 "84"=>['','imgr','','','','',''],
 "85"=>['','console','','||','||','||',''],
-"86"=>['','philum','','||5','||','||','']];
+"86"=>['','philum','','||5','||','||','']]; ?>

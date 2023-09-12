@@ -1,5 +1,5 @@
-<?php //msql/connectors_clbasic
-$r=["_"=>['car','help'],
+<?php 
+return ["_"=>['car','help'],
 "1"=>['?','?_PARAM=1 assign 1 if _PARAM is empty'],
 "2"=>['!','!_PARAM=1 assign 1'],
 "3"=>['+','create an array'],
@@ -8,4 +8,4 @@ $r=["_"=>['car','help'],
 "6"=>['/','/unexecuted line'],
 "7"=>[';','show work (dev)'],
 "8"=>['_PARAM','variable get from usage of connector or module'],
-"9"=>['_0','occurrence 0 of the current array (bidimensional only)']];
+"9"=>['_0','occurrence 0 of the current array (bidimensional only)']]; ?>

@@ -20,13 +20,13 @@ return sql('id','qda','k',$wh+['>=re('=>'1','_order'=>prmb(9),'_limit'=>$o]);}
 
 static function pub_art_b($id,$t,$o){
 [$dy,$frm,$suj,$amg]=ma::rqtart($id);
-if(rstr(32))$img=minimg($amg,'hb'); $lnk=urlread($id);
+if(rstr(32))$img=pop::minimg($amg,'hb'); $lnk=urlread($id);
 return tagb('h2',lkc('',$lnk,$suj)).divc('panel',ma::read_msg($id,$o?$o:2));}
 
 static function pub_img($id){
 [$dy,$frm,$suj,$amg]=ma::readcacherow($id);
 if(!$dy){$amg=sql('img','qda','v',$id);}
-return lkc('',urlread($id),minimg($amg,'ban'));}
+return lkc('',urlread($id),pop::minimg($amg,'ban'));}
 
 static function read_art($n,$t,$o){$in=ma::read_msg($n,'');
 if(strlen($in)>1000)$nbc=['1','1']; $ret='';

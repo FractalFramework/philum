@@ -1,5 +1,5 @@
-<?php //msql/default_apps_home
-$r=["_"=>['button','type','process','param','option','condition','root','icon','hide','private'],
+<?php 
+return ["_"=>['button','type','process','param','option','condition','root','icon','hide','private'],
 "1"=>['home','link','','/home','','','','home','',''],
 "2"=>['cache','ajax','popup','rebuild__3xx','','','boot','upcloud','','8'],
 "3"=>['mini','ajax','','sesmake__self_1_rebuild*img','','','dev','upcloud','1','4'],
@@ -26,4 +26,4 @@ $r=["_"=>['button','type','process','param','option','condition','root','icon','
 "30"=>['publish','ajax','popup','pubdate,call','','','dev','export','1','6'],
 "31"=>['cache','ajax','popup','rebuild__3xx','','','dev','reload','1','6'],
 "23"=>['philum','ajax','popup','md,about','','','','phi2','',''],
-"24"=>['Rss','linkt','blank','/rss/newsnet ','','','modes','rss','','7']];
+"24"=>['Rss','linkt','blank','/rss/newsnet ','','','modes','rss','','7']]; ?>

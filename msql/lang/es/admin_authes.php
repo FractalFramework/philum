@@ -1,5 +1,5 @@
-<?php //msql/admin_authes
-$r=["_"=>['graduación'],
+<?php 
+return ["_"=>['graduación'],
 "console"=>['tablero'],
 "restrictions"=>['cortapisas'],
 "params"=>['parámetros'],
@@ -46,4 +46,4 @@ $r=["_"=>['graduación'],
 "tags"=>['herramientas de marcado'],
 "icons"=>['iconografía'],
 "pictos"=>['pictografía'],
-"overcat"=>['sobrecategorías']];
+"overcat"=>['sobrecategorías']]; ?>

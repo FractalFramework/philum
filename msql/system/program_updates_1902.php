@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1902
-$r=["1"=>['0203','publication'],
+<?php 
+return ["1"=>['0203','publication'],
 "2"=>['0206','btpages est disponible pour toutes les applications,
 visible dans searched_words, obtenu du menu des mots connus de l\'article'],
 "3"=>['0209','l\'Api Twitter (interne) est désormais capable de lire les vidéos des twits, qui sont stockées en local (tout simplement)'],
@@ -9,4 +9,4 @@ visible dans searched_words, obtenu du menu des mots connus de l\'article'],
 "5"=>['0211','- ajout du connecteur :twits, ouvre une série de twits désignés par leur id numérique et séparés par un espace'],
 "6"=>['0212','- réfection des favoris et de :book'],
 "7"=>['0214','- nouveau nivigateur temporel, plus clair, plus court, affiche seulement les dates autour de la zone de recherche'],
-"8"=>['0218','- requalification du comportement du bouton d\'articles \'art\',']];
+"8"=>['0218','- requalification du comportement du bouton d\'articles \'art\',']]; ?>

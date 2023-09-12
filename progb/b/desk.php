@@ -114,7 +114,7 @@ static function icoart($k,$v,$c){$ico=''; $id='ic'.$k;
 if(is_numeric($k)){$v='popup_popart__3_'.$k; $ic=self::thumb($k); $k=ma::suj_of_id($k);}
 else $ic=self::desk_icon($k,$v);
 if($ic)$ico=strpos($ic,'<')!==false?$ic:mimes($k,$ic,32);
-return ljp(att($k).atd($id),$v,divc($c.' dicon',divb($ico).' '.divb(etc($k,50))));}
+return ljp(att($k).atd($id),$v,divc($c.' dicon',div($ico).' '.div(etc($k,50))));}
 
 static function pane_icons($r,$c){$ret='';
 if(is_array($r))foreach($r as $k=>$v)$ret.=self::icoart($k,$v,$c);
@@ -244,7 +244,7 @@ static function deskmenu($dr,$p,$opt,$tg){
 $r=explode('/',$dr); $n=count($r); $rt=[]; $r[-1]='root';
 for($i=0;$i<$n;$i++){$dir=ajx(implode('/',array_slice($r,0,$i)));
 	$rt[]=lj('',$tg.'_desk,deskroot__15_'.$p.'_'.$dir.'_'.$opt.'_'.$tg,$r[$i]);}
-return divb(join(' ',$rt),'menus');}
+return div(join(' ',$rt),'menus');}
 
 static function deskroot($p,$dr,$opt,$optb){
 self::poplist(); $optb=$optb?$optb:randid('dk');

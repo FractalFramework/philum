@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2305
-$r=["_"=>['date','text'],
+<?php 
+return ["_"=>['date','text'],
 "1"=>['0501','publication'],
 "2"=>['0501','- conn::retape_conn \"retapé\"
 - conv::trap_v_id retapé (err captation des yt avec title)
@@ -142,4 +142,4 @@ $r=["_"=>['date','text'],
 "34"=>['0530','- le curseur de tweetfeed est posé dans une table msql au lieu d\'un fichier txt
 - l\'app html ne marchait plus
 - rénovation de l\'admin msql
-']];
+']]; ?>

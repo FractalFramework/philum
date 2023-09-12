@@ -1,5 +1,5 @@
-<?php //admin_restrictions
-$r=["_"=>['name','description'],
+<?php 
+return ["_"=>['name','description'],
 "1"=>['trackbacks','comments opened to public'],
 "2"=>['moderation','comments are moderated (auth 4)'],
 "3"=>['time system','time system : used for periodic revues'],

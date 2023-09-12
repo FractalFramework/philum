@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1605
-$r=["1"=>['0501','publication'],
+<?php 
+return ["1"=>['0501','publication'],
 "2"=>['0511','ajout du dispositif overcat :
 - /admin/overcat permet d\'affecter un menu hiérarchique auquel s\'attache une catégorie d\'articles
 - module overcats : affiche un menu ouvrable en javascript ou en bubbles ajax'],
@@ -41,4 +41,4 @@ $r=["1"=>['0501','publication'],
 - ajout d\'un bouton \'preview\' dans l\'éditeur sub-modules des apps
 - réparation du problème (d\'appel d\'un article puis d\'appel du background du desktop) à l\'allumage sur un hub secondaire à partir des déductions de l\'appel d\'un article
 - petite rénovation de l\'allumage de modules assez rares
-- suppression du module cssfonts (permettait de lancer des fontes supplétives ; se référer désormais au css supplétif)']];
+- suppression du module cssfonts (permettait de lancer des fontes supplétives ; se référer désormais au css supplétif)']]; ?>

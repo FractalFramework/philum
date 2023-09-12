@@ -15,11 +15,11 @@ if(!$r)return;
 $ra=array_shift($r); $t=$ra[0]; $ret=$r[$nb][0];
 //$b=lj('','ctt_citation,build___citation*1',picto('reload')).' ';
 $bt=lj('','ctt_citation,build',picto('after'));
-return divb($ret).divc('small',$t);}
+return div($ret).divc('small',$t);}
 
 static function call($p,$o,$prm=[]){$p=$prm[0]??$p;
 $ret=self::build($p,$o);
-return divb($ret,'twit','ctt');}
+return div($ret,'twit','ctt');}
 
 static function menu($p,$o,$rid){
 if(!$p)$p=self::$default;

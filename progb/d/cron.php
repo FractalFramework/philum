@@ -7,12 +7,12 @@ static $cr=[];
 
 /**/static function followers($p){
 $t=twit::init(); $qu=$t->followers($p,'');
-$r=self::usrlist($q['ids']);
+$r=twit::usrlist($p['ids']);
 return;}
 
 /**/static function favorites($p){
-$t=twit::init(); $q=$t->favorites($p,$id,1);
-$r=self::datas($q);
+$t=twit::init(); $q=$t->favorites($p,$p,1);
+$r=twit::datas($q);
 //$ret=twit::batch($q,'');
 //$ret=twit::play($k,$r,$q,$o);
 return;}

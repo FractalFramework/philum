@@ -18,7 +18,7 @@ static function img($g1,$g2){return $ret=image($g1,$g2);}
 static function audio($g1,$g2){return $ret=audio($g1,$g2);}
 static function video($g1,$g2){return $ret=video($g1,$g2);}
 static function popim($g1){[$w,$h]=getimagesize($g1); return usg::photo($g1,$w,$h,get('sz'));}
-static function poptxt($g1){return divb(sesr('delaytxt',$g1),'twit','','display:block; min-width:440px;');}
+static function poptxt($g1){return div(sesr('delaytxt',$g1),'twit','','display:block; min-width:440px;');}
 static function popfile($g1){return nl2br(str::cleanmail(read_file($g1)));}
 static function popread($g1){return ma::read_msg($g1,3);}
 static function popmsql($g1,$g2,$g3){$r=msql::mul($g1,$g2,$g3,1); if($r)return divtable($r,1);}
@@ -34,7 +34,7 @@ static function fbcall($u){
 $d=curl_get_contents($u); $d=($d);
 $ret=conv::html_detect($d,'<div class="_5pcr userContentWrapper"');
 if(!$ret)$ret=conv::html_detect($d,'<p class="_1q3v">');
-$ret.=divb(lkt('txtx',$u,pictxt('link',domain($u))));
+$ret.=div(lkt('txtx',$u,pictxt('link',domain($u))));
 return divc('panel justy',$ret);}
 
 static function call($g1,$g2,$prm){
@@ -93,7 +93,7 @@ $pa=match($pa){'priority'=>'re','cat'=>'frm','tag'=>'thm',default=>'tag'};
 if($pa=='thm')$pb=$p; elseif($pb==1)$pb=ses('frm');
 if(strpos($pb,'|')!==false){$rc=explode('|',$pb); $nc=count($rc);}
 if($nc>0){foreach($rc as $k=>$v){$rab=ma::rqtcol([$pa=>$v]); if($rab)$ra=$rab;}}
-elseif($pb)$ra=ma::rqtcol([$pa=>$pb]); else $ra=rqtall('id','k');
+elseif($pb)$ra=ma::rqtcol([$pa=>$pb]); else $ra=ma::rqtall('id','k');
 if($ra){$min=min($ra);
 $r=self::search_conn($ra,$min,':video'); $_SESSION['iv'.$iv]=$r;
 if($r)return divd('iv'.$iv,self::playvideo($iv,ses::r('curdiv'),0));}}

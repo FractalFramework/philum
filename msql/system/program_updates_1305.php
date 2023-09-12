@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1305
-$r=["_"=>['day','text'],
+<?php 
+return ["_"=>['day','text'],
 "1"=>['0501','- fix pb affichage login, et \'reboot\' ne se relogue pas
 - fix pb miniconn activable en début de ligne
 - ajout de raccourcis dans apps/sys
@@ -61,4 +61,4 @@ $r=["_"=>['day','text'],
 "20"=>['0520','- menus bubbles dans l\'admin msql (non publié)
 - ajout d\'une aide à la langue française dans les commentaires
 - ajout d\'un gestionnaire des messages d\'erreurs pour les commentaires
-- ajout d\'une procédure pour afficher dans une popup le commentaire prit en référence, lors d\'une réponse : @123 affiche le pseudo et le message de ce commentaire']];
+- ajout d\'une procédure pour afficher dans une popup le commentaire prit en référence, lors d\'une réponse : @123 affiche le pseudo et le message de ce commentaire']]; ?>

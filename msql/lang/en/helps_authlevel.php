@@ -1,5 +1,5 @@
-<?php //msql/helps_authlevel
-$r=["_"=>['permission'],
+<?php 
+return ["_"=>['permission'],
 "1"=>['you have to be a member'],
 "2"=>['you have to be a commentator'],
 "3"=>['you have to be a publicator'],
@@ -7,4 +7,4 @@ $r=["_"=>['permission'],
 "5"=>['you have to be a designer'],
 "6"=>['you need to be an admin'],
 "7"=>['you have to be superadmin'],
-"8"=>['closed to the public']];
+"8"=>['closed to the public']]; ?>

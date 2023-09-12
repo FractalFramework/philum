@@ -1,5 +1,5 @@
-<?php //msql/program_updates_2103
-$r=["1"=>['0301','publication'],
+<?php 
+return ["1"=>['0301','publication'],
 "2"=>['0301','- réforme :msql : reçoit table|row|col, compatible avec les options de traitement table|opt|opt2
 - correctifs ::web sets sans id'],
 "3"=>['0303','- ajout de l\'app meteo, branchée sur l\'api Fractal : http://logic.ovh/api/meteo/insee:75101
@@ -50,4 +50,4 @@ Beaucoup de similitudes entre les deux templateurs et les deux parseurs de conne
 "24"=>['0330','- fix qq pb dus aux précédents chamboulements
 - améliorations de l\'interface de pad
 - introduction des connecteurs, et des balises :speech et :fact (discours et faits), :fact étant destiné à un dctionnaire des faits certains (ce qui est le destin d\'internet - et a été proposé au w3c pour le html6)'],
-"25"=>['0331','- réfection de l\'app stars (astronomie)']];
+"25"=>['0331','- réfection de l\'app stars (astronomie)']]; ?>

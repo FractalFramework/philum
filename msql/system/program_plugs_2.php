@@ -1,5 +1,5 @@
-<?php //msql/program_plugs_2
-$r=["_"=>['usage','dir','loadable','callable','interface','state','private'],
+<?php 
+return ["_"=>['usage','dir','loadable','callable','interface','state','private'],
 "Telex"=>['','webservices','','','','',''],
 "Twitter"=>['','webservices','','','','',''],
 "_model"=>['','tools','','','','','1'],
@@ -219,4 +219,4 @@ $r=["_"=>['usage','dir','loadable','callable','interface','state','private'],
 "upim"=>['','images','1','','','',''],
 "upimb"=>['','images','','','','',''],
 "upload"=>['','images','1','','','',''],
-"utmsrc"=>['retrouve url depuis feedburner','system','1','','','','']];
+"utmsrc"=>['retrouve url depuis feedburner','system','1','','','','']]; ?>

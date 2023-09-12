@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1106
-$r=["_"=>['day','txt'],
+<?php 
+return ["_"=>['day','txt'],
 "1"=>['110601','rénovation des connecteurs vidéo pour qu\'ils renvoie plutôt des iframe que des embed'],
 "2"=>['110602','- déplacement de fonctions pour optimiser les appels ;
 - renommage / mise en conformité des plug-ins ;
@@ -56,4 +56,4 @@ l\'utilisation s\'améliore d\'un paramètre | de sorte à choisir parmi une lig
 syntaxe [directory/hub_node_row|col:microsql ]
 et pour les bases à indicatif ça donne :
 syntaxe [directory/hub_node_nb_row|col:microsql ]
-avec \'directory\' optionnel, où \'lang\' choisit la langue par défaut']];
+avec \'directory\' optionnel, où \'lang\' choisit la langue par défaut']]; ?>

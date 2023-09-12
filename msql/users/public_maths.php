@@ -1,5 +1,5 @@
-<?php //msql/public_maths
-$r=["_"=>['','col2','col3'],
+<?php 
+return ["_"=>['','col2','col3'],
 "1"=>['&#8469;','entiers naturels','algèbre'],
 "2"=>['&#8484;','entiers relatifs (positifs, négatifs et nuls)','algèbre'],
 "3"=>['&#8474;','nombres rationnels','algèbre'],
@@ -70,4 +70,4 @@ $r=["_"=>['','col2','col3'],
 "66"=>['!','factorielle (nombres réels possiblement infinis)','logique linéaire'],
 "67"=>['&#8888;','devient (consommation des prédicats) = négation linéaire + disjonction multiplicative','logique linéaire'],
 "68"=>['&#12501;','\"fu\" (objectif) [japonais Katakana]','logique linéaire'],
-"69"=>['&#12530;','\"wo\" (subjectif) [japonais Katakana]','logique linéaire']];
+"69"=>['&#12530;','\"wo\" (subjectif) [japonais Katakana]','logique linéaire']]; ?>

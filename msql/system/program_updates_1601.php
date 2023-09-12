@@ -1,5 +1,5 @@
-<?php //msql/program_updates_1601
-$r=["1"=>['0101','publication'],
+<?php 
+return ["1"=>['0101','publication'],
 "2"=>['0101','- ajout d\'une nouvelle admin de tags
 - suppression de tous les modules de type usertag (ajour d\'un param aux modules de type \'tag\' pour spécifier la classe)
 '],
@@ -58,4 +58,4 @@ Bilan : 6.8Mo de \'datas\' sont devenus 265Ko, et 340Ko de tags sont devenus 60K
 - réfection de converts
 - déportation de channel (module) vers un plus
 - tests préliminaires pour le nouveau conscroll
-- ajout d\'un début d\'api pour centraliser toutes les requêtes et les rendre accessibles à ajax sans avoir à passer par des requêtes stockées et nommées']];
+- ajout d\'un début d\'api pour centraliser toutes les requêtes et les rendre accessibles à ajax sans avoir à passer par des requêtes stockées et nommées']]; ?>

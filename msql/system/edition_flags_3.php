@@ -1,5 +1,5 @@
-<?php //msql/edition_flags_3
-$r=["1"=>['Drapeau','Pays','Capitale','Population','Superficie'],
+<?php 
+return ["1"=>['Drapeau','Pays','Capitale','Population','Superficie'],
 "2"=>['[http://www.drapeauxdespays.fr/afghanistan|http://flags.fmcdn.net/data/flags/h20/af.png]','[http://www.drapeauxdespays.fr/afghanistan|Afghanistan]','Kaboul','25.500.100','652.090 km [2:e]'],
 "3"=>['[http://www.drapeauxdespays.fr/afrique-du-sud|http://flags.fmcdn.net/data/flags/h20/za.png]','[http://www.drapeauxdespays.fr/afrique-du-sud|Afrique du Sud]','Pretoria','52.981.991','1.221.040 km [2:e]'],
 "4"=>['[http://www.drapeauxdespays.fr/albanie|http://flags.fmcdn.net/data/flags/h20/al.png]','[http://www.drapeauxdespays.fr/albanie|Albanie]','Tirana','2.821.977','28.748 km [2:e]'],
@@ -198,4 +198,4 @@ $r=["1"=>['Drapeau','Pays','Capitale','Population','Superficie'],
 "197"=>['[http://www.drapeauxdespays.fr/viet-nam|http://flags.fmcdn.net/data/flags/h20/vn.png]','[http://www.drapeauxdespays.fr/viet-nam|Viêt Nam]','Hanoï','89.708.900','331.689 km [2:e]'],
 "198"=>['[http://www.drapeauxdespays.fr/yemen|http://flags.fmcdn.net/data/flags/h20/ye.png]','[http://www.drapeauxdespays.fr/yemen|Yémen]','Sanaa','25.235.000','527.968 km [2:e]'],
 "199"=>['[http://www.drapeauxdespays.fr/zambie|http://flags.fmcdn.net/data/flags/h20/zm.png]','[http://www.drapeauxdespays.fr/zambie|Zambie]','Lusaka','14.580.290','752.618 km [2:e]'],
-"200"=>['[http://www.drapeauxdespays.fr/zimbabwe|http://flags.fmcdn.net/data/flags/h20/zw.png]','[http://www.drapeauxdespays.fr/zimbabwe|Zimbabwe]','Harare','12.973.808','390.757 km [2:e]']];
+"200"=>['[http://www.drapeauxdespays.fr/zimbabwe|http://flags.fmcdn.net/data/flags/h20/zw.png]','[http://www.drapeauxdespays.fr/zimbabwe|Zimbabwe]','Harare','12.973.808','390.757 km [2:e]']]; ?>

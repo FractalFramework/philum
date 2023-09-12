@@ -24,7 +24,7 @@ if($r)foreach($r as $k=>$v){
 		if($k!='_error')$ret.=embedli($d,$k,1).self::topo($v,$d.'/'.$k,$c);}
 	elseif($v && str_replace(array('users/','imgb/icons/'),"",$d)==$c)
 		$ret.=embedli($d,$v,0);}
-return divb($ret,'Taxonomy','','margin-left:10px');}
+return div($ret,'Taxonomy','','margin-left:10px');}
 
 static function home($c,$dir){$_SESSION["nbsd"]=0;
 if(is_numeric($dir)){$_SESSION["ds"]=$dir; $dir='imgb/bkg';}

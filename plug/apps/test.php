@@ -48,14 +48,14 @@ return $ret;}
 static function searchapp($p,$rid,$prm=[]){
 $d=$prm[0]??''; $ret='';
 $ra=scandir_r('plug'); $rb=scandir_r('progb'); $r=array_merge($ra,$rb);
-foreach($r as $k=>$v)if(strpos($v,$d))$ret.=divb($v);
+foreach($r as $k=>$v)if(strpos($v,$d))$ret.=div($v);
 return $ret?$ret:'no';}
 
 static function search($p,$rid){
 $j='srap_test,searchapp_search_3__'.$rid;
 $ret=inputj('search','',$j,'app').' ';
 $ret.=lj('',$j,picto('ok'));
-return $ret.divb('','','srap');}
+return $ret.div('','','srap');}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
