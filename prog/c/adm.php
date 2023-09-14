@@ -609,16 +609,17 @@ else sql::sav('qdd',[ses('qbd'),'surcat',$over.'/'.$cat]);
 return self::adm_overcat(1);}
 
 static function adm_overcat($o=''){$rb=[];
-$r=sql('id,msg','qdd','kv',['ib'=>ses('qbd'),'val'=>'surcat']);
+$r=sql('id,msg','qdd','kv',['val'=>'surcat']);//'ib'=>ses('qbd'),
 if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rb[$cat]=[$ov,$k];}
 $r=sql('frm','qda','k','nod="'.ses('qb').'" and substring(frm,1,1)!="_" order by frm');
 $jb='scat_adm,overcatdel___';
-$ret=helps('overcat').hlpbt('overcats_menu').br().br();
+$ret=div(helps('overcat').hlpbt('overcats_menu')); $rt=[];
 if($r)foreach($r as $k=>$v){$id=randid();
 	$rbk1=$rb[$k][1]??'';
 	if($rbk1)$ret.=lj('popdel',$jb.ajx($rbk1),picto('del')).' ';
-	$ret.=$k.' '.input($id,$rb[$k][0]??'');
-	$ret.=lj('popbt','scat_adm,overcatsav_'.$id.'__'.ajx($k).'_'.$rbk1,picto('ok')).' ';
+	$j='scat_adm,overcatsav_'.$id.'_3_'.ajx($k).'_'.$rbk1;
+	$ret.=$k.' '.inputj($id,$rb[$k][0]??'',$j);
+	//$ret.=lj('',$j,picto('ok')).' ';
 	if(isset($rb[$k]))unset($rb[$k]);
 	$ret.=br();}
 //if($rb)pr($rb);//unused cats
@@ -655,7 +656,7 @@ return self::adm_reviews();}
 
 static function adm_reviews(){$ret='';
 $r=sql('ib,id','qdmb','kv',['_order'=>'ib desc']);
-$ret=lj('','admarts_adm,reviewfromsq','get from msql');
+//$ret=lj('','admarts_adm,reviewfromsq','get from msql');//done
 foreach($r as $k=>$v)$ret.=ma::popart($k,1).' ';
 return div($ret,'list');}
 

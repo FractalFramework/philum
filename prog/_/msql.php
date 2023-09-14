@@ -3,8 +3,8 @@ class msql{
 static $dr,$nod,$f,$r;
 static $m='_';
 
-static function url($dr,$nod,$o=''){if($o)$nod.='_sav';
-$dr=$dr=='lang'?$dr.'/'.prmb(25):($dr?$dr:'users');
+static function url($dr,$nod,$o=''){if($o)$nod.='_sav'; $lg=ses('lng')?ses('lng'):prmb(25);
+$dr=$dr=='lang'?$dr.'/'.$lg:($dr?$dr:'users');//prmb(25)
 return 'msql/'.$dr.'/'.$nod.'.php';}//groot('msql/')
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
 static function patch_m($dr,$nod){$r=msql::read($dr,$nod); $r=msqa::patch_m($r); self::save($dr,$nod,$r);}

@@ -523,7 +523,7 @@ setTimeout(function(){getbyid(id).value="";},700);
 if(di){clbub(0,''); setTimeout(function(){getbyid(di).parentNode.style.display="none";},1000);}}
 
 function Search2(id){var prm=[];
-var r=[id?id:'search','srdig','srbol','srord','srtit','srseg','srpag','srcat','srtag','limit','srlng','srpri','srlen'];
+var r=[id?id:'search','srdig','srbol','srord','srtit','srseg','srpag','srcat','srtag','srovc','limit','srlng','srpri','srlen'];
 for(i=0;i<r.length;i++)prm.push(getbyid(r[i]).value);
 ajaxcall('popup','search,home',[],prm,3);
 Close('popup');}

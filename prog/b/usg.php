@@ -171,6 +171,7 @@ switch($d){
 	case('tag'):$cat=$o=='utag'?ses('iq'):$o; $nbd=rstr(3)&&!is_numeric($o)?60:ma::maxdays();
 		$r=ma::tags_list_nb($cat,$nbd); if($r)ksort($r); break;//'tag'=>1
 	case('lang'): $r=explode(' ',prmb(26)); $r=array_combine($r,$r); break;
+	case('ovcat'):$r=sesmk2('usg','overcats'); if($r)array_unshift($r,''); if($r)ksort($r); break;
 	case('pri'):$r=[1=>0,2=>1,3=>2,4=>3,5=>4]; break;
 	case('vfld'):$r=sql('msg','qdd','k','val="folder"'); $cl=0; break;
 	case('lang'):$r=array_flip(explode(' ',prmb(26))); $cl=0; break;
@@ -187,6 +188,11 @@ switch($d){
 	default: $s=strpos($d,'|')?'|':' '; $r=array_flip(explode($s,$d)); break;}
 if($r && $cl)$r=array_unshift_b($r,'','x');
 return $r;}
+
+static function overcats(){$r=[];
+$r=sql('id,msg','qdd','kv',['val'=>'surcat']);//'ib'=>ses('qbd'),
+if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rt[$ov]=1;}
+return $rt;}
 
 static function getparent($id){
 $r=sav::newartparent(); $ib=sql('ib','qda','v',$id); $ret='';
@@ -229,6 +235,7 @@ if($k!='auth' && $k!='USE')return $_SESSION[$k]=$v;}
 static function setlng($g1){
 $ret=usg::putses('lang',$g1);
 ses('lng',$g1!='all'?$g1:prmb(25));
+$_SESSION['nms']=msql::col('lang','helps_nominations',0,1);
 return $ret;}
 
 static function cookprefs($p){

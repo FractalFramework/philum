@@ -75,7 +75,7 @@ $img=imagecreatetruecolor($w,$h);
 $c=imagecolorallocate($img,255,255,255); imagefill($img,0,0,$c);
 $im=@imagecreatefrompng($in);
 if($im)imagecopyresampled($img,$im,0,0,0,0,$w,$h,$w,$h);
-imagejpeg($img,$out,100);
+imagejpeg($img,$out,90);
 if($id){$sz1=fsize($in); $sz2=fsize($out);//abort if jpg is larger
 	if($sz1>$sz2){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
 		self::mdf($id,$a,$b); ma::cacheart($id);

@@ -214,7 +214,7 @@ $src=substr($bin,$imnb+$nb,$bend-$imnb-$nb);
 if(strpos($bin,'popup_usg,nbp'))$mid='['.$txt.':nh]';//anchor
 elseif(strpos($src,'base64') && !$im)$mid='['.($src).':b64]';//self::b64img
 elseif(strpos($src,'twitter.com')!==false && strpos($src,'status/')!==false){
-return '['.strto($src,'?').':twitter]';}
+return '['.strto($src,'?').($txt?'|'.$txt:'').':twitter]';}
 elseif($src){$src=trim($src);
 	if(substr($src,0,19)=='data:image/svg+xml,')return;
 	$src=utmsrc($src); $src=preg_replace("/(\n)|(\t)/",'',$src); 

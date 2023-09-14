@@ -119,7 +119,7 @@ for($i=0;$i<9;$i++){$nbj=$r[$i];
 	if($nb>$limit)$i=9;}
 return $nbj;}
 
-static function seslng(){if(empty($_SESSION['lang'])){
+static function seslng($o=''){if(empty($_SESSION['lang']) or $o){
 	$hal=isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])?$_SERVER['HTTP_ACCEPT_LANGUAGE']:'';
 	$lg=substr($hal,0,2); $syslg=$_SESSION['prmb'][25];
 	if(!rstr(53))$lg='all'; elseif(!$lg)$lg=$syslg; $_SESSION['lang']=$lg;
@@ -373,7 +373,7 @@ static function init(){self::master_params(); $_SESSION['philum']=checkversion()
 self::define_hubs(); self::define_qb(); self::define_config();}
 
 static function reboot(){self::reset_ses(); $_SESSION['dayx']=time();
-self::init(); self::define_use(); self::define_iq(); self::define_auth(); self::seslng(); self::time_system('ok'); self::cache_arts(); self::define_condition(); self::define_clr();}//self::cats(); 
+self::init(); self::define_use(); self::define_iq(); self::define_auth(); self::seslng(1); self::time_system('ok'); self::cache_arts(); self::define_condition(); self::define_clr();}//self::cats(); 
 
 static function rebuild(){$_SESSION['rqt']=[]; $_SESSION['dayx']=time();
 return self::cache_arts(1);}

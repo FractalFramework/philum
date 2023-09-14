@@ -39,7 +39,7 @@ return pictxt($r[$d]??'tag',$t);}
 
 //titles
 static function titles($vrf,$tot,$cac){$rt3='';
-[$rech,$dig,$bol,$ord,$tit,$seg,$pag,$cat,$tag,$lim,$lng,$pri,$len]=arb(self::$rp);
+[$rech,$dig,$bol,$ord,$tit,$seg,$pag,$cat,$tag,$ovc,$lim,$lng,$pri,$len]=arb(self::$rp);
 $load=ses('load'); $rid=randid('search');
 $rj=['onkeyup'=>atj('checksearch',$rid)];
 $rt1=btn('search',inputb($rid,$rech,32,'',150,$rj)).' ';
@@ -59,9 +59,10 @@ $bt.=checkact('srbol',$bol,nms(70)).' ';//.''.hlpbt('bool')
 $bt.=checkact('srseg',$seg,nms(180)).' ';
 $rt2=btn('nbp',$bt);
 $rt2.=slct_cases('srlng','lang',$lng,1,nms(162)).' ';//
-$rt2.=slct_cases('srcat','cat',$cat,1,nms(9)).' ';//chkslct_j
+$rt2.=slct_cases('srcat','cat',$cat,1,nms(9)).' ';//chkslct
 //$rt2.=slct_cases('srtag','tag',$tag,'','tag').' ';//prm4=catag; 0=all
 $rt2.=hidden('srtag','');//hidden('srcat','').
+$rt2.=slct_cases('srovc','ovcat',$ovc,1,nms(207)).' ';//chkslct
 //$tgs=prmb(18); $ru=explode(' ',$tgs);
 //foreach($ru as $k=>$v)$rt2.=slct_cases('srtag'.$k,$v,$tag,'',$v);
 //$rt2.=hlpbt('search_cases').' ';
@@ -88,29 +89,49 @@ return $ret;}
 static function except_words($d){$r=['de','des','du','dans','le','les','la','un','a','?','ou','o?','on','en','y','?','?',"'",'"',':','-','!','?'];
 if(!in_array($d,$r))return true;}
 
+static function intersections($d){
+$r=explode('~',$d); $rca=[]; $rcb=[];
+foreach($r as $v){$ad=substr($v,0,1);
+if($ad=='+')$rca[]=substr($v,1); elseif($ad=='-')$rcb[]=substr($v,1);}
+return [$rca,$rcb];}
+
+static function cat($cat){$sq=[];
+[$rca,$rcb]=self::intersections($cat);
+if($rca)$sq[]='frm in ("'.join('","',$rca).'")';
+if($rcb)$sq[]='frm not in ("'.join('","',$rcb).'")';
+if($sq)return join(' and ',$sq);}
+
 static function tag($tag,$catag){
-$qda=db('qda'); $qdta=db('qdta'); $rtag=explode('~',$tag); $rta=[]; $rtb=[]; $tg='';
-foreach($rtag as $v){$ad=substr($v,0,1);
-	if($ad=='+')$rta[]=substr($v,1); elseif($ad=='-')$rtb[]=substr($v,1);}
-if($rta){$w=['tag in'=>$rta];
+$qda=db('qda'); $qdta=db('qdta');
+[$rca,$rcb]=self::intersections($tag);
+if($rca){$w=['tag in'=>$rca];
 	$rtg=sql::inner('idart','qdt','qdta','idtag','rv',$w);
-	$tg=' and '.$qda.'.id in ("'.implode('","',$rtg).'")';}
-if($rtb){$w=['tag in'=>$rtb];
+	$tg=' and '.$qda.'.id in ("'.join('","',$rtg).'")';}
+if($rcb){$w=['tag in'=>$rcb];
 	$rtg=sql::inner('idart','qdt','qdta','idtag','rv',$w);
-	$tg.=' and '.$qda.'.id not in ("'.implode('","',$rtg).'")';}
+	$tg.=' and '.$qda.'.id not in ("'.join('","',$rtg).'")';}
 return ' inner join '.$qdta.' on '.$qda.'.id='.$qdta.'.idart '.$tg;}
 
-static function adds($tag,$col){$sq=[]; $rta=[]; $rtb=[];
-$qda=db('qda'); $r=explode('~',$tag); $lgs=prmb(25);
-foreach($r as $v){$ad=substr($v,0,1); $slg=substr($v,1);
-	if($ad=='+'){$rta[]=$slg; if($slg==$lgs)$rta[]='';}
-	elseif($ad=='-'){$rtb[]=$slg; if($slg==$lgs)$rtb[]='';}}
-if($rta)$sq[]=$col.' in ("'.implode('","',$rta).'")';
-if($rtb)$sq[]=$col.' not in ("'.implode('","',$rtb).'")';
-return $sq;}
+static function adds($tag,$col){$sq=[];
+$qda=db('qda'); $lgs=prmb(25);
+[$rca,$rcb]=self::intersections($tag);
+foreach($rca as $k=>$v)if($v==$lgs)$rca[]='';
+if($rca)$sq[]=$col.' in ("'.join('","',$rca).'")';
+if($rcb)$sq[]=$col.' not in ("'.join('","',$rcb).'")';
+if($sq)return join(' and ',$sq);}
 
-static function call($rch,$days=''){$rp=self::$rp; $rch=htmlspecialchars($rch);//sql::qres($rch);
-[$rech,$dig,$bol,$ord,$tit,$seg,$pag,$cat,$tag,$lim,$lng,$pri,$len]=arb(self::$rp);
+static function overcats($d){$rb=[]; $rba=[]; $rbb=[]; $sq=[];
+[$rca,$rcb]=self::intersections($d);
+$r=sql('id,msg','qdd','kv',['val'=>'surcat']);//'ib'=>ses('qbd'),
+if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rb[$ov][]=$cat;}
+if($rca)foreach($rca as $k=>$v)if($rb[$v]??[])$rba=array_merge($rba,$rb[$v]);
+if($rba)$sq[]='frm in ("'.join('","',$rba).'")';
+if($rcb)foreach($rcb as $k=>$v)if($rb[$v]??[])$rbb=array_merge($rbb,$rb[$v]);
+if($rbb)$sq[]='frm not in ("'.join('","',$rbb).'")';
+if($sq)return join(' and ',$sq);}
+
+static function call($rch,$days=''){$rp=self::$rp; $rch=htmlspecialchars($rch??'');//sql::qres($rch);
+[$rech,$dig,$bol,$ord,$tit,$seg,$pag,$cat,$tag,$ovc,$lim,$lng,$pri,$len]=arb(self::$rp);
 $tit=$tit?1:0; //if($tag=='tag')$tag='';
 $qb=ses('qb'); $qda=db('qda'); $qdm=db('qdm'); $qdt=db('qdt'); $qdta=db('qdta');
 //sql
@@ -131,25 +152,21 @@ if(!$tit && $rch){
 	if($ft)$sqnd['msg']=$ft;
 	elseif($seg)$sqnd['msg']=$qdm.'.msg REGEXP "[[:<:]]'.$rch.'[[:>:]]"';
 	else $sqnd['msg']=$qdm.'.msg like "%'.html_entity_decode($rch).'%" ';}//COLLATE utf8mb4_unicode_ci
-if($cat){
-	$rcat=explode('~',$cat); $rca=[]; $rcb=[];
-	foreach($rcat as $v){$ad=substr($v,0,1);
-	if($ad=='+')$rca[]=substr($v,1); elseif($ad=='-')$rcb[]=substr($v,1);}
-	if($rca)$sq['cat']='frm in ("'.implode('","',$rca).'")';
-	if($rcb)$sq['nocat']='frm not in ("'.implode('","',$rcb).'")';}
+if($cat)$sq['cat']=self::cat($cat);
 if($tag)$sqin['tag']=self::tag($tag,'tag');
-if($lng)$sq['lng']=implode(' and ',self::adds($lng,'lg'));
-if($pri)$sq['re']=implode(' and ',self::adds($pri,'re'));
+if($ovc)$sq['ovc']=self::overcats($ovc);
+if($lng)$sq['lng']=self::adds($lng,'lg');
+if($pri)$sq['re']=self::adds($pri,'re');
 if($len){if($len==60)$min=30; elseif($len=='more'){$min=60; $len=1000;} else $min=$len-10;
 $sq['host']='(host between '.($min*1400).' and '.($len*1400).')';}
 //$rchb=$seg?'[[:<:]]'.$rch.'[[:>:]]':$rch;//REGEXP_REPLACE//(?i) //mariadb is sensitive
 $counter='FLOOR((LENGTH('.$qdm.'.msg)-LENGTH(REPLACE(lower('.$qdm.'.msg),lower("'.$rch.'"),"")))/(LENGTH("'.$rch.'")))';
 if($lim)$sq['lim']=$counter.'>='.$lim;
 //req
-$wh=implode(' and ',$sq);
+$wh=impl(' and ',$sq);
 if($sqnd['suj'] && isset($sqnd['msg']))$wh.=' and ('.$sqnd['msg'].' or '.$sqnd['suj'].')';
 elseif($sqnd['suj'])$wh.=' and '.$sqnd['suj']; elseif($sqnd['msg']) $wh.=' and '.$sqnd['msg'];
-if(isset($sqin))$inner=implode('',$sqin); else $inner='';
+if(isset($sqin))$inner=join('',$sqin); else $inner='';
 $slct[]=$qda.'.id';
 //if($ft)$slct[]=$ft.' as score';//change $fr
 $w=' where '.$wh.' order by '.$qda.'.'.prmb(9);
@@ -182,16 +199,17 @@ static function rech($p){
 if(isset($_SESSION['recache'][$p])){$_SESSION['recache'][$p]=[]; return 'x';}
 elseif(isset($_SESSION['recache']))$_SESSION['recache']=[]; return 'xx';}
 
-static function good_rech($d){if(!$d)return; $d=str::clean_acc($d);//$d=str::utflatindecode($d); 
+static function good_rech($d){if(!$d)return; $d=str::clean_acc($d);
 $d=str_replace("&nbsp;",' ',$d); $d=strip_tags($d); $d=stripslashes($d); return trim(urldecode($d));}
 
 static function home($d0,$n0,$prm=[]){chrono(); $load=[]; $ret='';
-[$d,$n,$b,$o,$t,$sg,$pg,$cat,$tag,$lim,$lng,$pri,$len]=arr($prm,13); $d=$d?$d:$d0; $n=$n?$n:$n0;
-$rech=self::good_rech($d); $pg=$pg?$pg:1; if(!$n)$n=ses('nbj'); $cac=''; $nb=0; //eco(htmlentities($d));
+[$d,$n,$b,$o,$t,$sg,$pg,$cat,$tag,$ovc,$lim,$lng,$pri,$len]=arr($prm,14); $d=$d?$d:$d0; $n=$n?$n:$n0;
+$rech=self::good_rech($d); $pg=$pg?$pg:1; if(!$n)$n=ses('nbj'); $cac=''; $nb=0;
 if($lim=='-')$lim=''; if($lng=='-')$lng=''; if($pri=='-')$pri=''; if($len=='-')$len='';
+if(!$lng && ses('lang')!='all')$lng='+'.ses('lng');//autolang
 geta('search',$rech); geta('page',$pg); ses('rech',$rech);
-self::$rp=['rech'=>$rech,'dig'=>$n,'bool'=>$b,'ord'=>$o,'titles'=>$t,'seg'=>$sg,'page'=>$pg,'cat'=>$cat,'tag'=>$tag,'lim'=>$lim,'lng'=>$lng,'pri'=>$pri,'len'=>$len];
-$vrf=($rech.$n.$b.$o.$t.$sg.$cat.$tag.$lim.$lng.$pri.$len); ses::$r['seg']=$sg;
+self::$rp=['rech'=>$rech,'dig'=>$n,'bool'=>$b,'ord'=>$o,'titles'=>$t,'seg'=>$sg,'page'=>$pg,'cat'=>$cat,'tag'=>$tag,'ovc'=>$ovc,'lim'=>$lim,'lng'=>$lng,'pri'=>$pri,'len'=>$len];
+$vrf=($rech.$n.$b.$o.$t.$sg.$cat.$tag.$ovc.$lim.$lng.$pri.$len); ses::$r['seg']=$sg;
 if(!isset($_SESSION['recache']))$_SESSION['recache'][$vrf]=[];
 $maxid=ma::lastartid();
 //if(is_float($rech))echo $rech=(string) $rech;
@@ -225,7 +243,7 @@ if($load && !is_array($load))$load=[];
 if($load){$_SESSION['load']=$load; $_SESSION['recache'][$vrf]=$load; $nb=count($load);}
 if($pg>ceil($nb/$_SESSION['prmb'][6]) or ses('oldig')!=$n)geta('page',1);
 if(isset($load[0]))unset($load[0]); if(isset($load[1]))unset($load[1]);
-if($load)$res=ma::output_arts($load,'rch','simple');
+if($load)$res=ma::output_arts($load,'rch','little');
 $ret=self::titles($vrf,$nb,$cac);
 $ret.=divd('apicom','');
 ses::$r['popm']=chrono('search'); $_SESSION['oldig']=$n;

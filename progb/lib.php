@@ -94,8 +94,8 @@ return '<input'.atr(['type'=>$ty,'id'=>$d,'value'=>$v,'size'=>$s]+$p).' />';}
 function inputb($d,$v,$s='',$h='',$m='',$p=[]){
 $pr=['id'=>$d,'type'=>'text','value'=>$h==1?'':$v,'placeholder'=>$h==1?$v:$h,'size'=>$s,'maxlength'=>$m]+$p;
 return '<input'.atr($pr).' />';}
-function inputj($d,$v,$j,$h='',$s='',$p=[]){$js='checkj(this)';
-$pr=['id'=>$d,'type'=>'text','value'=>$v,'placeholder'=>$h,'size'=>$s,'data-j'=>$j,'onkeyup'=>$js];
+function inputj($d,$v,$j,$h='',$s='',$p=[]){$js='checkj(this)'; $ju='sj(this)';
+$pr=['id'=>$d,'type'=>'text','value'=>$v,'placeholder'=>$h,'size'=>$s,'data-j'=>$j,'onkeyup'=>$js,'onblur'=>$ju];
 return taga('input',$p+$pr);}
 function inpsw($d,$v,$s='',$p=[]){return inputb($d,$v,$s,'password','100',['type'=>'password']);}
 function inpdate($id,$v,$min='',$max='',$o=''){$ty=$o?'datetime-local':'date';//time
@@ -510,6 +510,7 @@ function is_http($d){if(substr($d,0,4)=='http' or substr($d,0,2)=='//')return tr
 //vars
 function expk($s,$d){[$k,$v]=explode($s,$d); return [$k=>$v];}
 function expl($s,$d,$n=2){$r=explode($s,$d); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
+function impl($s,$r){$rb=[]; foreach($r as $k=>$v)if($v)$rb[]=$v; return join($s,$rb);}
 function opt($d,$s,$n=2){$r=explode($s,$d); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}//old
 function arr($r,$n=''){$rb=[]; $n=$n?$n:count($r); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
 function arb($r,$n=''){$rb=array_values($r); if($n)$rb=array_pad($rb,$n,''); return $rb;}

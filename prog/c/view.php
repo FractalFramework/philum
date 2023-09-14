@@ -17,7 +17,7 @@ static function art(){return [
 ['span','grey right','{artlang}{social}{words}{open}'],
 ['div','txtsmall','{tag}'],
 ['clear','',''],
-['article',['id'=>'art_{id}','class'=>'justy','onclick'=>'{js}'],'{msg}']
+['article',['id'=>'art{id}','class'=>'justy','onclick'=>'{js}'],'{msg}']
 ];}
 
 static function cat(){return [
@@ -37,7 +37,7 @@ static function cat(){return [
 			['div','grey tright','{artlang}{social}{words}{open}']]]],
 		['','','{float}'],
 		['','','{artedit}'],
-		['article',['id'=>'art_{id}'],'{suj}']]]]];}
+		['article',['id'=>'art{id}'],'{msg}']]]]];}
 
 static function read(){return [
 ['header','',[
@@ -56,9 +56,48 @@ static function read(){return [
 	['','','{float}'],
 	['div','panel txtsmall','{tag}']]],
 ['','','{artedit}'],
-['article',['id'=>'art_{id}','class'=>'justy'],[
+['article',['id'=>'art{id}','class'=>'justy'],[
 	['','','{msg}'],
 	['clear','','']]]];}
+
+static function little(){return [
+['div','grid-little',[
+	['div','row1 colspan1',[
+		['header','',[
+			['div',['id'=>'meta{id}'],[
+				['span','popbt','{cat}'],
+				['span','txtbox','{search}'],
+				['span','txtnoir','{nbarts}'],
+				['span','txtsmall2','{date}'],
+				['span','txtsmall','{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}']]],
+			['h4','','{parent}'],
+			['span','right','{edit}'],
+			['h2','','{suj}'],
+		['div','grey tright','{artlang}{social}{words}{open}']]]]],
+	['div','row2 col1',[
+		['div','panel scrollb txtsmall','{tag}']]],
+	['div','row2 col2',[
+		['article',['id'=>'art{id}'],'{msg}']]]]]];}
+
+static function little2(){return [
+['div','grid-3',[
+	['div','row1 colspan2',[
+		['header','',[
+			['span','right','{edit}'],
+			['div',['id'=>'meta{id}'],[
+				['span','popbt','{cat}'],
+				['span','txtbox','{search}'],
+				['span','txtnoir','{nbarts}'],
+				['span','txtsmall2','{date}'],
+				['span','txtsmall','{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}']]],
+			['h4','','{parent}'],
+			['h2','','{suj}']]]]],
+	['div','row2 col1','{thumb}'],
+	['div','row2 col2',[
+		['div','panel scrollb txtsmall','{tag}']]],
+	['div','row2 col3',[
+		['div','grey tright','{artlang}{social}{words}{open}'],
+		['article',['id'=>'art{id}'],'{msg}']]]]]];}
 
 static function simple(){return [
 ['header','',[
@@ -72,14 +111,14 @@ static function simple(){return [
 	['span','right','{edit}{artlang}{open}'],
 	['h2','','{suj}']]],
 ['','','{artedit}'],
-['article',['id'=>'art_{id}','class'=>'panel'],[
+['article',['id'=>'art{id}','class'=>'panel'],[
 	['','','{msg}']]]];}
 
 static function fast(){return [
 ['div',[],[
 	['h3','',[
 		['url','{url}','{suj}']]]]],
-['article',['id'=>'art_{id}','class'=>'justy'],[
+['article',['id'=>'art{id}','class'=>'justy'],[
 	['','','{msg}']]]];}
 
 static function tracks(){return [
@@ -89,7 +128,7 @@ static function tracks(){return [
 	['anchor','','trk_{id}'],
 	['span','txtsmall2','{date} #{id}'],
 	['','','{edit}']]],
-['div',['id'=>'art_{id}','class'=>'trkmsg'],'{msg}']];}
+['div',['id'=>'art{id}','class'=>'trkmsg'],'{msg}']];}
 
 static function titles(){return [
 ['div',[],[
@@ -164,7 +203,7 @@ static function book(){return [
 static function file(){return [
 ['h1',[],[
 	['url','{url}','{suj}']]],
-['article',['id'=>'art_{id}'],[
+['article',['id'=>'art{id}'],[
 	['','','{msg}'],
 	['clear','','']]],
 ['br','','']];}
@@ -184,17 +223,18 @@ foreach($r as $v)$rt[$v]='';
 return $rt;}
 
 //r to tmp
+//view::mkconn(view::little());
 static function mkconn($r){$ret='';
 foreach($r as $k=>$v){[$v1,$v2,$v3]=$v;
 	if(is_array($v[2]))$v3=self::mkconn($v3);
 	if(is_array($v[1])){$v2='';
 		foreach($v[1] as $ka=>$va)$v2.='['.$va.':'.$ka.']';}
+	else $v2='['.$v2.':class]';
 	$ret.='['.$v3.'|'.$v2.':'.$v1.']';}
 return $ret;}
 
 //tmp to r
 static function mkr($d){$rt=[];
-
 return $rt;}
 
 //r to render

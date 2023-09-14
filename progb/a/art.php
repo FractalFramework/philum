@@ -1,8 +1,7 @@
-<?php //art
+<?php 
 class art{
 
 #template
-
 //tmp_common
 static function decide_tpl(){$tpl=prma('template');//from mod
 if(!$tpl){$r=ses('tmpc'); $c=$_SESSION['cond'][0]; $tpl=$r[$c]??'';}//from context
@@ -442,8 +441,9 @@ $rear=self::ib_arts_nb($id)+1; $trk=''; $nb='';
 $tp=$tp?$tp:($r['o']['template']??'');
 $rt['id']=$id; $rt['suj']=$r['suj'];
 if($r['re']==0)$rt['css']='hide'; else $rt['css']='';
-if($prw==1 or $prw=='rch')$tp='simple';
+//if($prw==1 or $prw=='rch')$tp='little';//unused
 if($prw==2)$rt['thumb']=self::prepare_thumb($r['img'],$id,$nl);
+else $rt['thumb']=img('img/'.pop::art_img($r['img'],$id));
 if($prw=='rch')$rt=self::prepare_rech($id,$msg,$rt);
 elseif($msg){$rt['msg']=self::prepare_msg($id,$msg,$r,$prw,$nl);
 	//if(!$nl)$trk=self::prepare_tracks($id,$otp,$r['o']);

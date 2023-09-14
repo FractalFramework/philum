@@ -324,7 +324,7 @@ getbyid(id).value=rb.join('~');}
 
 function hidslct(id,v,t,o){
 if(parseInt(o)==1||parseInt(o)==3)getbyid('bt'+id).innerHTML=ajx(t,1);
-getbyid(id).value=v; Close('popup');}
+getbyid(id).value=v;}// Close('popup');
 
 function selectprnt(id,v){
 getbyid('ib'+id).value=v; Close('prnt'+id);}

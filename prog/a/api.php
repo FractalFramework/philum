@@ -68,6 +68,13 @@ $qdt=db('qdt'); $qdta=db('qdta'); $qda=db('qda');
 return 'inner join '.$qdta.' pm'.$n.' on '.$qda.'.id=pm'.$n.'.idart
 inner join '.$qdt.' m'.$n.' on m'.$n.'.id=pm'.$n.'.idtag ';}
 
+static function sql_overcat($ovc){
+$ra=explode('|',$ovc); $rb=[]; $rt=[];
+$r=sql('id,msg','qdd','kv',['val'=>'surcat']);//'ib'=>ses('qbd'),
+if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rb[$ov][]=$cat;}
+foreach($ra as $k=>$v)if($rb[$v]??[])$rt=array_merge($rt,$rb[$v]);
+return 'frm in ("'.join('","',$rt).'")';}
+
 static function sql_tags_additive($tags,$cat){$r=explode('|',$tags);
 $qdt=db('qdt'); $qdta=db('qdta'); $qda=db('qda'); $rb=[]; $rc=[]; $sc='';
 $ret='inner join '.$qdta.' pm on '.$qda.'.id=pm.idart
@@ -107,7 +114,7 @@ if($d=='>' or $d=='<')return $d.'"'.substr($v,1).'"';}
 
 #sql
 static function mksql($r){$qda=db('qda'); $in=''; $gr='';
-$p=valk($r,['count','select','json','sql','cat','nocat','nochilds','priority','notpublished','owner','hub','minday','maxday','from','until','mintime','maxtime','mindid','maxid','source','parent','nbchars','id','minid','lang','lg','search','search_whole','fullsearch','avoid','title','folder','related','relatedby','cmd','group','order','file','page','nbyp','idlist','media','catid','poll','cluster','date','msg','classtag','famous']);
+$p=valk($r,['count','select','json','sql','cat','nocat','nochilds','priority','notpublished','owner','hub','minday','maxday','from','until','mintime','maxtime','mindid','maxid','source','parent','nbchars','id','minid','lang','lg','search','search_whole','fullsearch','avoid','title','folder','related','relatedby','cmd','group','order','file','page','nbyp','idlist','media','catid','poll','cluster','date','msg','classtag','famous','overcat']);
 if($p['count'])$sq['slct'][]='count('.$qda.'.id)';
 elseif($p['select'])$sq['slct'][]=$p['select'];
 elseif($p['idlist'])$sq['slct'][]=$qda.'.id';
@@ -154,6 +161,7 @@ if($p['cluster']){$rt=sql::inner('tag','qdt','qdtc','idtag','rv',['word'=>$p['cl
 	$sq['inner'][]=self::sql_tags_additive(implode('|',$rt),'');}
 if($p['famous']??''){$rt=sql::inner('tag,count(tag) as n','qdt','qdta','idtag','kv',['cat'=>$p['famous'],'_group'=>'tag','_order'=>'n desc','_limit'=>'100']);
 	$sq['inner'][]=self::sql_tags_additive(implode('|',array_keys($rt)),'');}
+if($p['overcat'])$sq['and'][]=self::sql_overcat($p['overcat']);
 if($p['classtag']){$sq['inner'][]=self::sql_tags_inner(); $sq['slct'][]='tag';
 	$sq['and'][]='cat="'.$p['classtag'].'"';}
 if($p['lg']){$trn=ses('trn'); $sq['slct'][]='txt';
@@ -435,8 +443,8 @@ return self::defaults_rq($ra,['dig'=>$dig]);}
 //mod
 static function mod_rq($v){//mod
 if(strpos($v,';'))$v=str_replace(';',',',$v);
-if(strpos($v,'&'))$ra=explode_k($v,'&','=');//harmonization with old protocol, need &
-else $ra=explode_k($v,',',':'); if(!rstr(105))$ra['hub']=ses('qb'); $ra['minday']='';
+//if(strpos($v,'&'))$ra=explode_k($v,'&','=');else //harmonization with old protocol, need &
+$ra=explode_k($v,',',':'); if(!rstr(105))$ra['hub']=ses('qb'); $ra['minday']='';
 if($ra['nbdays']??''){$ra['minday']=$ra['nbdays']; unset($ra['nbdays']);}
 if($ra['hours']??'')$ra['mintime']=timeago($ra['hours']/24);
 $ra['order']=$ra['order']??prmb(9);
@@ -447,7 +455,7 @@ $ra['lang']=ses('lang');
 return self::defaults_rq($ra);}
 
 static function mod_arts_rq($p,$t,$d,$o,$tp){//api_arts
-$ra=self::mod_rq($p); //echo $p;
+$ra=self::mod_rq($p);
 $ra['rid']='loadmodart'; $ra['page']=1; //$ra['nbyp']=prmb(6);
 $ra['t']=$ra['t']??$t; $ra['template']=$tp;
 $ra['cmd']=$d; if($o=='cols')$ra['cols']=1;

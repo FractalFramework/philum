@@ -110,6 +110,7 @@ case('Page_titles'):$ret=self::page_titles($o); break;
 case('categories'):$ret=md::cat_mod_j($p,$o,$d,$tp); break;
 case('category'):if($p==1 && !get('frm'))$p='All'; $ret=api::arts($p,$o,$tp); break;
 case('catarts'):if($p)$sq=['frm'=>$p]; if($o)$sq+=explode_k($o,',','='); $load=ma::rqtcol($sq); break;
+case('overcat'):$ret=api::arts('overcat:'.$p,$o,$tp); break;
 case('playconn'):$api=api::arts_rq('',''); $api['media']=$p; $api['nbyp']=10; $api['t']=$t; break;
 case('gallery'):$ret=md::gallery($p,$o); break;//old
 case('tracks'):$ret=md::trkarts($p,$t,$d,$o); break;//api::tracks($t)

@@ -333,7 +333,7 @@ return $ret;}
 //build
 //apps=['button','type','process','param','option','condition','root','icon'];
 //$rc=[$v[0],$v[1],$v[2],$v[3],$v[4],$v[5],$v[6],$v[7]];
-static function apps($r,$d,$dir,$cond){//$r,,dir,cond
+static function apps($r,$d,$dir,$cond,$n=''){//$r,,dir,cond
 if($dir=='zero'){$dir=''; $dd='d';} else $dd=''; $rb=[]; $ret='';
 $dr=explode('/',$dir); $nd=$dir?count($dr):0;
 if($r)foreach($r as $k=>$v){$rc=array_flip(explode(' ',' '.$v[5]));
@@ -348,7 +348,7 @@ if($rc[$cond?$cond:'menu']??'' or !$v[5]){$t=$v[0];
 			if($rot)$root=implode('/',$rot);}
 		$pc=picto('kright','20px').'&nbsp;'.$rvb;
 		if($dd)$pc=$rvb;
-		$rb[$rvb]=popbub($v[4]?$v[4]:$d,ajx($root),$pc,$dd,1);}
+		$rb[$rvb]=popbub($v[4]?$v[4]:$d,ajx($root).'_'.$n,$pc,$dd,1);}
 	if($is && $nv>$nd)$is=false;
 	if($is && empty($v[8]) && (empty($v[9]) or auth($v[9]??''))){//noj*
 		if($v[1]=='link')$rb[$t]=ljbub($ico.$t,$v[3],'','','','');
@@ -414,6 +414,6 @@ $r=match($d){
 'menubub'=>self::menubub($dir,$n),
 'bubses'=>$_SESSION['bubses'],
 default=>[]};
-return self::apps($r,$d,$dir,'');}
+return self::apps($r,$d,$dir,'',$n);}
 }
 ?>

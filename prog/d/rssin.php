@@ -93,7 +93,7 @@ return $ret;}
 static function recognize_article($f,$d,$alx){
 if(is_string($f) && isset($alx[$f]))return $alx[$f]; 
 elseif(isset($alx[$d]))return $alx[$d];
-elseif(isset($alx[substr($f??'',7)]))return $alx[substr($f,7)];
+elseif(isset($alx[substr($f??'',7)]))return $alx[substr($f??'',7)];
 $id=sql('id','qda','v',['nod'=>ses('qb'),'mail'=>$f,'_limit'=>'1']);
 if(!$id)$id=sql('id','qda','v',['nod'=>ses('qb'),'%suj'=>$d,'_limit'=>'1']);
 return $id;}
