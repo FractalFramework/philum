@@ -1,0 +1,3 @@
+<?php 
+return ["_"=>['code'],
+"1"=>['[{cat}{back}{avatar}[{search}|[txtbox:class]:span][{nbarts}|[txtnoir:class]:span][{date}|[txtsmall2:class]:span][{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|[txtsmall:class]:span]|[meta{id}:id]:header]{thumb}[{parent}|:h4][{edit}|[right:class]:span][{title}|:h1]{artedit}{float}[{artlang} {social} {words} {open}|[grey right:class]:span][{tag}|[txtsmall:class]:div][|:clear][{msg} |[art{id}:id][justy:class][{js}:onclick]:article]']]; ?>

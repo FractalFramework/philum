@@ -1,0 +1,15 @@
+{
+    "editor.insertSpaces": false,
+    "editor.wordWrap": "on",
+    "files.eol": "\n",
+    "editor.acceptSuggestionOnCommitCharacter": false,
+    "editor.suggest.showFields": false,
+    "editor.suggest.showEvents": false,
+    "editor.suggest.showEnums": false,
+    "editor.suggest.showEnumMembers": false,
+    "editor.suggest.showConstants": false,
+    "editor.quickSuggestionsDelay": 100,
+    "editor.inlineSuggest.showToolbar": "never",
+    "editor.inlineSuggest.enabled": false,
+    "editor.acceptSuggestionOnEnter": "smart"
+}

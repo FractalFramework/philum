@@ -1,0 +1,2 @@
+<?php $ret=time();
+
