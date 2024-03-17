@@ -127,7 +127,7 @@ return $atr.$rect.$t;}
 
 //build
 static function build($p,$o){//$o=0;
-$r=msql::read('','public_atomic','',1);
+$r=msql::read('','public_atomic',1);
 if(!$o)$o=self::$mode;
 $w=1000; $h=600*self::$ratio; $sz=$w.'/'.$h;
 $bt=self::nav($p,$o,'spl');
@@ -167,8 +167,8 @@ return $ret;}
 static function home($p,$o){
 new spiline(118);
 $rid='spl'; $p=$p?$p:self::$max;
-Head::add('csscode',self::css());
-//Head::add('jscode',spiline::js($rid.'_spiline,call__2_',$p,$o));
+head::add('csscode',self::css());
+//head::add('jscode',spiline::js($rid.'_spiline,call__2_',$p,$o));
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 return $bt.divd($rid,$ret);}

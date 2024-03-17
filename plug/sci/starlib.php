@@ -154,7 +154,7 @@ return $rt;}
 #init
 static function knownstars($p1){
 if($p1=='knownstars' or $p1=='allstars')$ra=sqldb::read('db/public/stars/1',1);
-if($p1=='allstars'){$rb=msql::read('','ummo_exo_5',1); $ra=array_merge($ra,$rb);}
+if($p1=='allstars'){$rb=msql::row('','ummo_exo_5',1); $ra=array_merge($ra,$rb);}
 return implode(',',array_keys_r($ra,8));}
 
 static function sq($p1){

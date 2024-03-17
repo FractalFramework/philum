@@ -2,7 +2,7 @@
 class ops{
 
 static function build($p,$o){
-//$r=msql::read('',nod('umnum'),$p);
+//$r=msql::row('',nod('umnum'),$p);
 //$r=sqb('name,count(name)','qda','kv','group by name');
 //$r=sql::inner('id,msg','qda','qdm','id','kv','limit 100',1);//,"C","E","H","NR","GR"
 $r=sql('id','qda','rv','name="ummo" and frm in("D","C","E","H","NR","GR","ES");'); //p($r);
@@ -28,7 +28,7 @@ $ret.=lj('',$rid.'_ops*call_inp',picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid=randid('plg');
-ses('qdaa','pub_art_a');
+sesr('db','qdaa','art_a');
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 //$bt.=msqbt('',nod('ops'));

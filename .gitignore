@@ -64,6 +64,7 @@ msql/users/public_chat_*
 msql/users/newsnet_twit_*
 msql/clients/*
 msql/*_sav.php
+msql/_bak/*
 pub/favicons/favicon_nn*
 pub/favicons/favicon_oo*
 

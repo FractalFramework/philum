@@ -2,9 +2,9 @@
 class upim{
 static function upim_h(){
 $_SESSION['uproot']='users/'.ses('qb').'/downloads';//destination folder
-Head::add('csslink','../css/_admin.css');
-//Head::add('jslink','../js/upload.js');
-Head::add('csscode','
+head::add('csslink','../css/_admin.css');
+//head::add('jslink','../js/upload.js');
+head::add('csscode','
 .upload_form_cont {border:1px solid transparent; color:#000;}
 .info {background:#eee; border:1px solid #ddd; font-weight:bold; margin:20px;}
 .info > div {padding:10px 15px;}
@@ -38,7 +38,7 @@ else return 'nothing';}
 
 static function home(){
 upim_h();
-//jscode(up_js());
+//head::jscode(up_js());
 return '
 <div class="container">
 	<div class="contr"></div>

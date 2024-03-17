@@ -22,7 +22,7 @@ return $r;}*/
 
 static function build($t,$fx,$fy,$lac,$hac,$fnt,$clr,$dest){
 $t=str_replace("&nbsp;",' ',$t);
-$nb_chars=strlen($t); $width=400;//cw();
+$nb_chars=strlen($t); $width=400;
 if($lac && $width)$maxl=floor($width/$lac); else $maxl=400;
 $la=$nb_chars*$lac; 
 $la=$la>$width-8?$width-8:$la;

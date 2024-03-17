@@ -69,10 +69,10 @@ static function save($d){$f='img/draw_temp.png'; //$d.='=';
 write_file($f,base64_decode(substr($d,22)));
 return image($f);}
 
-static function home($w=580,$h=420){//cw();
-Head::add('jslink','/js/jquery.js');
-Head::add('jscode',self::js());
-Head::add('csscode',self::css());
+static function home($w=580,$h=420){
+head::add('jslink','/js/jquery.js');
+head::add('jscode',self::js());
+head::add('csscode',self::css());
 $ret=tag('canvas',['id'=>'canvas','width'=>$w.'px','height'=>$h.'px'],'');
 $r=['black','white','blue','green','yellow','orange','brown','red','indigo','violet','pink','cyan']; $n=count($r);
 for($i=0;$i<$n;$i++){

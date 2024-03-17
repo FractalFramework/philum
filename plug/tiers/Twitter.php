@@ -17,15 +17,15 @@ public $_url;
 
 public function __construct($n=''){if(!$n)$n=1;
 $r=msql::kv('',nod('twit_'.$n),'',1);//msql (hub)_twit
-if(isset($r[1]))$this->oauth_token=$r[1];
-if(isset($r[2]))$this->oauth_token_secret=$r[2];
-if(isset($r[3]))$this->oauth_consumer_key=$r[3];
-if(isset($r[4]))$this->oauth_consumer_secret=$r[4];
-if(isset($r[5]))$this->_usr=$r[5];
+$this->oauth_token=$r['access_token']??'';
+$this->oauth_token_secret=$r['token_secret']??'';
+$this->oauth_consumer_key=$r['consumer_key']??'';
+$this->oauth_consumer_secret=$r['consumer_secret']??'';
+$this->_usr=$r['token_identifier']??'';
 $this->oauth_nonce=md5(rand());
 $this->oauth_signature_method='HMAC-SHA1';
 $this->oauth_timestamp=time();
-$this->oauth_version='1.0';}
+$this->oauth_version='1.1';}
 
 //build url
 private function urlParams(){

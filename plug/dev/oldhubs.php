@@ -2,7 +2,7 @@
 class oldhubs{
 
 static function build($p,$o){
-//$r=msql::read('',nod('umnum'),$p);
+//$r=msql::row('',nod('umnum'),$p);
 //$r=sqb('name,count(name)','qda','kv','group by name');
 
 //$r=sql('id','qda','rv','frm="ES" or frm="_system"'); //pr($r);
@@ -47,7 +47,7 @@ echo $ret.br();}*/
 //echo file_get_context($v);//
 
 	//$sq='frm="_ES",suj="'.$v[0].'",thm="'.$v[0].'",day="'.$day.'",mail="'.urldecode($v[2]).'" where id='.$idb.'';
-	//qr('update pub_art set '.$sq);
+	//qr('update art set '.$sq);
 	//$rb=sql('id,idtag','qdta','kv','idart='.$v,1); pr($rb);
 	//$rb=sql('id','qdta','rv','idtag='.$k); //pr($rb);
 	//$va=sql('id','qdt','v','id='.$v); //pr($rb);
@@ -59,7 +59,7 @@ echo $ret.br();}*/
 /*
 //install art
 $r=sql('nod,name,id,suj,frm','qda','ar','nod="ummo" and frm="_system" and suj="free" and id>100');
-$rb=msql::read('',nod('es_3'),'',1); //pr($rb);
+$rb=msql::read('',nod('es_3'),1); //pr($rb);
 //echo count($rb);//647/191
 foreach($rb as $k=>$v){
 	$idb=$r[$k]['id'];
@@ -69,7 +69,7 @@ foreach($rb as $k=>$v){
 	//if(substr($suj,1,strlen($v[0]))!=$v[0] && $suj && $v[0]!='D60' && $v[0]!='D61' && $v[0]!='D94' && $v[0]!='D95')
 	if((substr($suj,1,strlen($v[0]))==$v[0] && $suj) or $v[0]=='D91' or $v[0]=='D518'){
 	echo $v[0].':'.$suj.' '.$ida.br().$sq.br().br();
-	//qr('update pub_art set '.$sq);
+	//qr('update art set '.$sq);
 	//utag_sav($idb,'langfr',$ida);//ref to fr
 	//utag_sav($ida,'langesp',$idb);//ref from fr
 	//langslct($idb,'es');
@@ -78,10 +78,10 @@ foreach($rb as $k=>$v){
 
 //isole old hub
 /*foreach($r as $k=>$v){
-//qr('update pub_art_a set ib="",name="ummo",nod="ummo",mail="",frm="_system",suj="free",re="1",lu="0",img="",host="0",thm="",day="" where id="'.$v['id'].'"');
-//qr('update pub_txt_a set msg="" where id="'.$v['id'].'"');
+//qr('update art_a set ib="",name="ummo",nod="ummo",mail="",frm="_system",suj="free",re="1",lu="0",img="",host="0",thm="",day="" where id="'.$v['id'].'"');
+//qr('update txt_a set msg="" where id="'.$v['id'].'"');
 //ib="",`name`="ummo",`nod`="ummo",mail="",day="0",`frm`="_system",`suj`="free",`re`=1,`lu`=0,`img`="",`thm`="",img="",`host`=0 WHERE nod="_ummo"name
-//qr('update pub_art set frm="_ES",suj="free",re="1",lu="0",img="",host="0",thm="",day="" where id="'.$v['id'].'"');
+//qr('update art set frm="_ES",suj="free",re="1",lu="0",img="",host="0",thm="",day="" where id="'.$v['id'].'"');
 }*/
 return tabler($r);}
 
@@ -101,7 +101,7 @@ $ret.=lj('',$rid.'_oldhubs,call_inp',picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid=randid('plg');
-ses('qdaa','pub_art_a');
+sesr('db','qdaa','art_a');
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 //$bt.=msqbt('',nod('oldhubs'));

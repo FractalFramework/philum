@@ -2,18 +2,18 @@
 class transport{
 
 static function last($b){if(sql::ex(sqldb::qb($b)))
-return sql::call('select id from '.self::pub($b).' order by id desc limit 1','v');}
+return sql::call('select id from '.($b).' order by id desc limit 1','v');}
 
 static function dumpall(){
 $r=self::tables(); foreach($r as $k=>$v)backup::dump($v);}
 
-static function tables(){return ['art','cat','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','yandex','ips','live','live2','stat','_sys','cat','hub','mbr','img'];}//,'umvoc','umvoc_arts','umtwits','bdvoc','dicoen','dicofr','dicoum','hipparcos','gaia'
+static function tables(){return ['art','cat','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','stat','cat','hub','mbr','img','_sys','_prog','_progr'];}//,'umvoc','umvoc_arts','umtwits','bdvoc','dicoen','dicofr','dicoum','hipparcos','gaia','live','live2'
 
-static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','yandex','ips','live','live2','stat','cat','hub','mbr','img'];//,'umvoc','umvoc_arts','umtwits'
-if(in_array($b,$r))return qd($b); else return $b;}
+static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','live','live2','stat','cat','hub','mbr','img'];//,'umvoc','umvoc_arts','umtwits'
+if(in_array($b,$r))return $b;}// else return $b;
 
 static function db_r(){$r=sqldb::$rt;
-foreach($r as $k=>$v)$_SESSION[$k]='pub_'.$v;
+$_SESSION[$k]=$r;
 return array_flip($r);}
 
 static function ts_db($b){$r=self::db_r(); return $r[$b]??$b;}
@@ -21,13 +21,6 @@ static function ts_db($b){$r=self::db_r(); return $r[$b]??$b;}
 static function tr_dcrpt($d){
 $iv='fKxb6KW8K37/IzoScd7kcQ==';
 return base64_decode(crypt::decrypt_build($d,$iv));}
-
-/*static function srv0(){$srv=$_SERVER['HTTP_HOST'];
-$r=msql::col('server','shared_servers_1',0,1);
-if($srv=='oumo.fr')return ['dav','umm',self::tr_dcrpt($r[1]),'umm'];//srv1
-//if($srv=='socialnetwork.ovh')return ['dav','umm',self::tr_dcrpt($r[2]),'umm'];//srv2
-if($srv=='newsnet.fr')return ['root','nfo',self::tr_dcrpt($r[1]),'nfo'];//1
-if($srv=='newsnet.ovh')return ['dav','nfo',self::tr_dcrpt($r[2]),'nfo'];}*///2
 
 static function srv($o=''){$d=read_file(boot::cnc()); $sbr=$o?'/home':'';
 $d=between($d,'sql([','])'); $d=str_replace("'",'',$d); $r=explode(',',$d);
@@ -61,8 +54,7 @@ if($o=='call'){//distant
 	ses('tilen',5000); backupim::rec($p,'');
 	$ret=backupim::call($p,1);	}
 elseif($o=='menu'){$r=scandir_b('img'); $nb=count($r);
-	if($_SESSION['rqt'])$n=key($_SESSION['rqt']);
-	$n=ceil($n/$l); $ret=''; //rmdir_r('backupphi');//not good
+	$lid=ma::lastartid(); $n=ceil($lid/$l); $ret=''; //rmdir_r('backupphi');//not good
 	for($i=0;$i<$n;$i++){$min=$i*$l; $max=$min+$l;
 		$f='_backup/imgqda_'.$min.'-'.$max.'.tar.gz'; $c=is_file($f)?'active':'';
 		$ret.=lj($c,$p.'_transport,img__3___'.$i,$i*$l).'-';
@@ -91,7 +83,7 @@ static function usr($p,$o){
 $ret=''; $rb=[]; $l=5000;
 [$usr,$db,$ps,$dr]=self::srv(1);
 if($o=='call'){//distant
-	$f='_backup/users_'.$p.'.tar'; $r=scandir_r('users/'.$p); //pr($r);
+	$f='_backup/users_'.$p.'.tar'; $r=scanfiles('users/'.$p); //pr($r);
 	if(is_file($f))return $f;//
 	$ret=tar::files($f,$r,0);}
 elseif($o=='menu'){$qb=ses('qb'); //$qb='shroud';
@@ -117,7 +109,7 @@ return $ret;}
 //local
 static function build($p,$o,$prm=[]){
 $p=$prm[0]??$p; if(!auth(7))return;
-[$usr,$db,$ps,$dr]=self::srv(1); $res=''; $root=__DIR__;
+[$usr,$db,$ps,$dr]=self::srv(1); $res=''; $root=__DIR__; $ok=1;
 $srv=prms('srvimg'); if(!$srv)return 'srvimg is not set';
 if($o=='all'){$dt=date('ymd');
 	$u=$srv.'/call/transport/1/d'; $fa=get_file($u);//build
@@ -138,13 +130,13 @@ if($o=='z' && auth(7)){sql::drop(self::ts_db($p));//$b=self::pub($p); qr('drop t
 	$res=$p.':z';}
 elseif($o=='zz' && auth(7)){$r=self::tables();//reinstal tables
 	foreach($r as $k=>$v)sql::drop(self::ts_db($v));//qr('drop table '.self::pub($v));
-	return sqldb::batchinstall();}//install::home(ses('qd'))
+	return sqldb::batchinstall();}//install::home(db('qd'))
 elseif($o=='json'){//dj
 	$u=$srv.'/call/transport/'.$p.'/dj'; $d=get_file($u); //echo $u.';;';//build?? //.($o?$o:$maxid)
 	$f='_backup/'.$p.'.json'; $u=$srv.'/'.$f;
 	//if(is_file($f))unlink($f); 
 	if(!is_file($f)){$e='wget -P '.$dr.'/_backup '.$u; exc($e);}
-	if($d=get_file($u))$r=json_decode($d,true); $er=json_error(); $r=utf_r($r,1);
+	if($d=get_file($u))$r=json_decode($d,true); $er=json_error(); //$r=utf_r($r,1);
 	if($d && !$er){$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b); sql::sav2($b,$r,1,0); $res=$b.':renoved';}}
 else{//partial and complete dumps, not gziped
 	//$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b);
@@ -155,15 +147,15 @@ else{//partial and complete dumps, not gziped
 		if(strpos($d,'404 Not Found'))$res=' - already updated';
 		elseif($d)write_file($f,$d);}
 	//if(!is_file($f))copy($u,$f);
-	if(is_file($f)){$o=='d'?'ssh':'rq';// -t '.qd($p).'
+	if(is_file($f)){$o=='d'?'ssh':'rq';// -t '.$p.'
 		if($o=='ssh'){$e='mysql -u '.$usr.' -p'.$ps.' '.$db.' < '.$dr.'/'.$f; exc($e);}
-		else{$d=file_get_contents($u); $u; if($d)qr($d,0);}
+		else{$d=file_get_contents($u); if($d)qr($d,0);}//$d=utf8enc($d); eco($d);
 		$res=$maxid==$dist_maxid?'ok':$maxid.'->'.$dist_maxid;}
-	else $res='not uploaded'.$res;
+	else{$res='not uploaded'.$res; $ok=0;}
 	//exc('rm '.$dr.'/'.$f);
 	//todo: del local and distant
 }
-return divb($p.'-'.$o.':'.$res,'frame-blue');}
+return div($p.'-'.$o.':'.$res,$ok?'frame-blue':'frame-red');}
 
 static function utf8(){$r=self::tables();
 foreach($r as $k=>$v)

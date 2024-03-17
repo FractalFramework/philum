@@ -113,9 +113,9 @@ return $r;}
 
 static function build($p1,$p2,$ob){
 if(!$p1)$p1=self::$default;
-$ra=msql::read('','ummo_exo_5','',1); $pb=$p1;
+$ra=msql::read('','ummo_exo_5',1); $pb=$p1;
 if($p1=='knownstars')$pb=implode(',',array_keys_r($ra,8));
-if($p1=='allstars'){$rb=msql::read('','ummo_exo_stars','',1);
+if($p1=='allstars'){$rb=msql::read('','ummo_exo_stars',1);
 	$ra=array_merge($ra,$rb); $pb=implode(',',array_keys_r($ra,8));}
 $sq=star::sq($pb); //pr($sq);
 $r=star::build($sq,1); //pr($r);
@@ -136,7 +136,7 @@ static function menu($p1,$p2,$rid){
 $j=$rid.'_starmap2,call_p1,p2_xr';
 $ret=inputj('p1',$p1?$p1:self::$default,$j,'',36);
 $ret.=lj('',$j,picto('ok')).hlpbt('starmap').' ';
-$ret.=inputj('p2',$p2?$p2:50,$j,'distance',4,['step'=>10,'type'=>'number']);
+$ret.=inpnb('p2',$p2?$p2:50,$j,['placeholder'=>'distance','step'=>10]);
 $ret.=label('p2',btn('small','(limit horizon)')).' ';
 //$ret.=inputj('p3',1400,$j,'',4).label('p3','size').' ';
 $ret.=lj('txtx',$rid.'_starmap2,call__2_'.self::$default,'default').' ';
@@ -152,6 +152,6 @@ if(!$p1)$p1=self::$default;
 $ret=self::call($p1,$p2);
 //ses::$r['popw']=self::$w+20;
 //$s='width:'.(self::$w+20).'px';
-return $bt.divb($ret,'',self::$rid);}
+return $bt.div($ret,'',self::$rid);}
 }
 ?>

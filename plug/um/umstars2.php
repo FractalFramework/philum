@@ -105,7 +105,7 @@ $rb[$k]['dist']=$ds;}
 return $rb;}
 
 static function build($p,$o){
-$r=msql::read_b('',nod('exo_4'),'',1); //p($r);
+$r=msql::read('',nod('exo_4'),1);
 $rb=self::datas($r); //pr($rb);
 $ret=self::draw($rb,$p?$p:900);
 return $ret;}

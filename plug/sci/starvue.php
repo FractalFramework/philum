@@ -8,7 +8,7 @@ static $dims=[];
 
 static function legend($r){$w=self::$w; $h=$w; $sz=16; $x=40; $y=0; $i=0;
 [$white,$black,$red,$green,$blue,$yellow,$cyan,$orange,$silver,$gray]=self::$clr;
-$r=['amical'=>$green,'neutre'=>$yellow,'inamical'=>$orange,'danger'=>$red,'indéfini'=>$white];
+$r=['amical'=>$green,'neutre'=>$yellow,'inamical'=>$orange,'danger'=>$red,'indÃ©fini'=>$white];
 $i++; $y=$sz+$i*$sz;
 svg::text(10,$x,$y+12,'Stars',$white);
 svg::text(10,$w-100,$y+12,mkday('','d/m/Y'),$white);
@@ -57,7 +57,7 @@ for($i=0;$i<=$wd;$i++)if($i%$cx==0){
 	$hour=floor($hdec); $min=round(($hdec-$hour)*60); $t=$hour.'h'.str_pad($min,2,0,STR_PAD_LEFT);
 	svg::line($x,0,$x,$h,$i==12?$white:$gray);
 	svg::text(10,$x-12,10,$t,$yellow);}
-for($i=0;$i<=$hd;$i++)if($hr*$i%$cy==0){
+for($i=0;$i<=$hd;$i++)if(round($hr)*$i%$cy==0){
 	$y=$hr*$i-($diffy*$hr); $t=round($bottom+($hd-$i));
 	svg::line(0,$y,$w,$y,$t==0?$white:$gray);
 	svg::text(10,0,$y+4,$t,$yellow);}}
@@ -109,7 +109,7 @@ $r=[$d,$wd,$hd,$ra0,$ra1,$dc0,$dc1,$wm,$hm,$right,$left,$top,$bottom,$wr,$hr]; /
 self::$dims=$r;}
 
 static function build($p,$o){$ra=[];
-$ra=msql::read('','ummo_exo_5','',1);
+$ra=msql::read('','ummo_exo_5',1);
 //if(!$p)$p=self::$default;
 //$r=star::build($p,1);
 if(strpos($p,'radius')===false)$p.=',radius=1h';

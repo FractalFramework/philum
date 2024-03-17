@@ -170,7 +170,7 @@ $ut=explode(' ','utag tag '.prmb(18)); $ut[]=ses('iq'); $n=count($ut);
 for($i=0;$i<$n;$i++)if($ut[$i]){$tags=$r[$ut[$i]]??'';
 	if($tags)$sq['inner'][]=self::sql_tags_combinative($tags,$ut[$i]);}
 if($p['cmd']=='tracks'){$qdi=db('qdi'); //$sq['slct']=[$qda.'.id'];//todo:use datas
-	$sq['inner'][]='inner join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id';}
+	$sq['inner'][]='right join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id';}
 if($md=$p['media']??'' && !is_numeric($md)){$qdm=db('qdm');
 	if($md=='mp3')$md='.'.$md; elseif($md=='img')$md='.jpg'; else $md=':'.$md.']';
 	$sq['inner'][]='natural join '.$qdm;
@@ -264,8 +264,7 @@ $prw1=art::slct_media($prw);
 if($rch){$prw1='rch'; geta('search',$rch); ses::$r['look']=$rch;}
 if($rid){$n=array_rand($r); $rb[$n]=$r[$n]; $r=$rb;}
 if($cmd=='panel')foreach($r as $k=>$v)$rt[]=mod::pane_art($k,'',$tp,'',$v);//cmd panel/cover
-elseif($cmd=='tracks')foreach($r as $k=>$v)//cmd tracks
-	$rt[]=art::playb($k,1).art::output_trk(ma::read_idy($k,'asc'));
+elseif($cmd=='tracks')foreach($r as $k=>$v)$rt[]=art::playtrk($k);
 else{foreach($r as $k=>$v){$id=$v['id']; $rc[$id]=$v; $prw=$prw1=='auto'?($v['re']>2?2:1):$prw; $pr[$id]=$prw;
 		if($prw>1 or $prw=='rch' or substr($prw,0,4)=='conn')$rd[$id]=$id;}
 	if($ra['lg']??'')foreach($r as $k=>$v){$id=$v['id']; $rm[$id]=$v['txt']; unset($rd[$id]);}
@@ -291,18 +290,6 @@ if(isset($ra['seesql']))echo $sql;
 $r=self::qr($sql);
 return $r;}
 
-#com
-static function callr($ra){
-if($ra)$r=self::datas($ra);
-if($ra['idlist']??'' && $r)return $r;
-if($ra['results']??'' && $r)pr($r);
-if($r)return self::build($r,$ra);}
-
-static function callj($p,$b=''){
-$ra=explode_k($p,',',':'); $rb=explode_k($b,',',':');
-$ra=self::defaults_rq($ra,$rb);
-if($ra)return self::callr($ra);}
-
 #load //from url
 static function load($ra){
 $ra['rid']=$ra['rid']??'loadmodart';//randid('load');
@@ -319,6 +306,18 @@ head::add('jscode',$js); $jb='';
 $jb=head::jscode($js);
 //if(!$ret)$ret=nmx([11,16]);
 return divd($ra['rid'],$nbpg.$ret).$jb;}
+
+#com
+static function callr($ra){
+if($ra)$r=self::datas($ra);
+if($ra['idlist']??'' && $r)return $r;
+if($ra['results']??'' && $r)pr($r);
+if($r)return self::build($r,$ra);}
+
+static function callj($p,$b=''){
+$ra=explode_k($p,',',':'); $rb=explode_k($b,',',':');
+$ra=self::defaults_rq($ra,$rb);
+if($ra)return self::callr($ra);}
 
 #call
 static function call($p,$o='',$prm=[]){
@@ -351,7 +350,6 @@ static function tracks($t){//tracks
 $ra=self::arts_rq('',ses('nbj'));
 //$ra['select']=db('qda').'.id,'.db('qdi').'.re';
 $ra['cmd']='tracks'; $ra['preview']=1; $ra['t']=$t;
-//$ra['seesql']=1; p($ra);
 return self::load($ra);}
 
 #get

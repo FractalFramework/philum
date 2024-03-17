@@ -72,7 +72,7 @@ static function xml_rss($r){
 //$enc=strtolower(self::array_dig($r,'0/props/encoding'));
 //$title=self::array_dig($r,'1/content/3/content/0/content');
 //$items=self::array_dig($r,'1/content/3/content');//pr($ra);
-$enc=strtolower($r['0']['props']['encoding']); if($enc=='utf-8')$utf=1;
+//$enc=strtolower($r['0']['props']['encoding']); if($enc=='utf-8')$utf=1;
 $title=$r['1']['content']['3']['content']['0']['content'];
 $items=$r['1']['content']['3']['content'];//pr($items);
 foreach($items as $k=>$v){
@@ -80,9 +80,7 @@ foreach($items as $k=>$v){
 		foreach($v as $ka=>$va){$i++;//elems
 			if(is_array($va))foreach($va as $vb){//pr($vb);
 				$d=@$vb['content'];
-				//$d=decode_unicode($d);
 				//$d=html_entity_decode($d);
-				if($utf)$d=utf8dec_b($d);
 				//$d=utflatindecode($d);
 				$rb[$i][@$vb['balise']]=$d;}}}
 return $rb;}

@@ -34,7 +34,7 @@ $ret.='[#'.$clr.',gray,,,1:attr]['.$x.','.$y.','.$w.','.$h.',,id'.$k.':rect]';
 $ret.='[black,:attr]['.($x+16).','.($y+16).'|'.$k.':text]';
 return $ret;}
 
-//fonction qui détermine la prochaine sous-couronne à remplir
+//fonction qui dÃ©termine la prochaine sous-couronne Ã  remplir
 static function nextsubrg($rb,$rg,$subrg){
 if($rg==1)return [$rg+1,$subrg];
 elseif($subrg==1){
@@ -61,7 +61,7 @@ return [$ra,$n];}
 return $rc;}*/
 
 static function build_layer($p){$ret='';//42
-//définition des emplacements ; résultat par imbrication : sous-couronne 3 = $r[0]+$r[1]+$r[2]
+//dÃ©finition des emplacements ; rÃ©sultat par imbrication : sous-couronne 3 = $r[0]+$r[1]+$r[2]
 //$r[0]=[1,2]; $o=2; for($i=1;$i<6;$i++)for($ia=0;$ia<4;$ia++){$o+=1; $r[$i][]=$o;} //pr($r);
 //difinition des sous-couronnes possibles pour chaque couronne
 //for($i=1;$i<9;$i++)for($ia=1;$ia<=$i;$ia++)$rb[$i][]=$ia; //pr($rb);
@@ -72,7 +72,7 @@ return $ret;}
 
 //build
 static function build($p,$o){//$o=0;
-$r=msql::read('','public_atomic','',1); $ret='';
+$r=msql::read('','public_atomic',1); $ret='';
 $bt=self::menu($p,$o,'spg');
 $ret=self::build_layer($p); //pr($rb);
 if($ret)$ret=svg::home($ret,self::$sz);//render
@@ -93,8 +93,8 @@ return $ret;}
 
 static function home($p,$o){
 $rid='spg'; if(!$p)$p=42;
-Head::add('csscode',self::css());
-//Head::add('jscode',self::js('spg_spialgo,call__2_',$p));
+head::add('csscode',self::css());
+//head::add('jscode',self::js('spg_spialgo,call__2_',$p));
 $ret=spialgo::build($p,$o);
 return divd($rid,$ret);}
 }

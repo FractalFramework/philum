@@ -1,4 +1,4 @@
-<?php //a/model
+<?php 
 class dom{
 
 //domdel
@@ -6,8 +6,8 @@ static function remove($v){$n=$v->childNodes->length;
 for($i=0;$i<$n;$i++)$v->removeChild($v->childNodes->item(0));
 return $v;}
 
-static function del($d,$o){
-$r=explode('|',$o); $dom=dom($d);
+static function del2($dom,$o){
+$r=explode('|',$o);
 if($dom)foreach($r as $va)if($va){
 	[$c,$at,$tg,$op]=opt($va,':',4); if(!$at)$at='class'; if(!$tg)$tg='div';//id,href,...
 	foreach($dom->getElementsByTagName($tg) as $k=>$v){$attr=$v->getAttribute($at);
@@ -16,9 +16,16 @@ if($dom)foreach($r as $va)if($va){
 		elseif($op=='rm' && $attr==$c)self::remove($v);//noopener:rel:a:rm
 		elseif($op=='clean'){$dest=$dom->createElement('img');//:src:img:clean
 			$src=$v->getAttribute($at); $dest->setAttribute('src',$src); $v->parentNode->replaceChild($dest,$v);}
-		elseif(($c && strpos($attr,$c)!==false) or !$c){self::remove($v); $v->parentNode->removeChild($v);}}}
+		elseif(($c && strpos($attr,$c)!==false) or !$c){self::remove($v); $v->parentNode->removeChild($v);}}}}
+
+static function del($d,$o){$dom=dom($d);
+self::del2($dom,$o);
+return $dom->saveHTML();}
+
+static function master_del($d,$o){
+$dom=dom($d); self::del($dom,$o);
 $ret=$dom->saveHTML();
-return ($ret);}//utf8dec_b
+return $ret;}
 
 static function cleanimg($d){
 $dom=dom($d); $rec=dom(''); $dest=$dom->createElement('img');
@@ -34,7 +41,7 @@ if($dom)foreach($dom->getElementsByTagName('img') as $k=>$v){
 	//$nn->setAttribute('src',$src);
 	}
 $ret=$dom->saveHTML();
-return ($ret);}//utf8dec_b
+return $ret;}
 
 //dom
 static function importnode($rec,$v,$tg){
@@ -47,17 +54,21 @@ return $rec;}
 
 static function capture($dom,$va,$rec){//todo:iterate it
 [$c,$at,$tg,$cn]=opt($va,':',4); if(!$at)$at='class'; if(!$tg)$tg='div'; //id,a,...
-$r=$dom->getElementsByTagName($tg); $n=0;
+//if(!$g){if($tg=='img')$g='src'; elseif($tg=='meta')$g='content';}//props
+$r=$dom->getElementsByTagName($tg); $n=0; $c=str_replace('(ddot)',':',$c);
 foreach($r as $k=>$v){$attr=$v->getAttribute($at);//domattr($v,$at) //echo $v->nodeName.'-';
 if(($c && strpos($attr,$c)!==false) or !$c){$n++;//nb of similar captures
 	if($n==$cn or !$cn)self::importnode($rec,$v,$tg);}}
 return $rec;}
 
-static function detect($d,$o){
+static function detect($d,$o,$enc=''){$ret='';
 $r=explode('|',$o); $dom=dom($d); $rec=dom(''); $rec->formatOutput=true;
 if($dom)foreach($r as $k=>$va)self::capture($dom,$va,$rec);//var_dump($rec);
-$ret=$rec->saveHTML();
-if($ret)return (trim($ret));}//utf8dec_b
+$ret=$rec->saveHTML(); if($enc)$ret=utf8enc($ret);
+return $ret;}
+
+static function batch($dom,$rec,$o){$r=explode('|',$o);
+foreach($r as $k=>$va)self::capture($dom,$va,$rec);}
 
 //dom2
 static function extract($dom,$va){$ret='';//all-in-one
@@ -67,17 +78,22 @@ $r=$dom->getElementsByTagName($tg); $c=str_replace('(ddot)',':',$c);
 foreach($r as $k=>$v){$attr=$v->getAttribute($at);
 	if(!$ret && ($c==$attr or ($c && strpos($attr,$c)!==false) or !$c))
 		$ret.=$g?domattr($v,$g):$v->nodeValue;}
-return ($ret);}//utf8dec_b
+if(is_utf($ret))$ret=utf8dec($ret);//??eco($ret);
+return ($ret);}
 
-static function extract_batch($d,$o){$ret='';
-$r=explode('|',$o); $dom=dom($d);
-if($dom)foreach($r as $v)$ret.=self::extract($dom,$v);
-return $ret;}
+static function extract_r($dom,$va){$rt=[];//all-in-one
+[$c,$at,$tg,$g]=opt($va,':',4); if(!$at)$at='class'; if(!$tg)$tg='div';//id,href,...
+if(!$g){if($tg=='img')$g='src'; elseif($tg=='meta')$g='content';}//props
+$r=$dom->getElementsByTagName($tg); $c=str_replace('(ddot)',':',$c);
+foreach($r as $k=>$v){$attr=$v->getAttribute($at); $rec=dom(''); $rec->formatOutput=true;
+	if($c==$attr or ($c && strpos($attr,$c)!==false) or !$c)
+		$rt[]=$g?domattr($v,$g):self::importnode($rec,$v,$tg)->saveHTML();}
+return $rt;}
 
 //href
 static function href($d){$lk=''; $va=''; $dom=dom($d);
 $r=$dom->getElementsByTagName('a');
-foreach($r as $k=>$v){$lk=domattr($v,'href'); $va=($v->nodeValue);}//utf8dec_b
+foreach($r as $k=>$v){$lk=domattr($v,'href'); $va=$v->nodeValue;}
 return '['.$lk.($va?'|'.$va:'').']';}
 
 //dom2conn//dev
@@ -159,18 +175,17 @@ $rt=self::detect_table($r[0]);
 return tabler($rt);}
 
 //call
-static function call($p,$o,$prm=[]){
-$p=$prm[0]??$p;
+static function call($p,$o,$prm=[]){$p=$prm[0]??$p;
 $dom=dom($p); $rec=dom(''); $rec->formatOutput=true;
-self::detect($dom,$o,$rec);
+self::capture($dom,$o,$rec);
 $ret=$rec->saveHTML();
-return ($ret);}//utf8dec_b
+return $ret;}
 
 static function com($d,$fc,$o=''){
 $dom=dom($d);
 self::$fc($dom,$o);
 $ret=$dom->saveHTML();
-return ($ret);}//utf8dec_b
+return $ret;}
 
 static function menu($p,$o,$rid){
 $bid='inp'.$rid; $cid='txt'.$rid;

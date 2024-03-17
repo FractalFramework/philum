@@ -17,9 +17,9 @@ class vhost
 		write_file($f, $d);
 		$fa = self::$fa;
 		//exc('cp '.$f.' '.$fa.'/'.hst().'.conf');
-//exc('a2dissite '.$fa.'/'.hst().'.conf');
-//exc('a2ensite '.$fa.'/'.hst().'.conf');
-//exc('systemctl reload apache2');
+		//exc('a2dissite '.$fa.'/'.hst().'.conf');
+		//exc('a2ensite '.$fa.'/'.hst().'.conf');
+		//exc('systemctl reload apache2');
 		return self::call($p, $o);
 	}
 
@@ -47,5 +47,3 @@ class vhost
 		return $ret;
 	}
 }
-?>
-

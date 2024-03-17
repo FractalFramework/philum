@@ -1,206 +1,190 @@
-<?php //msql/admin_modules
-$r=["_"=>['description(|||)help','option(||||)command'],
-"All"=>['All items(|||)Give title(||)preview; auto depende de stars',''],
-"BLOCK"=>['Calls a Module Block','specify the name of a module block'],
-"Banner"=>['text and background image(|||)p=image if there is one, t=title, o=height','height'],
-"Board"=>['items with priority greater than 1; sensible al tema actual','especificar el número de columnas'],
-"Hubs"=>['Hubs(||||)Lista',''],
-"LOAD"=>['Dar un título',''],
-"MenuBub"=>['Componente principal que recibe el desbobinado de artículos o una vista previa de un artículo completo','(||); auto depende de los menús de trabajo stars'],
-"MenusJ"=>['ajax, basados en una tabla msql (no depende de las sesiones)','indica un número de versión alternativo al menú menub_1'],
-"Page_titles"=>['Menu que devuelve los módulos en Ajax','param/title/command/option:module->target|button[,...no reenganchable(|||)'],
-"Wall"=>['Títulos de página (incluyendo navegación)','(||)'],
-"agenda"=>['Secuencia de artículos con sólo cuerpo del mensaje','especificaruna categoría (opción)'],
-"api"=>['artículos cuya etiqueta\'agenda\' está en el futuro(|||)Dar un título',''],
-"api_arts"=>['Devuelve el resultado de una consultaa Api','control secuencial (ver /module/api)'],
-"api_mod"=>['Llamar Api usando Load(|||)Api',''],
-"app_link"=>['Llamar APIusando el constructor de comandos API','de Json'],
-"app_menu"=>['-type articles button of an App(|||)syntax or id of your user table line, o la lista de aplicaciones predefinidas con el comando',''],
-"app_popup"=>['- lista predefinida con los comandos',' inicio todos los hubs plan taxonomía agenda categorías lang hub
-existente : tecla o val0 de la línea
-configurable : mod|nb, plug|name, /url|button
-auto : categoría, id
-también podemos usar la coma como delimitador'],
-"apps"=>['lanzar una aplicación en una ventana emergente','parámetros : botón,tipo,proceso,param
-ej: hello,art,auto,(id article)'],
-"archives"=>['Apps(||)Las aplicaciones son botones de software. Puede crear botones, enlaces, menús, html, ajax, ubicados en el menú de administración, en un artículo, abriendodesplazamiento, software, in situ, anidado, vinculado a otros botones, vinculado a iconos, en una ventana emergente, o en cualquier otro lugar.... Estas oportunidades están clasificadas por tipo de habilidad y ubicación.
+<?php 
+return ['_'=>['description','param','option','command'],
+'All'=>['Todos los artículos','Dar un título','vista previa: 1,2,3,auto',''],
+'LOAD'=>['Componente principal que recibe una lista de artículos o un artículo entero','','vista previa: 1,2,3,auto','orden de los artículos'],
+'BLOCK'=>['Llama a un bloque de módulo','nombre del bloque de módulo','',''],
+'MENU'=>['Llamar a un bloque como menú de enlaces a módulos','Nombre del bloque','',''],
+'ARTMOD'=>['Llama a un bloque de módulos junto con un artículo.
+El rstr60 permite mostrarlo en un pequeño botón llamado \"artículos conectados\", en lugar de un div en la página. Los módulos del contexto \"arte\" deben reservarse aquí','','',''],
+'TABMOD'=>['módulos en pestañas','nombre del bloque del módulo','',''],
+'Banner'=>['texto e imagen de fondo','p=imagen si la hay, t=título, o=altura','hauteur',''],
+'MenuBub'=>['Menús abiertos en ajax, basados en una tabla msql (no depende de sesiones)','indicar un número de versión alternativo a la tabla menubub_1','',''],
+'Page_titles'=>['Titulares de página (incluyendo navegación)','','artículos padres',''],
+'agenda'=>['artículos con etiqueta \'agenda\' en el futuro','Indicar título','',''],
+'api'=>['Envía el resultado de una petición a la Api','comando Api [a1:p1;a2:p2]','comando rectificaciones',''],
+'api_arts'=>['Llama a la Api usando los constructores Load','comando Api (separador \";\" en vez de \",\")','',''],
+'api_chan'=>['Cadena de comandos Api','tabla msql (1)','',''],
+'api_mod'=>['Llamar a la API utilizando constructores API','command Json items','',''],
+'link'=>['envía un enlace','home, categoría, 123, módulo/...','1 : pictograma asociado o pictograma con nombre',''],
+'app_popup'=>['ejecuta una app en un popup','params : botón,tipo,proceso,param
+ex: hola,arte,auto,(id de item)','',''],
+'apps'=>['Apps','Las apps son botones de software. Se pueden crear botones, enlaces, menús, html, ajax, situados en el menú admin, en un artículo, abriendo listas desplegables, software, in situ, anidados, vinculados a otros botones, vinculados a iconos, en un popup, o en otro lugar... Estas posibilidades se clasifican por tipo de habilidad y ubicación.
 
-Nota: las aplicaciones del mismo nombre sustituyen a las anteriores: para cancelar una aplicación por defecto, añada la misma y ocúltela.
+Nota: las apps con el mismo nombre sustituyen a las anteriores: para anular una app por defecto, añade la misma y ocúltala 
 
-Contextos :
-menu : Menú Apps del menú de administración
-escritorio: iconos de escritorio
-boot : cuando se inicia la página
-inicio : menú admin Menú Phi
-user : menu user du menu admin (activated by rstr48)','(||)'],
-"art_mod"=>['navigation temporelle','Donner un titre'],
-"articles"=>['modules attachés aux articles : affiche un bouton dans les titres qui ouvrir ce menu de modules','commandes de modules :
-param/title/command/option:module(|button)[,]
-
-Ej: related_arts|linked to, related_arts|linked by, tags/Tags/scroll/7:see_also-tags|tags, themes/Thèmes/scroll/7:see_also-tags|themes, //scroll/7:see_also-source|source, art:rub_taxo|context(|||)El rstr60 muestra el resultado en el cuerpo del artículo. En este caso, se debe especificar la opción de ancho de columna. Disminuye el ancho de las imágenes tanto.(|||)'],
-"article"=>['custom unfolded articles(|||)parameters of the Api :
-
-tag=Un&nbdays:1,vista previa:auto,limit:10
-
-cat/tag : especifica una categoría / etiqueta
-
-nocat/notag : excluye una categoría / etiqueta
-
-nbdays : campo de tiempo
-
-vista previa : 1, 2, 3, auto',''],
-"audio_playlist"=>['simple article','ID'],
-"ban_art"=>['articles containing .mp3','nb of days'],
-"basic"=>['banner','(ID)(item using the banner, or the first cataloged image of the item, as background page'],
-"birthday"=>['executes a custom connector (identified by its title), or basic','param=value input.'],
-"blocks"=>['article of a day(||)specify a date[day-month], or none for the current date',''],
-"br"=>['determine the DIV tags of the html page, que son tantos bloques de módulo (informados por el css del fabricante, requerido)','lista de bloques de módulo, separados por un espacio'],
-"bridge"=>['añade un salto de línea',''],
-"fav_mod"=>['puente entrephilum','param : servidor sin el\'http\''],
-"calendar"=>['Muestra los favoritos compartidos(|||)Al especificar un título favorito, muestra el calendario rendering',''],
-"cart"=>['calendar(|||)Give a title',''],
-"cat_arts"=>['Items added to the cart(|||)Give a title',''],
-"categories"=>['itemsde una categoría(|||)especifique la categoría','(||)'],
-"category"=>['lista de elementos(|||)Dé un título(||)opción de param o nb = número de elementos, home',''],
-"channel"=>['articles of the current category',''],
-"chat"=>['receives feeds from other Philum hubs or sites, including sort criteria','(parameters separated by a space)
-Ejemplo :  philum.fr:sitio philum:hub 236:art CMS:tag 10:last\'
-Definiciones :
-sitio: (opcional) sin el\"http\";
-cat : (opcional) una categoría...............................................................................................................................................................................................;
-arte (ilógico con el gato) : artículos afiliados...........................................................................................................................................................................................;
-last : los N últimos artículos;
-...
-El módulo de canal puede ser llamado desde un conector\':ajax\';
-ejemplo :[sitio.com:blog site:hub :canal|Título, cerrar|x:ajax]'],
-"chatxml"=>['Chat','module room'],
-"chrono"=>['chat between servers','channel'],
-"classtag_arts"=>['tiempo de generación de página',''],
-"clear"=>['Muestra los elementos con una clase de etiqueta definida','especificar clase de etiqueta'],
-"codeline"=>['clear:left undoes left floating',''],
-"columns"=>['Retorna las etiquetas html anidadas escritas en Codeline(|||)ex: [[_URL|_SUJ:link]|h2:html] [[_OPT|txtsmall2:css]',''],
-"conn"=>['coloca cada módulo en una columna de línea de comandos(|||)',''],
-"connector"=>['resultado de un único conector',''],
-"contact"=>['permite componer el código como conectores(|||)El editordevuelve su contenido en el campo param','tag article'],
-"content"=>['mail al admin','title'],
-"context"=>['determina el ancho artificial de la página (informado por el fabricante css, requerido)','ancho del contenido (para imágenes y vídeos)'],
-"create_art"=>['especificar un contexto','retornar módulos pertenecientes a un contexto'],
-"credits"=>['añadir formulariode css en la cabecera',''],
-"csscode"=>['artículos recientemente visitados','(||)'],
-"deja_vu"=>['determina la hoja Css a utilizar (informado por el fabricante css, necesario)','especificar un número de hoja css de suscripción css : coloca el css reciente como un underlay, sobre el cual es posible usar el mínimo de personalización: classic, default, n>3 para una tabla pública); de lo contrario vea params/auto_design'],
-"design"=>['desktop','parameters specify html color, #_var, gradient or image'],
-"desktop"=>['returns the content of the desktop',' concerns apps with the condition\'desk\', o la opción'],
-"desktop_apps"=>['presenta artículos en el script de comando Desktop','article (nada = los de la caché)'],
-"desktop_arts"=>['presenta archivos compartidos en el Escritorio global virtual(|||)(por defecto : local|real)(|||)root',''],
-"desktop_files"=>['position virtual articles : construye directorios a partir de la metacarpeta de artículos ','desde[número de días]'],
-"desktop_varts"=>['Contenido de un directorio espacialuser disk','specify a directory'],
-"disk"=>['Items selected by the visitor',''],
-"favs"=>['Open Finder','param (path) : hub/root/dir....(||)opciones para cada parámetro :
-0 = disco/compartido/iconos
-1 = local/global/remote
-2 = virtual/real
-3 = lista/panel/flap/iconos/icon-disk
-4 = normal/recursivo/conectado
-5 = solo
-6 = nodos de pictogramas/mini'],
-"finder"=>['artículo, en orden descendente del número de subelementos (carpetas de artículos)','especificar el número de nodos (se ordenan de más a menos utilizados)'],
-"folders"=>['Los artículos clasificados en una carpeta virtual','nb de días'],
-"folders_varts"=>['las etiquetas más frecuentes(|||)especificar una clase, none = all',''],
-"frequent_tags"=>['devuelve el ítem nombrado como el ID del ítem actual','(||)css'],
-"friend_art"=>['devuelve el ítemllamado como field',''],
-"friend_rub"=>['',''],
-"gallery"=>['menús jerárquicos(|||)Dar título',''],
-"hierarchics"=>['fecha',' especificar: Un %d %B %G %T (opcional)'],
-"hour"=>['añade una barra horizontal','especifica la clase CSS'],
-"hr"=>['lista de Hubs(|||)Dar un título(|||) muestra el númerojs en cabecera',''],
-"hubs"=>['agrega un enlace js en la cabecera',''],
-"jscode"=>['artículo',''],
-"jslink"=>['más reciente Buscarsaved(|||)search term','(||)'],
-"last"=>['last tags added(|||)number of tags','specify class / command bub : to d menub'],
-"last_search"=>['width of leftbar (for images and videos)','informed by css_builder after a\'save_width\''],
-"last_tags"=>['returns a link (in a link)','Predefined link : Home, Article ID, Category name
-
-Enlace directo: /module/..., /plug/....
-
-Título : texto, pictograma : inicio:picto'],
-"leftbar"=>['disconnection',''],
-"link"=>['login','Dar un título(|||)a la derecha'],
-"log-out"=>['login ina popup','Give a title'],
-"login"=>['ID del módulo al que llamar (utilizado para simplificar las consultas)',''],
-"login_popup"=>['artículos más vistos','nb_day-)nb_arts (ej: 7-50)'],
-"module"=>['artículos más vistos, estadísticas consolidadas','nb_jours-nb_arts (ex: 7-50) '],
-"most_read"=>['devuelve una lista de enlaces de una microbase ;
-la opción da el tipo de enlaces : rss, mails o nada = links(||)recibe el sufijo de la microbase (links, rssurl_1)','table source'],
-"most_read_stat"=>['newsletter','subscribe'],
-"msql_links"=>['Top menus (see /admin/overcat), to which categories','belong Muestra un menú de trabajo, escriba javascript o ajax con el comando bub'],
-"newsletter"=>['item','panel de comandos de la API, o id'],
-"overcats"=>['llamar a un plugin(|||)nombre de los valores del plugin','p y o enviado al plugin'],
-"panel_arts"=>['abre el artículo(local o remoto) en una ventana emergente',''],
-"plan"=>['muestra un enlace a los títulos de los artículos anteriores y siguientes(|||) para mostrarlos en los botones ',', v. gr: prev|next or &lt;|&gt;'],
-"player"=>['Articles with priority','set level for sorting (0-4)'],
-"plug"=>['article','pub'],
-"popart"=>['title +del panel de vista previa',''],
-"prev_next"=>['que contiene elementos ordenados manualmente(|||)123 124 ID separado por un espacio','(||)'],
-"priority_arts"=>['utiliza la primera imagen referenciada de un artículo(|||)ID_article',''],
-"pub"=>['article','ID_article'],
-"pub_art"=>['contentde un artículo','ID_article'],
-"pub_arts"=>['10 últimos artículos de una partida(|||)especificar la partida (1 devuelve la partida actual, all in Home',''],
-"pub_img"=>['articles attached by the articles option\'related\'(|||)Give a title(||)command parameter (nb columns or limit before scroll)','treatment'],
-"read"=>['articles that point to that-ci par l\'option d\'articles\'related\'\'','Donner un titre'],
-"read_art"=>['largeur de rightbar (pour les images et vidéos)','informé parcss_builder después de un\'save_width\''],
-"recents"=>['Devuelve un espacio de consulta en el sitio rss(||) especificando el nombre de una tabla de enlace rss (rssurl por defecto)',''],
-"related_arts"=>['recibe un feed rss, 10 títulos más recientes','especifique un enlace RSS'],
-"related_by"=>['cadena de fuentes rss',''],
-"rightbar"=>['taxonomía de un tema / artículo, presentado en forma topológica (menú), insensible en ese momento)','art=artículo en progreso, 1=encabezamiento en progreso/Todos, encabezamiento, ID'],
-"rss"=>['artículos con el mismo título(|||)Dar un título','(||)'],
-"rss_input"=>['motor de búsqueda(|||)Dar un título(|||)derecho alinear',''],
-"rssin"=>['En el mismo campo(|||)especificar el campo, 1=auto cuando Home=All',''],
-"rub_tags"=>['articles from the same source','Give a title'],
-"rub_taxo"=>['Articles with the same Tags as the article being read(|||)specify the class',''],
-"same_title"=>['short (brief)','specify the number of characters of the article(4000)'],
-"search"=>['publicaciones no enrolladas(|||)Dar un título',''],
-"see_also-rub"=>['url fuente de los artículos chupados(|||) númerode ocurrencias',''],
-"see_also-source"=>['histograma de visitas','número de días (valor por defecto actual)'],
-"see_also-tags"=>['menús desplegables','sintaxis:
-cada objeto es un conector\':link\' (ID,categoría)
+Los contextos: 
+menu: menú Apps en el menú admin
+desk: iconos del escritorio
+boot: al iniciar la página
+home: menú Phi en el menú admin
+user: menú user en el menú admin (habilitado por rstr48)','',''],
+'archives'=>['navegación temporal','Dar un título','',''],
+'article'=>['elemento simple','ID','',''],
+'articles'=>['Comando api especializado en scrolls de artículos','parámetros api:
+tag=Uno&amp;nbdays:1,preview:auto,limit:10
+- cat/tag: especifica una categoría / etiqueta
+- nocat/notag: excluye una categoría / etiqueta
+- nbdays: campo de tiempo
+- preview: 1, 2, 3, auto','',''],
+'ban_art'=>['banner','(ID) artículo que utiliza el banner, o la primera imagen catalogada del artículo, como fondo de página','',''],
+'basic'=>['ejecuta un conector personalizado (identificado por su título), o un código básico','param=value input.','',''],
+'birthday'=>['artículo de un día','especifica una fecha [día-mes], o ninguna para la fecha actual','',''],
+'blocks'=>['determina las etiquetas DIV en la página html, que son todos bloques de módulos (informados por el constructor css, obligatorio)','lista de bloques de módulos, separados por un espacio','',''],
+'bridge'=>['puente entre dos sitios philum','param : servidor sin el \'http\'','ID del artículo o url de la consola (/módulo/puente/philum.fr/236)',''],
+'calendar'=>['calendario','Dar un título','',''],
+'cart'=>['Artículos añadidos a la cesta','Dar un título','',''],
+'catarts'=>['artículos en una categoría','Especificar categoría','lang=en','render'],
+'categories'=>['Lista de artículos','Dar título','opción de param o nb = número de artículos, inicio',''],
+'category'=>['artículos en la categoría actual','','',''],
+'cats'=>['lista de categorías','','',''],
+'catj'=>['lista de categorías, ajax','','',''],
+'channel'=>['recibe feeds de otros hubs o sitios Philum, incluyendo criterios de clasificación','(parámetros separados por un espacio)
+Ejemplo: \'philum.fr:site philum:hub 236:art CMS:tag 10:last\'
+Definiciones:
+:site: (opcional) sin el \'http\';
+:cat: (opcional) una categoría;
+:art (ilógico con cat): artículos afiliados;
+:last: los N artículos más recientes;
+..
+El módulo Channel puede ser llamado desde un conector \':ajax\'; 
+ejemplo: [site.com:site blog:hub :channel|Title, close|x:ajax]','autorefresh (seconds)',''],
+'chat'=>['módulo chat','nombre sala','autorefresh (segundos)',''],
+'chatxml'=>['chat servidor','nombre canal','autorefresh (segundos)',''],
+'chrono'=>['tiempo de generación de la página','','',''],
+'classtag_arts'=>['visualiza artículos con una clase de etiqueta definida','especificar clase de etiqueta','',''],
+'clear'=>['clear:left cancela la flotación a la izquierda','','',''],
+'conb'=>['templates conb','[[_URL|_SUJ:link]|h2:html] [[_OPT|txtsmall2:css]','',''],
+'conn'=>['resultado de un solo conector','','',''],
+'connector'=>['permite componer código en forma de conectores','','El editor devuelve su contenido en el campo param','article tag'],
+'contact'=>['enviar a admin','title','css',''],
+'content'=>['determina el ancho artificial de la página (informado por el constructor css, obligatorio)','ancho del contenido (para imágenes y vídeos)','','Especifica un contexto para el contenido (para imágenes)'],
+'context'=>['especifica un contexto','devuelve los módulos pertenecientes a un contexto','',''],
+'cover'=>['article cover','id o Api (ej: priority:4,minday:14,random:1)','',''],
+'create_art'=>['añadir formulario de artículo','','',''],
+'credits'=>['philum','','',''],
+'csscode'=>['añadir css a la cabecera','','',''],
+'deja_vu'=>['artículos visitados recientemente','','',''],
+'design'=>['determinar la hoja css a utilizar (informado por el constructor css, obligatorio)','especificar un número de hoja css','suscripción css: coloca css recientes en la subcapa, sobre la que es posible utilizar la personalización mínima: clásica, por defecto, n&gt;3 para una tabla pública); en caso contrario, véase parámetros/diseño_automático',''],
+'desktop'=>['parámetros del escritorio','especificar color html, #_var, degradado, imagen o directorio de imágenes (aleatorio)','',''],
+'desktop_apps'=>['devuelve el contenido de escritorio','concierne a las aplicaciones con la condición \'escritorio\', o la de la opción','',''],
+'desktop_arts'=>['presenta artículos en el escritorio','article control script (nada = los de la caché)','',''],
+'desktop_files'=>['presenta los archivos compartidos en el Escritorio','global|virtual (por defecto: local|real)','posición raíz',''],
+'desktop_varts'=>['artículos virtuales: construye directorios basados en la meta \'carpeta\' de artículos','desde [número de días]','',''],
+'disk'=>['Contenido de un directorio en el espacio de disco del usuario','especificar un directorio','',''],
+'fav_mod'=>['Mostrar favoritos compartidos','Especificar un título de favoritos mostrará la representación','',''],
+'favs'=>['Artículos seleccionados por el visitante','','',''],
+'finder'=>['Opera un Finder','param (path) : hub/root/dir...','opciones para cada parámetro : 
+- 0 = disco/compartido/iconos
+- 1 = local/global/distante
+- 2 = virtual/real
+- 3 = lista/panel/flap/iconos/icon-disco
+- 4 = normal/recursivo/conn
+- 5 = solo
+- 6 = pictos/mini',''],
+'folder'=>['Lista de carpetas virtuales','','',''],
+'folders'=>['nodos de artículos, en orden descendente de número de subartículos (carpetas de artículos)','nb días','ordenados por número',''],
+'folders_varts'=>['Artículos archivados en una carpeta virtual','especificar una carpeta','',''],
+'frequent_tags'=>['etiquetas más frecuentes','especificar una clase, ninguna = todas','',''],
+'friend_art'=>['devuelve el artículo nombrado como ID del artículo actual','','css',''],
+'friend_rub'=>['devuelve el elemento nombrado como encabezamiento','','css',''],
+'gallery'=>['','','',''],
+'hierarchics'=>['menús jerárquicos','Dar título','',''],
+'hour'=>['fecha','especificar: %A %d %B %G %T (opcional)','css',''],
+'hubs'=>['lista de hubs','dar título','muestra el número de elementos',''],
+'jscode'=>['añadir js en la cabecera','','',''],
+'jslink'=>['añadir enlace js en la cabecera','','',''],
+'last'=>['artículo más reciente','','',''],
+'last_search'=>['búsquedas guardadas','término de búsqueda','',''],
+'last_tags'=>['últimas etiquetas añadidas','número de etiquetas','especificar una clase / comando bub : al menubub',''],
+'lbar'=>['ancho de la barra izquierda (para imágenes y vídeos)','informado por css_builder después de un save_width','',''],
+'log-out'=>['login','','',''],
+'login'=>['login','Dar un título','derecha',''],
+'login_popup'=>['login en un popup','Dar un título','',''],
+'module'=>['ID del módulo a llamar (se utiliza para simplificar las peticiones)','','',''],
+'most_polled'=>['artículos más votados','define tipo de voto (fav,like,poll,mood)','limit (100)',''],
+'score_datas'=>['artículos mejor valorados','definir el tipo de valoración (interés, viabilidad, calidad,...)','limite (100)',''],
+'special_poll'=>['asignar valoraciones a un artículo','definir el nombre del campo','elección1|elección2',''],
+'newsletter'=>['suscribirse al boletín','dar título','botón emergente',''],
+'overcats'=>['Menús superiores (ver /admin/overcat), a los que se adjuntan las categorías','Muestra un menú abierto, tipo javascript o ajax con el comando bub','',''],
+'panel_arts'=>['panel de artículo','api comando, o id','',''],
+'player'=>['','','',''],
+'app'=>['llamar a una app','nombre de la app','destino del comando asíncrono si pp está activado',''],
+'popart'=>['abre un artículo (local o remoto) en una ventana emergente','','',''],
+'prev_next'=>['muestra enlace a artículos anteriores y siguientes','títulos a mostrar en botones (|), ej: prev|next o &amp;lt;|&amp;gt;','css; comando rub: en la misma sección',''],
+'priority_arts'=>['Artículos con prioridad','definir el nivel para ordenar (0-4)','nb cols o límite de desplazamiento',''],
+'pub'=>['artículo anuncio','devuelve un simple enlace si no hay opción','1,2,3: nivel de vista previa; 4: varios id',''],
+'pub_art'=>['título + imagen','id_artículo','nivel de vista previa',''],
+'pub_arts'=>['panel que contiene artículos ordenados manualmente','123 124: IDs separados por un espacio','',''],
+'pub_img'=>['utiliza la primera imagen referenciada de un artículo','ID_artículo','',''],
+'read'=>['contenido del artículo','ID_article','css',''],
+'read_art'=>['contenido del artículo','ID_article','',''],
+'recents'=>['últimos 10 artículos de una sección','especificar sección (1 devuelve la sección actual, todos en Inicio)','',''],
+'related_arts'=>['artículos enlazados por la opción \'relacionado\'','artículo','Dar un título','ID o [empty=auto]'],
+'related_by'=>['artículos enlazados a éste mediante la opción \'related\'','Dar un título','ID o [empty=auto]','tratamiento del artículo'],
+'parent_art'=>['artículo padre','id o vacío (artículo actual)','','artículos hijos'],
+'child_arts'=>['artículos hijos','id o vacío (artículo actual)','',''],
+'rbar'=>['anchura de la barra derecha (para imágenes y vídeos)','informada por css_builder después de un \'save_width\'','',''],
+'rss'=>['Envía un espacio para consulta in situ de feeds rss','Indicar el nombre de una tabla de enlaces rss (por defecto rssurl)','',''],
+'rss_input'=>['recibe un flujo rss, los 10 titulares más recientes','especificar un enlace RSS','',''],
+'rssin'=>['cadena de feeds rss','','',''],
+'rub_tags'=>['etiquetas para los artículos de la sección','tag class','',''],
+'same_title'=>['artículos con el mismo título','dar un título','',''],
+'search'=>['buscador','dar título','alineado a la derecha',''],
+'searched_arts'=>['búsquedas guardadas','','',''],
+'searched_words'=>['búsqueda de etiquetas conocidas','','',''],
+'cluster_tags'=>['buscar elementos similares por grupos de etiquetas','configurar grupos en /app/clusters','',''],
+'same_tags'=>['buscar elementos con las mismas etiquetas','id','',''],
+'see_also-rub'=>['En el mismo tema','especificar tema, 1=auto cuando Home=All','',''],
+'see_also-source'=>['artículos de la misma fuente','Dar un título','',''],
+'see_also-tags'=>['Artículos con las mismas etiquetas que el artículo que se está leyendo','Especifique la clase','',''],
+'short_arts'=>['artículos cortos (breves)','Especifique el número de caracteres del artículo (4000)','',''],
+'social'=>['lista de publicaciones','Dar un título','',''],
+'sources'=>['fuente de artículos recuperados','número de ocurrencias','',''],
+'stats'=>['historial de visitas','número de días (actual por defecto)','con texto',''],
+'submenus'=>['menús desplegables','sintaxis:
+cada objeto es un conector \':enlace\' (ID, ID|título, categoría)
 cada línea corresponde a un botón
-el número de guiones significa la profundidad
+el número de guiones significa profundidad
 los botones en la parte superior de una jerarquía no pueden ser enlaces
 
 uno
-dos
-tres
-horno
-five'],
-"short_arts"=>['da al visitante la forma de proponer un artículo desde un módulo Url',''],
-"social"=>['en pestañas','param/title/command/coption:module|button[,]'],
-"sources"=>['articles having for Tag','specify the reference tag for sorting ;
-si es necesario, especifique la clase de etiqueta
-ej: tag:class'],
-"stats"=>['list of keywords(tags)','specify tag class'],
-"submenus"=>['list of words-(nube de etiquetas)','especificar la clase de etiqueta'],
-"suggest"=>['taxonomía de un tema / artículo (lista de artículos, usa cache)','specify 1 (=current item/All), un campo o item ID'],
-"tab_mods"=>['list of nodes with openable menus (refers to cache, then looks for parents in time)','plugin ; especifique el ID de un artículo de nivel superior'],
-"tag_arts"=>['',''],
-"tags"=>['nombre de la plantilla',''],
-"tags_cloud"=>['texto libre',' especifique untexto plano'],
-"taxo_arts"=>['comentarios artículos','nb días(|||)título'],
-"taxo_nav"=>['recibe un Twitter(|||)feed indicando hashtag (sin el signo #) ; opción = nb de segundos de refresh',''],
-"taxonomy"=>['navegación del sitio(|||)enlaces predefinidos :
-enlace clave : Inicio, ID, categoría, módulo
-poner un título : Home|Home
-usando un pictograma : Home|home:pictograma
-enlace interno : /?plug=myplug|name_of_plug','css'],
-"template"=>['affiche une vidéo','id de la vidéo'],
-"text"=>['articles contenant des vidéos','nb de jours(|||)'],
-"tracks"=>['viewer vidéo en
-etiqueta, gato, prioridad
-tag1|tag2 o 5-tag1|tag2 (5=tags)
-prioridad-2|3|4 u 11-2|3|4 (11=prioridad)
-cat-public : artículos en\'public\' ;
-cat-1 : categoría actual',''],
-"twitter"=>['',''],
-"user_menu"=>['',''],
-"video"=>['',''],
-"video_playlist"=>['',''],
-"video_viewer"=>['','']];
+- dos
+- tres
+- cuatro
+-- cinco','horizontal',''],
+'suggest'=>['ofrece a los visitantes una forma de sugerir un artículo a partir de una Url','','',''],
+'tag_arts'=>['artículos con etiqueta','especificar la etiqueta de referencia para la clasificación;
+si es necesario, especificar la clase de etiqueta
+ej: tag:class','',''],
+'tags'=>['lista de palabras clave (tags)','especificar la clase de tag','nb/tamaño de los collares o límite de desplazamiento',''],
+'clusters'=>['list of tag clusters','','',''],
+'tags_cloud'=>['lista de palabras clave (nube de etiquetas)','especificar la clase de etiqueta','',''],
+'taxo_arts'=>['taxonomía de una rúbrica / artículo (lista de artículos, utiliza caché)','especificar 1 (=rúbrica actual/Todos), una rúbrica o el ID de un artículo','',''],
+'taxo_nav'=>['lista de nodos con menús que se pueden abrir (hace referencia a la caché, luego busca los padres a lo largo del tiempo)','plugin; especificar el ID del artículo padre','',''],
+'taxonomy'=>['','','',''],
+'template'=>['plantilla de artículo','nombre de la plantilla','',''],
+'text'=>['texto libre','especificar texto sin formato','',''],
+'tracks'=>['item comments','número de días','1=en el sitio, si no, popup',''],
+'twits'=>['Mostrar todos los twits registrados','especificar una fecha','número de resultados por página',''],
+'webs'=>['Muestra las entradas de enlaces','id','número de resultados por página',''],
+'twitter'=>['recibe un feed de Twitter','especificar hashtag (sin el #); opción = número de segundos para actualizar','',''],
+'video'=>['visualiza un vídeo','video id','',''],
+'playconn'=>['artículos que contienen el conector especificado','especificar el conector (img,mp4,twitter,...)','',''],
+'video_viewer'=>['viewer vídeo en ajax','rÃ¨gles de tri sÃ©parÃ©es par \'|\' :
+- tag, cat, priority 
+- tag1|tag2 ou 5-tag1|tag2 (5=tags)
+- priority-2|3|4 ou 11-2|3|4 (11=priority)
+- cat-public : articles dans \'public\' ;
+- cat-1 : catÃ©gorie en cours','',''],
+'microarts'=>['microartículos con un solo campo y fecha','nombre del hilo','',''],
+'vacuum'=>['abre un artículo web a través del motor de vacío','url','','']]; ?>

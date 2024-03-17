@@ -23,8 +23,7 @@ $domain=strto($f,'/'); if($img)$im=http($domain.'/'.$img);}
 $r=['title'=>$ti?$ti:$ti0,'image'=>$im];//,'defs'=>$rb
 //$tx=hooks($tx);
 if($o=='conn')$r['content']=$tx?$tx:$tx0;
-else $r['content']=$html?$html:$tx0; //parse($tx); pr($r);
-//$r=utf_r($r);
+else $r['content']=$html?$html:$tx0; //parse($tx);
 //$xml=self::mkxml($r,$f); //eco($r['content']);
 $ret=mkjson($r);
 $er=json_last_error();//echo $er;

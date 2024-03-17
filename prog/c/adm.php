@@ -152,9 +152,8 @@ if($slct){//save
 	if($slct=='titles' && !rstr(66))$ret.=pictxt('alert','rstr(66)');
 	if($slct=='book' && !rstr(67))$ret.=pictxt('alert','rstr(67)');
 	if($local && $type=='templates'){
-		if($slct=='articles')$msg=cltmp2::art();
-		//elseif($slct=='rssin')$msg=cltmp2::rss();
-		elseif(method_exists('cltmp2',$slct))$msg=cltmp2::$slct();}
+		if($slct=='articles')$msg=msql::val('system','edition_template_art',1);
+		else $msg=msql::val('system','edition_template_'.$slct,1);}
 	$ret.=self::conb_editor($msg,$type,$slct).br();
 	if(!$pubase)$ret.=lj('txtx',$j.'mkpub_'.$slct,'make public').' ';
 	else $ret.=lj('txtx',$j.'mkpriv_'.$slct,'make private').' ';

@@ -18,8 +18,8 @@ $r=sql::call('select '.$cols.' from '.($b).' where id>"'.$id.'"','ar',0);
 if($o==1){$deb='update `'.($b).'` set ';
 	if($r)foreach($r as $k=>$v)$rb[]=$deb.self::atmrak($v).' where id="'.$v['id'].'";'.n();}
 else{$deb='INSERT INTO `'.($b).'` ('.$cols.') VALUES ';
-	if($r)foreach($r as $k=>$v)$rb[]=self::atmra($v);}//pr($rb);
-if($rb){if($o==1)$ret=implode("\n",$rb); else $ret=$deb.implode(",\n",$rb).' ON DUPLICATE KEY UPDATE;';}
+	if($r)foreach($r as $k=>$v)$rb[]=self::atmra($v);}//pr($rb);// on duplicate key update id=id
+if($rb){if($o==1)$ret=implode("\n",$rb); else $ret=$deb.implode(",\n",$rb).';';}
 //if($o)return $ret;
 $f='_backup/'.$db.'.dump';//_from_'.$id.'
 if(is_file($f))unlink($f); //eco($ret);
@@ -28,7 +28,7 @@ if($ret)$err=write_file($f,$ret); //exc('gzip -r /home/nfo/'.$f);
 if(!$err)return lkt('txtyl','/'.$f,$f);}//.'.gz'
 
 static function dump($b){
-if($_SERVER['HTTP_HOST']=='oumo.fr')$n=12; else $n=11;
+if(ses::$oom)$n=12; else $n=11;
 [$usr,$db,$ps,$dr]=transport::srv(1); $table=$b!=1?transport::pub($b):'';
 $f='_backup/'.($b!=1?$b:$db.date('ymd')).'.dump';//-default-character-set=utf8
 if($b==1){if(is_file($f.'.gz'))return $f.'.gz';} elseif(is_file($f))unlink($f); 
@@ -54,7 +54,7 @@ static function restore($d){//import
 exc($d);}
 
 static function home($p,$o,$y=''){
-if(!$p){connect(); $p=sql::$db;} if(!$p)return;
+if(!$p){$p=sql::$db;} if(!$p)return;//connect(); 
 $o='1';//gz
 [$usr,$db,$ps,$dr]=transport::srv(1); $base=$p;//$db //echo $ps;
 //exc('mkdir '.$dr.'/backup');
@@ -65,13 +65,13 @@ $fa=''.$dr.'/'; $f='_backup/'.$p.date('ymd').'.dump';
 #dump
 //$d='mysqldump --user='.$user.' --host='.$host.' --password='.$pasw.' '.$base.' > '.$fa;
 //$ps='';
-//$opt='–default-character-set=utf8 ';
+//$opt='â€“default-character-set=utf8 ';
 $d='mysqldump -u '.$usr.' -h localhost -p'.$ps.' --opt '.$base.' > '.$fa.$f;//ecko($d);
 #restore
 //$d='mysql -u root -p maBase < '.$fa;
 #copy dir
 //if(is_file($f))unlink($f); if(is_file($f.'.gz'))unlink($f.'.gz'); //echo exc('ls -la');
-//cp -r /répertoire_source /répertoire_destination
+//cp -r /rÃ©pertoire_source /rÃ©pertoire_destination
 if(!is_file($f) && $p){//exc($d);
 	if(auth(6) or $y=='c9f4e6')echo shell_exec($d);
 	if($o)echo exc('gzip -r '.$fa.$f);}//gzip

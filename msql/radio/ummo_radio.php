@@ -1,2 +1,0 @@
-<?php //philum/microsql/ummo_radio
-$r=["_menus_"=>['prog','file','length','title','txt','img'],1=>['','ummo/audio/Entrevista_Munoz_1.mp3','','Entrevista a Antonio Muñoz, dueño de La Ponderosa (1 de 2)','','']];

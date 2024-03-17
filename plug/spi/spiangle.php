@@ -99,7 +99,7 @@ return $atr.$rect.$t;}
 
 //build
 static function build($p,$o){//$o=0;
-$r=msql::read('','public_atomic','',1);
+$r=msql::read('','public_atomic',1);
 $bt=self::nav($p,$o,'spg');
 //mode linear
 if($o){$mode='linear'; $sz='1900/400';} else{$mode=0; $sz='1000/600';}
@@ -135,7 +135,7 @@ $ret.=lk('/app/spt',picto('filelist'));
 return $ret;}
 
 static function home($p,$o){$rid='spg'; $p=$p?$p:118; //$o=1;
-Head::add('csscode',self::css());
+head::add('csscode',self::css());
 //$bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 return divd($rid,$ret);}

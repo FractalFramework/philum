@@ -52,9 +52,12 @@ if($d)return nl2br($d);}
 
 static function png2jpg($id,$o=''){
 $d=sql('msg','qdm','v',$id); get('read',$id);
-if(rstr(48))$d=conb::parse($d,'correct','webp2jpg');
-if($o)$d=conb::parse($d,'correct','forcewebp2jpg');
-return conb::parse($d,'correct','png2jpg');}
+if(rstr(48))$d=self::parse($d,'correct','webp2jpg');
+if($o)$d=self::parse($d,'correct','forcewebp2jpg');
+return self::parse($d,'correct','png2jpg');}
+
+static function rmconn($d,$o){
+return self::parse($d,'correct',$o);}
 
 #templater
 static function build($d,$r){
@@ -223,7 +226,7 @@ if(!$ret)$ret=match($c){
 ':cyan'=>mk::pub_clr($d,'#2dd'),
 ':purple'=>mk::pub_clr($d,'#d2d'),
 ':yellow'=>mk::pub_clr($d,'#dd2'),
-':bkgclr'=>mk::pub_bkgclr($d),
+':bkgclr'=>mk::bkgclr($d),
 ':video'=>video::titlk($p,''),
 ':videourl'=>video::titlk($p,''),
 ':figure'=>pop::figure($d,'','1'),

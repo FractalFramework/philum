@@ -9,25 +9,26 @@ $time=strtotime($q['created_at']);
 return $time;}
 
 static function req_arts_y($p){
-$qda=ses('qda'); $qdm=ses('qdm'); $qdi=ses('qdi');
+$qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi');
 $wh=$qda.'.frm="'.implode('" or '.$qda.'.frm="',explode(',',$p)).'"';
 $sql='select distinct '.$qda.'.id,'.$qda.'.day,'.$qda.'.suj,'.$qda.'.mail,'.$qdm.'.msg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' and re>0 group by id order by day ASC';
 return sql::call($sql,'','');}
 
-static function req_arts_yb($p){$qda=ses('qda'); $w=sql::atmra(explode(',',$p));
+static function req_arts_yb($p){$qda=db('qda'); $w=sql::atmra(explode(',',$p));
 $sql='select id,day,suj,mail from '.$qda.' where frm in '.$w.' and re>0 order by day ASC';
 return sql::call($sql,'','');}
 
 static function build($p,$o,$ob=''){
 //require_once('plug/tiers/Twitter.php'); //timelang();
 //$r=sql('id,day,suj,mail','qda','','frm="'.$p.'" order by day ASC');// and re>"0"
-$r=self::req_arts_yb($p); $rc=[]; //pr($r);
+$r=self::req_arts_yb($p); $rc=[]; $d=''; $nm=''; $newtit=''; $newtit2='';
 if($p=='Oaxiiboo 6'){$d='O6'; $nm='oaxiiboo6';}
 elseif($p=='Oolga Waam'){$d='OW'; $nm='olga_waam';}
 elseif($p=='Oomo Toa'){$d='OT'; $nm='oomo_toa';}
 elseif($p=='Oyagaa Ayoo Yissaa'){$d='OAY'; $nm='oyagaaayuyisaa';}
 elseif($p=='312oay'){$d='312'; $nm='312oay';}
-elseif($p=='Unio Mentalis'){$d='Um'; $nm='unio_mentalis';}
+elseif($p=='Unio_Mentalis'){$d='Um'; $nm='Unio_Mentalis';}
+elseif($p=='EpheHellenica'){$d='Eh'; $nm='EpheHellenica';}
 $rk=['title','temp title','new title','diff date','msg','diff link'];
 //$na=0; $nac=0; $nad=0; $nae=0; 
 $nb0=0; $nb1a=0; $nb1b=0; $nb2=0; $nb3=0; $time=''; $nf1=1; $nf2=1; $nf3=1; $nf4=1;
@@ -36,7 +37,7 @@ if($r)foreach($r as $k=>$v){
 	//$id=$v[0]; $day=$v[1]; $suj=$v[2]; $lk=$v[3]; $msg=$v[4];
 	[$id,$day,$suj,$lk,$msg]=arr($v,5);
 	//$msg=sql('msg','qdm','v','id='.$id);
-	$suj=str_replace('@'.$nm.' ','',$suj);
+	$suj=$suj?str_replace('@'.$nm.' ','',$suj):'';
 	$newtit=$suj;
 	//date from twitter
 	//if(!$_SESSION['twtime'][$id])$_SESSION['twtime'][$id]=self::twit_time($v[2]);
@@ -52,7 +53,7 @@ if($r)foreach($r as $k=>$v){
 		else{$newtit='['.$d.'-'.$na.']';}//.$date
 	}
 	else*/
-	if($d=='OT' or $d=='OAY' or $d=='O6' or $d=='OW' or $d=='312' or $d=='Um'){//
+	if($d=='OT' or $d=='OAY' or $d=='O6' or $d=='OW' or $d=='312' or $d=='Um' or $d=='Eh'){//
 		if(valr($rb,'info','favoris')){$nb1a++;
 			if($date2a==$date2b1){$nf1++; $date2=$date2a.'-'.$nf1;} else{$nf1=1; $date2=$date2a;}
 			$newtit='['.$d.'-Like '.$nb1a.'] '.$date2; $newtit2=$newtit;
@@ -86,7 +87,7 @@ if($r)foreach($r as $k=>$v){
 		if(strpos($suj,'::')){[$num,$tit]=explode('::',$suj);
 			$newtit='['.strtoupper(trim($num)).'] '.trim($tit);}
 		else $newtit=$suj;}*/
-	else{[$num,$tit]=explode(']',$suj); $newtit=strtoupper(trim($num)).'] '.trim($tit);}
+	else{[$num,$tit]=expl(']',$suj,2); $newtit=strtoupper(trim($num)).'] '.trim($tit);}
 	$rc[$id]=$newtit;
 	//if(strpos($suj,'@')===false){}
 	#sql::upd('qda',['suj'=>$newtit],$id);

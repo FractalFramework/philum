@@ -13,19 +13,19 @@ static function merge($r,$d){$d=strend($d,'_');
 if($r)foreach($r as $k=>$v){$dy=substr($v[1],0,6); 
 $msg=$v[2]; 
 $msg=delconn($msg);
-$msg=self::msg($msg); //echo 'eee';
+$msg=self::msg($msg);
 //$msg=miniconn($msg);
 //$msg=str::embed_links($msg);
 //$msg=conn::read($msg,'','');
-$msg=codeline::parse($msg,'','sconn');
+$msg=conb::parse($msg,'sconn');
 $msg=nl2br($msg);
 $ret[$v[0]]=array($d,lka($v[0],$dy),$msg,lka($v[3],picto('tw')));}
 return $ret;}
 
 static function build($p,$o){
 $r=explode(',',$p); $ra=array();
-if($r && $p)foreach($r as $k=>$v){//echo $v;
-$r=msql::read('',$v);//pr($r);
+if($r && $p)foreach($r as $k=>$v){
+$r=msql::read('',$v);
 if($r)$ra+=self::merge($r,$v);}
 ksort($ra);
 return tabler($ra);}
@@ -40,7 +40,7 @@ return 'ummo_arts_Oaxiiboo6,ummo_arts_OolgaWaam,ummo_arts_OomoToa,ummo_arts_Oyag
 
 static function menu($p,$o,$rid){
 $p=$p?$p:self::default();
-$ret=input('inp',$p,'').' ';
+$ret=input('inp',$p).' ';
 $ret.=lj('',$rid.'_msqmerge,call_inp',picto('ok')).' ';
 return $ret;}
 

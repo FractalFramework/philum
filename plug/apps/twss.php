@@ -14,7 +14,7 @@ $ret=self::build($p,$o);
 return $ret;}
 
 static function twr(){
-$r=msql::read('',nod('twss'),'',1);
+$r=msql::read('',nod('twss'),1);
 if(!$r)$r=msql::save('',nod('twss'),[['']],['account']);
 foreach($r as $k=>$v)$rb[$k]=$v[0];
 return $rb;}

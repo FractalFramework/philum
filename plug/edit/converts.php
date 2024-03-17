@@ -44,12 +44,13 @@ return str_replace($ara,$arb,$d);}
 static function act($txt,$d,$enc){$ret='';
 if($d=='html2conn'){$ret=conv::call($txt);}
 elseif($d=='conn2html'){$ret=conn::read($txt);}
-elseif($d=='utf8')$ret=$enc?utf8enc(utf8enc($txt)):utf8dec_b($txt);//
+elseif($d=='utf8')$ret=$enc?utf8enc($txt):utf8dec_b($txt);
 elseif($d=='base64')$ret=$enc?base64_encode($txt):base64_decode($txt);
-elseif($d=='htmlentities')$ret=$enc?htmlentities($txt,ENT_QUOTES,'ISO-8859-15',false):html_entity_decode($txt);
+elseif($d=='htmlentities')$ret=$enc?htmlentities($txt):html_entity_decode($txt);//,ENT_QUOTES,'utf-8',false
 elseif($d=='url')$ret=$enc?urlencode($txt):urldecode($txt);
 elseif($d=='ajx')$ret=ajx($txt,$enc?0:1);
-elseif($d=='unescape')$ret=$enc?$ret:str::decode_unicode($txt,"");
+elseif($d=='case')$ret=$enc?strtoupper($txt):str::lowercase($txt);
+elseif($d=='unescape')$ret=$enc?$ret:str::decode_nonutf8($txt);//unicode_decode
 elseif($d=='ascii'){if($enc)$ret=self::ascii_encode($txt); else $ret=self::ascii_decode($txt);}
 elseif($d=='binary')$ret=$enc?self::ascii2bin($txt):self::bin2ascii($txt);
 elseif($d=='bin/dec')$ret=$enc?decbin($txt):bindec($txt);
@@ -66,7 +67,7 @@ elseif($d=='asin')$ret=rad2deg(asin($txt));
 elseif($d=='acos')$ret=rad2deg(acos($txt));
 elseif($d=='atan')$ret=rad2deg(atan($txt));
 elseif($d=='indent')$ret=indent::build($txt);
-elseif($d=='md')$ret=codeline::parse($txt,'','md');
+elseif($d=='md')$ret=conb::parse($txt,'md');
 elseif($d=='meta'){[$ti,$tx]=web::metas($txt); $ret='ti:'.$ti.n().'tx:'.$tx;}
 elseif($d=='counts'){$r=explode(' ',$txt); $ret=strlen($txt).' chars, '.count($r).' words';}
 elseif(in_array($d,['pc2al','pc2km','al2km','al2pc','deg2ra','ra2deg','deg2dec','dec2deg','mas2al','al2mas'])){
@@ -80,14 +81,12 @@ static function call($p,$o,$prm=[]){$d=$prm[0]??'';
 return self::act($d,$p,$o);}
 
 static function menu($p,$o,$rid){$ria=$rid.'a';
-$ret=lj('','popup_converts,home','(+)'); $j=$rid.'_converts,call_'.$ria.'_4_';
-$r=['utf8','htmlentities','url','ajx','unescape','base64','ascii','binary','bin/dec','timestamp'];
+$ret=lj('','popup_converts,home','(+)'); $ret=''; $j=$rid.'_converts,call_'.$ria.'_4_';
+$r=['utf8','htmlentities','url','case','ajx','unescape','base64','ascii','binary','bin/dec','timestamp'];
 	$ret.=lj('txtx',$j.'html2conn','html2conn').' ';
 	$ret.=lj('txtx',$j.'conn2html','conn2html').' ';
-foreach($r as $v){
-	$ret.=lj('txtx',$j.''.$v.'_1',$v.'_encode').' ';
-	$ret.=lj('txtx',$j.''.$v.'',$v.'_decode').' ';}
-$r=['php','hexdec','dechex','deg2rad','rad2deg','sin','cos','tan','asin','acos','atan','pc2al','pc2km','al2km','al2pc','deg2ra','ra2deg','deg2dec','dec2deg','mas2al','al2mas','twostars','indent','md','meta'];
+foreach($r as $v){$ret.=btn('txtx',$v.': '.lj('',$j.''.$v.'_1','&uarr;').' '.lj('',$j.''.$v.'','&darr;')).' ';}
+$r=['php','hexdec','dechex','deg2rad','rad2deg','sin','cos','tan','asin','acos','atan','pc2al','pc2km','al2km','al2pc','deg2ra','ra2deg','deg2dec','dec2deg','mas2al','al2mas','twostars(,)','indent','md','meta'];
 foreach($r as $v)$ret.=lj('txtx',$j.''.$v.'_1',$v).' ';
 	$ret.=lj('txtx',$j.'counts_1','counts').' ';
 	$ret.=ljb('txtx','transhtml',[$rid,$ria],'&uarr;').' ';

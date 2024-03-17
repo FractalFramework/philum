@@ -10,6 +10,8 @@ static function cat(){return '[[{thumb}[{tag}|panel txtsmall:divc]|row1 col1:div
 static function read(){return '[[{avatar}[{search}|txtbox:css]{cat} {back} [{date}|txtsmall2:css] [{nbarts}|txtnoir:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:div]
 [{parent}:h4][{edit}|right:css][{title}:h1]
 [{artlang} {social} {words} {open}|grey right:css][:clear]{float}[{tag}|panel txtsmall:divc]:header]{artedit}[{msg}[:clear]|[art{id}:id][justy:class][{js}:onclick]:article]';}
+static function little(){return '[[[[[{cat}|[popbt:class]:span][{search}|[txtbox:class]:span][{nbarts}|[txtnoir:class]:span][{date}|[txtsmall2:class]:span][{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}|[txtsmall:class]:span]|[meta{id}:id]:div][{parent}|[:class]:h4][{edit}|[right:class]:span][{suj}|[:class]:h2][{artlang}{social}{words}{open}|[grey tright:class]:div]|[:class]:header]|[row1 colspan1:class]:div][[{tag}|[panel scrollb txtsmall:class]:div]|[row2 col1:class]:div][[{msg}|[art{id}:id]:article]|[row2 col2:class]:div]|[grid-little:class]:div]';}
+static function little2(){return '[[[[{edit}|[right:class]:span][[{cat}|[popbt:class]:span][{search}|[txtbox:class]:span][{nbarts}|[txtnoir:class]:span][{date}|[txtsmall2:class]:span][{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}|[txtsmall:class]:span]|[meta{id}:id]:div][{parent}|[:class]:h4][{suj}|[:class]:h2]|[:class]:header]|[row1 colspan2:class]:div][{thumb}|[row2 col1:class]:div][[{tag}|[panel scrollb txtsmall:class]:div]|[row2 col2:class]:div][[{artlang}{social}{words}{open}|[grey tright:class]:div][{msg}|[art{id}:id]:article]|[row2 col3:class]:div]|[grid-3:class]:div]';}
 static function simple(){return '[[{cat} {back} {avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|txtsmall:css]|[meta{id}:id]:div][{parent}:h4][{edit} {artlang} {open}|right:css][{title}:h2]:header][{msg}|[art{id}:id][panel:class]:article]';}
 static function fastart(){return '[[[{url}|{suj}:url]:h3]:div]
 [{msg}[:clear]|[art{id}:id][justy:class]:article]';}
@@ -32,22 +34,5 @@ static function vars(){
 $d='artedit pid id jurl purl hurl url edit title suj cat msg img1 video btim back avatar author date day nbarts tag priority words search parent rss social open tracks source length player lang artlang opt css sty addclr thumb trkbk float js auteurs btrk btxt '.str::eradic_acc(prmb(18)); $r=explode(' ',$d); $rt=[];
 foreach($r as $v)$rt[$v]='';
 return $rt;}
-
-//renove
-static function patch($c='art'){$ret='';
-$d=cltmp::$c();
-$r=explode('_',$d);
-foreach($r as $k=>$v){$p=[]; $v=trim($v);
-$n=strpos($v,' '); if($n!==false)$p[]=$n;
-$n=strpos($v,':'); if($n!==false)$p[]=$n;
-$n=strpos($v,'|'); if($n!==false)$p[]=$n;
-$n=strpos($v,'['); if($n!==false)$p[]=$n;
-$n=strpos($v,']'); if($n!==false)$p[]=$n;
-$m=$p?min($p):strlen($v); 
-$va=substr($v,0,$m);
-$vb='{'.strtolower($va).'}';
-$v=str_replace($va,$vb,$v);
-$ret.=$v;}
-eco($ret);}
 }
 ?>

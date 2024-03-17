@@ -8,11 +8,11 @@ static function build($p,$o){
 $r=scandir_b(self::$dr); //pr($r);
 $ima='/'.self::$dr.'/'.$r[$a];
 $imb='/'.self::$dr.'/'.$r[$b];
-$rt=divb(img($ima),'','im1','position:absolute;');
-if(!$o)$rt.=divb(img($imb),'','im2','position:absolute;');
+$rt=div(img($ima),'','im1','position:absolute;');
+if(!$o)$rt.=div(img($imb),'','im2','position:absolute;');
 //$ret=divc('txtcadr',$r[$a].'/'.$r[$b]);
 $ret=lj('',$rid.'_uban,call__2_'.$a.'-'.$b.'_'.($o?0:1),picto($o?'arrow-down':'arrow-top'));
-$ret.=div('',$rt);
+$ret.=div($rt);
 return $ret;}
 
 static function call($p,$o,$prm=[]){
@@ -27,7 +27,7 @@ $r=scandir_b(self::$dr);//pr($r);
 foreach($r as $k=>$v){$t=strprm(strto($v,'.'),2,'_');
 	$rt[1][]=$ret=lj(active($k,$a),$rid.'_uban,call__2_'.$k.'-'.$b.'_'.$o,$t).' ';
 	$rt[2][]=$ret=lj(active($k,$b),$rid.'_uban,call__2_'.$a.'-'.$k.'_'.$o,$t).' ';}
-return divc('nbp',impl($rt[1])).divc('nbp',impl($rt[2]));
+return divc('nbp',join('',$rt[1])).divc('nbp',join('',$rt[2]));
 return $ret;}
 
 static function home($p,$o){

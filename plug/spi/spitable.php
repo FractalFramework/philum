@@ -80,8 +80,8 @@ foreach($r as $k=>$v){$c=$v<=$p?'active':'';
 return $ret;}
 
 static function menu($p){
-$j='spit_spitable,call_inpst_2_'; $pr=['onchange'=>sj($j),'type'=>'number'];
-$ret=inputb('inpst',$p,4,'number',$pr);
+$j='spit_spitable,call_inpst_2_'; $pr=;
+$ret=inpnb('inpst',$p,$j,['placeholder'=>'number']);
 $ret.=lj('popbt',$j,picto('ok')).' ';
 $ret.=lk('/app/spt',picto('organigram'));
 return $ret;}
@@ -97,7 +97,7 @@ $ret.=self::levels($p);
 return divc('nbp',$ret).br();}
 
 static function build($p){$p=$p?$p:118;
-$r=msql::read('','public_atomic','');
+$r=msql::read('','public_atomic');
 [$ra,$n]=self::subring($r,[],[],1,1,0,$p); //pr($ra);
 return self::nav($p).self::mktable_empty($ra);}//divs('overflow-y:auto;',)
 
@@ -114,8 +114,8 @@ for($i=1;$i<=$n;$i++){$td='';
 return tagb('table',$tr);}
 
 static function home($p){$p=$p?$p:118;
-Head::add('csscode','td{margin:0; padding:1px;}');
-Head::add('jscode',self::js($p));
+head::add('csscode','td{margin:0; padding:1px;}');
+head::add('jscode',self::js($p));
 $pub=msqbt('','public_atomic','');
 //$bt=self::menu($p);
 $ret=self::build($p);

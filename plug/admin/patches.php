@@ -82,11 +82,14 @@ return self::$p($p1,$o,$prm);}
 #msql
 static function nod($dr,$k,$v){
 $v=str_replace('.php','',$v);
-[$b,$d,$p,$t,$v]=msqa::murlread($v);
-$nod=msqa::mnod($p,$t,$v);
-$f=msql::url($d,$nod);
-//if(is_file($f))echo $d.';'.$p.';'.$t.';'.$v.' ';
-if(is_file($f))return [$d,$nod];}
+//[$b,$d,$p,$t,$v]=msqa::murlread($v);
+[$b,$d,$p,$t,$v]=expl('_',$v,6);
+[$d1,$d2,$d3,$d4]=expl('/',$b,4);
+if($d2=='lang'){$dr=$d2.'/'.$d3; $nd=$d4;}else{$dr=$d2; $nd=$d3;}
+$nod=msqa::mnod($nd,$d,$p,$t,$v);
+$f=msql::url($dr,$nod); //echo $f.' ';
+//if(is_file($f))echo $dr.'/'.$nod.' ';
+if(is_file($f))return [$dr,$nod];}
 
 static function renove_utf($dr,$k,$v){
 if(!auth(6))return;
@@ -112,23 +115,45 @@ if(!auth(6))return;
 msqa::tools($dr,$nod,'patch_ret','');
 return $nod;}
 
+static function backup($dr,$nod){
+$r=msql::read($dr,$nod);
+$nod=str_replace('_sav','',$nod);
+//if(!$r)$r=msql::read($dr,$nod);
+if($r)msql::save($dr,$nod,$r,[],1);}
+
+static function renove_bak($dr,$k,$v){
+if(!auth(6))return; mkdir_r('msql/_bak/');
+[$dr,$nod]=self::nod($dr,$k,$v);
+if($nod && substr($nod,-4)=='_sav'){
+mkdir_r('msql/_bak/'.$dr);
+echo $dr.'/'.$nod.' ';
+self::backup($dr,$nod);
+unlink($v);
+return $nod;}}
+
 #call
+static function callbak($p,$o,$prm=[]){if(!auth(6))return;
+$ra=['clients','design','lang/fr','lang/en','lang/es','server','system','users'];
+foreach($ra as $v)$r[]=scanwalk('msql/'.$v,'patches::renove_bak');
+return tree($r,1);}
+
 static function call($p,$o,$prm=[]){$r=[];
 [$p1,$o]=prmp($prm,$p,$o);
 if(!auth(6))return;
 if($p1)$r=scanwalk('msql/'.$p1,'patches::renove_'.$p);
 else foreach(['design','lang/fr','lang/en','lang/es','server','system','users'] as $v)
-	$r=scanwalk('msql/'.$v,'patches::renove_'.$p);
-return implode(' ',$r);}
+	$r[]=scanwalk('msql/'.$v,'patches::renove_'.$p);
+return tree($r);}
 
 static function menu($p){
 $ret=inputb('fto',$p,18,'directory');
-$rok=[12];//0,1,3,4,6,
+$rok=[2,3,12,13];//0,1,3,4,6,
 $rt[0]='msql: ';
 $rt[1]=lj('popbt','fut_patches,call_fto_3_utf','msqutf');
-$rt[2]=lj('popbt','fut_patches,call_fto_3_headers','headers');
+$rt[2]=lj('popbt','fut_patches,call_fto_3_headers','headers_msql');
 $rt[3]=lj('popbt','fut_patches,call_fto_3_splitters','splitters_msql');
 $rt[12]=lj('popbt','fut_patches,call_fto_3_return','msqlreturns');
+$rt[13]=lj('popbt','fut_patches,callbak_fto_3_','msqlbak');
 $rt[4]=' | mysql: ';
 $rt[5]=lj('popbt','fut_patches,call2_fto_3_dbutf','mysqlutf');
 $rt[6]=lj('popbt','fut_patches,call2_fto_3_dbsplitters','splitters_mysql');

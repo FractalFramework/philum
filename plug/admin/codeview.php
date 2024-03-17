@@ -1,7 +1,9 @@
 <?php //codeview
 #not work with bad number of {}, verify code under comments
-ini_set("memory_limit","1200M");
+ini_set('memory_limit','1200M');
 class codeview{
+static $f;
+
 static function scrut_dira($dr,$fa=''){$ret=[];//file_infos
 if(is_dir($dr)){$dir=opendir($dr);
 	while($f=readdir($dir))if($f!='..' && $f!='.'){$drb=$dr.'/'.$f;
@@ -31,7 +33,7 @@ if(is_file($f)){//echo $f.br();
 		//$res=substr($res,strpos($res,'{')+1,strrpos($res,'}'-1)); //eco($res,1);
 		$resav=addslashes($res);
 		if(!$id && $maj!=$day)
-		qr('INSERT INTO _sys VALUES ("","'.$func.'","'.$page.'","'.$day.'","'.$resav.'")');
+		qr('INSERT INTO _sys VALUES (null,"'.$func.'","'.$page.'","'.$day.'","'.$resav.'")');
 		elseif($maj!=$day)
 		qr('UPDATE _sys SET maj="'.$day.'", func="'.$resav.'" WHERE id='.$id);
 		$ret.='//'.$func."\n";
@@ -42,18 +44,19 @@ return $ret;}
 static function save_funcs_all($j,$k,$v,$i){//dr,file.php,1,nb
 self::save_funcs($j.'/'.$k,strto($k,'.'));}
 
-static function sql_init($t){$db=install::db(ses('qd'));
+static function sql_init($t){$db=install::db(db('qd'));
 if($db['_'.$t])qr($db['_'.$t]);}
 
 static function savefunc(){//save_all
 self::sql_init('sys');
 qr('TRUNCATE TABLE _sys');
-$r=['admin','ajax','api','art','bubs','finder','lib','pop','sav','spe','tri'];//,'ajx.js','utils.js'
+$r=['admin','ajax','api','art','bubs','finder','lib','pop','sav','spe','tri'];//,'ajx.js','core.js','lib.js'
 foreach($r as $v)self::save_funcs('progb/'.$v.'.php',$v);}
 
 static function savefunc_plug(){//save_all
 $r=explore('plug','full',1); //pr($r);
-$ra=['edit','dev','admin','ummo','photo']; //$ra=explore('plug','dirs',1);
+$ra=['edit','dev','admin','photo']; //$ra=explore('plug','dirs',1);
+if(ses::$oom)$ra[]='ummo';
 if($ra)foreach($ra as $v){$rb=explore('plug/'.$v,'full');}
 //if($rb)foreach($rb as $vb)$r[]=$vb;
 foreach($r as $v)if($v!='userdl.tar.gz'){$p=strend($v,'/'); $p=strto($p,'.'); self::save_funcs($v,$p);}}
@@ -85,7 +88,7 @@ for($i=0;$i<$n;$i++){$v=$r[$i];
 	if(substr($v,0,2)=='//')$ret[$i]=$v."\n";
 	elseif(substr($v,0,1)=='#')$ret[$i]=$v."\n";
 	elseif(!$v)$ret[$i]="\n";
-	elseif(substr($v,0,9)=='static function ' or substr($v,0,16)=='static static function '){
+	elseif(substr($v,0,9)=='function ' or substr($v,0,16)=='static function '){
 		$c=between($v,'static function ',')','').')';
 		$rec[$c]=between($v,'static function ','(','');
 		$reb=self::scrut_func($r,$i,0,0);
@@ -98,7 +101,7 @@ return [$rea,$rec];}
 static function treat_funcs($j,$k,$v,$i){$f=$j.'/'.$v; $ret='';//dr,nm,nm.php,nb
 if(is_file($f) && $v==$_SESSION['file'] or !$_SESSION['file']){
 	if(is_file($f))$v=read_file($f); $na=substr_count($v,'{'); $nb=substr_count($v,'}');
-	if($na!=$nb)return '//error: illegal nb of {'.$na.'/'.$nb.'}';
+	if($na!=$nb)return '//error: illegal nb of {'.$na.'/'.$nb.'} on '.$v;
 	$reb=self::splitfuncs($v); //p($reb);
 	$rea=$reb[0];
 	if(is_array($reb[1]))$_SESSION['rec']+=$reb[1];
@@ -129,7 +132,7 @@ return '<div class="console" style="max-width:100%; max-height:400px; overflow:a
 static function functions_list($dr,$f){
 $_SESSION['rec']=[];
 $rep=self::scrut_dira($dr); $ret='';
-$r=explode_dir($rep,$dr,'treat_funcs');
+$r=explode_dir($rep,$dr,'codeview::treat_funcs');
 if($r)$doc=implode('',$r);
 //if($_SESSION['rec'])asort($_SESSION['rec']);
 if($_GET['sav'] && !$f)$doc=self::save_funcs_one($dr);
@@ -137,7 +140,7 @@ if($f)$ret=self::function_aff($doc,'//'.$dr.'/'.$f);
 return [$rep,$ret];}
 
 static function cv_btn($p,$h){
-return lj(''.($p==$h?'active':''),'codeview_codeview,'.$p,$p);}
+return lj(''.($p==$h?'active':''),'codeview_codeview,home___'.$p,$p);}
 
 static function ffunc_row($v){
 $func=$v[0].'('.between($v[2],'(',')','').')';
@@ -147,7 +150,7 @@ lj('','edc_dev,func*edit*j___progb|'.ajx($v[1]).'|'.ajx($v[0]),picto('editxt')),
 lj('','codeview_codeview,home___progb_'.$v[1],$v[1]),
 lj('','popup_codeview,home___progb_'.ajx($v[1]).'_'.ajx($v[0]),$func));}
 
-static function findfunc($p,$o,$prm){[$p,$o]=arr($prm);
+static function findfunc($p,$o,$prm){[$p,$o]=arr($prm,2);
 $sql='select name,page,func from _sys where name="'.$p.'"'; $r=sql::call($sql,'');
 $rb[]=['edit','page','static function']; if($r)$rb[]=self::ffunc_row($r[0]);
 $sql='select name,page,func from _sys where func like "%='.$p.'(%" or  func like "%.'.$p.'(%" or  func like "%('.$p.'(%" or  func like "\n'.$p.'(%"'; $r=sql::call($sql,'');
@@ -155,7 +158,7 @@ if(!$r)return 'null';
 foreach($r as $k=>$v)$rb[]=self::ffunc_row($v); $n=count($rb);
 return btn('txtcadr','static function '.$p.'() '.$n.' '.plurial($n,19).'').tabler($rb,'txtblc');}
 
-static function home($dr,$f,$fc=''){connect();
+static function home($dr,$f,$fc=''){db('qdy','_sys');
 if($dr=='param')$dr=$f=''; $ret=''; $res='';
 if(!$f && $fc)$f=sql::call('select page from _sys where name="'.$fc.'"','v');
 if(strpos($f,'.')===false && $f)$f.='.php'; if($fc=='all')$fc='';
@@ -176,13 +179,13 @@ if(auth(5)){
 	$ret.=self::slct_sj($rep,$f,'codeview_codeview,home__15_'.ajx($dr).'_');
 	//page
 	if($f && auth(6)){$ret.=lj('','popup_codev,home___'.$dr.'_'.$jp,picto('editxt')).' '; 
-	if($dr=='plug')$ret.=lj('','popup_plugin___'.$jp,picto('window')).' ';}
+	if($dr=='plug')$ret.=lj('','popup_'.$jp.',home',picto('window')).' ';}
 	//list
 	$rec=array_values($_SESSION['rec']); array_unshift($rec,'all'); //if($rec)ksort($rec);
 	if($f)$ret.=self::slct_sj($rec,$fc,'codeview_codeview,home__15_'.ajx($dr).'_'.ajx($f).'_');
 	//func
 	if($fc && auth(6)){$ret.=lj('','popup_codev,home___'.$dr.'_'.$jp.'_'.ajx($fc),picto('editxt')).' ';
-		if($dr=='plug')$ret.=lj('','popup_plug___'.$jp.'_'.ajx($fc),picto('window')).' ';}
+		if($dr=='plug')$ret.=lj('','popup_'.$jp.',home___'.ajx($fc),picto('window')).' ';}
 	//search
 	$ret.=input('funcsrch',$fc,8).' '.lj('popbt','popup_codeview,findfunc_funcsrch','find').' '.lj('popbt','popup_coremap,map_funcsrch','map');
 }

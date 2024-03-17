@@ -1,7 +1,7 @@
 <?php //umdico
 class umdico{
 static function source(){//AADOAUGOO
-$r=msql::read('users','ummo_umvoc_1','');
+$r=msql::read('users','ummo_umvoc_1');
 $ry=['','word','expression','name','planet','unit','math'];
 $sql='nod="ummo" and substring(frm,1,1)!="_" and frm!="Etudes" and frm!="Blog" and substring(frm,1,2)!="ES" and re>0 and msg like ';
 if($r)foreach($r as $k=>$v){if($k!=msql::$m)
@@ -18,7 +18,7 @@ return divs('width:'.$w.'px;',image('/'.$f,$w,$h));}
 
 static function build($p){
 if($p=='1' && auth(6))$r=self::source();
-$r=msql::read('users','ummo_umvoc_1','',1);
+$r=msql::read('users','ummo_umvoc_1',1);
 if($r)foreach($r as $k=>$v)$ra[$v[0]]=$v; ksort($ra);
 if($ra)foreach($ra as $k=>$v){
 	//if(strpos($v[3],'Eyaoloowa')!==false){}
@@ -33,7 +33,7 @@ if($ra)foreach($ra as $k=>$v){
 return tabler($rb);}
 
 static function update(){
-$ra=msql::read('users','ummo_umvoc_1','',0);//voc,def,typ,ref
+$ra=msql::read('','ummo_umvoc_1');//voc,def,typ,ref
 $r=sql('voc,def,typ','dico','',''); //voc,def,snd,typ
 if($r)foreach($r as $k=>$v){
 	$kb=in_array_r($ra,$v[0],0);
@@ -43,8 +43,8 @@ if($rb)msql::modif('','ummo_umvoc_1',$rc,'arr','','');
 return 1;}
 
 static function home($p,$o){
-ses('qdvoc',qd('umvoc'));
-ses('qdvoc_b',qd('umvoc_arts'));
+sesr('db','qdvoc','umvoc');
+sesr('db','qdvoc_b','umvoc_arts');
 //if(auth(6))$p=self::update();//import defs from dicoum and update ref
 $ret=self::build($p);
 $ret.=msqbt('','ummo_umvoc_1','').' ';

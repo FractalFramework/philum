@@ -12,43 +12,45 @@ else $ret.=hidden('cnp','');
 $ret.=ljb('popsav',$j,$jv,'ok');
 return divs('width:320px;',$ret);}
 
-static function conns($p,$va,$rid='',$idart=''){$ret=''; switch($p){
-case('url'):$ret=self::url($va,$idart); $t='URL or ID article'; break;
-case('art'):$ret=self::art($va,$idart); $t='ID article'; break;
-case('img'):$ret=self::upload($idart); $t=nms(78); break;
-case('table'):$ret=self::mktable($va); $t='table'; break;
-case('nh'):$ret=self::footnotes($va,1); $t='footnotes'; break;
-case('css'):$ret=self::assistant('cnn','embedcss',$p,'',''); break;
-case('color'):$ret=self::color($p); break;
-case('bkgclr'):$ret=self::color($p); break;
-case('conn'):$p=''; break;
-case('video'):$ret=self::video($va); break;
-case('popvideo'):$ret=self::video($va); break;
-case('replace'):$ret=self::replace($va); break;
-case("delconn"):$ret=self::delconn($va); break;
-case('book'):$ret=mc::book($p); $t='mk_book'; break;
-case('paste'):$ret=self::paste(); $t=nms(86); $s=600; break;
-case('microform'):$ret=self::forms($p); $t='user_form'; break;
-case('microsql'):$ret=self::msql(); $t='select_microbase'; break;
-case('formail'):$ret=self::forms($p); $t='form_for_mail'; break;
-case("call_url"):$ret=self::vacuum(); $t=helps('import_art'); break;//from embpop
-//case("import"):$ret=self::vacuum(); $t=helps('import_art'); break;
-case("importart"):$ret=self::importart(); $t=helps('import_art'); break;////to do
-case('radio'):$ret=radio::select(); $t='mp3 directory '; break;
-case('module'):$ret=admx::modeditpop(1); break;
-case('ajax'):$ret=admx::modeditpop(0); break;//not public
-//case('articles'):$ret=admx::artmod_edit($p); break;
-//case('svg'):$ret=mbd_editsvg($p); break;
-case('search'):$t=nms(26); break;
-case('rss_art'):$t='xml_url'; break;
-case('api_read'):$t='philum distant_article'; break;
-case('iframe'):$t=nms(51).' (.txt)'; break;
-case('scan'):$t=nms(51).' (.txt)'; break;
-case('preview'):$t=nms(65); $va=str::embed_links($va);
-	$ret=conn::read($va,'',''); break;
-case('display'):$ret=divc('panel',$va); break;}
-if($p)if(strpos('forumchatpetitionlast-update',$p)!==false)$va=ses('read');
-if(!$ret)$ret=self::assistant('cnv','insert_conn',$p,$va,'');
+static function conns($p,$va,$rid='',$idart=''){
+$defo=function(){return self::assistant('cnv','insert_conn','',get('read'),'');};
+$ret=match($p){
+'url'=>self::url($va,$idart),
+'art'=>self::art($va,$idart),
+'img'=>self::upload($idart),
+'table'=>self::mktable($va),
+'nh'=>self::footnotes($va,1),
+'css'=>self::assistant('cnn','embedcss',$p,'',''),
+'color'=>self::color($p),
+'bkgclr'=>self::color($p),
+'conn'=>$defo,
+'video'=>self::video($va),
+'popvideo'=>self::video($va),
+'replace'=>self::replace($va),
+'delconn'=>self::delconn($va),
+'book'=>self::book($p),
+'paste'=>self::paste(),
+'microform'=>self::forms($p),
+'microsql'=>self::msql(),
+'formail'=>self::forms($p),
+'call_url'=>self::vacuum(),//from embpop
+'import'=>self::vacuum(),
+'importart'=>self::importart(),//to do
+'radio'=>radio::select(),
+'module'=>admx::modeditpop(1),
+'ajax'=>admx::modeditpop(0),//not public
+'articles'=>admx::artmod_edit($p),
+'svg'=>mbd_editsvg($p),
+'search'=>$defo,
+'rss_art'=>$defo,
+'api_read'=>$defo,
+'iframe'=>$defo,
+'scan'=>$defo,
+'preview'=>conn::read(str::embed_links($va),'',''),
+'display'=>divc('panel',$va),
+default=>$defo};
+//if($p)if(strpos('forumchatpetitionlast-update',$p)!==false)$va=ses('read');
+//if(!$ret)$ret=self::assistant('cnv','insert_conn',$p,$va,'');
 return $ret;}
 
 //links//jr:future connedit will need refer id

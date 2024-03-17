@@ -151,6 +151,7 @@ if(!$tit && $rch){
 	$sqin['msg']='natural join '.$qdm;
 	if($ft)$sqnd['msg']=$ft;
 	elseif($seg)$sqnd['msg']=$qdm.'.msg REGEXP "[[:<:]]'.$rch.'[[:>:]]"';
+	//elseif($seg)$sqnd['msg']=$qdm.'.msg regexp "^[[:blank:]]'.$rch.'[[:blank:]]$"';
 	else $sqnd['msg']=$qdm.'.msg like "%'.html_entity_decode($rch).'%" ';}//COLLATE utf8mb4_unicode_ci
 if($cat)$sq['cat']=self::cat($cat);
 if($tag)$sqin['tag']=self::tag($tag,'tag');
@@ -199,7 +200,7 @@ static function rech($p){
 if(isset($_SESSION['recache'][$p])){$_SESSION['recache'][$p]=[]; return 'x';}
 elseif(isset($_SESSION['recache']))$_SESSION['recache']=[]; return 'xx';}
 
-static function good_rech($d){if(!$d)return; $d=str::clean_acc($d);
+static function good_rech($d){if(!$d)return; //$d=str::clean_acc($d);
 $d=str_replace("&nbsp;",' ',$d); $d=strip_tags($d); $d=stripslashes($d); return trim(urldecode($d));}
 
 static function home($d0,$n0,$prm=[]){chrono(); $load=[]; $ret='';

@@ -11,7 +11,7 @@ return $ret;}
 
 static function legend($r,$im,$klr,$font){$w=self::$w; $h=$w/2; $sz=16; $x=40; $i=0;
 [$white,$black,$red,$green,$blue,$yellow,$cyan,$silver,$gray,$orange]=$klr;
-$r=['amical'=>$green,'neutre'=>$yellow,'inamical'=>$orange,'danger'=>$red,'indéfini'=>$white];
+$r=['amical'=>$green,'neutre'=>$yellow,'inamical'=>$orange,'danger'=>$red,'indÃ©fini'=>$white];
 foreach($r as $k=>$v){$i++; $y=$sz+$i*$sz+16;
 	ImageFilledRectangle($im,$x,$y,$x+$sz,$y+$sz,$v);
 	imagestring($im,$font,$x+24,$y,$k,$white);}}
@@ -67,9 +67,9 @@ imagepng($im,$out);
 return $out;}
 
 static function build($p,$o){$ra=[];
-$ra=msql::read('','ummo_exo_5','',1); $pb=$p;
+$ra=msql::read('','ummo_exo_5',1); $pb=$p;
 if($p=='knownstars')$pb=implode(',',array_keys_r($ra,8));
-if($p=='allstars'){$rb=msql::read('','ummo_exo_stars','',1);
+if($p=='allstars'){$rb=msql::read('','ummo_exo_stars',1);
 	$ra=array_merge($ra,$rb); $pb=implode(',',array_keys_r($ra,8));}
 $sq=star::sq($pb);
 $r=star::build($sq,1); //pr($r);

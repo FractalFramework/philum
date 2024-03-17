@@ -86,7 +86,7 @@ return [$ra,$n];}
 
 static function table($d){
 $ret=self::menu($d);
-$r=msql::read('','public_atomic','');
+$r=msql::read('','public_atomic');
 $rp=explode('-',$r[$d][3]);
 $rgnm=[1=>'k','l','m','n','o','p','q','r','s'];
 //$rsnm=[1=>'s','p','d','f','5','6','7'];

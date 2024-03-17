@@ -13,23 +13,23 @@ if($o)echo $d.' transforme '.$r[0].' en '.($r[3]).br();//.', renvoie '.$ret
 return $ret;}
 
 static function isinv($r){
-//détermine l'effet de l'opérande
-$op=self::op($r['a'],0);//applique l'opérande au secteur connu
-//regarde le résultat
+//dÃ©termine l'effet de l'opÃ©rande
+$op=self::op($r['a'],0);//applique l'opÃ©rande au secteur connu
+//regarde le rÃ©sultat
 $inv=$op!=$r[3]?true:false;
-//compare le résultat attendu au réel (renvoie 1/0)
+//compare le rÃ©sultat attendu au rÃ©el (renvoie 1/0)
 $op=self::op($r['b']);
-//déduction
+//dÃ©duction
 return $inv?inv($op):$op;}
 
 static function addinv($r){
-//détermine l'effet
+//dÃ©termine l'effet
 $op=$r['a'][0]+$r['a'][1];
-//verif véracité
+//verif vÃ©racitÃ©
 $inv=$op==$r[3]?1:0;
-//applique à b
+//applique Ã  b
 $op=$r['b'][0]+$r['b'][1];
-//déduction
+//dÃ©duction
 return $inv?$op:inv($op);}
 
 static function transp($r){static $i; $i++;
@@ -109,7 +109,7 @@ background-color:#'.$d.'; color:#'.invert_color($d,1).'';}
 
 static function tabler_clr($r,$rb){$tr='';
 if(is_array($r))foreach($r as $k=>$v){$td='';
-	if(is_array($v))foreach($v as $ka=>$va)$td.=tag('td',ats(self::sty(valr($rb,$k,$ka))),$va);
+	if(is_array($v))foreach($v as $ka=>$va)$td.=tag('td',['style'=>self::sty($rb[$k][$ka]??'')],$va);
 	if($td)$tr.=tagb('tr',$td);}
 return tagb('table',$tr);}
 
@@ -131,7 +131,7 @@ static function cartobin($p,$o,$id){
 $ret=''; $ok=''; $r=[];
 if(is_numeric($id))$d=sql('msg','qdm','v','id='.$id);
 else $d=$p;
-//$d=str_replace(['&nbsp;',"'",'"','-','/',',',';',':','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','«','»'],'',($d));//'.','|','%','&',
+//$d=str_replace(['&nbsp;',"'",'"','-','/',',',';',':','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','Â«','Â»'],'',($d));//'.','|','%','&',
 //$ret=tagb('code',self::encode($d));
 $rb=self::bin_answ(); //pr($rb);
 foreach($rb as $k=>$v)$rc[]=[$k,$v];
@@ -139,7 +139,7 @@ $ok=tabler($rc);
 $ret=self::encode($d); if($ret){
 	msql::modif('',nod('carbin'),[$ret],'one','',$id);
 	if($r)foreach($rb as $k=>$v)$ok.=self::c2b_find($r,$ret,$v,$k);}
-if($ok)foreach($rb as $k=>$v)$ret=str_replace($v,btn('stabilo',$v),$ret);
+if($ok)foreach($rb as $k=>$v)$ret=str_replace($v,btn('stabilo',$v),$ret??'');
 return $ok.divs('word-wrap:break-word;',$ret);}
 
 static function char2bin($p){$j='cr2bn_umbin,cartobin_c2b';
@@ -164,11 +164,11 @@ return $ret.divd('cr2bn',self::wordstobin('','',[$p]));}
 //search
 static function search($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o); $enc=self::encode($p); $rb=[]; $ret='';
-$r=msql::read('',nod('carbin'),'',1); //pr($r);
-foreach($r as $k=>[$v])if($n=substr_count($v,$enc))$rb[$k]=$n; //pr($rt);
-foreach($rb as $k=>$v)$ret.=divb(lj('','b2d_bincode,bin2txt___'.$k.'_'.$enc,pictxt('view',$k.' ('.$v.')')));
+$r=msql::read('',nod('carbin'),1);
+foreach($r as $k=>[$v])if($n=substr_count($v,$enc))$rb[$k]=$n;
+foreach($rb as $k=>$v)$ret.=div(lj('','b2d_bincode,bin2txt___'.$k.'_'.$enc,pictxt('view',$k.' ('.$v.')')));
 $ret.=divd('b2d','');
-return divb('bincode: '.$enc).divb(count($rb).' articles').$ret;}
+return div('bincode: '.$enc).div(count($rb).' articles').$ret;}
 
 static function searchcod($p){$j='cr2bn_umbin,search_c2b';
 $ret=textarea('c2b','hello world',60,4).lj('',$j,picto('ok'));
@@ -178,7 +178,7 @@ return $ret.divd('cr2bn',self::wordstobin('','',[$p]));}
 //algo
 static function ub_algo($r,$p){//pr($r);
 if($p==0)return '';//test0
-if($p==1)return self::isinv($r);//test1: utilise ma et mb comme opérande
+if($p==1)return self::isinv($r);//test1: utilise ma et mb comme opÃ©rande
 if($p==2)return self::addinv($r);//test2: additionne aa+am=ab, si vrai alors bb=ba+bm
 if($p==3)return self::transp($r);//test3: transpose
 if($p==4)return self::equi($r);//test4: transpose

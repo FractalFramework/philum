@@ -110,8 +110,8 @@ $rb[$k]['dist']=$ds;}
 return $rb;}
 
 static function build($p,$o){$p=$p?$p:600;
-$r=msql::read_b('','ummo_exo_2','',1); //p($r);
-$rb=self::datas($r,$p); //pr($rb);
+$r=msql::read('','ummo_exo_2',1);
+$rb=self::datas($r,$p);
 $ret=self::draw($rb,$p);
 return $ret;}
 

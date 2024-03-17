@@ -29,12 +29,12 @@ return $rb;}
 //soundex,metaphone,levenshtein
 static function see($p,$o,$prm=[]){
 $rid='bdv'.randid();
-ses('bdvoc','bdvoc');
+sesr('db','bdvoc','bdvoc');
 $p=$prm[0]??$p;
 if($o){$sound=sql('sound','bdvoc','v','voc="'.$p.'"');
-	if(!$sound)$sound=soundex($p); $wh='sound="'.$sound.'"';}
-else $wh='voc="'.$p.'"';//.' and lang="'.ses('lang').'"'
-$r=sql('id,voc,idart,ref,sound,txt,lang','bdvoc','rr',$wh); //p($r);
+	if(!$sound)$sound=soundex($p); $sq=['sound'=>$sound];}
+else $sq=['voc'=>$p];//,'lang'=>ses('lang')
+$r=sql('id,voc,idart,ref,sound,txt,lang','bdvoc','rr',$sq); //p($r);
 if(!$r)$r=sql('id,voc,idart,ref,sound,txt,lang','bdvoc','rr','voc like "%'.$p.'%"');
 $rb=self::play($r,$p,$o); $n=count($rb)-1;
 $ret=btn('txtx',$n.' '.plurial($n,16)).' ';
@@ -69,7 +69,7 @@ static function menu($p,$o,$rid){
 $j=$rid.'_bdvoc,see_inpbdv_1';
 $ret=inputj('inpbdv',$p,$j).' ';
 $ret.=lj('',$j,picto('ok')).' ';
-$ret.=lj('',$rid.'_bdvoc,see_inpbdv_1',pictxt('sound',nms(179))).' ';
+$ret.=lj('popbt',$rid.'_bdvoc,see_inpbdv_1',pictxt('sound',nms(179))).' ';
 //$n=sqb('count(distinct(voc))','bdvoc','v','');
 //$ret.=btn('txtxt',$n.' vocables').' ';
 return $ret;}
@@ -82,7 +82,7 @@ if($r)foreach($r as $k=>$v){
 return count($r);}
 
 static function home($p,$o){$rid='bdv';
-ses('bdvoc','bdvoc');
+sesr('db','bdvoc','bdvoc');
 $bt=self::menu($p,$o,$rid);
 //if(auth(6))echo self::arts();
 if($p)$ret=self::see($p,$o);

@@ -113,14 +113,14 @@ return $ret;}//$bt.
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o); if($p>118)$p=118;
 $bt=self::nav($p,$o,'spt'); //self::frees();
-$r=msql::read('','public_atomic','',1);
+$r=msql::read('','public_atomic',1);
 if(!is_numeric($p))$p=self::spisearch($r,$p);
 return $bt.self::build($r,$p,$o);}
 
 //build public_atomic_3
 static function frees(){
 $ra=[1=>2,2=>6,3=>10,4=>14,5=>18]; //
-$r=msql::read('','public_atomic','',1);
+$r=msql::read('','public_atomic',1);
 for($i=1;$i<=118;$i++){$rb=self::findpos($r[$i][4],$i);//free emplacaments
 	[$ring,$sub,$pos]=$rb; $lmax=$ra[$sub]; $free=$lmax-$pos;
 	//$deg=floor(($pos/$lmax)*360);
@@ -149,8 +149,8 @@ $ret.=lk('/app/spt',picto('filelist'));
 return $ret;}
 
 static function home($p,$o){$rid='spt'; $p=$p?$p:118; $o=1;//linear
-Head::add('csscode',self::css());
-Head::add('jscode',self::js('spt_spiatom,call',$p,$o));
+head::add('csscode',self::css());
+head::add('jscode',self::js('spt_spiatom,call',$p,$o));
 $ret=self::call($p,$o);
 return divd($rid,$ret);}
 }

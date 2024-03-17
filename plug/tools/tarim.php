@@ -70,9 +70,9 @@ return self::tar($f,$rc);}
 static function nb(){$rc=scandir('img'); return count($rc);}
 
 static function menu($p,$o,$rid){$length=ses('tilen');
-//if($_SESSION['rqt'])$n=ceil(key($_SESSION['rqt'])/$length);
-$n=sesmk('tarim_nb','',''); $ret=$n.' images'.br();
-$n/=$length;
+$lid=ma::lastartid()/$length);
+$ret=$lid.' arts'.br();
+$n=ceil($lid/$length);
 for($i=0;$i<$n;$i++){
 	if(is_file(self::f($i)))$c='active'; else $c='';
 		$ret.=lj($c,$rid.'_tarim,call2_'.$i,$i*$length).' ';}

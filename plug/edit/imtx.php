@@ -11,6 +11,6 @@ static function home($p,$o){$rid='plg'.randid(); ses('out','_datas/imtx.png'); $
 $j=$rid.'_imtx,call_txtarec__'.$w.'_'.$h; $sj='SaveJ(\''.$j.'\')';
 $ret=textarea('txtarec',$p,44,14,['class'=>'console','onkeyup'=>$sj,'onclick'=>$sj]);
 $ret.=lj('',$j,picto('ok')).' ';
-return $ret.divd($rid,image(root().'/'.ses('out')));}
+return $ret.divd($rid,image('/'.ses('out')));}
 }
 ?>

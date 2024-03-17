@@ -1,4 +1,4 @@
-<?php //umtimord
+<?php 
 class umtimord{
 static function build($p,$o){
 $r=sql('id,day,suj,mail','qda','','frm="'.$p.'" order by day ASC');// and re>"0"
@@ -32,7 +32,7 @@ $ret.=hlpbt('umrennum');
 return $ret;}
 
 static function home($p,$o){$rid=randid('plg');
-$bt=self::menu($p,$o,$rid);
+$bt=self::menu($p,$o,$rid); $ret='';
 if($p)$ret=self::build($p,$o);
 return $bt.divd($rid,$ret);}
 }

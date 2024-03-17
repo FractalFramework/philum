@@ -42,7 +42,7 @@ if(!$r or $o==1){$ra=$r?$r:[];
 	if($ti)$ti=strip_tags($ti); if($tx)$tx=strip_tags($tx);
 	//json::add('','web'.mkday(),[$ti,$tx,$im,$id,mkday('','Ymd:His')]);
 	if($ra && $ti)sqlup('qdw',['tit'=>$ti,'txt'=>$tx,'img'=>$im],['url'=>$u]);
-	elseif(!$ra)sqlsav('qdw',['ib'=>$id?$id:0,'url'=>etc($u,250),'tit'=>$ti,'txt'=>$tx,'img'=>$im]);
+	elseif(!$ra)sqlsav('qdw',['ib'=>$id?$id:0,'url'=>etc($u,250),'tit'=>$ti,'txt'=>$tx,'img'=>$im],'',1);
 	if($ti)$r=[$ti,$tx,$im,$id];}
 if(!$r)$r=['','','',$id];
 return $r;}

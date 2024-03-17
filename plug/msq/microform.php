@@ -12,7 +12,7 @@ static function tab(){}
 
 static function mr($d){$r=explode(',',$d);$n=count($r);
 for($i=0;$i<$n;$i++){
-	[$v,$type]=opt($r[$i],'='); $vb=normalize($v); 
+	[$v,$type]=opt($r[$i],'='); $vb=str::normalize($v); 
 	if($type!='button')$rb[]=$vb;}
 //$rb[]='day';
 return $rb;}
@@ -28,7 +28,7 @@ static function home($p,$id){$rid='mfr'.randid(); //echo $p.'-'.$id;
 $nod=ses('mform',ses('qb').'_microform_'.$id); 
 ses('mformj',$rid.'_microform,home___'.ajx($p).'_'.$id);
 [$p,$tp]=opt($p,'|'); $rb=self::mr($p); //p($rb);
-msql::read('',$nod,'','',$rb);
+msql::read('',$nod,'',$rb);
 $ret.=mk::form($p,'mfr'.$id.'_microform,form',ajx($p).'_'.$id).br();
 if(auth(4))$ret.=msqbt('users',ses('mform')).' '.btn('txtsmall2',$nod).' ';
 if($tp==1)$ret.=self::read($id); elseif($tp)$ret.=msqtemplate::home($nod,$tp);

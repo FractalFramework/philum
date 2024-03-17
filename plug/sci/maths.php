@@ -24,9 +24,9 @@ static function degres($radian){return rad2deg($radian);}
 static function arcsin($a){return self::degres(asin($a));}
 static function arccos($a){return self::degres(acos($a));}
 static function arctan($a){return self::degres(atan($a));}
-static function sin_rect($co,$hy){return $co/$hy;}//sinus = côté opposé / hypoténuse
-static function cos_rect($ca,$hy){return $ca/$hy;}//cosinus = côté adjacent / hypoténuse
-static function tan_rect($co,$ca){return $co/$ca;}//tangente = côté opposé / côté adjacent
+static function sin_rect($co,$hy){return $co/$hy;}//sinus = cÃ´tÃ© opposÃ© / hypotÃ©nuse
+static function cos_rect($ca,$hy){return $ca/$hy;}//cosinus = cÃ´tÃ© adjacent / hypotÃ©nuse
+static function tan_rect($co,$ca){return $co/$ca;}//tangente = cÃ´tÃ© opposÃ© / cÃ´tÃ© adjacent
 static function cotan_rect($co,$ca){return $ca/$co;}//cotangente = inverse de tangente
 static function ratan2($x,$y){return rad2deg(atan2($x,$y))+(($x<0)?180:0);}//compass
 
@@ -56,8 +56,8 @@ static function ra2deg($d){//00h00m00s
 	$ad1=(float)substr($d,0,2); $ad2=(float)substr($d,3,2); $ad3=(float)substr($d,6,2);//1h=15,1m=0.25
 	$a=($ad1*15); $b=bcmul($ad2,0.25); $c=bcmul($ad3,0.25/60); //echo $a.'+'.$b.'+'.$c.'-  ';
 	return $a+$b+$c;}//round,4
-static function dec2deg($d){//+00°00'00"
-	$d=str_replace('°','d',$d); $d=str_replace('&prime;','m',$d); $d=str_replace('&Prime;','s',$d);
+static function dec2deg($d){//+00Â°00'00"
+	$d=str_replace('Â°','d',$d); $d=str_replace('&prime;','m',$d); $d=str_replace('&Prime;','s',$d);
 	$d=str_replace(' ','',$d); if(substr($d,0,1)!='-' && substr($d,0,1)!='+')$d='+'.$d;
 	$ad1=(float)substr($d,0,3); $ad2=(float)substr($d,4,2); $ad3=(float)substr($d,8,2);
 	$a=$ad1; $b=bcdiv($ad2,60); $c=bcdiv($ad3,600); //echo $a.'--'.$b.'--'.$c.'-- ';
@@ -70,7 +70,7 @@ static function deg2ra($d){$ha=$d/15; $h=floor($ha);//if(!is_int($d))echo $d=flo
 	$m=str_pad($m,2,'0',STR_PAD_LEFT);
 	$s=str_pad($s,2,'0',STR_PAD_LEFT).'.'.$sf;
 	return $h.'h'.$m.'m'.$s.'s';}
-static function deg2dec($d){$deg=floor($d);//+00°00'00"
+static function deg2dec($d){$deg=floor($d);//+00Â°00'00"
 	$m1=$d-$deg; $m2=$m1/10*60*10; $m=floor($m2);
 	$s1=$m2-$m; $s2=$s1/10*60*10; $s=floor($s2);
 	$sf=round($s2-$s,2)*60; //echo $deg.'+'.$m.'+'.$s.'-'.$sf.' ';
@@ -114,11 +114,11 @@ static function fibo(){$a=1; $b=1; $max=100;
 for($i=1;$i<$max;$i++){$c=bcadd($a,$b); $ret=bcdiv($c,$b); $a=$b; $b=$c;}
 return $ret;}
 
-//longueur d'une hélice //long,nb_spires,diam,haut
+//longueur d'une hÃ©lice //long,nb_spires,diam,haut
 static function helice($l,$n,$d,$h){return sqrt(self::powr($l)+self::powr($n)+self::powr($d)+self::powr($h));}
 static function centrifuge($d,$t){return 4*pow(pi(),2)*$d/pow($t,2);}
 
-//renvoie angle en degrés
+//renvoie angle en degrÃ©s
 static function missing_angle($r){//adj/opp/hyp 
 if(!$r[0])return self::arcsin(self::sin_rect($r[1],$r[2]));
 if(!$r[1])return self::arccos(self::cos_rect($r[0],$r[2]));
@@ -172,9 +172,9 @@ if(!$a && $h)$a=cos($d)*$h; elseif(!$a && $o)$a=$o/tan($d);
 if(!$h && $o)$h=$o/sin($d); elseif(!$h && $a)$h=$a/cos($d);
 return [$o,$a,$h];}
 
-static function opposite_angle($tan){return atan(1/$tan);}//angle opposé
+static function opposite_angle($tan){return atan(1/$tan);}//angle opposÃ©
 static function hypothenuse_from_oa($x,$y){return $x/cos(atan($y/$x));}
-static function distance3d($r1,$r2){//v[(xA-xB)²+(yA-yB)²+(zA-zB)²]
+static function distance3d($r1,$r2){//v[(xA-xB)Â²+(yA-yB)Â²+(zA-zB)Â²]
 return bcsqrt(bcpow($r1[0]-$r2[0],2)+bcpow($r1[1]-$r2[1],2)+bcpow($r1[2]-$r2[2],2));}
 
 //3d coords from angles
@@ -203,12 +203,12 @@ $a=deg2rad($a); $op=sin($a)*$h; $ad=cos($a)*$h;
 return [$op,$ad,$h];}
 
 static function star_xyz($r){
+if(is_string($r))$r=str_replace(' ','',trim($r));
 //if(is_numeric($r))return sql('x,y,z','umm.hipparcos','w',['hip'=>$r]);
 //if(is_numeric($r))$r=sql('rarad,decrad,dist','umm.hipparcos','rv',['hip'=>$r]);
-//if(is_numeric($r))$r=sql('ra,dc,dist','umm.hipparcos','rv',['hip'=>$r]);
-if(!is_array($r)){
-	if(strpos($r,' '))$r=explode(' ',$r);
-	else $r=simbad::callr($r);}
+//if(is_numeric($r))$r=sql('ra,dc,dist','hip','rv',['hip'=>$r]);
+//elseif(substr($r,0,2)=='hd')$r=sql('ra,dc,dist','hip','rv',['hd'=>substr($r,3)],1);
+if(!is_array($r))$r=simbad::callr($r);
 $ad=self::ra2deg($r[0]); $dc=self::dec2deg($r[1]); $ds=$r[2];
 return self::xyz($ad,$dc,$ds,1);}
 
@@ -228,10 +228,10 @@ static function test(){
 $m=new maths(40);
 //$ret=$m->test();
 $r0=[14.6,107.4443,96.885];//soluce
-$r1=['12h30m14s',"+09°01'15",14.3];
-//$r1=['00h00m00s',"+00°00'00",0];
-$r2=['23h03m57',"-04°47'41",99.43];//hip 113896//hd 217877
-$r2=['03h39m27',"-10°41'52",99.05];//hip 17265//hd 23065
+$r1=['12h30m14s',"+09Â°01'15",14.3];
+//$r1=['00h00m00s',"+00Â°00'00",0];
+$r2=['23h03m57',"-04Â°47'41",99.43];//hip 113896//hd 217877
+$r2=['03h39m27',"-10Â°41'52",99.05];//hip 17265//hd 23065
 //$d2='17265';
 //$d2='113896';
 //$d2='32578';

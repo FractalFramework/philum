@@ -655,7 +655,7 @@ if(!$b){$b=$p; $p='';} if(!$b)$b='users'; if($b=='lang')$d=$dir?$dir:prmb(25);
 return [$b,$d,$p,ajx($t),ajx($v),ajx($row)];}
 
 static function sesm($k,$v=''){return sesr('mu',$k,$v);}
-static function mnod($p,$t,$v){return $p.($t?'_'.$t:'').($v?'_'.$v:'');}
+static function mnod($p,$t,$s,$v=''){return $p.($t?'_'.$t:'').($s?'_'.$s:'').($v?'_'.$v:'');}//join('_',[$p,$t,$v])
 static function murl($b,$d,$p,$t,$v){return $u=($b?$b.'/':'').($d?$d.'/':'').self::mnod($p,$t,$v);}
 static function murlvars($u){[$b,$d,$p,$t,$v,$n]=self::murlread($u);
 return [$b.($d?'/'.$d:''),self::mnod($p,$t,$v),$n];}
@@ -723,8 +723,7 @@ if($cmd && $cmd!='='){
 	$murl=self::sesm('murl',self::murl($base,$dir,$hub,$table,$version));//b/d/p_t_v
 	$basename=$root.$folder.$node;
 	$is_file=is_file($basename.'.php');
-	$lk=self::sesm('lk',$url.$folder.$node.self::gpage());
-	$folder=$root.$folder;}//conformity
+	$lk=self::sesm('lk',$url.$folder.$node.self::gpage());}
 $def=ajx(get('def'),1);
 if(get('see'))$ret[]=verbose($ra,'dirs');
 //auth
@@ -745,7 +744,7 @@ if(!$def && auth(6)){
 	if(auth(4))$rt[]=lj('active','popup_msqa,creatable___'.$jurl,$lh[9][0]);
 	if($table && $authorized && $hub && $is_file){//$defs && 
 		$rt[]=self::opbt('backup',$jurl,$lh[2]);//sav==
-		if(is_file($basename.'_sav.php')){
+		if(is_file($root.'_bak/'.$folder.$node.'.php')){
 			$rt[]=self::opbt('restore',$jurl,$lh[3]);
 			$rt[]=self::opbt('del_backup',$jurl,$lh[30],1);}
 		$rt[]=self::opbt('import_defs',$jurl,$lh[5],1);

@@ -13,7 +13,7 @@ return $ret;}
 
 static function detect_core(){$dr='progb/';
 $rec=self::recup_func($dr,'lib'); //p($rec);
-$r=msql::read('system','program_core','','1');
+$r=msql::read('system','program_core','1');
 $rk=array_keys_r($r,0,'k'); $na=0; $nb=0;//p($r);
 foreach($rec as $k=>$v){$ka=val($rk,$k); $rc=arr(val($r,$ka),4);
 	$v=str_replace('$','',$v);
@@ -33,7 +33,7 @@ if(strpos($d,$v.'input'))return 1;}
 
 static function update_table_lang($r,$d,$lg,$rh){//update_table in msql
 if(isset($r[msql::$m]))$ret[msql::$m]=$r[msql::$m]; else $ret=[];
-$rb=msql::read_b('lang/'.$lg,$d); $ret=[];
+$rb=msql::read('lang/'.$lg,$d); $ret=[];
 if($r)foreach($r as $k=>$v)
 $ret[$k]=$rb[$k]?$rb[$k]:array_pad(array(),count($rb["_menus_"]),"");
 msql::save('lang/'.$lg,$d,$ret,$rh);
@@ -53,7 +53,7 @@ if($rec)foreach($rec as $k=>$v)
 return[$rb,$rc];}
 
 static function detect_plugs(){$dr='plug/';
-$r=msql::read('system','program_plugs','',1);//p($r);
+$r=msql::read('system','program_plugs',1);//p($r);
 $rec=explore($dr,'files',0); $rb=[]; $rc=[]; $rd=[]; $na=0;
 $ra=self::batch_funcs($r,$rec,$rb,$rc,$dr); $rb=$ra[0]; $rc=$ra[1];
 //$rb=msql::reorder($rb);//p($rb);

@@ -1,11 +1,11 @@
-<?php //a/json
+<?php 
 class json{
 var $dr,$nod,$f,$r;
 
 static function nod($d){return 'usr/'.ses('qb').'/'.$d;}
 static function url($dr,$nod){
 $dr=$dr=='lang'?$dr.'/'.prmb(25):$dr; $dr=$dr?$dr:'usr';
-return root('json/').$dr.'/'.$nod.'.json';}
+return 'json/'.$dr.'/'.$nod.'.json';}//groot('msql/')
 static function init($f){$dr=struntil($f,'/');
 if(!is_dir($dr))mkdir_r($dr); if(!is_file($f))file_put_contents($f,'');}
 

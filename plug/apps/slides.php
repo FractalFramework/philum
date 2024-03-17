@@ -16,12 +16,12 @@ if(isset($r[$p+1]))$bt2=lj('',$j.($p+1).'_'.$rid,pictxt('after',($p+1))).' ';
 else $bt2=btn('grey',picto('after'));
 $bt=divc('',$bt1.$bt2);
 $ret=nl2br(stripslashes_b($v[0]??''));
-$cell=div(ats('margin:auto;'),$ret);
-$ret=$bt.div(atc('book').ats('display:flex; min-height:300px; width:94%;'),$cell);
+$cell=divs($ret,'margin:auto;');
+$ret=$bt.div($cell,'book','','display:flex; min-height:300px; width:94%;');
 return $ret;}
 
 static function build($p,$rid){if(!$p)$p=1;
-$r=msql::read_b('',nod(ses('nodslid')),'',1,['val']);
+$r=msql::read('',nod(ses('nodslid')),1,['val']);
 $ret=self::slide($r,$p,$rid);
 $bt=self::menu($p,'',$rid);
 return $bt.$ret;}
@@ -42,7 +42,7 @@ return divc('',$ret);}
 
 static function home($p,$o){$rid=randid('tpo'); $p=$p?$p:1;
 $_SESSION['nodslid']='slides_'.$p;
-Head::add('csscode','.book a, .book:hover .philum{color:white;}');
+head::add('csscode','.book a, .book:hover .philum{color:white;}');
 $ret=self::build($o,$rid);
 return divd($rid,delbr($ret,"\n"));}
 }

@@ -56,7 +56,7 @@ return $ret;}
 
 //update dico
 static function upd(){
-$r=msql::read('','ummo_umvoc_1','');
+$r=msql::read('','ummo_umvoc_1');
 if($r)foreach($r as $k=>$v){
 	[$voc,$def,$typ,$ref]=$v;
 	$ex=sql('id','dico','v','voc="'.$voc.'"');
@@ -87,8 +87,8 @@ $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid='dcm';
-ses('bdvoc','bdvoc');
-ses('dico','dicoum');
+sesr('db','bdvoc','bdvoc');
+sesr('db','dico','dicoum');
 $bt=self::menu($p,$o,$rid);
 $ret=self::call($p,$o); //if(auth(6))
 //if(auth(6))$ret.=divd('bdv',bdv_upd());

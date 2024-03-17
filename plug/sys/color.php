@@ -1,7 +1,7 @@
 <?php 
 class color{
 static function call($p,$o,$prm=[]){
-$r=msql::read('system','edition_colors','','1');
+$r=msql::read('system','edition_colors','1');
 foreach($r as $k=>$v){$ret.=divs('background-color:#'.$v,$k);}
 return $ret;}
 

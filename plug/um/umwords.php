@@ -18,7 +18,7 @@ return sql('id','qdvoc','v','voc="'.$v.'"');}
 
 static function sav($r){
 if($r)foreach($r as $k=>$v)if(!self::ex($v[1]))$rb[]=$v; //pr($rb);
-//$nid=sql::qrid('insert into '.qd('umvoc').' values '.sql::atmrb($rb,1));
+//$nid=sql::qrid('insert into umvoc values '.sql::atmrb($rb,1));
 return $nid;}
 
 static function sav2($v,$o){
@@ -33,8 +33,8 @@ else return 'already exists';
 return $ret.'added in '.$idvoc.'-'.$nid;}
 
 static function build($p,$o){$ratio=50; $min=$p*$ratio;
-if($o)$wh='and pub_art.id='.$o; else $wh='limit '.$limit=$min.', '.($min+$ratio);
-$r=sql::inner('pub_art.id,msg','qda','qdm','id','kv','nod="ummo" '.$wh);// and pub_art.id>1689
+if($o)$wh='and art.id='.$o; else $wh='limit '.$limit=$min.', '.($min+$ratio);
+$r=sql::inner('art.id,msg','qda','qdm','id','kv','nod="ummo" '.$wh);// and art.id>1689
 if($r)foreach($r as $k=>$v){
 	$v=str_replace("'",' ',$v); //$v=str_replace('-',' ',$v);
 	$rb=str_word_count($v,2);
@@ -96,10 +96,10 @@ if($id){sql::upd('thesaurus',['idart'=>$id],$k);}}
 return count($r);}
 
 static function home($p,$o){$rid='plg'.randid();
-ses('thesaurus','thesaurus'); $ret='';
-ses('qdvoc',qd('umvoc'));
-ses('qdvoc_b',qd('umvoc_arts'));
-ses('qdvoc_b1',qd('umvoc_arts_a'));
+db('thesaurus','thesaurus'); $ret='';
+sesr('db','qdvoc','umvoc');
+sesr('db','qdvoc_b','umvoc_arts');
+sesr('db','qdvoc_b1','umvoc_arts_a');
 $bt=self::menu($p,$o,$rid);
 //self::repair($p,$o);
 //echo self::count();

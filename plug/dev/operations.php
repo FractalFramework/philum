@@ -24,11 +24,11 @@ echo $suj.br();
 return $ret;}
 
 static function patchlg(){$op=0;
-if($op==1)qr('ALTER TABLE '.$_SESSION['qda'].' ADD `lg` VARCHAR(2) NOT NULL;');
+if($op==1)qr('ALTER TABLE '.db('qda').' ADD `lg` VARCHAR(2) NOT NULL;');
 if($op==2)$r=sql('ib,msg','qdd','kv','val="lang"'); pr($r);
 if($r)foreach($r as $k=>$v)sql::upd('qda',['lg'=>$v],$k);
-if($op==3)qr('update '.$_SESSION['qda'].' set lg="fr" where lg=""');
-if($op==4)qr('delete from '.$_SESSION['qdd'].' where val="lang"'); sql::reflush('qdd',1);}
+if($op==3)qr('update '.$db('qda').' set lg="fr" where lg=""');
+if($op==4)qr('delete from '.db('qdd').' where val="lang"'); sql::reflush('qdd',1);}
 
 //
 static function import_content($id){
@@ -45,23 +45,23 @@ static function reimport(){
 //foreach($r as $k=>$v)few::importation($v);
 }
 
-static function toyandex($p){$qb=ses('qb'); ses('ynd','pub_yandex');
-$r=explore(root().'msql/users','files',1); $n=count($r);
+static function toyandex($p){$qb=ses('qb'); ses('trn','trans');
+$r=explore('/msql/users','files',1); $n=count($r);
 for($i=0;$i<$n;$i++){$rb=preg_split("/[_\.]/",$r[$i]);
 	if($rb[2]!='sav' && $rb[3]!='sav')
-		if($rb[0]==$qb && $rb[1]=='yandex' && $rb[2])$rc[]=$rb[2];}
+		if($rb[0]==$qb && $rb[1]=='trans' && $rb[2])$rc[]=$rb[2];}
 //pr($rc);
 foreach($rc as $k=>$v){
-	$rd=msql::read('users',nod('yandex_'.$v),'','1'); //p($rd);
+	$rd=msql::read('users',nod('trans_'.$v),'1'); //p($rd);
 	foreach($rd as $kb=>$vb){$hash=md5($vb); $lg=substr($kb,0,2);
-		$ex=sql('id','ynd','v','ref="art'.$v.'" and lang="'.$lg.'"','');
-		if(!$ex)sql::sav('ynd',['art'.$v,$hash,$vb,$lg]);}}
+		$ex=sql('id','trn','v','ref="art'.$v.'" and lang="'.$lg.'"','');
+		if(!$ex)sql::sav('trn',['art'.$v,$hash,$vb,$lg]);}}
 }
 
 static function lang_es(){$lg=ses('lang');
 $nod='admin_restrictions';
 //require('msql/lang/fr/helps_nominations.php');
-$r=msql::read_b('lang/fr',$nod,'',''); //pr($r);
+$r=msql::read('lang/fr',$nod);
 $rk=array_keys($r);
 foreach($r as $k=>$v)$rb[]=(is_array($v)?implode('(cl)',$v):$v); //pr($rb);
 $doc=implode("(nl)",$rb); $ref=substr('msq'.$nod,0,11);
@@ -72,12 +72,12 @@ write_file(msql::url('lang/es',$nod),msql::dump($rd,$nod));
 $bt=msqbt('lang/es',$nod);
 return $bt.$ret;}
 
-static function maint_ynd(){//d41d8cd98f00b204e9800998ecf8427e
-$r=sql('id,md5,txt,ref','ynd','','');
+static function maint_trn(){//d41d8cd98f00b204e9800998ecf8427e
+$r=sql('id,md5,txt,ref','trn','','');
 foreach($r as $k=>$v){
 //correct bad md5
 $hash=md5($v[2]); if($hash!=$v[1]){echo $v[0].br();
-	sql::upd('ynd',['md5'=>$hash],$v[0]);}
+	sql::upd('trn',['md5'=>$hash],$v[0]);}
 //find doublons
 //$rb[$v[1]][]=$v[0];//md5
 //$rc[$hash][]=$v[0];//text
@@ -85,23 +85,23 @@ $rd[substr($v[3],3)][]=$v[3];//bad trk
 }
 //pr($rd);
 if($rb)foreach($rb as $k=>$v){$n=count($v); //pr($v);
-	if($n>1)for($i=1;$i<=$n;$i++)sql::del('ynd',$v[$i]);}
+	if($n>1)for($i=1;$i<=$n;$i++)sql::del('trn',$v[$i]);}
 //if($rc)foreach($rc as $k=>$v){$n=count($v); if($n>1)pr($v);
-	//if($n>1)for($i=1;$i<=$n;$i++)sql::del('ynd',$v[$i]);}
+	//if($n>1)for($i=1;$i<=$n;$i++)sql::del('trn',$v[$i]);}
 if($rd)foreach($rd as $k=>$v){$art=''; $trk='';
 	foreach($v as $ka=>$va){
 		if(substr($va,0,3)=='art')$art=1;
 		if(substr($va,0,3)=='trk')$trk=1;
 		if(substr($va,0,3)=='trk' && $art && $trk){
 			echo $va.br();
-			//qr('delete from '.$_SESSION['ynd'].' where ref="'.$va.'"');
+			//qr('delete from '.$_SESSION['trn'].' where ref="'.$va.'"');
 	}}}
 }
 
-static function maint_ynd2(){
-$r=sql('id,txt','ynd','','');//id=3636
+static function maint_trn2(){
+$r=sql('id,txt','trn','','');//id=3636
 foreach($r as $k=>$v){$d=$v[1]; $hash1=md5($d);
-	//$d=codeline::parse($d,':q','');
+	//$d=conb::parse($d,'',':q');
 	/*if(strpos($d,'twitter.com/hashtag/')){
 		echo $deb=strpos($d,'[https://twitter.com/hashtag/');
 		$end1=strpos($d,'?',$deb);
@@ -116,10 +116,10 @@ foreach($r as $k=>$v){$d=$v[1]; $hash1=md5($d);
 }
 return $ret;}
 
-static function maint_ynd3(){
-$r=sql::call('SELECT id,md5,txt FROM pub_yandex GROUP BY md5 HAVING COUNT(md5) >1 order by id desc',''); //pr($r);
+static function maint_trn3(){
+$r=sql::call('SELECT id,md5,txt FROM trans GROUP BY md5 HAVING COUNT(md5) >1 order by id desc',''); //pr($r);
 $ret=tabler($r);
-//foreach($r as $k=>$v){sql::del('ynd',$v[0]);}
+//foreach($r as $k=>$v){sql::del('trn',$v[0]);}
 return $ret;}
 
 static function uclist(){
@@ -130,7 +130,7 @@ return implode(' ',array_keys($r));
 static function patchweb(){
 $r=msql::choose('',ses('qb'),'web'); pr($r);
 foreach($r as $k=>$v){
-$rb=msql::read('',nod('web_'.$v),''); pr($rb);
+$rb=msql::read('',nod('web_'.$v)); pr($rb);
 }
 return $ret;}
 
@@ -145,10 +145,7 @@ return $ret;}
 static function test_xml($f){
 $f='http://www.tlaxcala-int.org/rss_lg.asp?lg_rss=fr';
 $d=get_file($f);
-echo $enc=between(strtolower($d),'encoding="','"');
-if(strtolower($enc)=='utf-8')$d=utf8dec_b($d);
-//echo substr_count($d,'<').'-'.substr_count($d,'>');
-eco($d,1);
+//$enc=between(strtolower($d),'encoding="','"');
 $r=simplexml_load_string($d);
 $xml=explode("\n",$f);
 if(!$r){
@@ -168,8 +165,8 @@ $ret.=trim($er->message)."\nLine: $er->line"."\nColumn: $er->column";
 if($er->file)$ret.="\nFile: $er->file";
 return $ret.hr();}
 
-static function maint_pbsearch(){//maintenance pub_search
-$r=sql::call('SELECT p1.id,word FROM pub_search p1 left outer join pub_search_art p2 
+static function maint_pbsearch(){//maintenance search
+$r=sql::call('SELECT p1.id,word FROM search p1 left outer join search_art p2 
 on p1.id=p2.ib where p2.ib is null',''); //pr($r);
 foreach($r as $k=>$v)sql::del('qdsr',$v[0]);}
 
@@ -191,14 +188,14 @@ foreach($r as $k=>$v){$rb[$v]=sql('id','qdu','v',['name'=>$v],1);
 	//if(!$rb[$v])sqlsav('qdu',['',$v,'','',time(),'','','','','','','','','','']);
 } pr($rb);
 foreach($rb as $k=>$v)$rb[$v]=sqlup('qda',[$col=>$v],[$col=>$k]);
-qr('ALTER TABLE `pub_art` CHANGE `'.$col.'` `'.$col.'` INT NOT NULL;');
+qr('ALTER TABLE `art` CHANGE `'.$col.'` `'.$col.'` INT NOT NULL;');
 return $ret;}
 
 static function create_cats(){
 $r=sql('distinct(frm)','qda','rv',''); pr($r);
 foreach($r as $k=>$v)$rb[$v]=sqlsav('qdd',['','cat',$v]); pr($rb);
 foreach($rb as $k=>$v)$rb[$v]=sqlup('qda',['frm'=>$v],['frm'=>$k]);
-qr('ALTER TABLE `pub_art` CHANGE `frm` `frm` INT NOT NULL;');
+qr('ALTER TABLE `art` CHANGE `frm` `frm` INT NOT NULL;');
 return $ret;}
 
 static function ut8ise($db='qda'){
@@ -214,7 +211,7 @@ foreach($r as $k=>$v){
 		//$r[$k][$ka]=mb_convert_encoding(html_entity_decode($va),'UTF-8','HTML-ENTITIES');
 	//sqlup($db,$rb,['id'=>$v['id']]);
 	} //pr($rb);
-//qr('ALTER TABLE `pub_art` DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;');
+//qr('ALTER TABLE `art` DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;');
 $b=sqldb::db($db);
 sql::dbq(['localhost','root','dev','nfo2',1]);
 //sqldb::batchinstall();
@@ -224,7 +221,7 @@ sql::sav2($b,$r,$ai=0,1);
 return $ret;}
 
 static function reform_msql_menus(){
-$r=scandir_r('msql'); //pr($r);
+$r=scanfiles('msql'); //pr($r);
 //echo count($r);
 function reform($f){
 $d=read_file($f); //eco($d);
@@ -236,24 +233,23 @@ foreach($r as $k=>$v)reform($f);}
 
 static function table2utf($b){
 $b2=$b.'2'; $db=sqldb::qb($b);
-$db2=$db.'2'; ses($db2,qd($b2));
+$db2=$db.'2'; ses($db2,$b2);
 echo $b2.':';
 sql::backup($db);
 $r=sqldb::def($b);
 sqlop::install($b.'2',$r,1);
 echo 'install,';
 $r=sql('*',$db,'ar',[]);
-//$r=utf_r($r); //pr($r);
 sql::sav2($db2,$r,0);
-//sql::qr('insert into '.qd($b2).' select * from '.qd($b));
+//sql::qr('insert into '.$b2.' select * from '.$b);
 echo 'save2,';
-qr(' RENAME TABLE '.ses($db).' TO '.qd($b.'1').'; ');
-qr(' RENAME TABLE '.qd($b2).' TO '.qd($b).'; ');
+qr(' RENAME TABLE '.ses($db).' TO '.$b.'1'.'; ');
+qr(' RENAME TABLE '.$b2.' TO '.$b.'; ');
 echo 'rename';
 }
 
 static function table2utf_call($n){$n=$n?$n:1;
-$r=['art','data','cat','favs','hub','ips','iqs','live','live2','mbr','meta','meta_art','meta_clust','search','search_art','stat','trk','twit','txt','umtwits','umvoc','umvoc_arts','user','web','yandex'];
+$r=['art','data','cat','favs','hub','ips','iqs','live','live2','mbr','meta','meta_art','meta_clust','search','search_art','stat','trk','twit','txt','umtwits','umvoc','umvoc_arts','user','web','trans'];
 self::table2utf($r[$n]);}
 
 static function encmasl(){

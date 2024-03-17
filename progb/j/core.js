@@ -628,7 +628,7 @@ function artlive2(div){var ret=''; var ia=0;
 var content=getbyid(div);
 if(typeof content!=='object'||typeof content==null||!content)return;
 var scrl=pageYOffset+innerHeight;
-var mnu=content.getElementsByTagName('section');
+var mnu=content.getElementsByTagName('div');//section
 if(typeof mnu!=='object'||typeof mnu==null)return;
 var load=mnu[mnu.length-4];
 var pos=getPosition(load);

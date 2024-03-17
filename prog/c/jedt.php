@@ -26,7 +26,7 @@ $d=json_encode($r);
 
 static function save($p){
 $com=array_shift($p);
-return jedt::add('cnfg/nav',$com,$p);}
+return self::add('cnfg/nav',$com,$p);}
 
 static function create(){
 $r=['com','bt','ico','auth'];

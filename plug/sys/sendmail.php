@@ -12,7 +12,7 @@ if($_GET["kill"]) $r=["from"=>$_GET["kill"],"dest"=>$_GET["dest"],"suj"=>$_GET["
 
 static function home(){
 $ret.=lkc("","sendmail.php","index").br();
-$ip=hostname();
+$ip=ip();
 $arr=["from"=>"text","dest"=>"text","suj"=>"text","msg"=>"textarea","ok"=>"submit"];
 if($_POST["submit"]=="ok"){
 foreach($arr as $k=>$v){$$k=$_POST[$k]; $ret.=$k.': '.$$k."\n";}

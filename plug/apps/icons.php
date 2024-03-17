@@ -93,11 +93,11 @@ return btj($i,'icons_toggle(this,'.$i.')','bk'.$d);}
 static function icon($d,$id){
 $r=str_split($d); $n=16; $nb=$n*$n; $sz=16; $ret='';
 for($i=0;$i<$nb;$i++)$ret.=self::ljd(val($r,$i),$i);
-return div(' id="pct'.$id.'" class="pixels" style="width:'.($n*$sz+32).'px;"',$ret);}
+return div($ret,'pixels','pct'.$id,'width:'.($n*$sz+32).'px;');}
 
 static function edit($k){$id=randid();
-Head::add('csscode',self::css()); 
-Head::add('jscode',self::js());
+head::add('csscode',self::css()); 
+head::add('jscode',self::js());
 $d=msql::val('system','program_icons',$k);
 if(auth(6)){
 	$ret=lj('popbt','pctpanel_icons,read___'.$k,picto('ok'));
@@ -115,24 +115,24 @@ return $ret;}
 
 //read
 static function pictosys($d){$nm='?time='.randid();
-return imgico('/imgb/icons/system/philum/16/'.$d.'.png'.$nm,$nm,4,root());}//'../'
+return imgico('/imgb/icons/system/philum/16/'.$d.'.png'.$nm,4,$nm);}
 
 static function read(){$id=randid();
-$r=msql::read('system','program_icons','',1); ksort($r);
+$r=msql::read('system','program_icons',1); ksort($r);
 if($r)foreach($r as $k=>$v){$im=self::pictosys($k).' ';
 	//self::graphics($v,16,16,'../imgb/icons/system/philum/16/'.$k.'.png');
 	$ret[]=lj('','popup_icons,edit__js_'.$k,$im.$k).br();}
 return onxcols($ret,'5','550');}
 
 static function home($d){$ret='';
-Head::add('csscode',self::css()); 
-Head::add('jscode',self::js());
-//$ret=jscode('addjs(\'\',\''.self::js().'\',\'\')');
-$ret=jscode(self::js()).csscode(self::css());
+head::add('csscode',self::css()); 
+head::add('jscode',self::js());
+//$ret=head::jscode('addjs(\'\',\''.self::js().'\',\'\')');
+$ret=head::jscode(self::js()).head::csscode(self::css());
 $ret.=lj('popbt','popup_icons,edit__js_new',picto('add'));
 $ret.=lj('popbt','pctpanel_icons,read __js',picto('ok'));
 $ret.=btd('cbk','').br();
-$ret.=divb(self::read(),'bkg','pctpanel').br();
+$ret.=div(self::read(),'bkg','pctpanel').br();
 $ret.=msqbt('system','program_icons');
 return $ret;}
 }

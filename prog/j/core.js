@@ -650,9 +650,9 @@ var opt=type=='disk'?getbyid("opt"+id).value:'';
 var jo=type=='art'?'':'14';//portfolio
 var fileSelect=getbyid("upfile"+id);
 var files=fileSelect.files;
+var fd=new FormData();
 uploaded=0;
 for(var i=0;i<files.length;i++){//1
-	var fd=new FormData();
 	var time=Math.floor(Date.now()/1000);
 	var file=files[i];
 	var filename=file.name;
@@ -660,7 +660,7 @@ for(var i=0;i<files.length;i++){//1
 	fd.append("upfile"+id,file,filename);
 	//waitmsg(id+'up');
 	if(filename)upload_progress(id);
-	var gets=jurl()+'&app=sav,uploadsav&g0='+id+'&g1='+type+'&g3='+opt;
+	var gets=jurl()+'&app=sav,uploadsav&g0='+id+'&g1='+type+'&g2='+opt;
 	new AJAX(gets,id+'up',jo,fd);}}
 
 function cancelupload(rid){clearTimeout(xb); uploaded=0; jumphtml(rid+'prg','');}

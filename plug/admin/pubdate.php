@@ -6,7 +6,7 @@ static function update_msql(){
 $tim=time(); $ym=date('ym',$tim); $ymd=date('ymd',$tim); $ymdhi=date('ymd.His',$tim);
 msql::modif('system','program_version',[[$ymd],[$ymdhi]],'arr',['current_version']);
 file_put_contents('version.txt',$ymdhi);
-$ex=msql::read('system','program_updates_'.$ym,'');
+$ex=msql::read('system','program_updates_'.$ym);
 $r=[date('md',$tim),'publication']; $rh=['date','text'];
 if(!$ex)msql::save('system','program_updates_'.$ym,[1=>$r],$rh);
 $k=msql::find_k('system','default_apps','updates',0);

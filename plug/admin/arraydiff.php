@@ -8,8 +8,8 @@ return $ret;}
 
 static function build($p,$o,$n=1){
 if(!$p or !$o)return;
-$ra=msql::read('',$p,'',1);
-$rb=msql::read('',$o,'',1);
+$ra=msql::read('',$p,1);
+$rb=msql::read('',$o,1);
 $r=self::diff($ra,$rb,$n);
 $ret=divc('txtit','added: '.count($r['added']));
 $ret.=tabler($r['added']);

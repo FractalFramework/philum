@@ -1,4 +1,4 @@
-<?php //superpoll
+<?php 
 class superpoll{
 
 static function verif($r,$d){
@@ -6,7 +6,7 @@ if($r)foreach($r as $k=>$v)if($v[0]==$d)return true;}
 
 static function sav($rid,$var2,$prm=[]){
 $nod=$_SESSION['sppnod'];
-$r=msql::read('users',$nod,'');
+$r=msql::read('users',$nod);
 $rb=$prm; $nb=count($rb);
 for($i=0;$i<$nb;$i++){$rb[$i]=ajx($rb[$i],1);}
 if(self::verif($r,$rb[0])!=true){if(count($r)==1)$r[1]=$rb; else $r[]=$rb;
@@ -16,7 +16,7 @@ else return btn('txtred','already_exists');}
 
 static function verifuser($k,$p){
 $f='data/'.$_SESSION['sppnod'].'.txt';
-$t=read_file($f); $ip=hostname(); $r=explode('#',$t);
+$t=read_file($f); $ip=ip(); $r=explode('#',$t);
 foreach($r as $i=>$v){
 	[$ipa,$ka,$pa]=explode('/',$v);
 	if($ipa==$ip && $ka==$k){
@@ -30,15 +30,22 @@ elseif($ok=='no')return true;}
 
 static function poll($k,$p){
 $nod=$_SESSION['sppnod'];
-$r=msql::read('users',$nod,'');
+$r=msql::read('users',$nod);
 if($p==1)$r[$k][1]+=1; else $r[$k][1]-=1;
 if($k && !self::verifuser($k,$p))msql::save('',$nod,$r);
 return $r[$k][1];}
 
 static function read($k){
-$r=msql::row('',$_SESSION['sppnod'],$k,1); //p($r);
+$r=msql::row('',$_SESSION['sppnod'],$k,1);
 unset($r['projet']); unset($r['poll']);
 return on2cols($r,500,5);}
+
+static function call2($p,$o,$prm=[]){
+if($o=='del')$r[0]=self::del($p);
+elseif($o=='sav')$r[0]=self::sav($p,$prm);
+else $r[0]=self::poll($p,$o);
+$r[1]=self::table($p);
+return $r;}
 
 static function del($d){
 msql::modif('',$_SESSION['sppnod'],$d,'del');
@@ -46,19 +53,19 @@ return btn('txtred',$k.' deleted');}
 
 static function table($rid){
 $dfb[msql::$m]=['projet','poll']; $ret='';
-$r=msql::read('',$_SESSION['sppnod'],'',1);//p($r);
+$r=msql::read('',$_SESSION['sppnod'],1);
 if($r){$ra=array_keys_r($r,1); arsort($ra);
 foreach($ra as $k=>$v){
-$bt=ljb('txtbox','SaveJb',['ob'.$k.'_superpoll,poll___'.$k.'_0',$rid.'_superpoll,table'],'-').' ';
-$bt.=btn('txtred" id="ob'.$k,($r[$k][1]?$r[$k][1]:0));
-$bt.=ljb('txtbox','SaveJb',['ob'.$k.'_superpoll,poll___'.$k.'_1',$rid.'_superpoll,table'],'+').' ';
-if(auth(4))$bt.=ljb('txtbox','SaveJb',['res_superpoll,del_'.$k,$rid.'_superpoll,table'],'x').' ';
+$bt=lj('txtbox','ob'.$k.','.$rid.'_superpoll,poll___'.$k.'_0','-').' ';
+$bt.=span($r[$k][1]??0,'','txtred','ob'.$k);
+$bt.=lj('txtbox','ob'.$k.','.$rid.'_superpoll,poll___'.$k.'_1','+').' ';
+if(auth(4))$bt.=lj('txtbox','res,'.$rid.'_superpoll,poll___'.$k.'_del','x').' ';
 $ret.=divc('txtcadr',divc('imgr',$bt).$r[$k][0]);}}
 return $ret;}
 
 static function add($rid){
 $ret=textarea('p1','',40,1);
-$ret.=ljb('txtbox','SaveJb',['add_superpoll,sav_p1_xd_'.$rid,'res_superpoll,table'],'save').' ';
+$ret.=lj('txtbox','add,'.$rid.'_superpoll,call2_p1_xd_'.$rid.'_sav','save').' ';
 //$ret.=lj('txtyl','add_plug','x').br().br();//icon('close')
 return $ret;}
 

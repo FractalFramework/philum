@@ -15,16 +15,18 @@ $ret.=inputj('plugn',$plg,$j,'plugin').' ';
 $ret.=lj('',$j,picto('ok'));
 $ret.=inputb('plugp',$p?$p:'param','',1).' ';
 $ret.=inputb('plugo',$o?$o:'option','',1).' ';
+$ret.=msqbt('system','program_plugs');
+$ret.=msqbt('system','program_apps');
 return $ret;}
 
-static function board(){
+static function plugs(){
 $ico=picto('editxt'); $dir='plug';
-$plug=msql::read('system','program_plugs','');
-$help=msql::read('lang','program_plugs','');
+$plug=msql::read('system','program_plugs');
+$help=msql::read('lang','program_plugs');
 $mt=msql::prep('system','program_plugs_types'); 
 //$re=explore($dir,'files',1); sort($re);
-$re=scandir_r($dir); //eco($re);
-$rt=['url','plugin','open','edit','do','usage','tag','private','interface','dev','old','modified'];
+$re=scanfiles($dir); //eco($re);
+$rt=['url','app','open','edit','do','usage','tag','private','interface','dev','old','modified'];
 foreach($re as $k=>$v){$va=between($v,'/','.',1,1); $plg=arr(val($plug,$va),7);
 	$fi=auth(4)?lj('','popup_editmsql___system/program*plugs_'.ajx($va).'__1',$ico).' ':'';
 	$hlp=auth(4)?lj('','popup_editmsql___lang/fr/program*plugs_'.ajx($va).'__1',$ico).' ':'';
@@ -51,9 +53,15 @@ foreach($ra as $k=>$v){$rd=array_merge(array($rt),$v);
 	$rb[$k][]=tabler($rd,'txtcadr','');}
 return tabs($rb);}
 
+static function apps(){$rt=[];
+$r=msql::read('system','program_apps',1);
+foreach($r as $k=>$v)$rt[]=[lj('','plg_'.$v[0].',home__3',$v[0],att($v[1])),$v[1]];
+return tabler($rt);}
+
 static function home($p,$o){
 $bt=self::menu($p,$o);
-$ret=self::board();
+//$ret=self::plugs();
+$ret=self::apps();
 return $bt.divd('plg',$ret);}
 }
 ?>

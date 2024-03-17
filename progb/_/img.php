@@ -1,60 +1,48 @@
-<?php //a/img
+<?php 
 class img{
-static $a=__CLASS__;
 
+#db
 static function install(){sqldb::install('img');}
 
+static function original($im,$id){
+if($id)$w=['ib'=>$id]; $w['im']=$im;
+return sql('dc','qdg','v',$w);}
+
 static function restore($im,$id){
-$dc=sql('dc','qdg','v',['ib'=>$id,'im'=>$im]);
-if($dc)$dc=conn::get_image($dc,$id,3);
-if($dc)return conn::place_image($dc,3,'',920,$id);}
+$dc=self::original($im,$id);
+if($dc)return conn::getimg($dc,$id,3);}
+
+static function restoreim($a,$id){
+$b=self::restore($a,$id); if(!$b)return;
+if($b && $b!=$a){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);}
+return conn::mkimg($b,3,920,$id,'');}
 
 static function rewrite($d){$im='img/'.$d;
 [$w,$h,$ty]=getimagesize($im);
-make_mini($im,$im,$w,$h,'');
+self::build($im,$im,$w,$h,'');
 $bt=btn('txtyl',$w.'-'.$h.':'.fsize($im));
 return img($im).$bt;}
 
-static function sz($w,$h,$w1,$h1){
-$h2=($w1/$w)*$h; $w2=$w1;
-if($h>$w){$w2=($h1/$h)*$w; $h2=$h1;}
-return [round($w2),round($h2)];}
+static function save($id,$im,$dc){
+$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
+if(!$ex)return $ex=sqlsav('qdg',[$id,$im,$dc,0],0);
+elseif($dc)sqlup('qdg',['ib'=>$id,'im'=>$im,'dc'=>$dc,'no'=>0],$ex);
+return $im;}
 
-static function reduce($d,$o,$id=''){$im='img/'.$d;
-[$wo,$ho,$ty]=getimagesize($im);
-if($o){$w=$wo/2; $h=$ho/2;}
-else [$w,$h]=self::sz($wo,$ho,940,940);
-make_mini($im,$im,$w,$h,''); opcache($im);
-return conn::place_image($d.'?'.$w,3,'',920,$id);}
+static function mdf($id,$a,$b){if(!auth(6))return;
+$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$a]);
+if($ex)sqlup('qdg',['im'=>$b],$ex);}
 
-static function png2jpg($a,$id){
-$b=str_replace('.png','.jpg',$a);
-$in='img/'.$a; $out='img/'.$b;
-if(!is_file($in))return;
-[$w,$h,$ty]=getimagesize($in); if(!$w)return;
-$img=imagecreatetruecolor($w,$h);
-$c=imagecolorallocate($img,255,255,255); imagefill($img,0,0,$c);
-$im=@imagecreatefrompng($in);
-imagecopyresampled($img,$im,0,0,0,0,$w,$h,$w,$h);
-imagejpeg($img,$out,100);
-if($id){$sz1=fsize($in); $sz2=fsize($out);//abort if jpg is larger
-	if($sz1>$sz2){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
-		self::mdf($id,$a,$b); meta::putincache($id);
-		unlink($in); $res=$b; ses::$adm['alert']='png destroyed ('.$sz1.'=>'.$sz2.') ';}
-	else{unlink($out); $res=$a; ses::$adm['alert']='png kept ('.$sz1.'<='.$sz2.') ';}}
-//return img($out.'?'.randid()).fsize($out);
-return conn::place_image($res,3,'',920,$id);}
+static function rm($id,$im){if(!auth(6))return;
+$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
+if($ex)sqlup('qdg',['no'=>1],$ex);}
 
-static function webp2jpg($a,$id){
-$b=str_replace('.jpeg','.jpg',$a);
-$b=str_replace('.webp','.jpg',$b);
-$in='img/'.$a; $out='img/'.$b;
-$im=@imagecreatefromwebp($in);
-imagejpeg($im,$out,90);
-imagedestroy($im);
-if($id){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
-	self::mdf($id,$a,$b); if($b!=$a)unlink($in);}
-return conn::place_image($b,3,'',920,$id);}
+static function del($id,$im){if(!auth(6))return;
+$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
+if($ex)sql::del('qdg',$ex);
+conn::replaceinmsg($id,'['.$im.']','');
+conn::replaceinimg($id,'/'.$im,'');
+rm('img'.$im); rm('imgc'.$im);}
 
 static function batch($p=1,$l=10000){//self::install();
 $min=$p*$l; $max=$min+$l; $rc=[];
@@ -65,60 +53,94 @@ foreach($r as $k=>$v){$rb=explode('/',$v);
 		$rc[]=[$k,$v,fsize('img/'.$v),'',0];}}//self::save($k,$v,'');
 return $rc;}
 
-static function save($id,$im,$dc){//self::install();
-$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
-if(!$ex)sqlsav('qdg',[$id,$im,$dc,0],0,1);//,fsize('img/'.$f)
-//else sqlup('qdg',['ib'=>$id,'im'=>$im,'dc'=>$dc,'no'=>0],$ex);
-}
+#correct
+static function sz($w,$h,$w1,$h1){
+$h2=($w1/$w)*$h; $w2=$w1;
+if($h>$w){$w2=($h1/$h)*$w; $h2=$h1;}
+return [round($w2),round($h2)];}
 
-static function mdf($id,$a,$b){if(!auth(4))return;
-$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$a]);
-if($ex)sqlup('qdg',['im'=>$b],$ex);}
+static function reduce($d,$o,$id=''){$im='img/'.$d;
+[$wo,$ho,$ty]=getimagesize($im);
+if($o){$w=$wo/2; $h=$ho/2;}
+else [$w,$h]=self::sz($wo,$ho,940,940);
+self::build($im,$im,$w,$h,'');
+if($id)return conn::mkimg($d.'?'.$w,3,920,$id,'');}
 
-static function rm($id,$im){if(!auth(4))return;
-$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
-if($ex)sqlup('qdg',['no'=>1],$ex);}
+static function png2jpg($a,$id){
+$b=str_replace('.png','.jpg',$a);
+$in='img/'.$a; $out='img/'.$b;
+if(!is_file($in))return;
+[$w,$h,$ty]=getimagesize($in); if(!$w)return $a;
+$img=imagecreatetruecolor($w,$h);
+$c=imagecolorallocate($img,255,255,255); imagefill($img,0,0,$c);
+$im=@imagecreatefrompng($in);
+if($im)imagecopyresampled($img,$im,0,0,0,0,$w,$h,$w,$h);
+imagejpeg($img,$out,90);
+if($id){$sz1=fsize($in); $sz2=fsize($out);//abort if jpg is larger
+	if($sz1>$sz2){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
+		self::mdf($id,$a,$b); ma::cacheart($id);
+		rm($in); $res=$b; ses::$adm['alert']='png destroyed ('.$sz1.'=>'.$sz2.') ';}
+	else{rm($out); $res=$a; ses::$adm['alert']='png kept ('.$sz1.'<='.$sz2.') ';}}
+return $res;}//'?'.randid()
 
-static function del($id,$im){if(!auth(5))return;
-$ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);
-if($ex)sql::del('qdg',$ex);
-conn::replaceinmsg($id,'['.$im.']','');
-conn::replaceinimg($id,'/'.$im,'');
-unlink('img'.$im); unlink('imgc'.$im);}
+static function webp2jpg($a,$id){
+$b=str_replace('.jpeg','.jpg',$a);
+$b=str_replace('.webp','.jpg',$b);
+$in='img/'.$a; $out='img/'.$b;
+$im=@imagecreatefromwebp($in);
+if(!$im)return $a;
+imagejpeg($im,$out,90);
+imagedestroy($im);
+if($id){conn::replaceinmsg($id,$a,$b); conn::replaceinimg($id,$a,$b);
+	self::mdf($id,$a,$b); if($b!=$a)rm($in);}
+return $b;}
 
-#thumbs
+#thumb
 static function thumbname($d,$w,$h){
 $nm=strto(strend($d,'/'),'.'); $xt=strend($d,'.');
 return 'imgc/'.$nm.'_'.$w.'x'.$h.'.'.$xt;}
 
-#arts
-static function make_thumb($mg,$prm){$ida='img';
-if(!file_exists($ida.'/'.$mg))return; $preb='';
-if(substr($mg,0,4)!='http')$pre='imgc/'; else $pre='';
-	if($prm=='h')$rpm='height="36" class="imgl"';
-	elseif(is_numeric($prm))$rpm='title="'.ma::rqt($prm,'suj').'"';
-	elseif($prm=='nl'){$rpm='class="imgl"'; $preb=host();}
-	elseif($prm=='hb')$rpm='height="32" class="imgl"';
-	elseif($prm=='no')$rpm='';
-	elseif(!$prm)$rpm='class="imgl"';
-	else{$ida=$prm;$rpm='';}
-$thumb=$pre.$mg;
-if((!file_exists($thumb) && $mg && $pre) or ses('rebuild_img')){
-	[$w,$h]=expl('/',prmb(27)); $mode=$_SESSION['rstr'][16]?0:1;//0=outsize
-	make_mini($ida.'/'.$mg,$thumb,$w,$h,$mode);}
-return '<img src="'.$preb.'/'.$thumb.'" '.$rpm.'>';}
+static function thumbprm($s,$m,$x){
+if(!$s)$s=prmb(27); [$w,$h]=expl('/',$s);
+if($m===false)$m=rstr(16)?1:0;
+if(!$x)$x=ses('rebuild_img');
+return [$w,$h,$m,$x];}
+
+static function build_thumb($img,$thumb,$x=''){
+if(is_file($img) && (!file_exists($thumb) or $x)){
+	//[$w,$h]=expl('/',prmb(27)); $m=$_SESSION['rstr'][16]?0:1;
+	[$w,$h,$m,$x]=self::thumbprm('',false,$x);
+	self::build($img,$thumb,$w,$h,$m);}
+return $thumb;}
+
+static function thumb($img,$x=''){//if(!$x)$x=ses('rebuild_img');
+return self::build_thumb('img/'.$img,'imgc/'.$img,$x);}
+
+static function make_thumb($img,$prm){$dr='img';
+if(!file_exists($dr.'/'.$img))return; $http=''; $rp=[];
+if(substr($img,0,4)!='http')$pre='imgc/'; else $pre='';
+	if($prm=='h')$rp=['height'=>'36','class'=>'imgl'];
+	elseif(is_numeric($prm))$rp['title']=ma::rqtv($prm,'suj');
+	elseif($prm=='nl'){$rp['class']='imgl'; $http=host();}
+	elseif($prm=='hb')$rp+=['height'=>'32','class'=>'imgl'];
+	elseif($prm=='no')$rp=[];
+	elseif(!$prm)$rp['class']='imgl';
+	else{$dr=$prm; $rp=[];}
+$thumb=self::build_thumb($dr.'/'.$img,$pre.$img,ses('rebuild_img'));
+$rp['src']=$http.'/'.$thumb;
+return taga('img',$rp);}
 
 //xsmall
-static function make_thumb_c($d,$size='',$s=''){
+static function make_thumb_c($img,$size='',$s=''){
 if(!$size)$size=prmb(27); [$w,$h]=explode('/',$size); $jd='';
-if(strpos($d,'?'))$d=strto($d,'?'); $wo=0; $x=ses('rebuild_img');
-if(substr($d,0,4)=='http')$b=substr(md5($d),0,6).'.'.strend($d,'.');
-else{$b=str_replace(['users/','img/','imgb/','icons','/'],'',$d); $jd='/';}
+if(strpos($img,'?'))$img=strto($img,'?'); $wo=0; $x=ses('rebuild_img');
+if(substr($img,0,4)=='http')$b=substr(md5($img),0,6).'.'.strend($img,'.');
+else{$b=str_replace(['users/','img/','imgb/','icons','/'],'',$img); $jd='/';}
 $thumb=self::thumbname($b,$w,$h.($s?'-'.$s:''));
-if(is_file($thumb) && !$x)return '<img src="'.$jd.$thumb.'">';//.'?'.randid()
-if(is_file($d) or $x)make_mini($d,$thumb,$w,$h,$s);//case of tw img not detected but exists
-if(is_file($thumb))return '<img src="'.$jd.$thumb.'">';}
+$thumb=self::build_thumb($img,$thumb,$x);
+return taga('img',['src'=>$jd.$thumb]);}//.'?'.randid()
 
+//arts
 static function imgartlk($im,$id){//[$w]=getimagesize('img/'.$im); if($w>100)
 if($im && is_file('img/'.$im))return lj('','popup_popart__3_'.$id.'_3',self::make_thumb($im,$id));}
 
@@ -126,6 +148,41 @@ static function outputimg($r){$ret=''; if($r)foreach($r as $id=>$ra){
 if($ra)foreach($ra as $k=>$im)if(is_img($im))$ret.=self::imgartlk($im,$id);}
 return $ret;}
 
+#build
+//force LH, cut and center
+static function scale($w,$h,$wo,$ho,$s){$hx=$wo/$w; $hy=$ho/$h; $ya=0; $yb=0; $xa=0; $xb=0;
+if($s==2){$xb=($wo/2)-($w/2); $yb=($ho/2)-($h/2); $wo=$w; $ho=$h;}//center
+elseif($hy>$hx && $s){$yb=($ho-($h*$hx))/2; $ho=$ho/($hy/$hx);}//reduce_h
+elseif($hy<$hx && $s){$xb=($wo-($w*$hy))/2; $wo=$wo/($hx/$hy);}//reduce_w
+elseif($hy<$hx){$xb=($wo-($w*$hy))/2; $wo=$wo/($hx/$hy);}//adapt_h (no_crop)
+elseif($hy && $hx){$xb=0; $ho=$ho/($hy/$hx);}//adapt_w
+$r=[$w,$h,$wo,$ho,$xb,$yb]; foreach($r as $k=>$v)if($v)$r[$k]=round($v);
+return $r;}
+
+static function imgalpha($img){
+$c=imagecolorallocate($img,255,255,255); imagecolortransparent($img,$c);
+imagealphablending($img,false);
+imagesavealpha($img,true);}
+
+static function build($in,$out,$w,$h,$s){
+if(!is_file($in) && substr($in,0,4)!='http')return; [$wa,$ha]=[440,320];
+$w=$w?$w:$wa; $h=$h?$h:$ha; [$wo,$ho,$ty]=getimagesize($in); $xa=0; $ya=0;
+[$w,$h,$wo,$ho,$xb,$yb]=self::scale($w,$h,$wo,$ho,$s);
+$img=imagecreatetruecolor($w,$h);
+$c=imagecolorallocate($img,255,255,255); imagefill($img,0,0,$c);
+if($ty==2){$im=@imagecreatefromjpeg($in);
+	imagecopyresampled($img,$im,$xa,$ya,$xb,$yb,$w,$h,$wo,$ho);
+	imagejpeg($img,$out,100);}
+elseif($ty==1){$im=@imagecreatefromgif($in); self::imgalpha($img);
+	imagecopyresampled($img,$im,$xa,$ya,$xb,$yb,$w,$h,$wo,$ho);
+	imagegif($img,$out);}
+elseif($ty==3){$im=@imagecreatefrompng($in); self::imgalpha($img);
+	if($im)imagecopyresampled($img,$im,$xa,$ya,$xb,$yb,$w,$h,$wo,$ho);
+	imagepng($img,$out);}
+opcache($out);
+return $out;}
+
+#graph
 static function imgclr($im,$d,$a=''){$r=hexrgb_r($d);
 if($a)return imagecolorallocatealpha($im,$r[0],$r[1],$r[2],$a);
 else return imagecolorallocate($im,$r[0],$r[1],$r[2]);}

@@ -4,8 +4,8 @@ static $pr='followers';
 
 static function build($p,$o){
 [$a,$b]=expl('|',$o); $n=1; $nd=ses('qb').'_'.self::$pr;
-$rb=msql::read('',$nd.'_'.$a,'','1'); //pr($ra);
-$ra=msql::read('',$nd.'_'.$b,'','1');
+$rb=msql::read('',$nd.'_'.$a,'1'); //pr($ra);
+$ra=msql::read('',$nd.'_'.$b,'1');
 if(!$ra or !$rb)return;
 $rka=array_keys_r($ra,$n);
 $rkb=array_keys_r($rb,$n);
@@ -37,7 +37,7 @@ $r=self::scan($p);//pr($r);
 foreach($r as $k=>$v){
 	$rt[1][]=lj(active($v,$a),$rid.'_umflw,call__2_'.$p.'_'.ajx($v).'|'.ajx($b),$v).' ';
 	$rt[2][]=lj(active($v,$b),$rid.'_umflw,call__2_'.$p.'_'.ajx($a).'|'.ajx($v),$v).' ';}
-return divb($ret).divc('nbp',impl($rt[1])).divc('nbp',impl($rt[2]));}
+return div($ret).divc('nbp',join('',$rt[1])).divc('nbp',join('',$rt[2]));}
 
 static function home($p,$o){
 $rid='ub'; $p=$p?$p:'OAY';

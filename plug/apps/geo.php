@@ -55,7 +55,7 @@ if($gpsv && $gpsu)return get_distance_m($gpsru[1],$gpsru[0],$gpsrv[1],$gpsrv[0])
 
 static function build($p,$o,$prm=[]){
 $p=$prm[0]??$$p;
-//$r=msql::read_b('',nod('geo_1'));//p($r);
+//$r=msql::read('',nod('geo_1'));
 $ret=$p.'-'.$o;
 return $ret;}
 
@@ -67,8 +67,8 @@ static function home($p,$o){$rid=randid('geo');
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 if(strpos($r['gps'],'/')===false)$r['gps']='0/0';
-Head::add('js','http://maps.googleapis.com/maps/api/js');
-Head::add('jscode',self::profil_js($r['gps']));
+head::add('js','http://maps.googleapis.com/maps/api/js');
+head::add('jscode',self::profil_js($r['gps']));
 //$bt.=msqbt('',nod('geo_1'));
 return $bt.divd($rid,$ret);}
 }

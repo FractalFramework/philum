@@ -48,7 +48,7 @@ return $ret;}
 
 static function menutree($va){$r=sesr('modc',$va); $rt=[];
 foreach($r as $k=>$v)if(!$v[7] && !$v[11]){
-if($v[0]=='MENU')$rt[$v[1]]=self::menutree($v[1]);
+if($v[0]=='MENU')$rt[$v[2]]=self::menutree($v[1]);
 else $rt[]=self::btmnu($v,$k,1,0);}
 return $rt;}
 
@@ -56,9 +56,15 @@ static function menutabs($va){
 $r=self::menutree($va);
 return tabs($r);}
 
+static function mkdrop($r){$ret='';
+if(is_array($r))foreach($r as $k=>$v){
+	if(is_array($v))$ret.=div(div($k,'dropb').div(self::mkdrop($v),'dropc'),'dropd');
+	else $ret.=$v;}
+return $ret;}
+
 static function menudrop($va){
 $r=self::menutree($va);
-return drop($r);}
+return div(self::mkdrop($r),'dropm');}
 
 static function menupane($va){$rid=randid();
 $r=self::menutree($va); $ret='';
@@ -69,14 +75,18 @@ return div($ret,'menu').div('','',$rid);}
 static function menuroot($va,$dr=''){$r=sesr('modc',$va); $rt=[]; $parent=strend($dr,'/');
 foreach($r as $k=>$v)if(!$v[7] && !$v[11]){$root=($dr?$dr.'/':'').$va;
 if($v[0]=='MENU')$rt=array_merge($rt,self::menuroot($v[1],$root));
+//else $rt[]=[$v[2],'mod',$v[0],$v[1],$v[5],'menu',$root,mime($v[0]),'',''];//mods
 else $rt[]=[$v[2],'mod',$v[0],$v[1],$v[5],'menu',$root,mime($v[0]),'',''];}
 return $rt;}
 
 static function menublock($va){$rt=[];
-$rt=self::menuroot($va);
-msql::save('',nod('menublock_'.$va),$rt);
-//return mkbub(bubs::call('menublock','zero',$va),'inline','position:relative');
-$ret=bubs::apps($rt,'zero','','');
+$rt=self::menuroot($va); //eco($rt);
+//$rh=['root','action','type','bt','ico','auth'];//mods
+$rh=['button','type','process','param','option','condition','root','ico','hide','private'];//apps
+msql::save('',nod('menublock_'.$va),$rt,$rh);
+$ret=bubs::call('menublock','zero',$va);
+//$ret=bubs::apps($rt,'','zero','');
+//return popbub('menublock',$va,'menu','d',1);
 return mkbub($ret,'bub menu inline','position:relative');}
 
 //menubub
@@ -109,9 +119,9 @@ if($r)foreach($r as $k=>$v){if(!$v[7] && (!$v[11] or $ath)){//hide/private
 		'block'=>self::menublock($v[1]),//bub erase itself
 		'tabs'=>self::menutabs($v[1]),
 		'drop'=>self::menudrop($v[1]),
-		'pane'=>self::menupane($v[1]),
-		'tog'=>togbub('mod,block',$v[1].'_1',$v[2],'','',''),//no
-		'bup'=>bubup($v[1],'_1',$v[2],'',''),
+		//'pane'=>self::menupane($v[1]),
+		//'tog'=>togbub('mod,block',$v[1].'_1',$v[2],'','',''),//no
+		//'bup'=>bubup($v[1],'_1',$v[2],'',''),
 		default=>self::block($v[1],1)};
 	elseif($v[9]??''){$rl[$k]=self::btmnu($v,$k,$i,$ni); $i++;}//bt
 	elseif($bt){//menu
@@ -158,14 +168,13 @@ switch($m){
 //main
 case('LOAD'):
 	if($id=get('read'))$ret=art::read($id,$tp);
-	elseif($gmd=get('module'))$ret=mod::callmod($gmd);
+	elseif($gmd=get('module'))$ret=self::callmod($gmd);
 	elseif($cmd=get('api'))$ret=api::call($cmd);
 	elseif($ra=api::load_rq())$ret=api::load($ra);//gets
 	elseif(ses::$loader)$ret=ses::$loader;//menus#
 	else $ret=api::arts(get('frm'),$o,$tp,$d); break;
 case('BLOCK'):$ret=self::block($p); break;
 case('MENU'):$ret=self::block($p,1); break;
-//case('MENU'):$ret=self::menublock($p,1); break;
 case('DESK'):$ret=self::menublock($p); break;
 case('BOOT'):$ret=self::menublock($p,2); break;
 case('ADMIN'):$ret=self::menublock($p,1); break;
@@ -252,8 +261,8 @@ case('folder'):$lin=desk::vfolders($p); break;
 //menus
 case('link'):$ret=md::modlk($p,$t,$o); break;
 case('app_popup'):head::add('jscode',sj(desk::read(explode(',',$p)))); break;
-case('overcats'):return mkbub(bubs::call('overcat','zero'),'inline','1'); break;
-case('MenuBub'):return mkbub(bubs::call('menubub','zero',$p),'inline','1'); break;
+case('overcats'):return mkbub(bubs::call('overcat','zero'),'inline','position:relative'); break;
+case('MenuBub'):return mkbub(bubs::call('menubub','zero',$p),'inline','position:relative'); break;
 case('timetravel'):return md::timetravel($p,$o); break;
 case('submenus'):return md::bubble_menus($p,$o); break;
 case('taxonomy'):$ret=md::mod_taxonomy($p,$o); break;
@@ -389,7 +398,7 @@ elseif($d=='api')$ret=api::mod_call($load);
 elseif($d=='icons')$ret=desk::pane_icons($load,'icones').divc('clear','');
 elseif($d=='panel' && is_array($load))foreach($load as $k=>$v)$ret.=self::pane_art($k,$o,$tp,$pp);
 elseif($d=='lines')$ret=self::m_publist($load,$tp);
-elseif($load)$ret=self::m_pubart($load,$d,$o,$tp);
+elseif($load)$ret=self::m_pubart($load,$d,$o,$tp,$pp);
 if($o=='scroll')$ret=scroll($load,$ret,10);
 elseif($o=='cols')$ret=pop::columns($ret,240,'','');
 elseif($o=='inline')$ret=divc('inline',$ret);
@@ -421,21 +430,22 @@ $p['sty']=$im?'background-image:url('.$p['img1'].')':'';
 return art::template($p,$tp);}
 
 #pubart
-static function pub_art($id,$tpl=''){$rst=$_SESSION['rstr'];
+static function pub_art($id,$tpl='',$pp=''){
+$rst=$_SESSION['rstr']; if(!$tpl)$tpl='pubart'; if($pp)$tpl='popart';
 $ra=ma::rqtart($id); if(!$ra)return;
 [$day,$frm,$suj,$amg,$nod,$thm,$lu,$name,$nbc,$src,$ib,$re,$lg]=arr($ra,13);
 $rt['url']=urlread($id); $rt['suj']=$suj;
-$tg='content'; if(rstr(85))$tg='popup'; if(rstr(136))$tg='pagup';//
+$tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';//
 $rt['jurl']=$tg.'_popart__3_'.$id.'_3';
+//$rt['purl']='popup_popart__3_'.$id.'_3';
 if($rst[32]!=1 && $amg)$rt['img1']=pop::art_img($amg,$id);
 if($rst[36]!=1){$rt['back']=art::back($id,$ib,$frm,0); $rt['cat']=$frm;}
 if($rst[7]!=1)$rt['date']=mkday($day);
 if($rst[4]!=1){$r=art::tags($id,1); if($r)$rt+=$r;}
-if(!$tpl)$tpl='pubart';
 if($re)return divc('pubart',art::template($rt,$tpl));}
 
-static function m_pubart($r,$o,$p,$tp=''){$re=[]; $ret='';
-if(is_array($r)){foreach($r as $k=>$v){$d=self::pub_art($k,$tp); if($d)$re[$k]=$d;}
+static function m_pubart($r,$o,$p,$tp='',$pp=''){$re=[]; $ret='';
+if(is_array($r)){foreach($r as $k=>$v){$d=self::pub_art($k,$tp,$pp); if($d)$re[$k]=$d;}
 if($o=='scroll'){$ret=scroll($r,implode('',$re),$p?$p:10);}
 elseif($o=='cols')return pop::columns($re,$p,'board','pubart');
 elseif($o=='inline')return divc('inline',join('',$ret));
@@ -443,7 +453,8 @@ elseif($re)$ret=implode('',$re);
 if($ret)return divc('panel',$ret)."\n";}}
 
 static function m_publist($r,$tp){$ret='';
-$tg='content'; if(rstr(85))$tg='popup'; if(rstr(136))$tg='pagup';
+$tp='bublj'; if(rstr(85))$tg='popup'; elseif(rstr(136))$tg='pagup';
+else{$tg='content'; if(rstr(149))$tp='bublh';}
 if(is_array($r))foreach($r as $k=>$v){
 	$p['url']=urlread($k); $p['suj']=ma::suj_of_id($k); $p['id']=$k;
 	$p['jurl']=$tg.'_popart__3_'.$k.'_3';

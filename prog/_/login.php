@@ -16,7 +16,7 @@ static function verif_user($usr,$psw){
 $sq=['name'=>$usr]; if($psw)$sq['pass']='PASSWORD("'.$psw.'")';
 return sql('id','qdu','v',$sq);}
 
-static function usedhubname($usr){//$usr=normalize($usr);
+static function usedhubname($usr){//$usr=str::normalize($usr);
 if(boot::ismbr($usr))return true;
 $uid=sql('id','qdu','v',['name'=>$usr]);
 //$r=explore('users/','dirs',1); if(isset($r[$usr]))return true;
@@ -31,14 +31,14 @@ static function log_result($usr,$uid,$qb,$rl,$ck){
 $_SESSION['USE']=$usr; $_SESSION['uid']=$uid; $_SESSION['qb']=$qb;
 if($ck){$dayz=$_SESSION['dayx']+(86400*30); $_SESSION['nuse']='';
 	setcookie('use',$usr,$dayz); setcookie('uid',$uid,$dayz);}
-if($rl)relod('?hub='.$qb.'&refresh==&log=on');
+if($rl)head::relod('?hub='.$qb.'&refresh==&log=on');
 else return 'logon: '.$qb;}
 
 //call
-static function call($p,$o,$prm=[]){//pr($prm);
+static function call($p,$o,$prm=[]){
 [$usr,$psw,$cook,$mail,$newhub]=arr($prm,5);
-$usr=normalize($usr); $psw=normalize($psw);
-$qdu=ses('qdu'); $qb=ses('qb'); $host=hostname();
+$usr=str::normalize($usr); $psw=str::normalize($psw);
+$qdu=db('qdu'); $qb=ses('qb'); $host=ip();
 if(md5($usr.$psw)=='e36f9846e997e4491c58aa65d9c9f4e6')$_SESSION['USE']=ses('master');
 //$ath=array_flip(adm::authes_levels());
 //log
@@ -80,9 +80,7 @@ elseif(prmb(11)>=1 or $newhub or !$first or prms('create_hub')=='on'){$rl='ok';
 		$ret.=lj('popsav','lgn_login,call_lgu,lgp,lgc,lgm,lgh__',pictxt('logout',nms(27))).' ';
 		$ret.=lj('txtx','lgn_login,form',picto('before'));
 		return $ret;}
-	else{
-		if($newhub)$usr=$newhub;
-		elseif($_SESSION['USE'])$usr=$_SESSION['USE'];
+	else{$usr=ses('USE'); if($newhub)$usr=$newhub;
 	if($usr!='admin')$uid=self::adduser($qb,$usr,$psw,$mail,$newhub);//add_user
 	if(prmb(11)>=6 or $newhub or !$first){self::modif_cnfgtxt($usr,$first);//add_hub
 		$qb=self::makenew($usr); self::message2newuser($usr,$mail,$psw); $_SESSION['auth']='';}
@@ -91,7 +89,7 @@ elseif(prmb(11)>=1 or $newhub or !$first or prms('create_hub')=='on'){$rl='ok';
 
 static function modif_cnfgtxt($qb,$first){$f=boot::cnf();
 if(is_file($f)){$d=read_file($f); $r=explode('#',$d);}
-else $r=[ses('qd'),'no','yes',ses('qb'),'','philum.fr','','','','Europe/Paris','6135','4000'];
+else $r=[db('qd'),'no','yes',ses('qb'),'','philum.fr','','','','Europe/Paris','6135','4000'];
 if(!$first)$r[3]=$qb; if(prms('htacc'))$r[1]='yes';
 write_file($f,implode('#',$r));}
 
@@ -116,7 +114,7 @@ return lj('small','lgn_login,form',"password sent to user $usr $qmail");}
 
 #newuser
 static function adduser($qb,$usr,$psw,$mail,$newhub){$dayx=ses('dayx');
-$qdu=ses('qdu'); $mbrs='7::admin,'; $open=''; $ip=hostname();
+$qdu=db('qdu'); $mbrs='7::admin,'; $open=''; $ip=ip();
 if(prmb(11)>=6 or $newhub){
 	$open=1; $menus=$dayx; $hub=$usr;
 	[$rstr,$config]=self::ndprms_defaults();
@@ -128,17 +126,18 @@ $ex=sql('id','qdu','v','1');
 $rp=[$usr,'PASSWORD("'.$psw.'")',$mail,$dayx,'',$ip,$rstr,$mbrs,$hub,0,$config,'','',$menus,$open];
 return sql::sav('qdu',$rp);}
 
-static function ndprms_defaults(){$rstr=admx::defaults_rstr(0);
-$r=msql_read('system','default_params','',1); $rb=[]; $config='';
-foreach($r as $k=>$v)$rb[$k]=$v[0];
-for($i=0;$i<=$k;$i++)$config.=val($rb,$i).'#';
+static function ndprms_defaults(){
+$rstr=admx::defaults_rstr(0); $config='';
+//$r=msql::read('system','default_params',1); $rb=[]; foreach($r as $k=>$v)$rb[$k]=$v[0];
+$rb=msql::col('system','default_params',0,1); $n=count($rb);
+for($i=0;$i<=$n;$i++)$config.=($rb[$i]??'').'#';
 $ln=explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 if($ln[0]=='fr')$lang='fr'; else $lang='en'; //$first_art=$lang=="fr"?236:253;
 $config=str_replace('LANG',$lang,$config);
 return ['0'.implode('',$rstr),$config];}
 
 static function makenew($qb,$restore=''){
-$qdu=ses('qdu'); if(!auth(4))$_SESSION['auth']=4;
+$qdu=db('qdu'); if(!auth(4))$_SESSION['auth']=4;
 msql::copy('system','default_css_1','design',$qb.'_design_1');
 msql::copy('system','default_clr_1','design',$qb.'_clrset_1');
 msql::copy('system','default_css_2','design',$qb.'_design_2');
@@ -151,9 +150,9 @@ msql::copy('system','default_apps','users',$qb.'_apps');
 if($restore){[$rstr,$config]=self::ndprms_defaults();
 sql::upd('qdu',['rstr'=>$rstr],['name'=>ses('qb')]);
 sql::upd('qdu',['config'=>$config],['name'=>ses('qb')]);}
-$clr=msql_read('system','default_clr_1','');
+$clr=msql::kv('system','default_clr_1');
 $css='css/'.$qb.'_design_1.css'; sty::build_css($css,sty::css_default(1),$clr);
-$clr=msql_read('system','default_clr_2','');
+$clr=msql::kv('system','default_clr_2');
 $css='css/'.$qb.'_design_2.css'; sty::build_css($css,sty::css_default(),$clr);
 sql::upd('qdu',['menus'=>ses('dayx')],['name'=>$qb]);
 if(!is_dir('users/'.$qb))mkdir_r('users/'.$qb);

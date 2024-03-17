@@ -54,7 +54,7 @@ foreach($r as $k=>$v){$c=$k==$travel?'active':''; $ic=$travel==$k?'clock':'hour'
 return divc('menus',$ret);}
 
 static function prevnext_art($b,$o,$id,$tg=''){$wh=''; $rb=[];
-$id=$id?$id:ses('read'); $ta=picto('left'); $tb=picto('right'); $htacc=htacc('read');
+$id=$id?$id:ses('read'); $ta=picto('kleft'); $tb=picto('kright'); $htacc=htacc('read');
 if($b=='rub')$wh='and frm="'.get('frm').'" '; else $wh='and substring(frm,1,1)!="_"';
 $ord=strtolower(prmb(9)); $col=strto($ord,' ');
 $w='and nod="'.ses('qb').'" and re>"0" '.$wh;
@@ -77,7 +77,7 @@ return $ret;}
 static function menus_r($r){$ret='';
 $sty='border-left:1px dotted grey; margin:0 0 1px 0; padding-left:15px;';
 foreach($r as $k=>$v){[$lk,$d]=self::submn_t($k); $ret.=divc('',lka($lk,$d));
-if(is_array($v)){$ret.=divs($sty,md::menus_r($v));}}
+if(is_array($v)){$ret.=divs($sty,self::menus_r($v));}}
 return $ret;}//'&#9500;&#9472;'.
 
 static function submn_t($va){[$k,$v]=cprm($va);
@@ -111,7 +111,7 @@ return mkbub($ret,$inl,1,'');}
 static function mod_taxonomy($p,$o){$p=$p?$p:'taxonomy';
 $r=self::collect_hierarchie_c('reverse',$o);
 if($r){$ret=self::title($r,$p,63);
-$ret.=divc('taxonomy',md::menus_r($r));}
+$ret.=divc('taxonomy',self::menus_r($r));}
 return $ret;}
 
 static function taxo_arts($p){
@@ -269,7 +269,7 @@ foreach($r as $ka=>$va)foreach($va as $k=>$v)if($v){$rb=explode('/',$v);
 		$f='img/'.$vb; $s=is_file($f)?filesize($f):0;
 		if($s>20480 or ($o && $s<20480))$load[$ka][$k][]=$vb;}}
 if($load)$ret=self::home_plan($load);
-if($rb)return md::title($load,'Gallery',61).$ret;}
+if($rb)return self::title($load,'Gallery',61).$ret;}
 
 static function trkarts($p,$t,$d,$o,$rch=''){//see also api cmd:tracks
 $qda=db('qda'); $qdi=db('qdi'); $pg=$o?$o:1; $tri=$d==1?$qdi:$qda;
@@ -475,7 +475,7 @@ return $rb;}
 
 static function supermenu($r){static $i; $i++; $ret='';
 if(is_array($r))foreach($r as $k=>$v){$ret.=nchar($i,"-");
-	if(is_array($v))$ret.=$k.n().md::supermenu($v); else $ret.=$k.n();} $i--;
+	if(is_array($v))$ret.=$k.n().self::supermenu($v); else $ret.=$k.n();} $i--;
 return $ret;}
 
 //adm

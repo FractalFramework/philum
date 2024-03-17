@@ -71,7 +71,7 @@ static function save($d,$t){
 $f='_datas/svg/'.$t.'.svg'; mkdir_r($f);
 $ret='<?xml version="1.0" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-'.$d;//'.csscode('body{font-family:Arial;}').'
+'.$d;//'.head::csscode('body{font-family:Arial;}').'
 write_file($f,$ret);
 return $f;}
 
@@ -145,7 +145,7 @@ if($b!='attr')return tag($b,$pr,$v);}
 
 static function com($d){
 $d=deln($d); $d=str_replace("&nbsp;",' ',$d);//eco($d,1);
-return codeline::parse($d,'','svg');}
+return conb::parse($d,'svg');}
 
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$p;

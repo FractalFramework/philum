@@ -30,7 +30,7 @@ static function sav($p,$o,$r){
 $rb=sesmk('mysqli_profil'); $i=0;
 if($rb)foreach($rb as $k=>$v){$ra[$k]=$r[$i]; $i++;}
 $id=sql('id','profil','v','user="'.$r[0].'"');
-if($id)qr('update '.qd('profil').' set '.implode(',',sql::atmrk($ra,'')).' where user="'.$r[0].'" limit 1');
+if($id)qr('update profil set '.implode(',',sql::atmrk($ra,'')).' where user="'.$r[0].'" limit 1');
 else sql::sav('profil',$ra);
 return btn('txtyl','ok');}
 
@@ -50,14 +50,14 @@ $ret.=hidden('cp','0');
 $ret.=divc('',input('gps',$r['gps']).btj('GPS','geo()','popw'));
 $ret.=divc('',lj('popsav','bts_profil,sav_user,name,com,cp,gps_xd',nms(27)));
 $ret.=divc('','').br();
-if(!get('callj'))$ret.=divb('','','googleMap','height:200px;border:1px solid gray');
+if(!get('app'))$ret.=div('','','googleMap','height:200px;border:1px solid gray');
 return divc('form',$ret);}//on2cols($rb,700,5)
 
 #mysql
 static function mysqli_profil(){
 return ['user'=>'var','name'=>'var','com'=>'var','cp'=>'int','gps'=>'var','photo'=>'var','day'=>'int'];}
 
-static function profile_init($b){ses($b,qd($b));
+static function profile_init($b){
 sqlop::install($b,mysqli_profil(),0);}
 
 //load
@@ -75,10 +75,10 @@ static function home($p,$o){$rid='plg'.randid(); //echo $p.'-'.$o;
 profile_init('profil');
 $r=self::datas(ses('USE')); //p($r);
 if(strpos($r['gps'],'/')===false)$r['gps']='0/0';
-//Head::add('js','http://maps.googleapis.com/maps/api/js');
-Head::add('jscode',self::js($r['gps']));
+//head::add('js','http://maps.googleapis.com/maps/api/js');
+head::add('jscode',self::js($r['gps']));
 $ret=self::form($r,$o);
-//$ret.=jscode(self::js($r[5]));
+//$ret.=head::jscode(self::js($r[5]));
 return divd($rid,$ret);}
 }
 ?>

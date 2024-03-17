@@ -35,7 +35,7 @@ if($stt=='amical')$clr=$green;
 elseif($stt=='inamical')$clr=$orange;
 elseif($stt=='danger')$clr=$red;
 elseif($stt=='neutre')$clr=$yellow;
-elseif($stt=='indéfini')$clr=$white;
+elseif($stt=='indÃ©fini')$clr=$white;
 elseif($stt=='galaxy')$clr=$blue;
 else $clr=$gray;
 return $clr;}
@@ -196,7 +196,7 @@ $dcd=maths::dec2deg($v[3]); $dcg=deg2rad($dcd);
 $spc=$v[8]=='999999'?'G2V':''; //if($v[8]=='999999')echo $v[2].'-'.$rad;
 if($v[2] && $v[8]!=='')$r[]=[$v[1],$v[8],$rag,$dcg,$v[4],$spc,'','',$rah,$dcd];}} //pr($r);
 //$r[]=['','999998',4.7705666221178,-0.47449684597553,26100,'',0,0,273.33,-27.1867];//Galactic center/Sagitarius A
-//$r[]=['','999999',3.2799099968103,0.15751596499249,14.31,'G2V',0,0,12.5283,9.025];//Yooma 187.925°=12.52j
+//$r[]=['','999999',3.2799099968103,0.15751596499249,14.31,'G2V',0,0,12.5283,9.025];//Yooma 187.925Â°=12.52j
 //pr($r);
 $cols=['hd','hip','rarad','decrad','dist','spect','mag','lum','ra','dc'];//
 if($r)foreach($r as $k=>$v){
@@ -215,9 +215,9 @@ if($rb[$k]['hip']=='0'){$rb[$k]['status']='galaxy'; $rb[$k]['star']='Galactic Ce
 return $rb;}*/
 
 static function build($p,$o){$ra=[];
-$ra=msql::read('','ummo_exo_5','',1); $pb=$p;
+$ra=msql::read('','ummo_exo_5',1); $pb=$p;
 if($p=='knownstars')$pb=implode(',',array_keys_r($ra,8));
-if($p=='allstars'){$rb=msql::read('','ummo_exo_stars','',1);
+if($p=='allstars'){$rb=msql::read('','ummo_exo_stars',1);
 	$ra=array_merge($ra,$rb); $pb=implode(',',array_keys_r($ra,8));}
 $sq=star::sq($pb);
 $r=star::build($sq,1); //pr($r);

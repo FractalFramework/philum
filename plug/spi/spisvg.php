@@ -37,7 +37,7 @@ for(i=1;i<=120;i++){
 	if(ret=="N/A" || ret=="---")ret="-";
 	else if(ret.indexOf("?")!=-1)ret=ret.substr(0,ret.indexOf("?"));
 	else if(ret.indexOf("@")!=-1)ret=ret.substr(0,ret.indexOf("@"));
-	else if(ret.indexOf("±")!=-1)ret=ret.substr(0,ret.indexOf("±"));
+	else if(ret.indexOf("Â±")!=-1)ret=ret.substr(0,ret.indexOf("Â±"));
 	else if(ret.indexOf(" ")!=-1)ret=ret.substr(0,ret.indexOf(" "));
 	ret=parseFloat(ret);
 	if(ret<min)min=ret; if(ret>max)max=ret; r[i]=ret;}
@@ -85,10 +85,10 @@ elseif($o==2){$r=self::clr2(); $r=array_keys(array_flip($r));}
 else $r=self::$clr;
 $s='display:inline-block; color:black; padding:4px; border:1px solid black;';
 foreach($r as $k=>$v)$rt[]=bts('background:#'.$v.'; '.$s,$k);
-if($o==5 or $o==6)$bt='C°'; elseif($o==8)$bt='g/L'; elseif($o==9)$bt='g/Mol';
+if($o==5 or $o==6)$bt='CÂ°'; elseif($o==8)$bt='g/L'; elseif($o==9)$bt='g/Mol';
 elseif($o==10)$bt='isotopes'; elseif($o==2)$bt='positions'; elseif($o==12)$bt='origin';
 if($bt)$rt[]=bts('background:#ffffff; '.$s,$bt);
-return divb(join('',$rt));}
+return div(join('',$rt));}
 
 //atom
 static function atompos($ring,$sub,$pos,$i,$v,$o){
@@ -206,7 +206,7 @@ $ra=array_keys_r($r,$col); $min=0; $max=0; $rb=[]; $rc=[]; $ratio=1; $ratio1=1; 
 foreach($ra as $k=>$v){$v=str_replace(',','.',$v);
 	if($v=='N/A' or $v=='---')$v='-';
 	elseif(strpos($v,'@')!==false)$v=substr($v,0,strpos($v,'@'));
-	elseif(strpos($v,'±')!==false)$v=substr($v,0,strpos($v,'±'));
+	elseif(strpos($v,'Â±')!==false)$v=substr($v,0,strpos($v,'Â±'));
 	elseif(strpos($v,' ')!==false)$v=substr($v,0,strpos($v,' '));
 	elseif(strpos($v,'/')!==false)$v=substr($v,0,strpos($v,'/'));
 	if(intval($v)<$min)$min=$v; if(intval($v)>$max)$max=$v; $ra[$k]=$v;}//pr($ra);
@@ -225,18 +225,17 @@ return $rb;}
 
 static function clr2(){
 return msql::col('','public_atomic_3',4);
-//$r=msql::read_b('','public_atomic_3','',1);
 return array_keys_r($r,4);}
 
 static function patch(){
-$r=msql::read_b('','public_atomic_2','',1); $rb=self::$clr;
-$rh=['Nom','Symbole','Famille','Couche','Niveau orbital','Fusion','Ebulition (C°)','Découverte','Masse','Masse atomique (u)','Isotopes','Numéro atomique','clr','pos','free','deg','clr2'];
+$r=msql::read('','public_atomic_2',1); $rb=self::$clr;
+$rh=['Nom','Symbole','Famille','Couche','Niveau orbital','Fusion','Ebulition (CÂ°)','DÃ©couverte','Masse','Masse atomique (u)','Isotopes','NumÃ©ro atomique','clr','pos','free','deg','clr2'];
 foreach($r as $k=>$v)$r[$k][12]=$rb[$v[2]];
 msql::save('','public_atomic_2',$r,$rh);}
 
 //build
 static function build($p,$o){//$o=0;
-$r=msql::read('','public_atomic_1','',1);
+$r=msql::read('','public_atomic_1',1);
 [$mode,$clr]=expl('-',$o);
 $u=self::$unit;//unit
 if($mode=='linear'){$u=self::$unit=30; $w=49*$u; $h=10*$u;}
@@ -291,10 +290,10 @@ return $ret;}
 
 static function home($p,$o){$rid='spt';
 $p=$p?$p:self::$max; //$o=1;
-Head::add('csscode',self::css());
-Head::add('jscode',self::js($p,$o));
+head::add('csscode',self::css());
+head::add('jscode',self::js($p,$o));
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
-return $bt.divb($ret,'small',$rid);}
+return $bt.div($ret,'small',$rid);}
 }
 ?>

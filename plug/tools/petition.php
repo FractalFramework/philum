@@ -16,12 +16,12 @@ $msg=str_replace(array('_NAME','_TITLE','_URL'),array($name,$title,$url),$msg);
 return mail($mail,$title,$msg,'From: '.$url."\n","");}
 
 static function insert_verif($mail){
-$r=msql::read('users',nod('petition_'.ses('read')),'');
-if($r)foreach($r as $k=>$v){if($v[5]==hostname() or $v[1]==$mail)return true;}}
+$r=msql::read('',nod('petition_'.ses('read')));
+if($r)foreach($r as $k=>$v){if($v[5]==ip() or $v[1]==$mail)return true;}}
 
 static function insert($id,$optb,$prm=[]){$day=time();
 [$name,$mail,$web,$city,$country]=arr($prm,5);
-$arr=array($name,$mail,$web,$city,$country,hostname(),0);
+$arr=array($name,$mail,$web,$city,$country,ip(),0);
 $bk=lj('txtbox','petform_petition,form_'.$id,picto('before'));
 if(self::insert_verif($mail)==true)return self::hlp('alert_exists');
 if(strpos($mail,'@')===false or !$name)return $bk.' '.self::hlp('alert_value');
@@ -58,10 +58,10 @@ static function home($id,$p,$page=''){$p=$p?$p:10; $page=$page?$page:1;
 $keys=explode(',',self::hlp('entries').',host,valid');
 $defsb[msql::$m]=['name','mail','web','city','country','host','valid'];
 if(auth(6))$msq=msqbt('',ses('qb').'_petition_'.$id);
-$nod=$_SESSION['qb'].'_petition_'.$id;
-$r=msql::read_b('',$nod,'','',$defsb);
+$nod=nod('petition_'.$id);
+$r=msql::read('',$nod,'',$defsb);
 $ret=lj('txtbox','popup_petition,form___'.$id,self::hlp('sign')).$msq.br();
-if(get('confirm')){$ret.=self::confirm($r,$nod,$id); $r=msql::read('users',$nod);}
+if(get('confirm')){$ret.=self::confirm($r,$nod,$id); $r=msql::read('',$nod);}
 if($r)$ret.=divd('pet'.$id,self::read($r,$p,$page));
 return $ret;}
 }

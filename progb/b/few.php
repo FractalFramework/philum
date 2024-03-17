@@ -4,7 +4,7 @@ class few{
 #transports
 //export
 static function exportation($id,$node,$frm,$sub){
-$USE=$_SESSION['USE']; $mn=$_SESSION['mn']; $qb=$_SESSION['qb']; $dy=$_SESSION['dayb'];
+$USE=ses('USE'); $mn=$_SESSION['mn']; $qb=ses('qb'); $dy=$_SESSION['dayb'];
 $j='exp'.$id.'_few,exportation___'; $ret=''; $rte='';
 if($frm)$ret.=lj('popbt',$j.$id.'_'.$node,picto('left')).' ';
 if($node!=$qb && $mn)$ret.=slctmnuj($mn,$j.$id.'_',$qb,' ','k');
@@ -51,17 +51,16 @@ return divc('txtcadr',picto('lock').' '.nms(137).' : '.inputj('artpswd','',$j).l
 #seesrc
 static function seesrc($f){
 $bt=lj('','popup_few,seesrc2__3_'.ajx($f),pictit('file-html','code')).' ';
-[$title,$ret,$d,$defid,$defs]=conv::vacuum($f); $d=self::progcode($d);
+[$title,$ret,$d]=conv::vacuum($f); $d=self::progcode($d);
 return $bt.tagc('code','console',$d);}
 
-static function seesrc2($f){$d=get_file($f); 
-//$enc=detect_enc($d); if($enc=='UTF-8')$d=utf8dec_b($d);
+static function seesrc2($f){$d=get_file($f);
 $d=self::progcode($d);
 return tagc('code','console',$d);}
 
 static function insrc($f){
 $bt=lj('popsav','popup_edit,com_insrc_x_'.ajx($f),pictxt('save','take it'));
-return divb($bt).textarea('insrc','',64,8);}
+return div($bt).textarea('insrc','',64,8);}
 
 static function progcode($d){$d=delbr($d,"\n");
 ini_set('highlight.comment','orange');
@@ -101,7 +100,7 @@ return $ret;}
 
 static function archives($cyear){
 $first=ma::oldestart(); $ret='';
-//$last=ma::lastart();
+//$last=ma::lastartid();
 if(!$first)$first=0; 
 $first_year=date('y',$first); 
 $actual_year=date('y');
@@ -129,8 +128,8 @@ return $ret;}
 
 #fonts
 static function inject_fonts(){$dr='fonts/'; $ret='';
-$ra=msql::read('server','edition_typos',''); $vra=array_keys_r($ra,0);
-$rb=msql::read('system','edition_typos',''); $vrb=array_keys_r($rb,0);
+$ra=msql::read('server','edition_typos'); $vra=array_keys_r($ra,0);
+$rb=msql::read('system','edition_typos'); $vrb=array_keys_r($rb,0);
 $rc=explore($dr,'files',1); $vrf[]=1;
 if($rc)foreach($rc as $k=>$v){[$nm,$xt]=split_right('.',$v,1,1);//add
 	if($xt=='woff' or $xt=='eot' or $xt=='svg'){// or $xt=='ttf'

@@ -1,6 +1,6 @@
-<?php //pictocss
+<?php 
 class pictocss{
-static function bt($d){return span(atc('philum ic-'.$d),'').br();}
+static function bt($d){return span('','philum ic-'.$d).br();}
 
 static function demo($p){
 return $p.':'.self::bt($p);}
@@ -13,7 +13,7 @@ return $ret;}
 static function all(){$ret='';
 $r=msql::kv('system','edition_pictos','',1);
 foreach($r as $k=>$v)$rb[$k]=hexdec($v); asort($rb);
-foreach($rb as $k=>$v)$ret.=span(att($k),picto($k,24)).' ';
+foreach($rb as $k=>$v)$ret.=btp(att($k),picto($k,24)).' ';
 return $ret;}
 
 static function build($p,$o){
@@ -33,7 +33,7 @@ $ret.=lj('',$rid.'_pictocss,build',picto('save')).' ';
 return $ret;}
 
 static function home($p,$o){$rid=randid('plg');
-Head::add('csslink','/css/_pictos.css');
+head::add('csslink','/css/_pictos.css');
 $bt=self::menu($p,$o,$rid);
 $bt.=msqbt('system','edition_pictos');
 //$ret.=self::build($p,$o);

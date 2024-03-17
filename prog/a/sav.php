@@ -352,17 +352,17 @@ $ret.=tagb('section',tagb('header',$ti).tag('article',$rp,$d));
 return $ret;}
 
 //upload
-static function uploadsav($id,$type,$dsk){$rid='upfile'.$id;
-$f=$_FILES[$rid]['name']??''; $f_tmp=$_FILES[$rid]['tmp_name']??'';
+static function uploadsav($id,$type,$dsk){$rid='upfile'.$id; //echo ini_get("upload_max_filesize");
+$f=$_FILES[$rid]['name']??''; $ft=$_FILES[$rid]['tmp_name']??''; $fn=$_FILES[$rid]['full_path']??'';
 if(!$f)return 'no file uploaded '; $er=''; $rep=''; $w='';
 $f=str::normalize($f,2); $xt=xt($f); $qb=ses('qb'); if(!auth(4))return;
 $goodxt='.mp4.m4a.mov.mpg.mp3.mkv.mid.wav.jpg.png.gif.pdf.txt.docx.rar.zip.tar.gz.svg.webp.webm.ods.odt'.prmb(23);
 if(stristr($goodxt,$xt)===false)$er=$xt.'=forbidden; ';
 if(stristr('.jpg.png.gif.mp3.mp4.pdf',$xt)===false)$w=':w';
-$fsize=$_FILES[$rid]['size']/1024; $uplimit=prms('uplimit');
+$fsize=round($_FILES[$rid]['size']/1024); $uplimit=prms('uplimit');//prms12=200000
 if($fsize>=$uplimit)$er.='maxsize:'.$uplimit.'Ko ';
 elseif($fsize===0)$er.='file=0Ko ';
-if(stristr('.m4a.mpg.mp4.webm',$xt)!==false)$rep='users/'.$qb.'/video/';
+if(stristr('.m4a.mpg.mp4.webm',$xt)!==false)$rep='video/';
 elseif(stristr('.rar.txt.pdf.svg',$xt)!==false)$rep='users/'.$qb.'/docs/';
 elseif(stristr('.mp3.mid',$xt)!==false)$rep='users/'.$qb.'/mp3/'; 
 if($type=='banim'){$fb='ban/'.$qb.'.jpg'; $dir='imgb/';}
@@ -373,14 +373,14 @@ elseif($type=='disk'){$dir='users/'.$dsk.'/'; $fb=$f; if($dsk!=$qb)mkdir_r($dir)
 elseif($type=='trk'){$fb=$qb.'_'.substr($id,2).'_'.substr(md5($f),0,6).$xt; $dir=$rep?$rep:'img/';}
 else{$fb=$qb.'_'.$id.'_'.substr(md5($f),0,6).$xt; $dir=$rep?$rep:'img/';}
 if(!is_dir($dir))mkdir_r($dir); $fc=$dir.$fb;
-if(is_uploaded_file($f_tmp) && !$er){
-	if(!move_uploaded_file($f_tmp,$fc))$er.='not saved';
+if(is_uploaded_file($ft)){// && !$er
+	if(!move_uploaded_file($ft,$fc))$er.='not saved';
 	if($type=='art' && is_img($fc)){conn::add_im_img($fb,$id);}//conn::add_im_msg($id,'',$fb.$w);
 	if($xt=='.tar' or $xt=='.gz')unpack_gz($fc,$dir);}
 else $er.='upload refused: '.$fb;
 if(!$er && $type=='avnim')img::build($fc,$fc,72,72,2);
 if($er)return divc('frame-red',picto('false').' '.$fc.': '.$er);
-elseif($type=='disk' or !is_img($fc))return divc('frame-blue',ljb('','insert','['.strfrom($fc,'/').']',$fc));
+elseif($type=='disk' or !is_img($fc))return divc('frame-blue',ljb('','insert','['.$fc.']',$fc));
 elseif($type=='art')return self::placeim($id);
 elseif($type=='trk')return self::placeimtrk($fb,$id);
 else return image($fc,48,48).btn('txtx',picto('true').' '.$fc);}

@@ -8,6 +8,8 @@ static function pub_float($d){[$d,$o]=cprm($d); return divs('float:'.($o?'right'
 static function pub_clr($d,$o=''){if(!$o)[$d,$o]=cprm($d); return bts('color:'.$o,$d);}
 static function pub_size($d){[$d,$o]=cprm($d); $s='font-size:'.$o.'px; line-height:'.round($o*1.2).'px;';
 return tag('font',['style'=>$s],$d);}
+static function pub_style($d){[$d,$o]=cprm($d); return tag('font',['style'=>$s],$d);}
+static function pub_overline($d){return tag('font',['style'=>'text-decoration:overline'],$d);}
 static function pub_html($d){[$p,$o]=split_right('|',$d); $r=explode_k($o,' ','=');
 $ra=['css'=>'class','font'=>'font-family','size'=>'font-size']; $rb=colors(); $atb='';
 foreach($r as $k=>$v){if($k=='color')$v=$rb[$v]?$rb[$v]:'#'.$v; $atb.=(isset($ra[$k])?$ra[$k]:$k).':'.$v.'; ';}
@@ -36,6 +38,11 @@ $f=goodroot($mg,1);
 if(file_exists($f))[$w,$h]=getimagesize($f);
 return divs('background-image: url(/img/'.$mg.'); background-repeat:no-repeat;  background-position:center center; background-size:cover; background-attachment:fixed; height:90%;',$d);}//'.$h.'px
 
+static function underline($d,$m){$sty='2px solid';
+[$d,$c]=cprm($d); if(!$c)$c='red'; //if($m<3)return $d;
+if($c=='double'){$sty='3px double'; $c='black';}
+return bts('border-bottom:'.$sty.' '.$c,$d);}
+
 static function wiki($d,$o){[$u,$v]=cprm($d);
 if($o)return wiki::call($u,1);
 if(substr($u,0,4)!='http')$u='https://fr.wikipedia.org/wiki/'.urlutf($u);
@@ -55,7 +62,8 @@ static function download($d,$t=''){//$f=goodroot($f);//root_security
 if(strpos($d,'|'))[$d,$t]=split_one('|',$d); [$f,$nm]=prepdlink($d); if($t==1)$t=strend($d,'/');
 if(!is_file($f))$g='img/'.$f; if(!is_file($f))$f='users/'.$f;
 if(is_http($d))return lkc('small',$d,pictxt('chain',$t));//$nm
-elseif(is_file($f)){$size=' '.btn('small','('.fsize($f,1).')'); $nbd=self::nbdwnl($f);
+elseif(is_file($f)){$sz=fsize($f,1); $ft=ftime($f,'ymd');
+	$size=' '.btn('small','('.$ft.', '.$sz.')'); $nbd=self::nbdwnl($f);
 	return lk('app/download/'.base64_encode($f),pictxt('download',$t)).$size.$nbd;}//.' '.$nm
 else return btn('small',$nm.' (file not exists)');}
 
@@ -153,11 +161,6 @@ static function frame($d,$m){
 $r=['white','blue','green','cyan','yellow','purple','orange','black'];
 if(in_array($c,$r))return divc('frame-'.$c,$d);
 return divs('padding:6px; border:1px solid '.$c,$d);}
-
-static function underline($d,$m){$sty='1px solid';
-[$d,$c]=cprm($d); if(!$c)$c='red'; //if($m<3)return $d;
-if($c=='double'){$sty='3px double'; $c='black';}
-return bts('border-bottom:'.$sty.' '.$c,$d);}
 
 static function nh($d,$id,$nl){static $i; $i++;//.'-'.$i
 if(!$nl)return togbub('usg,nbp',$d.'-'.$i.'_'.$id,$d,'',atn('nh'.$d),0);//over

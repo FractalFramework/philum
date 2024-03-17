@@ -7,7 +7,7 @@ return art::output_trk(ma::read_idy($g1,'ASC'));}
 
 static function delconn($g1){$d=sql('msg','qdm','v',$g1); 
 $d=html_entity_decode($d,true,ses::$enc);
-$d=codeline::parse($d,'','delconn'); return str::clean_lines($d);}
+$d=conb::parse($d,'delconn'); return str::clean_lines($d);}
 
 static function editbrut($g1,$g2,$prm){
 $p1=$prm[0]??''; if($p1)adm::artsav($p1,$g1);
@@ -17,27 +17,33 @@ static function txt($g1,$g2){return $ret=divc($g2,$g1);}
 static function img($g1,$g2){return $ret=image($g1,$g2);}
 static function audio($g1,$g2){return $ret=audio($g1,$g2);}
 static function video($g1,$g2){return $ret=video($g1,$g2);}
-static function popim($g1){[$w,$h]=getimagesize($g1); return usg::photo($g1,$w,$h,get('sz'));}
-static function poptxt($g1){$s='display:block; min-width:440px;';
-return $ret=div(atc('twit').ats($s),sesr('delaytxt',$g1));}
+static function popim($g1){[$w,$h]=getimagesize($g1); return self::photo($g1,$w,$h,get('sz'));}
+static function poptxt($g1){return div(sesr('delaytxt',$g1),'twit','','display:block; min-width:440px;');}
 static function popfile($g1){return nl2br(str::cleanmail(read_file($g1)));}
 static function popread($g1){return ma::read_msg($g1,3);}
-static function popmsql($g1,$g2,$g3){$r=msql_read($g1,$g2,$g3,1); if($r)return divtable($r,1);}
-static function popmsqt($g1,$g2,$g3,$g4){$rt=msql_read($g1,$g2,$g3); if(is_array($rt))$rt=$rt[$g4?$g4:0]??'';
-$ret=''; if(auth(6))$ret=msqbt($g1,$g2,$g3).' '; if($rt)$ret.=nl2br(stripslashes($rt));
+static function popmsql($g1,$g2,$g3){$r=msql::mul($g1,$g2,$g3,1); if($r)return divtable($r,1);}
+static function popmsqt($g1,$g2,$g3,$g4){$ret=''; $d='';
+$r=msql::row($g1,$g2,$g3,is_numeric($g4)?0:1); if($r)$d=$r[$g4?$g4:0]??'';
+if(auth(6))$ret=msqbt($g1,$g2,$g3).' '; if($d)$ret.=nl2br($d);
 ses::$r['popm']=$g2.' '.$g3.' '.$g4; return $ret;}
 static function yesno($g1,$g2){return offon($g1,$g2);}
 static function togno($g1,$g2){return togon($g1,$g2);}
+static function valid($g1,$g2){return valid($g1,$g2);}
 
 static function fbcall($u){
 $d=curl_get_contents($u); $d=($d);
 $ret=conv::html_detect($d,'<div class="_5pcr userContentWrapper"');
 if(!$ret)$ret=conv::html_detect($d,'<p class="_1q3v">');
-$ret.=div('',lkt('txtx',$u,pictxt('link',domain($u))));
+$ret.=div(lkt('txtx',$u,pictxt('link',domain($u))));
 return divc('panel justy',$ret);}
 
 static function call($g1,$g2,$prm){
 return $ret=$g1($g2,'',$prm);}
+
+static function switchcss($g1,$g2,$prm){
+$r=expl('_',$g1,4); $d=$r[3]=='neg'?'n':'d';
+cookz('night'); $_SESSION['negcss']=$d=='n'?1:0;
+return picto($d=='n'?'moon':'light');}
 
 #photo
 static function photosbt($im,$sz,$id,$j){$ret=''; $n=1;
@@ -64,23 +70,23 @@ static function photo($im,$dim,$sz,$id){
 $img=goodroot($im); [$w,$h]=self::bestdim($dim,$sz,$img,1);
 if(!$id)[$hub,$id,$nm]=expl('_',$im,3);
 $bt=lj('','pagup_usg,overim__x_'.ajx($im).'_'.$dim.'_'.$sz.'_'.$id,picto('fullscreen'));
-if($id)$bt.=self::photosbt($im,$sz,$id,'popup_usg,photo__x_');
+if(is_numeric($id))$bt.=self::photosbt($im,$sz,$id,'popup_usg,photo__x_');
 ses::$r['popm']=$bt; ses::$r['popw']=$w; ses::$r['popt']=sql('dc','qdg','v','im="'.$im.'"');
 $s='overflow:auto; width:auto; height:auto;';
-return div(ats($s),image($img,'auto','100%'));}
+return divs($s,image($img,'auto','100%'));}
 
 static function overim($im,$dim,$sz,$id){$bt='';
 $img=goodroot($im); [$w,$h]=self::bestdim($dim,$sz,$img,0);
 $bt=lj('','popup_usg,photo__x_'.ajx($im).'_'.$dim.'_'.$sz.'_'.$id,picto('popup'));
-if($id)$bt.=self::photosbt($im,$sz,$id,'pagup_usg,overim__x_');
+if(is_numeric($id))$bt.=self::photosbt($im,$sz,$id,'pagup_usg,overim__x_');
 ses::$r['popm']=$bt; ses::$r['popw']=$w; ses::$r['popt']=sql('dc','qdg','v','im="'.$im.'"');
 $s='overflow:auto; width:100%; height:'.($h+4).'px;';
-return div(ats($s),image($img,'100%','auto'));}
+return divs($s,image($img,'100%','auto'));}
 
 //video
-static function playvideo($iv,$cr_div,$n){
-$r=$_SESSION['iv'.$iv]; ses::$r['curdiv']=$cr_div;
-$jx='iv'.$iv.'_usg,playvideo___'.$iv.'_'.$cr_div.'_';
+static function playvideo($iv,$n){
+$r=$_SESSION['iv'.$iv];
+$jx='iv'.$iv.'_usg,playvideo___'.$iv.'_';
 $ret=divc('nbp right',self::nb_pages_j($r,$jx,$n));
 $ret.=tagb('h3',lk(htac('read').$r[$n][0],ma::suj_of_id($r[$n][0])));
 $ret.=video::any(strfrom($r[$n][1],'|'),$r[$n][0],3);
@@ -88,14 +94,14 @@ return $ret.br();}
 
 static function videoboard($p,$c,$o){static $iv; $iv++; $ra=[]; 
 [$pa,$pb]=split_right('-',$p,0);
-if($pa=='priority')$pa=11; if($pa=='cat')$pa=1; if($pa=='tag')$pa=5; 
-if(!is_numeric($pa)){$pb=$p; $pa=5;} if($pb==1)$pb=ses('frm');
+$pa=match($pa){'priority'=>'re','cat'=>'frm','tag'=>'thm',default=>'tag'};
+if($pa=='thm')$pb=$p; elseif($pb==1)$pb=ses('frm');
 if(strpos($pb,'|')!==false){$rc=explode('|',$pb); $nc=count($rc);}
-if($nc>0){foreach($rc as $k=>$v){$rab=ma::tri_rqt((string)$v,$pa); if($rab)$ra=$rab;}}
-elseif($pb)$ra=ma::tri_rqt($pb,$pa); else $ra=$_SESSION['rqt'];
-if($ra){$ra=array_keys($ra); $min=min($ra);
+if($nc>0){foreach($rc as $k=>$v){$rab=ma::rqtcol([$pa=>$v]); if($rab)$ra=$rab;}}
+elseif($pb)$ra=ma::rqtcol([$pa=>$pb]); else $ra=ma::rqtall('id','k');
+if($ra){$min=min($ra);
 $r=self::search_conn($ra,$min,':video'); $_SESSION['iv'.$iv]=$r;
-if($r)return divd('iv'.$iv,self::playvideo($iv,ses::r('curdiv'),0));}}
+if($r)return divd('iv'.$iv,self::playvideo($iv,0));}}
 
 static function search_conn($ra,$min,$cn){
 $req=sql::com('id,msg','qdm','id>="'.$min.'" and msg like "%'.$cn.'%" order by id desc');
@@ -134,9 +140,7 @@ return divc('twit small scroll',conn::read2(trim($ret),3,$id));}
 
 //dropmenu
 static function dropmenuform($id,$rid,$v,$opt){//mc::assistant($id,$j,$jv,$va,$chk);
-if($opt)$bt='getbyid(\''.$opt.$rid.'\').innerHTML=val;'; else $bt='';
-return input('adc'.$rid,$v).btj('ok','var val=getbyid(\'adc'.$rid.'\').value; 
-if(val){'.$bt.' getbyid(\''.$id.'\').value=val;}','popbt');}// Close(\'popup\');
+return input('adc'.$rid,$v).btj('ok',atjr('transportval',[$id,$rid,$opt]),'popbt');}
 
 static function dropmenu_jb($r,$id,$rid,$opt='',$n=''){//sav::catslct
 if($n)$vac=sav::find_vaccum($n); else $vac=''; $ret='';
@@ -164,27 +168,34 @@ return divc('list',$ret);}
 
 //select_j
 static function slct_r($d,$o,$vrf=''){$cl=0; $r=[];
-switch($d){case('parent'):$r=sav::newartparent(); break;
-	case('cat'):$r=ses('line'); if($r)array_unshift($r,''); if($r)ksort($r); break;
+switch($d){
+	case('parent'):$r=sav::newartparent(); break;
+	case('cat'):$r=sesmk2('boot','cats'); if($r)array_unshift($r,''); if($r)ksort($r); break;
 	case('tag'):$cat=$o=='utag'?ses('iq'):$o; $nbd=rstr(3)&&!is_numeric($o)?60:ma::maxdays();
 		$r=ma::tags_list_nb($cat,$nbd); if($r)ksort($r); break;//'tag'=>1
+	case('lang'): $r=explode(' ',prmb(26)); $r=array_combine($r,$r); break;
+	case('ovcat'):$r=sesmk2('usg','overcats'); if($r)array_unshift($r,''); if($r)ksort($r); break;
 	case('pri'):$r=[1=>0,2=>1,3=>2,4=>3,5=>4]; break;
 	case('vfld'):$r=sql('msg','qdd','k','val="folder"'); $cl=0; break;
 	case('lang'):$r=array_flip(explode(' ',prmb(26))); $cl=0; break;
-	case('msql'):[$dr,$nd,$vn]=msqa::murlvars($o); $r=msql::read($dr,$nd,'',1);
+	case('msql'):[$dr,$nd,$vn]=msqa::murlvars($o); $r=msql::read($dr,$nd,1);
 		if($r)$r=array_flip(array_keys($r)); break;
 	case('msqlb'):[$dr,$nd,$vn]=msqa::murlvars($o); $r=msql::kx($dr,$nd,$vn?$vn:0); break;
 	case('msqlc'):[$dr,$nd,$vn]=msqa::murlvars($o);
-		$ra=msql::read($dr,$nd,'',1); $vrf=$vn?$vn:0;
-		if($ra)foreach($ra as $k=>$v){$v=str::htmlentities_b($v[$vrf]); $r[$v]=$v;}
+		$ra=msql::read($dr,$nd,1); $vrf=$vn?$vn:0;
+		if($ra)foreach($ra as $k=>$v){$va=$v[$vrf]; $r[$va]=$va;}
 		if($r)ksort($r); break;
-	case('plug'):$r=msql_read('system','program_plugs'); if($r)ksort($r); break;
-	case('func'):if($o)$r=call_user_func($o); $r=array_keys($r); if($r)ksort($r); break;
+	case('plug'):$r=msql::read('system','program_plugs'); if($r)ksort($r); break;
+	case('func'):if($o)$r=$o(); $r=array_keys($r); if($r)ksort($r); break;
 	case('pclass'):[$a,$m,$p]=expl('/',$o,3); if(method_exists($a,$m))$r=$a::$m($p); break;
-	default: if(strpos($d,'|'))$r=array_flip(explode('|',$d));
-		else $r=array_flip(explode(' ',$d)); break;}
+	default: $s=strpos($d,'|')?'|':' '; $r=array_flip(explode($s,$d)); break;}
 if($r && $cl)$r=array_unshift_b($r,'','x');
 return $r;}
+
+static function overcats(){$r=[];
+$r=sql('id,msg','qdd','kv',['val'=>'surcat']);//'ib'=>ses('qbd'),
+if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rt[$ov]=1;}
+return $rt;}
 
 static function getparent($id){
 $r=sav::newartparent(); $ib=sql('ib','qda','v',$id); $ret='';
@@ -194,13 +205,13 @@ return scroll($r,divc('list',$ret),10,'','240');}
 static function hidslct($id,$d,$vrf='',$o='',$prm=[]){//hidj//select_j()
 $vrf=$prm[0]??$vrf; if($d=='date')return self::dropmenuform($id,$id,$vrf,'bt',$o);
 $r=self::slct_r($d,$o,$vrf); $ret=''; ses::$r['popw']=320;
-if($d=='msql')$o='1'; elseif($d=='msqlb' or $d=='msqlc')$o=''; 
+if($d=='msql')$o='1'; elseif($d=='msqlb' or $d=='msqlc')$o='';
 elseif($d=='pclass')$o=3; //elseif($d=='tag')$o=1;
-if(is_array($r))foreach($r as $k=>$v){$c=active($k,$vrf); $k=addslashes($k);
+if(is_array($r))foreach($r as $k=>$v){$c=active($k,$vrf); $k=addslashes($k);//addib
 	if(is_array($v) or is_numeric($v))$v=$k; $v=stripslashes($v);
 	if(strpos($d,'|')===false)$t=$k?$k:$d; elseif($k)$t=$k; elseif($vrf)$t=$vrf; else $t='';
 	if($t=='-')$t='...';
-	if($v && $d=='tag')$ret.=ljb($c,'jumpvalue',[$id,ajx($t),''],$v);
+	if($v && ($d=='tag' or $d=='lang'))$ret.=ljb($c,'addval',[$id,ajx($t),'|'],$v);//
 	elseif($v)$ret.=ljb($c,'hidslct',[$id,$k,ajx($t),$o],$v);}
 if($o>=2)$ret.=self::dropmenuform($id,$id,$vrf,'bt',$o);
 //$ret=scroll($r,$ret,40,'');
@@ -224,29 +235,41 @@ return divc('list',$ret);}
 static function putses($k,$v){
 if($k!='auth' && $k!='USE')return $_SESSION[$k]=$v;}
 
+static function setlng($g1){
+$ret=self::putses('lang',$g1);
+ses('lng',$g1!='all'?$g1:prmb(25));
+$_SESSION['nms']=msql::col('lang','helps_nominations',0,1);
+return $ret;}
+
 static function cookprefs($p){
 $r=['iq'=>ses('iq')];
 $ex=sql('id','qdk','v',$r);
 if($ex)sqlup('qdk',['ok'=>$p],$ex,0);
-else{$r+=['ok'=>$p,'usr'=>'','time'=>mysqldate()]; $ex=sqlsav('qdk',$r,0);}
+else{$r+=['ok'=>$p,'usr'=>'','time'=>sqldate()]; $ex=sqlsav('qdk',$r,0);}
 if($p==1)cookie('iq',$r['iq']); //if($use=ses('USE'))cookie('use',$use);
 if($ex)ses('iqa',$p);}
 
 #convhtml
-static function html2conn($ret){ses::$urlsrc=host().'/';
-$ret=str::decode_unicode($ret); $ret=str::embed_links($ret); $ret=conv::call($ret);
-$ret=str::html_entity_decode_b($ret); $ret=html_entity_decode($ret); $ret=str::clean_prespace($ret);
-$ret=str_replace(['[img/','[users/'],'',$ret);
-return $ret;}
+static function html2conn($d){ses::$urlsrc=host().'/';
+$d=conv::call($d);//$d=str::embed_links($d);
+//$d=str::html_entity_decode_b($d); $d=html_entity_decode($d); $d=str::clean_prespace($d);
+$d=str_replace(['[img/','[users/'],'',$d);
+return $d;}
 
 static function conn2($g1){$d=sql('msg','qdm','v',$g1); 
 $d=conn::read($d,'',$g1,1); return str_replace('</p>',"</p>\n",$d);}
 
-static function iframe($g1){$sz=get('sz'); [$w,$h]=expl('-',$sz); $s=$w>400?$w:cw();
+#windows
+static function slctmod($g1){
+return boot::select_mods(yesnoses('slctm')?$g1:'');}
+
+static function iframe($g1){$sz=get('sz'); [$w,$h]=expl('-',$sz); $s=$w>400?$w:prma('content');
 ses::$r['popm']=lkt('',$g1,pictxt('pdf',domain($g1))); ses::$r['popw']=$s;
 return iframe($g1,$s-20);}
 
-static function site($g1,$g2){
-return iframe('index.php'.($g1?'?'.$g1.'='.$g2:''),cw());}
+static function site($g1,$g2,$g3){
+if($sz=get('sz'))[$w,$h]=expl('-',$sz,2); if(!$w)$w=prma('content');
+$u='index.php'; if($g1)$u.='/'.$g1; if($g2)$u.='/'.$g2;
+return iframe($u,$w,$h);}
 }
 ?>

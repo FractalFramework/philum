@@ -10,7 +10,7 @@ $r=explode('/',$f); if($r[0]!='params')
 return base64_encode(file_get_contents($f));}
 
 static function patch($p=''){$ret='';
-$r=msql::read('system','program_patches','',1);
+$r=msql::read('system','program_patches',1);
 $rb=msql::col('server','program_patches',0,1);
 if($r)foreach($r as $k=>$v)if(!val($rb,$k))$ret.=lj('','popup_software,patch___'.$k,$k);
 if($ret)$ret=btn('txtyl','patch needed: '.$ret);
@@ -24,11 +24,11 @@ static function tabler($r){
 return divc('scroll',tabler($r[0],['updated']).tabler($r[1],['created']).tabler($r[2],['deleted']));}
 static function details(){$r=json::read('srv','upd'); if($r)return self::tabler($r);}
 static function rapport($r){return lj('txtalert','updb_pubdate,call',count($r[0]).' files updated, '.count($r[1]).' files created, '.count($r[2]).' files deleted');}
-static function notes(){$r=msql::read('system','program_updates_'.date('ym'),'',1);
+static function notes(){$r=msql::read('system','program_updates_'.date('ym'),1);
 $r=array_reverse($r); return tabler($r);}
 
 static function state($p=''){$ret='';
-$localver=checkversion(2); $distver=checkupdate(2); if($p)$localver=$distver;
+$localver=checkversion(2); $distver=sesmk('checkupdate',2,1); if($p)$localver=$distver;
 $f=json::url('srv','upd'); $date=ftime($f,'ymd.Hi');
 if($p)$r[]=btn('txtcadr',helps('softwareupdated'));
 elseif(prms('aupdate'))$r[]=btn('txtx',helps('updateno'));
@@ -55,7 +55,7 @@ return $no;}
 static function datas($dr,$k,$f){$no=self::exceptions($dr,$f);
 if(!$no)return [$f,ftime($f)];}//,fsize($f)
 
-static function recense($dr){$r=scandir_r($dr); $rb=[];
+static function recense($dr){$r=scanfiles($dr); $rb=[];
 foreach($r as $k=>$v)if(!self::exceptions($dr,$v))$rb[$v]=ftime($v); return $rb;}
 
 static function build($p=''){$rb=[];
@@ -78,8 +78,8 @@ return [$rc,$rd,$re];}
 
 static function archive($u){//u:calling server
 $f=http($u).'/'.json::url('srv','upd');
-$d=file_get_contents($f);
-$r=json_decode($d,true);
+$r=$_POST;//json
+if(!$r){$d=file_get_contents($f); $r=json_decode($d,true);}
 if($r)$r=array_merge($r[0],$r[1]);
 $f='_backup/upd.tar.gz';//work file
 return tar::files($f,$r);}
@@ -94,7 +94,9 @@ if($rb)$rc=self::compare($ra,$rb);
 if($rc)foreach($rc[2] as $k=>$v)unlink($v);//old files
 json::write('srv','upd',$rc);//needed files
 $f=upsrv().'/call/software,archive/'.nohttp(host());//distant will build archive
-$fa=file_get_contents($f); $fb='_backup/upd.tar.gz'; copy(upsrv().'/'.$fa,$fb);
+if(ses::$local)$fa=curl_get_contents($f,json_encode($rc),1);
+else $fa=file_get_contents($f);
+$fb='_backup/upd.tar.gz'; copy(upsrv().'/'.$fa,$fb);
 tar::untar($fb,'');//install files
 return divd('updb',self::state($p).self::rapport($rc).self::tabler($rc));}
 

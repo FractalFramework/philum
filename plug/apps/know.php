@@ -2,7 +2,6 @@
 class know{
 
 static function build($p,$o){
-//$r=msql::read_b('',nod('know_1'));//p($r);
 $ret=$p.'-'.$o;
 return $ret;}
 

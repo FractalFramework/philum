@@ -6,7 +6,7 @@ foreach($r as $k=>$v)foreach($v as $ka=>$va)$r[$k][$ka]='"'.$va.'"';
 return $r;}
 
 static function bt_func($d){
-//$d=codeline::parse($d,'','delconn');
+//$d=conb::parse($d,'delconn');
 if(strpos($d,'|'))$d=strto(strend($d,'|'),']');
 $d=trim($d);
 return $d;}

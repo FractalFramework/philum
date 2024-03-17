@@ -2,7 +2,7 @@
 class video{
 static $rp=['youtube','youtu','vimeo','rumble','vk','rutube','dailymotion','framatube','crowdbunker','ted','livestream'];
 
-static function detect($f,$o='',$t='',$op=''){$fb=$f;
+static function detect($f,$o='',$t='',$op=''){if(!$f)return; $fb=$f;
 //if(strpos($f,'/')===false)return '['.$f.'|'.$t.':'.$o.'video]';
 $f=nohttp($f); $fa=httproot($f); $ret='';
 if(strpos($f,'#'))$f=strto($f,'#'); $f=urldecode($f);//if(strpos($f,'?'))$f=strend($f,'?');
@@ -31,7 +31,7 @@ if($ret){
 	else return '['.$ret.$t.':video]';}}
 
 static function extractid($g1,$o,$prm=[]){$p1=$prm[0]??$g1;
-$d=video::detect($p1,'','',''); if(!$d)$d='['.$g1.':video]';
+$d=self::detect($p1,'','',''); if(!$d)$d='['.$g1.':video]';
 return $d;}
 
 static function extractpr($f){

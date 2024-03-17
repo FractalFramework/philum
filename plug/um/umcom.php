@@ -11,12 +11,10 @@ if($p=='last')$p=umrec::req_last('All');
 if(!is_numeric($p))$p=ma::id_of_urlsuj('['.$p.']');
 //$_SESSION['memcom'][$p]+=1;
 if(!$p)return 'nothing';
-if(!rstr(8))$com='com2'; else $com='com';
+$com='com';//2 if !rstr8
 if($o)return self::bt($p,$o);
 $ret=umrec::call($p,$o,$com); $ret=delbr($ret);
-if(!rstr(8))return tagb('blockquote',$ret);
-$bt=divc('right',lkt('','/app/umcom/'.$p,picto('chain')));
-return tagb('blockquote',divd('umrec'.$p,$ret));}//$bt.
+return tag('blockquote',['id'=>'umrec'.$p],$ret);}
 
 static function menu($p,$o,$rid){
 $j=$rid.'_umcom,call_inp';

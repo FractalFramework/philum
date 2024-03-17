@@ -89,7 +89,7 @@ case('atpos'):$n=count($defs); $defs=self::save_css_displace($defs,$res,$o);
 	if(count($defs)==$n)msql::save($bd,$nod,$defs); break;
 case('save'):msql::save($bd,$nod,$defs); //if(rstr(63))
 	self::build_css($ftmp,$defs); self::build_css($fcss,$defs); self::build_css($fcss,$defs,1); break;
-case('backup'):msql::save($bd,$nod,$defs,[],1); self::save_clr($noc.'_sav'); break;
+case('backup'):msql::save($bd,$nod,$defs,[],1); self::save_clr($noc,1); break;
 case('apply'):msql::save($bd,$nod,$defs); self::save_clr($noc);
 	self::build_css($fcss,$defs); self::informe_config_design(); break;
 case('test_design'):$_SESSION['prmd']=ses('desgn'); break;
@@ -198,9 +198,10 @@ return $ret;}
 static function css_default($o=''){$o=$o?$o:'2';
 return msql::read('system','default_css_'.$o);}
 
-static function save_clr($nod){$r=$_SESSION['clrs'][$_SESSION['clrset']]; 
+static function save_clr($nod,$o=''){
+$r=$_SESSION['clrs'][$_SESSION['clrset']]; 
 if($r)foreach($r as $k=>$v)if($v)$rb[$k]=[$v]; $rb[]=[];
-if($rb)msql::save('design',$nod,$rb); return $rb;}
+if($rb)msql::save('design',$nod,$rb,[],$o); return $rb;}
 
 static function reorder_keys($r){$i=0; $ret=[];
 if($r)foreach($r as $k=>$v){if($k!=msql::$m){$i++; $k=$i;} $ret[$k]=$v;}

@@ -1,7 +1,7 @@
-<?php //uclock
+<?php 
 //http://www.ummo-sciences.org/activ/analyses/ana26.pdf
 class uclock{
-static function needle_css($id,$sz,$clr,$w,$h){return '
+static function needle($id,$sz,$clr,$w,$h){return '
 	#'.$id.'{
 		background:'.$clr.';
 		width:'.$w.'px;
@@ -39,14 +39,11 @@ static function css(){
 		font-size:small;
 	}
 	#clockFrame{
-		background:#fff;
 		width:'.($size3+40).'px;
 		height:'.($size3+60).'px;
 		padding:10px;
-		position:relative;
 	}
 	#clock{
-		background:#fff;
 		border:2px solid grey;
 		width:'.$size3.'px;
 		height:'.$size3.'px;
@@ -100,11 +97,11 @@ static function css(){
 		top:calc(50% - 9px);
 		border-radius:8px;
 	}
-	'.self::needle_css('landmarkXee',$size1,$xeeColor,4,10).'
-	'.self::needle_css('needleXee',$size1,$xeeColor,8,$size1/2).'
-	'.self::needle_css('needleXsi',$size2,$xsiColor,6,$size2/2).'
-	'.self::needle_css('needleUiw',$size3,$uiwColor,4,$size3/2).'
-	';}//'.self::needle_css('needleHour',$size4,$uiwHourColor,4,$size4/2).'
+	'.self::needle('landmarkXee',$size1,$xeeColor,4,10).'
+	'.self::needle('needleXee',$size1,$xeeColor,8,$size1/2).'
+	'.self::needle('needleXsi',$size2,$xsiColor,6,$size2/2).'
+	'.self::needle('needleUiw',$size3,$uiwColor,4,$size3/2).'
+	';}//'.self::needle('needleHour',$size4,$uiwHourColor,4,$size4/2).'
 
 static function js(){return '
 function clock(){
@@ -162,43 +159,42 @@ setInterval(clock,200);
 //clock();';}
 
 static function head(){
-	Head::add('csscode',self::css());
-	Head::add('jscode',self::js());}
+head::add('csscode',self::css());
+head::add('jscode',self::js());}
 
 static function home($p,$o){//$rid='plg'.randid();
-	//echo mktime(4,0,0,7,26,2003); //1059184800
-	//echo mktime(4,0,0,7,9,2003); //1057716000
-	self::head();
-	//if(get('callj'))$head=Head::generate();
-	$ret=tag('div',array('id'=>'clock'),'');
-	//landmarkUiwSub
-	for($i=0;$i<60;$i++){
-		$landmarkSub=tag('div',array('id'=>'landmarkSub'),'');
-		$ret.=tag('div',array('id'=>'landmarkFrame','style'=>'transform: rotate('.($i*6).'deg);'),$landmarkSub);}
-	//landmarkUiw
-	for($i=0;$i<12;$i++){
-		$landmark=tag('div',array('id'=>'landmark'),'');
-		$ret.=tag('div',array('id'=>'landmarkFrame','style'=>'transform: rotate('.($i*30).'deg);'),$landmark);
-		//landmarkText
-		$hour=tag('div',array('id'=>'landmarkText','style'=>'transform: rotate(-'.($i*30).'deg);'),($i?$i*5:60));
-		$ret.=tag('div',array('id'=>'landmarkTextFrame','style'=>'transform: rotate('.($i*30).'deg);'),$hour);}
-	$needleXee=tag('div',array('id'=>'needleXee'),' ');
-	$ret.=tag('div',array('id'=>'needleXeeFrame'),$needleXee);
-	$needleXsi=tag('div',array('id'=>'needleXsi'),' ');
-	$ret.=tag('div',array('id'=>'needleXsiFrame'),$needleXsi);
-	$needleUiw=tag('div',array('id'=>'needleUiw'),' ');
-	$ret.=tag('div',array('id'=>'needleUiwFrame'),$needleUiw);
-	$needleHour=tag('div',array('id'=>'needleHour'),' ');
-	$ret.=tag('div',array('id'=>'needleHourFrame'),$needleHour);
-	$ret.=tag('div',array('id'=>'clockCenter'),'');
-	//digit
-	$digit=tag('span',array('id'=>'xee','class'=>'xeeColor'),'').' ';
-	$digit.=tag('span',array('id'=>'xsi','class'=>'xsiColor'),'').' ';
-	$digit.=tag('span',array('id'=>'uiw','class'=>'uiwColor'),'').' ';
-	$digit.=tag('span',array('id'=>'uiwHour','class'=>'uiwHourColor'),'').' ';
-	$ret.=tag('div',array('id'=>'digit'),'Aeon 4 '.$digit);
-	$ret.=jscode('clock();');
-	if(get('callj'))$ret.=csscode(self::css()).jscode(self::js());
-	return tag('div',array('id'=>'clockFrame'),$ret);}
+//echo mktime(4,0,0,7,26,2003); //1059184800
+//echo mktime(4,0,0,7,9,2003); //1057716000
+self::head();
+$ret=tag('div',array('id'=>'clock'),'');
+//landmarkUiwSub
+for($i=0;$i<60;$i++){
+	$landmarkSub=tag('div',array('id'=>'landmarkSub'),'');
+	$ret.=tag('div',array('id'=>'landmarkFrame','style'=>'transform: rotate('.($i*6).'deg);'),$landmarkSub);}
+//landmarkUiw
+for($i=0;$i<12;$i++){
+	$landmark=tag('div',array('id'=>'landmark'),'');
+	$ret.=tag('div',array('id'=>'landmarkFrame','style'=>'transform: rotate('.($i*30).'deg);'),$landmark);
+	//landmarkText
+	$hour=tag('div',array('id'=>'landmarkText','style'=>'transform: rotate(-'.($i*30).'deg);'),($i?$i*5:60));
+	$ret.=tag('div',array('id'=>'landmarkTextFrame','style'=>'transform: rotate('.($i*30).'deg);'),$hour);}
+$needleXee=tag('div',array('id'=>'needleXee'),' ');
+$ret.=tag('div',array('id'=>'needleXeeFrame'),$needleXee);
+$needleXsi=tag('div',array('id'=>'needleXsi'),' ');
+$ret.=tag('div',array('id'=>'needleXsiFrame'),$needleXsi);
+$needleUiw=tag('div',array('id'=>'needleUiw'),' ');
+$ret.=tag('div',array('id'=>'needleUiwFrame'),$needleUiw);
+$needleHour=tag('div',array('id'=>'needleHour'),' ');
+$ret.=tag('div',array('id'=>'needleHourFrame'),$needleHour);
+$ret.=tag('div',array('id'=>'clockCenter'),'');
+//digit
+$digit=tag('span',array('id'=>'xee','class'=>'xeeColor'),'').' ';
+$digit.=tag('span',array('id'=>'xsi','class'=>'xsiColor'),'').' ';
+$digit.=tag('span',array('id'=>'uiw','class'=>'uiwColor'),'').' ';
+$digit.=tag('span',array('id'=>'uiwHour','class'=>'uiwHourColor'),'').' ';
+$ret.=tag('div',array('id'=>'digit'),'Aeon 4 '.$digit);
+$ret.=head::csscode(self::css()).head::jscode(self::js());
+$ret.=head::jscode('clock();');
+return tag('div',array('id'=>'clockFrame'),$ret);}
 }
 ?>

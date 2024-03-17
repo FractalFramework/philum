@@ -11,5 +11,8 @@
     "editor.quickSuggestionsDelay": 100,
     "editor.inlineSuggest.showToolbar": "never",
     "editor.inlineSuggest.enabled": false,
-    "editor.acceptSuggestionOnEnter": "smart"
+    "editor.acceptSuggestionOnEnter": "smart",
+    "diffEditor.experimental.showEmptyDecorations": false,
+    "diffEditor.wordWrap": "on",
+    "editor.renderWhitespace": "none"
 }

@@ -70,7 +70,7 @@ return $o?$f:lk($f,$f);}
 static function call($p,$o,$prm=[]){
 $length=self::$length; chrono();
 $min=$p*$length; $max=$min+$length;
-ses('qda','pub_art'); $rc=[];
+sesr('db','qda','art'); $rc=[];
 $rq=sql::com('id,img','qda',['>id'=>$min,'<id'=>$max]);
 while($r=sql::qrw($rq)){$d=$r[1];
 	//$d=sav::recenseim($r[0]); //echo $d;
@@ -179,7 +179,7 @@ else $ok=self::tar($f,array_keys($re));
 return $o?$f:lk($f,$f);}
 
 static function tarimgx(){
-$f='_backup/imgx.tar.gz'; $r=scandir_r('imgx');
+$f='_backup/imgx.tar.gz'; $r=scanfiles('imgx');
 return self::tar($f,$r);} //rmdir_r('imgx');
 
 static function nb(){$rc=scandir('img'); return count($rc);}
@@ -188,15 +188,13 @@ static function imgc(){$r=scandir('imgc'); $f='_backup/imgc.tar';
 $ok=self::tar($f,$r); return lk($f);}
 
 static function db($p,$rid){$length=10000;
-$n=key($_SESSION['rqt']);
+$n=ma::lastartid();
 $n=ceil($n/$length); $min=$p*$length; $max=$min+$length; $ret='from '.$min.' to '.$max.': ';
 for($i=1;$i<$n;$i++)$ret.=lj('',$rid.'_backupim,db___'.$i.'_'.$rid,$i).' ';
 //$ret.=img::batch($p);
 return divc('nbp',$ret);}
 
 static function patchmrc(){
-//$d='newsnet_mrcreseauinternational.netunsenateurrusseaccuselesetatsunisdeprepareruncoupdetatsoftauve';
-//$d='newsnet_mrcreseauinternational.netunempirediaboliquedefauxdrapeaux_f3dcdb.jpg';
 //$ra=[$d];
 $ra=scandir('imgx'); $i=0; //mkdir_r('/imgx');
 foreach($ra as $k=>$v){
@@ -208,7 +206,7 @@ foreach($ra as $k=>$v){
 return 'ok:'.$i;}
 
 static function menu($p,$o,$rid){$length=self::$length; //self::patchmrc();
-if($_SESSION['rqt'])$n=key($_SESSION['rqt']);//j
+$n=ma::lastartid();
 //unlink('_backup/img_0-5000.tar');
 //mkdir_r('/imgb/cod');
 //$n=sesmk('backupim_nb','',''); $ret=$n.' images'.br();//ja
@@ -234,7 +232,6 @@ for($i=0;$i<$n;$i++){$f=self::f($i);
 return $ret;}
 
 static function home($p,$o){$rid='plg'.randid();
-if(!auth(6))return;
 $bt=self::menu($p,$o,$rid);
 //rmdir_r('imgd/'); mkdir_r('imgd/');
 //echo tar::extract(img8.tar','imgd/');

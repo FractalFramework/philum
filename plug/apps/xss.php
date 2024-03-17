@@ -24,7 +24,7 @@ if($r)foreach(self::$dfb as $k=>$v)if($v){$rz=opt($r[$v],':',4);
 if($ra)$vr=$q->getElementsByTagName($ra['channel'][2]); //pr($vr);
 if($vr)foreach($vr as $k=>$v){
 	foreach($r as $ka=>$va){//pr($v);
-		//$rb[$k][$ka]=utf8dec_b(utf8dec_b(self::find($v,$va)));
+		//$rb[$k][$ka]=self::find($v,$va);
 		$rb[$k][$ka]=$va?dom::extract($v,$va):'';}} //pr($rb);
 if($rb)foreach($rb as $k=>$v)if($v['title']){$rt='';
 	//foreach($v as $ka=>$va)$rt.=tagb($ka,$va);
@@ -42,7 +42,6 @@ return divc('',$bt);}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
-//$r=msql::read('',nod('xss'),$p);
 $u=msql::val('',nod('xss'),$p,0);
 $u=nohttp($u); if(substr($u,-1)=='/')$u=substr($u,0,-1);
 $ret=self::build($p,$o);
@@ -50,7 +49,7 @@ $bt=self::bt($u,$o);
 return $bt.$ret;}
 
 static function xssr(){
-$r=msql::read('',nod('xss'),'',1);
+$r=msql::read('',nod('xss'),1);
 if(!$r)$r=msql::save('',nod('xss'),[['','','','','','','','','','','','','']],self::$dfb);
 foreach($r as $k=>$v)$rb[$k]=$v[0];
 return $rb;}
@@ -64,7 +63,6 @@ $ret.=lj('',$rid.'_xss,call__3_'.$k,$v).' ';
 return divc('list',$ret);}
 
 static function install($b){
-ses($b,qd($b));//name of table
 $r=['site'=>'var','tit'=>'var','img'=>'var','descr'=>'var','content'=>'var','footer'=>'var','day'=>'int'];
 sqlop::install($b,$r,0);}
 

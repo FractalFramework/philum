@@ -3,7 +3,7 @@ class sconn{
 
 static function build($p,$o){
 if($o)$p='['.$p.']';
-$ret=codeline::read($p,'','test');
+$ret=conb::read($p,'','test');
 return $ret;}
 
 static function call($p,$o,$prm=[]){
@@ -21,6 +21,6 @@ return $ret;}
 static function home($p,$o){$rid='plg'.randid();
 $bt=self::menu($p,$o,$rid);
 $ret=self::call($p,$o);
-return $bt.div(atd($rid),$ret);}
+return $bt.divd($rid,$ret);}
 }
 ?>

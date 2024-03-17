@@ -1,7 +1,7 @@
 <?php //chat
 class chat{
 static function data($p){;
-return msql::read_b('',nod('chat_'.$p),'',1,['time','name','msg']);}
+return msql::read('',nod('chat_'.$p),1,['time','name','msg']);}
 
 static function erz($p,$erz){$nod=ses('qb').'_chat_'.$p;
 msql::modif('',$nod,$erz,'del'); return self::read($p);}
@@ -20,7 +20,7 @@ if($r){$r=array_reverse_b($r,50); $ret='';
 foreach($r as $k=>$v){$erz=''; $msg=$v[2];
 	if($nm==$v[1] or auth(6))$erz=lj($c,'cht'.$p.'_cha,erz___'.$p.'_'.$k,'(x)');
 	$bt=btn('popbt',$v[1]).' '.btn($c.'2',mkday($v[0],'ymd:Hi')).$erz;
-	//$msg=codeline::parse($msg,'','sconn2');
+	//$msg=conb::parse($msg,'sconn2');
 	$msg=conn::read($msg,'','');
 	$ret.=divc('track',$bt.$msg);}}
 return scroll($r,$ret,7);}
@@ -35,7 +35,7 @@ return '<form name="chat'.$p.'" action="javascript:'.sj($j).'">'.$d.'</form>';
 return $ret;}
 
 static function home($p,$msg,$prm=[]){
-$p=$p?normalize($p):'public'; ses('muse',$pr[0]??ses('USE'));
+$p=$p?str::normalize($p):'public'; ses('muse',$pr[0]??ses('USE'));
 return self::form($p,$msg).divd('cht'.$p,self::read($p));}
 
 }

@@ -1,9 +1,17 @@
-<?php //msql/helps_langs
-$r=["_"=>['title'],
-"fr"=>['French'],
-"en"=>['English'],
-"es"=>['Spanish'],
-"de"=>['Deutsh'],
-"it"=>['Italian'],
-"ru"=>['Russian'],
-"cn"=>['China']];
+<?php 
+return ['_'=>['title'],
+'fr'=>['Français'],
+'en'=>['English'],
+'es'=>['Español'],
+'de'=>['Deutsch'],
+'it'=>['Italiano'],
+'ru'=>['Pусский'],
+'zh'=>['&#20013;&#22269;'],
+'nl'=>['Nederlander'],
+'pl'=>['Polacy'],
+'pt'=>['Portuguesa'],
+'ja'=>['&#26085;&#26412;&#35486;'],
+'is'=>['Icelandic'],
+'ar'=>['&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;'],
+'mr'=>['&#2361;&#2367;&#2306;&#2342;&#2368;'],
+'no'=>['Norsk']]; ?>

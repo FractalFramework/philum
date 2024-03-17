@@ -1,4 +1,4 @@
-<?php //tlex
+<?php 
 class tlex{
 
 static function post($p,$o,$prm=[]){
@@ -19,11 +19,11 @@ $pr=['onclick'=>$j,'onkeypress'=>$j,'class'=>'console'];
 $txt=host().'/'.$p;//$suj."\n\n".//philum
 $ret=tag('textarea',['id'=>'twpost','cols'=>50,'rows'=>5,...$pr],$txt).br();
 $ret.=btn('popbt',nms(29).' '.nms(152).' :');
-$r=msql::read('',ses('qb').'_tlex','',1);
+$r=msql::read('',nod('tlex'),1);
 if($r)foreach($r as $k=>$v)
 	$ret.=lj('popbt',$rid.'_tlex,post_twpost___'.$k,$v[0]).' ';
 else $ret.=helps('tlex');
-$ret.=span(atd('strcount').atc('txtsmall'),'');
+$ret.=span('','txtsmall','strcount');
 return divd($rid,$ret);}
 
 static function home($p,$o){

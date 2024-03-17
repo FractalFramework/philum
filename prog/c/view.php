@@ -136,6 +136,14 @@ static function pubart(){return [
 	['hurl','{url}','{suj}']]],
 ['','','{video}']];}
 
+static function popart(){return [
+['div',['class'=>'imgl'],[
+	['thumb','44/44','{img1}']]],
+['span',['class'=>'author'],'{auteurs}'],
+['h4','',[
+	['jurl','{jurl}','{suj}']]],
+['','','{video}']];}
+
 static function pubartb(){return [
 ['url','{url}',[
 	['thumb','200/100','{img1}']]],
@@ -173,10 +181,15 @@ static function weblink(){return [
 		['div',[],'{msg}']]],
 	['clear','','']]]];}
 
+static function bublh(){
+return [['hurl','{url}','{suj}']];}
+
+static function bublj(){
+return [['jurl','{jurl}','{suj}']];}
+
 static function bublk(){
-	if(rstr(149))return [['hurl','{url}','{suj}']];
-	else return [['jurl','{jurl}','{suj}']];}
-//static function bublj(){return self::bublk();}//
+if(rstr(149))return self::bublh();
+else return self::bublj();}
 
 static function book(){return [
 ['div',['class'=>'book'],[
@@ -208,6 +221,13 @@ static function vars(){
 $d='artedit pid id jurl hurl url edit title suj cat msg img1 video btim back avatar author date day nbarts tag priority words search parent rss social open tracks source length player lang artlang opt css sty addclr thumb trkbk float js ovc btrk btxt togprw '.str::eradic_acc(prmb(18)); $r=explode(' ',$d); $rt=[];// purl
 foreach($r as $v)$rt[$v]='';
 return $rt;}
+
+static function detectvars($r){static $rv=[];
+foreach($r as $k=>$v)
+	if(is_array($v[2]))self::vars($v[2]);
+	elseif(substr($v[2],0,1)=='{'){//todo: multiples vars
+		$rv[]=substr($v[2],1,-1);}
+return $rv;}
 
 //r to tmp
 //view::mkconn(view::little());
@@ -249,9 +269,10 @@ return match($c){''=>$d,
 'app'=>appin($p,$o),
 default=>tag($c,$pr,$d)."\n"};}
 
-static function play($r,$ra,$rc){$ret='';
+static function play($r){$ret='';
+$ra=self::$ra; $rc=self::$rc;
 foreach($r as $k=>$v){[$c,$p,$d]=$v; $pr=[];
-	if(is_array($v[2]))$d=self::play($d,$ra,$rc);
+	if(is_array($v[2]))$d=self::play($d);
 	else $d=str_replace($rc,$ra,$d);
 	//$pr=is_array($p)?$p:['class'=>$p];//bad service
 	if(is_array($p))foreach($p as $kp=>$vp)
@@ -260,9 +281,19 @@ foreach($r as $k=>$v){[$c,$p,$d]=$v; $pr=[];
 	if($d)$ret.=self::repl($c,$p,$pr,$d);}
 return $ret;}
 
+static array $ra;
+static array $rc;
+
+/*static function call0($r,$ra){$rb=self::detectvars($r);
+$rc=array_diff($ra,$rb); foreach($ra as $k=>$v)$rc[$k]='{'.$k.'}';
+self::$ra=$ra; self::$rc=$rc;
+$d=self::play($r);
+return $d;}*/
+
 static function call($r,$ra){$rb=sesmk2('view','vars');
 $ra+=$rb; $rc=[]; foreach($ra as $k=>$v)$rc[$k]='{'.$k.'}';
-$d=self::play($r,$ra,$rc);
+self::$ra=$ra; self::$rc=$rc;
+$d=self::play($r);
 return $d;}
 
 static function batch($r,$rb){$rt=[];

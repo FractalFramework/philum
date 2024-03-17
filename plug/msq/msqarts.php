@@ -51,7 +51,7 @@ if($r)foreach($r as $k=>$v){
 return $ret;}
 
 static function arts($wh){if($wh)$wh='where '.$wh;
-$qda=$_SESSION['qda']; $qdm=$_SESSION['qdm']; $ret=''; $b='';
+$qda=db('qda'); $qdm=db('qdm'); $ret=''; $b='';
 $sql='select '.$qda.'.id,suj,'.$qdm.'.msg from '.$qda.' 
 inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id '.$wh.' order by day ASC';
 if($b)echo $sql; $rq=qr($sql);
@@ -64,7 +64,7 @@ $r=self::arts('frm="'.$p.'"');
 return $r;}
 
 static function name($p){
-return ses('qb').'_arts_'.normalize($p);}
+return ses('qb').'_arts_'.str::normalize($p);}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o); if(!$p)return 'no';
@@ -79,14 +79,14 @@ return msqbt('users',$nod).' '.btn('txtsmall2',$nod);}
 //$ret.=togbub('msqarts','r',btn('popbt','select...'));
 
 static function menu($p,$o,$rid){
-$ret=input('inp',$p,'').' ';
+$ret=input('inp',$p).' ';
 $ret.=lj('',$rid.'_msqarts,call_inp',picto('ok')).' ';
 return $ret;}
 
 //
 static function home($p,$o){$rid='plg'.randid(); //if(!$p)$p='Oyagaa Ayoo Yissaa';
 $nod=self::name($p);
-msql::read('',$nod,'','',['id','suj','msg']);
+msql::read('',$nod,'',['id','suj','msg']);
 $bt=self::menu($p,$o,$rid); $ret=self::call($p,$o);
 //$bt.=msqbt('',$nod);
 return $bt.divd($rid,$ret);}

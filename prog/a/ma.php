@@ -122,8 +122,8 @@ $nbpg=!$fw?pop::btpages($npg,$page,$i,$j):'';
 return $nbpg.$ret.$nbpg;}
 
 static function read_idy($ib,$o,$frm=0,$re='',$id=''){
-$w='ib="'.$ib.'"'.($frm?' and frm="'.$frm.'"':'').''.($re?' and re="'.$re.'"':'').' '.($id?' and id="'.$id.'"':'').' order by day '.$o;
-return sql('id,ib,name,mail,day,nod,frm,suj,msg,re,host,lg','qdi','',$w);}
+$rw=['ib'=>$ib]; if($frm)$rw['frm']=$frm; if($re)$rw['re']=$re; if($id)$rw['id']=$id; $rw['_order']='day '.$o;
+return sql('id,ib,name,mail,day,nod,frm,suj,msg,re,host,lg','qdi','',$rw);}
 
 #tags
 static function artags($slct,$wh,$how,$z=''){

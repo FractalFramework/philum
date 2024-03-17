@@ -18,7 +18,7 @@ foreach($r as $k=>$v){
 return $ret;}
 
 static function build($p,$o){
-$minid=0; $maxid=ma::lastart(); 
+$minid=0; $maxid=ma::lastartid(); 
 $na=$maxid-$minid; $nb=100; $n=ceil($na/$nb); $n=1;//
 //echo 'start:'.$minid.'-end:'.$maxid.'-loops:'.$n.br();
 for($i=0;$i<$n;$i++){$min=$minid+$nb*$i; $max=$min+$nb;

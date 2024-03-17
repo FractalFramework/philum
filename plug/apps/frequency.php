@@ -3,10 +3,21 @@
 class frequency{
 static $a=__CLASS__;
 static $default='';
+static $w=620;
 
-static function graph($r){$ret='';
-$mx=max($r); $w=620; $ratio=$w/$mx; $rb=[];
-foreach($r as $k=>$v){$rb[]=[$k,div(ats('width:'.round($v*$ratio).'px; border:1px solid gray; display:inline-block;').atc('bkg'),$v)];}
+static function calc($r){$rb=[];
+$mx=max($r); $w=self::$w; $ratio=$w/$mx; $rb=[];
+foreach($r as $k=>$v){$rb[$k]=round($v*$ratio);}
+return $rb;}
+
+static function render($r){$rb=[];
+foreach($r as $k=>$v){$rb[]=[$k,progress($v,self::$w,self::$w,$v)];}//div($v,'bar','','width:'.$v.'px;')
+return $rb;}
+
+static function graph($r,$l=100){
+arsort($r); $r=array_slice($r,0,$l);
+$ra=self::calc($r);
+$rb=self::render($ra);
 return tabler($rb);}
 
 static function twits($p,$o){$w=''; $n=10000; $rb=[]; $rc=[];
@@ -14,7 +25,7 @@ if($p){$w='where mentions like "%'.$p.'%"'; if($o)$w.=' and date>"'.timeago($o).
 $r=sqb('id,date','qdtw','kv',$w.' order by twid desc limit '.$n);
 if($r)foreach($r as $k=>$v)if($v){$day=date('ymd',$v); $rb[$day][]=1;}
 if($rb)foreach($rb as $k=>$v)$rc[$k]=count($v);
-return self::graph($rc);}
+return self::graph($rc,1000);}
 /*
 static function tags($p,$o){$w; $rb=[]; $rc=[];
 if($o)$w=' and date>"'.timeago($o).'"';
@@ -26,7 +37,7 @@ return self::graph($rc);}*/
 static function arts($p,$o){$rb=[]; $cat=$o?'frm="'.$o.'" and ':'';
 $r=sql('id,day','qda','kv',$cat.'nod="'.ses('qb').'" and day>"'.timeago($o).'" limit 1000');
 if($r)foreach($r as $k=>$v)if($v){$day=date('ymd',$v); $rb[$day]=isset($rb[$day])?$rb[$day]+1:1;}
-if($rb)return self::graph($rb);}
+if($rb)return self::graph($rb,100);}
 
 static function stats($p,$o){$rb=[]; $cat=$o?'frm="'.$o.'" and ':'';
 $r=sql('id,day','qda','kv',$cat.'nod="'.ses('qb').'" order by day asc'); //Oyagaa Ayoo Yissaa
@@ -43,14 +54,14 @@ if($r)foreach($r as $k=>$v){
 	$dist=$old-$v; 
 	$rb[$k]=$dist; 
 	$rd[$k]=$old;
-	$old=$v; }
+	$old=$v;}
 arsort($rb); //pr($rb);
 $rc[]=['temps écoulé','id','date','depuis'];
 foreach($rb as $k=>$v)$rc[]=[self::elapsed_time($rd[$k],$r[$k]),pop::pubart($k),date('Y-m-d',$rd[$k]),date('Y-m-d',$r[$k])];
 return tabler($rc);}
 
 static function elapsed_time($d1,$d2=''){$rt=[]; if(!$d2)$d2=time();
-$t1=new DateTime(); $t2=new DateTime(); $t1->setTimestamp($d1); $t2->setTimestamp($d2);
+$t1=new DateTime(); $t2=new DateTime(); $t1->setTimestamp(round($d1)); $t2->setTimestamp($d2);
 $diff=$t1->diff($t2); $n=$diff->format('%d');
 $ra=$n>0?['year','month','day']:['hour','minute','second'];
 $ty=$n>0?'%y-%m-%d':'%h-%i-%s'; $res=$diff->format($ty); $rb=explode('-',$res);
@@ -61,7 +72,7 @@ static function build($p,$o){
 [$a,$b]=arr($p,',',2); $r=[];
 if($b && method_exists($a,$b))$r=$a::$b($p);
 elseif(function_exists($a))$r=$p($o);
-if($r)return self::graph($rc);}
+if($r)return self::graph($rc,200);}
 
 static function call($p,$o,$q=[]){$ret=''; $p=$q[0]??$p; //ecko($o); //pr($q);
 if($p=='twits')$ret=self::twits($q,$o);

@@ -18,7 +18,7 @@ $ret.=lj('',$rid.'_searchtwit,call_inp',picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid=randid('plg');
-ses('umt','pub_umtwits');
+sesr('umt','umtwits');
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);
 return $bt.divd($rid,$ret);}

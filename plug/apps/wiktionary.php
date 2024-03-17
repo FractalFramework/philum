@@ -51,8 +51,7 @@ return $ret;}
 static function build($p,$o){
 $d=curl_get_contents($p);
 $ret=html_detect($d,'<ol>');
-$ret=utf8dec_b($ret);
-$ret=strip_tags($ret,''); //eco($ret);
+$ret=strip_tags($ret,'');
 $ret=nl2br($ret);
 return $ret;}
 

@@ -12,7 +12,7 @@ foreach($r as $k=>$v){
 $ra=$r=ma::art_tags($v); //pr($ra);
 $a=key($ra['auteurs']??[]);
 $t=ma::suj_of_id($v);
-$rb[]='- '.$t.' '.($a?'('.$a.') ':'').' : http://newsnet.fr/'.$v;}
+$rb[]='- '.$t.' '.($a?'('.$a.') ':'').' : '.host().'/'.$v;}
 return implode(br(),$rb);}
 
 static function call($p,$o,$prm=[]){
@@ -30,7 +30,6 @@ $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 
 static function install($b){
-//ses($b,qd($b));//name of table
 //1=drop table on change $r !
 $r=['tit'=>'var','txt'=>'text','day'=>'int'];
 sqlop::install($b,$r,0);}

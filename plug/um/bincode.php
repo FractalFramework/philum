@@ -4,7 +4,7 @@ static function bin_answ(){return ['aa'=>'001011010111','am'=>'000000100101','ab
 
 //encode
 static function cleanup($d){
-$d=codeline::parse($d,'','delconn');
+$d=conb::parse($d,'delconn');
 $d=str_replace('&nbsp;',' ',$d);
 //$d=str_replace(['&nbsp;',"'",'"','-','/',',',';',':','$','#','_','+','=','!','?','\n','\r','\\','~','(',')','[',']','{','}','|','%','&'],'',$d);
 return $d;}
@@ -47,7 +47,7 @@ msql::modif('',nod('carbin'),[$ret],'one','',$id);
 return $ret;}
 
 static function bindatas($p,$o){
-$r=sql::inner('pub_art.id,msg','qda','qdm','id','kv',['frm in'=>['ES-D','ES-E'],'_order'=>'id asc']);
+$r=sql::inner('art.id,msg','qda','qdm','id','kv',['frm in'=>['ES-D','ES-E'],'_order'=>'id asc']);
 foreach($r as $k=>$v)self::art2bin($k,$v);
 return 'ok: '.implode(' ',array_keys($r));}
 
@@ -67,7 +67,7 @@ static function bin2datas($p,$o,$prm=[]){
 $r=msql::col('','ummo_carbin',0);
 foreach($r as $k=>$v)if($n=substr_count($v,$p))$rb[$k]=$n; //pr($r);
 //$ret=tabler($rb);
-foreach($rb as $k=>$v)$ret.=divb(lj('','b2d_bincode,bin2txt___'.$k.'_'.$p,pictxt('view',$k.' ('.$v.')')));
+foreach($rb as $k=>$v)$ret.=div(lj('','b2d_bincode,bin2txt___'.$k.'_'.$p,pictxt('view',$k.' ('.$v.')')));
 $ret.=divd('b2d','');
 return $ret;}
 

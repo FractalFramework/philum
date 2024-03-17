@@ -18,7 +18,7 @@ $ret.='<a href="?export=_idy">_idy</a>';
 $ret.='<br><br>';
 //export
 if($_GET['export']!="" && auth(5)){
-$file='pub_'.$_GET['export'];
+$file=get('export');
 //$ret.=self::export($host,$user,$pass,$db,$file);}
 return $ret;}
 

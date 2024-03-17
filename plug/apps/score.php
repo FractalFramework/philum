@@ -9,31 +9,30 @@ foreach($r as $k=>$v){foreach($v as $ka=>$va)$rb[$ka][$k]=$va;}
 return $rb;}
 
 static function build($ra,$cat){$limit='limit 10000';
-//$r=msql::read_b('',nod(self::$a.'_1'));//p($r);
-$qda=ses('qda'); $add=ses('qdd'); $qdf=ses('qdf'); $qdt=ses('qdt'); $qdta=ses('qdta');
+$qda=db('qda'); $add=db('qdd'); $qdf=db('qdf'); $qdt=db('qdt'); $qdta=db('qdta');
 foreach($ra as $k=>$v){switch($k){
 //case('cat'):$r[$k]=sql('id','qdk','kv','frm="'.$v.'"'); break;
 case('jdapoll'):$r[$k]=sql('ib,msg','qdd','kv','val="jdapoll" order by cast(msg as unsigned integer) desc '.$limit); break;
 case('jdatrk'):$r[$k]=sql('ib,msg','qdd','kv','val="jdatrk" order by cast(msg as unsigned integer) desc '.$limit); break;
 case('approve'):$r[$k]=sql('ib,msg','qdd','kv','val="approve" order by cast(msg as unsigned integer) desc '.$limit); break;
 case('disapprove'):$r[$k]=sql('ib,msg','qdd','kv','val="disapprove" order by cast(msg as unsigned integer) desc'); break;//no limit
-case('nbtags'):$r[$k]=sqb('idart,count(idtag) as nb','qdta','kv','inner join pub_meta on pub_meta.id=pub_meta_art.idtag where cat="tag" group by idart order by nb desc '.$limit); break;
+case('nbtags'):$r[$k]=sqb('idart,count(idtag) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="tag" group by idart order by nb desc '.$limit); break;
 case('tagweight'):$rd=[]; $re=[];
 	//nb art by tag
-	$rb=sqb('idtag,count(idart) as nb','qdta','kv','inner join pub_meta on pub_meta.id=pub_meta_art.idtag where cat="tag" group by idtag order by nb desc'); //pr($rb);
+	$rb=sqb('idtag,count(idart) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="tag" group by idtag order by nb desc'); //pr($rb);
 	//tags pour chaque art
-	$rc=sqb('idart,idtag','qdta','kr','inner join pub_meta on pub_meta.id=pub_meta_art.idtag where cat="tag"'); //pr($rc);
+	$rc=sqb('idart,idtag','qdta','kr','inner join meta on meta.id=meta_art.idtag where cat="tag"'); //pr($rc);
 	//nombre d'occurrence de chaque tag
 	foreach($rc as $kb=>$v)foreach($v as $ka=>$va)$rd[$kb][$va]=$rb[$va]; //pr($rd);
 	//célébrité moyenne de chaque tag
 	foreach($rd as $kb=>$v)$re[$kb]=array_sum($v)/count($v); //pr($re);
 	$r[$k]=$re; break;
-case('nbwords'):$r[$k]=sqb('idart,count(idtag) as nb','qdta','kv','inner join pub_meta on pub_meta.id=pub_meta_art.idtag where cat="mot" group by idart order by nb desc '.$limit); break;
+case('nbwords'):$r[$k]=sqb('idart,count(idtag) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="mot" group by idart order by nb desc '.$limit); break;
 case('wordweight'):$rd=[]; $re=[];
 	//nb art by tag
-	$rb=sqb('idtag,count(idart) as nb','qdta','kv','inner join pub_meta on pub_meta.id=pub_meta_art.idtag where cat="mot" group by idtag order by nb desc'); //pr($rb);
+	$rb=sqb('idtag,count(idart) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="mot" group by idtag order by nb desc'); //pr($rb);
 	//tags pour chaque art
-	$rc=sqb('idart,idtag','qdta','kr','inner join pub_meta on pub_meta.id=pub_meta_art.idtag where cat="mot"'); //pr($rc);
+	$rc=sqb('idart,idtag','qdta','kr','inner join meta on meta.id=meta_art.idtag where cat="mot"'); //pr($rc);
 	//nombre d'occurrence de chaque tag
 	foreach($rc as $kb=>$v)foreach($v as $ka=>$va)$rd[$kb][$va]=$rb[$va]; //pr($rd);
 	foreach($rd as $kb=>$v)$re[$kb]=array_sum($v)/count($v); //pr($re);
@@ -88,7 +87,7 @@ arsort($rd);
 
 #render
 //$ret=tabler($rc);
-$f='scores_'.normalize(strfrom($cat,') ')).'_'.implode('-',$ra);
+$f='scores_'.str::normalize(strfrom($cat,') ')).'_'.implode('-',$ra);
 $rav=[]; foreach(self::$r as $k=>$v)$rav[$v]=$ra[$k];//french cols
 $rb=[]; $rb[]=['config',implode_k($rav,',','=')]; $rb[]=['id','rating'];
 foreach($rd as $k=>$v)$rb[]=[$k,$v];

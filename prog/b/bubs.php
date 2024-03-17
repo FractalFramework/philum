@@ -236,7 +236,7 @@ if($r)foreach($r as $k=>$v)$ret[]=[$k,'link','cat','/cat/'.$k,'','',$root.$v,'ur
 return $ret;}
 
 //desk
-//button,type,process,param,option,condition,root,icon,hide,private
+//button,type,process,action,option,condition,root,icon,hide,private
 static function menubub($d,$n){
 $r=msql::read('',nod('menubub_'.($n?$n:'1')),1); $ret=[];
 if($r)foreach($r as $k=>$v){//if(strpos($v[0],$d)!==false)
@@ -250,6 +250,7 @@ if($r)foreach($r as $k=>$v){//if(strpos($v[0],$d)!==false)
 	elseif($v[2]=='ajax')$ret[]=[$v[3],'ajax','',$v[1],'','',$v[0],$v[4],'',$v[5]];//sysonly
 	elseif($v[2]=='content')$ret[]=[$v[3],'ajax','content',$v[1],'','',$v[0],$v[4],'',$v[5]];
 	elseif($v[2]=='popup')$ret[]=[$v[3],'popup',$v[1],'','','',$v[0],$v[4],'',$v[5]];
+	elseif($v[2]=='pop')$ret[]=[$v[3],'popup',$v[1],'','','',$v[0],$v[4],'',$v[5]];
 	//elseif($v[2]=='bub')$ret[]=[$v[3],'bubble',$v[0],$v[1],$v[0],$v[4],'',$v[5]];
 	//elseif($v[2]=='taxo')$ret=self::taxo($v[0],$ret);
 	elseif($v[2]=='msql')$ret[]=[$v[3],'msql',$v[1],'','','',$v[0],$v[4],'',$v[5]];
@@ -272,9 +273,8 @@ if($r)foreach($r as $k=>$v)if(!$v[7] && !$v[11]){$pi=$v[1]; $root=$va;
 	else $rt[]=[$v[2],'btmnu',$k,$v[1],$v[0],'',$root,mime($v[0]),'',''];} //pr($rt);
 return $rt;}
 
-static function menublock($d){//echo $d;
-$r=msql::read('',nod('menublock_'.$d),1); //pr($r);
-return $r;}
+static function menublock($d){
+return msql::read('',nod('menublock_'.$d),1);}
 
 //user
 static function adm_user_fast(){
@@ -349,7 +349,7 @@ return $ret;}
 //apps=['button','type','process','param','option','condition','root','icon'];
 //$rc=[$v[0],$v[1],$v[2],$v[3],$v[4],$v[5],$v[6],$v[7]];
 static function apps($r,$d,$dir,$cond,$n=''){//$r,,dir,cond
-if($dir=='zero'){$dir=''; $dd='d';} else $dd=''; $rb=[]; $ret=''; //echo $dir;
+if($dir=='zero'){$dir=''; $dd='d';} else $dd=''; $rb=[]; $ret='';
 $dr=explode('/',$dir); $nd=$dir?count($dr):0;
 if($r)foreach($r as $k=>$v){$rc=array_flip(explode(' ',' '.$v[5]));//wait for desk,boot,menu
 if($rc[$cond?$cond:'menu']??'' or !$v[5]){$t=$v[0];

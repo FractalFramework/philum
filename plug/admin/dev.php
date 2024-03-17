@@ -93,7 +93,7 @@ $ret=msql::val('server','program_dev',$d,3);
 return divc('txtblc',nl2br($ret));}
 
 static function cancel_menu($del){$i=0; $ret='';
-$r=msql::read('server','program_dev',''); //1=>array('','','')
+$r=msql::read('server','program_dev'); //1=>array('','','')
 if($del=='all'){$r=array(); msql::modif('server','program_dev',$r,'arr');}
 if($del){unset($r[$del]); msql::modif('server','program_dev',$del,'del');}
 //$ret.=lj('txtx','popup_dev,cancel*menu___all','empty').br();
@@ -112,7 +112,7 @@ return $ret;}
 $view=strrchr($view,'/');
 if(substr($va,0,2)!='<'.'?php')$va='<'."? //philum$view\n\n//$func\n$va\n\n//end\n?".'>';
 $reb=highlight_string($va,true); //$reb=str_replace($ra,$rb,$reb);
-return div(ats('max-width:600px; max-height:400px; overflow:auto; wrap:true; padding:10px; border:1px solid black;'),$reb);}*/
+return divp(ats('max-width:600px; max-height:400px; overflow:auto; wrap:true; padding:10px; border:1px solid black;'),$reb);}*/
 
 static function func_sav($fa,$fb,$prm){$va=$prm[0]??'';
 if(!auth(6))return;
@@ -220,8 +220,8 @@ return $res;}
 
 static function home(){
 $_SESSION['rec']=[];
-$ret=divb(self::edit('hello_world','progb','lib','p'),'','edc','display:inline-block; width:50%;');
-$ret.=divb('','','results','float:right; width:40%; margin-left:10px;');
+$ret=div(self::edit('hello_world','progb','lib','p'),'','edc','display:inline-block; width:50%;');
+$ret.=div('','','results','float:right; width:40%; margin-left:10px;');
 $ret.=divc('clear','');
 $ret.=lkc('txtx','/app/exec','exec').' ';
 $ret.=lkc('txtx','/app/codev','codev');

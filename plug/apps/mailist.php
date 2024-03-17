@@ -16,14 +16,14 @@ class mailist{
 'adios_mail'=>'clic this link to confirm unsubscribe');*/
 
 static function ra(){$defsb[msql::$m]=['name','re','date','ip','id'];
-return msql::read_b('',nod('mails'),'','',$defsb);}
-static function rb(){return msql::read('',nod('mails'),'');}
+return msql::read('',nod('mails'),'',$defsb);}
+static function rb(){return msql::read('',nod('mails'));}
 static function rm($r,$d){msql::modif('',nod('mails'),$r,$d);}
 static function rs($r){msql::save('',nod('mails'),$r);}
-static function mailvoc(){return msql::read('lang','helps_newsletter','');}
+static function mailvoc(){return msql::read('lang','helps_newsletter');}
 
 /*static function upgrade($p){//patch
-$r=msql::read('',$_SESSION['qb'].'_mails','');
+$r=msql::read('',ses('qb').'_mails');
 if($r)foreach($r as $k=>$v){if(substr($v[0],0,1)=='_' && !$v[4])$upg=1;}
 if($p==1 && $upg)return lj('txtx','popup_maillist,upgrade','upgrade');
 elseif($upg){foreach($r as $k=>$v){
@@ -43,7 +43,7 @@ if(strpos($m,'@')!==false && strpos($m,'.')!==false && strpos($m,'?')===false){$
 	if(!$r[$m]){$p=0; $msg=$voc['welcome_mail'].br().$voc['adios_mail']; $dt=time();
 	$sent=mails::send_html($m,'newsletter',$msg,'','/app/mailist/confirm/'.$dt);
 		if($sent=='not_sent')return divc('txtyl',$m.' :: '.$voc['answer_success']);
-		else{$r[$m]=[$n,$p,$dt,$ip,$_SESSION['iq']]; self::rs($r);
+		else{$r[$m]=[$n,$p,$dt,$ip,ses('iq')]; self::rs($r);
 			return divc('txtyl',$m.' :: '.$voc['answer_success']);}}
 	else return duvc('txtyl',$voc['answer_exists']);}
 else return divc('txtyl',$voc['answer_error']);}
@@ -81,7 +81,7 @@ $ret.=lj('txtbox','cbk_mailist,unsb_unmail__1_2','ok').' ';
 return $ret;}
 
 static function read(){
-return mod::block('newsletter','');}
+return mod::block('newsletter');}
 
 static function home($p,$o){//$id=randid('cbk');
 if($p=='')$ret=self::form($o);
@@ -94,7 +94,7 @@ if($p)$ret.=lj('txtx','cbk_plugin__3_maillist',$voc['register']).' ';
 if($p!='uns')$ret.=lj('txtx','cbk_maillist,uns',$voc['unregister']).' ';
 if($p!='read')$ret.=lj('txtx','cbk_maillist,read',$voc['see_newsletter']).' ';
 //if($_SESSION['auth']>5)$ret.=self::upgrade(1);
-if($_SESSION['auth']>5)$ret.=msqbt('users',$_SESSION['qb'].'_mails').' ';
+if($_SESSION['auth']>5)$ret.=msqbt('users',ses('qb').'_mails').' ';
 return divd('cbk',$ret);}
 }
 ?>

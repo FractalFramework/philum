@@ -1,13 +1,10 @@
-<?php
-//philum_microsql_edition_typosbrowsers
-$edition_typosbrowsers["_menus_"]=array('TrueType','WOFF','EOT','SVG');
-$edition_typosbrowsers["IE 9"]=array('Limited','Yes','Yes','');
-$edition_typosbrowsers["Firefox 3.5"]=array('Yes','','','');
-$edition_typosbrowsers["Firefox 3.6+"]=array('Yes','Yes','','');
-$edition_typosbrowsers["Safari 3.1+"]=array('Yes','','','Yes');
-$edition_typosbrowsers["Chrome 6+"]=array('Yes','Yes','','Yes');
-$edition_typosbrowsers["Opera 10+"]=array('Yes','Coming Soon','','Yes');
-$edition_typosbrowsers["iOS <4.2"]=array('','','','Yes');
-$edition_typosbrowsers["iOS 4.2+"]=array('Yes','','','Yes]');
-
-?>
+<?php 
+return ['_'=>['TrueType','WOFF','EOT','SVG'],
+'IE 9'=>['Limited','Yes','Yes',''],
+'Firefox 3.5'=>['Yes','','',''],
+'Firefox 3.6+'=>['Yes','Yes','',''],
+'Safari 3.1+'=>['Yes','','','Yes'],
+'Chrome 6+'=>['Yes','Yes','','Yes'],
+'Opera 10+'=>['Yes','Coming Soon','','Yes'],
+'iOS <4.2'=>['','','','Yes'],
+'iOS 4.2+'=>['Yes','','','Yes]']]; ?>

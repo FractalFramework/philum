@@ -7,7 +7,7 @@ if($p=='dir' && $f && strpos($f,'/')!=false){echo $f; if(is_dir($f))rmdir_r($f);
 return btn('txtyl',$p.' '.$f.': deleted');}
 
 static function com($p,$o){$rid='plg'.randid(); $id='del'.$o;
-$ret=input('inp'.$o,$p?$p:'/'.$o,atz(44)).' ';
+$ret=input('inp'.$o,$p?$p:'/'.$o,44).' ';
 $ret.=lj('popsav',$rid.'_del,call_inp'.$o.'__'.$o,'delete').' ';
 $ret.=btd($rid,'').br();
 return $ret;}

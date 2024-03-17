@@ -1,9 +1,10 @@
-<?php //umespdf
+<?php 
 class umespdf{
+static $db='ummo_es_7';
 
 static function dlscans(){
 $u='https://www.ummo-sciences.org/es/scan/';
-//$r=scandir_r($u); pr($r);
+//$r=scanfiles($u); pr($r);
 $dr='_users/ummo/origin/';
 /*$ftp_user_name='ummo'; $ftp_user_pass=''; $r=[];
 $ftp=ftp_connect('ummo-sciences.org');
@@ -11,7 +12,6 @@ $res=ftp_login($ftp,$ftp_user_name,$ftp_user_pass);
 if($ftp)$r=ftp_nlist($ftp,$u);
 if($r)foreach($r as $v)if($v!='.' && $v!='..'){$f=$dr.$v; $fa=$u.'/'.$v;
 $dl=ftp_get($ftp,$f,$fa,FTP_ASCII);}*/
-
 $r=msql::read('','ummo_es_4');
 foreach($r as $k=>$v)$rb[]=between($v[1],'[','|',0,1);
 foreach($rb as $k=>$v)if(substr($v,-3)=='pdf')$rc[]=$v;
@@ -32,7 +32,7 @@ static function call($p,$o){
 $id=$p?$p:ses('read');
 $d=sql('suj','qda','v','id='.$id);
 $vrf=between($d,'[',']'); $ret='';
-$r=msql::read('',nod('es_3'),'');
+$r=msql::read('',self::$db);
 $r=msql::tri($r,0,$vrf); if($r)$r=current($r);
 if(!isset($r[0]))return;
 if(!empty($r[1])){

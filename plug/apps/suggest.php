@@ -14,13 +14,13 @@ $msg=conn::read($msg,'','test');
 return tagb('h1',clean_title($suj)).divc('panel justy',$msg);}
 
 static function recall(){$ret='';
-$r=msql::read('',nod('suggest'),''); $js='popup_sav,batchpreview__3_';
+$r=msql::read('',nod('suggest')); $js='popup_sav,batchpreview__3_';
 if($r)foreach($r as $k=>$v){$j=ajx($v[2]); $lnk=lka($v[2],picto('url')); $lk=$v[2]?preplink($v[2]):'';
 if(!$v[1])$ret.=br().lj('popbt',$js.$j.'_'.$k,$v[0].' '.$lk).' '.$lnk;}
 return $ret;}
 
 static function rapport($m){
-$r=msql::read_b('',nod('suggest'),'');
+$r=msql::read('',nod('suggest'));
 if($r)foreach($r as $k=>$v){$id='';
 	if($v[3])$id=sql('id','qda','v','mail="'.$v[3].'"'); 
 	if($id)$art=lj('popw','popup_popart__3_'.$id.'_3',nms(89));
@@ -40,7 +40,7 @@ if($r)foreach($r as $k=>$v){if(md5($v[5])==$md5)return true;}}
 //sugmail,sugtit,sugtxt,sugurl
 static function call($v1,$v2,$ra){$nod=nod('suggest');
 $dfb[msql::$m]=['day','ok','url','mail','tit','msg','iq'];
-$r=msql::read_b('',$nod,'','',$dfb);
+$r=msql::read('',$nod,'',$dfb);
 $back=lj('txtx','sugg_suggest,home',picto('back'));
 $alx=self::alx($r,$ra[2]); $rap='popup_suggest,rapport___'.ajx($ra[1]);
 if($ra[1] && $alx)return lj('txtyl',$rap,nms(56));

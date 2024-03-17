@@ -1,7 +1,7 @@
 <?php //searchlang
 class searchlang{
 static function build($p,$o){
-$r=sql('ref,lang','ynd','kv','txt like "%'.$p.'%"');
+$r=sql('ref,lang','trn','kv','txt like "%'.$p.'%"');
 return $r;}
 
 static function call($p,$o,$prm=[]){

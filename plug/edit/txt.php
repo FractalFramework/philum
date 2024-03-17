@@ -20,12 +20,16 @@ if($r)foreach($r as $k=>$i){$txt=msql::val('',$nd.'_txt_'.$i,1);
 return divc('list',$ret);}
 
 //html
-static function area($p,$o,$prm){[$d]=$prm;
+static function wyg($p,$o,$prm=[]){$d=$prm[0]??'';
 if($p=='conn2html')$d=self::act('conn2html','',$prm);
+$s='min-height:400px; border:1px dotted silver; margin:2px 0; padding:4px;';
+$ret=divd('wyswyg',tag('div',['contenteditable'=>'true','id'=>'txtareb','class'=>'wyg','style'=>$s],$d));
+return $ret;}
+
+static function area($p,$o){
 $ret=lj('popbt','txtarea_txt,act_txtareb_23_html2conn',picto('before'));
 $ret.=lj('popbt','txtarea_txt,act_txtareb_23_code',picto('code'));
-$ret.=diveditbt('').' ';
-$ret.=div(atb('contenteditable','true').atd('txtareb').atc('panel').ats('min-height:400px; border:1px dotted silver; margin:2px 0; padding:4px;'),$d);
+$ret.=diveditbt('').self::wyg($p,$o,$prm=[]);
 return $ret;}
 
 static function mkquotes($d){$ret=''; $r=explode("\n",$d);
@@ -45,8 +49,8 @@ case('code'):$ret=($d); break;
 case('cleanmail'):$ret=str::cleanmail($d); break;
 case('cleanbr'):$ret=str::clean_br($d); break;
 case('deln'):$ret=str::del_n($d); break;
-case('striplink'):$ret=codeline::parse($d,'striplink','correct'); break;
-case('cleanpunct'):$ret=str::clean_punct($d); break;
+case('striplink'):$ret=conb::parse($d,'correct','striplink'); break;
+case('cleanpunct'):$ret=str::clean_punctuation($d); break;
 case('addlines'):$ret=mc::add_lines($d); break;
 case('txt2array'):$ret=buildtable::call($d); break;
 case('dump2array'):$ret=buildtable::jb($d); break;
@@ -71,6 +75,7 @@ $ret=lj('','popup_converts,home','converts');
 $ret.=lj('','popup_connectors,home','conn');
 $ret.=lj('','popup_sconn,home','sconn');
 $ret.=lj('','popup_vue,home','vue');
+$ret.=lj('','popup_html,home','html');
 if(auth(6))$ret.=lj('','popup_exec,home','exec');
 $ret.=toggle('','rpl_txt,repl','replace');
 $ret.=lj('','txtarea_converts,act__23_x','x').' ';
@@ -78,7 +83,7 @@ $reb=divd('rpl','');
 $reb.=inputj('url','','txtarea_txt,act_url_23_src','url');//import
 $reb.=lj('popsav','txtarea_txt,act_url_23_src',nms(132)).' ';
 $reb.=lj('popbt','txtarea_txt,act_url_23_brut','brut').' ';
-$reb.=lj('popbt','wyswyg_txt,area_txtarea_3_conn2html',picto('after'),att('conn2html'));
+$reb.=lj('popbt','wyswyg_txt,wyg_txtarea_3_conn2html',picto('after'),att('conn2html'));
 return divc('nbp',$ret).$reb;}
 
 //call
@@ -102,23 +107,23 @@ if($d)$ret.=msqbt('',$nd.'_txt_'.$d);
 return $ret;}
 
 static function home($d,$tx){$nd=self::log(); $msg='';
-if($d)$ra=msql::read('',$nd.'_txt_'.$d,'');
-if($d && is_array($ra)){$msg=stripslashes(valr($ra,1,1)); $msg=str::html_entity_decode_b($msg);}
+if($d)$ra=msql::read('',$nd.'_txt_'.$d);
+if($d && is_array($ra)){$msg=stripslashes(valr($ra,1,1));} //$msg=str::html_entity_decode_b($msg);
 if($d && !$ra && $nd)msql::modif('users',$nd.'_txt_'.$d,['title',''],'one','',1);
 $ret=self::paste($d).' ';
 if($d)$ret.=input('tit',stripslashes(valr($ra,1,0))).' ';
 $ret.=self::btn($d,$nd,$tx).br();
-$ret.=div('',edit::bt(''));//ats('width:630px;')
-$ret.=div('',self::btact('',''));
-$s='width:100%; min-height:360px; padding:4px 8px; margin-top:2px;';
-$edt=divc('col1',textarea('txtarea',$msg,44,4,['style'=>$s]));
-$edt.=div(atc('col2 tab'),div(atd('wyswyg'),''));
+$ret.=div(edit::bt(''));//ats('width:630px;')
+$ret.=div(self::btact('',''));
+$edt=divc('col1',textarea('txtarea',$msg,44,4,['class'=>'txar']));
+$edt.=divc('col2',self::area('',''));
 $ret.=divc('grid-pad',$edt);
 $ret.=divd('bck','');
-Head::add('csscode','
-.tab{font-size:large; padding:6px; border:1px dotted silver; max-height:320px; word-wrap:break-word; overflow-y:auto;}
-.grid-pad{grid-template-columns:auto 40%;}');
-$ret.=jscode('document.getElementById(\'txtarea\').innerHTML=localStorage[\'m1\']');//Head::add('
+$css='.wyg{font-size:large; padding:6px; border:1px dotted silver; max-height:320px; word-wrap:break-word; overflow-y:auto;}
+.txar{width:100%; min-height:360px; padding:4px 8px; margin-top:2px;}
+.grid-pad{grid-template-columns:auto 50%;}';
+$ret.=head::csscode($css); //head::add('csscode',$css);
+$ret.=head::jscode('document.getElementById(\'txtarea\').innerHTML=localStorage[\'m1\']');//head::add('
 return btd('plgtxt',$ret);}
 
 }

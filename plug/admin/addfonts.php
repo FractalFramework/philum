@@ -6,11 +6,11 @@ if(!is_file($f)){$d=read_file($u); write_file($f,$d); return lka($f);}
 else return $f.' '.btn('txtyl','already_exists');}
 
 static function inject(){$ret='';
-$ra=msql::read('server','edition_typos','');
+$ra=msql::read('server','edition_typos');
 if($ra)$vra=array_keys_r($ra,0,'k');
-$r=msql::read('','public_addfonts',''); if($r){$vr=array_shift($r);}
-$dir='fonts/'; $diru='users/'.$_SESSION['qb'].'/fonts/'; if(!is_dir($diru))mkdir($diru);
-if($r)foreach($r as $k=>$v){$font=normalize($v[0]); 
+$r=msql::read('','public_addfonts'); if($r){$vr=array_shift($r);}
+$dir='fonts/'; $diru='users/'.ses('qb').'/fonts/'; if(!is_dir($diru))mkdir($diru);
+if($r)foreach($r as $k=>$v){$font=str::normalize($v[0]); 
 	if(!$vra[$font]){$rb=[$font,'','','','']; 
 		for($i=1;$i<count($v);$i++){$f=$font.'.'.$vr[$i]; $rc[]=$dir.$f; 
 			$ret.=self::copy($v[$i],$dir.$f).br();}//u
@@ -24,7 +24,7 @@ $ret.=lkc('txtbox','/?admin=fonts&inject==','inject datas (admin/fonts)').br();
 return $ret;}
 
 static function call($var1,$var2,$prm=[]){$res=$prm[0]??'';
-$r=msql::read('','public_addfonts',''); if($r)$rk=array_keys_r($r,0,'k');
+$r=msql::read('','public_addfonts'); if($r)$rk=array_keys_r($r,0,'k');
 $res=ajx(substr($res,0,-1),1); $res=between($res,'{','}','');
 $res=str_replace(array('"',"'",' ',"\n","\r","\t","?#iefix","?","!"),'',$res);
 $ra=explode(';',$res); $nb=count($ra);
@@ -48,8 +48,8 @@ if($n>0)$ret=lj('txtbox','cbk_addfonts,inject','add '.$n.' typos').br().br();//x
 return $ret.tabler($r,0,1);}
 
 static function home($d){$here='addfonts';
-//Head::add('css','../css/_admin.css')); Head::add('js','../progb/ajx.js'));
-$r=msql::read('','public_addfonts','');
+//head::add('css','../css/_admin.css')); head::add('js','../progb/ajx.js'));
+$r=msql::read('','public_addfonts');
 $ret=divc('txtalert','coller la classe @face-font (avec url absolue)').br();
 $ret.=textarea('txtcss','',60,10);
 $ret.=lj('txtbox','cbk_addfonts,call_txtcss__1_2','save').br().br();//xd
