@@ -16,8 +16,8 @@ return stripslashes(msql::val('system','default_htaccess',1));}
 
 static function call($var1,$var2,$prm){$txt=$prm[0]??'';
 $ok=write_file('.htaccess',$txt);
-if($ok)return btn('txtyl','saved').' '.hlpbt('htaccess');
-return lkc('txtyl','.htaccess','not saved');}
+if($ok)return btn('txtyl',$ok).' '.hlpbt('htaccess');
+return lkc('txtyl','.htaccess','saved');}
 
 static function home($d){$here='htaccess';
 $default=msql::val('system','default_htaccess',1); $ret='';
@@ -29,7 +29,7 @@ $ret.=lj('txtbox','cbk_htaccess,mkdefault_txt_xd','backup').' ';
 $ret.=msqbt('system','default_htaccess').' ';
 $ret.=lkc('txtx','.htaccess','link').' ';
 $ret.=hlpbt('htaccess').' '.btd('cbk','').' ';
-$ret.=lj('txtbox','cbk_htaccess,call_txt_xd','save').br().br();
+$ret.=lj('txtbox','cbk_htaccess,call_txt','save').br().br();
 $ret.=textarea('txt',$actual,120,26).br();
 $ret.=lkt('txtblc','http://htaccess.madewithlove.be/','tests');
 return $ret;}

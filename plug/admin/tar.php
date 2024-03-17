@@ -45,7 +45,7 @@ fclose($fp);}
 
 static function addir($f,$dr){
 $a=new PharData($f);//.tar
-$r=scanfiles($dr);
+$r=scandir_r($dr);
 foreach($r as $k=>$v)$a->addFile($v);
 $a->compress(Phar::GZ);
 //$pgz=$phar->convertToExecutable(Phar::TAR,Phar::GZ);//makes myphar.phar.tar.gz

@@ -3,7 +3,7 @@
 class dev2prod{
 
 static function remove($rb){
-$r=scanfiles('prog'); $ret='';
+$r=scandir_r('prog'); $ret='';
 foreach($r as $k=>$v){
 	[$dr,$f]=split_right('/',$v);//prog ; a/art.php
 	$fb='progb/'.$f; if(!is_file($fb)){unlink($v); $ret.=strto($f,'.').' ';}}
@@ -11,7 +11,7 @@ if($ret)return br().'remove: '.$ret;}
 
 static function call($p,$o){
 //$r=explore('progb','files',0); p($r);
-$r=scanfiles('progb'); $ret='ok ';
+$r=scandir_r('progb'); $ret='ok ';
 $old='_old/'.date('ymd').'/'; if(!is_dir($old))mkdir_r($old);
 $olb='_old/'.date('ym').'/'; if(!is_dir($olb))mkdir_r($olb);
 foreach($r as $k=>$v){

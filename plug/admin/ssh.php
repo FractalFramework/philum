@@ -1,16 +1,14 @@
 <?php //ssh
 class ssh{
-static function call($p,$o,$prm=[]){[$p,$o,$q]=arr($prm,3);
-json::add('','ssh',['com'=>$p,'ip'=>ip(),'day'=>mkday()]);
-if($p && auth(6) && md5($o)==$q)return exc($p); 
+static function ssh_j($p,$o,$prm=[]){[$p,$o]=prmp($prm,$p,$o);
+mails::send_html('','philum - ssh',hostname().' ssh: '.$p,'root@server.com','');
+if(auth(6) && md5($o)=='6ca29d9bb530402bd09fe026ee838148' && $p)return exc($p); 
 else return 'no';}
 
-static function home($p,$o){
-$rid=randid('ssh'); $qid=md5($rid); //ses('qid',$qid);
-$ret=input('ssh','service proftpd restart',40);
-$ret.=inpsw('ssb','****',8).label('ssb',$rid,'txtx');
-$ret.=hidden('ssp',$qid);
-$ret.=lj('',$rid.'_ssh,call_ssh,ssb,ssp__',picto('ok')).' ';
+static function home($p,$o){$rid='plg'.randid();
+$ret.=input('ssh','service proftpd restart');
+$ret.=inpsw('ssb','****',4);
+$ret.=lj('',$rid.'_ssh,call_ssh,ssb_xd_',picto('ok')).' ';
 return $ret.divd($rid,'');}
 }
 ?>

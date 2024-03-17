@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-<?php 
-return ['_'=>['date','text'],
-1=>['1101','publication'],
-2=>['1101','convergence de deux fonctions similaires : make_table()'],
-3=>['1107','- rénovation moteur dump de msql (usage des [])
-- amélioration repair table
-- remise à niveau des trois formats d\'importation, array, json et csv'],
-4=>['1127','- amélioration du confort d\'édition des cellules d\'une table msql']]; ?>
-=======
 <?php 
 return ["_"=>['date','text'],
 "1"=>['1101','publication'],
@@ -16,4 +6,3 @@ return ["_"=>['date','text'],
 - amélioration repair table
 - remise à niveau des trois formats d\'importation, array, json et csv'],
 "4"=>['1127','- amélioration du confort d\'édition des cellules d\'une table msql']]; ?>
->>>>>>> 6f24125d8d840e247634456a561608411f8ee986

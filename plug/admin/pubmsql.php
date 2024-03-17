@@ -15,7 +15,7 @@ return $nod;}
 
 static function call($p,$o,$prm=[]){$rt=[];
 [$p,$o]=prmp($prm,$p,$o);
-$r=scanfiles('msql');
+$r=scandir_r('msql');
 foreach($r as $k=>$v)if(strpos($v,'_sav')===false){
 if(strpos($v,'msql/users/')!==false){
 	if(strpos($v,'/public_')!==false)$rt[]=$v;}

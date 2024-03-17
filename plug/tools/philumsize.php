@@ -5,7 +5,7 @@ static function home($p='',$o=''){
 $dr=($p?$p:'progb'); $nm=date('ym'); $ret=[];
 //$nm='1904'; echo $dr='_old/1905'; 
 //$r=explore($dr,'files',1);
-$r=scanfiles($dr); //p($r);
+$r=scandir_r($dr); //p($r);
 if($r)foreach($r as $k=>$v)if($v!='_trash.php'){
 	$f=$v; //$f=$dr.'/'.$v; 
 	$v=read_file($f);

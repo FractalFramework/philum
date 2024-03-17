@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-<?php 
-return ['_'=>['description'],
-'.jpg,.png,.gif'=>['embed image'],
-'.mp3'=>['mp3_player'],
-'.mp4,.mov,.wmv,.asf,.rm (etc...)'=>['recognized as vidéo'],
-'.pdf'=>['recognized as PDF'],
-'.swf'=>['recognized as Flash (spécify the sizes : 320/240|objet.swf'],
-'@§text'=>['make mail link'],
-'http://'=>['make an html link, or import image'],
-'lien§text/image'=>['make an html link ; accept an ID_article']]; ?>
-=======
 <?php 
 return ["_"=>['description'],
 ".jpg,.png,.gif"=>['embed image'],
@@ -20,4 +8,3 @@ return ["_"=>['description'],
 "@§text"=>['make mail link'],
 "http://"=>['make an html link, or import image'],
 "lien§text/image"=>['make an html link ; accept an ID_article']]; ?>
->>>>>>> 6f24125d8d840e247634456a561608411f8ee986
