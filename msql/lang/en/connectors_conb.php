@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php 
 return ['_'=>['value'],
 'balise'=>['html balise with ID and class : value|balise|id|class ; this one accept empty content'],
@@ -23,3 +24,30 @@ return ['_'=>['value'],
 'conn'=>['return a connector'],
 'plug'=>['return a plug-in'],
 'core'=>['access to algorithms of core']]; ?>
+=======
+<?php 
+return ["_"=>['value'],
+"balise"=>['html balise with ID and class : value|balise|id|class ; this one accept empty content'],
+"html"=>['balise'],
+"div"=>['div with attributs'],
+"css"=>['span with css class'],
+"br"=>['new line'],
+"id"=>['attribut of \'id\''],
+"class"=>['attribut of \'class\''],
+"style"=>['attribut of \'style\''],
+"name"=>['attribut of \'name\''],
+"text"=>['affiche du texte'],
+"url"=>['html link'],
+"link"=>['html link understanding the modules language'],
+"anchor"=>['return an anchor (called by a link with a name attribut)'],
+"date"=>['[_DAY|d/m/y:date] (Day Month Yeah I=minute Second - return the current timestamp if _DAY is empty'],
+"title"=>['title of an article from an if or \'_ID\''],
+"read"=>['content of an article (numeric value or \'_ID\')'],
+"image"=>['embed image'],
+"thumb"=>['make a miniature from an image or \'_IMG1\' ; specify width/height'],
+"split"=>['return two variables from split function : specify string and separator'],
+"cut"=>['return the part of memorized text after and before the two parameters'],
+"conn"=>['return a connector'],
+"plug"=>['return a plug-in'],
+"core"=>['access to algorithms of core']]; ?>
+>>>>>>> 6f24125d8d840e247634456a561608411f8ee986

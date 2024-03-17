@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
@@ -69,3 +70,77 @@ pub/favicons/favicon_nn*
 pub/favicons/favicon_oo*
 
 
+=======
+# Windows thumbnail cache files
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# =========================
+# Operating System Files
+# =========================
+
+_notes
+_old
+_backup
+_datas
+video
+video_u
+users
+imgb
+_trash.php
+cnfg/newsnet.fr.php
+cnfg/newsnet.ovh.php
+cnfg/oumo.fr.php
+cnfg/philum.fr.php
+cnfg/philum.test.php
+cnfg/vps801456.ovh.net.php
+cnfg/newsnet_saveconfig.txt
+cnfg/_nfo_config.txt
+cnfg/_nfo2_config.txt
+css/newsnet*
+css/MARIALI*
+img/*.jpg
+img/*.png
+img/*.webp
+imgc/*.jpg
+imgc/*.png
+imgc/*.webp
+msql/design/newsnet_*
+msql/design/philum_*
+msql/design/spitable_*
+msql/design/nmk_*
+msql/design/MARIALI_*
+msql/design/ummo_*
+msql/users/_*
+msql/users/newsnet_*
+msql/users/philum_*
+msql/users/dav_*
+msql/users/nmk_*
+msql/users/ummo_*
+msql/users/public_twit_*
+msql/users/public_backup_*
+msql/users/public_chat_*
+msql/users/newsnet_twit_*
+msql/clients/*
+msql/*_sav.php
+pub/favicons/favicon_nn*
+pub/favicons/favicon_oo*
+
+
+>>>>>>> 6f24125d8d840e247634456a561608411f8ee986

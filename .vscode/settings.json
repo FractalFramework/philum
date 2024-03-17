@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "editor.insertSpaces": false,
     "editor.wordWrap": "on",
     "files.eol": "\n",
@@ -15,4 +16,9 @@
     "diffEditor.experimental.showEmptyDecorations": false,
     "diffEditor.wordWrap": "on",
     "editor.renderWhitespace": "none"
+=======
+    "editor.autoIndent": "none",
+    "editor.codeActionWidget.showHeaders": false,
+    "editor.formatOnSave": false
+>>>>>>> 6f24125d8d840e247634456a561608411f8ee986
 }

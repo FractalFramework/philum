@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php 
 return ['_'=>['date','text'],
 1=>['0901','publication'],
@@ -85,3 +86,18 @@ return ['_'=>['date','text'],
 - confiscation de la clique rp(), style de fabrication de tags à attributs réduits, qui n\'ont pas eu de succès'],
 22=>['0928','- l\'\'action d\'ouvrir un article via hj() dans le contexte du desktop (via le template bublk au lieu de bublj) produit l\'effet escompté d\'instinct : ouvrir une popup et définir l\'url qui y est associée
 - confiscation des templates bublj et pubartj, quand on s\'est rendu compte qu\'on pouvait faire switecher le mode de lien (lk/lh) directement dans le template']]; ?>
+=======
+<?php 
+return ["_"=>['date','text'],
+"1"=>['0901','publication'],
+"2"=>['0903','- adaptation de quelques éléments pour recevoir une nouvelle structure de l\'information
+- correctif id:content en double
+- suppression cltmp d\'origine, antique'],
+"3"=>['0907','- fix capture liens twitter embed dans un blockquote dans une figure'],
+"4"=>['0908','- fix détection des guillemets lors des recherches
+- correctif :msql, qui reçoit deux \"|\" pour aller chercher la colonne
+- plus besoin de passer par :basic pour avoir un ym:date
+- protect csvfile'],
+"5"=>['0912','- patch_ret, réforme des tables msql, qui reçoivent un return au lieu d\'un $r=
+- mise à niveau du dump et du read msql pour le nouveau format, compatible avec l\'ancien (patch)']]; ?>
+>>>>>>> 6f24125d8d840e247634456a561608411f8ee986

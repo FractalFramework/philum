@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php 
 return ['_'=>['title_1'],
 1=>['save condition'],
@@ -11,3 +12,18 @@ return ['_'=>['title_1'],
 9=>['inject globals'],
 10=>['saved css'],
 11=>['dev css']]; ?>
+=======
+<?php 
+return ["_"=>['title_1'],
+"1"=>['save condition'],
+"2"=>['specific condition'],
+"3"=>['herit'],
+"4"=>['make public'],
+"5"=>['inform public'],
+"6"=>['make default'],
+"7"=>['make globals'],
+"8"=>['make admin'],
+"9"=>['inject globals'],
+"10"=>['saved css'],
+"11"=>['dev css']]; ?>
+>>>>>>> 6f24125d8d840e247634456a561608411f8ee986

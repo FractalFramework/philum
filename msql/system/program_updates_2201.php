@@ -1,8 +1,15 @@
 <?php 
+<<<<<<< HEAD
 return ['_'=>[''],
 1=>['0101','publication'],
 2=>['0101','- correctifs admin msql dû à la réforme du moteur ajax'],
 3=>['0102','- correctifs annuels de l\'installateur, cette fois il sera entièrement utf8/innodb
+=======
+return ["_"=>[''],
+"1"=>['0101','publication'],
+"2"=>['0101','- correctifs admin msql dû à la réforme du moteur ajax'],
+"3"=>['0102','- correctifs annuels de l\'installateur, cette fois il sera entièrement utf8/innodb
+>>>>>>> 6f24125d8d840e247634456a561608411f8ee986
 - fix qq deprecated de php 8.1'],
 4=>['0103','- correctifs d\'implémentation de dn2 (transport, msql, plugs)
 - correctifs php8.1'],
