@@ -1,0 +1,5 @@
+{
+    "editor.autoIndent": "none",
+    "editor.codeActionWidget.showHeaders": false,
+    "editor.formatOnSave": false
+}
