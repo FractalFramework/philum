@@ -1,2 +1,2 @@
 <?php 
-return ["_"=>['usage']]; ?>
+return ['_'=>['usage']]; ?>

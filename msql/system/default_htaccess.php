@@ -1,6 +1,6 @@
 <?php 
-return ["_"=>['title_1'],
-"1"=>['RewriteEngine on
+return ['_'=>['title_1'],
+1=>['RewriteEngine on
 RewriteRule ^([0-9]+)$ /?read=$1 [L]
 RewriteRule ^art/([^/])$ /?art=$1 [L]
 RewriteRule ^read/([^/])$ /?read=$1 [L]
