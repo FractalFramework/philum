@@ -6,7 +6,7 @@ $msq=new mysql('qda'); //echo $msq::$b;
 $msq::read('id,day','kv','frm="oaxiiboo 6" order by day ASC');
 $r=$msq::$ret;
 setlocale(LC_ALL,"fr_FR");
-$dr=['jan'=>'jan','fev'=>'feb','mars'=>'mar','avr.'=>'apr','mai'=>'may','juin'=>'jun','juil'=>'jul','août'=>'aug','sept'=>'sep','oct'=>'oct','nov'=>'nov','déc'=>'dec'];
+$dr=['jan'=>'jan','fev'=>'feb','mars'=>'mar','avr.'=>'apr','mai'=>'may','juin'=>'jun','juil'=>'jul','aoï¿½t'=>'aug','sept'=>'sep','oct'=>'oct','nov'=>'nov','dï¿½c'=>'dec'];
 foreach($r as $k=>$v){$nb++;
 //14.12.28 00.50 (122)
 //$suj=date('y.m.d H.i',$v).' ('.$nb.')';
@@ -70,7 +70,7 @@ $rc=explode("(nl)",$trad); //pr($rc);
 if($rc)foreach($rk as $k=>$v)$rd[$v]=explode('(cl)',$rc[$k]); p($rd);
 write_file(msql::url('lang/es',$nod),msql::dump($rd,$nod));
 $bt=msqbt('lang/es',$nod);
-return $bt.$ret;}
+return $bt;}
 
 static function maint_trn(){//d41d8cd98f00b204e9800998ecf8427e
 $r=sql('id,md5,txt,ref','trn','','');
@@ -136,10 +136,10 @@ return $ret;}
 
 static function dieguez(){$ret='ok';
 //$r=sql('id','qda','rv','nod="dav" and name!="dav"','');
-$r=sql('idart','qdta','rv','idtag="954"','');//1000=author:dav//954=Manuel de Diéguez//994=Aline
-//$r=sql::inner('id','qda','qdm','id','rv','nod="MARIALI" and msg like "%Manuel de Diéguez%"','');
+$r=sql('idart','qdta','rv','idtag="954"','');//1000=author:dav//954=Manuel de Diï¿½guez//994=Aline
+//$r=sql::inner('id','qda','qdm','id','rv','nod="MARIALI" and msg like "%Manuel de Diï¿½guez%"','');
 pr($r);
-//foreach($r as $k=>$v)$rb[$v]=sqlup('qda',['name'=>'Manuel de Diéguez'],['id'=>$v],1);
+//foreach($r as $k=>$v)$rb[$v]=sqlup('qda',['name'=>'Manuel de Diï¿½guez'],['id'=>$v],1);
 return $ret;}
 
 static function test_xml($f){

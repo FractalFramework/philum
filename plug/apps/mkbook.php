@@ -62,7 +62,7 @@ if($r)foreach($r as $k=>$v){$i=$k+1;
 	$rt.=tagb('b','#'.$v[0]).br();
 	$txt=str_replace(':video',':videourl',$v[3]);
 	$txt=conb::parse($txt,'sconn2','epub');
-	$txt=str_replace('œ','&oelig;',$txt);
+	$txt=str_replace('ï¿½','&oelig;',$txt);
 	$txt=self::enc($txt);
 	$txt=embed_p($txt);
 	$txt=str_replace('</blockquote></p>','</p></blockquote>',$txt);
@@ -87,14 +87,14 @@ if(isset($r1))$wh.=' and '.$qda.'.id in ("'.implode('","',$r1).'")';
 if(isset($r2))$wh.=' and '.$qda.'.frm in ("'.implode('","',$r2).'")';
 if($lg)$wh.=' and lg="'.$lg.'"';
 if($pg)$limit='limit '.(($pg-1)*20).',20'; else $limit='';
-$sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day asc '.$limit;//collate utf8
+$sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day asc '.$limit;
 return sql::call($sql,'',0);}
 
 static function req2($p,$lg=''){//***
 $qda=db('qda'); $qdm=db('qdm'); $wh='nod="'.ses('qb').'"';
 $wh.=' and '.$qda.'.re>3 and day>'.calctime(365);
 if($lg)$wh.=' and lg="'.$lg.'"';
-$sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day asc '.$limit;//collate utf8
+$sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day asc';
 return sql::call($sql,'',0);}
 
 static function req3($p){//favs

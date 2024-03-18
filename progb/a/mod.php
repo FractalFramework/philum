@@ -197,7 +197,7 @@ case('overcat'):$ret=api::arts('overcat:'.$p,$o,$tp); break;
 case('playconn'):$api=api::arts_rq('',''); $api['media']=$p; $api['nbyp']=10; $api['t']=$t; break;
 case('gallery'):$ret=md::gallery($p,$o); break;//old
 case('tracks'):$ret=md::trkarts($p,$t,$d,$o); break;//api::tracks($t)
-case('trkrch'):$ret=md::trkrch($p); break;
+case('trkrch'):$ret=md::trkrch($p,''); break;
 case('last'):$ret=art::playb('last',3); break;
 case('cover'):$ret=md::cover($p,$o,$tp); break;
 case('friend_art'):$ret=md::friend_art($o); break;
@@ -224,7 +224,7 @@ case('same_title'):$load=md::same_title($p); break;
 case('deja_vu'):$load=ses('mem'); break;
 //com
 case('context'):$ret=md::call_context($p); break;
-case('rss_input'):if($p)$ret=rss::build(ajx($p,1)); break;
+case('rss_input'):if($p)$ret=rss::build(ajx($p),1); break;
 case('disk'):$_SESSION['dlmod']=$p; if($p && $p!='/')$pb='/'.$p;
 	$ret=divd('dsnavds',finder::home('dl','users/'.ses('qb').$pb)); break;//!
 case('finder'):$ra=['|','-']; $p=str_replace($ra,'/',$p); $o=str_replace($ra,'/',$o);
@@ -285,13 +285,13 @@ case('tag_arts'):[$p,$o]=split_one(':',$p); $load=ma::tag_arts($p,$o); break;
 case('classtag_arts'):$load=md::classtag_arts($p); break;//class find id//$o=$p;
 case('last_search'):$ret=md::last_search($p,$o); break;
 case('see_also-tags'):$r=md::see_also_tags($p?$p:'tag'); 
-	if($r)$ret=see_also($r,$p,$d,$o,$tp); break;
+	if($r)$ret=md::see_also($r,$p,$d,$o,$tp); break;
 case('see_also-rub'):$t=$p!=1?$p:get('frm');
 	if(get('read'))$load=md::see_also_rub($p); break;
 case('see_also-source'):[$load,$t]=md::see_also_source($o); break;
 case('siteclics'):$ret=md::siteclics($p); break;
 case('rub_tags'):$ret=md::rub_tags($p); break;
-case('rss'):$ret.=rss::home($p?$p:'rssurl'); break;
+case('rss'):$ret.=rss::home($p?$p:'rssurl',''); break;
 case('rssin'):$ret.=self::rssj_m($p,$o); break;
 case('chat'):if($t)$t=lj('','cht'.$p.'_chat___'.$p,$t);
 	$p=$p!=1?$p:'pub'; $in=chat::home($p,$o?$o:10); 
@@ -301,17 +301,17 @@ case('archives'):if($p==1)$p=$m; if($p)$ret=self::title('',$p);
 	$in=divd('archives',few::archives('')); $ret.=tagc('ul',$cs,$in); break;
 case('agenda'):$load=sql('ib,msg','qdd','kv',['val'=>'agenda']); $tim=time();
 	if($load)foreach($load as $k=>$v)if(strtotime($v)<$tim)unset($load[$k]); break;
-case('calendar'):$in=calendar(ses('daya')); if($p==1)$p=$m;//old
+case('calendar'):$in=few::calendar(ses('daya')); if($p==1)$p=$m;//old
 	if($p)$ret=self::title('',$p); $ret.=divc($cs,$in); break;
 case('folders_varts'):$load=desk::varts($p); break;
 case('searched_words'):$ret=searched::look($p); break;
 case('searched_arts'):$load=searched::arts($p); break;
 case('same_tags'):$load=md::same_tags($p); break;
 case('cluster_tags'):$load=md::cluster_tags($p); break;
-case('panel_arts'):$ret=panart::build($p); break;
+case('panel_arts'):$ret=panart::build($p,''); break;
 case('birthday'):$load=md::birthday($p); break;
 case('newsletter'):if($o)$ret=lj('txtcadr','popup_mailist,home__3_'.$p,'mailist');
-	else $ret=mailist::home($p); break;
+	else $ret=mailist::home($p,''); break;
 case('bridge'):$ret=md::bridge($p,$t); break;
 case('fav_mod'):$ret=self::fav_mod($p,$t); break;
 //users
@@ -448,7 +448,7 @@ static function m_pubart($r,$o,$p,$tp='',$pp=''){$re=[]; $ret='';
 if(is_array($r)){foreach($r as $k=>$v){$d=self::pub_art($k,$tp,$pp); if($d)$re[$k]=$d;}
 if($o=='scroll'){$ret=scroll($r,implode('',$re),$p?$p:10);}
 elseif($o=='cols')return pop::columns($re,$p,'board','pubart');
-elseif($o=='inline')return divc('inline',join('',$ret));
+elseif($o=='inline')return divc('inline',join('',$re));
 elseif($re)$ret=implode('',$re);
 if($ret)return divc('panel',$ret)."\n";}}
 

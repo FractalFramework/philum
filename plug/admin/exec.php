@@ -1,7 +1,7 @@
 <?php //exec
 
 class exec{
-static function form_insert($r){
+static function form_insert($r){$ret='';
 if($r)foreach($r as $k=>$v){
 	if($v=="<-")$vb='\n';else $vb=$v;
 	$ret.=ljb('txtx','insert',$vb,$v).' ';}
@@ -39,7 +39,7 @@ static function js(){return 'function jumpMenuIns(fc){
 	var lk=fc+\'(\'+vr+\')\';
 	insert_b(lk,\'codarea\');}';}
 
-static function run($a,$b,$prm){[$d]=$prm;
+static function run($a,$b,$prm=[]){[$d]=$prm;
 if(!auth(6))return;
 //if(hostname()!='86.49.245.213.rev.sfr.net')return;
 $f='_datas/exec/'.date('ymd').'.php'; mkdir_r($f);

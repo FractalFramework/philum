@@ -7,7 +7,7 @@ static function erz($p,$erz){$nod=ses('qb').'_chat_'.$p;
 msql::modif('',$nod,$erz,'del'); return self::read($p);}
 
 static function sav($p,$nm,$prm=[]){$nod=ses('qb').'_chat_'.$p; $msg=$prm[0]??'';;
-if($ret)msql::modif('',$nod,[time(),$nm,str::embed_links($msg)],'push');
+if($msg)msql::modif('',$nod,[time(),$nm,str::embed_links($msg)],'push');
 return self::read($p);}
 
 static function nam($p,$nm,$prm=[]){$res=$prm[0]??'';
@@ -31,8 +31,7 @@ $d.=inputb('msg'.$p,'',18,'message',1000,[]);
 if($nm)$j='cht'.$p.'_chat,sav_msg'.$p.'__'.$p.'_'.$nm;
 else $j='popup_chat,nam_msg'.$p.'_x_'.$p;
 $d.=lj('popbt',$j,picto('kright'));
-return '<form name="chat'.$p.'" action="javascript:'.sj($j).'">'.$d.'</form>';
-return $ret;}
+return '<form name="chat'.$p.'" action="javascript:'.sj($j).'">'.$d.'</form>';}
 
 static function home($p,$msg,$prm=[]){
 $p=$p?str::normalize($p):'public'; ses('muse',$pr[0]??ses('USE'));

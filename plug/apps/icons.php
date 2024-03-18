@@ -48,8 +48,8 @@ for($i=0;$i<6;$i+=2){$r[]=hexdec(substr($d,$i,2));} return $r;}
 
 static function graphics_pick($in){[$w,$h,$ty]=getimagesize($in);
 if($ty==2){$im=imagecreatefromjpeg($in);}
-elseif($ty==1){$im=imagecreatefromgif($in); imgalpha($img);}
-elseif($ty==3){$im=imagecreatefrompng($in); imgalpha($img);}
+elseif($ty==1){$im=imagecreatefromgif($in); imgalpha($im);}
+elseif($ty==3){$im=imagecreatefrompng($in); imgalpha($im);}
 for($y=0;$y<$h;$y++){for($x=0;$x<$w;$x++){
 $rgb=imagecolorat($im,$x,$y); $clrs[$x][$y]=imagecolorsforindex($im,$rgb);}}
 return $rgb;}

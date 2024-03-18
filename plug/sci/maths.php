@@ -239,10 +239,10 @@ $ret=$m->stars_distance($r1,$r2);
 return $ret;}
 
 static function menu(){
-$r=get_class_methods($this);
+$r=get_class_methods('maths');
 return tabler($r,'');}
 
 static function home($p,$o){bcscale(self::$bcs);
-if(method_exists($p))return self::$p($o);}
+if(method_exists('maths',$p))return self::$p($o);}
 }
 ?>

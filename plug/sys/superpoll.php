@@ -15,7 +15,7 @@ if(self::verif($r,$rb[0])!=true){if(count($r)==1)$r[1]=$rb; else $r[]=$rb;
 else return btn('txtred','already_exists');}
 
 static function verifuser($k,$p){
-$f='data/'.$_SESSION['sppnod'].'.txt';
+$f='data/'.$_SESSION['sppnod'].'.txt'; $ta='';
 $t=read_file($f); $ip=hostname(); $r=explode('#',$t);
 foreach($r as $i=>$v){
 	[$ipa,$ka,$pa]=explode('/',$v);
@@ -49,7 +49,7 @@ return $r;}
 
 static function del($d){
 msql::modif('',$_SESSION['sppnod'],$d,'del');
-return btn('txtred',$k.' deleted');}
+return btn('txtred',$d.' deleted');}
 
 static function table($rid){
 $dfb[msql::$m]=['projet','poll']; $ret='';
@@ -57,7 +57,7 @@ $r=msql::read('',$_SESSION['sppnod'],1);
 if($r){$ra=array_keys_r($r,1); arsort($ra);
 foreach($ra as $k=>$v){
 $bt=lj('txtbox','ob'.$k.','.$rid.'_superpoll,poll___'.$k.'_0','-').' ';
-$bt.=spn($r[$k][1]??0,'','txtred','ob'.$k);
+$bt.=span($r[$k][1]??0,'','txtred','ob'.$k);
 $bt.=lj('txtbox','ob'.$k.','.$rid.'_superpoll,poll___'.$k.'_1','+').' ';
 if(auth(4))$bt.=lj('txtbox','res,'.$rid.'_superpoll,poll___'.$k.'_del','x').' ';
 $ret.=divc('txtcadr',divc('imgr',$bt).$r[$k][0]);}}

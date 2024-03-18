@@ -109,7 +109,7 @@ static function zip0($f,$dr){//folder included
 $z=new ZipArchive();
 $z->open($f,ZIPARCHIVE::CREATE);
 $z->addEmptyDir($dr);
-self::folderToZip($f,$z,strlen("$f/"));
+self::zip($f,$z,strlen($f));
 $z->close();}
 
 static function com($p,$o){

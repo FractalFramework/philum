@@ -24,15 +24,15 @@ if($r[12]!==false)$alpha='background-image:url(bkg/shadow/black'.$alp.'.png); ';
 else $sty.='background-color:#'.$_SESSION['clrs'][$_SESSION['prmd']][6].'; ';
 if($r[11]=='inside')$pos='position:absolute; margin-left:'.$wb.'px;';
 $ret=self::nav($_SESSION[$sdj],$na,$nb,$f);
-if($r[7])$ret=divs($sty.$width.$font.$color.$align.$alpha.$pos,$ret.$r[7]);
+if($r[7])$ret=divs($sty.$w.$font.$color.$align.$alpha.$pos,$ret.$r[7]);
 return div($ret.$im);}//style="text-align:center;"
 
-static function thumbs($r,$f,$a){$w=cw(); if($r)unset($r[msql::$m]);
+static function thumbs($r,$f,$a){$w=cw(); if($r)unset($r[msql::$m]); $i=0; $ret='';
 if($r)$rb=array_keys_r($r,5); if($rb)$wt=array_sum($rb); $limit=0-($wt-$w+22);
 if($r)foreach($r as $k=>$v){$i++; $imn='gallery/mini/'.$v[1];
 	if(is_file($imn)){$im=image($imn,$v[5],$v[6]);
-	$gdp=(0-$wa+(($w/2)-($v[5]/2))); if($gdp<$limit)$gdp=$limit; if($gdp>0)$gdp=0;
-	$ret.=ljb('','sliderjnav_'.$a,[$gdp,$k],$im); $wa+=$v[5];}}
+	$gdp=(0-$w+(($w/2)-($v[5]/2))); if($gdp<$limit)$gdp=$limit; if($gdp>0)$gdp=0;
+	$ret.=ljb('','sliderjnav_'.$a,[$gdp,$k],$im); $w+=$v[5];}}
 $ret=div($ret,'sdjv'.$a,'','margin-left:0px;',$ret);
 $ret=div($ret,'','','overflow:hidden; width:'.($w).'px; height:75px;',$ret);
 return $ret;}
@@ -46,9 +46,9 @@ static function sliderjnav_'.$a.'(v,i){
 
 static function nav($n,$na,$nb,$f){
 $j='sdj'.$na.'_sliderJ,img___'.ajx($f,'').'_';
-	$ret.=lj('',$j.'prev-'.$na,picto('previous')).' ';
-	$ret.=lj('',$j.'next-'.$na,picto('next')).' ';
-	$ret.='('.$n.'/'.$nb.') ';
+$ret=lj('',$j.'prev-'.$na,picto('previous')).' ';
+$ret.=lj('',$j.'next-'.$na,picto('next')).' ';
+$ret.='('.$n.'/'.$nb.') ';
 return $ret.br();}
 
 static function home($f,$id,$o){$w=cw(); static $i; $i++; 

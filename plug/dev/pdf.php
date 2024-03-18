@@ -19,11 +19,11 @@ $rq=sql::com('id,frm,thm','qda',$sq);
 if($rq){while($data=sql::qrr($rq)){$stop=false;
 	$tags=explode(",",$data["thm"]); $id=$data["id"];
 	if($tags) foreach($tags as $vb){if($notag[trim($vb)]==true){$stop=true;}}
-	if(!$stop)$ret[$id]=$prw;}
+	if(!$stop)$ret[$id]=1;}
 return $ret;}}
 
 static function arts_menus($dya,$dyb){$cs='txtblc';
-$ret.=divc('txtcadr','build_pdf_book').br();
+$ret=divc('txtcadr','build_pdf_book').br(); $dt=[];
 $dya=$dya?$dya:time(); $dyb=$dyb?$dyb:0;
 $sq='nod="'.ses('qb').'" and day<'.$dya.' and day>'.$dyb.' AND re="1"';
 $rq=sql::com('id,frm,thm,day','qda',$sq);
@@ -31,12 +31,12 @@ while($data=sql::qrr($rq)){
 	$dt['cat'][ajx($data['frm'],'')]+=1;
 	//$tags=explode(',',ajx($data['thm'],''));
 	//foreach($tags as $k=>$v){$dt['tag'][ltrim($v)]+=1;}//self::tri_tags($r)
-	if($data['day']<$mind)$mind=$data['day'];
-	if($data['day']>$maxd)$maxd=$data['day'];}
+	if($data['day']<ses('dayb'))$mind=$data['day'];
+	if($data['day']>ses('daya'))$maxd=$data['day'];}
 $ret.='from '.input('dyb',date('d/m/Y',$mind)).' ';
 $ret.='to '.input('dya',date('d/m/Y',$maxd)).br().br();
 if($dt['cat'])$cts=implode('|',array_keys_b($dt['cat']));
-//if($dt['tag'])$tgs=implode('|',array_keys_b($dt['tag']));
+if($dt['tag'])$tgs=implode('|',array_keys_b($dt['tag']));
 $ret.='cats: '.input('cts','').' ';
 $ret.=jump_btns('cts',$cts,',').br();
 $ret.='no-cats: '.input('nct','').' ';
@@ -56,17 +56,18 @@ $rq=sql::com('id,suj,day,frm,thm','qda','id="'.$wh.'"');
 while($data=sql::qrr($rq)){$ret[$data['id']]=array($data['suj'],date('ymd',$data['day']),$data['frm'],$data['thm']);} //p($ret);
 return tabler($ret,'','');}
 
-static function little_split($v){$unkill=explode(",",$v);
-	foreach($unkill as $su){$su=trim($su);
-	if($su && $su!=" ")$ret[$su]+=$v;}
+static function little_split($v){$unkill=explode(",",$v); $ret=[];
+foreach($unkill as $su){$su=trim($su);
+if($su && $su!=" ")$ret[$su]+=$v;}
 return $ret;}
 
-static function tri_tags($r){if(is_array($r)){foreach($r as $k=>$v){$rb=trimr($k);
+static function tri_tags($r){$ret=[];
+if(is_array($r)){foreach($r as $k=>$v){$rb=trimr($k);
 foreach($rb as $ka=>$va)if($va)$ret[$va]+=$v;}} return $ret;}
 
 static function call(){//echo $_GET['nom'];
 $r=['dya','dyb','cat','nocat','tag','notag','order'];
-$cll=explode("~",$_SESSION['call']);
+$cll=explode("~",$_SESSION['call']); $cal='';
 $get=explode("_",$_GET['nom']);
 foreach($r as $k=>$v){if($k){
 	$rb=self::tri_tags($r);
@@ -84,7 +85,6 @@ return self::arts($mart).br().$bpd;
 static function produce(){
 include("pdf/phpToPDF.php");
 $PDF = new phpToPDF();
-
 $PDF->AddPage();
 $PDF->SetFont("Arial","B",16);
 $PDF->Text(40,10,"Uniquement un texte");
@@ -107,7 +107,7 @@ if(!$_GET['nom']){
 	head::add('csslink','../css/_admin.css');
 	head::add('jslink','../progb/ajx.js');
 	$ret=head::call();}
-$ret.=self::arts_menus($dya,$dyb);
+$ret.=self::arts_menus(ses('daya'),ses('dayb'));
 $ret.=divd('call','');
 $ret.=divd('pdf','');
 return $ret;}

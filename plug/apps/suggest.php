@@ -9,9 +9,9 @@ mails::send_html($dest,$suj,$msg,$from,'');}
 static function import($f,$o='',$prm=[]){[$f,$o]=arr($prm);
 if(substr($f,0,4)!='http')return; ses::$urlsrc=$f;
 [$suj,$msg]=conv::vacuum($f,'');
-if(!$suj && !$msg){[$suj,$msg,$img]=web::getmetas($f); $msg=$img.' '.$msg;}
+if(!$suj && !$msg){[$suj,$msg,$img]=web::metas($f); $msg=$img.' '.$msg;}
 $msg=conn::read($msg,'','test');
-return tagb('h1',clean_title($suj)).divc('panel justy',$msg);}
+return tagb('h1',str::clean_title($suj)).divc('panel justy',$msg);}
 
 static function recall(){$ret='';
 $r=msql::read('',nod('suggest')); $js='popup_sav,batchpreview__3_';
@@ -48,7 +48,7 @@ $r[]=[date('ymdHi'),'',$ra[3],$ra[0],$ra[1],$ra[2],ses('iq')]; if(isset($r[0]))$
 if(!$ra[0] or !$ra[1] or !$ra[2])return btn('txtyl','niet').$back;
 elseif(!$alx){msql::save('',$nod,$r); if($ra[0])self::sugmail($ra[0],$ra[1]);
 	return btn('txtred',helps('userforms')).$back;
-	return lj('txtred','popup_sav,batchpreview__3_'.ajx($lnk),nms(56));}
+	return lj('txtred','popup_sav,batchpreview__3_'.ajx($ra[2]),nms(56));}
 else return lj('txtyl',$rap,nms(37)).$back;}
 
 static function web(){

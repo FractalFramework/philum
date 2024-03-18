@@ -5,20 +5,20 @@ static $a=__CLASS__;
 static $default='';
 static $nb=10000;
 
-static function del($p,$o){
+static function del($p,$o){$ret='';
 if(!is_numeric($p))$p=0; $min=self::$nb*($p);
 $r=sqb('id,im','qdg','kv','where ib<'.$p,0); $rb=[];
 if(auth(6))foreach($r as $k=>$v)if(is_file('img/'.$v))unlink('img/'.$v);
 return $ret;}
 
-static function build($p,$o){
+static function build($p,$o){$ret='';
 if(!is_numeric($p))$p=0; $min=self::$nb*($p);
 $r=sqb('id,im','qdg','kv','limit '.$min.',5000',0); $rb=[];
 foreach($r as $k=>$v){$s=fsize('img/'.$v); if ($s>1000)$rb[$k]=[$v,$s];} //pr($rb);
 foreach($rb as $k=>$v){
 	$xt=xtb($v[0]);
 	if($xt=='png')img::png2jpg($v[0],$k);
-	else img::reduce($v[0]);
+	else img::reduce($v[0],'');
 	$ret.=$v[0].'-'.$v[1].br();}
 return $ret;}
 

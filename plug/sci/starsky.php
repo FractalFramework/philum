@@ -24,7 +24,7 @@ foreach($r as $k=>$v){$i++; $y=$sz+$i*$sz+16;
 	imagestring($im,$font,$x+24,$y,$k,$white);}}
 
 static function sttclr($stt,$klr){
-[$amical,$inamical,$neutre,$galaxy,$hostile]=$klr;
+[$green,$orange,$yellow,$blue,$red,$gray]=$klr;
 if($stt=='amical')$clr=$green;
 elseif($stt=='inamical')$clr=$orange;//img::imgclr($im,'ff9900')
 elseif($stt=='danger')$clr=$red;
@@ -36,7 +36,7 @@ return $clr;}
 //https://fr.wikipedia.org/wiki/Type_spectral
 /**/static function spclr($spc,$mg,$klr){
 [$co,$cb,$ca,$cf,$cg,$ck,$cm,$cw]=$klr;
-if($spc=='O')$clr=$co; elseif($spc=='B')$clr=$cb; elseif($spc=='A')$clr=$ca; elseif($spc=='F')$clr=$cf; elseif($spc=='G')$clr=$cg; elseif($spc=='K')$clr=$ck; elseif($spc=='M')$clr=$cm; else $clr=$white;
+if($spc=='O')$clr=$co; elseif($spc=='B')$clr=$cb; elseif($spc=='A')$clr=$ca; elseif($spc=='F')$clr=$cf; elseif($spc=='G')$clr=$cg; elseif($spc=='K')$clr=$ck; elseif($spc=='M')$clr=$cm; else $clr=$cw;
 return $clr;}
 
 /*static function size($spc,$dist){
@@ -78,7 +78,7 @@ foreach($r as $k=>$v){[$w,$h]=explode('/',$v); $rb[]=$w; $rb[]=$h;} //pr($rb);
 imagepolygon($im,$rb,$clr);}//imagefilledpolygon($im,$r,2,$clr);
 
 static function zones($im,$klr){
-[$r0,$r1,$r2,$r3]=starmap4::zpt(); $r0b=$r0; $r3b=$r3; $cx=12;
+[$r0,$r1,$r2,$r3]=starlib::zpt(); $r0b=$r0; $r3b=$r3; $cx=12;
 foreach($r0 as $k=>$v)$r0[$k]=starmap4::correct($v,$cx); self::poly($im,$r0,'025100');//p($r0);
 foreach($r0b as $k=>$v)$r0b[$k]=starmap4::correct($v,-12); self::poly($im,$r0b,'025100');//p($r0b);
 foreach($r1 as $k=>$v)$r1[$k]=starmap4::correct($v,$cx); self::poly($im,$r1,'a62a00');//p($r1);

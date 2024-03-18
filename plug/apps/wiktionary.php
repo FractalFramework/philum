@@ -18,7 +18,7 @@ foreach($n->childNodes as $nc)($nc->hasChildNodes())
 :$ret=$nc->nodeValue;
 return $ret;}*/
 
-static function explore($r){
+static function explore($r){$ret='';
 foreach($r->childNodes as $k=>$v){
 	if($v->hasChildNodes()){
 		//$attr=$v->getAttribute('href');
@@ -26,8 +26,7 @@ foreach($r->childNodes as $k=>$v){
 		$val=$v->nodeValue;
 		$a=$tag=='a'?ath($v->getAttribute('href')):'';
 		if($tag && $val)$ret.=tag($tag,$a,self::explore($v));
-		else $ret.=$val;
-		}
+		else $ret.=$val;}
 	else{//pr($v);
 		$va=$v->parentNode;
 		$val=$v->nodeValue;
@@ -50,7 +49,7 @@ return $ret;}
 
 static function build($p,$o){
 $d=curl_get_contents($p);
-$ret=html_detect($d,'<ol>');
+$ret=conv::html_detect($d,'<ol>');
 $ret=strip_tags($ret,'');
 $ret=nl2br($ret);
 return $ret;}
@@ -72,5 +71,5 @@ $bt=self::menu($p,$o,$rid);
 if($p)$ret=self::call($p,$o);
 return $bt.divd($rid,$ret);}
 
-}s
+}
 ?>

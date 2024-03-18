@@ -1,6 +1,6 @@
 <?php //imgtxtb
 class imgtxt{
-static function gdf_nblines($t,$maxl){$n=0; 
+static function gdf_nblines($t,$maxl){$n=0; $nb=0; $ret=[];
 $t=str_replace("\n"," \n",$t); $r=explode(' ',$t);
 foreach($r as $k=>$v){$len=strlen($v); $nb+=$len+1; $pos=strpos($v,"\n");
 	if($nb>$maxl){$v; $pos=strlen($v); $ret[$n].=substr($v,0,$pos); $n++;

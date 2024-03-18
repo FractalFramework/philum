@@ -142,7 +142,7 @@ $rq=sql::com('id,img,nod','qda',['>id'=>$min,'<id'=>$max]); //p($r);
 while($r=sql::qrw($rq)){$ka=$r[0]; $d=$r[1]; $qb=$r[2];
 	$rb=explode('/',$r[1]); $ref=$rb[0]; if(!$ref or !is_numeric($ref))$ref=1;
 	foreach($rb as $k=>$v)if($v && !is_numeric($v)){if(val($ra,$v)==$ka)$rc[]=[$ka,$v,'',0];}}
-if($rc)sqlsav2('qdg',$rc); pr($rc);
+if($rc)sql::sav2('qdg',$rc); pr($rc);
 return 'ok';}
 
 //repair error

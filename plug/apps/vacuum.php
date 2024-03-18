@@ -18,7 +18,7 @@ $f=str_replace('|','/',urldecode($f)); ses::$urlsrc=http($f);
 [$ti,$tx,$html,$defid,$defs]=conv::vacuum($f,'');
 //if($defs)foreach($defs as $k=>$v)$defs[$k]=htmlentities($v);
 //$rb=['text-start','text-end','title-start','title-end','footer','utf8','post-treat','last-update','option-start','option-end']; $rb=array_combine($rb,$defs); $rb=json_encode($rb);
-if(!$im){$ims=art::play_conn($d,'.jpg'); $img=between($ims,'[',']');
+if(!$im){$ims=art::play_conn($f,'.jpg'); $img=between($ims,'[',']');
 $domain=strto($f,'/'); if($img)$im=http($domain.'/'.$img);}
 $r=['title'=>$ti?$ti:$ti0,'image'=>$im];//,'defs'=>$rb
 //$tx=hooks($tx);

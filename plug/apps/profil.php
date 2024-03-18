@@ -15,7 +15,7 @@ static function gps_ok(position){
 static function gps_ko(error){switch(error.code){
 	case error.PERMISSION_DENIED: console.log('refus utilisateur'); break;      
 	case error.POSITION_UNAVAILABLE: console.log('localisation impossible'); break;
-	case error.TIMEOUT: console.log('pas de réponse'); break;}}
+	case error.TIMEOUT: console.log('pas de rï¿½ponse'); break;}}
 static function initialize(){var mapProp={
 	center:new google.maps.LatLng(".$lon.",".$lat."),zoom:15,
 	mapTypeId:google.maps.MapTypeId.ROADMAP};
@@ -42,8 +42,8 @@ static function form($r,$o=''){
 $ret=hidden('user',ses('USE'));
 //$ret.=divc('',btn('popw',ses('USE')));
 $ret.=divc('',lj('txtsmall','popup_adm,avatar___1',btd('avatar',self::avatar(ses('USE')))));
-$ret.=divc('',inputb('name',$r['name']??'').btn('popw','identité'));
-$ret.=divc('',inputb('com',$r['com']??'').btn('popw','présentation'));
+$ret.=divc('',inputb('name',$r['name']??'').btn('popw','identitï¿½'));
+$ret.=divc('',inputb('com',$r['com']??'').btn('popw','prï¿½sentation'));
 $ret.=hidden('cp','0');
 //$cp=input('cp',$r['cp'],'',['onkeyup'=>"num_finger('cp',5);"]);
 //$ret.=divc('',$cp.btn('popw','Code postal'));
@@ -54,11 +54,11 @@ if(!get('callj'))$ret.=div('','','googleMap','height:200px;border:1px solid gray
 return divc('form',$ret);}//on2cols($rb,700,5)
 
 #mysql
-static function mysqli_profil(){
+static function db(){
 return ['user'=>'var','name'=>'var','com'=>'var','cp'=>'int','gps'=>'var','photo'=>'var','day'=>'int'];}
 
-static function profile_init($b){
-sqlop::install($b,mysqli_profil(),0);}
+static function init($b){
+sqlop::install($b,self::db(),0);}
 
 //load
 static function datas($ud){
@@ -67,12 +67,12 @@ return sql('id,user,name,com,cp,gps,day','profil','r','user="'.$ud.'"');}
 /*static function user($ud){$r=self::datas($ud); //echo $ud; p($r);
 $ret.=divc('',self::avatar($r['user'])).br();
 //$ret.=divc('',btn('txtx','Nom').btn('popbt',$r['user'])).br();
-if($r['com'])$ret.=divc('',btn('txtx','Présentation').btn('popbt',$r['com'])).br();
+if($r['com'])$ret.=divc('',btn('txtx','Prï¿½sentation').btn('popbt',$r['com'])).br();
 $ret.=divc('',btn('txtx','Localisation').btn('popbt',self::distance($r['gps']))).br();
 return $ret;}*/
 
 static function home($p,$o){$rid='plg'.randid(); //echo $p.'-'.$o;
-profile_init('profil');
+self::init('profil');
 $r=self::datas(ses('USE')); //p($r);
 if(strpos($r['gps'],'/')===false)$r['gps']='0/0';
 //head::add('js','http://maps.googleapis.com/maps/api/js');

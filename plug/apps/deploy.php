@@ -24,7 +24,7 @@ if($deploy && $USE){//prep
 	if($_POST['multiple']=="ok" && is_array($listmail)){
 		$sentto=mails::batch($listmail,$mail_format,$qb.' :: '.$raed,$msg,$sender,$htacc);}
 	else{$sentto=$_POST['dpl']; $vm=str_replace(array(",",";","\n"," "),",",$sentto);
-	send_mail($mail_format,$vm,$qb.' :: '.$raed,$msg,$sender,$htacc);}
+	mails::send_html($mail_format,$vm,$qb.' :: '.$raed,$msg,$sender,$htacc);}
 	$ret.=lkc("popbt",'/?read='.$deploy,'article '.$deploy.' sent to: '.$sentto);}}
 else{$ret.=btn('popdel','forbidden');}}
 //if($_POST['dpl'])return $ret; 

@@ -84,10 +84,10 @@ if($r)foreach($r as $k=>$v)$ret.=lj('','popup_api__3_'.ajx($v[0]).':'.ajx($v[1])
 return btn('nbp',$ret);}
 
 static function lgdate($d){
-return date($p?$p:'d-m-Y',$d);}
+return date('d-m-Y',$d);}
 
 static function playtx($id){$d=sql('msg','qdm','v',$id);
-return trans::convert($d,$id);}
+return trans::build($d,'','','','art'.$id);}
 
 static function btredit($ref,$to,$from){$ret=''; if(auth(6) && $to!='all'){
 $ret=lj('','trn'.$ref.'_trans,redo___'.$ref.'_'.$to.'-'.$from.'-1',picto('refresh')).' ';
@@ -332,7 +332,8 @@ $ret.=hlpbt('umrec');
 return divc('nbp',$ret);}
 
 //global lang
-static function lng($p,$o,$rid){$r=explode(' ','all '.prmb(26));//['all','fr','en','es'];
+static function lng($p,$o,$rid){$ret='';
+$r=explode(' ','all '.prmb(26));//['all','fr','en','es'];
 $lg=sesb('umrlg',ses('lang')?ses('lang'):'all');
 $now=in_array_b($lg,$r); return radioj('umrlg',$r,$now);
 //foreach($r as $k=>$v)$ret.=lj($v==$g?'active':'',$rid.'_umrec,home___'.$p.'_'.$v,$v).' ';

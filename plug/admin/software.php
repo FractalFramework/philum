@@ -16,7 +16,7 @@ if($r)foreach($r as $k=>$v)if(!val($rb,$k))$ret.=lj('','popup_software,patch___'
 if($ret)$ret=btn('txtyl','patch needed: '.$ret);
 if($p && !$rb[$p]){
 	$ret=lj('txtalert','upd_software,state',$r[$p][0].': '.$r[$p][1]);
-	$ret.=patchs::home($r[$p][0]);
+	$ret.=patchs::home($r[$p][0],'');
 	msql::modif('server','program_patches',1,'shot',0,$p);}
 return $ret;}
 

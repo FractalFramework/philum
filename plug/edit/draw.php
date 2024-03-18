@@ -74,16 +74,16 @@ head::add('jslink','/js/jquery.js');
 head::add('jscode',self::js());
 head::add('csscode',self::css());
 $ret=tag('canvas',['id'=>'canvas','width'=>$w.'px','height'=>$h.'px'],'');
-$r=['black','white','blue','green','yellow','orange','brown','red','indigo','violet','pink','cyan']; $n=count($r);
+$r=['black','white','blue','green','yellow','orange','brown','red','indigo','violet','pink','cyan']; $n=count($r); $cl='';
 for($i=0;$i<$n;$i++){
 	$c='" style="background: none repeat scroll 0% 0% '.$r[$i].';" data-couleur="'.$r[$i];
 	$cl.=tagb('li',lka($c,$r[$i]));}
 $ret.=tag('ul',['id'=>'couleurs'],$cl);
 $inp=label('largeur_pinceau','width');
-$inp.=inp('largeur_pinceau','',1,['type'=>'range','min'=>2,'max'=>20]);
+$inp.=input('largeur_pinceau','',1,['type'=>'range','min'=>2,'max'=>20]);
 //$inp.=tag('output',['id'=>'output'],'pixels');
-$inp.=inp('reset','reset','',['type'=>'reset']);
-$inp.=inp('save','save','',['type'=>'button']);
+$inp.=input('reset','reset','',['type'=>'reset']);
+$inp.=input('save','save','',['type'=>'button']);
 $ret.='<form id="largeurs_pinceau">'.$inp.'</form>';
 return $ret;}
 }

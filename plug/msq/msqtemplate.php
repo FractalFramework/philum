@@ -5,7 +5,7 @@ static function conform_order($r,$rb){
 foreach($rb as $k=>$v){$ret[$k]=$r[$k];}
 return $ret;}
 
-static function build($nod,$tmp){
+static function build($nod,$tmp){$ret='';
 [$dr,$nod]=split_right('/',$nod,0); if(!$dr)$dr='users';
 $r=msql::read($dr,$nod); $mnu=$r[msql::$m]; unset($r[msql::$m]);
 //$rb=array_keys_r($r,0); asort($rb); $r=self::conform_order($r,$rb);

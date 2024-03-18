@@ -31,7 +31,7 @@ foreach($r as $k=>$v){$pos=strpos($v,'(');
 	if($pos!==false)$rb[substr($v,0,$pos).'(']='f'.$k.'(';}
 return $rb;}
 
-static function list_vars($d){$r=explode("$",$d); $rb=[];
+static function list_vars($d){$r=explode("$",$d); $rb=[]; $kb=0;
 $ra=array(';','.',',','=','[',']',')','+','-','!','?','<','>','|','&','"',"'");
 $no=['_GET','_POST',' _SESSION','_SERVER'];//,'_GLOBAL'
 foreach($r as $k=>$v){$end=''; if(substr($v,0,1)!='_')

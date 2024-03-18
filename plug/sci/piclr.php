@@ -3,7 +3,7 @@ class piclr{
 static $conn=1;
 static function pi_car($d){return ;}
 
-static function build($p){
+static function build($p){$css=''; $ret='';
 $ra=msql::read('system','edition_colors',1); //foreach($ra as $k=>$v)$rb[$i]=$v;
 $rb=array_keys($ra);
 $rand=[4,12,24,78,14,19,44,21,32,79];

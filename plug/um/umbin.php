@@ -20,7 +20,7 @@ $inv=$op!=$r[3]?true:false;
 //compare le résultat attendu au réel (renvoie 1/0)
 $op=self::op($r['b']);
 //déduction
-return $inv?inv($op):$op;}
+return $inv?self::inv($op):$op;}
 
 static function addinv($r){
 //détermine l'effet
@@ -30,7 +30,7 @@ $inv=$op==$r[3]?1:0;
 //applique à b
 $op=$r['b'][0]+$r['b'][1];
 //déduction
-return $inv?$op:inv($op);}
+return $inv?$op:self::inv($op);}
 
 static function transp($r){static $i; $i++;
 $ra=[0,1,1,1,0,0,0,1,0,0,1,1,1];

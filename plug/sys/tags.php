@@ -1,6 +1,6 @@
 <?php //see_tags
 class tags{
-static function fthemb($req){
+static function fthemb($req){$ret=[];
 while([$suj]=sql::qrw($req)){
 $unkill=explode(',',$suj);
 foreach($unkill as $vbl){$su=trim($vbl);

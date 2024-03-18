@@ -15,7 +15,7 @@ function gps_ok(position){
 function gps_ko(error){switch(error.code){
 	case error.PERMISSION_DENIED: alert('refus utilisateur'); break;      
 	case error.POSITION_UNAVAILABLE: alert('localisation impossible'); break;
-	case error.TIMEOUT: alert('pas de réponse'); break;}}
+	case error.TIMEOUT: alert('pas de rï¿½ponse'); break;}}
 function initialize(){var mapProp={
 	center:new google.maps.LatLng(".$lon.",".$lat."),
 	zoom:15,
@@ -27,7 +27,7 @@ google.maps.event.addDomListener(window,'load',initialize);
 
 //http://www.awelty.fr/blog/developpement-web/php.html
 //En savoir plus sur http://www.awelty.fr/blog/developpement-web/php.html
-/*static function algo_gps_distance($lat,$lon,$peri){//lieux dans un périmètre donné
+/*static function algo_gps_distance($lat,$lon,$peri){//lieux dans un pï¿½rimï¿½tre donnï¿½
 $formule="(6366*acos(cos(radians($lat))*cos(radians(`lat`))*cos(radians(`lon`) -radians($lon))+sin(radians($lat))*sin(radians(`lat`))))";
 $sql="SELECT ville,$formule AS dist FROM villes WHERE $formule<='$peri' ORDER by dist ASC";
 $r=sql::call($sql,'',1); p($r);
@@ -38,7 +38,7 @@ return sql::call('select ville from villes where lat_deg<"'.($lat+$mg).'" and la
 }
 
 static function get_distance_m($lat1,$lng1,$lat2,$lng2){
-$earth_radius=6378137;//Terre=sphère de 6378km de rayon
+$earth_radius=6378137;//Terre=sphï¿½re de 6378km de rayon
 $rlo1=deg2rad($lng1); $rla1=deg2rad($lat1);
 $rlo2=deg2rad($lng2); $rla2=deg2rad($lat2);
 $dlo=($rlo2-$rlo1)/2; $dla=($rla2-$rla1)/2;
@@ -51,7 +51,7 @@ $gpsu=sql('gps','profil','v','user="'.ses('USE').'"');
 $gpsru=explode('/',$gpsu); $gpsrv=explode('/',$gpsv);
 //$da=$gpsru[0]-$gpsrv[0]; $db=$gpsru[1]-$gpsrv[1];
 //$r=algo_gps_distance($gpsru[0],$gpsru[1],100); 
-if($gpsv && $gpsu)return get_distance_m($gpsru[1],$gpsru[0],$gpsrv[1],$gpsrv[0]);}
+if($gpsv && $gpsu)return self::get_distance_m($gpsru[1],$gpsru[0],$gpsrv[1],$gpsrv[0]);}
 
 static function build($p,$o,$prm=[]){
 $p=$prm[0]??$$p;
@@ -65,8 +65,7 @@ return $ret;}
 
 static function home($p,$o){$rid=randid('geo');
 $bt=self::menu($p,$o,$rid);
-$ret=self::build($p,$o);
-if(strpos($r['gps'],'/')===false)$r['gps']='0/0';
+$ret=self::build($p,$o); $r['gps']='0/0';
 head::add('js','http://maps.googleapis.com/maps/api/js');
 head::add('jscode',self::profil_js($r['gps']));
 //$bt.=msqbt('',nod('geo_1'));

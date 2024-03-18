@@ -1,5 +1,5 @@
 <?php 
-#retape arts pour désactiver rstr70
+#retape arts pour dï¿½sactiver rstr70
 class retape{
 
 static function home($p,$o){

@@ -37,7 +37,7 @@ if(isset($_FILES['myfile']) && $_SESSION['uproot']){
 else return 'nothing';}
 
 static function home(){
-upim_h();
+self::upim_h();
 //head::jscode(up_js());
 return '
 <div class="container">

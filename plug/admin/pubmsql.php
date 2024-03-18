@@ -38,7 +38,7 @@ return $ret;}
 
 static function home($p){
 $bt=self::menu($p); $ret='';
-if($p)$ret=self::call($p);
+if($p)$ret=self::call($p,'');
 return $bt.divd('pbm',$ret);}
 }
 ?>

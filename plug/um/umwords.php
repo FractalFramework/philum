@@ -11,15 +11,15 @@ if(!$n)$n=sql::call('select id from dicoen where mot like "'.$v.'";','v');
 return $n;}
 
 static function exart($idvoc,$idart,$pos){
-return sql('id','qdvoc_b','v',['idvoc'=>$idvoc,'idart'=>$idart,'pos'=>$pos);}
+return sql('id','qdvoc_b','v',['idvoc'=>$idvoc,'idart'=>$idart,'pos'=>$pos]);}
 
 static function ex($v){
 return sql('id','qdvoc','v','voc="'.$v.'"');}
 
 static function sav($r){
 if($r)foreach($r as $k=>$v)if(!self::ex($v[1]))$rb[]=$v; //pr($rb);
-//$nid=sql::qrid('insert into umvoc values '.sql::atmrb($rb,1));
-return $nid;}
+//return sql::qrid('insert into umvoc values '.sql::atmrb($rb,1));
+}
 
 static function sav2($v,$o){
 [$id,$pos]=explode('-',$o);
@@ -62,8 +62,7 @@ foreach($r as $k=>$v)
 	if($rb)foreach($rb as $ka=>$va)
 		if($va[1]==$v)$rc[]=[$k,$va[0],$va[2]];*/
 //if(auth(6))$nid=sql::qrid('insert into '.ses('qdvoc_b').' values '.sql::atmrb($rc,1));
-return tabler($rb);
-return count($rc);}
+return tabler($rb);}
 
 static function see($p,$o,$prm){
 $p=$prm[0]??$p;

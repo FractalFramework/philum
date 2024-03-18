@@ -511,8 +511,7 @@ elseif($prw=='rch' && $tp){ses::$r['look']=$tp; get('search',$tp); $tp='little';
 elseif($prw==3)$tp=$tp?$tp:'read';//$prw=self::slct_media($prw);
 $r=self::datas($id); if(!$r)return;
 if(($prw>=2) && $r['re'])$msg=sql('msg','qdm','v',$id);//rstr(5) or
-return self::call($id,$r,'',$msg,$prw,$tp,$nl,$n='',$trk='');
-return $ret;}
+return self::call($id,$r,'',$msg,$prw,$tp,$nl,$n='',$trk='');}
 
 static function playq($id,$pos,$r35,$quot=''){//quotes
 $_SESSION['read']=$id; $r=self::datas($id); $r['o']=self::metart($id);

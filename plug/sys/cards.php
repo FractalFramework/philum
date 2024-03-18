@@ -1,6 +1,6 @@
 <?php 
 class cards{
-static function home(){
+static function home(){$ret='';
 $data=sql('msg','qdm','v','id="'.$_GET['cards'].'"');
 $data=str_replace('[cards:plug]','',$data);
 $obj=conn::read($data,3,ses('read')); $obj=nl2br($obj); 

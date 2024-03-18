@@ -36,7 +36,7 @@ foreach($r as $v)if($v)$rb[]=[trim(addslashes($v)).'.','','',''];
 $rb=msql::save('',nod('study_'.$p),$rb,['text','description','commentaires','references']);
 return self::read($rb,$p);}
 
-static function build($p,$o,$prm=[]){$id=prm[0]??'';
+static function build($p,$o,$prm=[]){$id=$prm[0]??'';
 $d=sql('msg','qdm','v','id='.$id);
 if(is_array($d))return 'no';
 $d=conb::parse($d,'delconn');

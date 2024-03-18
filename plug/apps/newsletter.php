@@ -7,11 +7,11 @@ if($r)foreach($r as $v){$k=between($v,'<','>'); $ret[$k]=$v;}
 return $ret;}
 
 static function msav($d,$i){
-if(!$d){$n=1;$c='';}elseif(!rstr($k)){$n=0;$c='active';}
-$ret[]=offon($n).' '.btn($cx,lj('','rstr_params___'.$k.'_'.$n,$v)).br();}
+if(!$d){$n=1;$c='';}elseif(!rstr($d)){$n=0;$c='active';}
+$ret[]=offon($n).' '.btn('',lj('','rstr_params___'.$d.'_'.$n,$i)).br();}
 
 static function edit(){$r=mails::datas();
-$r=msql::read('',nod('mails'),1);
+$r=msql::read('',nod('mails'),1); $ret=''; $i=0;
 if($r)foreach($r as $k=>$v){$i++; $n='nl'.$i; $c=''; if($v[1])$c='active';
 	$ret.=lj('',$n.'_newsletter,mmsav',$k).br();}
 return div($ret,'nbp','nldt');}
@@ -27,8 +27,8 @@ return $ret;}
 static function batch($p,$o,$rs=[]){$here=host();
 $un=helps('newsletter_uns'); $url=htacc('hub').ses('qb'); 
 $from=$_SESSION['qbin']['adminmail']; $ret=self::read();
-$suj=$rs[0]?$rs[0]:ses('qb').' '.mkday('',1);
-if($rs[1])$r=nl_mklist(); else $r=mails::datas();
+$suj=$rs[0]?$rs[0]:ses('qb').' '.mkday('',1); $i=0;
+if($rs[1])$r=self::nl_mklist(); else $r=mails::datas();
 if($r)foreach($r as $k=>$to){$i++;
 	$uns=lkc('txtx',$here.'/app/mailist/uns/'.$k,$un).br();
 	if(trim($to))mails::send_html($to,$suj,$ret.$uns,$from,$url);}
@@ -43,7 +43,7 @@ return divd('nws',$ret);}
 
 static function home($d){$ret='';
 if($d=='edit' && $_SESSION['auth']>5)$ret.=self::prep();
-if($d=='batch' && $_SESSION['auth']>5)$ret.=self::batch();
+if($d=='batch' && $_SESSION['auth']>5)$ret.=self::batch('','');
 if($d=='prep')$ret.=lj('popsav','popup_newsletter,batch',nms(28));
 return $ret;}
 }
