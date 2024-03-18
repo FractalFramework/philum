@@ -42,7 +42,6 @@ $ra=art::test($id,'');
 chrono();
 //for($i=0;$i<100;$i++)
 $d=view::call($r,$ra);
-////$d=vue::build($d,$ra);
 //$d=cltmp2::patch('art');//convert to {var}
 //$d=conb::parse($d,'template');
 //$d=conb::build($d,$ra);

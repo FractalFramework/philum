@@ -9,7 +9,7 @@ static function addart_btn(){//sav::newartcat
 $p=['onclick'=>'SaveIeb()','oncontextmenu'=>'SaveIeb()','onchange'=>'SaveIeb()','onpaste'=>'SaveIeb()'];
 $t=inputb('addsrc','',43,'url',256,$p);
 $t.=lj('','popup_edit,call',picto('add',14));
-return spn($t,'search','adb');}
+return span($t,'search','adb');}
 
 //ucom
 static function ucom_btn(){//obs
@@ -106,7 +106,7 @@ foreach($r as $k=>$v)$rt=self::seek_merge($v,$rt);
 return $rt;}
 
 //mods
-/**/static function adm_mods($d){//mod::block($va,$cr);
+/**/static function adm_mods($d){//mod::block($va);
 return mod::call($d);}
 
 //hubs
@@ -212,9 +212,10 @@ foreach($r as $k=>$v)$rt[]=popbub('admin',$k,mimes($k).'&nbsp;'.$v,'',1);
 return join('',$rt);}
 
 //login
-static function exec($d){
+static function app($d){
 if($d=='login'){login::call('','',''); return divd('nob',login::form('','1',''));}
-if($d=='cache')return li(boot::rebuild());}
+if($d=='cache')return li(boot::rebuild());
+[$a,$p]=expl(',',$d); return appin($a,$p);}
 
 //taxo
 static function bubtaxo_root($r,$ib){
@@ -236,7 +237,7 @@ if($r)foreach($r as $k=>$v)$ret[]=[$k,'link','cat','/cat/'.$k,'','',$root.$v,'ur
 return $ret;}
 
 //desk
-//'button','type','process','param','option','condition','root','icon','hide','private'
+//button,type,process,param,option,condition,root,icon,hide,private
 static function menubub($d,$n){
 $r=msql::read('',nod('menubub_'.($n?$n:'1')),1); $ret=[];
 if($r)foreach($r as $k=>$v){//if(strpos($v[0],$d)!==false)
@@ -250,7 +251,9 @@ if($r)foreach($r as $k=>$v){//if(strpos($v[0],$d)!==false)
 	elseif($v[2]=='ajax')$ret[]=[$v[3],'ajax','',$v[1],'','',$v[0],$v[4],'',$v[5]];//sysonly
 	elseif($v[2]=='content')$ret[]=[$v[3],'ajax','content',$v[1],'','',$v[0],$v[4],'',$v[5]];
 	elseif($v[2]=='popup')$ret[]=[$v[3],'popup',$v[1],'','','',$v[0],$v[4],'',$v[5]];
-	//elseif($v[2]=='bub')$ret[]=[$v[3],'bubble',$v[0],$v[1],$v[0],$v[4],'',$v[5]];
+	elseif($v[2]=='pop')$ret[]=[$v[3],'popup',$v[1],'','','',$v[0],$v[4],'',$v[5]];
+	elseif($v[2]=='bub')$ret[]=[$v[3],'bubble',$v[0],$v[1],$v[0],$v[4],'',$v[5]];
+	elseif($v[2]=='app')$ret[]=[$v[3],'app',$v[0],$v[1],$v[0],$v[4],'',$v[5]];//new
 	//elseif($v[2]=='taxo')$ret=self::taxo($v[0],$ret);
 	elseif($v[2]=='msql')$ret[]=[$v[3],'msql',$v[1],'','','',$v[0],$v[4],'',$v[5]];
 	elseif($v[2]=='arts')$ret[]=[$v[3],'arts',$v[1],'','','',$v[0],$v[4],'',$v[5]];
@@ -260,6 +263,20 @@ if($r)foreach($r as $k=>$v){//if(strpos($v[0],$d)!==false)
 		elseif(is_numeric($v[1]))$lk='/'.$v[1];	else $lk=$v[1];
 		$ret[]=[$v[3],'link','',$lk,'','',$v[0],$v[4],'',$v[5]];}}
 return $ret;}
+
+//[block],mod,param,title,condition,command,option,cache,hide,template,bt,div,prv,popup//mod format
+//button,type,process,param,option,condition,root,icon,hide,private//bub format
+static function modbub($va,$n){$r=sesr('modc',$va); $rt=[]; $typ=rstr(85)?'modpop':'modin';
+if($r)foreach($r as $k=>$v)if(!$v[7] && !$v[11]){$pi=$v[1]; $root=$va;
+	if($v[0]=='MENU')$root.='/'.$v[2];
+	//if($v[0]=='api_arts')$pi=str_replace(',',';',$v[1]);
+	//$prm='p:'.$pi.',o:'.$v[5].',c='.$v[4].',t:'.$v[2];
+	//$rt[]=[$v[2],$typ,$v[0],$v[1],$v[5],'',$v[1],mime($v[0]),'',$v[11]];
+	else $rt[]=[$v[2],'btmnu',$k,$v[1],$v[0],'',$root,mime($v[0]),'',''];} //pr($rt);
+return $rt;}
+
+static function menublock($d){
+return msql::read('',nod('menublock_'.$d),1);}
 
 //user
 static function adm_user_fast(){
@@ -336,7 +353,7 @@ return $ret;}
 static function apps($r,$d,$dir,$cond,$n=''){//$r,,dir,cond
 if($dir=='zero'){$dir=''; $dd='d';} else $dd=''; $rb=[]; $ret='';
 $dr=explode('/',$dir); $nd=$dir?count($dr):0;
-if($r)foreach($r as $k=>$v){$rc=array_flip(explode(' ',' '.$v[5]));
+if($r)foreach($r as $k=>$v){$rc=array_flip(explode(' ',' '.$v[5]));//wait for desk,boot,menu
 if($rc[$cond?$cond:'menu']??'' or !$v[5]){$t=$v[0];
 	$rv=explode('/',$v[6]); $nv=$v[6]?count($rv):0;
 	$ico=$v[7]?picto($v[7],'').'&nbsp;':''; $rvb=$rv[$nv-1]??'';
@@ -350,15 +367,18 @@ if($rc[$cond?$cond:'menu']??'' or !$v[5]){$t=$v[0];
 		if($dd)$pc=$rvb;
 		$rb[$rvb]=popbub($v[4]?$v[4]:$d,ajx($root).'_'.$n,$pc,$dd,1);}
 	if($is && $nv>$nd)$is=false;
-	if($is && empty($v[8]) && (empty($v[9]) or auth($v[9]??''))){//noj*
+	if($is && empty($v[8]) && (empty($v[9]) or auth($v[9]??''))){
 		if($v[1]=='link')$rb[$t]=ljbub($ico.$t,$v[3],'','','','');
 		elseif($v[1]=='linkt')$rb[$t]=ljbub($ico.$t,$v[3],'','','','1');
 		elseif($v[1]=='js')$rb[$t]=ljbub($ico.$t,'',atj($v[2],$v[3]));
 		elseif($v[1]=='bub')$rb[$t]=popbub($v[2],$v[3],$ico.$t,'c',1);//d
 		elseif($v[1]=='arts')$rb[$t]=popbub('','arts',$ico.$t,'d',0);
 		elseif($v[1]=='art')$rb[$t]=lh($v[3],$ico.$t);
-		elseif($v[1]=='mod'){$rb[$t]=mod::callmod($v[3]);}
+		//elseif($v[1]=='app')$rb[$t]=self::app($v[3]);//used when app is inside a menu
+		elseif($v[1]=='appin')$rb[$t]=self::app($v[3]);//innercontent
+		elseif($v[1]=='mod')$rb[$t]=mod::callmod($v[3]);
 		elseif($v[1]=='modbt')$rb[$t]=mod::btmod($v[3].',t:'.$t);//,bt:1
+		elseif($v[1]=='btmnu')$rb[$t]=mod::btmnu([$v[4],$v[3],$t],$v[2],1,0);
 		else{$j=desk::read($v); $rb[$t]=ljbub($ico.$t,'',sj($j));}}}}
 if($rb)$ret=implode('',$rb);
 //if($d=='arts')//$ret=desk::pane_icons($rb,'icones');
@@ -385,12 +405,14 @@ $ret=match($dir){//pre-rendered, intercepte navigation
 'ucom'=>self::ucom_btn(),
 'arts'=>self::adm_arts_fast(),
 'user'=>self::adm_user_fast(),
-'exec'=>self::exec($d),
+'app'=>self::app($dir),
+'exec'=>self::app($d),
 default=>''};
 if($ret)return $ret;
 $r=match($d){
 'hubs'=>self::hubs_fast(),
 'bub'=>self::slct($d),
+'app'=>[['','appin','',$dir,'','',$dir,'']],
 'home'=>self::r_apps_home(0),
 'adhome'=>self::r_apps_home(1),
 'admin'=>self::adm_admin($dir),
@@ -412,6 +434,8 @@ $r=match($d){
 //'plug'=>self::plug($dir),
 'overcat'=>self::overcats($dir),
 'menubub'=>self::menubub($dir,$n),
+'modbub'=>self::modbub($dir,$n),
+'menublock'=>self::menublock($n),
 'bubses'=>$_SESSION['bubses'],
 default=>[]};
 return self::apps($r,$d,$dir,'',$n);}

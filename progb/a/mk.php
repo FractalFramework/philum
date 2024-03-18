@@ -6,9 +6,10 @@ static function pub_div($d){[$d,$o]=cprm($d); return divc($o,$d);}
 static function pub_font($d){[$d,$o]=cprm($d); return bts('font-family:'.$o,$d);}
 static function pub_float($d){[$d,$o]=cprm($d); return divs('float:'.($o?'right':'left'),$d);}
 static function pub_clr($d,$o=''){if(!$o)[$d,$o]=cprm($d); return bts('color:'.$o,$d);}
-static function pub_bkgclr($d){[$d,$o]=cprm($d); return bts('background-color:'.$o,$d);}
 static function pub_size($d){[$d,$o]=cprm($d); $s='font-size:'.$o.'px; line-height:'.round($o*1.2).'px;';
 return tag('font',['style'=>$s],$d);}
+static function pub_style($d){[$d,$o]=cprm($d); return tag('font',['style'=>$s],$d);}
+static function pub_overline($d){return tag('font',['style'=>'text-decoration:overline'],$d);}
 static function pub_html($d){[$p,$o]=split_right('|',$d); $r=explode_k($o,' ','=');
 $ra=['css'=>'class','font'=>'font-family','size'=>'font-size']; $rb=colors(); $atb='';
 foreach($r as $k=>$v){if($k=='color')$v=$rb[$v]?$rb[$v]:'#'.$v; $atb.=(isset($ra[$k])?$ra[$k]:$k).':'.$v.'; ';}
@@ -27,6 +28,20 @@ static function imgtxt($v){[$p,$o]=cprm($v);
 return imgtxt::home($p,$o,'');}
 static function webview($d,$id){[$u,$v]=cprm($d); $lk=lka($u,$v);
 return togbub('web,call',ajx($u).'_0_'.$id,picto('acquire')).sep().$lk;}
+
+static function bkgclr($d){[$d,$o]=cprm($d); $s='background-color:'.$o.'; ';
+$s.=substr($o,0,1)=='#'?'color:#'.invert_color(substr($o,1),1).';':''; return bts($s,$d);}
+
+static function bkgimg($v,$id){[$d,$p]=cprm($v); if(!$p){$p=$d; $d='';}
+if($p)$mg=$p; else{$imgs=sql('img','qda','v',$id); $mg=pop::art_img($imgs,$id);}
+$f=goodroot($mg,1);
+if(file_exists($f))[$w,$h]=getimagesize($f);
+return divs('background-image: url(/img/'.$mg.'); background-repeat:no-repeat;  background-position:center center; background-size:cover; background-attachment:fixed; height:90%;',$d);}//'.$h.'px
+
+static function underline($d,$m){$sty='2px solid';
+[$d,$c]=cprm($d); if(!$c)$c='red'; //if($m<3)return $d;
+if($c=='double'){$sty='3px double'; $c='black';}
+return bts('border-bottom:'.$sty.' '.$c,$d);}
 
 static function wiki($d,$o){[$u,$v]=cprm($d);
 if($o)return wiki::call($u,1);
@@ -47,7 +62,8 @@ static function download($d,$t=''){//$f=goodroot($f);//root_security
 if(strpos($d,'|'))[$d,$t]=split_one('|',$d); [$f,$nm]=prepdlink($d); if($t==1)$t=strend($d,'/');
 if(!is_file($f))$g='img/'.$f; if(!is_file($f))$f='users/'.$f;
 if(is_http($d))return lkc('small',$d,pictxt('chain',$t));//$nm
-elseif(is_file($f)){$size=' '.btn('small','('.fsize($f,1).')'); $nbd=self::nbdwnl($f);
+elseif(is_file($f)){$sz=fsize($f,1); $ft=ftime($f,'ymd');
+	$size=' '.btn('small','('.$ft.', '.$sz.')'); $nbd=self::nbdwnl($f);
 	return lk('app/download/'.base64_encode($f),pictxt('download',$t)).$size.$nbd;}//.' '.$nm
 else return btn('small',$nm.' (file not exists)');}
 
@@ -124,12 +140,6 @@ if($prw==3 && !$t)return self::pdfplayer($d).lk($d,pictxt('pdf',domain($d)));
 if(!$t or $t==1)$t=domain($d);
 return lk($d,picto('pdf')). ' '.lj('','popup_mk,pdfplayer__15_'.ajx($d).'_'.ajx($t).'__autowidth',$t);}
 
-static function bkg($v,$id){[$d,$p]=cprm($v); if(!$p){$p=$d; $d='';}
-if($p)$mg=$p; else{$imgs=sql('img','qda','v',$id); $mg=pop::art_img($imgs,$id);}
-$f=goodroot($mg,1);
-if(file_exists($f))[$w,$h]=getimagesize($f);
-return divs('background-image: url(/img/'.$mg.'); background-repeat:no-repeat;  background-position:center center; background-size:cover; background-attachment:fixed; height:90%;',$d);}//'.$h.'px
-
 static function cols($d,$m){[$p,$o]=cprm($d);
 if($m>2)return pop::columns($p,$o); else return $p;}
 
@@ -151,11 +161,6 @@ static function frame($d,$m){
 $r=['white','blue','green','cyan','yellow','purple','orange','black'];
 if(in_array($c,$r))return divc('frame-'.$c,$d);
 return divs('padding:6px; border:1px solid '.$c,$d);}
-
-static function underline($d,$m){$sty='1px solid';
-[$d,$c]=cprm($d); if(!$c)$c='red'; //if($m<3)return $d;
-if($c=='double'){$sty='3px double'; $c='black';}
-return bts('border-bottom:'.$sty.' '.$c,$d);}
 
 static function nh($d,$id,$nl){static $i; $i++;//.'-'.$i
 if(!$nl)return togbub('usg,nbp',$d.'-'.$i.'_'.$id,$d,'',atn('nh'.$d),0);//over
@@ -253,7 +258,7 @@ static function msqplay($r,$o=''){
 $head=isset($r[msql::$m])?array_shift($r):'';
 if(is_array($r)){
 	if($o)$r=array_reverse($r);
-	$ret=tabler($r,$head);
+	return $ret=tabler($r,$head);
 	return scroll($r,$ret,20,'',640);}
 return $r;}
 
@@ -282,8 +287,10 @@ $r=msql::read('',$d,1); $rb=[]; $img='';
 if($r)foreach($r as $k=>$v){
 	$im=img::make_thumb_c($v[5],'48/48',1); if($im)$img='{img}'; else $img='[{img}:distimg]';
 	$rb[$k]=['img'=>$im?$im:$v[5],'name'=>$v[2],'screen'=>$v[1],'txt'=>stripslashes($v[4])];}
-$tmp='['.$img.' {name} (@{screen}) [{txt}:small]|trkmsg:divc]';
-$ret=vue::call($tmp,$rb);
+//$tmp='[{img} {name} (@{screen}) [{txt}:small]|trkmsg:divc]';
+//$ret=vue::call($tmp,$rb);
+$rt=[['div',['class'=>'trkmsg'],'{img} {name} (@{screen})'],['div',['class'=>'small'],'{txt}']];
+$ret=view::batch($rt,$rb);
 return divc('scroll',$ret);}
 
 static function microread_pop($d){[$p,$o]=cprm($d);
@@ -349,7 +356,7 @@ return divc('scroll',$ret).msqbt('',$nd).$csv;}
 
 //:thumb
 static function thumb_d($im,$sz,$id){//web,vue,conb
-[$w,$h]=opt($sz,'/'); if(!$w)$w=cw();
+[$w,$h]=opt($sz,'/'); if(!$w)$w=prma('content');
 if(substr($im,0,4)=='http')$imn=ses('qb').'_'.$id.'_'.substr(md5($sz),0,6).xt($im);
 elseif(strpos($im,'/')!==false)$imn=str_replace('/','',$im); else $imn=$im;
 $imb=img::thumbname($imn,$w,$h); $im=goodroot($im);
@@ -360,7 +367,7 @@ else return picto('img',48);}
 
 static function mini_d($da,$id,$nl){//im|w/h//conn_thumb//conb
 [$v,$p]=split_one('|',$da,1); $img=self::thumb_d($v,$p,$id);
-if($nl)return image(goodroot($v),cw(),'');
+if($nl)return image(goodroot($v),prma('content'),'');
 else return self::popim($v,$img,$id);}
 
 //:mini
@@ -442,7 +449,7 @@ static function jukebox($f,$m,$id){[$f,$t]=cprm($f);
 if($m<3)return lj('','popup_mk,jukebox___'.ajx($f).'_3',pictxt('music',$t?$t:'Jukebox'));
 $r=explore('users/'.$f); $ret=''; $rb=[];
 if($r)foreach($r as $k=>$v)$rb[ftime('users/'.$f.'/'.$v)]=$v; if($rb)krsort($rb);
-if($rb)foreach($rb as $k=>$v)$ret.=lj('','juke'.$id.'_usg,audio___'.ajx('users/'.$f.'/'.$v).'|'.ajx($v).'_'.$id,ascii('speaker').' '.$v);//pictxt('music',$v)
+if($rb)foreach($rb as $k=>$v)$ret.=lj('','juke'.$id.'_usg,audio___'.ajx('users/'.$f.'/'.$v).'|'.ajx($v).'_'.$id,asciitypo('speaker').' '.$v);//pictxt('music',$v)
 $bt=divd('juke'.$id,audio('users/'.$f.'/'.$r[0],$id,$r[0]));
 return $bt.divc('list',$ret);}
 
@@ -498,7 +505,7 @@ $r=sql('id,name,msg','qdi','','ib="'.$id.'"');
 if($r)foreach($r as $k=>$v){$rb=explode(':callquote]',$v[2]); $n=count($rb);
 	if($n>1){foreach($rb as $ka=>$va){$s1=mb_strrpos($va,'['); $va=mb_substr($va,$s1+1); [$p,$s]=cprm($va);
 		if($s)$msg=self::apply_quote2($msg,$id,$s,$p,$v[0]);}}}
-return divr(conn::read($msg,3,$id,''),['ondblclick'=>'useslct(this,\''.$id.'\')']);}
+return tag('div',['ondblclick'=>atjr('useslct',['this',$id])],conn::read($msg,3,$id,''));}
 
 //ephemeral conn
 static function quote2($d,$id){[$p,$o]=cprm($d); return self::stabilo($p);//from art, built by find_quotes
@@ -521,7 +528,7 @@ return tagb('blockquote',$p.' '.$nb);}//find_quotes
 
 //xltags
 static function xltags($id,$conn,$msg=''){if(!$msg)$msg=sql('msg','qdm','v','id="'.$id.'"');
-return divr(conn::read($msg,3,$id,''),['ondblclick'=>'xltags(this,\''.$id.'\',\''.$conn.'\')']);}
+return tag('div',['ondblclick'=>atjr('xltags',['this',$id,$conn])],conn::read($msg,3,$id,''));}
 
 static function xltagslct($id){$r=['fact','quote','stabilo'];
 $j2='art'.$id.'_art,playq___'.$id.'_3_1'; $bt='';//'all',

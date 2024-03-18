@@ -35,12 +35,14 @@ static function liaisons($p,$o){
 $rb=self::build($p,$o);
 $r=sql('id,voc','qdvoc','kv','');
 foreach($r as $k=>$v)
-	if($v)foreach($v as $ka=>$va)
+	if($rb)foreach($rb as $ka=>$va)
 		if($va[1]==$v)$rc[]=[$k,$va[0],$va[2]];
 //if(auth(6))$nid=sql::qrid('insert into '.ses('qdvoc_b').' values '.sql::atmrb($rc,1));
-return tabler($rb);}
+return tabler($rb);
+return count($rc);}
 
-static function see($p,$o,$prm){$p=$prm[0]??$p;
+static function see($p,$o,$prm){
+$p=$prm[0]??$p;
 return self::liaisons('',$p);}
 
 static function glossary($p,$o,$prm=[]){

@@ -207,7 +207,7 @@ foreach($r as $k=>$v)if(($cnd && strpos($v[5],$cnd)!==false) or !$cnd){
 	if(substr($v[6],0,strlen($id))==$id or !$id)
 		$ar[$k]=[$up,$bt,$dir,$v[1],$cd,$prv];}//,$v[2],$v[5]
 $ret=tabler($ar,1).hidden($id,'');
-return divd('sbm',$top.$ret);}
+return divd('sbm',$top.divc('',$ret));}
 
 static function submod_pop(){
 ses::$r['popw']=460; ses::$r['popt']='Apps';
@@ -219,11 +219,11 @@ return self::desktop('',$cnd,'',$r);}
 
 #add_mod
 static function addmod($vl){$rm=[]; $rt=[];
-$r=msql::read('system','admin_modules',1); $rb=array_keys($r);
+$r=msql::read('system','admin_modules',1); $rb=array_keys($r); sort($rb);
 foreach($r as $k=>$v)$rm[$v[0]][]=$k;
 $ru=self::user_mods(); $rm['user']=array_keys($ru);
 $ret=label('modbar','module','txtsmall'); ksort($rb);
-$ret.=select(['id'=>'modbar','name'=>'bar'],$rm,'kk').' ';
+$ret.=select(['id'=>'modbar','name'=>'bar'],$rb,'vv').' ';
 $ret.=label('modcon','condition','txtsmall');
 $cond=$_SESSION['cond'][0]; $cndr=['-','home','cat','art']; //$cndr[]=$cond;
 $ret.=select(['id'=>'modcond','name'=>'cond'],$cndr,'vv',$cond);
@@ -256,10 +256,9 @@ foreach($rds as $k=>$v){$rvs[$k]=$k.$rid; $rc[$v]='';}//hidden($rvs[$k],$rm[$k]?
 //edit
 $edit='';
 $edtapi=toggle('popbt','amc_apicom,build___'.ajx($p).'_'.$rvs['mp'],pictxt('emission','Api command')).divd('amc','');
+if(in_array($mod,['BLOCK','MENU','ARTMOD','BOOT','DESK','ADMIN','PHI']))//
+	$edit=div(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);
 switch($mod){
-case('BLOCK'):$edit=div(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
-case('MENU'):$edit=div(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
-case('ARTMOD'):$edit=div(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);break;
 case('submenus'):$edit=self::menus_h($mid); if($option)$p=self::menu_h_g($option);break;
 case('Banner'):$edit=lkc('popbt','/admin/banner','edit_banner');break;
 case('template'):$ra=msql::row('',nod('template'),'',1); 
@@ -294,7 +293,9 @@ case('bt'):if($arb[$v]=='1')$rx[$v]=1;break;
 case('div'):if($arb[$v]=='1')$rx[$v]=1;break;
 case('prv'):if($arb[$v]=='1')$rx[$v]=1;break;
 case('pop'):if($arb[$v]=='1')$rx[$v]=1;break;}}
-if($sys)foreach(['block','template','cache','hide','bt','div','prv','pop'] as $k=>$v)$rx[$v]=1;
+//if($sys)
+if(in_array($mod,['blocks','content','design']))//del bt
+foreach(['block','template','cache','hide','bt','div','prv','pop'] as $k=>$v)$rx[$v]=1;
 //helps//$rh
 foreach($rds as $k=>$v){$rh[$v]=''; switch($v){
 case('block'):$rh[$v]=hlpbt($v);break;

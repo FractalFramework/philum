@@ -40,9 +40,9 @@ if($id && auth(6)){
 	//if(!$rst[1])$trk=li(lj('','popup_tracks,form___'.$id,picto('forum')));
 	$rt['edit']=li($tag).li($tit).li($edt).tag('li',['id'=>'adt2'.$id],$edt2);}//.$trk
 $dev=ses('dev'); $ic=$dev=='b'?$ico[11]:($dev=='c'?$ico[16]:$ico[12]);
-if(!$rst[157])$rt['night']=li(btj(btd('swcs',picto('moon')),'switchcss()',''));
+if(!$rst[157])$rt['night']=li(btj(btd('swcs',picto(ses('negcss')?'moon':'light')),'switchcss()',''));
 if(auth(6) or $dev)$rt['dev']=popbub('dev','dev',$ic,$top,$hv);//dev
-$rt['fixit']=spn(' ','etc','fixtit');
+$rt['fixit']=span(' ','etc','fixtit');
 $chrono=round(microtime(1)-$st,3); 
 if(ses('dev'))$rt['chrono']=btj($chrono,'relj()','popbt');
 if(ses::r('er'))$rt['err']=div(div_r(ses::$er),'small');
@@ -91,7 +91,7 @@ if(is_img($pre.$im) && strpos($im,'<')===false){
 		if($w>$pw && !$nl)$ret=ljb('','SaveBf',ajx($im).'_'.$w.'_'.$h.'_'.$id,$img);
 		else $ret=image($pre.$im);
 		if(auth(6) && rstr(121) && !$nl)$ret=conn::rzim($ret,$im,$pre.$im,$id,$w,$h);}
-	elseif($id!='test'){$im=conn::recup_image($im,$id); $pre=jcim($im,$nl); if($im)$ret=img($pre.$im);}
+	elseif($id!='test' && !$nl){$im=conn::recup_image($im,$id); $pre=jcim($im,$nl); if($im)$ret=img($pre.$im);}
 	elseif($im)$ret=img($pre.$im);}
 else $ret=$im;
 return tagb('figure',$ret.tagb('figcaption',$t));}
@@ -124,20 +124,8 @@ static function call_pop($d){[$v,$k]=cprm($d); $rid=randid('bpop');
 if(strpos($k,"\n"))$k=strto($k,"\n"); sesr('delaytxt',$k,$v);
 return lj('','popup_usg,poptxt___'.ajx($k),$k.' '.picto('get'),atd('bt'.$rid));}
 
-static function bubble_note($d,$t='',$nl=''){
-[$v,$tb]=cprm($d);
-$rid=rid($d); $t=$t?$t:($tb?$tb:'(*)');
-if($nl)return '['.$t.': '.$v.']';
-return togbub2($rid,$v,$t,'','',1);}
-
-static function toggle_note($d,$t='',$nl=''){
-[$v,$tb]=cprm($d); $rid=rid($d); $t=$t?$t:$tb;
-$div=spn($v,'twit panel',$rid,'display:none;');
-if($nl)return '['.$t.': '.$v.']';
-return ljb('','toggle_block',$rid,$t?$t:'(*)',atd('bt'.$rid)).$div;}
-
 static function divtog($d,$o,$nl=''){[$v,$t]=cprm($d);
-if($o)$v=tagb('blockquote',$v); if($nl)return tagb('h4',$t).$v;
+if($o)$v=div('blockquote',$v); if($nl)return tagb('h4',$t).$v;
 return togbt($v,pictxt('lys',$t));}
 
 static function toggle_conn($d,$nl){[$id,$t]=cprm($d); $rid=rid('jop');
@@ -256,18 +244,11 @@ return twit::call($p,$o);}
 
 static function poptwit($d,$o='',$nl=''){[$n,$nm]=cprm($d);
 if(substr($n,-8)=='/photo/1')$n=substr($n,0,-8);
-//{$im=twit::getimg($n,1); return mk::popim($im,pictxt('img',$nm));}
-//if(strpos($n,'/'))$n=strend($n,'/'); //let fullurl
 if(strpos($n,'?'))$n=strto($n,'?'); $bt=$nm?$nm:$n;
-$o=$o?$o:'ban'; if(is_numeric($n))$o='tweet';
-elseif(substr($n,0,1)=='@')$o='ban';
-elseif(substr($n,0,1)=='#')$o='search';//stream
-//if($o=='ban')$bt=pictxt('arobase',$bt); elseif($o=='search')$bt=pictxt('diez',$bt); else 
-if($o=='tweet')$bt=pictxt('tw',$bt,16);
-return lj('txtx','popup_twit,call__3_'.ajx($n).'_'.$o,$bt);}
+return lj('txtx','popup_twit,call__3_'.ajx($n).'_'.$o,pictxt('tw',$bt,16));}
 
 static function twitart($d,$id,$ty='',$nl=''){[$k,$nm]=cprm($d);
-if(substr($k,0,4)=='http')$k=strend($k,'/'); //let fullurl
+if(substr($k,0,4)=='http')$k=strprm($k,5,'/');//let fullurl
 if($nm==1)$nm=$k;
 if($nm=='thread')return self::twitapi($d);
 if($nm=='users')return twit::play_usrs($d);

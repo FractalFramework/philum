@@ -60,7 +60,7 @@ foreach($r as $k=>$v){
 		else $ret.=tagb($k,$v)."\n";}}
 return $ret;}
 
-static function build($p,$prw=2){$http=host(); $rt=[];
+static function build($p,$prw){$http=host(); $rt=[];
 $qb=ses('qb'); $desc=sql('dscrp','qdu','v',['name'=>$qb]);
 $r=msql::read('',nod('cache'),1);
 //$nb_arts=count($r);
@@ -84,7 +84,7 @@ $ret.='</channel>
 </rss>';
 return $ret;}
 
-static function home($hub,$prw=2){
+static function home($hub,$prw){
 $rebuild=1; $cache=1;
 if(!$hub)return slctmnu(ses('mn'),'/rss/','','','','kv');
 $r=msql::read('',nod('cache'),1);//$nb_arts=count($r);

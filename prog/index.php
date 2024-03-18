@@ -23,20 +23,21 @@ if(rstr(74)){
 	$rh[]=['meta'=>['property','og:description',$meta['descript']??'']];}
 else{
 	$rh[]=['meta'=>['name','title',$meta['title']]];
-	$rh[]=['meta'=>['name','image',$meta['img']]];
-	$rh[]=['meta'=>['name','description',$meta['description']]];}
+	$rh[]=['meta'=>['name','image',$meta['img']??'']];
+	$rh[]=['meta'=>['name','description',$meta['descript']]];}
 //$rh[]=['meta'=>['name','author',$meta['author']]];
 $rh[]=['meta'=>['name','category',get('frm')]];
 $rh[]=['meta'=>['name','generator','philum_'.ses('philum')]];//needed
 $rh[]=['meta'=>['name','hub',ses('qb')]];
 //$rh[]=['meta'=>['name','copyright','GNU/GPLv3']]
-$rh[]=['meta'=>['name','viewport','user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width']];//prmb(4)?prmb(4):
+$rh[]=['meta'=>['name','viewport','user-scalable=yes, initial-scale=1, minimum-scale=1, maximum-scale=2, width=device-width']];//prmb(4)?prmb(4):
 $rh[]=['meta'=>['name','apple-mobile-web-app-capable','yes']];
 $rh[]=['meta'=>['name','mobile-web-app-capable','yes']];
 $rh[]=['meta'=>['name','google-site-verification',prms('goog')]];
 $rh[]=['css'=>'_global'];
 $rh[]=['css'=>'_pictos'];
-$rh[]=['css'=>'_oomo'];
+//$rh[]=['css'=>'_glyphs'];
+if(ses::$oom)$rh[]=['css'=>'_oomo'];
 $rh[]=['css'=>$meta['css']];
 $rh[]=['jscode'=>'read="'.$read.'"; flow="'.$flow.'";
 fixpop="'.ses('mobile').'"; fulpop="1"; var design="'.$meta['css'].'";
@@ -49,6 +50,7 @@ $rh[]=['meta'=>['http-equiv','cache-control','no-cache']];
 $rh[]=['meta'=>['http-equiv','expires','0']];
 $rh[]=['meta'=>['http-equiv','pragma','no-cache']];*/
 if(ses('desgn'))$rh[]=['jslink'=>'/js/live.js#css'];
+$rh[]=['jscode'=>mod::jsmap('rha')];
 $ret.=head::call($rh);
 $ret.='</head>'."\n";
 $ret.='<body onclick="clpop(event)" onmousemove="popslide(event)">'."\n";

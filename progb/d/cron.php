@@ -58,10 +58,10 @@ return $bt.divd('crn',$ret);}
 static function card($p){
 $t=twit::init(); $q=$t->show($p);
 unset($q['entities']);
-$q['withheld_in_countries']=implode(',',$q['withheld_in_countries']);
-$q['description']=($q['description']);
-$q['location']=($q['location']);
-$q['name']=utf2ascii($q['name']);
+$q['withheld_in_countries']=implode(',',$q['withheld_in_countries']??[]);
+$q['description']=($q['description']??'');
+$q['location']=($q['location']??'');
+$q['name']=utf2ascii($q['name']??'');
 $q['status-created_at']=$q['status']['created_at']??'';
 $q['status-id']=$q['status']['id']??'';
 $q['status-reply-id']=$q['status']['in_reply_to_status_id']??'';
@@ -71,13 +71,14 @@ return $q;}
 
 static function build($nm,$usr){$d=date('ymd.Hi');
 $r=self::card($usr); $r['date']=$d; $rc=[]; $rd=[]; $bt='';
+if($r['errors']??''){eco($r['errors']); $r=[];}
 write_file('_backup/cron_last.txt',$d);
 $rh=array_keys($r);
 $nod=nod('cron_'.$nm);
 $rb=msql::assoc('',$nod,'',1);
 if($rb)$rc=array_pop($rb);
 if(!$rc)$rc=array_flip($rh);
-if($rc)$rd=array_diff($r,$rc); //$bt=tabler(array_merge_cols($r,$rc));
+if(is_array($rc))$rd=array_diff($r,$rc); //$bt=tabler(array_merge_cols($r,$rc));
 if(isset($rd['friends_count']) && $rd['friends_count']===0)unset($rd['friends_count']);
 if(isset($rd['listed_count']) && $rd['listed_count']===0)unset($rd['listed_count']);
 unset($rd['date']);

@@ -139,7 +139,6 @@ if(self::$save)$ret=self::state($o);
 return $ret;}
 
 ##prog/plug
-
 //see
 static function funcsee($r){$rb=[];$rt=[];//child=>parent
 foreach($r as $k=>$v)foreach($v as $ka=>$va)$rb[$k][$va]=1;

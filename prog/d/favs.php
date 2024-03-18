@@ -123,7 +123,7 @@ if($ret)return btn('nbp',picto('bookmark',16).' '.$ret);}
 //dbsav//used for dock only
 static function favsav($id,$type,$poll=1){$iq=ses('iq');
 $r=sql('id,poll','qdf','w',['ib'=>$id,'type'=>$type,'iq'=>$iq]); [$ex,$d]=arr($r,2);
-if($ex)sql::upd('qdf',['poll'=>$poll],$ex); else $ex=sqlsav('qdf',[$id,$iq,$type,$poll],1);}
+if($ex)sql::upd('qdf',['poll'=>$poll],$ex); else $ex=sqlsav('qdf',[$id,$iq,$type,$poll]);}
 
 static function favdel($id,$type){$iq=ses('iq');
 $r=sql('id,poll','qdf','w',['ib'=>$id,'type'=>$type,'iq'=>$iq]); [$ex,$d]=arr($r,2);

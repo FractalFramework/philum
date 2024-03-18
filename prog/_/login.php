@@ -38,7 +38,7 @@ else return 'logon: '.$qb;}
 static function call($p,$o,$prm=[]){
 [$usr,$psw,$cook,$mail,$newhub]=arr($prm,5);
 $usr=str::normalize($usr); $psw=str::normalize($psw);
-$qdu=db('qdu'); $qb=ses('qb'); $host=hostname();
+$qdu=db('qdu'); $qb=ses('qb'); $host=ip();
 if(md5($usr.$psw)=='e36f9846e997e4491c58aa65d9c9f4e6')$_SESSION['USE']=ses('master');
 //$ath=array_flip(adm::authes_levels());
 //log
@@ -114,7 +114,7 @@ return lj('small','lgn_login,form',"password sent to user $usr $qmail");}
 
 #newuser
 static function adduser($qb,$usr,$psw,$mail,$newhub){$dayx=ses('dayx');
-$qdu=db('qdu'); $mbrs='7::admin,'; $open=''; $ip=hostname();
+$qdu=db('qdu'); $mbrs='7::admin,'; $open=''; $ip=ip();
 if(prmb(11)>=6 or $newhub){
 	$open=1; $menus=$dayx; $hub=$usr;
 	[$rstr,$config]=self::ndprms_defaults();

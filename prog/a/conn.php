@@ -97,7 +97,7 @@ static function b64img($d,$id,$m=''){if(!$id)return; $da=$d;
 if(substr($d,0,22)=='data:image/png;base64,'){$d=substr($d,22);$xt='.png';}
 if(substr($d,0,23)=='data:image/jpeg;base64,'){$d=substr($d,23);$xt='.jpg';}
 $f=ses('qb').'_'.$id.'_'.substr(md5($d),0,6).'.jpg'; write_file('img/'.$f,base64_decode($d));
-[$w]=getimagesize('img/'.$f); if(!$w){rm('img/'.$f); self::add_im_msg($id,$da,'','b64'); return;}
+[$w]=getimagesize('img/'.$f); if(!$w){rm('img/'.$f); if($id!='test')self::add_im_msg($id,$da,'','b64'); return;}
 if($id!='test'){self::add_im_img($f,$id); self::add_im_msg($id,$da,$f,'b64'); img::save($id,$f,'b64');}
 return $f;}
 
@@ -148,7 +148,7 @@ if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($da),0,6).$xt;//soon, del qb
 		if(strpos($dc,' '))$dc=urlencode($dc);
 		if(!$ok){$d=curl_get_contents($dc);
 			if($d && strlen($d)>1000 && strpos($d,'Forbidden')===false){// && strpos($d,'<')===false
-				$er=write_file('img/'.$nmw,$d); $ok=1;
+				$ok=write_file('img/'.$nmw,$d);
 				if(is_zip('img/'.$nmw))gz2im('img/'.$nmw);}
 			if(!$ok)$ok=@copy($dc,'img/'.$nmw);}}
 	if($ok && is_file('img/'.$nmw)){$w='';
@@ -156,8 +156,9 @@ if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($da),0,6).$xt;//soon, del qb
 		elseif($xt=='.webp')$nmw=img::webp2jpg($nmw,$id);
 		if($nmw)[$w,$h,$ty]=getimagesize('img/'.$nmw);//not with webp
 		$sz=fsize('img/'.$nmw,1);
-		if($w or $sz){self::add_im_img($nmw,$id); self::add_im_msg($id,$da,$nmw);
-			if(strpos($da,'cdni.rt.com'))self::autothumb('img/'.$nmw);
+		if($w or $sz){
+			self::add_im_img($nmw,$id); self::add_im_msg($id,$da,$nmw);
+			if(strpos($da,'mf.b37mrtl.ru'))self::autothumb('img/'.$nmw);
 			if(rstr(152) && $w>1280)img::reduce($nmw,0);
 			img::save($id,$nmw,$dc); return $nmw;}
 		else{rm('img/'.$nmw); return $da;}}
@@ -165,7 +166,7 @@ if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($da),0,6).$xt;//soon, del qb
 else return $da;}
 
 static function mkimg($da,$m,$pw='',$id='',$nl=''){
-if(!$pw)$pw=ses::r('curdiv');//$_SESSION['prma']['content'];
+if(!$pw)$pw=prma('content');
 $pwb=round($pw*0.5); $br=''; $w=''; $p['id']='';//rez
 if($m=='noimages')return ' ';
 if(rstr(142))return self::orimg($da,$id,0);//distant original
@@ -230,15 +231,18 @@ if($c)$ret=match($c){
 ':font'=>mk::pub_font($d),
 ':size'=>mk::pub_size($d),
 ':color'=>mk::pub_clr($d),
-':bkg'=>mk::bkg($d,$id),
 ':stabilo'=>mk::stabilo($d),
-':bkgclr'=>mk::pub_bkgclr($d),
+':bkg'=>mk::bkgclr($d),
+':bkgclr'=>mk::bkgclr($d),
+':bkgimg'=>mk::bkgimg($d,$id),
 ':red'=>mk::pub_clr($d,'#d22'),
 ':green'=>mk::pub_clr($d,'#2d2'),
 ':blue'=>mk::pub_clr($d,'#22d'),
 ':cyan'=>mk::pub_clr($d,'#2dd'),
 ':purple'=>mk::pub_clr($d,'#d2d'),
 ':yellow'=>mk::pub_clr($d,'#dd2'),
+':underline'=>mk::underline($d,$m),
+':overline'=>mk::pub_overline($d,$m),
 //':parma'=>mk::pub_clr($d,'#993399'),
 ':numlist'=>mk::make_li($d,'ol'),
 ':anchor'=>mk::anchor($d),
@@ -263,7 +267,6 @@ if($c)$ret=match($c){
 ':table'=>mk::table($d),
 ':divtable'=>mk::dtable($d),
 ':frame'=>mk::frame($d,$m),
-':underline'=>mk::underline($d,$m),
 ':nh'=>mk::nh($d,$id,$nl),
 ':nb'=>mk::nb($d,$id,$nl),
 ':pre'=>tagb('pre',str::htmlentities_a($d)),
@@ -332,12 +335,7 @@ if($c)$ret=match($c){
 ':popart'=>pop::btart($d),
 ':popurl'=>mk::popurl($d),
 ':pop'=>pop::call_pop($d),
-':bubble_note'=>pop::bubble_note($d,'',$nl),
-':toggle_note'=>pop::toggle_note($d,'',$nl),
-':toggle_text'=>pop::divtog($d,0,$nl),
-//':toggle_quote'=>pop::divtog($d,1,$nl),
-':toggle'=>pop::divtog($d,1,$nl),
-':toggle_conn'=>pop::toggle_conn($d,$nl),
+':toggle'=>pop::divtog($d,0,$nl),
 ':api_read'=>mc::api_read($d),
 ':webpage'=>mk::webpage($d),
 ':webview'=>mk::webview($d,$id),
@@ -434,7 +432,6 @@ if(is_img($p) && !$par){// && $html===false
 	if($http && $id)$p=self::getimg($p,$id,$m);
 	return self::mkimg($p,$m,$pw,$id,$nl);}
 if(($par or $http) && $html===false){//secure double hooks
-	//[$p,$o]=cprm($da);
 	if(is_img($p)){//img|txt
 		if(is_img($o))return mk::popim($p,image(goodroot($o)),$id);//mini
 		return mk::popim($p,pictxt('img',$o),$id);}
@@ -451,8 +448,8 @@ if(($par or $http) && $html===false){//secure double hooks
 	elseif(substr($p,0,4)=='http')return rstr(111)&&!$nl?mk::webview($da,$id):lka($p,$o);
 	elseif(substr($p,0,1)=='/')return lkt('',$p,$o);
 	elseif(strpos($p,'/'))return lkt('',goodroot($p),$o);
-	elseif(is_numeric($p) && strpos($o,':')===false)return ma::jread('',$p,$o);}
-elseif($par){//[$p,$o]=cprm($da);
+	elseif(is_numeric($p) && strpos($o,':')===false && !$c)return ma::jread('',$p,$o);}
+elseif($par){
 	if(is_img($p) && is_img($o))return mk::popim($p,image(goodroot($o)),$id);//mini
 	elseif(is_img($p)){//img|txt
 		if(is_http($o))return lkt('',$o,img(goodroot($p)));

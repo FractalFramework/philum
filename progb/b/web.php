@@ -12,23 +12,9 @@ return tagb('blockquote',$ret.divc('clear',''));}
 
 static function imgyt($u){return 'https://img.youtube.com/vi/'.strin($u,'=','&').'/hqdefault.jpg';}
 
-static function metas2($f,$d,$dom){$ti=''; $tx='';
-[$defid,$defs]=conv::verif_defcon($f);//defcons
-if(!empty($defs[2])){
-	if(strpos($defs[2],':')!==false)$ti=dom::detect($d,$defs[2]);
-	//if(strpos($defs[2],':')!==false)$ti=dom::extract($dom,$defs[2]);//let utf-errors
-	if(!$ti)$ti=str::embed_detect($d,$defs[2],$defs[3]);
-	if($ti){$ti=str::del_n($ti); $ti=strip_tags(trim($ti??''));}}
-if(!empty($defs[0])){
-	if(strpos($defs[0],':')!==false)$tx=dom::detect($d,$defs[0]);
-	//if(strpos($defs[2],':')!==false)$rec=dom::extract($dom,$defs[0]);
-	else $tx=str::embed_detect($d,$defs[0],$defs[1]); $tx=strip_tags($tx??'');}
-return [$ti,$tx];}
-
 static function metas($u,$d=''){
-if(!$d)$d=vaccum_ses(http($u),''); //$d=utf2ascii($d);
+if(!$d)$d=vaccum_ses(http($u),''); if($d)$d=str::clean_acc($d);
 if(!$d)return ['','','']; $dom=dom($d); $ti=''; $tx='';
-[$ti,$tx]=self::metas2($u,$d,$dom);
 if(!$ti)$ti=dom::extract($dom,'title:property:meta');
 if(!$ti)$ti=dom::extract($dom,'name:itemprop:meta');
 if(!$ti)$ti=dom::extract($dom,'og(ddot)title:property:meta');
@@ -56,7 +42,7 @@ if(!$r or $o==1){$ra=$r?$r:[];
 	if($ti)$ti=strip_tags($ti); if($tx)$tx=strip_tags($tx);
 	//json::add('','web'.mkday(),[$ti,$tx,$im,$id,mkday('','Ymd:His')]);
 	if($ra && $ti)sqlup('qdw',['tit'=>$ti,'txt'=>$tx,'img'=>$im],['url'=>$u]);
-	elseif(!$ra)sqlsav('qdw',['ib'=>$id?$id:0,'url'=>etc($u,250),'tit'=>$ti,'txt'=>$tx,'img'=>$im]);
+	elseif(!$ra)sqlsav('qdw',['ib'=>$id?$id:0,'url'=>etc($u,250),'tit'=>$ti,'txt'=>$tx,'img'=>$im],'',1);
 	if($ti)$r=[$ti,$tx,$im,$id];}
 if(!$r)$r=['','','',$id];
 return $r;}
@@ -78,12 +64,12 @@ return $r;}
 static function resav($u,$o,$r){
 $u=nohttp(utmsrc($u));
 if($o)$r=self::read($u,$o);
-if($u){[$ti,$tx,$im,$ib]=arr($r,4);
+elseif($u){[$ti,$tx,$im,$ib]=arr($r,4);
 	$ex=sql('id','qdw','v',['url'=>$u],0);
 	$rs=['ib'=>$ib?$ib:0,'url'=>$u,'tit'=>($ti),'txt'=>($tx),'img'=>$im];
 	if($ex)sqlup('qdw',$rs,['url'=>$u]);
 	else sqlsav('qdw',$rs);}
-if(strpos($u,'youtube.com')!==false)return video::any(strfrom($u,'='),$ib,3);
+if(strpos($u,'youtube.com')!==false)return video::any(strfrom($u,'='),$r[3],3);
 return self::com($u);}
 
 static function redit($u,$rid,$id){

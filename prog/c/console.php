@@ -132,13 +132,13 @@ case('backup_mods'):copy(msql::url('',$nod),$fb); break;
 case('mk_default'):msql::copy('users',$nod,'system','default_mods');
 msql::copy('users',$nod,'users','public_mods_1'); alert('system/default_mods;public_mods_1'); break;
 case('restore_mods'):copy($fb,msql::url('',$nod)); boot::define_mods(); boot::define_condition(); $rl=1; break;
-case('refresh_mods'):boot::define_mods(); boot::define_condition(); return console::home(); break;
+case('refresh_mods'):boot::define_mods(); boot::define_condition(); return self::home(); break;
 case('make_copy'):msql::copy('users',ses('qb').'_mods_'.ses('prmb1'),'users',$nod);
 	boot::define_mods(); boot::define_condition(); break;
 case('default_mods'):msql::copy('system','default_mods','users',$nod);
 	boot::define_mods(); boot::define_condition(); break;
 case('set_cond'):boot::setcond($o,1); boot::define_modc(); boot::define_prma();
 	return self::home(); break;}
-return $rl?console::home():$ret;}
+return $rl?self::home():$ret;}
 }
 ?>

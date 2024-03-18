@@ -1,7 +1,8 @@
-<?php //modules
+<?php 
 class mod{
 static $r=['m','p','t','c','d','o','ch','hd','tp','bt','dv','pv','pp'];
 static $rha=[];
+static $cur=[];
 
 static function connmod($d){$rt=explode_k($d,',',':');
 if($rt[0]??'')$rt['p']=$rt[0]; if($rt[1]??'')$rt['m']=$rt[1]; return $rt;}
@@ -10,31 +11,29 @@ static function mkcmd($p,$r=[],$o=0){if(!$r)$r=self::connmod($p);//p|bt:m
 if($o)return array_combine(self::$r,arr($r,13));//build keys
 else return valk($r,self::$r);}//verify keys
 
-static function jsmap($nm){$r=self::$rha;
+static function jsmap($nm){$r=self::$rha; $rt=[];
 foreach($r as $k=>$v)$rt[]='["'.$k.'","'.$v.'"]';
-return head::jscode('const '.$nm.'=new Map(['.implode(',',$rt).']);');}
+return 'const '.$nm.'=new Map(['.implode(',',$rt).']);';}
 
 //send only one command
 static function btmod($p,$r=[]){$r=self::mkcmd($p,$r,1);
 $tg=!empty($r['pp'])?'popup':'content'; $bt=$r['t']?$r['t']:'open'; unsetif($r,'bt');
 $j=implode_k($r,',',':'); return lj('',$tg.'_mod,call___'.ajx($j),$bt);}
 
-static function btmnu($r,$ik,$i,$ni,$k){$r=self::mkcmd('',$r,1);
+static function btmnu($r,$k,$i,$ni){$r=self::mkcmd('',$r,1);
 $tg=!empty($r['pp'])?'popup':'content'; $t=$r['t']?$r['t']:'open'; unsetif($r,'bt');
-$cmd=implode_k($r,',',':'); $g=ajx($cmd);//$tg.'_mod,callmod_'..'_'.$k.'_'.$ik.'_'.$i
-self::$rha[$t]=$i; $c=active($i,$ni);
-return tag('a',['onclick'=>'SaveBg('.$i.')','data-g'=>$g,'class'=>$c,'id'=>'n'.$i],$t);}
+$cmd=implode_k($r,',',':'); $g=ajx($cmd); self::$rha[$t]=$k; $c=active($i,$ni);
+return tag('a',['onclick'=>'SaveBg('.$k.')','class'=>$c,'id'=>'n'.$k],$t);}//,'data-g'=>$g
 
 //a:p1,b:p2|bt:m//compatible p/t:m|bt:module
-static function callmod($p){$r=self::mkcmd($p,[],0); //pr($r);
+static function callmod($p){$r=self::mkcmd($p,[],0);
 //if(is_numeric($r['m']))$p=$r['m'];
 if(is_numeric($p)){$r=msql::row('',nod('mods_'.prmb(1)),$p);
 	if($r){array_shift($r); return self::build($r);}}
 elseif($r['bt'])return self::btmod('',$r);
 elseif($r){['m'=>$m,'p'=>$p,'t'=>$t]=$r;
 	if($m=='home' or $m=='cat' or $m=='read'){geta($m,$p);
-		boot::deductions($p,''); boot::define_condition();}
-	ses::$r['curdiv']='content';}
+		boot::deductions($p,''); boot::define_condition();}}
 return self::build(array_values($r));}
 
 static function call($p,$o='',$prm=[]){
@@ -42,35 +41,116 @@ $p=$prm[0]??$p; $ret=''; $r=explode(';',$p);
 foreach($r as $k=>$v)$ret.=self::callmod($v);
 return $ret;}
 
-static function block($va,$cr,$bt=''){$ath=auth(6); $g=get('read'); $c=get('frm');
-$r=sesr('modc',$va); ses::$r['curdiv']=$va; $rt=[]; $rl=[]; $ret=''; $ik=1; $i=-1; $ni=0;
+//build desk
+//root,action,type,bt,ico,auth//desk format
+//button,type,process,param,option,condition,root,icon,hide,private//bub format
+//[block],mod,param,title,condition,command,option,cache,hide,template,bt,div,prv,popup//mod format
+
+static function menutree($va){$r=sesr('modc',$va); $rt=[];
+foreach($r as $k=>$v)if(!$v[7] && !$v[11]){
+if($v[0]=='MENU')$rt[$v[2]]=self::menutree($v[1]);
+else $rt[]=self::btmnu($v,$k,1,0);}
+return $rt;}
+
+static function menutabs($va){
+$r=self::menutree($va);
+return tabs($r);}
+
+static function mkdrop($r){$ret='';
+if(is_array($r))foreach($r as $k=>$v){
+	if(is_array($v))$ret.=div(div($k,'dropb').div(self::mkdrop($v),'dropc'),'dropd');
+	else $ret.=$v;}
+return $ret;}
+
+static function menudrop($va){
+$r=self::menutree($va);
+return div(self::mkdrop($r),'dropm');}
+
+static function menupane($va){$rid=randid();
+$r=self::menutree($va); $ret='';
+foreach($r as $k=>$v)if(is_array($v))$ret.=toggle('',$rid.'_mod,menupane___'.ajx($k),$k); else $ret.=$v;
+return div($ret,'menu').div('','',$rid);}
+
+//menublock
+static function menuroot($va,$dr=''){$r=sesr('modc',$va); $rt=[]; $parent=strend($dr,'/');
+foreach($r as $k=>$v)if(!$v[7] && !$v[11]){$root=($dr?$dr.'/':'').$va;
+if($v[0]=='MENU')$rt=array_merge($rt,self::menuroot($v[1],$root));
+//else $rt[]=[$v[2],'mod',$v[0],$v[1],$v[5],'menu',$root,mime($v[0]),'',''];//mods
+else $rt[]=[$v[2],'mod',$v[0],$v[1],$v[5],'menu',$root,mime($v[0]),'',''];}
+return $rt;}
+
+static function menublock($va){$rt=[];
+$rt=self::menuroot($va); //eco($rt);
+//$rh=['root','action','type','bt','ico','auth'];//mods
+$rh=['button','type','process','param','option','condition','root','ico','hide','private'];//apps
+msql::save('',nod('menublock_'.$va),$rt,$rh);
+$ret=bubs::call('menublock','zero',$va);
+//$ret=bubs::apps($rt,'','zero','');
+//return popbub('menublock',$va,'menu','d',1);
+return mkbub($ret,'bub menu inline','position:relative');}
+
+//menubub
+static function menubub($va,$old=''){$rt=[];
+$r=sesr('modc',$va); $rid=randid();
+if($old)$rt[]=lj('',$rid.'_mod,menubub___'.ajx($old),picto('back'));
+foreach($r as $k=>$v)if(!$v[7] && !$v[11]){
+if($v[0]=='MENU')$rt[]=lj('',$rid.'_mod,menubub___'.ajx($v[2]).'_'.ajx($va),$v[2]);
+else $rt[]=self::btmnu($v,$k,1,0);}
+return div(join('',$rt),'menu',$rid);}
+
+//modbub
+static function modbub($va){$rt=[]; $r=sesr('modc',$va);//use panup=bub
+foreach($r as $k=>$v)if(!$v[7] && !$v[11]){
+//if($v[0]=='MENU')$rt[]=dropup('modbub',$v[1],$v[2],'');
+if($v[0]=='MENU')$rt[]=panup('modbub',$v[1],$v[2],'d');
+else $rt[]=li(self::btmnu($v,$k,1,0));}
+$ret=join('',$rt);
+return mkbub($ret,'bub menu inline','position:relative');}
+
+#blocks
+//[block],mod,param,title,condition,command,option,cache,hide,template,bt,div,prv,popup//mod format
+static function block($va,$bt='',$it=''){$ath=auth(6); $g=get('read'); $c=get('frm'); $m=get('menu');
+$r=sesr('modc',$va); $rt=[]; $rl=[]; $ret=''; $ni=0; static $i; $i=$i?$i:0;
 if($r)foreach($r as $k=>$v){if(!$v[7] && (!$v[11] or $ath)){//hide/private
-	if($v[9]??'')$rl[$k]=self::btmod('',$v);//bt
-	elseif($bt){$i++;//menu
-		$rl[$k]=self::btmnu($v,$ik,$i,$ni,$k);
+	//if($v[0]=='MENU')$rl[$k]=self::block($v[1],1);//bub(todo)
+	if($v[0]=='MENU')$rl[$k]=match($v[4]){//='mod'
+		'mod'=>self::modbub($v[1]),//works well but no reload
+		'bub'=>self::menubub($v[1]),//menu onplace not visible on reload
+		'block'=>self::menublock($v[1]),//bub erase itself
+		'tabs'=>self::menutabs($v[1]),
+		'drop'=>self::menudrop($v[1]),
+		//'pane'=>self::menupane($v[1]),
+		//'tog'=>togbub('mod,block',$v[1].'_1',$v[2],'','',''),//no
+		//'bup'=>bubup($v[1],'_1',$v[2],'',''),
+		default=>self::block($v[1],1)};
+	elseif($v[9]??''){$rl[$k]=self::btmnu($v,$k,$i,$ni); $i++;}//bt
+	elseif($bt){//menu
+		if($v[2]==$m)$ni=$i; else $ni=0;
+		$rl[$k]=self::btmnu($v,$k,$i,$ni);
 		if($c && !$g && $v[0]=='categories')ses::$loader=self::build($v);
-		elseif($i==$ni && !$g && !$c)ses::$loader=self::build($v);}//superflous if #
+		//elseif($i==$ni && !$g && !$c && !$m)ses::$loader=self::build($v);
+		//if($v[2]==$m)ses::$loader=self::build($v);
+		$i++;}
 	elseif($v[6]){$mdc=sesr('mdc',$k);//cache
-		if(!$mdc or $cr){$rt[$k]=self::build($v); $_SESSION['mdc'][$k]=$rt[$k];}
+		if(!$mdc){$rt[$k]=self::build($v); $_SESSION['mdc'][$k]=$rt[$k];}
 		else $rt[$k]=$mdc;}
 	//elseif($v[11]??'')$rt[$k]=divd('mod'.$k,lj('txtcadr','mod'.$k.'_md::modj___'.$k.'_'.$va,$v[2]));
-	elseif($v[12]??''){$rt[$k]=divd('mod'.$k,''); head::add('jscode',sj('mod'.$k.'_mod,callmod___'.$k));}
+	//elseif($v[14]??''){$rt[$k]=divd('mod'.$k,''); head::add('jscode',sj('mod'.$k.'_mod,callmod___'.$k));}
 	else $rt[$k]=self::build($v);}}
 if($rl)$ret=implode('',$rl);
 if($rt)$ret.=implode(n(),$rt);
-ses::$r['curdiv']='content'; $h='';
-if(self::$rha){$h=self::jsmap('rha'); self::$rha=[];}
-return $ret.$h;}
+return $ret;}
 
 static function blocks(){
-$r=explode(' ',prma('blocks'));
-foreach($r as $k=>$v)$ret[$v]=divd($v,self::block($v,''));
+$r=explode(' ',prma('blocks')); //pt(ses('modc'));
+foreach($r as $k=>$v)$ret[$v]=divd($v,self::block($v));
+//pr(self::$rha);
 return $ret;}
 
 static function playmod($g1,$g2,$prm){ses('frm','');
 $g2=$prm[0]??$g2; if($g2)$_SESSION[$g1]=$g2; geta($g1,$g2);
 boot::deductions(); boot::define_condition();
-return self::block('content','');}
+return self::block('content');}
 
 static function playcontext($g1,$g2,$g3){
 $g2=(urldecode($g2)); if($n=strpos($g2,'#'))$g2=substr($g2,0,$n);
@@ -78,7 +158,7 @@ geta($g1,$g2); if($g3)geta('dig',$g3);//str::protect_url
 boot::deductions(); boot::define_condition(); boot::define_modc(); $rt=self::blocks();
 return implode('',$rt);}
 
-//mod,param,title,condition,command,option,(bloc),hide,template,nobr,div,ajxbtn
+//[block],mod,param,title,condition,command,option,cache,hide,template,bt,div,prv,popup//mod format
 static function build($r){$cs='panel'; $csb='small';
 $lin=[]; $load=[]; $api=[]; $ret=''; $prw=''; $id=''; $obj='';
 [$m,$p,$t,$c,$d,$o,$ch,$hd,$tp,$bt,$dv,$pv,$pp]=arr($r,13);
@@ -88,16 +168,19 @@ switch($m){
 //main
 case('LOAD'):
 	if($id=get('read'))$ret=art::read($id,$tp);
-	//elseif($frm=get('frm'))$ret=api::arts($frm,$o,$tp,$d);
-	elseif($gmd=get('module'))$ret=mod::callmod($gmd);
+	elseif($gmd=get('module'))$ret=self::callmod($gmd);
 	elseif($cmd=get('api'))$ret=api::call($cmd);
-	elseif($ra=api::load_rq())$ret=api::load($ra);
-	elseif(ses::$loader)$ret=ses::$loader; break;
-case('BLOCK'):$ret=self::block($p,''); break;
-case('MENU'):$ret=self::block($p,'',1); break;
-case('ARTMOD'):$ret=self::block($p,''); break;
+	elseif($ra=api::load_rq())$ret=api::load($ra);//gets
+	elseif(ses::$loader)$ret=ses::$loader;//menus#
+	else $ret=api::arts(get('frm'),$o,$tp,$d); break;
+case('BLOCK'):$ret=self::block($p); break;
+case('MENU'):$ret=self::block($p,1); break;
+case('DESK'):$ret=self::menublock($p); break;
+case('BOOT'):$ret=self::menublock($p,2); break;
+case('ADMIN'):$ret=self::menublock($p,1); break;
+case('ARTMOD'):$ret=self::block($p); break;
 case('TABMOD'):$ret=self::artmod($p,$d); break;
-case('ART'):$ret=self::block('article',''); break;
+case('ART'):$ret=self::block('article'); break;
 case('All'):$api=api::arts_rq($p,$o); $api['t']=$t?$t:nms(100); break;
 //case('Home'):$ret=self::playcontext('home',''); break;//stupid
 case('article'):$ret=art::read($p,$tp); break;
@@ -178,8 +261,8 @@ case('folder'):$lin=desk::vfolders($p); break;
 //menus
 case('link'):$ret=md::modlk($p,$t,$o); break;
 case('app_popup'):head::add('jscode',sj(desk::read(explode(',',$p)))); break;
-case('overcats'):return mkbub(bubs::call('overcat','zero'),'inline','1'); break;
-case('MenuBub'):return mkbub(bubs::call('menubub','zero',$p),'inline','1'); break;
+case('overcats'):return mkbub(bubs::call('overcat','zero'),'inline','position:relative'); break;
+case('MenuBub'):return mkbub(bubs::call('menubub','zero',$p),'inline','position:relative'); break;
 case('timetravel'):return md::timetravel($p,$o); break;
 case('submenus'):return md::bubble_menus($p,$o); break;
 case('taxonomy'):$ret=md::mod_taxonomy($p,$o); break;
@@ -262,7 +345,7 @@ case('app'):[$pa,$pb,$oa,$ob]=expl('_',$p,4);
 	//if($pp){$rid=randid($pa); $ret=divd($rid,''); head::add('jscode',sj($rid.'_'.$pa.','.$pb.'___'.$oa.'_'.$ob));}
 	if($t)$ret=self::title('',$t,''); $ret.=appin($pa,$pb?$pb:'home',$oa,$ob); break;
 case('close'):$ret='';
-default:if(method_exists($m,'call'))$ret=$m::call($p,$o); break;}
+default:if(method_exists($m,'home'))$ret=$m::home($p,$o); break;}
 if($lin)$ret=self::mod_lin($lin,$t,$d,$o);//menus
 elseif($load)$ret=self::mod_load($load,$t,$d,$o,$obj,$prw,$tp,$id,$pp);//arts
 elseif($api)$ret=api::load($api);//api
@@ -315,7 +398,7 @@ elseif($d=='api')$ret=api::mod_call($load);
 elseif($d=='icons')$ret=desk::pane_icons($load,'icones').divc('clear','');
 elseif($d=='panel' && is_array($load))foreach($load as $k=>$v)$ret.=self::pane_art($k,$o,$tp,$pp);
 elseif($d=='lines')$ret=self::m_publist($load,$tp);
-elseif($load)$ret=self::m_pubart($load,$d,$o,$tp);
+elseif($load)$ret=self::m_pubart($load,$d,$o,$tp,$pp);
 if($o=='scroll')$ret=scroll($load,$ret,10);
 elseif($o=='cols')$ret=pop::columns($ret,240,'','');
 elseif($o=='inline')$ret=divc('inline',$ret);
@@ -332,36 +415,37 @@ return divd('titles',tagb('h3',$t).' '.$nb.$bt);}//pictxt('eye',)
 
 #paneart
 static function pane_art($id,$o,$tp='',$pp='',$ra=[]){
-$o='auteurs'; if(!$tp)$tp='panart_j';
+$o='auteurs'; if(!$tp)$tp='panart';
 if($ra['tag']??'')$p[$o]=$ra['tag'];
 else $p[$o]=sql::inner('tag','qdt','qdta','idtag','v',['cat'=>$o,'idart'=>$id]);
 if($ra)$ra=vals($ra,['id','frm','suj','img','nod','thm','lu','name','host','mail','ib','re','lg']);//api
 else $ra=ma::rqtart($id); if(!$ra)return;
 [$day,$frm,$suj,$amg,$nod,$thm,$lu,$name,$nbc,$src,$ib,$re,$lg]=$ra;
 $p['url']=urlread($id); $p['suj']=ma::suj_of_id($id);
-$p['jurl']='content_mod,playmod__u_read_'.$id;
-$p['purl']=(rstr(136)?'pagup':'popup').'_popart__3_'.$id.'_3'; if($pp)$p['jurl']=$p['purl'];
+$tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';
+$p['jurl']=$tg.'_popart__3_'.$id.'_3';
 $p['cat']=catpict($frm,22); //$p+=art::tags($id,1);
 $im=pop::art_img($amg,$id); if($im)$p['img1']='/imgc/'.art::make_thumb_css($im);
 $p['sty']=$im?'background-image:url('.$p['img1'].')':'';
 return art::template($p,$tp);}
 
 #pubart
-static function pub_art($id,$tpl=''){$rst=$_SESSION['rstr'];
+static function pub_art($id,$tpl='',$pp=''){
+$rst=$_SESSION['rstr']; if(!$tpl)$tpl='pubart'; if($pp)$tpl='popart';
 $ra=ma::rqtart($id); if(!$ra)return;
 [$day,$frm,$suj,$amg,$nod,$thm,$lu,$name,$nbc,$src,$ib,$re,$lg]=arr($ra,13);
 $rt['url']=urlread($id); $rt['suj']=$suj;
-$rt['jurl']=(rstr(85)?'popup':'content').'_mod,playmod__u_read_'.$id;
-$rt['purl']=(rstr(136)?'pagup':'popup').'_popart__3_'.$id.'_3';
+$tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';//
+$rt['jurl']=$tg.'_popart__3_'.$id.'_3';
+//$rt['purl']='popup_popart__3_'.$id.'_3';
 if($rst[32]!=1 && $amg)$rt['img1']=pop::art_img($amg,$id);
 if($rst[36]!=1){$rt['back']=art::back($id,$ib,$frm,0); $rt['cat']=$frm;}
 if($rst[7]!=1)$rt['date']=mkday($day);
 if($rst[4]!=1){$r=art::tags($id,1); if($r)$rt+=$r;}
-if(!$tpl)$tpl=$rst[8]?'pubart':'pubart_j';
 if($re)return divc('pubart',art::template($rt,$tpl));}
 
-static function m_pubart($r,$o,$p,$tp=''){$re=[]; $ret='';
-if(is_array($r)){foreach($r as $k=>$v){$d=self::pub_art($k,$tp); if($d)$re[$k]=$d;}
+static function m_pubart($r,$o,$p,$tp='',$pp=''){$re=[]; $ret='';
+if(is_array($r)){foreach($r as $k=>$v){$d=self::pub_art($k,$tp,$pp); if($d)$re[$k]=$d;}
 if($o=='scroll'){$ret=scroll($r,implode('',$re),$p?$p:10);}
 elseif($o=='cols')return pop::columns($re,$p,'board','pubart');
 elseif($o=='inline')return divc('inline',join('',$ret));
@@ -369,10 +453,11 @@ elseif($re)$ret=implode('',$re);
 if($ret)return divc('panel',$ret)."\n";}}
 
 static function m_publist($r,$tp){$ret='';
+$tp='bublj'; if(rstr(85))$tg='popup'; elseif(rstr(136))$tg='pagup';
+else{$tg='content'; if(rstr(149))$tp='bublh';}
 if(is_array($r))foreach($r as $k=>$v){
 	$p['url']=urlread($k); $p['suj']=ma::suj_of_id($k); $p['id']=$k;
-	$p['jurl']=(rstr(85)?'popup':'content').'_mod,playmod__u_read_'.$k;
-	$p['purl']=(rstr(136)?'pagup':'popup').'_popart__3_'.$k.'_3';
+	$p['jurl']=$tg.'_popart__3_'.$k.'_3';
 	$ret.=art::template($p,$tp);}
 return divc('list',$ret);}
 
@@ -439,11 +524,9 @@ $im=$p?goodroot($p):'imgb/usr/'.ses('qb').'_ban.jpg'; $h=is_numeric($o)?$o:'120'
 return div($t,'banim','','background-image:url('.$im.'); height:'.$h.'px;');}
 
 static function footer(){
-ses::$r['curdiv']='footer';
 return self::call(':credits;:chrono;:log-out');}
 
-//p:D,d:lines,o:lg=fr,tp:pubart2,m:catarts
-
+//p:D,d:lines,o:lg=fr,tp:pubartb,m:catarts
 static function menu($p){
 $j='mds_mod,call_inp_3__';
 return inputj('inp',$p,$j).lj('',$j,picto('ok'));}

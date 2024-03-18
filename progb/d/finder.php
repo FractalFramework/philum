@@ -333,7 +333,7 @@ foreach($r as $k=>$v){if(isset($v['j'])){
 	$ico=$v['img']??''; if(!$ico)$ico=mimes($v['typ'],'','32');
 	//$ico=isset($v['typ'])?$im:'';
 	$conn=$v['conn']??'';
-	//$div=spn('','',$v['id']);
+	//$div=span('','',$v['id']);
 	//if($v['r'])$lk=toggle('icones','popup_finder,home___'.$v['j'].$o,$ico.br().$v['f']);
 	if($v['r'])$lk=lj('icones','popup_finder,home___'.$v['j'].$o,$ico.br().$v['f']);
 	else $lk=ljb('icones','insert',$conn,$ico.br().$v['f']).' ';

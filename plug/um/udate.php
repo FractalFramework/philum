@@ -267,6 +267,6 @@ return $bt.divd(self::$cb,$ret);}
 
 static function api($p,$o){
 $r=self::build($p,$o);
-return json_encode($r);}
+return json_enc($r);}
 }
 ?>

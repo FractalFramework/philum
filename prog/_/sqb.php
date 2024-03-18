@@ -72,8 +72,8 @@ static function mkq($r){[$r,$q]=self::where($r);//oldschool
 foreach($r as $k=>$v)if(substr($v,0,9)!='password(')$q=str_replace(':'.$k,'"'.$v.'"',$q); return $q;}
 
 static function fetch($stmt,$p){$rt=[];
-if($p=='a' or $p=='ar')$rt=$stmt->fetchAll(\PDO::FETCH_ASSOC);
-elseif($p=='r' or $p=='rr')$rt=$stmt->fetchAll(\PDO::FETCH_BOTH);
+if($p=='a' or $p=='ar')$rt=$stmt->fetchAll(PDO::FETCH_ASSOC);
+elseif($p=='r' or $p=='rr')$rt=$stmt->fetchAll(PDO::FETCH_BOTH);
 else $rt=$stmt->fetchAll(PDO::FETCH_NUM);
 return $rt;}
 

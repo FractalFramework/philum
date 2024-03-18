@@ -55,7 +55,6 @@ if($r)foreach($r as $k=>$v){$i++;
 return $prev.lj('',$j,picto('home').' '.$nb.'/'.$n).' '.$next;}//
 
 static function read($id,$rid,$o=''){
-cwset($_SESSION['prma']['content']-60); //[120:setwidth]
 if(!$o)$p['back']=self::prevnxt($id,$rid);
 $p['id']=$id;
 $r=ma::rqtart($id);
@@ -70,7 +69,6 @@ $msg=conn::read($msg,'',$id,1);
 $p['player']=self::pages($id,$rid);
 $p['msg']=self::scroll($msg,$rid);
 $ret=art::template($p,'book');
-//ses::$r['curdiv']='content';//setwidth in template
 ses::$r['popw']=1000;
 return $ret;}
 
@@ -97,7 +95,6 @@ foreach($r as $k=>$v){$i++; $io=$i.'. ';
 $rb['msg']=self::scroll($msg,$rid);
 $ret=divd('book'.$rid,art::template($rb,'book'));
 $ret.=head::jscode(self::js()).head::csscode(self::css());
-//ses::$r['curdiv']='content';
 return $ret;}
 }
 ?>

@@ -33,14 +33,14 @@ function atjr($d,$j){return $d.'('.implode_j($j).');';}
 function sj($d){return $d?'SaveJ(\''.$d.'\');':'';}
 function ul($v,$c=''){return '<ul'.atc($c).'>'.$v.'</ul>';}
 function li($v,$c=''){return '<li'.atc($c).'>'.$v.'</li>';}
-function btp($p,$v){return '<span'.$p.'>'.$v.'</span>';}
 function btn($c,$v){return '<span'.atc($c).'>'.$v.'</span>';}
 function btd($d,$v){return '<span'.atd($d).'>'.$v.'</span>';}
 function bts($d,$v){return '<span'.ats($d).'>'.$v.'</span>';}
-function divp($p,$v){return '<div'.$p.'>'.$v.'</div>';}
+function btp($p,$v){return '<span'.$p.'>'.$v.'</span>';}
 function divc($c,$v){return '<div'.atc($c).'>'.$v.'</div>';}
 function divd($d,$v){return '<div'.atd($d).'>'.$v.'</div>';}
 function divs($s,$v){return '<div'.ats($s).'>'.$v.'</div>';}
+function divp($p,$v){return '<div'.$p.'>'.$v.'</div>';}
 function blockquote($v){return '<blockquote>'.$v.'</blockquote>';}
 function lk($u,$v='',$p=''){return '<a href="'.$u.'"'.$p.'>'.($v?$v:$u).'</a>';}
 function lka($u,$v='',$p=''){return '<a href="'.$u.'"'.$p.'>'.($v?$v:domain($u)).'</a>';}
@@ -51,11 +51,10 @@ function lkh($oc,$ov,$v,$c=''){return '<a'.atc($c).atk($oc).atmo($ov).'>'.$v.'</
 function llk($c,$u,$v){return li(lk($u,$v),$c);}
 function lj($c,$j,$v,$p=''){return '<a onclick="sj(this)" data-j="'.$j.'"'.atc($c).$p.'>'.$v.'</a>';}
 function lh($h,$v,$p=''){return '<a href="'.$h.'" onclick="return hj(this)"'.$p.'>'.$v.'</a>';}
-//function lja($c,$j,$v){return '<a'.atk($j).atc($c).'>'.$v.'</a>';}
 function ljb($c,$j,$p,$v,$o=''){$j=atjr($j,$p); return '<a'.atk($j).atc($c).$o.'>'.$v.'</a>';}
 function ljh($c,$j,$p,$v,$o=''){$j=atjr($j,$p); return '<a'.atmo($j).atmu($j).atc($c).$o.'>'.$v.'</a>';}
 function ljp($p,$j,$v){return '<a'.atk(sj($j)).' '.$p.'>'.$v.'</a>';}
-function blj($c,$id,$j,$v,$o=''){return spn(lj('',$id.'_'.$j,$v,$o),$c,$id);}
+function blj($c,$id,$j,$v,$o=''){return span(lj('',$id.'_'.$j,$v,$o),$c,$id);}
 function llj($c,$j,$v,$id='',$a=''){return '<li'.atd($id).'>'.lj($c,$j,$v,'').'</li>';}
 function image($d,$w='',$h='',$p=''){if(substr($d,0,4)=='img/')$d='/'.$d;
 return '<img src="'.$d.'"'.atb('width',$w).atb('height',$h).' '.$p.'/>';}
@@ -68,42 +67,35 @@ function btim($d,$w='',$h=''){$j=str_replace('_','*',$d).'_'.$w.'_'.$h;
 return lj('','popup_usg,overim___'.$j,img('/'.$d,$w));}
 
 //ff
-function bj($c,$j,$v,$o=''){if(ses('dev')=='b')$o.=att($j);
-return '<a onclick="bj(this)" data-bj="'.$j.'"'.atc($c).$o.'>'.$v.'</a>';}
+function bj($c,$j,$v,$p=[]){if(ses('dev'))$p+=['title'=>$j];
+return tag('a',['onclick'=>'bj(this)','data-bj'=>$j,'class'=>$c]+$p,$v);}
+/*function bj($j,$v,$c='',$p=[]){if(cnfg('db'))$p+=['title'=>$j];
+return tag('a',['onclick'=>'bj(this)','data-bj'=>$j,'class'=>$c]+$p,$v);}*/
 function atr($r){$ret=''; if($r)foreach($r as $k=>$v)if($v)$ret.=' '.$k.'="'.$v.'"'; return $ret;}
 function tag($b,$p,$d){return '<'.$b.atr($p).'>'.$d.'</'.$b.'>';}
 function taga($b,$p){return '<'.$b.atr($p).' />';}
 function tagb($b,$d){return '<'.$b.'>'.$d.'</'.$b.'>';}
 function tagc($b,$c,$d){return '<'.$b.atc($c).'>'.$d.'</'.$b.'>';}
 function div($v,$c='',$id='',$s=''){return tag('div',['class'=>$c,'id'=>$id,'style'=>$s],$v);}
-function spn($v,$c='',$id='',$s='',$t=''){return tag('span',['class'=>$c,'id'=>$id,'style'=>$s],$v);}
+function span($v,$c='',$id='',$s=''){return tag('span',['class'=>$c,'id'=>$id,'style'=>$s],$v);}
 function btj($t,$j,$c='',$id='',$p=[]){return tag('a',['onclick'=>$j,'class'=>$c,'id'=>$id]+$p,$t);}
-
-//rp//'n'=>'name','v'=>'value','z'=>'size',
-function rp(){return ['c'=>'class','d'=>'id','s'=>'style','t'=>'title','h'=>'href','k'=>'onclick','kp'=>'onkeyup','ch'=>'onchange','mo'=>'onmouseover','mp'=>'onmouseup','mu'=>'onmouseout','md'=>'onmousedown'];}
-function rpr($r){$rt=[]; $ra=rp();
-foreach($r as $k=>$v)if($v)$rt[]=' '.($ra[$k]??$k).'="'.$v.'"'; return implode('',$rt);}
-function tagr($b,$d,$r=[]){return '<'.$b.rpr($r).'>'.$d.'</'.$b.'>';}
-function divr($d,$r=[]){return '<div'.rpr($r).'>'.$d.'</div>';}
-function spnr($d,$r=[]){return '<span'.rpr($r).'>'.$d.'</span>';}
 
 #forms
 function input($d,$v,$s='',$p=[]){
 if($p['type']??''){$ty=$p['type']; unset($p['type']);} else $ty='text';
-return '<input'.atr(['type'=>$ty,'id'=>$d,'value'=>$v,'size'=>$s]+$p).' />';}
+return '<input'.atr($p+['type'=>$ty,'id'=>$d,'value'=>$v,'size'=>$s]).' />';}
 function inputb($d,$v,$s='',$h='',$m='',$p=[]){
-$pr=['id'=>$d,'type'=>'text','value'=>$h==1?'':$v,'placeholder'=>$h==1?$v:$h,'size'=>$s,'maxlength'=>$m]+$p;
-return '<input'.atr($pr).' />';}
-function inputj($d,$v,$j,$h='',$s='',$p=[]){$js='checkj(this)'; $ju='sj(this)';
-$pr=['id'=>$d,'type'=>'text','value'=>$v,'placeholder'=>$h,'size'=>$s,'data-j'=>$j,'onkeyup'=>$js,'onblur'=>$ju];
-return taga('input',$p+$pr);}
+$pr=$p+['id'=>$d,'type'=>'text','value'=>$h==1?'':$v,'placeholder'=>$h==1?$v:$h,'size'=>$s,'maxlength'=>$m];
+return '<input'.atr($pr).'/>';}
+function inputj($d,$v,$j,$h='',$s='',$p=[]){$js='checkj(this)'; $ju='';//'sj(this)';
+return taga('input',$p+['id'=>$d,'type'=>'text','value'=>$v,'placeholder'=>$h,'size'=>$s,'data-j'=>$j,'onkeyup'=>$js,'onblur'=>$ju]);}
 function inpsw($d,$v,$s='',$p=[]){return inputb($d,$v,$s,'password','100',['type'=>'password']);}
 function inpdate($id,$v,$min='',$max='',$o=''){$ty=$o?'datetime-local':'date';//time
 return input($id,$v,'',['type'=>$ty,'min'=>$min,'max'=>$max]);}//step=1
-function inpnb($id,$v,$min='',$max='',$st=1){
-return input($id,$v,'',['type'=>'number','name'=>$id,'min'=>$min,'max'=>$max,'step'=>$st]);}
+function inpnb($id,$v,$j,$p=[]){if($j)$p['onchange']=sj($j);
+return input($id,$v,'',$p+['type'=>'number','name'=>$id,'min'=>1,'step'=>1,'size'=>'8']);}
 function inpclr($id,$v=''){return '<input'.atr(['type'=>'color','id'=>$id,'name'=>$id,'value'=>$v]).'>';}
-function inpmail($id,$v='',$p=[]){return '<input'.atr(['type'=>'mail','id'=>$id,'value'=>$v,'size'=>'16','placeholder'=>'mail','maxlength'=>'100']+$p).'>';}
+function inpmail($id,$v='',$p=[]){return '<input'.atr($p+['type'=>'mail','id'=>$id,'value'=>$v,'size'=>'16','placeholder'=>'mail','maxlength'=>'100']).'>';}
 function inptel($id,$v,$pl='06-01-02-03'){$pr=atr(['type'=>'tel','id'=>$id,'name'=>$id,'value'=>$v,'placeholder'=>$pl,'pattern'=>"[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}"]);
 return '<input'.$pr.' required>';}
 function inprange($id,$v,$st=1,$min='',$max=''){
@@ -130,11 +122,11 @@ $ret.='<input type="radio"'.atn($n).atd($id).atv($v).$ck.'/>'.label($id,$v,'smal
 return $ret;}
 function radioj($id,$r,$n){$rid=randid(); $ret='';
 foreach($r as $k=>$v)$ret.=ljb(active($k,$n),'radioj',[$rid,$id,ajx($v),$k],$v);
-return spn($ret,'nbp',$rid);}
+return span($ret,'nbp',$rid);}
 function radiobtj($r,$vrf,$id,$o=''){$rid=randid('rdio'); if($o)$r=array_keys($r); $ret='';
 if(is_array($r))foreach($r as $k=>$v){$c=active($v,$vrf);
 $ret.=ljb($c,'radiobtj',[$rid,$id,ajx($v),$k],$v);}
-return spn($ret,'nbp',$rid).hidden($id,$vrf);}
+return span($ret,'nbp',$rid).hidden($id,$vrf);}
 function datalist($id,$r,$v,$s=16,$t='',$j=''){$ret=''; $opt=''; if($t)$ret=label($id,$t);
 $p=['list'=>'dt'.$id]; if($j){$p['data-j']=$j; $p['onkeyup']='checkj(this)';}
 $ret.=input($id,$v,$s,$p);
@@ -144,7 +136,10 @@ return $ret;}
 
 //edit
 function textarea($id,$v,$cl='40',$rw='4',$p=[]){
-return tag('textarea',['id'=>$id,'cols'=>$cl,'rows'=>$rw]+$p,$v);}
+$pr=['id'=>$id]; $pr['style']=$p['style']??'';
+if(is_numeric($cl))$pr['cols']=$cl; else $pr['style'].='width:'.$cl.'; ';
+if(is_numeric($rw))$pr['rows']=$rw; else $pr['style'].='height:'.$rw.'; ';
+return tag('textarea',$pr+$p,$v);}
 function diveditbt($id){
 $r=['no'=>nms(72),'p'=>'normal','h1'=>'h1','h2'=>'h2','h3'=>'h3','h4'=>'h4','h5'=>'h5','fact'=>'fact'];
 $ret=select(['id'=>'wygs','onchange'=>'execom2(this.value)'],$r);
@@ -155,18 +150,17 @@ foreach($r as $k=>$v)$ret.=btj(picto($v,16),atj('execom',$k));
 if(is_numeric($id))$ret.=btj(picto('save2',16),atj('saveart',$id));
 return btn('nbp',$ret);}
 function divarea($id,$d,$c='',$s='',$j='',$o=''){$ja='';
-$rp=['contenteditable'=>'true','id'=>$id,'c'=>$c,'s'=>$s];
-if($j)$rp+=[$o?'onblur':'onclick'=>$j];//'onkeydown'=>$j,
-return divr($d?$d:' ',$rp);}
+$rp=['contenteditable'=>'true','id'=>$id,'class'=>$c,'style'=>$s];
+if($j)$rp[$o?'onblur':'onclick']=$j;//$rp['onkeydown']=$j;
+return tag('div',$rp,$d?$d:' ');}
 function divedit($id,$c,$s,$j,$d){return diveditbt($id).divarea($id,$d,$c,$s,$j);}
 function form($go,$d){return '<form method="post" action="'.$go.'">'.$d.'</form>';}
-function goodarea($id,$v,$n=44,$o=''){$nb=round(mb_strlen($v)/$n); $h=$nb>10?10:$nb;
-$hb=substr_count($v,"\n"); if($hb>$h)$h=$hb>10?10:$h;
+function goodarea($id,$v,$n=44,$o=''){$nb=ceil(mb_strlen($v)/$n); $h=$nb>10?10:$nb;
+$hb=substr_count($v,"\n"); if($hb>$h)$h=$hb>10?10:$h; if($h==0)$h=1;
 return textarea($id,$v,$n,$h,['wrap'=>'false','onkeyup'=>atjr('areasize',['this'])]);}
 
 //upload
-function upload_j($id,$typ,$o=''){
-if($o)$o=hidden('opt'.$id,$o);//send this val to uploadsav(id,typ,val)
+function upload_j($id,$typ,$o=''){if($o)$o=hidden('opt'.$id,$o);//send this val to uploadsav(id,typ,val)
 return '<form id="upl'.$id.'" action="" style="display:inline-block" method="POST" onchange="upload(\''.$id.'\')" accept-charset="utf-8"><label class="uplabel btn"><input type="file" id="upfile'.$id.'" name="upfile'.$id.'" multiple />'.hidden('typ'.$id,$typ).$o.picto('upload').'</label></form>'.btd($id.'up','').btd($id.'prg','');}
 
 //select
@@ -231,7 +225,11 @@ elseif(is_file($drb)){unlink($drb); $drb.br();}} if(is_dir($dr))rmdir($dr);}
 function scandir_b($d){$r=scandir($d); unset($r[0]); unset($r[1]); return $r;}
 function scandir_r($d,$r=[]){$dr=opendir($d);
 while($f=readdir($dr))if($f!='..' && $f!='.' && $f!='_notes'){$df=$d.'/'.$f;
-	if(is_dir($df))$r=scandir_r($df,$r); else $r[]=$df;}
+	if(is_dir($df)){$r[]=$df; $r+=scandir_r($df,$r);}}
+return $r;}
+function scanfiles($d,$r=[]){$dr=opendir($d);
+while($f=readdir($dr))if($f!='..' && $f!='.' && $f!='_notes'){$df=$d.'/'.$f;
+	if(is_dir($df))$r=scanfiles($df,$r); else $r[]=$df;}
 return $r;}
 
 function explore($dr,$p='',$o=''){
@@ -254,8 +252,9 @@ if($f)return $d.'/'.$f; else return $d;}
 //actions
 function walk_dir($dr,$fc){
 $r=explore($dr); return explode_dir($r,$dr,$fc?$fc:'func');}
-function scanwalk($dr,$fc){$r=scandir_r($dr); $rb=[];
+function scanwalk($dr,$fc){$r=scanfiles($dr); $rb=[];
 foreach($r as $k=>$v){$a=$fc($dr,$k,$v); if($a)$rb[]=$a;} return $rb;}
+function walk($r,$fc){$rt=[]; foreach($r as $k=>$v)$rt[]=$fc($v); return $rt;}
 
 #files
 function get_file($f){return curl_get_contents($f);}
@@ -424,6 +423,8 @@ function strin($d,$a,$b){return between($d,$a,$b,0,0,1);}
 function isnum($d){return preg_replace("/[^0-9]/",'',$d);}
 function str_slice($d,$n=1){$r=[]; $nb=mb_strlen($d); $na=ceil($nb/$n);
 for($i=0;$i<$na;$i++)$r[]=mb_substr($d,$i*$n,$n); return $r;}
+function stripfirst($v,$s){return substr($v,0,1)==$s?substr($v,1):$v;}
+function striplast($v,$s){return substr($v,-1,1)==$s?substr($v,0,-1):$v;}
 //r
 function array_combine_a($a,$b){$n=count($a); $r=[];//php4
 for($i=0;$i<$n;$i++)if(isset($b[$i]))$r[$a[$i]]=stripslashes($b[$i]); return $r;}
@@ -449,7 +450,7 @@ function array_column_k($r,$n){return array_combine(array_keys($r),array_column(
 function in_array_b($d,$r){if($r)foreach($r as $k=>$v)if($v==$d)return $k;}
 function in_array_k($d,$r){foreach($r as $k=>$v)if(isset($v[$d]))return true;}
 function in_array_p($d,$r){if($r)foreach($r as $k=>$v)if(strpos($d,$v)!==false)return 1;}
-function in_array_r($r,$d,$n){if($r)foreach($r as $k=>$v)if($v[$n]==$d)return $k;}
+function in_array_r($r,$d,$n){if($r)foreach($r as $k=>$v)if(($v[$n]??'')==$d)return $k;}
 function unset_value($r,$d){if($r)foreach($r as $k=>$v)if($v==$d)unset($r[$k]); return $r;}
 function array_add_r($ra,$rb){foreach($rb as $k=>$v)
 if(is_array($v))$ra[$k]=array_add_r($ra[$k],$v); else $ra[]=$v; return $ra;}
@@ -509,7 +510,7 @@ function is_http($d){if(substr($d,0,4)=='http' or substr($d,0,2)=='//')return tr
 
 //vars
 function expk($s,$d){[$k,$v]=explode($s,$d); return [$k=>$v];}
-function expl($s,$d,$n=2){$r=explode($s,$d); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
+function expl($s,$d,$n=2){$r=explode($s,$d??''); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
 function impl($s,$r){$rb=[]; foreach($r as $k=>$v)if($v)$rb[]=$v; return join($s,$rb);}
 function opt($d,$s,$n=2){$r=explode($s,$d); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}//old
 function arr($r,$n=''){$rb=[]; $n=$n?$n:count($r); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
@@ -528,7 +529,7 @@ function is255($d){return strlen($d)>255?substr($d,0,255):($d??'');}
 //function is255mb($d){return mb_strlen($d)>255?mb_substr($d,0,255):($d??'');}
 
 //gets
-function gets(){$r=$_GET; foreach($r as $k=>$v)ses::$r['get'][$k]=urldecode($v); return ses::$r['get']??[];}
+function gets(){$r=$_GET; foreach($r as $k=>$v)ses::$r['get'][$k]=ajx(urldecode($v),1); return ses::$r['get']??[];}
 function posts(){$r=$_POST??[]; foreach($r as $k=>$v)ses::$r['post'][$k]=delr($v); return ses::$r['post']??[];}
 function get($k,$v=''){return !empty(ses::$r['get'][$k])?ses::$r['get'][$k]:ses::$r['get'][$k]=$v;}
 function geta($k,$v){return ses::$r['get'][$k]=$v;}//assign
@@ -536,6 +537,7 @@ function getb($k,$v=''){return ses::$r['get'][$k]??ses::$r['get'][$k]=$v;}
 function getz($k){ses::$r['get'][$k]='';}
 function post($k,$v=''){return $_POST[$k]??$_POST[$k]=$v;}
 function cookie($d,$v=''){if($v)setcookie($d,$v,ses('daya')+(86400*30)); return $_COOKIE[$d]??'';}
+function cookz($d){setcookie($d,'',0);}
 function ses($d,$v=null){if(isset($v))$_SESSION[$d]=$v; return $_SESSION[$d]??'';}//assign
 function sesb($d,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=$v; return $_SESSION[$d];}
 function sesz($d){if(isset($_SESSION[$d]))unset($_SESSION[$d]);}
@@ -543,12 +545,13 @@ function sesr($d,$k,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=[];
 if(!isset($_SESSION[$d][$k]))$_SESSION[$d][$k]='';
 if($v)$_SESSION[$d][$k]=$v; return $_SESSION[$d][$k];}
 function sesrr($d,$k,$v=[]){if(!isset($_SESSION[$d]))$_SESSION[$d]=[];
+if(!isset($_SESSION[$d][$k]))$_SESSION[$d][$k]='';
 return $v?$_SESSION[$d][$k]=$v:($_SESSION[$d][$k]??[]);}
 function sesrz($d,$k){if(array_key_exists($k,$_SESSION[$d]))unset($_SESSION[$d][$k]);}
 function sesg($v,$d){$s=ses($v); $g=get($v); return $g?$g:($s?$s:$d);}
 function sesk($d,$v){$_SESSION[$d][]=$v; return $_SESSION[$d];}
 function sesmk($v,$p='',$b=''){if(!isset($_SESSION[$v.$p]) or $b)
-if(function_exists($v))$_SESSION[$v.$p]=call_user_func($v,$p); return $_SESSION[$v.$p]??[];}
+if(function_exists($v))$_SESSION[$v.$p]=$v($p); return $_SESSION[$v.$p]??[];}
 function sesmk2($a,$m,$p='',$b=''){if(empty($_SESSION[$a.$m.$p]) or $b)
 if(method_exists($a,$m))$_SESSION[$a.$m.$p]=$a::$m($p); return $_SESSION[$a.$m.$p]??'';}
 function setses($d,$o=''){return !isset($_SESSION[$d])?$_SESSION[$d]=$o:$_SESSION[$d];}
@@ -565,13 +568,14 @@ function nohttps($f){return str_replace('https','http',$f);}
 function http($f){return $f&&substr($f,0,4)!='http'?'http://'.$f:$f;}
 function ishttp($f){return substr($f,0,4)=='http'?1:0;}
 function nohttp($f){if($f)return str_replace(['http://','https://','www.'],'',$f);}
-function domain($f){$f=nohttp($f); $p=strpos($f??'','/'); return $p?substr($f,0,$p):$f;}//preplink
+function domain($f){$f=nohttp($f); $p=strpos($f??'','/'); return $p?substr($f,0,$p):$f;}
 function httproot($f){$f=domain($f); $f=substr($f,0,strrpos($f,'.')); return $f;}
 function findroot($u){$r=explode('/',$u); $r=array_slice($r,0,3); if($r)return implode('/',$r);}
 function utmsrc($f){if(!$f)return; $r=['?fbclid','&fbclid','?utm','&utm'];
 foreach($r as $k=>$v)if($n=strpos($f,$v))$f=strto($f,$v); return $f;}
 function host(){return 'http://'.$_SERVER['HTTP_HOST'];}
-function hostname(){$ip=$_SERVER['REMOTE_ADDR']??'';
+function hst(){return $_SERVER['HTTP_HOST'];}
+function ip(){$ip=$_SERVER['REMOTE_ADDR']??'';
 if(strstr($ip,' ')){$r=explode(' ',$ip); return $r[0];} else return gethostbyaddr($ip);}
 function mobile(){$s=$_SERVER['HTTP_USER_AGENT']??'';
 return stristr($s,'android') || stristr($s,'iPhone') || stristr($s,'iPad');}
@@ -580,7 +584,7 @@ return stristr($s,'android') || stristr($s,'iPhone') || stristr($s,'iPad');}
 function recup_fileinfo($doc){if(is_file($doc))
 return date('ymd',filemtime($doc)).'-'.round(filesize($doc)/1024).'Ko';}
 function ftime($f,$d=''){if(is_file($f))return date($d?$d:'ymd.Hi',filemtime($f));}
-function fsize($f,$o=''){if(is_file($f))return round(filesize($f)/1024,1).($o?' Ko':'');}
+function fsize($f,$o=''){if(is_file($f))return round(filesize($f)/1024).($o?' ko':'');}
 function fwidth($f,$o=''){$r=is_file($f)?getimagesize($f):[0,0]; return $o?implode('/',arr($r,2)):$r;}
 function frdate($d){$r=['','janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']; return $r[$d];}
 function localdate($d){$r=explode('/',date('d/m/Y',$d)); $r[1]=frdate(intval($r[1]));
@@ -604,18 +608,16 @@ function mkdts(){return $_SESSION['prmb'][17]??'ymd.Hi';}
 function rss_date($d){return date(mkdts(),strtotime($d));}
 function inpday($t){[$d,$m,$y]=explode('-',$t); return mktime(0,0,0,$m,$d,$y);}//23,59,59
 function day2time($t){[$y,$m,$d]=str_slice($t,2); return mktime(0,0,0,$m,$d,$y);}
-function time_ago($dt){$dy=time()-$dt; if($dy<86400){$fuseau=3;
+function time_ago($dt){$dy=time()-round($dt); if($dy<86400){$fuseau=3;
 $h=intval(date('H',$dy))-$fuseau; $i=intval(date('i',$dy)); $s=intval(date('s',$dy));
-$nbh=$h>1?$h.' h ':''; $nbi=$i>0?$i.' min ':''; return $nbh.$nbi;} else return date(mkdts(),$dt);}
+$nbh=$h>1?$h.' h ':''; $nbi=$i>0?$i.' min ':''; return $nbh.$nbi;} 
+else return date(mkdts(),round($dt));}
 function clean_nb($d,$o=0){return number_format($d,$o,',',' ');}
 
-function elapsed_time($d1,$d2=''){$rt=[]; if(!$d2)$d2=time();
-$t1=new DateTime(); $t2=new DateTime(); $t1->setTimestamp($d1); $t2->setTimestamp($d2);
-$diff=$t1->diff($t2); $n=$diff->format('%d');
-$ra=$n>0?['year','month','day']:['hour','minute','second'];
-$ty=$n>0?'%y-%m-%d':'%h-%i-%s'; $res=$diff->format($ty); $rb=explode('-',$res);
-foreach($rb as $k=>$v)if($v)$rt[]=$v.' '.$ra[$k].($v>1?'s':'');
-return implode(', ',$rt);}
+function compute_time($s){$rt=[];
+$r=['year'=>31556925,'month'=>2629744,'week'=>604800,'day'=>86400,'hour'=>3600,'minute'=>60,'second'=>1];
+foreach($r as $k=>$v)if($s>$v){$n=floor($s/$v); $s-=$v*$n; $rt[]=$n.' '.$k.($n>1?'s':'');}
+return join(' ',$rt);}
 
 #builders
 function scroll($r,$d,$max=10,$w='',$h='',$id=''){$h=is_numeric($h)?$h.'px':$h;
@@ -649,12 +651,11 @@ return tag('iframe',['src'=>$dc,'frameborder'=>'0','width'=>$w,'height'=>$h,'nam
 function obj($d,$t,$s=''){return tag('object',['data'=>$d,'type'=>$t,'style'=>$s],'');}
 function audio($d,$id='',$t=''){[$f,$t]=cprm($d); $bt=btn('small',mk::download($d));
 return '<audio controls><source src="'.$f.'" type="audio/mpeg"></audio>'.$bt;}
-function video($d,$w='',$h='',$o=''){
-[$d,$t]=cprm($d); $d=goodroot($d); $ty='type="video/'.xtb($d,1).'"';
+function video($d,$w='',$h='',$o=''){[$d,$t]=cprm($d); $d=goodroot($d);
 if($t)return lj('','popup_usg,video___'.ajx($d),pictxt('movie',$t!=1?$t:strend($d,'/')));
-if($o)$h.=' poster="'.$o.'"';
-if($w)$w.='px'; else $w='100%'; if($h)$h=' height="'.$h.'px"'; else $h=' height="440px"';
-return '<video src="'.$d.'" width="'.$w.'"'.$h.$ty.' controls autobuffer></video>';}
+$pr=['type'=>'video/'.xtb($d,1),'src'=>$d,'controls'=>'true','autobuffer'=>'true']; if($o)$pr['poster']=$o;
+$pr['width']=($w?$w.'px':'100%'); $pr['height']=($h?$h:440).'px';
+return tag('video',$pr,'');}
 
 #img
 function img64($d,$m=''){$m=$m?$m:'jpeg';
@@ -670,7 +671,7 @@ function hexrgb_r($d){
 for($i=0;$i<3;$i++)$r[]=hexdec(substr($d,$i*2,2)); return $r;}
 function hexrgb($d,$o=''){$r=hexrgb_r($d);
 return 'rgba('.$r[0].','.$r[1].','.$r[2].','.$o.')';}
-function invert_color($p,$o){$ret='';
+function invert_color($p,$o=''){$ret=''; if(!ctype_xdigit((string) $p))return;
 if($o)return hexdec($p)<8300000?'ffffff':'000000';//16777215
 for($i=0;$i<3;$i++){$d=dechex(255-hexdec(substr($p,$i*2,2)));
 	if(strlen($d)==1)$d='0'.$d; $ret.=$d=='0'||!$d?'00':$d;}
@@ -699,13 +700,11 @@ function hsl2hex($h,$s,$l){$r=hsl2rgb($h,$s,$l); return rgb2hex($r);}
 //ascii
 function chr_b($d){return '&#'.$d.';';}
 function asciinb($n){if(is_numeric($n))return chr_b(9311+$n);}
-function ascii($d,$s='',$c=''){
-if(is_numeric($s))$s='font-size:'.$s.'px;';
-if(is_numeric($d))return btp(ats($s),chr_b($d));
-return spn('','as-'.$d.' '.$c,'',$s);}
+function ascii($d,$s=''){$s=is_numeric($s)?'font-size:'.$s.'px;':''; return span(chr_b($d),'','',$s);}
+function asciitypo($d,$s=''){$s=is_numeric($s)?'font-size:'.$s.'px;':''; return span('','as-'.$d,'',$s);}
 function nb($d,$o=''){$d=str_replace(['(',')','[',']'],'',$d);
-if($d>20)return $o?tagb('sup','('.$d.')'):tagb('sup',$d.'.');
-if($o)return "&#93".(31+$d); else return "&#93".(51+$d);}
+if($d>20)return tagb('sup',$o?'('.$d.')':$d.'.');
+return "&#93".(($o?31:51)+$d);}
 
 #maths
 function phi($n=32){$d=1; for($i=0;$i<$n;$i++)$d=1+(1/$d); return $d;}//dav algo :)
@@ -725,6 +724,7 @@ function excget($u,$f){$e='wget -P '.excdir().'/'.$u.' '.$f; exc($e);}
 function pr($r){echo '<pre>'.print_r($r,true).'</pre>';}
 function code($d){echo '<code><pre>'.$d.'</pre></code>';}
 function vd($r){is_object($r)?var_dump($r):pr($r);}
+function pt($r){echo tree($r);}
 //function ret(...$r){return join(' ',$r);}
 function backtrace(){var_dump(debug_backtrace());}
 function dump($r,$o=''){$rb=[]; $i=0; if(is_array($r))foreach($r as $k=>$v){$ka='';
@@ -740,13 +740,13 @@ if($d)return btn('small',$d.':'.round($ret,5));}
 function chrono_average($o=''){static $r=[]; static $t0; static $i; if($o){$r=[]; $i=0;}
 if(!$t0)$t0=$_SERVER['REQUEST_TIME_FLOAT']; $t1=microtime(true); $r[$i]=$t1-$t0;
 $ret=$i.'. '.round(array_sum($r)/count($r),5); $t0=$t1; $i++; return $ret;}//.$r[$i].': '
-function window($d){return divr($d,['contenteditable'=>'true','s'=>'overflow:auto; height:300px;']);}
+function window($d){return tag('div',['contenteditable'=>'true','style'=>'overflow:auto; height:300px;'],$d);}
 function eco($d,$o=''){if(is_array($d))$d='<pre>'.print_r($d,true).'</pre>';
 elseif(is_object($d))$d=var_dump($d,true);
 $ret=textarea('',htmlspecialchars($d),44,12); if($o)return $ret; elseif(auth(6))echo $ret.br();}
 function verbose($r){echo implode(br(),$r).hr();}
 function funcs(){pr(get_defined_functions());}
-function trace(){pr(debug_backtrace());}
+function trace(){eco(debug_backtrace());}
 function er($d){return ses::$er[]=$d;}
 
 //debugdeclare(ticks=1); $calls=[]; register_tick_function('tracer');

@@ -4,7 +4,6 @@ class ma{
 #arts
 static function popart($id,$t=''){
 if($t==1)$t=self::suj_of_id($id); $t=pictxt('articles',$t);
-if(!rstr(8))return lkc('',htacc($id),$t);
 $tg=rstr(136)?'pagup':'popup';
 return lj('',$tg.'_popart__3_'.$id.'_3',$t);}
 
@@ -13,8 +12,7 @@ if(is_numeric($d))$wh='id="'.$d.'"'; else $wh='suj="'.$d.'"';
 return sql('id','qda','v',$wh.' AND nod="'.ses('qb').'"');}
 
 static function jread($c,$id,$t){$ic=self::find_art_link($id);
-if(!rstr(8) or !$ic)return lkc($c,urlread($id),$t);
-else return self::popart(is_numeric($ic)?$ic:$id,$t);}
+return self::popart(is_numeric($ic)?$ic:$id,$t);}
 
 static function read_msg($d,$m){$id=self::find_id($d); if(!$id)return;// and substring(frm,1,1)!='_'
 $ok=sql('id','qda','v','id='.$id.' and (re>0 or name="'.ses('USE').'")'); if(!$ok)return;
@@ -113,7 +111,7 @@ static function readcachedel($id){if(rstr(140))unset($_SESSION['rqt'][$id]); ret
 
 #outputs
 static function output_arts($r,$md,$tp,$j=''){$rch=get('search');
-if(rstr(39) or $md=='flow'){$fw=$j?0:1; geta('flow',1);}
+if(rstr(39) or $md=='flow'){$fw=$j?0:1; geta('flow',1); $md=rstr(8)?'auto':$md;}
 $npg=prmb(6); $page=get('page',1); $ret='';
 $min=($page-1)*$npg; $max=$page*$npg; $md=art::slct_media($md); $i=0;
 if(is_array($r))foreach($r as $id=>$nb)if($id>0){$i++;
@@ -124,8 +122,8 @@ $nbpg=!$fw?pop::btpages($npg,$page,$i,$j):'';
 return $nbpg.$ret.$nbpg;}
 
 static function read_idy($ib,$o,$frm=0,$re='',$id=''){
-$w='ib="'.$ib.'"'.($frm?' and frm="'.$frm.'"':'').''.($re?' and re="'.$re.'"':'').' '.($id?' and id="'.$id.'"':'').' order by day '.$o;
-return sql('id,ib,name,mail,day,nod,frm,suj,msg,re,host,lg','qdi','',$w);}
+$rw=['ib'=>$ib]; if($frm)$rw['frm']=$frm; if($re)$rw['re']=$re; if($id)$rw['id']=$id; $rw['_order']='day '.$o;
+return sql('id,ib,name,mail,day,nod,frm,suj,msg,re,host,lg','qdi','',$rw);}
 
 #tags
 static function artags($slct,$wh,$how,$z=''){

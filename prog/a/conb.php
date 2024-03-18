@@ -52,9 +52,12 @@ if($d)return nl2br($d);}
 
 static function png2jpg($id,$o=''){
 $d=sql('msg','qdm','v',$id); get('read',$id);
-if(rstr(48))$d=conb::parse($d,'correct','webp2jpg');
-if($o)$d=conb::parse($d,'correct','forcewebp2jpg');
-return conb::parse($d,'correct','png2jpg');}
+if(rstr(48))$d=self::parse($d,'correct','webp2jpg');
+if($o)$d=self::parse($d,'correct','forcewebp2jpg');
+return self::parse($d,'correct','png2jpg');}
+
+static function rmconn($d,$o){
+return self::parse($d,'correct',$o);}
 
 #templater
 static function build($d,$r){
@@ -191,9 +194,6 @@ $ret=match($c){
 ':appbt'=>pop::btapp($d,''),
 ':connbt'=>pop::connbt($d,''),
 ':bt'=>pop::connbt($d,''),
-':ascii'=>ascii($p,$o),
-':picto'=>picto($d),
-':oomo'=>oomo($d),
 ':msql'=>mk::msqcall($d,'',''),
 ':popimg'=>mk::mini_d($d,$b,''),
 ':quote'=>mk::quote2($d,$c),
@@ -226,7 +226,7 @@ if(!$ret)$ret=match($c){
 ':cyan'=>mk::pub_clr($d,'#2dd'),
 ':purple'=>mk::pub_clr($d,'#d2d'),
 ':yellow'=>mk::pub_clr($d,'#dd2'),
-':bkgclr'=>mk::pub_bkgclr($d),
+':bkgclr'=>mk::bkgclr($d),
 ':video'=>video::titlk($p,''),
 ':videourl'=>video::titlk($p,''),
 ':figure'=>pop::figure($d,'','1'),
@@ -243,6 +243,11 @@ if(!$ret)$ret=match($c){
 ':download'=>lka($p),
 ':pdf'=>lka($p),
 ':img'=>image($p),
+':picto'=>picto($p,$o),
+':ascii'=>ascii($p,$o),
+':glyph'=>glyph($p,$o),
+':oomo'=>oomo($p,$o),
+':typo'=>mk::typo($p,$o),
 ':w'=>lka($p),
 ':no'=>'',
 default=>''};
@@ -401,7 +406,7 @@ $ret=self::sconn_html($p,$o,$c);
 if(!$ret)$ret=match($c){
 //elements
 ':tag'=>tagb($p,$o),
-':span'=>$p?spn($p,$o):'',
+':span'=>$p?span($p,$o):'',
 ':css'=>$p?btn($o,$p):'',
 ':div'=>$p?divp($o,$p):'',
 ':divc'=>$p?divc($o,$p):'',

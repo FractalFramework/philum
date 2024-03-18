@@ -32,8 +32,8 @@ static function t($k){$nod=nod('proposal');
 if($k)$r=msql::row('',$nod,$k);
 if(isset($r))return $r[1]??'';}
 
-static function save($p,$o,$res){
-[$txt,$usr]=ajxr($res);
+static function save($p,$o,$prm=[]){
+[$txt,$usr]=arr($prm);
 cookie('use',$usr);
 $nod=nod('proposal_'.$p);
 if($p && $usr && $txt)msql::push('',$nod,[$usr,$txt,date('ymd')]);
@@ -41,7 +41,7 @@ elseif(!$usr)return 'usr?'; elseif(!$txt)return 'txt?';
 return self::call($p,$o);}
 
 static function build($p,$o,$ord,$r){$ret=''; $rt=[]; $rb=[]; $rc=[];
-$j=$o.'_proposal,save__3_'.$p.'_'.$o.'_inp1|inp2';
+$j=$o.'_proposal,save_inp1,inp2_3_'.$p.'_'.$o;
 $usr=cookie('use'); if(!$usr)$usr=ses('USE'); $day=date('ymd'); //$usr='dav';
 $ret=lj('popbt '.active($ord,1),$o.'_proposal,call__3_'.$p.'_'.$o.';1','score');
 $ret.=lj('popbt '.active($ord,2),$o.'_proposal,call__3_'.$p.'_'.$o.';2','date');
@@ -56,12 +56,18 @@ if($r)foreach($r as $k=>$v){$id=self::valid($p.$v[1]); $edt=social::edt($id,'agr
 	if($ord==2)$rb[$k]=$v[2];
 	else $rb[$k]=sql('count(id)','qdf','v','ib="'.$id.'" and type="agree"');
 	$tit='#'.$k.' '.$v[0].' ('.$v[2].')';
-	$rc[]=['tit'=>$tit,'edt'=>$edt,'del'=>$del,'txt'=>$v[1],'id'=>$k];
+	//$rc[]=['tit'=>$tit,'edt'=>$edt,'del'=>$del,'txt'=>$v[1],'id'=>$k];
 	$rt[$k]=divc('track',btn('popbt',$tit.' '.$edt.' '.$del).divc('panel',$v[1]));}
 if($rb){arsort($rb); foreach($rb as $k=>$v)$ret.=$rt[$k];}
-$tmp='[[[{tit} {edt} {del}|popbt:spanc]:div]{txt}|[track:class][{id}:id]:div]';
-//return vue::call($tmp,$rc);
+//return view::batch(self::tmp(),$rc);
 return $ret;}
+
+static function tmp(){return [
+['div',['class'=>'track panel','id'=>'{id}'],[
+	['div',[],[
+		['span',['class'=>'txtcadr'],'{tit}'],
+		['','',' {edt}{del}']]],
+	['div',[],'{txt}']]]];}
 
 static function call($p,$o){$ord='';
 if(strpos($o,';')){$ro=explode(';',$o); $o=$ro[0]; $ord=$ro[1];}

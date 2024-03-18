@@ -31,7 +31,7 @@ foreach($r as $k=>$v){$cur=true;//by_lines
 	elseif($act=='line' && $pb=='last' && $k==$nbr-1)$cur=false;
 	elseif($act=='line' && $pb=='title' && $t){$tb=str::clean_title(str::clean_html(trim($t),1));
 		if(strpos($v,$tb)!==false)$cur=false; else $cur=$v;}
-	elseif($act=='linewith' && strpos($v,$pb)!==false)$cur=false;//utf8 pb
+	elseif($act=='linewith' && strpos($v,$pb)!==false)$cur=false;
 	elseif($act=='boldline' && $k==$pb-1 && $v)$cur='['.$v.':b]';
 	elseif($act=='del-link' && strpos($v,$pb)!==false)$cur=between($v,'|',']');
 	elseif($act=='linenolink' && $k==$pb-1)[$no,$cur]=explode('|',substr($v,0,-1));
@@ -44,7 +44,7 @@ $ret=str::clean_br($ret);
 $ret=str::repair_tags($ret);
 return trim($ret??'');}
 
-//defcon
+#defcon
 static function detect_defcon($d,$r){
 $dom=dom($d); $rec=dom(''); $ret='';
 if($r)foreach($r as $k=>$v){
@@ -64,24 +64,29 @@ $r=msql::col('','public_defcons_tt',0,1);
 $tt=self::detect_defcon($d,$r);
 return [$tx,'',$tt,'','','','','','','',''];}
 
-static function recognize_defcon($f){$d=vaccum_ses($f);
+static function recognize_defcon($u,$rid=''){
+$f=domain($u); if(substr_count($f??'','.')==2)$f=strfrom($f,'.');
+$r=msql::read('','public_defcons',1);
+foreach($r as $k=>$v)if($k==$f){$ra=[];
+	foreach($v as $ka=>$va)$ra[$rid.$ka]=$va; return $ra;}
+$d=vaccum_ses($f);
 return self::known_defcon($d);}
 
 static function add_defcon($f,$d){$fb=domain($f); $rw=self::known_defcon($d);
 if($rw)msql::modif('',(rstr(18)?'public':ses('qb')).'_defcons',$rw,'row',[],$fb);
 return $rw;}
 
+static function find_defcon($f){$f=domain($f);
+$base=rstr(18)?'public':ses('qb');
+$r=msql::readsl('',$base.'_defcons');
+if($r)foreach($r as $k=>$v)if($f==$k)return [$k,$v];
+return ['',['','','','','','']];}
+
 static function vacuum_json($d){
 $r=json_decode($d,true); $er=json_error(); if($er)return er($er);
 $ti=$r['title']??''; $tx=$r['content']??'';
 $tx=self::call($tx);
 return [$ti,$tx,''];}
-
-static function verif_defcon($f){$f=domain($f);
-$base=rstr(18)?'public':ses('qb');
-$r=msql::read('',$base.'_defcons');
-if($r)foreach($r as $k=>$v)if($f==$k)return [$k,self::stripslashes_r($v)];
-return ['',['','','','','','']];}
 
 #transductor
 static function call($d,$h=''){
@@ -102,7 +107,7 @@ return [$r['title'],$r['content']];}
 static function vacuum($f,$sj='',$h=''){//$f=https($f);
 $f=http($f); $f=utmsrc($f); $suj=''; $rec=''; $ret=''; $enc='';
 $reb=vaccum_ses($f); if(!$reb){vacses($f,'b','x'); return ['','','','',''];}
-[$defid,$defs]=self::verif_defcon($f);//defcons
+[$defid,$defs]=self::find_defcon($f);//defcons
 //if(substr($reb,0,1)=='{')return self::vacuum_json($reb);
 $auv=video::detect($f);
 if(!$defs && !$auv)$defs=self::add_defcon($f,$reb);
@@ -116,6 +121,7 @@ else [$suj,$rec]=web::metas($f,$reb);
 if($defs[8])$rec=dom::detect($reb,$defs[8]);//header
 if($defs[0])$rec.=dom::detect($reb,$defs[0]);//content
 //elseif(strpos($reb,'<body')!==false)$rec=self::html_detect($reb,'<body');
+if($defs[1]){if(strpos($defs[1],':')===false)$rec=struntil($rec,$defs[1]);}
 if($defs[4])$rec.=dom::detect($reb,$defs[4]);//footer
 if($defs[10])$rec=dom::del($rec,$defs[10]);//jump_div
 if($auv){$ret=$auv;//video
@@ -143,7 +149,7 @@ return [$t,$ret];}
 static function importart($f){
 $f=http($f); $f=utmsrc($f); $d=vaccum_ses($f);
 if(!$d){vacses($f,'b','x'); return ['','','','',''];}
-[$defid,$defs]=conv::verif_defcon($f); $defs=arr($defs,11);
+[$defid,$defs]=self::find_defcon($f); $defs=arr($defs,11);
 $ret=video::detect($f); if($ret){[$t,$reb]=web::read($f,1); if($reb)$ret.=n().n().strip_tags($reb);}
 elseif(strpos($f,'twitter.com'))[$t,$ret]=twit::vacuum($f);
 else [$t,$ret]=self::master($d,$defs);
@@ -176,6 +182,9 @@ elseif(substr($dz,0,11)=='footnoteref')$mid='['.$txt.':nb] ';
 //elseif(strpos($dz,'<sup>'))$mid='['.between($txt,'<sup>','</sup>').':nb] ';//ri
 elseif(substr($dz,0,13)=='easy-footnote')$mid=' ['.$txt.':nh]';//ri
 elseif(substr($dz,0,5)=='note_')$mid='['.$txt.':nb] ';//rare
+elseif(strpos($dz,'-footnote-ref-') or $txt=='&uarr;' or $txt=='↑')$mid='[]';//wp
+//elseif(strpos($dz,'-footnote-ref-') && $txt!='&uarr;')$mid='['.strend($dz,'-footnote-ref-').':nb] ';//wp
+elseif(strpos($dz,'-footnote-'))$mid=' ['.strend($dz,'-footnote-').':nh]';
 elseif(substr($dz,0,5)=='foot_')$mid=' ['.$txt.':nh]';
 elseif(substr($src,-3)=='sym')$mid='['.$txt.':nh] ';//openoffice
 elseif(substr($src,-3)=='anc')$mid=' ['.$txt.':nb]';
@@ -191,11 +200,11 @@ return $mid;}
 
 //link-img
 static function treat_link($bin,$txa){
-$sp='';$sp2='';$mid='';$txt='';$txb='';$bend='';$tag='';$len=0;$nb=0;$dz='';$imnb=0;
+$sp='';$sp2='';$mid='';$txt='';$txb='';$bend='';$tag='';$len=0;$nb=0;$dz='';$imnb=0;$rot='';
 if($txa){$tag='href='; $len=6;
 	if(substr($txa,0,1)==' ')$sp=' '; if(substr($txa,-1,1)==' ')$sp2=' '; $txt=trim($txa);}
 if($txt){
-	$txt=str::stripconn($txt);//kill conns inside links
+	if(!is_img($txt))$txt=str::stripconn($txt);//kill conns inside links
 	if($n=strpos($txt,'>'))$txt=substr($txt,$n+1);
 	$txt=utmsrc($txt); if($txt)$txt=str_replace(["\n","\t"],'',$txt);
 	if($txt && substr($txt,0,1)=='/')$txt=substr($txt,1);
@@ -214,15 +223,17 @@ $src=substr($bin,$imnb+$nb,$bend-$imnb-$nb);
 if(strpos($bin,'popup_usg,nbp'))$mid='['.$txt.':nh]';//anchor
 elseif(strpos($src,'base64') && !$im)$mid='['.($src).':b64]';//self::b64img
 elseif(strpos($src,'twitter.com')!==false && strpos($src,'status/')!==false){
-return '['.strto($src,'?').($txt?'|'.$txt:'').':twitter]';}
+	$txt=!strtotime($txt)?'|'.$txt:'';
+	return '['.trim(urldecode(strto($src,'?'))).$txt.':twitter]';}
 elseif($src){$src=trim($src);
 	if(substr($src,0,19)=='data:image/svg+xml,')return;
+	//if(strpos($src,'substackcdn.com/image'))$src='http'.urldecode(strend($src,'http'));
 	$src=utmsrc($src); $src=preg_replace("/(\n)|(\t)/",'',$src); 
 	if(strpos($src,'#')!==false)$dz=strend($src,'#');
 	$srcim=is_img($src); if(strpos($src,'rendition=image'))$srcim=1;
 	if($srcim)$src=str_replace(' ','%20',$src);
 	if(substr($src,0,2)=='//' && strpos($src,'.'))$src='https:'.$src;
-	if(strpos($src,'http')===false && $root)$rot=self::urlroot($root,$src); else $rot='';
+	if(strpos($src,'http')===false && $root)$rot=$root;//urlroot($src)
 	$delroot=host(); $nr=strlen($delroot);//wygsav figure
 	if(substr($src,0,$nr)==$delroot)$src=substr($src,$nr);
 	if(!$rot && substr($src,0,4)=='img/')$src=substr($src,4);
@@ -231,7 +242,8 @@ elseif($src){$src=trim($src);
 	if(substr($src,-1)=='/')$src=substr($src,0,-1);
 	if(strpos($src,'../')!==false)$src=str_replace('../','',$src);
 	if(substr($src,0,6)=='users/')$src=substr($src,6);
-	if($srcim && is_img($txt))return '['.$rot.$src.']';
+	//if($srcim && is_img($src))return '['.$rot.$src.']';
+	if(is_img($txt))return '['.$txt.']'; //echo($txt).'- ';//$srcim && 
 	if(strpos($src,'javascript')!==false)$src='';
 	if(strpos($bin,'cs_glossaire')!==false)$mid=$txt;//strend($txt,'|')
 	if(!$srcim && !is_url($rot.$src) && $txt)return $txt;
@@ -252,6 +264,7 @@ elseif($src){$src=trim($src);
 				if(!is_img($txt) && $txt!='https')$mid='['.$rot.$src.($txt?'|'.$txt:'').']';
 				else $mid='['.$rot.$src.'|'.$txt.']';}
 			//elseif(domain($txt)==domain($rot.$src))$mid='['.$rot.$src.'] ';//kill img§src
+			elseif($src && strin($txt,'/','.')==strin($src,'/','.'))$mid='['.$rot.$src.']';//ri kill links
 			elseif($src && is_http($txt) && strpos($rot.$src,substr($txt,0,-4))!==false)$mid='['.$rot.$src.']';
 			//elseif(strpos($rot.$src,domain($txt))!==false)$mid='['.$rot.$src.'] ';//
 			else $mid='['.$rot.$src.'|'.$txt.']';}
@@ -260,12 +273,8 @@ elseif($src){$src=trim($src);
 elseif($txt)$mid=$txt.' ';
 return $sp.$mid.$sp2;}
 
-#lnks
-static function treat_links2($bin,$b){}
-
 #imgs
 static function treat_img($bin,$b,$o=''){$im='';
-//$b=antipuces($b);
 //$b=str::prop_detect($bin,'src'); if(substr($b,0,2)=='//')$b='http:'.$b;
 if(strpos($bin,'data-src="'))$im=between($bin,'data-src="','"');
 elseif(strpos($bin,'src="'))$im=between($bin,'src="','"');
@@ -276,19 +285,23 @@ elseif(strpos($bin,'data-original'))$im=between($bin,'data-original="','"'); if(
 if(strpos($im,';base64'))return '['.($im).':b64]';//self::b64img
 if(substr($im,0,19)=='data:image/svg+xml,')return;
 $root=findroot(ses::$urlsrc); if($root==host())$root='';
-if(substr($im,0,2)=='//')$rot='https:';
-elseif(substr($im,0,4)!='http' && $root)$rot=self::urlroot($root,$im); else $rot='';
-//if(!is_img($b))$b=$b.':img';
+if(substr($im,0,2)=='//')$root='https:';
+if(strpos($im,'substackcdn.com/image')){$im='http'.urldecode(strend($im,'http'));}
+//if(!is_img($b))$b=$b.':gim';
 $im=self::cleanmini($im);//ri
 $delroot=host(); $nr=strlen($delroot);//wygsav figure
 if(substr($im,0,$nr)==$delroot)$im=substr($im,$nr);
-if(!$rot && substr($im,0,4)=='img/')$im=substr($im,4);
-if(!$rot && substr($im,0,5)=='/img/')$im=substr($im,5);
-//if(strpos($im,' '))$im=urlencode($im);
+if(!$root && substr($im,0,4)=='img/')$im=substr($im,4);
+if(!$root && substr($im,0,5)=='/img/')$im=substr($im,5);
 if(strpos($im,' '))$im=str_replace(' ','%20',$im);
-$im=antipuces($im);
-if($o)return $rot.$im;
-return '['.$rot.$im.']'.n().n();}
+if(substr($im,0,2)=='//')$im=substr($im,2);
+if(substr($im,0,1)=='/')$im=substr($im,1);
+//else $root=struntil(ses::$urlsrc,'/');//relative links
+if($root && substr($root,-1)!='/')$root.='/';
+if(substr($im,0,4)=='http')$root='';
+//$im=antipuces($im);//obs
+if($o)return $root.$im;
+return '['.$root.''.$im.']';}
 
 #html_transductor
 static function piegemedia($v){
@@ -307,7 +320,7 @@ static function piege_sott($u){$d=read_file('http:'.$u); return between($d,'/sta
 static function piege_jsm($d){$d=between($d,'file:',','); if($d)return '['.trim(str_replace('"','',$d)).']';}
 static function piege_mp3_b64($v){$d=between($v,'soundFile=','&');
 	if(strpos($d,'.mp3')===false)return base64_decode($d); else return $d;}
-static function trap_v_id($v,$s){$v=htmlspecialchars_decode($v); $d=between($v,$s,'"');
+static function trap_v_id($v,$s){$v=htmlspecialchars_decode($v); $d=between($v,$s,'"'); if(!$d)return;
 	$e=mb_strpos($d,'?'); if($e!==false)$d=mb_substr($d,0,$e); 
 	$e=mb_strpos($d,'&'); if($e!==false)$d=mb_substr($d,0,$e); return $d;}
 
@@ -318,15 +331,6 @@ elseif($cl=='gl_dd')$bal='';
 elseif($cl=='gl_dl')$bal='';
 if(strpos($bin,'display:none')===false)
 return $bal;}
-
-static function urlroot($root,$src){
-$ro=explode('/',$root); $ret='';
-if(substr($src,0,1)=='/')$na=3;//départ racine
-else{$nb=substr_count($src,'../'); $na=count($ro)-$nb-1;}
-//if(substr($src,0,2)=='//')return $root.$src;//départ racine
-if($na<3)$na=3;//erreurs d'adressage (../ en trop)
-for($i=0;$i<$na;$i++)$ret.=val($ro,$i).'/';
-return $ret;}
 
 static function cleanmini($d){//ri renvoie des mini
 if(strpos($d,'-') && strpos($d,'x'))[$f,$xt]=split_one('.',$d,1); else return $d;
@@ -347,7 +351,7 @@ static $fig; static $dd; static $dt; static $td=[]; static $tr=[];
 $n="\n"; $taga=''; $tagb='';//echo $ba.' '.$bb.' '.$b.$n.$n;
 switch($ba){
 case('a'):$b=self::treat_link($bin,$b); break;
-case('img'):$b=$n.self::treat_img($bin,$b,$fig); break;
+case('img'):$b=$n.self::treat_img($bin,$b,$fig).$n; break;
 //case('picture'):$b=str::prop_detect($bin,'src'); break;
 case('blockquote'):
 	if(strpos($bin,'twitter-')!==false){$d=$b;
@@ -371,7 +375,7 @@ case('td'):$td[]=self::prep_table($b); break;
 case('th'):$td[]=self::prep_table($b); break;
 case('tr'):$tr[]=$td; $td=[]; break;
 case('table'):$b=$n.$n.'['.implode_r($tr,self::$splitable,'|').':table]'; $tr=[]; break;
-case('li'):$b=trim($b); $b=deln($b,' '); $b.=$n; break;//whichsplit
+case('li'):$b=trim($b); $b.=$n; break;//whichsplit $b=deln($b,' ');
 case('ul'):$b=$n.'['.$b.':list]'.$n; break;
 case('ol'):$b=$n.'['.$b.':numlist]'.$n; break;
 case('strike'):$b='['.$b.':k]'; break;
@@ -382,7 +386,7 @@ case('sup'):$b='['.$b.':e]'; break;
 case('pre'):$b='['.$b.':pre]'; break;
 case('code'):$b='['.$b.':code]'; break;
 case('center'):$b='['.$b.':center]'; break;
-case('red'):$b='['.$b.':r]'; break;//wyg
+case('red'):$b='['.$b.':red]'; break;//wyg
 case('txtclr'):$b='['.$b.':c]'; break;//wyg
 case('fact'):$b='['.$b.':fact]'; break;//xlhtml
 case('quote'):$b='['.$b.':quote]'; break;//xlhtml
@@ -403,9 +407,9 @@ case('dl')://prevent double img from <a<img
 	elseif($dt)$b=$n.$dt.$n; elseif($dd)$b=$n.$dd.$n;
 	$dt=''; $dd=''; break;
 case('figure'):
-	if(strpos($b,':video')===false && is_img($b)){$b=self::delhook($b); if(strpos($b,'|'))$b=strto($b,'|');}
-	elseif($fig){$b=$n.$n.'['.trim($b).'|'.$fig.':figure]'.$n.$n; $fig='';} break;
-case('figcaption'):if(!$fig)$fig=trim($b); if(is_img($fig))$fig=self::delhook($b); $b='';break;
+	if(strpos($b,':video')===false && is_img($b)){if(strpos($b,'|'))[$b,$fig]=expl('|',$b);}//$b=self::delhook($b); 
+	if($fig){$b=$n.$n.'['.($b).'|'.conb::rmconn($fig,':q').':figure]'.$n.$n; $fig='';} break;
+case('figcaption'):$fig=trim($b); if(is_img($fig))$fig=self::delhook($b); $b='';break;
 //case('aside'):$b=$n.'['.$b.'|1:msq_graph]'.$n; break;
 //case('source'):$bim=self::treat_link($bin,'');//inside audio
 	//if($bim)$b=$n.$n.$bim.$n.$n; else $b=''; break;
@@ -415,12 +419,13 @@ case('video'):$u=between($bin,'src="','"');
 	if($u)$b='['.goodsrc($u).':video]'; break;
 case('audio'):$u=between($bin,'src="','"');
 	if($u)$b='['.goodsrc($u).':audio]'; break;
-case('time'):$b='['.$b.':time]'; break;
+case('time'):$b='['.trim($b).':time]'; break;
 case('param'):if(strpos($bin,'soundFile'))$b=self::piege_mp3_b64($bin); break;
 case('script'):
 	if(strpos($b,'jwplayer'))$b=self::piege_jsm($b);
 	elseif(strpos($bin,'telegram.org/js')!==false){
-		$d=str::prop_detect($bin,'data-telegram-post');
+		//$d=str::prop_detect($bin,'data-telegram-post');
+		$d=between($bin,'data-telegram-post="','"');
 		$b='[https://t.me/'.$d.'?embed=1:iframe]'; $tagb=$n.$n;}
 	else $b=''; break;
 //case('noscript'):$b=''; break;//self::treat_link($bin,'');
@@ -444,7 +449,7 @@ case('iframe'):
 	elseif(strpos($bin,'sott.net/embed')!==false){
 		$u=between($bin,'src="','"'); $b='['.self::piege_sott($u).':twitter]';}
 	elseif(strpos($bin,'app.videas.fr')){//fs
-		$u=between($bin,'src="','"'); $u=goodsrc($u); $b='['.$u.'|1:iframe]'; break;}//[194:nms]
+		$u=between($bin,'src="','"'); $u=goodsrc($u); $b='['.$u.':iframe]'; break;}//[194:nms]
 	else{$u=between($bin,'src="','"'); $b='['.$u.':iframe]'; break;}}
 return [$taga,$b,$tagb];}
 
@@ -461,14 +466,14 @@ elseif(strpos($bse,'color')!==false && self::notin($b,':color]')){
 	$n=strpos($bse,'color:'); $nb=strpos($bse,';',$n); $s=$nb!==false?$s=';':'"';
 	$clr=between($bse,'color:',$s);
 	if($clr && substr($clr,0,1)=='#' && strlen($clr)==7 && $clr!='#000000'){
-		if($clr=='#d03b39' or $clr=='#FF0000')$b='['.$b.':red]';
+		if($clr=='#d22' or $clr=='#FF0000')$b='['.$b.':red]';
 		else $b='['.$b.'|'.$clr.':color]';}}
 elseif(strpos($bse,'line-through;')!==false)$b='['.$b.':k]';
 elseif(strpos($bse,'spip_doc_descriptif')!==false)$b='['.$b.':q]';
 elseif(strpos($bse,'ndtref')!==false)$b='['.$b.':parma]';
 elseif(strpos($bse,'ndwref')!==false)$b='['.$b.':green]';
-elseif(strpos($bse,'class="ndt"')!==false)$b='['.$b.'|(NdT):bubble_note]';
-elseif(strpos($bse,'class="ndw"')!==false)$b='['.$b.'|(NdW):bubble_note]';
+elseif(strpos($bse,'class="ndt"')!==false)$b='['.$b.'|(NdT):toggle]';
+elseif(strpos($bse,'class="ndw"')!==false)$b='['.$b.'|(NdW):toggle]';
 elseif(strpos($bse,'class="tdef"')!==false)$b='['.$b.'|red:underline]';
 elseif(strpos($bse,'class="udouble"')!==false)$b='['.$b.'|double:underline]';
 //elseif(strpos($bse,'margin-left')!==false)$b='['.$b.':q]';
@@ -488,8 +493,6 @@ static function whichsplit($d){
 if(strpos($d,"\n"))$d.='¬';
 else $d=preg_replace('/(\n){2,}/',"\n",$d);
 return $d;}
-
-static function stripslashes_r($r){foreach($r as $k=>$v)$r[$k]=str_replace('\"','"',$v); return $r;}
 
 static function ecart($v,$a,$b){$min=$a+1; $max=$b-$a-1; if($a<$b+1)
 return substr($v,$min,$max);}//if($min<$max)else error detected
@@ -529,12 +532,12 @@ if($aab!==false && $ba){
 	$bal=self::ecart($v,$ab,$ba);}
 return $bal;}
 
-static function until_error($d){
+static function until_error($d){static $i; $i++;
 $ba=strpos($d,'<'); $bb=strpos($d,'>'); $db=substr($d,0,$ba);
 if($ba!==false && $bb!==false){$v=substr($d,$ba,$bb-$ba+1);
 	$na=substr_count($v,'<'); $nb=substr_count($v,'>');
 	if($na!=$nb)return $db;
-	else $v=$db.$v.self::until_error(substr($d,$bb+1));}//get big er
+	elseif($i<100)$v=$db.$v.self::until_error(substr($d,$bb+1));}//loop er
 else $v=$db;
 return $v;}
 

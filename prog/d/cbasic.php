@@ -7,8 +7,8 @@ switch($c){
 case(':exec'):$ret=self::run($p,$o);break;
 case(':split'):$ret=explode($o,$p);break;
 case(':cut'):[$s,$e]=explode('/',$o); $ret=between($p,$s,$e);break;
-case(':core'):if(is_array($p))$ret=call_user_func($o,$p,'',''); else{$pb=opt($p,'/',4);
-	$ret=call_user_func($o,$pb[0],$pb[1],$pb[2],$pb[3]);}break;
+case(':core'):if(is_array($p))$ret=$o($p,'',''); else{$pb=opt($p,'/',4);
+	$ret=$o($pb[0],$pb[1],$pb[2],$pb[3]);}break;
 case(':foreach'):foreach($p as $v)$ret.=self::exec($v,'','',$o);break;}
 return $ret;}
 

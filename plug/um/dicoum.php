@@ -26,7 +26,7 @@ static function build($p,$o){
 $rb=[]; $sq=[];
 $ratio=50; $min=($o-1)*$ratio; $rt=[];
 if($p)$sq['%voc']=$p;
-elseif($o)$sq['_limit']=$min.', '.($min+$ratio);
+elseif($o)$sq['_limit']=$min.', '.($min+$ratio)];
 $sq['group']='voc'; $sq['_order']='voc';
 $r=sql('id,voc,lang,sound','bdvoc','rr',$sq);
 $tr=['vocable','context','lang','ref','edit'];
