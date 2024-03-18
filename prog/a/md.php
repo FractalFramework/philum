@@ -408,7 +408,7 @@ if($rb)foreach($rb as $k=>$v){
 $csb=$frm==$k?$cs1:$cs2;
 //$ret.=llk($csb,'cat/'.$k,$k);
 $ret.=lh('cat/'.$k,$k);
-if($frm==$k && is_array($v))$ret.=m_suj_r($v,$cs1,$cs2);}
+if($frm==$k && is_array($v))$ret.=self::m_suj_r($v,$cs1,$cs2);}
 return $ret;}
 
 static function nodes($mn,$o){//arsort($mn);

@@ -22,14 +22,13 @@ if(in_array($col,self::$no))$va=alert('forbidden','red');
 else $nid=sql::upd($a,$rt,['id'=>$id]);
 return $va;}
 
-static function play($p){
-[$a,$n]=vals($p,['a','n']);
+static function play($p){[$a,$n]=vals($p,['a','n']);
 $r=sql::read('allid',$a,'ra',''); $rb=$r;//['_limit'=>$n.', 20']
 foreach($r as $k=>$v)
 	$rb[$k]['id']=bj('btn','dbdt|dbedt,read|a='.$a.',id='.$v['id'],$v['id']);
 $h=db::cols_k($a); $hb=$h; array_unshift($h,'id'); array_unshift($h,'_');
-if(count($r)<20)$ret=build::editable($rb,'dbedt,upd2|a='.$a,$h,0,self::$no);
-else$ret=build::tabler($r,$hb);
+if(count($r)<20)$ret=msqa::editable($rb,'dbedt,upd2|a='.$a,$h,0,self::$no);
+else$ret=tabler($r,$hb);
 return div($ret,'','plyt');}
 
 static function read($p){$r=[];

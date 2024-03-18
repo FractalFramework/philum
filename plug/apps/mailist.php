@@ -1,9 +1,9 @@
 <?php //mailist
 class mailist{
 
-/*$voc=array('register'=>':: Incription à la liste de diffusion',
+/*$voc=array('register'=>':: Incription ï¿½ la liste de diffusion',
 'see_newsletter'=>':: Newsletter actuelle',
-'answer_success'=>'email envoyé',
+'answer_success'=>'email envoyï¿½',
 'answer_exists'=>'mail already exists',
 'answer_not_exists'=>'mail no exists',
 'answer_error'=>'please fill form',
@@ -11,8 +11,8 @@ class mailist{
 'form_mail'=>'email',
 'form_button'=>'ok',
 'welcome_mail'=>'Merci pour votre inscription',
-'unregister'=>':: Désabonnement',
-'unregister_success'=>'Votre email a été effacé',
+'unregister'=>':: Dï¿½sabonnement',
+'unregister_success'=>'Votre email a ï¿½tï¿½ effacï¿½',
 'adios_mail'=>'clic this link to confirm unsubscribe');*/
 
 static function ra(){$defsb[msql::$m]=['name','re','date','ip','id'];
@@ -43,9 +43,9 @@ if(strpos($m,'@')!==false && strpos($m,'.')!==false && strpos($m,'?')===false){$
 	if(!$r[$m]){$p=0; $msg=$voc['welcome_mail'].br().$voc['adios_mail']; $dt=time();
 	$sent=mails::send_html($m,'newsletter',$msg,'','/app/mailist/confirm/'.$dt);
 		if($sent=='not_sent')return divc('txtyl',$m.' :: '.$voc['answer_success']);
-		else{$r[$m]=[$n,$p,$dt,$ip,ses('iq')]; self::rs($r);
+		else{$r[$m]=[$n,$p,$dt,hostname(),ses('iq')]; self::rs($r);
 			return divc('txtyl',$m.' :: '.$voc['answer_success']);}}
-	else return duvc('txtyl',$voc['answer_exists']);}
+	else return divc('txtyl',$voc['answer_exists']);}
 else return divc('txtyl',$voc['answer_error']);}
 
 static function form(){$voc=sesmk2('mailist','mailvoc');
@@ -61,20 +61,21 @@ $rk=array_keys_r($r,0); $k=in_array_b($p,$rk);
 if($r[$k][2]==$_GET['confirm']){$r[$k][2]=0; self::rs($r);
 return divc('txtalert',$voc['unregister_success']).br();}}
 
-static function unsb($a,$b,$prm){$r=self::ra(); $p=$prm[0]??'';
-$rk=array_keys_r($r,0); $k=in_array_b($p,$rk);
-if($k){$voc=sesmk2('mailist','mailvoc');
+static function unsb($a,$b='',$prm=[]){$r=self::ra(); $p=$prm[0]??'';
+$rk=array_keys_r($r,0); $k=in_array_b($p,$rk); $ret='';
+$voc=sesmk2('mailist','mailvoc');
+if($k){
 $msg=divc('txtblc',$voc['unregister']).br();
 $lnk='/app/mailist/unsubscribe/'.$p.'&confirm='.$r[$k][2];
 $tx=$msg.lka('http://'.$_SERVER['HTTP_HOST'].$lnk,$voc['adios_mail']).br().br();
-$sent=mails::send_html($p,$voc['unregister'],$tx,'',$go);
+$sent=mails::send_html($p,$voc['unregister'],$tx,'',host());
 	if($sent!='not_sent')$ret.=$voc['uns_mail'].': '.$p.' :: '.$voc['adios_mail'].br();
 	else $ret.='mail not sent';}
 else $ret.=$voc['answer_not_exists'];
 return divc('txtalert',$ret).' ';}
 
 static function uns($o){$voc=sesmk2('mailist','mailvoc');
-if($o)return self::unsb($a,$b,$o);
+if($o)return self::unsb('');
 $ret=btn('txtcadr',$voc['unregister']).' ';
 $ret.=inputb('unmail',$voc['form_mail'],'14','',1).' ';
 $ret.=lj('txtbox','cbk_mailist,unsb_unmail__1_2','ok').' ';

@@ -56,7 +56,7 @@ if($r)foreach($r as $k=>$v){
 	$rd[$k]=$old;
 	$old=$v;}
 arsort($rb); //pr($rb);
-$rc[]=['temps écoulé','id','date','depuis'];
+$rc[]=['temps ï¿½coulï¿½','id','date','depuis'];
 foreach($rb as $k=>$v)$rc[]=[self::elapsed_time($rd[$k],$r[$k]),pop::pubart($k),date('Y-m-d',$rd[$k]),date('Y-m-d',$r[$k])];
 return tabler($rc);}
 
@@ -72,7 +72,7 @@ static function build($p,$o){
 [$a,$b]=arr($p,',',2); $r=[];
 if($b && method_exists($a,$b))$r=$a::$b($p);
 elseif(function_exists($a))$r=$p($o);
-if($r)return self::graph($rc,200);}
+if($r)return self::graph($r,200);}
 
 static function call($p,$o,$q=[]){$ret=''; $p=$q[0]??$p; //ecko($o); //pr($q);
 if($p=='twits')$ret=self::twits($q,$o);

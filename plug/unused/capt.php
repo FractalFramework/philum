@@ -74,7 +74,7 @@ return $rd;}
 
 static function read2($f){
 $d=file_get_contents($f);
-$d=html_detect($d,'<div id="renseignement" class="Card frame table">');
+$d=conv::html_detect($d,'<div id="renseignement" class="Card frame table">');
 //$http=http(domain($f));
 $dom=new DomDocument;
 $dom->validateOnParse=true;
@@ -83,7 +83,7 @@ $dom->loadHtml($d);//pr($dom);
 foreach($dom->getElementsByTagName('tr') as $k=>$v){//pr($v);
 	$col=trim($v->childNodes[0]->nodeValue);
 	$val=trim($v->childNodes[2]->nodeValue);
-	if($col=='Statut' or $col=='Adresse (RCS)' or $col=='Code postal' or $col=='Ville' or $col=='Forme juridique' or $col=='Capital social' or $col=='Date création entreprise' or $col=='Chiffre d\'affaires')$rb[$col]=$val;}
+	if($col=='Statut' or $col=='Adresse (RCS)' or $col=='Code postal' or $col=='Ville' or $col=='Forme juridique' or $col=='Capital social' or $col=='Date crï¿½ation entreprise' or $col=='Chiffre d\'affaires')$rb[$col]=$val;}
 $n=count($rb);
 //pr($rb);
 return $rb;}

@@ -292,7 +292,7 @@ $j='modtrk_md,trkmod___'.$p.'_'.$t.'_'.$d.'_';
 if($r)$ret.=self::output_arts_trk($r,$d,$pg,$j,1,($d?'desc limit 1':'asc'));//
 return divd('modtrk',$ret);}
 
-static function trkrch($g1,$g2,$prm){return self::trkarts('',$g1,'','',$prm[0]??'');}
+static function trkrch($g1,$g2='',$prm=[]){return self::trkarts('',$g1,'','',$prm[0]??'');}
 static function trkmod($g1,$g2,$g3,$g4){return mod::build(['tracks',$g1,$g2,'',$g3,$g4]);}
 
 static function output_arts_trk($r,$mode,$page,$j,$re,$ord){
