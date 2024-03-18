@@ -47,7 +47,7 @@ return $ret;}
 
 static function searchapp($p,$rid,$prm=[]){
 $d=$prm[0]??''; $ret='';
-$ra=scandir_r('plug'); $rb=scandir_r('progb'); $r=array_merge($ra,$rb);
+$ra=scanfiles('plug'); $rb=scanfiles('progb'); $r=array_merge($ra,$rb);
 foreach($r as $k=>$v)if(strpos($v,$d))$ret.=div($v);
 return $ret?$ret:'no';}
 

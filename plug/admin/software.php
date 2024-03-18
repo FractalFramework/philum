@@ -55,7 +55,7 @@ return $no;}
 static function datas($dr,$k,$f){$no=self::exceptions($dr,$f);
 if(!$no)return [$f,ftime($f)];}//,fsize($f)
 
-static function recense($dr){$r=scandir_r($dr); $rb=[];
+static function recense($dr){$r=scanfiles($dr); $rb=[];
 foreach($r as $k=>$v)if(!self::exceptions($dr,$v))$rb[$v]=ftime($v); return $rb;}
 
 static function build($p=''){$rb=[];

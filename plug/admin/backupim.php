@@ -179,7 +179,7 @@ else $ok=self::tar($f,array_keys($re));
 return $o?$f:lk($f,$f);}
 
 static function tarimgx(){
-$f='_backup/imgx.tar.gz'; $r=scandir_r('imgx');
+$f='_backup/imgx.tar.gz'; $r=scanfiles('imgx');
 return self::tar($f,$r);} //rmdir_r('imgx');
 
 static function nb(){$rc=scandir('img'); return count($rc);}

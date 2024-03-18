@@ -244,7 +244,7 @@ $ret=tagb('table',tagb('tbody',join('',$tr)));
 $ret.=hidden('edtcom',$j);
 return tag('div',['width'=>'100%','class'=>'scroll'],$ret);}
 
-function form($r){$rt=[];
+function mkform($r){$rt=[];
 foreach($r as $k=>$v){
 	[$id,$ty,$va]=$v; $rid=randid($id); $rp=['placeholder'=>$id];
 	if($ty=='text' or $ty=='long')$d=textarea($rid,$va,40,4,$rp);
@@ -259,7 +259,7 @@ return join('',$rt);}
 //foreach($r as $k=>$v)$rt[$k]=array_combine($ra,$v);
 function callform($ra,$r=[]){$rt=[];
 foreach($ra as $k=>$v)$rt[]=[$k,$v,$r[$k]??''];
-return form($rt);}
+return mkform($rt);}
 
 //playr
 function div_r($r){$rt=[];

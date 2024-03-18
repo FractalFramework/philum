@@ -221,7 +221,7 @@ sql::sav2($b,$r,$ai=0,1);
 return $ret;}
 
 static function reform_msql_menus(){
-$r=scandir_r('msql'); //pr($r);
+$r=scanfiles('msql'); //pr($r);
 //echo count($r);
 function reform($f){
 $d=read_file($f); //eco($d);

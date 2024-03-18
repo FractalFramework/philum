@@ -4,7 +4,7 @@ static $db='ummo_es_7';
 
 static function dlscans(){
 $u='https://www.ummo-sciences.org/es/scan/';
-//$r=scandir_r($u); pr($r);
+//$r=scanfiles($u); pr($r);
 $dr='_users/ummo/origin/';
 /*$ftp_user_name='ummo'; $ftp_user_pass=''; $r=[];
 $ftp=ftp_connect('ummo-sciences.org');
