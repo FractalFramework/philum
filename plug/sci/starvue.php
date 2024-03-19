@@ -57,7 +57,7 @@ for($i=0;$i<=$wd;$i++)if($i%$cx==0){
 	$hour=floor($hdec); $min=round(($hdec-$hour)*60); $t=$hour.'h'.str_pad($min,2,0,STR_PAD_LEFT);
 	svg::line($x,0,$x,$h,$i==12?$white:$gray);
 	svg::text(10,$x-12,10,$t,$yellow);}
-for($i=0;$i<=$hd;$i++)if($hr*$i%$cy==0){
+for($i=0;$i<=$hd;$i++)if(round($hr)*$i%$cy==0){
 	$y=$hr*$i-($diffy*$hr); $t=round($bottom+($hd-$i));
 	svg::line(0,$y,$w,$y,$t==0?$white:$gray);
 	svg::text(10,0,$y+4,$t,$yellow);}}

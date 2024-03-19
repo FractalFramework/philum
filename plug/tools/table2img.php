@@ -1,6 +1,6 @@
 <?php 
 class table2img{
-static function home($d,$p){
+static function home($d,$p){$ret='';
 [$dr,$nod]=split_right('/',$p,'');
 $r=msql::read($dr,$nod,1);
 if($r)foreach($r as $k=>$v){

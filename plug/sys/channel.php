@@ -1,8 +1,8 @@
 <?php //channel
 class channel{
-static function arts($http,$otp){$ret=''; $rb=[]; $i=0;
+static function arts($http,$otp){
 $npg=$_SESSION['prmb'][6]; $page=get('page');
-$min=($page-1)*$npg; $max=$page*$npg;
+$min=($page-1)*$npg; $max=$page*$npg; $ret=''; $i=0; $rb=[];
 	if(is_array($otp)){foreach($otp as $id=>$nb){if(is_numeric($id)){$i++; 
 	if($i>=$min && $i<$max){$mg=$http.'/imgc/'.pop::art_img($nb[3],$rb[1]);
 		if(is_link($mg))$ret.=btn('imgl',image($mg,'',50));

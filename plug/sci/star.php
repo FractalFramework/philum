@@ -112,7 +112,7 @@ if($sq['dc']??'')$wr['and'][]='dc'.implode(' and dc',$sq['dc']);
 if($sq['ds']??'')$wr['and'][]='dist'.implode(' and dist',$sq['ds']);
 if($sq['mg']??'')$wr['and'][]='mag'.implode(' and mag',$sq['mg']);
 if($wr['and']??'')$w=implode(' and ',$wr['and']);
-if($wr['or'])$w=implode(' or ',$wr['or']);
+if($wr['or']??[])$w=implode(' or ',$wr['or']);
 $cols=['hd','hip','rarad','decrad','dist','spect','mag'];
 if($o)array_push($cols,'lum','ra','dc');
 if($w)$r=sql::call('select '.implode(',',$cols).' from hipparcos where '.$w.'','',0);

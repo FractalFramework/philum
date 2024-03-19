@@ -14,8 +14,8 @@ return $d;}
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$p; $ret='';
 $p=str_replace(['[',':table]'],'',$p);
-if(strpos($p,'�')===false)$p=str_replace("\n",'�',$p);
-$r=explode('�',$p);
+if(strpos($p,'¬')===false)$p=str_replace("\n",'¬',$p);
+$r=explode('¬',$p);
 foreach($r as $k=>$v){$rb=explode('|',$v);
 	foreach($rb as $ka=>$va)$rc[$k][$ka]='"'.self::bt_func($va).'"';}
 foreach($rc as $k=>$v)if(is_array($v))$ret.='$r['.($k+1).']=['.implode(',',$v).'];'; return $ret;

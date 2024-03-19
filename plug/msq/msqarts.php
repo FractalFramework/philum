@@ -4,7 +4,7 @@ class msqarts{
 //twitter date
 //07:01 - 13 juin 2015
 static function clean_day_tw($d){//echo $d.br();
-$dr=['jan'=>'01','fev'=>'02','mars'=>'03','avr.'=>'04','mai'=>'05','juin'=>'06','juil'=>'07','ao�t'=>'08','sept'=>'09','oct'=>'10','nov'=>'11','d�c'=>'12','Dec'=>'12'];
+$dr=['jan'=>'01','fev'=>'02','mars'=>'03','avr.'=>'04','mai'=>'05','juin'=>'06','juil'=>'07','août'=>'08','sept'=>'09','oct'=>'10','nov'=>'11','déc'=>'12','Dec'=>'12'];
 [$h,$y]=split_right('-',$d); 
 $hr=explode(':',trim($h)); //echo $h.br();
 $yr=explode(' ',trim($y)); 
@@ -29,7 +29,6 @@ static function clean_msg($d){
 $d=str_replace(array('[',']'),'',$d);
 $d=str_replace("\n",' :n: ',$d);
 $r=explode(' ',$d); $ret='';
-//$rm=['jan.','fév.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
 foreach($r as $k=>$v){
 	//$v=str_replace($rm,'',$v);
 	if(strpos($v,':b'))$v=strto($v,':');

@@ -1,4 +1,4 @@
-<?php 
+<?php //mailist
 class mailist{
 
 static function ra(){$defsb[msql::$m]=['name','re','date','ip','id'];
@@ -12,7 +12,7 @@ static function confirm($voc,$vrf){$r=self::rb();
 if($r)foreach($r as $k=>$v){if($v[0]==$vrf)$r[$k][2]=0;} self::rs($r);
 return divc('txtalert',$voc['welcome_mail']).' ';}
 
-static function save($a,$b,$prm){
+static function save($a,$b,$prm=[]){
 $r=self::rb(); [$m,$n,$p]=$prm; $voc=sesmk2('mailist','mailvoc'); $n=strto($m,'@');
 if(strpos($m,'@')!==false && strpos($m,'.')!==false && strpos($m,'?')===false){$m=trim($m);
 	if(!$r[$m]){$p=0; $msg=$voc['welcome_mail'].br().$voc['adios_mail']; $dt=time();
@@ -36,13 +36,14 @@ $rk=array_keys_r($r,0); $k=in_array_b($p,$rk);
 if($r[$k][2]==$_GET['confirm']){$r[$k][2]=0; self::rs($r);
 return divc('txtalert',$voc['unregister_success']).br();}}
 
-static function unsb($a,$b,$prm=[]){$r=self::ra(); $p=$prm[0]??'';
-$rk=array_keys_r($r,0); $k=in_array_b($p,$rk); $ret='';
+static function unsb($a,$b,$prm){
+$r=self::ra(); $p=$prm[0]??''; $ret='';
+$rk=array_keys_r($r,0); $k=in_array_b($p,$rk);
 $voc=sesmk2('mailist','mailvoc');
 if($k){$msg=divc('txtblc',$voc['unregister']).br();
 $lnk='/app/mailist/unsubscribe/'.$p.'&confirm='.$r[$k][2];
 $tx=$msg.lka('http://'.$_SERVER['HTTP_HOST'].$lnk,$voc['adios_mail']).br().br();
-$sent=mails::send_html($p,$voc['unregister'],$tx,'',hostname());
+$sent=mails::send_html($p,$voc['unregister'],$tx,'',host());
 	if($sent!='not_sent')$ret.=$voc['uns_mail'].': '.$p.' :: '.$voc['adios_mail'].br();
 	else $ret.='mail not sent';}
 else $ret.=$voc['answer_not_exists'];
@@ -56,7 +57,7 @@ $ret.=lj('txtbox','cbk_mailist,unsb_unmail__1_2','ok').' ';
 return $ret;}
 
 static function read(){
-return mod::block('newsletter','');}
+return mod::block('newsletter');}
 
 static function home($p,$o){//$id=randid('cbk');
 if($p=='')$ret=self::form($o);

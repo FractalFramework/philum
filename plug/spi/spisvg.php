@@ -224,7 +224,8 @@ for($i=1;$i<=$n;$i++){$k=round($min+($sec*$i));
 return $rb;}
 
 static function clr2(){
-return msql::col('','public_atomic_3',4);}
+return msql::col('','public_atomic_3',4);
+return array_keys_r($r,4);}
 
 static function patch(){
 $r=msql::read('','public_atomic_2',1); $rb=self::$clr;

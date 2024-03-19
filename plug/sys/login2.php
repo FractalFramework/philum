@@ -4,7 +4,8 @@ static function call($usr,$rg,$t,$tl){
 if($t)$ta=btn('txtsmall',$t);
 if(!ses('USE')){// or !is_numeric($rg)
 $nam=adm::nameofauthes($_SESSION['prmb'][11]);
-return '<form id="login" name="form2" method="post" action="/?log=on" onKeyPress="checkEnter(event,\'login\')">'.$ta.inputb('user',$nam,16,'',100,['name'=>'user']).' '.inpsw('pass','',16).' '.button('document.forms[\'login\'].submit();','ok',['class'=>'txtx']).'</form>';}
+return '<form id="login" name="form2" method="post" action="/?log=on" onKeyPress="checkEnter(event,\'login\')">'.$ta.inputb('user',$nam,16,'',100,['name'=>'user']).' '.inpsw('pass','',16).' '.
+$ret=button('document.forms[\'login\'].submit();','ok',['class'=>'txtx']).'</form>';}
 else return lkc('txtx',"/?log=out","log_out").br();}
 
 static function home($p){

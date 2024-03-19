@@ -36,9 +36,9 @@ $ret=inputb('fto',$p,18,'directory');
 $ret.=lj('popbt','pbm_pubmsql,call_fto_',picto('ok'));
 return $ret;}
 
-static function home($p){
+static function home($p,$o){
 $bt=self::menu($p); $ret='';
-if($p)$ret=self::call($p,'');
+if($p)$ret=self::call($p,$o);
 return $bt.divd('pbm',$ret);}
 }
 ?>

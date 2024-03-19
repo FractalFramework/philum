@@ -12,8 +12,8 @@ static function pic($d){//return oomo($d,48);
 return image('/users/ummo/nb/'.$d.'.png');}
 
 static function nav($p,$o){
-$j=$o.'_umnb,call_inp'.$o.'___'.$o; $pr=['onchange'=>sj($j),'type'=>'number'];
-$ret=inputj('inp'.$o,$p?$p:1,$j,'number',4,$pr).' ';
+$j=$o.'_umnb,call_inp'.$o.'___'.$o;
+$ret=inpnb('inp'.$o,$p,$j,['placeholder'=>'number','size'=>4]).' ';
 $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 
@@ -42,8 +42,8 @@ $ret.=$ren;
 return $ret;}
 
 static function menu($p,$o){
-$j=$o.'_umnb,call_inp'.$o.'___'.$o; $pr=['onchange'=>sj($j),'type'=>'number'];
-$ret=inputj('inp'.$o,$p?$p:1,$j,'number',4,$pr).' ';
+$j=$o.'_umnb,call_inp'.$o.'___'.$o;
+$ret=inpnb('inp'.$o,$p,$j,['placeholder'=>'number']);
 $ret.=lj('',$j,picto('ok')).' ';
 $ret.=lka('/app/umnb/'.$p,picto('link')).' ';
 return $ret;}

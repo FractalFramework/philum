@@ -80,8 +80,8 @@ foreach($r as $k=>$v){$c=$v<=$p?'active':'';
 return $ret;}
 
 static function menu($p){
-$j='spit_spitable,call_inpst_2_'; $pr=['onchange'=>sj($j),'type'=>'number'];
-$ret=inputb('inpst',$p,4,'number',$pr);
+$j='spit_spitable,call_inpst_2_';
+$ret=inpnb('inpst',$p,$j,['placeholder'=>'number']);
 $ret.=lj('popbt',$j,picto('ok')).' ';
 $ret.=lk('/app/spt',picto('organigram'));
 return $ret;}

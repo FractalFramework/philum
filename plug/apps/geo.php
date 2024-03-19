@@ -65,7 +65,8 @@ return $ret;}
 
 static function home($p,$o){$rid=randid('geo');
 $bt=self::menu($p,$o,$rid);
-$ret=self::build($p,$o); $r['gps']='0/0';
+$ret=self::build($p,$o);
+$r['gps']=$p?$p:'0/0';
 head::add('js','http://maps.googleapis.com/maps/api/js');
 head::add('jscode',self::profil_js($r['gps']));
 //$bt.=msqbt('',nod('geo_1'));

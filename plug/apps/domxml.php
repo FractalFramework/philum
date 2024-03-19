@@ -12,12 +12,11 @@ curl_close($ch);
 return $ret;}
 
 static function xml2array($n){$ret=array();
-foreach($n->childNodes as $nc)
-if($nc->hasChildNodes())
-if($n->firstChild->nodeName==$n->lastChild->nodeName&&$n->childNodes->length>1)
+foreach($n->childNodes as $nc)if($nc->hasChildNodes()){
+if($n->firstChild->nodeName==$n->lastChild->nodeName && $n->childNodes->length>1)
 $ret[$nc->nodeName][]=self::xml2array('item');
 elseif(self::xml2array($nc))$ret[$nc->nodeName]=self::xml2array($nc);
-else $ret=$nc->nodeValue;
+else $ret=$nc->nodeValue;}
 return $ret;}
 
 /*static function dom2array($n,&$a,$dom){static $depth=0; static $sz='';

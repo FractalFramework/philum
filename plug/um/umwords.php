@@ -18,8 +18,7 @@ return sql('id','qdvoc','v','voc="'.$v.'"');}
 
 static function sav($r){
 if($r)foreach($r as $k=>$v)if(!self::ex($v[1]))$rb[]=$v; //pr($rb);
-//return sql::qrid('insert into umvoc values '.sql::atmrb($rb,1));
-}
+return sql::qrid('insert into umvoc values '.sql::atmrb($rb,1));}
 
 static function sav2($v,$o){
 [$id,$pos]=explode('-',$o);

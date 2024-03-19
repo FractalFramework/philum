@@ -13,7 +13,6 @@ static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clu
 if(in_array($b,$r))return $b;}// else return $b;
 
 static function db_r(){$r=sqldb::$rt;
-$_SESSION[$k]=$r;
 return array_flip($r);}
 
 static function ts_db($b){$r=self::db_r(); return $r[$b]??$b;}

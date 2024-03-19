@@ -4,7 +4,8 @@ static $a=__CLASS__;
 static $enc='UTF-8';
 
 static function enc($d){
-return ($d);}//utf8enc_b
+//$d=str_replace(host().'/img/','../images/',$d);
+return delnbsp($d);}//
 
 static function manifest($r,$dr,$ti=''){$n=count($r); $lg='fr';
 //$t0='Oummo - Corpus principal';
@@ -54,18 +55,19 @@ $d='<?xml version="1.0" encoding="'.self::$enc.'"?>
 write_file($dr.'/META-INF/container.xml',$d);
 $d='application/epub+zip'; write_file($dr.'/mimetype',$d);
 mkdir_r($dr.'/OEBPS/images'); mkdir_r($dr.'/OEBPS/sections'); mkdir_r($dr.'/OEBPS/styles');
-write_file($dr.'/OEBPS/styles/stylesheet.css',read_file('css/_global.css'));
+write_file($dr.'/OEBPS/styles/stylesheet.css',read_file('css/_global.css')); //pr($r);
 if($r)foreach($r as $k=>$v){$i=$k+1;
 	$f=$dr.'/OEBPS/sections/section'.str_pad($i,4,0,STR_PAD_LEFT).'.xhtml';
 	$rt=tagb('h1',self::enc($v[2]));
 	$rt.=tagb('i',date('d/m/Y',(int)$v[1])).' ';
 	$rt.=tagb('b','#'.$v[0]).br();
 	$txt=str_replace(':video',':videourl',$v[3]);
+	$txt=str_replace(':mini','',$txt);
 	$txt=conb::parse($txt,'sconn2','epub');
 	$txt=str_replace('�','&oelig;',$txt);
 	$txt=self::enc($txt);
-	$txt=embed_p($txt);
-	$txt=str_replace('</blockquote></p>','</p></blockquote>',$txt);
+	//$txt=embed_p($txt);
+	//$txt=str_replace('</blockquote></p>','</p></blockquote>',$txt);
 	$rt.=$txt;
 	//$rt.=conn::read($v[3],3,'','1').br();
 	$doc='<?xml version="1.0" encoding="'.self::$enc.'"?>
@@ -73,6 +75,7 @@ if($r)foreach($r as $k=>$v){$i=$k+1;
 	write_file($f,$doc);}
 if($r){self::manifest($r,$dr.'/OEBPS',$ti);
 	$f='_datas/books/'.$ti.'.epub';//.tar
+	mkdir_r($f);
 	//$lk=tar::gzdir($f,$dr);
 	$ok=tar::zip($f,$dr); //count($r).' results: '
 	return lkc('txtx','/'.$f,pictxt('book2',$ti));}
@@ -94,7 +97,7 @@ static function req2($p,$lg=''){//***
 $qda=db('qda'); $qdm=db('qdm'); $wh='nod="'.ses('qb').'"';
 $wh.=' and '.$qda.'.re>3 and day>'.calctime(365);
 if($lg)$wh.=' and lg="'.$lg.'"';
-$sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day asc';
+$sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day asc ';
 return sql::call($sql,'',0);}
 
 static function req3($p){//favs

@@ -26,15 +26,12 @@ $bt.=radio('inp3',['one','two'],0);
 $bt.=select(['id'=>'inp4'],['one','two','three'],'');
 $bt.=textarea('inp5','héllô');
 $bt.=divarea('inp6','hêllö');
-//$bt.=bj('popsav',$rid.','.$rid.'b;ajxtst,callr;;h,é,l,l,ô,\';inp1,inp2,inp3,inp4,inp5,inp6','hello');
-//$bt.=bj('popsav',$rid.';ajxtst,call;;héll_ô','hello');
-$bt.=bj('popsav',$rid.'|ajxtst,call||hé_llô|inp1,inp2,inp3,inp4,inp5,inp6','call');
-$bt.=bj('popsav',$rid.','.$rid.'b|ajxtst,callr|,xd|h,é,l,l,ô,\'','json-xd');
-$bt.=bj('popsav',$rid.'|ajxtst,call2|3','...');
-$bt.=bj('popsav',$rid.'|ajxtst,transmute|3','transmute');
-//$bt.=bj('popsav',$rid.','.$rid.'b-ajxtst,callr--h,é,l,l,ô,\'-inp1,inp2,inp3,inp4,inp5,inp6','json');
-//$bt.=bj('popsav',$rid.'-ajxtst,call-,xd-héll_ô','xd');
-//$bt.=bj('popsav',$rid.'-ajxtst,call2-3','...');
+//$bt.=bj('popsav',$rid.','.$rid.'b|ajxtst,callr|h,é,l,l,ô|inp1,inp2,inp3,inp4,inp5,inp6','hello');
+//$bt.=bj('popsav',$rid.'|ajxtst,call|héll_ô','hello');
+$bt.=bj('popsav',$rid.'|ajxtst,call|hé_llô|inp1,inp2,inp3,inp4,inp5,inp6','call');
+$bt.=bj('popsav',$rid.','.$rid.'b|ajxtst,callr|h,é,l,l,ô||xd','json-xd');
+$bt.=bj('popsav',$rid.'|ajxtst,call2|||3','...');
+$bt.=bj('popsav',$rid.'|ajxtst,transmute|||3','transmute');
 return $bt.div('','panel',$rid).div('','panel',$rid.'b');}
 
 }

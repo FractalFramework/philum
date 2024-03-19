@@ -56,12 +56,12 @@ if($r)foreach($r as $k=>$v){
 	$rd[$k]=$old;
 	$old=$v;}
 arsort($rb); //pr($rb);
-$rc[]=['temps écoulé','id','date','depuis'];
+$rc[]=['temps �coul�','id','date','depuis'];
 foreach($rb as $k=>$v)$rc[]=[self::elapsed_time($rd[$k],$r[$k]),pop::pubart($k),date('Y-m-d',$rd[$k]),date('Y-m-d',$r[$k])];
 return tabler($rc);}
 
 static function elapsed_time($d1,$d2=''){$rt=[]; if(!$d2)$d2=time();
-$t1=new DateTime(); $t2=new DateTime(); $t1->setTimestamp($d1); $t2->setTimestamp($d2);
+$t1=new DateTime(); $t2=new DateTime(); $t1->setTimestamp(round($d1)); $t2->setTimestamp($d2);
 $diff=$t1->diff($t2); $n=$diff->format('%d');
 $ra=$n>0?['year','month','day']:['hour','minute','second'];
 $ty=$n>0?'%y-%m-%d':'%h-%i-%s'; $res=$diff->format($ty); $rb=explode('-',$res);

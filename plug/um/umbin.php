@@ -109,7 +109,7 @@ background-color:#'.$d.'; color:#'.invert_color($d,1).'';}
 
 static function tabler_clr($r,$rb){$tr='';
 if(is_array($r))foreach($r as $k=>$v){$td='';
-	if(is_array($v))foreach($v as $ka=>$va)$td.=tag('td',ats(self::sty(valr($rb,$k,$ka))),$va);
+	if(is_array($v))foreach($v as $ka=>$va)$td.=tag('td',['style'=>self::sty($rb[$k][$ka]??'')],$va);
 	if($td)$tr.=tagb('tr',$td);}
 return tagb('table',$tr);}
 
@@ -139,7 +139,7 @@ $ok=tabler($rc);
 $ret=self::encode($d); if($ret){
 	msql::modif('',nod('carbin'),[$ret],'one','',$id);
 	if($r)foreach($rb as $k=>$v)$ok.=self::c2b_find($r,$ret,$v,$k);}
-if($ok)foreach($rb as $k=>$v)$ret=str_replace($v,btn('stabilo',$v),$ret);
+if($ok)foreach($rb as $k=>$v)$ret=str_replace($v,btn('stabilo',$v),$ret??'');
 return $ok.divs('word-wrap:break-word;',$ret);}
 
 static function char2bin($p){$j='cr2bn_umbin,cartobin_c2b';

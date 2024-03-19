@@ -2,20 +2,20 @@
 class searchnum{
 
 static function detect_from_art($p){
-$d=sql('msg','qdm','v','id='.$p); $i=0;
-$r=str_split($d); $rt=[];
+$d=sql('msg','qdm','v','id='.$p);
+$r=str_split($d); $ret=[]; $i=0;
 foreach($r as $k=>$v){
-	if(is_numeric($v))$rt[$i].=$v;
+	if(is_numeric($v))$ret[$i].=$v;
 	else $i++;}
-return $rt;}
+return $ret;}
 
-static function detect_num($r){$rt=[]; $i=0;
+static function detect_num($r){$ret=[]; $i=0;
 foreach($r as $k=>$v){
 	$rb=str_split($v);
 	foreach($rb as $kb=>$vb){
-		if(is_numeric($vb))$rt[$k][$i].=$vb;
+		if(is_numeric($vb))$ret[$k][$i].=$vb;
 		else $i++;}}
-return $rt;}
+return $ret;}
 
 static function build($p,$o){
 $minid=0; $maxid=ma::lastartid(); 

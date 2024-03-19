@@ -19,7 +19,7 @@ return tabler($ar,"txtblc","");}
 
 static function save($name,$frm,$msg,$suj){
 $qb=ses('qb'); $qdi=db('qdi'); $pdt=ses('dayx'); 
-return sql::qrid('INSERT INTO '.$qdi.' VALUES ("","","'.$name.'","","'.$pdt."'","'.$qb.'",'forum'.$frm.'","'.$suj.'","'.$msg.'"','1','','');}
+return sql::qrid('INSERT INTO '.$qdi.' VALUES ("","","'.$name.'","","'.$pdt.'","'.$qb.'","forum'.$frm.'","'.$suj.'","'.$msg.'","1","","")');}
 
 static function form($cht){
 $tfield=btn("txtx","subject:").' ';
@@ -31,9 +31,9 @@ $tfield.=submit('submit','ok','txtx');
 if(auth(1))return form('/?read='.$cht.'&suj='.get('suj').'&open='.get('open'),$tfield);}
 
 static function home($cht){
-$cht=str::normalize($cht); $ret='';
+$cht=str::normalize($cht);
 //$ret.=self::form($cht);
-if($_GET['open'])$ret.=lkc("txtx",'/'.ses('read'),"<-");
+$ret=lkc("txtx",'/'.ses('read'),"<-");
 //$ret.=self::read($cht);
 return $ret;}
 }

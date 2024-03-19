@@ -27,7 +27,7 @@ include('http://maps.googleapis.com/maps/api/js',static function(){
 static function squ($bs,$v,$w){}
 
 static function sav($p,$o,$r){
-$rb=sesmk('mysqli_profil'); $i=0;
+$rb=sesmk('db'); $i=0;
 if($rb)foreach($rb as $k=>$v){$ra[$k]=$r[$i]; $i++;}
 $id=sql('id','profil','v','user="'.$r[0].'"');
 if($id)qr('update profil set '.implode(',',sql::atmrk($ra,'')).' where user="'.$r[0].'" limit 1');
@@ -50,14 +50,14 @@ $ret.=hidden('cp','0');
 $ret.=divc('',input('gps',$r['gps']).btj('GPS','geo()','popw'));
 $ret.=divc('',lj('popsav','bts_profil,sav_user,name,com,cp,gps_xd',nms(27)));
 $ret.=divc('','').br();
-if(!get('callj'))$ret.=div('','','googleMap','height:200px;border:1px solid gray');
+if(!get('app'))$ret.=div('','','googleMap','height:200px;border:1px solid gray');
 return divc('form',$ret);}//on2cols($rb,700,5)
 
 #mysql
 static function db(){
 return ['user'=>'var','name'=>'var','com'=>'var','cp'=>'int','gps'=>'var','photo'=>'var','day'=>'int'];}
 
-static function init($b){
+static function profile_init($b){
 sqlop::install($b,self::db(),0);}
 
 //load
@@ -67,12 +67,12 @@ return sql('id,user,name,com,cp,gps,day','profil','r','user="'.$ud.'"');}
 /*static function user($ud){$r=self::datas($ud); //echo $ud; p($r);
 $ret.=divc('',self::avatar($r['user'])).br();
 //$ret.=divc('',btn('txtx','Nom').btn('popbt',$r['user'])).br();
-if($r['com'])$ret.=divc('',btn('txtx','Pr�sentation').btn('popbt',$r['com'])).br();
+if($r['com'])$ret.=divc('',btn('txtx','Présentation').btn('popbt',$r['com'])).br();
 $ret.=divc('',btn('txtx','Localisation').btn('popbt',self::distance($r['gps']))).br();
 return $ret;}*/
 
 static function home($p,$o){$rid='plg'.randid(); //echo $p.'-'.$o;
-self::init('profil');
+self::profile_init('profil');
 $r=self::datas(ses('USE')); //p($r);
 if(strpos($r['gps'],'/')===false)$r['gps']='0/0';
 //head::add('js','http://maps.googleapis.com/maps/api/js');

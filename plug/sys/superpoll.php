@@ -1,4 +1,4 @@
-<?php //superpoll
+<?php 
 class superpoll{
 
 static function verif($r,$d){
@@ -16,7 +16,7 @@ else return btn('txtred','already_exists');}
 
 static function verifuser($k,$p){
 $f='data/'.$_SESSION['sppnod'].'.txt'; $ta='';
-$t=read_file($f); $ip=hostname(); $r=explode('#',$t);
+$t=read_file($f); $ip=ip(); $r=explode('#',$t);
 foreach($r as $i=>$v){
 	[$ipa,$ka,$pa]=explode('/',$v);
 	if($ipa==$ip && $ka==$k){

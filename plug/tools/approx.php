@@ -13,14 +13,14 @@ return implode('',$r);}
 static function findpi($a,$b){static $i; $i++; static $x=[];
 $d=pi()*$b;
 if($d<$a)$o=1; else $o=0; $x[]=$o;
-$b=searchn($b,$o);
-if($d!=$a && $i<100)$d=findpi($a,$b); //echo $b.' ';
+$b=self::searchn($b,$o);
+if($d!=$a && $i<100)$d=self::findpi($a,$b); //echo $b.' ';
 return $b;}
 
 static function build($p,$o){
 //$ret=pi()*$p;
 //$ret=searchn($d,1);
-$ret=findpi(256,$p);
+$ret=self::findpi(256,$p);
 return $ret;}
 
 static function call($p,$o,$prm=[]){
@@ -30,7 +30,7 @@ return $ret;}
 
 static function menu($p,$o,$rid){
 $j=$rid.'_approx,call_'.$rid.'_inp';
-$ret.=inputj('inp',$p,$j);
+$ret=inputj('inp',$p,$j);
 $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 

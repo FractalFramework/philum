@@ -28,7 +28,8 @@ static function notes(){$r=msql::read('system','program_updates_'.date('ym'),1);
 $r=array_reverse($r); return tabler($r);}
 
 static function state($p=''){$ret='';
-$localver=checkversion(2); $distver=checkupdate(2); if($p)$localver=$distver;
+$localver=checkversion(2); $distver=sesmk('checkupdate',2,1); //checkupdate(2)
+if($p)$localver=$distver;
 $f=json::url('srv','upd'); $date=ftime($f,'ymd.Hi');
 if($p)$r[]=btn('txtcadr',helps('softwareupdated'));
 elseif(prms('aupdate'))$r[]=btn('txtx',helps('updateno'));

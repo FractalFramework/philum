@@ -1,4 +1,4 @@
-<?php //pictocss
+<?php 
 class pictocss{
 static function bt($d){return span('','philum ic-'.$d).br();}
 

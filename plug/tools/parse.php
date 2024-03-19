@@ -20,7 +20,7 @@ foreach($r as $k=>$v)
 	if($v['balise']=='section')$ret[]=$v['article'];
 return $ret;}
 
-static function mk_attrb($d,$a,$b){//$r=explode('=',$d);
+static function mk_attrb($d,$a,$b){$pos=[];
 $n=substr_count($d,'='); if($n==0 or !$d)return; $d=str_replace("\n",' ',$d);
 for($i=0;$i<$n;$i++){
 $pos[$i]=strpos($d,'=',$pos[$i-1]+1); $da=substr($d,0,$pos[$i]); $db=substr($d,$pos[$i]+1);
@@ -46,7 +46,7 @@ $aa_inner=self::ecart($v,$aa,$ab);//<...>
 	else $aa_balise=$aa_inner;}
 $ba=strpos($v,'</'.$aa_balise,$ab); $bb=strpos($v,">",$ba);//bb_balise
 if($ba!==false && $bb!==false && $aa_balise!="" && $bb>$ba){ 
-	$ba=recursearch($v,$ab,$ba,$aa_balise);//recursearch
+	$ba=conv::recursearch($v,$ab,$ba,$aa_balise);//recursearch
 	$bb=strpos($v,">",$ba); if($bb)$bb_balise=self::ecart($v,$ba,$bb);
 	$balise=self::ecart($v,$ab,$ba);}
 elseif($ab!==false)$bb=$ab;
@@ -58,7 +58,7 @@ $aa_balise=strtolower($aa_balise); $bb_balise=strtolower($bb_balise);
 $ret[$ia]['balise']=$aa_balise;
 $attrb=self::mk_attrb($aa_inner,' ','=');
 if($attrb)$ret[$ia]['props']=$attrb;
-//itération
+//itï¿½ration
 if(strpos($balise,'<')!==false)$balise=self::interpret_xml($balise);
 if($balise)$ret[$ia]['content']=$balise;
 //sequence
@@ -68,7 +68,7 @@ return $ret;}
 
 #
 
-static function xml_rss($r){
+static function xml_rss($r){$i=0;
 //$enc=strtolower(self::array_dig($r,'0/props/encoding'));
 //$title=self::array_dig($r,'1/content/3/content/0/content');
 //$items=self::array_dig($r,'1/content/3/content');//pr($ra);
@@ -91,7 +91,6 @@ if($f)$d=get_file($f);
 if($d)$r=self::interpret_xml($d);
 //$r=self::xml_rss($r);
 //$r=xml_html($r);
-//pr($r);
-return $ret;}
+}
 }
 ?>

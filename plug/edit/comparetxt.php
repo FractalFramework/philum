@@ -10,7 +10,7 @@ else $s=' ';
 $r1=explode($s,$txt1);
 $r2=explode($s,$txt2);
 $arr=array_diff($r1,$r2);
-$ret=divc('txtalert','r�sultat: '.count($arr).' diff�rences').br();
+$ret=divc('txtalert','résultat: '.count($arr).' différences').br();
 if($arr)foreach($arr as $k=>$v)$ret.=$v.':'.$r2[$k].hr();
 return $ret;}
 

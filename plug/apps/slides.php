@@ -3,7 +3,7 @@
 class slides{
 
 static function draw($r){$ret='';
-foreach($r as $k=>$v){if($v['txt'])$ret=li($k.') '.stripslashes_b($v['txt']));
+foreach($r as $k=>$v){if($v['txt'])$ret.=li($k.') '.stripslashes_b($v['txt']));
 	if($v['r'])$ret.=ul(self::draw($v['r']));}
 return ul($ret);}
 

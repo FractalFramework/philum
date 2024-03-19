@@ -69,12 +69,12 @@ static function save($d){$f='img/draw_temp.png'; //$d.='=';
 write_file($f,base64_decode(substr($d,22)));
 return image($f);}
 
-static function home($w=580,$h=420){//cw();
+static function home($w=580,$h=420){
 head::add('jslink','/js/jquery.js');
 head::add('jscode',self::js());
-head::add('csscode',self::css());
+head::add('csscode',self::css()); $cl='';
 $ret=tag('canvas',['id'=>'canvas','width'=>$w.'px','height'=>$h.'px'],'');
-$r=['black','white','blue','green','yellow','orange','brown','red','indigo','violet','pink','cyan']; $n=count($r); $cl='';
+$r=['black','white','blue','green','yellow','orange','brown','red','indigo','violet','pink','cyan']; $n=count($r);
 for($i=0;$i<$n;$i++){
 	$c='" style="background: none repeat scroll 0% 0% '.$r[$i].';" data-couleur="'.$r[$i];
 	$cl.=tagb('li',lka($c,$r[$i]));}

@@ -1,18 +1,18 @@
-<?php 
+<?php //sendmail
 class sendmail{
-static function form($arr,$goto){
+static function form($arr,$goto){$ret='';
 if($_GET["kill"]) $r=["from"=>$_GET["kill"],"dest"=>$_GET["dest"],"suj"=>$_GET["suj"]];
 	foreach($arr as $k=>$v){
 	if($v=="text"){
-	$ret=inputb($k,$r[$k],44,'',255,['name'=>$k]);}
+	$ret.=inputb($k,$r[$k],44,'',255,['name'=>$k]);}
 	if($v=="textarea"){$ret.=tag($v,['name'=>$k,'id'=>$k,'class'=>'txtblc','cols'=>64,'rows'=>10],$k);}
 	if($v=="submit"){$ret.=submit($v,$k,"txtblc");}
 	if($v!="submit")$ret.=tag('label',["for"=>$k],$k).br();}
 	return form("",$ret);}
 
-static function home(){
+static function home(){$ret='';
 $ret=lkc("","sendmail.php","index").br();
-$ip=hostname();
+$ip=ip();
 $arr=["from"=>"text","dest"=>"text","suj"=>"text","msg"=>"textarea","ok"=>"submit"];
 if($_POST["submit"]=="ok"){
 foreach($arr as $k=>$v){$$k=$_POST[$k]; $ret.=$k.': '.$$k."\n";}

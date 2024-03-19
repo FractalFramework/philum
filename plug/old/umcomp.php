@@ -99,7 +99,7 @@ return divc('',$ret).br();}
 static function home($p,$o){
 $rid='umcomp'; $bt=''; $ret='';
 if(!$p)$bt=self::menu($p,$o,$rid);
-if($p)$ret=self::call($p,$lg);
+if($p)$ret=self::call($p,'');
 return $bt.divd($rid,$ret);}
 }
 ?>

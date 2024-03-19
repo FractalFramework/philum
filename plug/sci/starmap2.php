@@ -136,7 +136,7 @@ static function menu($p1,$p2,$rid){
 $j=$rid.'_starmap2,call_p1,p2_xr';
 $ret=inputj('p1',$p1?$p1:self::$default,$j,'',36);
 $ret.=lj('',$j,picto('ok')).hlpbt('starmap').' ';
-$ret.=inputj('p2',$p2?$p2:50,$j,'distance',4,['step'=>10,'type'=>'number']);
+$ret.=inpnb('p2',$p2?$p2:50,$j,['placeholder'=>'distance','step'=>10]);
 $ret.=label('p2',btn('small','(limit horizon)')).' ';
 //$ret.=inputj('p3',1400,$j,'',4).label('p3','size').' ';
 $ret.=lj('txtx',$rid.'_starmap2,call__2_'.self::$default,'default').' ';

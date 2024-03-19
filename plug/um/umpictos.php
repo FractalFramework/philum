@@ -9,7 +9,8 @@ if($r)foreach($r as $k=>$v)$rb[]=[$k,self::ex($k),$v[1]];
 return tabler($rb);}
 
 static function menu($p,$o,$rid){
-return lj('',$rid.'_umpictos,all',picto('down')).' ';}
+$ret=lj('',$rid.'_umpictos,all',picto('down')).' ';
+return $ret;}
 
 static function home($p,$o){$rid=randid('plg');
 head::add('csslink','/css/_oomo.css'); $bt='';

@@ -15,12 +15,8 @@ static function msg($msg){
 $msg=conb::parse($msg,'sconn'); $msg=embed_p($msg); $msg=nl2br($msg);
 return $msg;}
 
-static function template(){return '
-[[[{url}|{day}:url]|small:css] [{suj}|popw:css] {open} {social}:h2]
-[{msg}|[track:class]:div][:br]';}
-
 static function build($p,$o){
-$tmp=self::template(); $rb=[]; $rd=[];
+$tmp=umrec::tpl_brut(); $rb=[]; $rd=[];
 $r=self::req_arts_y($p); //echo $p; pr($r);
 $rtg=self::list_tags(); //p($rtg);
 if($r)foreach($r as $k=>$v){[$id,$day,$suj,$msg,$cat,$tag,$lk]=$v;
@@ -32,7 +28,7 @@ if($r)foreach($r as $k=>$v){[$id,$day,$suj,$msg,$cat,$tag,$lk]=$v;
 	$lnk=lka(urlread($id)); $pop=lj('','popup_usg,trkplay___'.$id,picto('forum',16));
 	$rb[$day]=['suj'=>$suj,'day'=>mkday($day,'Y/m/d'),'msg'=>$msg,'url'=>$lk,'open'=>ma::popart($id).' '.$pop,'rtg'=>$tags];}
 krsort($rb); //pr($rb);
-if($rb)foreach($rb as $k=>$v){$res=vue::build($tmp,$v);
+if($rb)foreach($rb as $k=>$v){$res=view::call($tmp,$v);
 	$rd[nms(100)]=vadd($rd,nms(100),$res); $rc=$v['rtg']; //pr($rc);
 	//if($rc)foreach($rc as $kb=>$vb)$rd[$kb]=vadd($rd,$kb,$res);
 	}

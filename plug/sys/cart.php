@@ -46,7 +46,7 @@ $tb=str_replace("td",'td class="txtblc" align="center"',$tb);
 //$_SESSION["commande"]=$tb;
 $ret=$tb.br();
 $ret.=ljb('txtbox','jumpval','ref5_command::'.$save,$_SESSION['nms'][27]).br().br();
-//$ret.=nl2br(make_form_fromstring('::Name=input::Adress=input::city=input::Email=input::Message=text',''));
+//$ret.=mkform([['Name','input'],['Adress','input'],['city','input'],['Email','input'],['Message','text']]);
 }//enf_if_cart
 else $ret=btn("txtred","empty_cart");
 return $ret;}

@@ -26,7 +26,8 @@ foreach($r->childNodes as $k=>$v){
 		$val=$v->nodeValue;
 		$a=$tag=='a'?ath($v->getAttribute('href')):'';
 		if($tag && $val)$ret.=tag($tag,$a,self::explore($v));
-		else $ret.=$val;}
+		else $ret.=$val;
+		}
 	else{//pr($v);
 		$va=$v->parentNode;
 		$val=$v->nodeValue;

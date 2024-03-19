@@ -22,7 +22,9 @@ return divc('list',$ret);}
 //html
 static function wyg($p,$o,$prm=[]){$d=$prm[0]??'';
 if($p=='conn2html')$d=self::act('conn2html','',$prm);
-return divd('wyswyg',tag('div',['contenteditable'=>'true','id'=>'txtareb','c'=>'wyg','s'=>'min-height:400px; border:1px dotted silver; margin:2px 0; padding:4px;'],$d));}
+$s='min-height:400px; border:1px dotted silver; margin:2px 0; padding:4px;';
+$ret=divd('wyswyg',tag('div',['contenteditable'=>'true','id'=>'txtareb','class'=>'wyg','style'=>$s],$d));
+return $ret;}
 
 static function area($p,$o){
 $ret=lj('popbt','txtarea_txt,act_txtareb_23_html2conn',picto('before'));
@@ -53,7 +55,7 @@ case('addlines'):$ret=mc::add_lines($d); break;
 case('txt2array'):$ret=buildtable::call($d,''); break;
 case('dump2array'):$ret=buildtable::jb($d,''); break;
 case('replace'):$ret=str_replace($d1,$d2,$d); break;
-case('exec'):$ret=exec::run('','',[$d]); break;
+case('exec'):$ret=exec::run($d,''); break;
 case('entities'):$ret=html_entity_decode($d); break;
 case('utf8'):$ret=utf8dec_b($d); break;
 case('url'):$ret=urldecode($d); break;

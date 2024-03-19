@@ -1,4 +1,4 @@
-<?php //notepad
+<?php 
 class pad{
 static function np_j($id){return 'mem_storage(\''.$id.'_m'.$id.'_1_1\')';}
 

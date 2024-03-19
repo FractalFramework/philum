@@ -1,4 +1,4 @@
-<?php //tlex
+<?php 
 class tlex{
 
 static function post($p,$o,$prm=[]){

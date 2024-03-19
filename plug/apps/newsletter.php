@@ -8,26 +8,27 @@ return $ret;}
 
 static function msav($d,$i){
 if(!$d){$n=1;$c='';}elseif(!rstr($d)){$n=0;$c='active';}
-$ret[]=offon($n).' '.btn('',lj('','rstr_params___'.$d.'_'.$n,$i)).br();}
+$ret[]=offon($n).' '.btn('',lj('','rstr_params___'.$d.'_'.$n,$d)).br();}
 
-static function edit(){$r=mails::datas();
-$r=msql::read('',nod('mails'),1); $ret=''; $i=0;
+static function edit(){
+//$r=mails::datas();
+$r=msql::read('',nod('mails'),1); $i=0; $ret='';
 if($r)foreach($r as $k=>$v){$i++; $n='nl'.$i; $c=''; if($v[1])$c='active';
 	$ret.=lj('',$n.'_newsletter,mmsav',$k).br();}
 return div($ret,'nbp','nldt');}
 
 static function read(){$here=host();
-geta('nl',1); $ret=mod::block('newsletter',''); getz('nl');
+geta('nl',1); $ret=mod::block('newsletter'); getz('nl');
 $ret=str_replace('img id="rez" src="imgc/','img src="'.$here.'/imgc/',$ret);
 $ret=str_replace('img id="rez" src="img/','img src="'.$here.'/img/',$ret);
 $ret=str_replace('img src="users/','img src="'.$here.'/users/',$ret);
 $ret=str_replace('href="/','href="'.$here.'/',$ret);
 return $ret;}
 
-static function batch($p,$o,$rs=[]){$here=host();
+static function batch($p,$o,$rs=[]){$here=host(); $i=0;
 $un=helps('newsletter_uns'); $url=htacc('hub').ses('qb'); 
 $from=$_SESSION['qbin']['adminmail']; $ret=self::read();
-$suj=$rs[0]?$rs[0]:ses('qb').' '.mkday('',1); $i=0;
+$suj=$rs[0]?$rs[0]:ses('qb').' '.mkday('',1);
 if($rs[1])$r=self::nl_mklist(); else $r=mails::datas();
 if($r)foreach($r as $k=>$to){$i++;
 	$uns=lkc('txtx',$here.'/app/mailist/uns/'.$k,$un).br();

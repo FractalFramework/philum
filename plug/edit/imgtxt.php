@@ -1,7 +1,7 @@
 <?php //imgtxtb
 class imgtxt{
-static function gdf_nblines($t,$maxl){$n=0; $nb=0; $ret=[];
-$t=str_replace("\n"," \n",$t); $r=explode(' ',$t);
+static function gdf_nblines($t,$maxl){$n=0; 
+$t=str_replace("\n"," \n",$t); $r=explode(' ',$t); $ret=[]; $nb=0;
 foreach($r as $k=>$v){$len=strlen($v); $nb+=$len+1; $pos=strpos($v,"\n");
 	if($nb>$maxl){$v; $pos=strlen($v); $ret[$n].=substr($v,0,$pos); $n++;
 		$vb=substr($v,$pos); $nb=strlen($vb); 
@@ -22,7 +22,7 @@ return $r;}*/
 
 static function build($t,$fx,$fy,$lac,$hac,$fnt,$clr,$dest){
 $t=str_replace("&nbsp;",' ',$t);
-$nb_chars=strlen($t); $width=400;//cw();
+$nb_chars=strlen($t); $width=400;
 if($lac && $width)$maxl=floor($width/$lac); else $maxl=400;
 $la=$nb_chars*$lac; 
 $la=$la>$width-8?$width-8:$la;

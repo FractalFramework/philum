@@ -5,11 +5,10 @@ static $a=__CLASS__;
 static $default='';
 static $nb=10000;
 
-static function del($p,$o){$ret='';
+static function del($p,$o){
 if(!is_numeric($p))$p=0; $min=self::$nb*($p);
 $r=sqb('id,im','qdg','kv','where ib<'.$p,0); $rb=[];
-if(auth(6))foreach($r as $k=>$v)if(is_file('img/'.$v))unlink('img/'.$v);
-return $ret;}
+if(auth(6))foreach($r as $k=>$v)if(is_file('img/'.$v))unlink('img/'.$v);}
 
 static function build($p,$o){$ret='';
 if(!is_numeric($p))$p=0; $min=self::$nb*($p);
