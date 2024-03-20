@@ -4,8 +4,12 @@ static $cb='git';
 static $default='';
 
 static function build($p,$o){
-$ret=exc('/pub/'.$p.'.bat');
-return $ret;}
+if(!auth(7))return 'no';
+$u=__dir__.'/../../pub/'.$p.'.bat';
+//return exc($u);
+return sys($u);
+//exec('cmd /c C:['.$u.']',$ret); return $ret;
+}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);

@@ -712,7 +712,8 @@ return $rb;}
 #tools
 function genpswd($nb=8){$v='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$^§:()[]{}°+-/*';
 $r=str_split($v); $n=count($r); $ret=''; for($i=0;$i<$nb;$i++)$ret.=$r[rand(0,$n)]; return $ret;}
-function exc($d){if(auth(6))return shell_exec(($d));}//system//escapeshellcmd
+function exc($d){if(auth(6))return shell_exec(escapeshellcmd($d));}
+function sys($d){if(auth(6))system(escapeshellcmd($d),$d); return $d;}
 function excdir(){$dr=__DIR__; $r=explode('/',$dr); return '/'.$r[1].'/'.$r[2];}
 function excget($u,$f){$e='wget -P '.excdir().'/'.$u.' '.$f; exc($e);}
 
