@@ -172,5 +172,4 @@ Opciones: pop, read, conn, last, count, graph, form, tmp'],
 'look'=>['abre un artículo resaltando un término [id|palabra:look]'],
 'lang'=>['traduce el texto [text|(es/en/fr/...):lang].'],
 'vid'=>['reproduce un vídeo y lo importa si es necesario'],
-'private'=>['elementos privados'],
-'time'=>['time']]; ?>
+'private'=>['elementos privados']]; ?>

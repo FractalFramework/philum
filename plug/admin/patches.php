@@ -18,8 +18,7 @@ sql::qr(' RENAME TABLE `yandex` TO `trans`; ');}
 static function dbsplitters(){
 if(!auth(6))return;
 qr('UPDATE `pub_txt` SET `msg`=REPLACE(msg,"§","|");');
-qr('UPDATE `pub_trk` SET `msg`=REPLACE(msg,"§","|");');
-}
+qr('UPDATE `pub_trk` SET `msg`=REPLACE(msg,"§","|");');}
 
 static function dbutf($p){return;
 if(!auth(6))return;
@@ -33,11 +32,10 @@ $d=html_entity_decode($d,ENT_QUOTES,'UTF-8');
 $d=str::html_entity_decode_b($d);
 ///$d=ascii2iso($v);
 $rb[$k]=$d;
-sqlup('qda',['suj'=>$d],['id'=>$k],0);
+//sqlup('qda',['suj'=>$d],['id'=>$k],0);
 //sqlup('qdm',['msg'=>$d],['id'=>$k],0);
 }
-eco($rb);
-}
+eco($rb);}
 
 //hubs
 static function hubarts($p,$o,$prm=[]){
@@ -80,12 +78,15 @@ if(!auth(6))return;
 return self::$p($p1,$o,$prm);}
 
 #msql
+//msql/lang/fr/node_table_num_sav.php
 static function nod($dr,$k,$v){
 $v=str_replace('.php','',$v);
-[$b,$d,$p,$t,$v]=msqa::murlread($v);
-$nod=msqa::mnod($p,$t,$v);
+$v=str_replace('msql/','',$v);
+[$d,$l,$p,$t,$n,$s]=msqa::murlread($v);
+if($l)$d.='/'.$l;
+$nod=msqa::mnod($p,$t,$n,$s);
 $f=msql::url($d,$nod);
-//if(is_file($f))echo $d.';'.$p.';'.$t.';'.$v.' ';
+//if(is_file('msql/'.$f.'.php'))echo $d.';'.$p.';'.$t.';'.$n.';'.$s.' ';
 if(is_file($f))return [$d,$nod];}
 
 static function renove_utf($dr,$k,$v){
@@ -112,7 +113,24 @@ if(!auth(6))return;
 msqa::tools($dr,$nod,'patch_ret','');
 return $nod;}
 
+static function backup($dr,$nod){$r=msql::read($dr,$nod);
+msql::save($dr,str_replace('_sav','',$nod),$r,[],1);}
+
+static function renove_bak($dr,$k,$v){
+if(!auth(6))return;
+[$dr,$nod]=self::nod($dr,$k,$v);
+if($nod && substr($nod,-4)=='_sav'){
+	$fa='msql/'.$dr.'/'.$nod.'.php'; echo $fa.' ';
+	self::backup($dr,$nod);
+	unlink($fa);
+	return $nod;}}
+
 #call
+static function callbak($p,$o,$prm=[]){if(!auth(6))return;
+$ra=['design','lang/fr','lang/en','lang/es','server','system','users'];
+foreach($ra as $v)$r[]=scanwalk('msql/'.$v,'patches::renove_bak');
+return tree($r);}
+
 static function call($p,$o,$prm=[]){$r=[];
 [$p1,$o]=prmp($prm,$p,$o);
 if(!auth(6))return;
@@ -123,12 +141,13 @@ return implode(' ',$r);}
 
 static function menu($p){
 $ret=inputb('fto',$p,18,'directory');
-$rok=[12];//0,1,3,4,6,
+$rok=[2,3,12,13];//0,1,3,4,6,
 $rt[0]='msql: ';
 $rt[1]=lj('popbt','fut_patches,call_fto_3_utf','msqutf');
 $rt[2]=lj('popbt','fut_patches,call_fto_3_headers','headers');
 $rt[3]=lj('popbt','fut_patches,call_fto_3_splitters','splitters_msql');
 $rt[12]=lj('popbt','fut_patches,call_fto_3_return','msqlreturns');
+$rt[13]=lj('popbt','fut_patches,callbak_fto_3_','msqlbak');
 $rt[4]=' | mysql: ';
 $rt[5]=lj('popbt','fut_patches,call2_fto_3_dbutf','mysqlutf');
 $rt[6]=lj('popbt','fut_patches,call2_fto_3_dbsplitters','splitters_mysql');
@@ -140,9 +159,9 @@ $rt[11]=lj('popbt','fut_patches,call2__3_noqd','noqd');
 foreach($rok as $v)$ret.=$rt[$v];
 return $ret;}
 
-static function home($p,$o){
+static function home($p){
 $bt=self::menu($p); $ret='';
-if($p)$ret=self::call($p,$o);
+if($p)$ret=self::call($p,'');
 return $bt.divd('fut',$ret);}
 }
 ?>

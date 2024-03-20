@@ -21,7 +21,8 @@ return ['_'=>['description'],
 -[123456789|thread:twitter] hilo de una discusión (yendo hacia atrás)'],
 'art'=>['Apunta a un artículo: 
 -[1234:art] devuelve un botón al artículo con su título
--[1234|title:art] fija el botón a un título'],
+-[1234|title:art] fija el botón a un título
+-[title:art]: encuentra el artículo en el idioma actual'],
 'msql'=>['Enviar datos de una tabla: 
 [hub_table_(version)-(clave)|(fila)|opcion:microsql];
 Opciones: pop, read, conn, last, count, graph, form, tmp'],

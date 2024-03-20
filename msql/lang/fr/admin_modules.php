@@ -3,17 +3,7 @@ return ['_'=>['description','param','option','command'],
 'All'=>['Tous les articles','Donner un titre','prévisualisation : 1,2,3,auto',''],
 'LOAD'=>['Composant principal qui reçoit un déroulé d\'articles ou un article entier','','prévisualisation :1,2,3,auto','ordre des articles'],
 'BLOCK'=>['Appelle un Bloc de modules','nom du bloc de modules','',''],
-'MENU'=>['Appelle un bloc en tant que menu de liens vers des modules','Nommer ce bloc','','mod: modules dans une bub
-block: menu ajax
-bub: menu déroulant ajax
-drop: menu déroulant css
-tabs: onglets
-pane: panneaux
-tog: menu toggle
-bup: menu bubup
-admin: menu principal
-desk: bureau
-boot: démarrage'],
+'MENU'=>['Appelle un bloc en tant que menu de liens vers des modules','Nommer ce bloc','',''],
 'ARTMOD'=>['Appelle un bloc de modules conjointement à un article.
 La rstr60 permet de l\'afficher dans un petit bouton \"articles connectés\", au lieu d\'une div sur la page. On préférera y réserver les modules du contexte \"art\".','Nommer ce bloc','',''],
 'TABMOD'=>['modules dans des onglets (tabs en anglais)','nom du bloc de modules','',''],
@@ -197,8 +187,4 @@ ex: tag:classe','',''],
 - cat-public : articles dans \'public\' ;
 - cat-1 : catégorie en cours','',''],
 'microarts'=>['micro articles avec un seul champ et la date','nom du thread','',''],
-'vacuum'=>['ouvre un article du web via le moteur Vacuum','url','',''],
-'BOOT'=>['Modules à lancer au Boot','','',''],
-'DESK'=>['Modules du Desktop','Peut recevoir un module MENU','',''],
-'ADMIN'=>['Modules de l\'Admin','Peut recevoir un module MENU','',''],
-'background'=>['couleur ou image de fond','couleur html, #_var, dégradé, image ou répertoire d\'images (random)','','']]; ?>
+'vacuum'=>['ouvre un article du web via le moteur Vacuum','url','','']]; ?>

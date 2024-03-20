@@ -119,7 +119,7 @@ options : pop, read, conn, last, count, graph, form, tmp'],
 'pub'=>['[1234:pub] display button
 [1234|1:pub] |2 |3 |4 open article (preview mode)'],
 'art'=>['[1234:art] display button
-[1234|title:art] replace title'],
+[1234|1:art] |2 |3 |4 open article (preview mode)'],
 'punct'=>['cleanup punctuation'],
 'radio'=>['audio files from pace disk [dev/music:radio] (1 by article, the module build a playlist)'],
 'read'=>['call the content of an article'],

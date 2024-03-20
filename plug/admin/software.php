@@ -50,7 +50,7 @@ return ['ajax.php','app.php','call.php','index.php','install.php'];}
 static function exceptions($dr,$f){$no=0;
 if($dr=='msql/design' or $dr=='msql/users')if(strpos($f,$dr.'/public')===false)$no=1;
 if($dr=='css')if(strpos($f,$dr.'/_')===false && strpos($f,$dr.'/public')===false)$no=1;
-if(strpos($f,'_sav'))$no=1;
+if($dr=='msql/_bak')$no=1;
 return $no;}
 
 static function datas($dr,$k,$f){$no=self::exceptions($dr,$f);

@@ -1,5 +1,0 @@
-<?php 
-return [1=>['tintinhj','Tintin est apparu sur la liste en évoquant des sujets hautement pertinents, suite à quoi il a avoué entendre des voix puis ensuite s\'est trouvé ridicule puis colérique face à l\'incrédulité qui lui était opposée. Gwenaël a donné son diagnostique et bla bla bla, bla bla bla. Le mec il a le temps d\'articuler à haute résolution les marasmes de sa pensée temporairement rendue délirante, certainement à cause d\'un état de choc.
-Cela est cohérent avec ce dont il parlait (avant de se faire lourder) le \"conscientiser\" le \"et si c\'était vrai ?\" de façon parfaitement logique et saine, et d\'y trouver les oeillères qui souvent sont les nôtres.
-Il parlait aussi d\'un langage-toit, posant les bases de la supputation selon laquelle un même peuple pouvait très bien avoir plusieurs langages spécialisés. 
-']]; ?>

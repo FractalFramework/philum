@@ -238,4 +238,4 @@ Unique','16 MP, f/2.4, (grandangle)','Android 13, MIUI 14','Mediatek Dimensity 6
 60=>['ZTE nubia Flip','2024, fÃ©vrier 26','170 Ð¥ 76 Ð¥ 7.3 mm','214 gr.','','4310 mAh,
 , non amovible','600 EUR','Foldable OLED','6.9\" pouces','110.7 cm2','1188 x 2790 px','50 MP,
 Double','16 MP,
-Unique','16 MP, (grandangle)','Android 13','Qualcomm SM7450AB Snapdragon 7 Gen 1 (4 nm)','Adreno 644','128GB 6GB RAM','Nano-SIM, eSIM','','https://phonesdat È—ÑU   È—ÑU                  ´–—ÑU          €ˆ£
+Unique','16 MP, (grandangle)','Android 13','Qualcomm SM7450AB Snapdragon 7 Gen 1 (4 nm)','Adreno 644','128GB 6GB RAM','Nano-SIM, eSIM','','https://phonesdata.com/fr/smartphones/zte/nubia-flip-5464375/']]; ?>

@@ -205,5 +205,4 @@ return [1=>['artículo'],
 203=>['remover del dock'],
 204=>['revisar'],
 205=>['revisiones'],
-206=>['resumen'],
-207=>['familia']]; ?>
+206=>['resumen']]; ?>

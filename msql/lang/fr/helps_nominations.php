@@ -205,5 +205,4 @@ return ['_'=>['title'],
 203=>['retirer du dock'],
 204=>['révision'],
 205=>['révisions'],
-206=>['synthèse'],
-207=>['famille']]; ?>
+206=>['synthèse']]; ?>

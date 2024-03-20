@@ -121,7 +121,7 @@ Options : pop, read, conn, last, count, graph, form, tmp'],
 'pub'=>['[1234:pub] affiche un lien
 [1234|1:pub] |2 |3 |4 ouvre article (preview mode)'],
 'art'=>['[1234:art] affiche un lien
-[1234|titre:art] remplace le titre'],
+[1234|1:art] |2 |3 |4 ouvre article (preview mode)'],
 'clean_punct'=>['corrige les erreurs typographiques'],
 'radio'=>['pile de fichiers audio depuis l\'espace disque [dev/music:radio] (1 par article, le module fabrique une playlist)'],
 'read'=>['place le contenu d\'un article'],

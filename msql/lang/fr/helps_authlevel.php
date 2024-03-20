@@ -1,7 +1,7 @@
 <?php 
 return ['_'=>['permission'],
 1=>['Article dépublié'],
-2=>['Article privé'],
+2=>['Article protégé par un copyright'],
 3=>['Article retiré sur demande'],
 4=>['Article en cours de validation'],
 5=>['Article réservé aux abonnés'],

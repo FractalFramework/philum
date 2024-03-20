@@ -1,7 +1,7 @@
 <?php 
 return ['_'=>['category','param','title','command','option','cache','template','bt','div','prv','pop'],
 'All'=>['Api','','','','preview full false auto read','','','','','',''],
-'LOAD'=>['component','','','id-desc day-asc','preview full false auto read','','1','','','',''],
+'LOAD'=>['component','','','id-desc id-asc day-asc day-desc','preview full false auto read','','1','','','',''],
 'BLOCK'=>['component','','','','','','','','','',''],
 'MENU'=>['component','','','mod block bub drop tabs pane tog bup admin desk boot','2','','','','','',''],
 'ARTMOD'=>['system','','','tabs','220','','','','','',''],

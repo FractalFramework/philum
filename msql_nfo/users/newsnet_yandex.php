@@ -1,7 +1,0 @@
-<?php 
-return ['_'=>[''],
-1=>['3faee751-421b-5107-71be-ea47e8fcbe1'],
-'ff'=>['trnsl.1.1.20170206T173119Z.092e1dd0a9954253.db344b1e497240fb68fd4b1f5150a3d25d9c4e95'],
-'nn'=>['trnsl.1.1.20180424T143921Z.e47210bce651eadc.f1434d1d227b66402fc4bf8f44f82f0f85ed75b6'],
-'oo'=>['trnsl.1.1.20180424T143830Z.66e290d02ce3a559.adc6066d788696b551be9734420c4ad9b7061dbc'],
-'id'=>['enp573c2837f7lt7sg51']]; ?>

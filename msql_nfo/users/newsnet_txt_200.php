@@ -1,8 +1,0 @@
-<?php 
-return [1=>['notes 2309','La législation logicielle est une discipline inconnue et fuie par ceux qui croient que la simplicité existe. Ceux-là trouve bien ce qu\'ils comprennent, mal ce qu\'ils ne comprennent pas. Or plus on met d\'intelligence dans la législation, plus on soulage le code. Elle pèse zéro et prend zéro processeur, donc la plus grande partie du logiciel doit reposer sur elle. On se rend compte de sa pertinence le jour où une innovation ne nécessite aucune ligne de code.
-
-La doc d\'un logiciel ne peut provenir que de deux sources, le logiciel, et ce qu\'il ne peut pas dire. Le logiciel cite ses propres actions, elles sont descriptives. L\'auteur explique la législation, pour donner les clefs de la compréhension générale.
-
-D\'une langue à l\'autre il arrive qu\'il y ait plusieurs manières de dire le même mot, ou au contraire un seul tesseract de significations. Les discernement servent la compréhension et évite les erreurs et les conflits. Plus un mot est \"développé\" plus il a de variations. Le développement est par essence le chemin évolutif vers la perfection.
-
-Le terme qui a le plus besoin d\'être développé, est celui de l\'être, que je viens d\'utiliser dans cette phrase. Ce \"est\" appartient au champ de la complétude. Il est démontrable, et objectif. L\'autre \"est\" appartient au champ de l\'incomplétude, il nécessite une construction psychologique pour être perçu, et reste subjectif, relatif. Les scientifiques ont fait beaucoup de confusions avec cette histoire de relativité qui leur échappe quand ils y pensent.']]; ?>
