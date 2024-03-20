@@ -82,11 +82,12 @@ return self::$p($p1,$o,$prm);}
 static function nod($dr,$k,$v){
 $v=str_replace('.php','',$v);
 $v=str_replace('msql/','',$v);
-[$d,$l,$p,$t,$n,$s]=msqa::murlread($v);
-if($l)$d.='/'.$l;
-$nod=msqa::mnod($p,$t,$n,$s);
+//[$d,$l,$p,$t,$n,$s]=msqa::murlread($v);
+[$d,$l,$nod]=expl('/',$v,3);
+if($nod)$d.='/'.$l; else $nod=$l; //echo $nod.' ';
+//$nod=msqa::mnod($p,$t,$n,$s);
 $f=msql::url($d,$nod);
-//if(is_file('msql/'.$f.'.php'))echo $d.';'.$p.';'.$t.';'.$n.';'.$s.' ';
+//if(is_file($f))echo $d.';'.$l.';'.$p.';'.$t.';'.$n.';'.$s.' ';
 if(is_file($f))return [$d,$nod];}
 
 static function renove_utf($dr,$k,$v){
@@ -114,20 +115,20 @@ msqa::tools($dr,$nod,'patch_ret','');
 return $nod;}
 
 static function backup($dr,$nod){$r=msql::read($dr,$nod);
-msql::save($dr,str_replace('_sav','',$nod),$r,[],1);}
+if($r)msql::save($dr,str_replace('_sav','',$nod),$r,[],1);}
 
 static function renove_bak($dr,$k,$v){
-if(!auth(6))return;
-[$dr,$nod]=self::nod($dr,$k,$v);
-if($nod && substr($nod,-4)=='_sav'){
-	$fa='msql/'.$dr.'/'.$nod.'.php'; echo $fa.' ';
+if(!auth(6))return; mkdir_r('msql/_bak/');
+[$dr,$nod]=self::nod($dr,$k,$v); //echo $dr.'/'.$nod.' ';
+if($nod && substr($nod,-4)=='_sav'){mkdir_r('msql/_bak/'.$dr);
+	$f=msql::url($dr,$nod); echo $f.' ';
 	self::backup($dr,$nod);
-	unlink($fa);
+	unlink($f);
 	return $nod;}}
 
 #call
 static function callbak($p,$o,$prm=[]){if(!auth(6))return;
-$ra=['design','lang/fr','lang/en','lang/es','server','system','users'];
+$ra=['design','clients','lang/fr','lang/en','lang/es','server','system','users'];
 foreach($ra as $v)$r[]=scanwalk('msql/'.$v,'patches::renove_bak');
 return tree($r);}
 

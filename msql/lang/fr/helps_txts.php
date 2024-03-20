@@ -187,7 +187,7 @@ En l\'absence de template utilisateur, le logiciel cherche un template public av
 Si la restriction \'user templates\' (55) est activée, la machine ira chercher le template utilisateur puis le public, avant d\'utiliser celui par défaut. Pour éviter qu\'un template public ne supplante celui par défaut, il suffit de sauver ce dernier pour en faire un template utilisateur.'],
 'template'=>['structure de la mise en page
 suffixe \'j\' : si rstr(8) activé (mode ajax)'],
-'track_follow'=>['Indiquer un mail pour recevoir les autres commentaires'],
+'track_follow'=>['e-mail (recommandé)'],
 'track_captcha'=>['copier le code ici'],
 'update_ok'=>['Le logiciel est à jour'],
 'update_help'=>['Si une erreur survient, télécharger l\'image complète depuis l\'installateur'],
@@ -501,4 +501,7 @@ ex : HD 150680, hd150680, hip99461, 88601, 2021
 commandes pré-établies : knownstars, allstars
 Accepte les requêtes de Star (ra, dc, dist, radius)'],
 'clusters'=>['Clusters de tags : catégories génériques obtenues par émergence'],
-'tag_pictos'=>['les définitions de la config peuvent &ecirc;tre sauvegardées dans une table msql']]; ?>
+'tag_pictos'=>['les définitions de la config peuvent &ecirc;tre sauvegardées dans une table msql'],
+'utime'=>['- numeric value (strict time) : choose the unit (xee, year, etc.) not refer to 
+- ISO 8601 duration format : \"P\"+n(YMDHIS). ex: \"P1Y2D\" means \"1 year 2 days\" (see https://en.wikipedia.org/wiki/ISO_8601#Durations)
+- natural language : \"2 years 6 months 3 days\"']]; ?>

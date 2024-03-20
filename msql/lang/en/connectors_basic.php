@@ -19,10 +19,9 @@ return ['_'=>['description'],
 - [123456789:twitter] returns a twit
 - [text|search:twitter] result of a search
 - 123456789|thread:twitter] thread of a discussion (upwards)'],
-'art'=>['Open an article : 
+'art'=>['link to article : 
 - [1234:art] button to open an article with his title
-- [1234|title:art] free titre
-- [title:art] : find article in current language'],
+- [1234|title:art] free titre'],
 'msql'=>['return datas of a table : 
 [hub_table_(version)-(key)|(row)|option:microsql] ;
 options : pop, read, conn, last, count, graph, form, tmp'],

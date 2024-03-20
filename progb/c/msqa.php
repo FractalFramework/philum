@@ -650,7 +650,7 @@ if(substr($u,0,4)=='lang')[$base,$dir,$node]=expl('/',$u,3);
 else [$base,$node]=split_one('/',$u,1);
 [$b,$d]=split_one('/',$base,0);
 [$node,$row]=split_one('~',$node,1);
-[$p,$t,$v,$l]=expl('_',$node,4);
+[$p,$t,$v]=expl('_',$node,3);
 if(!$b){$b=$p; $p='';} if(!$b)$b='users'; if($b=='lang')$d=$dir?$dir:prmb(25);
 return [$b,$d,$p,ajx($t),ajx($v),ajx($row)];}
 

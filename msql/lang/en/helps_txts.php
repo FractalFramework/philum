@@ -134,7 +134,7 @@ _PARAM|txtit:css|h:conn'],
 use restriction 55 \'user template\' to activate the procedure of searching user template, then public template, then the one bydefault. (not needed for the template of articles)'],
 'template'=>['layout structure
 suffix \'j\': if rstr(8) enabled (ajax mode)'],
-'track_follow'=>['the mail let you to receive other comments'],
+'track_follow'=>['e-mail (recommended)'],
 'track_captcha'=>['copy code here'],
 'update_ok'=>['The software is up-to-date'],
 'update_help'=>['If an error occurs, renove all from install.php'],

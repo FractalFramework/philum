@@ -19,10 +19,9 @@ return ['_'=>['description'],
 - [123456789:twitter] renvoie un twit
 - [text|search:twitter] résultat d\'une recherche
 - [123456789|thread:twitter] fil d\'une discussion (en remontant)'],
-'art'=>['Pointe vers un article : 
+'art'=>['Lien vers un article : 
 - [1234:art] renvoie un bouton vers l\'article avec son titre
-- [1234|titre:art] assoie le bouton à un titre
-- [titre:art] : trouve l\'article dans la langue courante'],
+- [1234|titre:art] assoie le bouton à un titre'],
 'msql'=>['Renvoie les données d\'une table : 
 [hub_table_(version)-(key)|(row)|option:microsql] ;
 Options : pop, read, conn, last, count, graph, form, tmp'],
