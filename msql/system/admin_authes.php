@@ -67,4 +67,6 @@ return ['_'=>['category','auth_level'],
 'jsonadm'=>['Tools','4'],
 'ssh'=>['Tools','7'],
 'vhost'=>['Tools','7'],
-'ftp'=>['Tools','7']]; ?>
+'ftp'=>['Tools','7'],
+'chmod'=>['Tools','7'],
+'git'=>['Tools','7']]; ?>

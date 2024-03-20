@@ -14,7 +14,7 @@ $rb=msql::read('',nod('test_1')); $ret=[];
 $t=divc('txtcadr',count($r).' modules');
 foreach($r as $k=>$v){
 	$rid=str::normalize('prm'.$k); $j='popup_test,playmod_'.$rid.'_3_'.ajx($k);
-	$ret[]=[$k,$rh[$k][0],inputj($rid,valr($rb,$k,0),$j),lj('',$j,picto('ok'))];}
+	$ret[]=[$k,$rh[$k][0]??'',inputj($rid,valr($rb,$k,0),$j),lj('',$j,picto('ok'))];}
 return $t.tabler($ret);}
 
 static function playconn($p,$o,$prm=[]){

@@ -702,9 +702,9 @@ if($r)foreach($r as $k=>$v)if(isset($rico[$k]))$ret.=popbub('admn',$k,picto($ric
 return $ret;}
 
 static function fastmenus($o,$m){$rt=[];
-$r=self::authmenus(0); $tg=$o?'popup':'admcnt';//'modules','templates'
+$r=self::authmenus(1); $tg=$o?'popup':'admcnt';//'modules','templates'
 if(!$m)$rm=['console','desktop','config','rstr','css','msql','articles','tags','api','images','pictos','finder','templates','stats','software','twit','apps','txt','pad','exec','jsonadm','test','messages','members'];
-else $rm=['nodes','newsletter','tweetfeed','banner','favicon','dev','backup','htaccess','links','rssurl','mail','password','description','icons','pictography','authes','avatar','funcs','ssh','vhost','connectors','keygen','jedt','chmod']; sort($rm);
+else $rm=['nodes','newsletter','tweetfeed','banner','favicon','dev','backup','htaccess','links','rssurl','mail','password','description','icons','pictography','authes','avatar','funcs','ssh','vhost','connectors','keygen','jedt','chmod','git']; sort($rm);
 foreach($rm as $v){$j='admin___'.ajx($v);//'sty,home__head__'//
 	if($v=='css' && !$o)$j='admin__url_css_1';
 	if($r && in_array($v,$r))$rt[]=lj('',$tg.'_'.$j,pictxt(mime($v),$v,22));}

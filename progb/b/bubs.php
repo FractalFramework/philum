@@ -211,6 +211,10 @@ $r=msql::kv('lang','admin_menus'); $rt=[];
 foreach($r as $k=>$v)$rt[]=popbub('admin',$k,mimes($k).'&nbsp;'.$v,'',1);
 return join('',$rt);}
 
+static function fastmenu2(){
+return divc('',adm::fastmenu(1));}
+
+
 //login
 static function app($d){
 if($d=='login'){login::call('','',''); return divd('nob',login::form('','1',''));}
@@ -399,7 +403,7 @@ static function call($d,$dir='',$n=''){
 $ret=match($dir){//pre-rendered, intercepte navigation
 'batch'=>sav::batch('','c'),
 'fastmenu'=>self::fastmenu(),
-'fastmenu2'=>adm::fastmenu(1),
+'fastmenu2'=>self::fastmenu2(),
 'search'=>search_btn(),
 'addart'=>self::addart_btn(),
 'ucom'=>self::ucom_btn(),
