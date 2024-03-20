@@ -17,8 +17,8 @@ sql::qr(' RENAME TABLE `yandex` TO `trans`; ');}
 #mysql
 static function dbsplitters(){
 if(!auth(6))return;
-qr('UPDATE `pub_txt` SET `msg`=REPLACE(msg,"ง","|");');
-qr('UPDATE `pub_trk` SET `msg`=REPLACE(msg,"ง","|");');
+qr('UPDATE `pub_txt` SET `msg`=REPLACE(msg,"ยง","|");');
+qr('UPDATE `pub_trk` SET `msg`=REPLACE(msg,"ยง","|");');
 }
 
 static function dbutf($p){return;
@@ -140,9 +140,9 @@ $rt[11]=lj('popbt','fut_patches,call2__3_noqd','noqd');
 foreach($rok as $v)$ret.=$rt[$v];
 return $ret;}
 
-static function home($p){
+static function home($p,$o){
 $bt=self::menu($p); $ret='';
-if($p)$ret=self::call($p);
+if($p)$ret=self::call($p,$o);
 return $bt.divd('fut',$ret);}
 }
 ?>

@@ -37,7 +37,7 @@ return $ret;}
 
 static function menu($p,$o,$rid){
 $j=$rid.'_markorodin,call_inp__'.$rid;
-$ret.=inputj('inp',$p,$j);
+$ret=inputj('inp',$p,$j);
 $ret.=lj('',$j,picto('ok'));
 $ret.=hlpbt('markorodin');
 return $ret;}

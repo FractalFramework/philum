@@ -203,12 +203,12 @@ $a=deg2rad($a); $op=sin($a)*$h; $ad=cos($a)*$h;
 return [$op,$ad,$h];}
 
 static function star_xyz($r){
+if(is_string($r))$r=str_replace(' ','',trim($r));
 //if(is_numeric($r))return sql('x,y,z','umm.hipparcos','w',['hip'=>$r]);
 //if(is_numeric($r))$r=sql('rarad,decrad,dist','umm.hipparcos','rv',['hip'=>$r]);
-//if(is_numeric($r))$r=sql('ra,dc,dist','umm.hipparcos','rv',['hip'=>$r]);
-if(!is_array($r)){
-	if(strpos($r,' '))$r=explode(' ',$r);
-	else $r=simbad::callr($r);}
+//if(is_numeric($r))$r=sql('ra,dc,dist','hip','rv',['hip'=>$r]);
+//elseif(substr($r,0,2)=='hd')$r=sql('ra,dc,dist','hip','rv',['hd'=>substr($r,3)],1);
+if(!is_array($r))$r=simbad::callr($r);
 $ad=self::ra2deg($r[0]); $dc=self::dec2deg($r[1]); $ds=$r[2];
 return self::xyz($ad,$dc,$ds,1);}
 
@@ -239,10 +239,10 @@ $ret=$m->stars_distance($r1,$r2);
 return $ret;}
 
 static function menu(){
-$r=get_class_methods($this);
+$r=get_class_methods('maths');
 return tabler($r,'');}
 
 static function home($p,$o){bcscale(self::$bcs);
-if(method_exists($p))return self::$p($o);}
+if(method_exists('maths',$p))return self::$p($o);}
 }
 ?>

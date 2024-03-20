@@ -10,7 +10,7 @@ $suj=sql('suj','qda','v','id="'.$id.'"');
 $msg=divc('panel justy',$txt);
 $msg.=lkc('',$http.$htacc,tagb('h2',$suj));
 $msg.=divc('panel justy',ma::read_msg($id,'nlb'));
-self::send_mail('html',$to,$suj,$msg,$from?$from:hostname(),$htacc);
+self::send_mail('html',$to,$suj,$msg,$from?$from:ip(),$htacc);
 return btn('popbt',nms(34).' '.nms(79).' '.nms(36).': '.$to);}
 else return btn('popdel','error:'.$to);}
 

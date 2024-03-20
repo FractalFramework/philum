@@ -30,7 +30,7 @@ $msg=str_replace('_NAME',$nm,helps('chatcall')); $url=host().'/module/chatxml/'.
 if($to){mails::send_txt($to,$msg,$url,$nm,''); return nms(109).' '.nms(79).'e';}
 else return nms(114);}
 
-static function nam($p,$nm,$prm=[]){$res=$rm[0]?'';
+static function nam($p,$nm,$prm=[]){$res=$rm[0]??'';
 $j='popup_chatxml,home__x_'.$p.'_'.$res.'_namx'.$p;
 $d=inputb('namx'.$p,'',8,'name',20,[]);
 return $d.lj('popbt',$j,picto('kright'));}
@@ -46,7 +46,7 @@ $d.=lj('','popup_chatxml,canal__x_'.$p,picto('rss')).' ';
 $d.=lj('','popup_chatxml,invite___'.$p,picto('mail')).' ';
 //$d.=lj('','chtx'.$p.'_chatxml,sav___'.$p.'_2',picto('del')).' ';
 if(auth(6))$d.=msqbt('clients','chat_'.$p).' '; $d.=hlpbt('sconn').br();
-if($nm)$j='chtx'.$p.'_chatxml,sav_msgx'.$p.'_before_'.$p.'_'.$nm).atjr('jumpvalue',['msgx'.$p,''];
+if($nm)$j='chtx'.$p.'_chatxml,sav_msgx'.$p.'_before_'.$p.'_'.$nm.atjr('jumpvalue',['msgx'.$p,'']);
 else $j='popup__chatxmlnam__x_'.$p.'__msgx'.$p;
 $sty='min-height:24px; border:1px solid #777; max-width:330px; max-height:200px; overflow-y:auto; padding:4px;';
 $d.=divarea('msgx'.$p,'','track',$sty);//divedit

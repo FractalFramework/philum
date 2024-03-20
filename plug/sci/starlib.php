@@ -127,7 +127,7 @@ foreach($ra as $k=>$v){//known
 	$dcd=maths::dec2deg($v[3]); $dcg=deg2rad($dcd);
 	$rb[$k]=[$v[1],$v[8],$rag,$dcg,$v[4],'','','',$rah,$dcd];}} //pr($rb);
 	//$r[]=['','0',4.7705666221178,-0.47449684597553,26100,'',0,0,273.33,-27.1867];//Galactic center/Sagitarius A
-	//$r[]=['','999999',3.2799099968103,0.15751596499249,14.31,'G2V',0,0,12.5283,9.025];//Yooma 187.925°=12.52j
+	//$r[]=['','999999',3.2799099968103,0.15751596499249,14.31,'G2V',0,0,12.5283,9.025];//Yooma 187.925ï¿½=12.52j
 //if($p1=='knownstars' or $p1=='allstars')$r=$rb;
 if($r)foreach($r as $k=>$v){$kb=$rc[$v[1]]??randid();//hipparcos
 	$rt[$kb]=array_combine($cols,$v);
@@ -153,7 +153,7 @@ return $rt;}
 
 #init
 static function knownstars($p1){
-if($p1=='knownstars' or $p1=='allstars')$ra=sqldb::read('db/public/stars/1',1);
+if($p1=='knownstars' or $p1=='allstars')$ra=msql::read('','public_stars_1',1);
 if($p1=='allstars'){$rb=msql::row('','ummo_exo_5',1); $ra=array_merge($ra,$rb);}
 return implode(',',array_keys_r($ra,8));}
 
@@ -191,7 +191,7 @@ $r=self::play($p); if($r)$ret=tabler($r,1);
 if($p2){$ra=msql::read('','public_stars_1');
 	$k=in_array_r($p1,$ra,8);
 	if($ra[$k]??'')$ret.=tabler(array_combine($ra['_'],$ra[$k]),1,1);}
-if(!$ret)$ret=help('no element','txt');
+if(!$ret)$ret='no element';
 return $ret;}
 
 }

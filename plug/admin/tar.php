@@ -45,7 +45,7 @@ fclose($fp);}
 
 static function addir($f,$dr){
 $a=new PharData($f);//.tar
-$r=scandir_r($dr);
+$r=scanfiles($dr);
 foreach($r as $k=>$v)$a->addFile($v);
 $a->compress(Phar::GZ);
 //$pgz=$phar->convertToExecutable(Phar::TAR,Phar::GZ);//makes myphar.phar.tar.gz
@@ -109,7 +109,7 @@ static function zip0($f,$dr){//folder included
 $z=new ZipArchive();
 $z->open($f,ZIPARCHIVE::CREATE);
 $z->addEmptyDir($dr);
-self::folderToZip($f,$z,strlen("$f/"));
+self::zip($f,$z,strlen("$f/"));
 $z->close();}
 
 static function com($p,$o){

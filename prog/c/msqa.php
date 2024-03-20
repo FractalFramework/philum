@@ -106,11 +106,11 @@ if(is_array($r))foreach($r as $k=>$v){$td=''; $i++;
 		foreach($v as $ka=>$va)$td.=tagc('td',$csb,$va);
 	if($td)$tr.=tagb('tr',$td);}
 $ret=tag('table',[],$tr); //$ret=scroll($r,$ret,500);
-return divd('msqpg',$bt.$ret.$bt);}
+return div($bt.$ret.$bt,'','msqpg');}//scroll
 
 static function draw_table($r,$murl,$adm=''){//adm=saving
 [$dr,$nd,$n]=self::murlvars($murl); $jurl=ajx($murl); $def=get('def'); $i=0; $rh=[]; $datas=[];
-if($r)foreach($r as $k=>$v){$ra=[]; $i++;
+if(is_array($r))foreach($r as $k=>$v){$ra=[]; $i++;
 	if(is_array($v))foreach($v as $ka=>$va)$ra[]=self::displaydata(self::cutat($va),1);
 	$css=$k==$def?'popsav':'popbt';
 	$open=lj($css,'popup_msqa,editmsql___'.$jurl.'_'.ajx($k),$k);
@@ -208,7 +208,7 @@ $qb=ses('qb'); $tg=$ob?'socket':'admsql'; $rid=randid(); $rh=[];
 [$dir,$node]=self::node_decompil($nod); $nodb=ajx($nod); $pn=''; $rc=[]; $kb=''; $kyb='';
 $r=msql::read($dir,$node); $h=isset($r[msql::$m])?1:0; if($r)$rh=$h?$r[msql::$m]:current($r);
 if($r)$nxtk=msql::nextentry($r); $idn=randid();
-if($va=='add'){$u=$o; $o=domain(strtolower($u));
+if($va=='add'){$u=$o; $o=domain($u);
 	$va=$o?$o:self::findnextkey($r,0); $ry=array_fill(0,count($rh),'');
 	if(is_array($rh))$ra[$va]=array_combine($rh,$ry); else $ra[$va]=$ry; if(!isset($r[$va]))$r=$ra;
 	$rw=conv::recognize_defcon($u);
@@ -244,13 +244,13 @@ else{$kb=randid('k'); $rc[1]=self::codearea($kb,''); $keys='k'.$rid.','.$kb;}//n
 //$ret=self::medit_ksav($nod,$key,$res);
 $ret=input('k'.$rid,$key,strlen($key));
 $ret.=on2cols($rc,540,5);//render
-$bt=divc('txtx',$nod);
+$bt='';//divc('popbt',$nod);
 if(auth(4)){
 	$bt.=lj('popsav',$tg.'_msqa,msqlsav_'.$keys.'_x_'.$nodb.'_'.$kyb.'_'.$ob,nms(27)).' ';//sav
 	$bt.=lj('popbt',$tg.'_msqa,msqlsav_'.$keys.'__'.$nodb.'_'.$kyb.'_'.$ob,nms(66)).' ';//apply
 	$bt.=lj('popbt',$tg.'_msqa,msqlsav_'.$keys.'_x_'.$nodb.'_@'.$kyb,nms(98)).' ';//duplicate
 	$bt.=$pn.' ';//prevnext
-	if(strpos($nod,'_defcons'))$bt.=lj('popbt',$idn.'0,'.$idn.'1,'.$idn.'2,'.$idn.'3_conv,recognize*defcon___'.ajx($o),nms(195));//suggestions
+	if(strpos($nod,'_defcons'))$bt.=lj('popbt','json_conv,recognize*defcon___'.ajx($o).'_'.$idn,nms(195));//suggestions
 	$bt.=select_j('pos'.$rid,'msql',$key,$nod,'');//displace
 	$bt.=lj('popbt',$tg.'_msqa,msqldisplace_pos'.$rid.'__'.$nodb.'_'.ajx($key),nms(158)).' ';
 	$bt.=lj('popdel',$tg.'_msqa,msqldel__x_'.$nodb.'_'.$kyb,pictit('del',nms(76))).' ';}//del
@@ -258,7 +258,7 @@ if(substr($nod,0,4)=='lang'){$lg=strprm($nod,1,'/'); $rl=meta::langs(); $nd=stre
 	foreach($rl as $k=>$v)if($v!=$lg)$bt.=lj('popbt','popup_msqa,editmsql___lang/'.$v.'/'.ajx($nd).'_'.ajx($va),$v);
 	if($lg!=ses('lng'))$bt.=lj('popbt','popup_msqa,translate__x_lang/'.$lg.'/'.ajx($nd).'_'.ajx($va),picto('translate'));}
 $bt.=msqbt($dir,$node).hlpbt('defcons');
-$ret=divs('padding-bottom:4px',btd('bts','').$bt).$ret;
+$ret=div($bt,'').$ret;//'padding-bottom:4px',btd('bts','').
 return $ret;}
 
 #operations
@@ -655,7 +655,7 @@ if(!$b){$b=$p; $p='';} if(!$b)$b='users'; if($b=='lang')$d=$dir?$dir:prmb(25);
 return [$b,$d,$p,ajx($t),ajx($v),ajx($row)];}
 
 static function sesm($k,$v=''){return sesr('mu',$k,$v);}
-static function mnod($p,$t,$v){return $p.($t?'_'.$t:'').($v?'_'.$v:'');}
+static function mnod($p,$t,$s,$v=''){return $p.($t?'_'.$t:'').($s?'_'.$s:'').($v?'_'.$v:'');}//join('_',[$p,$t,$v])
 static function murl($b,$d,$p,$t,$v){return $u=($b?$b.'/':'').($d?$d.'/':'').self::mnod($p,$t,$v);}
 static function murlvars($u){[$b,$d,$p,$t,$v,$n]=self::murlread($u);
 return [$b.($d?'/'.$d:''),self::mnod($p,$t,$v),$n];}
@@ -723,8 +723,7 @@ if($cmd && $cmd!='='){
 	$murl=self::sesm('murl',self::murl($base,$dir,$hub,$table,$version));//b/d/p_t_v
 	$basename=$root.$folder.$node;
 	$is_file=is_file($basename.'.php');
-	$lk=self::sesm('lk',$url.$folder.$node.self::gpage());
-	$folder=$root.$folder;}//conformity
+	$lk=self::sesm('lk',$url.$folder.$node.self::gpage());}
 $def=ajx(get('def'),1);
 if(get('see'))$ret[]=verbose($ra,'dirs');
 //auth
@@ -745,7 +744,7 @@ if(!$def && auth(6)){
 	if(auth(4))$rt[]=lj('active','popup_msqa,creatable___'.$jurl,$lh[9][0]);
 	if($table && $authorized && $hub && $is_file){//$defs && 
 		$rt[]=self::opbt('backup',$jurl,$lh[2]);//sav==
-		if(is_file($basename.'_sav.php')){
+		if(is_file($root.'_bak/'.$folder.$node.'.php')){
 			$rt[]=self::opbt('restore',$jurl,$lh[3]);
 			$rt[]=self::opbt('del_backup',$jurl,$lh[30],1);}
 		$rt[]=self::opbt('import_defs',$jurl,$lh[5],1);

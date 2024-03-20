@@ -12,43 +12,45 @@ else $ret.=hidden('cnp','');
 $ret.=ljb('popsav',$j,$jv,'ok');
 return divs('width:320px;',$ret);}
 
-static function conns($p,$va,$rid='',$idart=''){$ret=''; switch($p){
-case('url'):$ret=self::url($va,$idart); $t='URL or ID article'; break;
-case('art'):$ret=self::art($va,$idart); $t='ID article'; break;
-case('img'):$ret=self::upload($idart); $t=nms(78); break;
-case('table'):$ret=self::mktable($va); $t='table'; break;
-case('nh'):$ret=self::footnotes($va,1); $t='footnotes'; break;
-case('css'):$ret=self::assistant('cnn','embedcss',$p,'',''); break;
-case('color'):$ret=self::color($p); break;
-case('bkgclr'):$ret=self::color($p); break;
-case('conn'):$p=''; break;
-case('video'):$ret=self::video($va); break;
-case('popvideo'):$ret=self::video($va); break;
-case('replace'):$ret=self::replace($va); break;
-case("delconn"):$ret=self::delconn($va); break;
-case('book'):$ret=mc::book($p); $t='mk_book'; break;
-case('paste'):$ret=self::paste(); $t=nms(86); $s=600; break;
-case('microform'):$ret=self::forms($p); $t='user_form'; break;
-case('microsql'):$ret=self::msql(); $t='select_microbase'; break;
-case('formail'):$ret=self::forms($p); $t='form_for_mail'; break;
-case("call_url"):$ret=self::vacuum(); $t=helps('import_art'); break;//from embpop
-//case("import"):$ret=self::vacuum(); $t=helps('import_art'); break;
-case("importart"):$ret=self::importart(); $t=helps('import_art'); break;////to do
-case('radio'):$ret=radio::select(); $t='mp3 directory '; break;
-case('module'):$ret=admx::modeditpop(1); break;
-case('ajax'):$ret=admx::modeditpop(0); break;//not public
-//case('articles'):$ret=admx::artmod_edit($p); break;
-//case('svg'):$ret=mbd_editsvg($p); break;
-case('search'):$t=nms(26); break;
-case('rss_art'):$t='xml_url'; break;
-case('api_read'):$t='philum distant_article'; break;
-case('iframe'):$t=nms(51).' (.txt)'; break;
-case('scan'):$t=nms(51).' (.txt)'; break;
-case('preview'):$t=nms(65); $va=str::embed_links($va);
-	$ret=conn::read($va,'',''); break;
-case('display'):$ret=divc('panel',$va); break;}
-if($p)if(strpos('forumchatpetitionlast-update',$p)!==false)$va=ses('read');
-if(!$ret)$ret=self::assistant('cnv','insert_conn',$p,$va,'');
+static function conns($p,$va,$rid='',$idart=''){
+$defo=function(){return self::assistant('cnv','insert_conn','',get('read'),'');};
+$ret=match($p){
+'url'=>self::url($va,$idart),
+'art'=>self::art($va,$idart),
+'img'=>self::upload($idart),
+'table'=>self::mktable($va),
+'nh'=>self::footnotes($va,1),
+'css'=>self::assistant('cnn','embedcss',$p,'',''),
+'color'=>self::color($p),
+'bkgclr'=>self::color($p),
+'conn'=>$defo,
+'video'=>self::video($va),
+'popvideo'=>self::video($va),
+'replace'=>self::replace($va),
+'delconn'=>self::delconn($va),
+'book'=>self::book($p),
+'paste'=>self::paste(),
+'microform'=>self::forms($p),
+'microsql'=>self::msql(),
+'formail'=>self::forms($p),
+'call_url'=>self::vacuum(),//from embpop
+'import'=>self::vacuum(),
+'importart'=>self::importart(),//to do
+'radio'=>radio::select(),
+'module'=>admx::modeditpop(1),
+'ajax'=>admx::modeditpop(0),//not public
+'articles'=>mod::artmod($idart,$p),
+'svg'=>svg::com($p),
+'search'=>$defo,
+'rss_art'=>$defo,
+'api_read'=>$defo,
+'iframe'=>$defo,
+'scan'=>$defo,
+'preview'=>conn::read(str::embed_links($va),'',''),
+'display'=>divc('panel',$va),
+default=>$defo};
+//if($p)if(strpos('forumchatpetitionlast-update',$p)!==false)$va=ses('read');
+//if(!$ret)$ret=self::assistant('cnv','insert_conn',$p,$va,'');
 return $ret;}
 
 //links//jr:future connedit will need refer id
@@ -137,7 +139,8 @@ return $ret;}
 
 static function paste(){$ret=diveditbt('');
 $ret=btn('right',lj('popbt" id="bts','txtarea_mc,wygok_txtareb_5',nms(86)));
-$ret.=divr('<br>',['contenteditable'=>'true','id'=>'txtareb','class'=>'panel justy','style'=>'padding:10px; border:1px dotted grey; min-width:550px; min-height:240px;']);
+$s='padding:10px; border:1px dotted grey; min-width:550px; min-height:240px;';
+$ret.=tag('div',['contenteditable'=>'true','id'=>'txtareb','class'=>'panel justy','style'=>$s],'<br>');
 return $ret;}
 
 //table
@@ -336,22 +339,22 @@ static function ascii($p,$id){
 $ret=lj('txtx','nvascii_mc,navs___ascii__'.$id,picto('back'));
 $r=msql::read('system','edition_ascii_11',1);
 foreach($r as $k=>$v)if($v[1]==$p){
-	if(is_numeric($v[0]))$va='&#'.$v[0].';'; elseif(mb_strlen($v[0])==1)$va=$v[0]; else $va='&'.$v[0].';';
-	$ret.=ljb('','insert_b',[$va,$id],$va,att($v[0])).' ';}
+	if(mb_strlen($v[0])==1)$va=$v[0]; elseif(is_numeric($v[0]))$va=chr_b($v[0]); else $va='&'.$v[0].';';
+	$ret.=ljb('ascii','insert_b',[$va,$id],$va,att($v[0])).' ';}
 return $ret;}
 
 static function unicodeslct($p,$id){
 $r=msql::row('system','edition_ascii_10',$p);
 $ret=div($r[0],'tit'); $a=hexdec($r[1]); $b=hexdec($r[2]);
-for($i=$a;$i<=$b;$i++){$va='&#'.$i.'; ';
+for($i=$a;$i<=$b;$i++){$va=chr_b($i).' ';
 $ret.=btj($va,atjr('insert',[$va,$id]),'ascii','').' ';}
 return $ret;}
 
 static function unicode($p,$id){
 $r=msql::read('system','edition_ascii_10',1);
-$ret=lj('txtx','nvascii_mc,navs___ascii_'.$id,picto('back')).' ';
-$ret.=lj('txtx','nvascii_mc,unicode____'.$id,'nocat').' ';
-$rc=msql::cat($r,3); foreach($rc as $k=>$v)$ret.=lj('txtblc','nvascii_mc,unicode___'.$k.'_'.$id,$k).' ';
+$ret=lj('active','nvascii_mc,navs___ascii_'.$id,picto('back')).' ';
+$ret.=lj('','nvascii_mc,unicode____'.$id,'nocat').' ';
+$rc=msql::cat($r,3); foreach($rc as $k=>$v)$ret.=lj('','nvascii_mc,unicode___'.$k.'_'.$id,$k).' | ';
 foreach($r as $k=>$v)if((!$p && !$v[3]) or $p==$v[3])$ret.=lj('','asc4_mc,unicodeslct___'.$k.'_'.$id,$v[0]).' ';
 if(auth(6))$ret.=msqbt('system','edition_ascii_10');
 $ret.=divd('asc4','');
@@ -359,9 +362,9 @@ return $ret;}
 
 static function navs($op,$id){$ret='';
 if($op=='ascii'){$r=msql::read('system','edition_ascii_11',1); $r=msql::cat($r,1);
-	$ret.=lj('txtx','popup_mc,navs___ascii_'.$id,pictxt('popup','detach'));
-	$ret.=lj('txtx','popup_ascii,home',pictxt('icons','search'));
-	$ret.=lj('','nv'.$op.'_mc,unicode___'.$id,pictxt('globe','families')).' ';
+	$ret.=lj('txtx','popup_mc,navs___ascii_'.$id,pictit('popup','detach'));
+	$ret.=lj('txtx','popup_ascii,home',pictit('search','search'));
+	$ret.=lj('','nv'.$op.'_mc,unicode___'.$id,pictit('globe','families')).' ';
 	if(auth(6))$ret.=msqbt('system','edition_ascii_11');
 	foreach($r as $k=>$v)$ret.=lj('','asc4_mc,ascii___'.$k.'_'.$id,$k).' ';
 	$ret.=divd('asc4','');}

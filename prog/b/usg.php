@@ -17,7 +17,7 @@ static function txt($g1,$g2){return $ret=divc($g2,$g1);}
 static function img($g1,$g2){return $ret=image($g1,$g2);}
 static function audio($g1,$g2){return $ret=audio($g1,$g2);}
 static function video($g1,$g2){return $ret=video($g1,$g2);}
-static function popim($g1){[$w,$h]=getimagesize($g1); return usg::photo($g1,$w,$h,get('sz'));}
+static function popim($g1){[$w,$h]=getimagesize($g1); return self::photo($g1,$w,$h,get('sz'));}
 static function poptxt($g1){return div(sesr('delaytxt',$g1),'twit','','display:block; min-width:440px;');}
 static function popfile($g1){return nl2br(str::cleanmail(read_file($g1)));}
 static function popread($g1){return ma::read_msg($g1,3);}
@@ -39,6 +39,11 @@ return divc('panel justy',$ret);}
 
 static function call($g1,$g2,$prm){
 return $ret=$g1($g2,'',$prm);}
+
+static function switchcss($g1,$g2,$prm){
+$r=expl('_',$g1,4); $d=$r[3]=='neg'?'n':'d';
+cookz('night'); $_SESSION['negcss']=$d=='n'?1:0;
+return picto($d=='n'?'moon':'light');}
 
 #photo
 static function photosbt($im,$sz,$id,$j){$ret=''; $n=1;
@@ -79,9 +84,9 @@ $s='overflow:auto; width:100%; height:'.($h+4).'px;';
 return divs($s,image($img,'100%','auto'));}
 
 //video
-static function playvideo($iv,$cr_div,$n){
-$r=$_SESSION['iv'.$iv]; ses::$r['curdiv']=$cr_div;
-$jx='iv'.$iv.'_usg,playvideo___'.$iv.'_'.$cr_div.'_';
+static function playvideo($iv,$n){
+$r=$_SESSION['iv'.$iv];
+$jx='iv'.$iv.'_usg,playvideo___'.$iv.'_';
 $ret=divc('nbp right',self::nb_pages_j($r,$jx,$n));
 $ret.=tagb('h3',lk(htac('read').$r[$n][0],ma::suj_of_id($r[$n][0])));
 $ret.=video::any(strfrom($r[$n][1],'|'),$r[$n][0],3);
@@ -96,7 +101,7 @@ if($nc>0){foreach($rc as $k=>$v){$rab=ma::rqtcol([$pa=>$v]); if($rab)$ra=$rab;}}
 elseif($pb)$ra=ma::rqtcol([$pa=>$pb]); else $ra=ma::rqtall('id','k');
 if($ra){$min=min($ra);
 $r=self::search_conn($ra,$min,':video'); $_SESSION['iv'.$iv]=$r;
-if($r)return divd('iv'.$iv,self::playvideo($iv,ses::r('curdiv'),0));}}
+if($r)return divd('iv'.$iv,self::playvideo($iv,0));}}
 
 static function search_conn($ra,$min,$cn){
 $req=sql::com('id,msg','qdm','id>="'.$min.'" and msg like "%'.$cn.'%" order by id desc');
@@ -135,9 +140,7 @@ return divc('twit small scroll',conn::read2(trim($ret),3,$id));}
 
 //dropmenu
 static function dropmenuform($id,$rid,$v,$opt){//mc::assistant($id,$j,$jv,$va,$chk);
-if($opt)$bt='getbyid(\''.$opt.$rid.'\').innerHTML=val;'; else $bt='';
-return input('adc'.$rid,$v).btj('ok','var val=getbyid(\'adc'.$rid.'\').value; 
-if(val){'.$bt.' getbyid(\''.$id.'\').value=val;}','popbt');}// Close(\'popup\');
+return input('adc'.$rid,$v).btj('ok',atjr('transportval',[$id,$rid,$opt]),'popbt');}
 
 static function dropmenu_jb($r,$id,$rid,$opt='',$n=''){//sav::catslct
 if($n)$vac=sav::find_vaccum($n); else $vac=''; $ret='';
@@ -183,7 +186,7 @@ switch($d){
 		if($ra)foreach($ra as $k=>$v){$va=$v[$vrf]; $r[$va]=$va;}
 		if($r)ksort($r); break;
 	case('plug'):$r=msql::read('system','program_plugs'); if($r)ksort($r); break;
-	case('func'):if($o)$r=call_user_func($o); $r=array_keys($r); if($r)ksort($r); break;
+	case('func'):if($o)$r=$o(); $r=array_keys($r); if($r)ksort($r); break;
 	case('pclass'):[$a,$m,$p]=expl('/',$o,3); if(method_exists($a,$m))$r=$a::$m($p); break;
 	default: $s=strpos($d,'|')?'|':' '; $r=array_flip(explode($s,$d)); break;}
 if($r && $cl)$r=array_unshift_b($r,'','x');
@@ -233,7 +236,7 @@ static function putses($k,$v){
 if($k!='auth' && $k!='USE')return $_SESSION[$k]=$v;}
 
 static function setlng($g1){
-$ret=usg::putses('lang',$g1);
+$ret=self::putses('lang',$g1);
 ses('lng',$g1!='all'?$g1:prmb(25));
 $_SESSION['nms']=msql::col('lang','helps_nominations',0,1);
 return $ret;}
@@ -260,12 +263,12 @@ $d=conn::read($d,'',$g1,1); return str_replace('</p>',"</p>\n",$d);}
 static function slctmod($g1){
 return boot::select_mods(yesnoses('slctm')?$g1:'');}
 
-static function iframe($g1){$sz=get('sz'); [$w,$h]=expl('-',$sz); $s=$w>400?$w:cw();
+static function iframe($g1){$sz=get('sz'); [$w,$h]=expl('-',$sz); $s=$w>400?$w:prma('content');
 ses::$r['popm']=lkt('',$g1,pictxt('pdf',domain($g1))); ses::$r['popw']=$s;
 return iframe($g1,$s-20);}
 
 static function site($g1,$g2,$g3){
-if($sz=get('sz'))[$w,$h]=expl('-',$sz,2); if(!$w)$w=cw();
+if($sz=get('sz'))[$w,$h]=expl('-',$sz,2); if(!$w)$w=prma('content');
 $u='index.php'; if($g1)$u.='/'.$g1; if($g2)$u.='/'.$g2;
 return iframe($u,$w,$h);}
 }

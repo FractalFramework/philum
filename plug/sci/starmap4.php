@@ -16,7 +16,7 @@ foreach($r as $k=>$v){$i++; $y=$sz+$i*$sz;
 	svg::circle($x+8,$y+8,5,$v,$black);
 	svg::text(12,$x+$sz+8,$y+12,$k,$white);}
 $i=0; $x=140; $y=$sz+$i*$sz; svg::text(10,$x,$y+12,'Zones',$white);
-$r=['Friends or Neutral','Ancien Aliens Dominion','Hostiles','Roswell New Dominion'];
+$r=['Friends or Neutral','Orion Elder Dominion','Hostiles','Roswell New Dominion'];
 $r=array_combine($r,self::$clr3);
 foreach($r as $k=>$v){$i++; $y=$sz+$i*$sz;
 	svg::rect($x,$y,$sz,$sz,$v,$black);
@@ -59,16 +59,17 @@ if($r)foreach($r as $k=>$v)$rb[$k]=round((($r1[$k]??10)+$r2[$k])/3,2); //pr($rb)
 return $rb;}*/
 
 static function dots($r,$o){$n=count($r);
-$w=self::$w; $h=$w/2; $mw=$w/24; $mh=$h/12; $sz=10; $xs=$o==1?16:12; $decaly=$o==1?20:16; //pr($r);
+$w=self::$w; $h=$w/2; $mw=$w/24; $mh=$h/12; $sz=10; $xs=12; $decaly=16;
 [$white,$black,$red,$green,$blue,$yellow,$cyan,$orange,$silver,$gray]=self::$clr; $klr=self::$clr2;
 if($o==2)$rz=starlib::proportion(array_keys_r($r,'radius'),2,12,50,0);
 elseif($o==3)$rz=starlib::proportion(array_keys_r($r,'dist'),2,12,100,1);
 elseif($o==5)$rz=starlib::proportion(array_keys_r($r,'mag'),2,12,10,1);
 elseif($o==4)$rz=['O'=>12,'B'=>10,'A'=>9,'F'=>8,'G'=>7,'K'=>6,'M'=>5,'L'=>4,'T'=>3,'Y'=>'2',''=>5];
 else $rz=starlib::sz($r);
-if($r)foreach($r as $k=>$v){
-	$x=$v['x']; $y=$v['y']; $st=$v['star']??''; $pl=$v['planet']??''; $stt=$v['status']??''; $ray=$v['radius']??1;
-	$nm=$st?$st:($v['hd']?'HD'.$v['hd']:''); $spc=substr($v['spect'],0,1); $ds=$v['dist']??30;
+if($r)foreach($r as $k=>$v){$x=$v['x']; $y=$v['y'];
+	$st=$v['star']??''; $pl=$v['planet']??''; $stt=$v['status']??''; $ray=$v['radius']??1; $hd=$v['hd'];
+	$nm=$st?$st:($hd?'HD '.$hd:''); if($o==1 && $hd)$nm='HD '.$hd;
+	$spc=substr($v['spect'],0,1); $ds=$v['dist']??30;
 	$clr=starlib::sttclr($stt); if($o==4)$clr=$klr[$spc]??'#ffffff';
 	if($o==4)$sz=$rz[$spc]??10; else $sz=$rz[$k]??10;
 	//svg::circle($x,$y,round($sz,2),$clr,$white,1);
@@ -77,7 +78,8 @@ if($r)foreach($r as $k=>$v){
 	if($n<100)svg::$ret[]='['.$tx.'|'.$circ.':bub]';
 	else svg::$ret[]='[star;info___'.$v['hip'].'_hip|'.$circ.':bubj]';
 	$xb=$x-20; $yb=$y+$decaly;
-	if($nm=='6 G. Piscium' or $nm=='38 Piscium' or $nm=='Iota Piscium' or $nm=='Gliese 250'){$xb=$x+8; $yb=$y+6;}
+	$rc=['6 G. Piscium','38 Piscium','Iota Piscium','Gliese 250','HD 217107','HD 222368','HD 1317','HD 50281'];
+	if(in_array($nm,$rc)){$xb=$x+8; $yb=$y+6;}
 	if($v['hd']=='114710'){$xb=$x-60;}//Berenice
 	//if($n<100)svg::bubj($xb,$yb,$xs,$white,'star;info___'.$v['hip'].'_hip',$nm);
 	if($n<100)svg::lj($xb,$yb,$xs,$white,'popup_star;info___'.$v['hip'].'_hip',$nm);}}
@@ -236,9 +238,10 @@ $j=$rid.'_starmap4,call_inp_2';
 $ret=inputj('inp',$p?$p:self::$default,$j).hlpbt('starmap');
 $ret.=lj('',$j,picto('ok')).' ';
 //$ret.=checkbox('big','1','big',0);
-$ret.=lj('txtx',$rid.'_starmap4,call_inp___1','big').' ';
+//$ret.=lj('txtx',$rid.'_starmap4,call_inp___1','big').' ';
 $ret.=lj('txtx',$rid.'_starmap4,call___knownstars','known').' ';
 $ret.=lj('txtx',$rid.'_starmap4,call___allstars','all').' ';
+$ret.=lj('txtx',$rid.'_starmap4,call_inp___1','hd').' ';
 $ret.=lk('/app/starmap4',picto('url'));
 return $ret;}
 

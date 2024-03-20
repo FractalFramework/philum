@@ -89,7 +89,7 @@ case('atpos'):$n=count($defs); $defs=self::save_css_displace($defs,$res,$o);
 	if(count($defs)==$n)msql::save($bd,$nod,$defs); break;
 case('save'):msql::save($bd,$nod,$defs); //if(rstr(63))
 	self::build_css($ftmp,$defs); self::build_css($fcss,$defs); self::build_css($fcss,$defs,1); break;
-case('backup'):msql::save($bd,$nod,$defs,[],1); self::save_clr($noc.'_sav'); break;
+case('backup'):msql::save($bd,$nod,$defs,[],1); self::save_clr($noc,1); break;
 case('apply'):msql::save($bd,$nod,$defs); self::save_clr($noc);
 	self::build_css($fcss,$defs); self::informe_config_design(); break;
 case('test_design'):$_SESSION['prmd']=ses('desgn'); break;
@@ -156,7 +156,7 @@ if($_SESSION['prmd']!=$_SESSION['desgn'])
 if($_SESSION['desgn']!=$_SESSION['prma']['design'])
 	$rt[]=self::cssactbt('apply',nms(66).' (mods:'.prmb(1).'-'.$_SESSION['prma']['design'].')','self','sav');
 $rt[]=self::cssactbt('save',nms(27),'','','').' ';
-$rt[]=spn('','','alertmsg');
+$rt[]=span('','','alertmsg');
 //$rt[]=self::cssactbt('build_css',nms(93),'','');//rebuild
 $ret.=div(implode('',$rt)); $rt=[];
 $rt[]=self::cssactbt('new_from',nms(44),'url','');//url
@@ -198,9 +198,10 @@ return $ret;}
 static function css_default($o=''){$o=$o?$o:'2';
 return msql::read('system','default_css_'.$o);}
 
-static function save_clr($nod){$r=$_SESSION['clrs'][$_SESSION['clrset']]; 
+static function save_clr($nod,$o=''){
+$r=$_SESSION['clrs'][$_SESSION['clrset']]; 
 if($r)foreach($r as $k=>$v)if($v)$rb[$k]=[$v]; $rb[]=[];
-if($rb)msql::save('design',$nod,$rb); return $rb;}
+if($rb)msql::save('design',$nod,$rb,[],$o); return $rb;}
 
 static function reorder_keys($r){$i=0; $ret=[];
 if($r)foreach($r as $k=>$v){if($k!=msql::$m){$i++; $k=$i;} $ret[$k]=$v;}
@@ -330,10 +331,10 @@ elseif($clrb==2)$clr=msql::kv('system','default_clr_2');
 else $clr=getclrs();
 $s='float:left; text-align:left; margin:1px; width:';
 if($k)$ret=toggle($csa.$css,'css'.$k.'_sty,editcss___'.$k,$t,'',ats($s.'190px;'));
-else $ret=spn($t,$csa,'',$s.'190px;');
-for($i=3;$i<6;$i++)$ret.=spn(self::petit_clr($p[$i]??'-',$clr),$csa,'',$s.'50px;');
+else $ret=span($t,$csa,'',$s.'190px;');
+for($i=3;$i<6;$i++)$ret.=span(self::petit_clr($p[$i]??'-',$clr),$csa,'',$s.'50px;');
 if($op){$pb=isset($p[6])?etc(str_replace('; ',';'.br(),stripslashes($p[6])),1000):'-';
-$ret.=spn($pb,$csa,'',$s.'250px;');}
+$ret.=span($pb,$csa,'',$s.'250px;');}
 return divc('clear',$ret);}
 
 static function design_edit($r,$defsb,$edit,$op){
@@ -347,7 +348,8 @@ if($v[0])$ra['divs'].=$ret; elseif($v[1])$ra['classes'].=$ret;
 elseif($v[2])$ra['elements'].=$ret;}}
 return divs('min-width:440px',tabs($ra,'css'.$edit));}
 
-static function saveclr($p){$qb=ses('qb'); $tosave=$p[0];
+static function saveclr($p){
+$qb=ses('qb'); $tosave=$p[0];
 $ndd=ses('desgn',ses('prmd'));
 $ndc=ses('clrset',ses('prmd'));
 $nod=$qb.'_design_'.$ndd; $f_c=$qb.'_clrset_'.$ndc;
@@ -376,7 +378,7 @@ EYE.register(initLayout,"init");})(jQuery)';
 $ret.='
 function SaveClr(nb){var clrs="/"; for(i=1;i<=nb;i++){
 var va=document.getElementById("colorpickerField"+i).value; clrs+=va+"/";}
-bjcall("clrreponse|sty,saveclr||"+clrs);
+bjcall("clrreponse|sty,saveclr|"+clrs);
 var x=setTimeout("Close(\"clrreponse\")",3000);}';
 return $ret;}
 
@@ -626,7 +628,7 @@ $kr=getclrs(); $n=$kr?count($kr):0; $ret='';
 for($i=0;$i<=3;$i++){$ri=$r[$i]??'';
 	$clrn=$ri=='undefined'||!$ri?'0':$ri; $nid=$i+1;
 	$kl=isset($kr[$clrn])?$kr[$clrn]:'';
-	$ret.=spn(self::setclr($kl,$clrn,$p.$nid),'cell','bt'.$p.$nid);}
+	$ret.=span(self::setclr($kl,$clrn,$p.$nid),'cell','bt'.$p.$nid);}
 return $ret;}
 
 static function facil_colors($defs,$k,$url){

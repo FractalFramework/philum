@@ -61,7 +61,7 @@ $ret=self::build($p,$o);
 return $ret;}
 
 static function menu($p,$o){$bid='inp';
-$j=self::$cb.'_'.self::$a.',call_'.$bid.'_2__'.$o;
+$j=self::$cb.'_oldefcons,call_'.$bid.'_2__'.$o;
 $ret=inputj($bid,$p,$j);
 $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}

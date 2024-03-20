@@ -77,10 +77,9 @@ return $ret;}
 static function taxoarts($p){$rca=[]; $rcb=[];
 //$r=ma::readcache();
 $r=taxonav::collect_hierarchie_d('reverse');
-//$r=tri_hierarchic($r,$h); p($r);
 //mk::taxonomy($r)
 //$ida=ma::id_of_ib($k);
-//$r=ibofid_r($k,$r);
+//$r=toxonav::ibofid_r($k,$r);
 return self::sav($rca,$rcb,$p,'taxo');}
 
 static function call($p,$o,$prm=[]){$p=$prm[0]??$p;

@@ -54,7 +54,7 @@ foreach($r as $k=>$v){$c=$k==$travel?'active':''; $ic=$travel==$k?'clock':'hour'
 return divc('menus',$ret);}
 
 static function prevnext_art($b,$o,$id,$tg=''){$wh=''; $rb=[];
-$id=$id?$id:ses('read'); $ta=picto('left'); $tb=picto('right'); $htacc=htacc('read');
+$id=$id?$id:ses('read'); $ta=picto('kleft'); $tb=picto('kright'); $htacc=htacc('read');
 if($b=='rub')$wh='and frm="'.get('frm').'" '; else $wh='and substring(frm,1,1)!="_"';
 $ord=strtolower(prmb(9)); $col=strto($ord,' ');
 $w='and nod="'.ses('qb').'" and re>"0" '.$wh;
@@ -62,11 +62,9 @@ if($col=='day'){$dy=sql('day','qda','v',$id); $w1='day<"'.$dy.'"'; $w2='day>"'.$
 else{$w1='id<"'.$id.'"'; $w2='id>"'.$id.'"';}
 $k1=sql('id','qda','v',$w1.' '.$w.' order by '.$col.' desc limit 1');
 $k2=sql('id','qda','v',$w2.' '.$w.' order by '.$col.' asc limit 1');
-if(!rstr(8)){$ret=lkc($k1?'':'hide',$htacc.$k1,$ta).''.lkc($k2?'':'hide',$htacc.$k2,$tb);}
-else{
-	if($tg)$j='pagup_popart__x_'; elseif($o)$j='popup_popart__x_'; else $j='content_mod,playmod__u_read_';
-	$ret=!$k1?btn('hide',$ta):lj('',$j.$k1,$ta);
-	$ret.=!$k2?btn('hide',$tb):lj('',$j.$k2,$tb);}
+if($tg)$j='pagup_popart__x_'; elseif($o)$j='popup_popart__x_'; else $j='content_mod,playmod__u_read_';
+$ret=!$k1?btn('hide',$ta):lj('',$j.$k1,$ta);
+$ret.=!$k2?btn('hide',$tb):lj('',$j.$k2,$tb);
 if(!$o)return btn('btpic right',$ret);
 return $ret;}
 
@@ -79,7 +77,7 @@ return $ret;}
 static function menus_r($r){$ret='';
 $sty='border-left:1px dotted grey; margin:0 0 1px 0; padding-left:15px;';
 foreach($r as $k=>$v){[$lk,$d]=self::submn_t($k); $ret.=divc('',lka($lk,$d));
-if(is_array($v)){$ret.=divs($sty,md::menus_r($v));}}
+if(is_array($v)){$ret.=divs($sty,self::menus_r($v));}}
 return $ret;}//'&#9500;&#9472;'.
 
 static function submn_t($va){[$k,$v]=cprm($va);
@@ -113,7 +111,7 @@ return mkbub($ret,$inl,1,'');}
 static function mod_taxonomy($p,$o){$p=$p?$p:'taxonomy';
 $r=self::collect_hierarchie_c('reverse',$o);
 if($r){$ret=self::title($r,$p,63);
-$ret.=divc('taxonomy',md::menus_r($r));}
+$ret.=divc('taxonomy',self::menus_r($r));}
 return $ret;}
 
 static function taxo_arts($p){
@@ -209,8 +207,7 @@ $w='nod="'.ses('qb').'"'; $nbj=ses('nbj'); $bt=''; $sp=sti();
 if($nbj==7 or $nbj=='auto')$w.=' and day>'.calctime(30);
 $r=sql('distinct(frm)','qda','rv',$w); $d=$d?$d:'lines';
 if($r)foreach($r as $k=>$v)//active($v,$p)
-	//$bt.=lj('',$rid.'_mod,callmod___m:category,p:'.ajx($v).',d:'.$prw.',tp:'.$tp,catico($v,16).$sp.$v);
-	$bt.=lh('cat/'.$v,catico($v,16).$sp.$v);
+	$bt.=lh('cat/'.$v,catico($v).$sp.$v);
 $prw=$prw?$prw:(rstr(41)?3:2);
 $p=get('frm')?get('frm'):$p;
 $ret=api::arts($p,$prw,'');
@@ -272,7 +269,7 @@ foreach($r as $ka=>$va)foreach($va as $k=>$v)if($v){$rb=explode('/',$v);
 		$f='img/'.$vb; $s=is_file($f)?filesize($f):0;
 		if($s>20480 or ($o && $s<20480))$load[$ka][$k][]=$vb;}}
 if($load)$ret=self::home_plan($load);
-if($rb)return md::title($load,'Gallery',61).$ret;}
+if($rb)return self::title($load,'Gallery',61).$ret;}
 
 static function trkarts($p,$t,$d,$o,$rch=''){//see also api cmd:tracks
 $qda=db('qda'); $qdi=db('qdi'); $pg=$o?$o:1; $tri=$d==1?$qdi:$qda;
@@ -321,7 +318,8 @@ return sql('ib','qda','k',['id'=>$id]);}
 static function same_title($id){if(!$id)$id=ses('read');
 return sql('id','qda','k',['suj'=>$id,'nod'=>ses('qb'),'!id'=>$id,'_order'=>prmb(9)]);}
 
-static function call_context($cntx){$r=$_SESSION['mods']; $ret='';//context as module
+static function call_context($cntx){
+$r=$_SESSION['mods']; $ret='';//context as module
 if($r)foreach($r as $k=>$v)
 if(is_array($v))foreach($v as $ka=>$va)
 if($va[7]!=1 && $va[3]==$cntx)$ret.=mod::build($va);
@@ -448,7 +446,7 @@ return $rb;}
 
 static function supertriad_b(){$rt=[];//descend
 $r=ma::readcache(); if(is_array($r))foreach($r as $k=>$v)
-if(is_numeric($v[10]))$rt[$k][$v[10]][$k]=1;
+if($v[10]??'' && s_numeric($v[10]))$rt[$k][$v[10]][$k]=1;
 return $rt;}
 
 static function collect_hierarchie_b($rev){$rt=[];//append
@@ -458,7 +456,7 @@ $r=self::supertriad_b(); if(is_array($r)){
 return $rt;}
 
 static function supertriad_c($d,$p=''){$rt=[];//descend
-$r=ma::readcache(); if($r)foreach($r as $k=>$v){
+$r=ma::readcache(); if($r)foreach($r as $k=>$v)if($v[10]??''){
 if($v[10]>0 && (!$p or $v[1]==$p))$rt[$v[10]][$k]=1;}
 return $rt;}
 
@@ -477,7 +475,7 @@ return $rb;}
 
 static function supermenu($r){static $i; $i++; $ret='';
 if(is_array($r))foreach($r as $k=>$v){$ret.=nchar($i,"-");
-	if(is_array($v))$ret.=$k.n().md::supermenu($v); else $ret.=$k.n();} $i--;
+	if(is_array($v))$ret.=$k.n().self::supermenu($v); else $ret.=$k.n();} $i--;
 return $ret;}
 
 //adm

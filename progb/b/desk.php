@@ -4,14 +4,13 @@ static $rico=[];
 static $rid='dk';
 
 #desktop
-//ajax,art,file,finder,admin,msql,iframe,link,url,bub//plugfunc,,plug,plup,link,appin,mod
 static function read($v,$tg=''){
 if($v[1]=='app'){[$a,$m]=expl(',',$v[2]);
 	return 'popup_'.$a.','.($m?$m:'home').'__3_'.ajx($v[3]).'_'.ajx($v[4]);}
 $rid=rstr(85)?'popup':'content';
 return match($v[1]){//p/t/d/o/c/h/tp/br
 'art'=>$rid.'_popart__3_'.$v[3].'_3_'.$v[4],
-'ajax'=>$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
+'ajax'=>$v[2].'_'.$v[3].'_'.$v[4],
 'popup'=>'popup_'.$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
 'desktop'=>($tg?$tg:'popup').'_desk,deskroot__15_'.$v[2].'_'.$v[3].'_'.$v[4].'_'.$tg,//type
 'module'=>$rid.'_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]),
@@ -110,7 +109,7 @@ $ra=['popart'=>'articles','msql'=>'server','desk,deskroot'=>'folder','usg,popim'
 if($j)$ica=strprm($j,1,'_'); if($ica=='popim')$ic=img::make_thumb_c(ajx(strprm($j,4,'_'),1),'50/38','ico');
 if($ica)return $ra[$ica]??'';}
 
-static function icoart($k,$v,$c){$ico=''; $id='ic'.$k;
+static function icoart($k,$v,$c){$ico=''; $id='ic'.$k;//(rstr(85)?'popup':'content').
 if(is_numeric($k)){$v='popup_popart__3_'.$k; $ic=self::thumb($k); $k=ma::suj_of_id($k);}
 else $ic=self::desk_icon($k,$v);
 if($ic)$ico=strpos($ic,'<')!==false?$ic:mimes($k,$ic,32);
@@ -220,7 +219,7 @@ return $dr.'/'.($r[rand(0,$n-1)]??'');}
 static function deskbkg(){$klr=0;
 $prmd=$_SESSION['prmd']; if(isset($_SESSION['negcss']))$prmd.='_neg';
 $clr=getclrs($prmd); $g=prma('desktop'); ses::$r['popm']=lj('','page_desk,deskbkg',picto('desktop'));//
-if($g)$g=goodroot($g); if(!$g)$g='top,#_4,#_2';
+if($g)$g=goodroot($g); if(!$g)$g='top,#_4,#_2'; else $g=stripfirst($g,'/');
 $s='background-size:cover; background-color:black; background-repeat:no-repeat;
 background-position:center center; background-attachment:fixed;';
 if(is_dir($g))$ret='background:url('.self::randimg($g).'); '.$s;

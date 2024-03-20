@@ -19,7 +19,7 @@ $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){
-$rid=randid(self::$a); $ret='';
+$rid=randid(); $ret='';
 $bt=self::menu($p,$o,$rid);
 if($p)$ret=self::build($p,$o);
 return $bt.divd($rid,$ret);}

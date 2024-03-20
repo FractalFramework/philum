@@ -1,2 +1,2 @@
 <?php 
-return ["1"=>['0803','publication']]; ?>
+return [1=>['0803','publication']]; ?>

@@ -9,7 +9,7 @@ elseif($ca<$cb){$nb=$cb-$ca; $t='"["';}
 if(isset($nb))return btn('txtyl',$nb.$t.'missing');}
 
 static function urledt($id){$b=rstr(18)?'public':ses('qb');
-$u=is_numeric($id)?ma::rqtv($id,'mail'):$id; [$k]=conv::verif_defcon($u);
+$u=is_numeric($id)?ma::rqtv($id,'mail'):$id; [$k]=conv::find_defcon($u);
 return lj('','popup_msqa,editmsql___users/'.$b.'*defcons_'.ajx($k).'_'.ajx($u),picto('config'));}
 
 //menus
@@ -46,7 +46,7 @@ return self::call($f,'');}
 static function txarea($d,$id=''){return '<textarea id="txtarea" name="msg" class="console" style="margin:0; width:100%; min-width:600px; min-height:240px;">'.$d.'</textarea>';}
 
 //f
-static function call($link,$id){ses::$r['curdiv']='content'; $ip=hostname();
+static function call($link,$id){$ip=ip();
 $USE=ses('USE'); $frm=ses('frm'); $suj=''; $msg=''; $rid=randid('edt');
 if($USE)$us=$USE; else [$us,$ml]=sql('name,mail','qdi','r','host="'.$ip.'" order by id desc limit 1');
 if(!$frm)$frm='public';

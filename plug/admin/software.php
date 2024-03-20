@@ -16,7 +16,7 @@ if($r)foreach($r as $k=>$v)if(!val($rb,$k))$ret.=lj('','popup_software,patch___'
 if($ret)$ret=btn('txtyl','patch needed: '.$ret);
 if($p && !$rb[$p]){
 	$ret=lj('txtalert','upd_software,state',$r[$p][0].': '.$r[$p][1]);
-	$ret.=patchs::home($r[$p][0]);
+	$ret.=patchs::home($r[$p][0],'');
 	msql::modif('server','program_patches',1,'shot',0,$p);}
 return $ret;}
 
@@ -28,7 +28,8 @@ static function notes(){$r=msql::read('system','program_updates_'.date('ym'),1);
 $r=array_reverse($r); return tabler($r);}
 
 static function state($p=''){$ret='';
-$localver=checkversion(2); $distver=checkupdate(2); if($p)$localver=$distver;
+$localver=checkversion(2); $distver=sesmk('checkupdate',2,1); //checkupdate(2)
+if($p)$localver=$distver;
 $f=json::url('srv','upd'); $date=ftime($f,'ymd.Hi');
 if($p)$r[]=btn('txtcadr',helps('softwareupdated'));
 elseif(prms('aupdate'))$r[]=btn('txtx',helps('updateno'));
@@ -55,7 +56,7 @@ return $no;}
 static function datas($dr,$k,$f){$no=self::exceptions($dr,$f);
 if(!$no)return [$f,ftime($f)];}//,fsize($f)
 
-static function recense($dr){$r=scandir_r($dr); $rb=[];
+static function recense($dr){$r=scanfiles($dr); $rb=[];
 foreach($r as $k=>$v)if(!self::exceptions($dr,$v))$rb[$v]=ftime($v); return $rb;}
 
 static function build($p=''){$rb=[];

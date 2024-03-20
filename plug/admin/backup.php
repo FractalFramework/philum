@@ -28,7 +28,7 @@ if($ret)$err=write_file($f,$ret); //exc('gzip -r /home/nfo/'.$f);
 if(!$err)return lkt('txtyl','/'.$f,$f);}//.'.gz'
 
 static function dump($b){
-if(ses('qb')=='ummo')$n=12; else $n=11;
+if(ses::$oom)$n=12; else $n=11;
 [$usr,$db,$ps,$dr]=transport::srv(1); $table=$b!=1?transport::pub($b):'';
 $f='_backup/'.($b!=1?$b:$db.date('ymd')).'.dump';//-default-character-set=utf8
 if($b==1){if(is_file($f.'.gz'))return $f.'.gz';} elseif(is_file($f))unlink($f); 

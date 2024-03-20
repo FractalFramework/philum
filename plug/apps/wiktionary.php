@@ -18,7 +18,7 @@ foreach($n->childNodes as $nc)($nc->hasChildNodes())
 :$ret=$nc->nodeValue;
 return $ret;}*/
 
-static function explore($r){
+static function explore($r){$ret='';
 foreach($r->childNodes as $k=>$v){
 	if($v->hasChildNodes()){
 		//$attr=$v->getAttribute('href');
@@ -50,7 +50,7 @@ return $ret;}
 
 static function build($p,$o){
 $d=curl_get_contents($p);
-$ret=html_detect($d,'<ol>');
+$ret=conv::html_detect($d,'<ol>');
 $ret=strip_tags($ret,'');
 $ret=nl2br($ret);
 return $ret;}
@@ -72,5 +72,5 @@ $bt=self::menu($p,$o,$rid);
 if($p)$ret=self::call($p,$o);
 return $bt.divd($rid,$ret);}
 
-}s
+}
 ?>

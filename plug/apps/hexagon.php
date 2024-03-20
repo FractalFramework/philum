@@ -57,7 +57,7 @@ return $ret;}
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$$p;
 $ret=self::build($p,$o);
-return $bt.$ret;}
+return $ret;}
 
 static function menu($p,$o,$rid){
 $j=$rid.'_hexagon_call_inp';

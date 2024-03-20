@@ -44,7 +44,7 @@ if($r)foreach($r as $k=>$v){$val=$rd[$v]; $gv=$prm[$v.$id]??'';
 	if(!$val)$val=$vrf;//permut value with global setting
 	if($gv==$vrf && $val)$gv='';//erase if not usefull
 	if($gv!=$val)self::utag_sav($id,$v,$gv);}
-return art::playd($id,$m);}//$gv &&
+return art::playd($id,$m,get('g2'));}//$gv &&
 
 static function priorsav($v,$id){
 if($v=='trash')sql::upd('qda',['frm'=>'_trash'],$id);
@@ -54,7 +54,7 @@ return self::prior_edit($v,$id);}
 
 static function prior_edit($va,$id){
 $j='rdbt'.$id.'_meta,priorsav___'; $ret='';
-$ra=prmb('typarts'); if($ra)$r=[1=>$ra[0]==1?'-':$ra[0],2=>$ra[1]==2?picto('s1'):$ra[1],3=>$ra[2]==3?picto('s2'):$ra[2],4=>$ra[3]==4?picto('s3'):$ra[3],5=>$ra[4]==5?picto('stars'):$ra[4]];
+$ra=opt(prmb(7),';',5); if($ra)$r=[1=>$ra[0]==1?'-':$ra[0],2=>$ra[1]==2?picto('s1'):$ra[1],3=>$ra[2]==3?picto('s2'):$ra[2],4=>$ra[3]==4?picto('s3'):$ra[3],5=>$ra[4]==5?picto('stars'):$ra[4]];
 else $r=[2=>picto('s1'),3=>picto('s2'),4=>picto('s3'),5=>picto('stars')];
 if($va==0)$ret.=lj('',$j.'trash_'.$id,picto('trash')).' ';
 if($va==0)$ret.=lj('active',$j.'del_'.$id,picto('del'),att(nms(43))).' ';
@@ -110,7 +110,7 @@ $ret.=toggle($css,'cbk'.$id.'_transart,home___'.$id,picto('translate'));
 //$rb[]=['f'=>'lj','p1'=>$css,'p2'=>'popup_meta,titedt___'.$id.'_'.$m,'p3'=>'[detach:picto]'];
 $dn=['ib','suj','img','src','frm1']; if(rstr(38))$dn[]='url';
 $ret.=toggle($css,'cbk'.$id.'_meta,editday___'.$id,picto('time'));
-if(ses('qb')=='ummo')$ret.=lj($css,'suj'.$id.'_umrenum,last__4_'.ajx($frm).'_'.$id,picto('bb'),att('Oay'));
+if(ses::$oom)$ret.=lj($css,'suj'.$id.'_umrenum,last__4_'.ajx($frm).'_'.$id,picto('bb'),att('Oay'));
 if(prms('srvmirror'))$ret.=lj($css,$id.';sav,art_mirror;;;'.$id.';'.$m,picto('symetry-v'),att('mirror'));
 $ret.=lj($css,$id.'_meta,addfoot___'.$id.'_'.$m,picto('anchor'),att('add anchors'));
 $ret.=lj($css,$id.'_meta,png2jpg___'.$id.'_'.$m,picto('gallery'),att('png2jpg'));
@@ -151,7 +151,7 @@ if(auth(4)){sql::upd('qda',['frm'=>$frm],$id); ma::cacheval($id,1,$frm);}
 return self::catedit($id,$frm);}
 
 static function catslctm($id,$frm,$r=[]){$ret='';
-if(!$r)$r=sql('distinct(frm)','qda','k',['nod'=>ses('qb'),'-frm'=>'_','_order'=>'frm']);
+if(!$r)$r=sql('distinct(frm)','qda','k',['nod'=>ses('qb'),'_order'=>'frm']);//,'-frm'=>'_'
 if($r)foreach($r as $k=>$v)
 	$ret.=lj('','frm'.$id.'_meta,catsav_frm1'.$id.'__'.$id.'_'.ajx($k),$k).' ';//catpic($k,20).
 return $ret;}
@@ -448,9 +448,9 @@ $j=atjr('autocomp',[$id,'tag '.prmb(18)]); $rj=['onkeyup'=>$j,'onclick'=>$j];
 $bt.=lj('','popup_meta,metall___'.$id.'_'.$m,picto('popup')).' ';
 $bt.=inputb('inp'.$id,nms(24),12,1,255,$rj);
 $rj=[]; foreach($rc as $k=>$v)$rj[]='slct'.str::normalize($v).$id; 
-$bt.=lj('',implode(',',$rj).'_meta,matchall__json_'.$id,picto('enquiry'),att('search'));
+$bt.=lj('','_meta,matchall__json_'.$id,picto('enquiry'),att('search'));
 $rj=[]; foreach($rc as $k=>$v)$rj[]=str::normalize($v).$id; 
-$bt.=lj('',implode(',',$rj).'_meta,delalltags__json_'.$id,picto('del'),att('del all'));
+$bt.=lj('','_meta,delalltags__json_'.$id,picto('del'),att('del all'));
 $bt.=toggle('','cls'.$id.'_clusters,viewart___'.$id,picto('network'),'',att('edit clusters')).' ';
 $bt.=toggle('','cls'.$id.'_meta,importags___'.$id,picto('import'),'',att('tags from translation'));
 $bt.=divd('cls'.$id,'');
@@ -547,14 +547,14 @@ static function rmtag($idtag){//from editor
 if(!security())return;
 $rb=sql('idart','qdta','rv',['idtag'=>$idtag]);//existing
 if(!$rb)sql::del2('qdt',$idtag);
-json::add('','rmtag',[$idtag=>hostname()]);
+json::add('','rmtag',[$idtag=>ip()]);
 return 'ok';}
 
 static function removetag($idtag){//from admin
 if(!auth(6))return;//security()
 if($idtag){sql::del2('qdta',['idtag'=>$idtag]);
 sql::del('qdt',$idtag);
-json::add('','rmtag',[$idtag=>hostname()]);}
+json::add('','rmtag',[$idtag=>ip()]);}
 return divc('frame-orange','remove: '.$idtag);}
 
 //rename

@@ -3,13 +3,13 @@ class searchnum{
 
 static function detect_from_art($p){
 $d=sql('msg','qdm','v','id='.$p);
-$r=str_split($d);
+$r=str_split($d); $ret=[]; $i=0;
 foreach($r as $k=>$v){
-	if(is_numeric($vb))$ret[$i].=$vb;
+	if(is_numeric($v))$ret[$i].=$v;
 	else $i++;}
 return $ret;}
 
-static function detect_num($r){
+static function detect_num($r){$ret=[]; $i=0;
 foreach($r as $k=>$v){
 	$rb=str_split($v);
 	foreach($rb as $kb=>$vb){
@@ -43,6 +43,6 @@ static function home($p,$o){$rid=randid('searchnum');
 $bt=self::menu($p,$o,$rid);
 //$ret=self::build($p,$o);
 //$bt.=msqbt('',nod('searchnum_1'));
-return $bt.divd($rid,$ret);}
+return $bt.divd($rid,'');}
 }
 ?>

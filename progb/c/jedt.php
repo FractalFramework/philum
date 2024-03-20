@@ -1,10 +1,10 @@
 <?php
-class jedt{
+class jedt{//etc
 
 //punctual
 static function add($a,$v){
 $f=json::url('',$a);
-$d=getfile($f);
+$d=readfile($f);
 $r=json_decode($d,true);
 //if($r[$k]??'')return alert('really?','red');
 $r[]=array_values($v);
@@ -15,7 +15,7 @@ return alert('saved','green');}
 //editable
 static function update($a,$k,$col,$val){
 $f=json::url('',$a);
-$d=getfile($f);
+$d=readfile($f);
 $r=json_decode($d,true);
 if($col=='k')$r[$k]=$val;
 else $r[$k][$col]=$val;
@@ -34,11 +34,11 @@ $ra=array_combine($r,['var','var','var','int']);
 $rb=array_combine($r,['com','bt','ico','0']);
 $keys=implode(',',walk($r,'unid'));
 $ret=bj('btsav','navedt|nav,save||'.$keys,picto('save'));
-$ret.=form::call($ra,$rb);
+$ret.=mkform($ra,$rb);
 return $ret.div('','','navedt');}
 
 static function modif($p){
-$r=json::call('cnfg','nav'); [$ka,$col]=explode('-',key($p)); $val=current($p); $i=0;
+$r=json::read('cnfg','nav'); [$ka,$col]=explode('-',key($p)); $val=current($p); $i=0;
 foreach($r as $k=>$v){$i++; if($i==$ka)$ka=$k;}
 self::update('cnfg/nav',$ka,$col,$val);
 return $val;}

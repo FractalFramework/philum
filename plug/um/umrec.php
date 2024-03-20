@@ -60,7 +60,6 @@ static function umrec_twit_init(){
 sqlop::install('umtwits',self::umtwits_r(),0);}
 
 static function twit_mem($id){
-sesr('db','umt','umtwits');
 $ex=sql('id','umt','v',['twid'=>isbint($id)],0);
 if($id && !$ex){$ra=self::umtwits_r(); $rb=[]; $nid='';
 	$cl=implode(',',array_keys($ra));
@@ -84,27 +83,31 @@ if($r)foreach($r as $k=>$v)$ret.=lj('','popup_api__3_'.ajx($v[0]).':'.ajx($v[1])
 return btn('nbp',$ret);}
 
 static function lgdate($d){
-return date($p?$p:'d-m-Y',$d);}
+return date('d-m-Y',$d);}
 
 static function playtx($id){$d=sql('msg','qdm','v',$id);
-return trans::convert($d,$id);}
+return trans::build($d,'','','','art'.$id);}
 
 static function btredit($ref,$to,$from){$ret=''; if(auth(6) && $to!='all'){
 $ret=lj('','trn'.$ref.'_trans,redo___'.$ref.'_'.$to.'-'.$from.'-1',picto('refresh')).' ';
 $ret.=lj('','popup_trans,redit___'.$ref.'_'.$to.'-'.$from.'-1',picto('edit'));}
 return $ret;}
 
+static function verbose($lg){
+return msql::kv('lang/'.$lg,'helps_umrec');}
+
+static function lang($lg){
+return msql::kv('lang/'.$lg,'helps_umrec');}
+
 //datas
 static function datas($r,$lang,$mode='',$q2=''){
 [$id,$day,$suj,$msg,$lk,$lg]=$r;
-if(!$lg)$lg='fr'; $nl=1;
-$rb=['id'=>$id,'suj'=>$suj,'day'=>date('d-m-Y',$day),'source'=>'','author'=>'','tracks'=>'','player'=>''];
+if(!$lg)$lg='fr'; $nl=0;
+$rb=['id'=>$id,'suj'=>$suj,'day'=>date('Y-m-d',$day),'source'=>'','author'=>'','tracks'=>'','player'=>''];
 $rb['url']='/'.$id;//'/app/umcom/'.$id;
 $msgb=str::stripconn($msg); $msgb=trim($msgb); $from='';
-if(substr($msgb,0,1)=='@')$from=strto($msgb,' ');
+//if(substr($msgb,0,1)=='@')$from=strto($msgb,' ');
 $rb['lang']=self::slctlng($id,'umrec'.$id,$lang,$lg,$mode);//slctlng
-//$rb['lang']=ljtog('','umart'.$id.'_trans,callum___'.$id.'_'.$lang.'-'.$lg,'umart'.$id.'_umrec,playtx___'.$id,picto('translate'));
-//$lnk=lka(urlread($id));
 $rtg=ma::art_tags($id,'vv');
 $rb['tag']=self::tglist($rtg);//tag
 if($mode=='tags'){if($rtg)foreach($rtg as $k=>$v)$rb['tagr'][$v[1]][]=$id;}
@@ -114,128 +117,129 @@ else $idy=$idb=$lgb=$nm='';
 $n=$idy?substr_count($idy,':u'):0;
 if($nfo=='favoris')$from='@'.between($msg,'twitter.com/','/status');
 elseif(!$from && $nm)$from=$nm;
-//if($lang!='all' && $idb){}// && $lg!=$lang
 	if($mode=='brut' or $mode=='ebook' or $mode=='com2')$edt=2; else $edt=0;//2=no edit
 	if($idb)$idy=trans::callum('trk'.$idb,$lang.'-'.$lgb,$edt);
-//if($lang!='all'){}// && $lang!=$lg
-	if($mode=='brut' or $mode=='ebook' or $mode=='com2')$edt=2; else $edt=0;
 	$msg=trans::callum('art'.$id,$lang.'-'.$lg,$edt,$q2?$msg:'');//,$msg
-	//$msg=divd('art'.$id,$msg);
 if($mode=='com2')$msg=str_replace(':video',':videourl',$msg);
-$msg=conn::read2($msg,'',1,$nl);
-$rb['msg']=$msg;//divd('umart'.$id,$msg);
 $rb['txtbrut']=$msg;
-if($from && $idy && $n>1){$rb['source']='Questions'; $rb['author']='';}//nms(171);
-elseif($from && $idy){$rb['source']='Question de'; $rb['author']=$from;}//nmx([170,68])
+$rb['msg']=conn::read2($msg,'',1,$nl);
+$rl=sesmk2('umrec','verbose',$lang,1); if(!$rl)$rl=sesmk2('umrec','verbose','en',1);
+if($from && $idy && $n>1){$rb['source']=$rl['questions']; $rb['author']='';}//nms(171);
+elseif($from && $idy){$rb['source']=$rl['question_from']; $rb['author']=$from;}//nmx([170,68])
 elseif($from && !$idy && $nfo!='favoris' && $nfo!='retweet'){
-	$rb['source']='Question manquante de'; $rb['author']=$from;}
-if($nfo=='favoris'){$rb['opt']='Favoris'; $rb['player']=$from;}
-elseif($nfo=='retweet'){$rb['opt']='Retweet'; $rb['player']=$from;}
-elseif($nfo=='status')$rb['opt']='Statut du';
-elseif($from)$rb['opt']='Réponse';
-else $rb['opt']='Message';
+	$rb['source']=$rl['question_missing']; $rb['author']=$from;}
+if($nfo=='favoris'){$rb['opt']=$rl['favorite']; $rb['player']=$from;}
+elseif($nfo=='retweet'){$rb['opt']=$rl['retweet']; $rb['player']=$from;}
+elseif($nfo=='status')$rb['opt']=$rl['status_of'];
+elseif($from)$rb['opt']=$rl['answer'];
+else $rb['opt']=$rl['message'];
 $rb['btrk']=$rb['source']?self::btredit('trk'.$idb,$lang,$lg):'';
 $rb['btxt']=self::btredit('art'.$id,$lang,$lgb);
 if($mode=='com2')$idy=str_replace(':video',':videourl',$idy);
-if($from)$rb['tracks']=$idy;//conn::read($idy,1,'',$nl); //ecko($idy);
+if($from)$rb['tracks']=conn::read($idy,1,'',$nl);
 if($from)$rb['trkbrut']=$idy;
-$rb['social']=ma::popart($id).' '; //$rb['open']=lka($lk,picto('tw'));
-$rb['pid']=lj('','popup_umrec,call___'.$id,$id);
-$rb['title']=lk('/'.$id,$rb['suj']);
-$idx=str_replace(['[',']'],'',strto($suj,']'));//substr($suj,1,-1)//
-//$rb['social'].=lj('','popup_umrec,txtbrut___'.$idx,picto('txt'),att('brut'));
-//$rb['social'].=lkt('','/context/compile/'.$idx,picto('chain'));
-$rb['social'].=lkt('','/app/umcom/'.$idx,picto('chain'));
+$rb['social']=ma::popart($id).' ';
+$rb['open']=lj('','popup_umrec,call___'.$id,picto('cube'));
+$rb['openxt']=lj('','popup_umrec,callbrut___'.$id.'_'.$lang,picto('txt'));
+$rb['url']='/'.$id;
+$rb['url2']='/app/umcom/'.$id;
+$idx=str_replace(['[',']'],'',strto($suj,']'));
+$rb['link']=lk('/app/umcom/'.$idx,picto('chain'));
+//pr($rb);
 return $rb;}
 
-static function template(){
-return '[[{title}:h2][{social} #{pid} {tag}|small:css][{lang}|nbp:divc]
-[[{source}:b] [{author}:u] {btrk}:div][{tracks}:p]
-[[{opt}:b] [{player}:u] ({day}) {btxt}:div][{msg}:p]:section]';}
+static function tpl_art(){
+return [
+['h2',[],[
+	['','','{suj}']]],
+['span',['class'=>'small'],'{social} {open} {link} #{id}# {tag}'],
+['div',['class'=>'nbp'],'{lang}'],
+['div',[],[
+	['strong',[],'{source}'],
+	['small','','{author}'],
+	['','','{btrk}']]],
+['p',['class'=>''],'{tracks}'],
+['div',[],[
+	['strong',[],'{opt}'],
+	['small',[],'{player}'],
+	['span',['class'=>'date'],'({day})'],
+	['span',['class'=>'small'],'{btxt}']]],
+['article','',[['p','','{msg}']]]];}
 
-static function temp_brut(){
-return '[[{url}|{suj}:url]:h2]
-[[{source}:b] [{author}:u]:p][{tracks}:p]
-[[{opt}:b] [{player}:u] ({day}) [#{id}|small:css]:p]
-[{msg}:p]';}
+static function tpl_brut(){
+return [
+['h2',[],[
+	['hurl','{url2}','{suj}']]],
+['p',[],[
+	['strong',[],'{source}'],
+	['small',[],'{author}']]],
+['p','','{tracks}'],
+['p',[],[
+	['strong',[],'{opt}'],
+	['small',[],'{player}'],
+	['span',['class'=>'date'],'{day}'],
+	['span',['class'=>'small'],'#{id}#']]],
+['article','','{msg}']];}
 
-static function text($r){//umcom
+static function umcom($r){//:umcom
+return deln(view::call(self::tpl_art(),$r));
 $ret=divc('nbp',$r['lang']);
-$ret.=tagb('h2',$r['suj']).' '.$r['social'].' '.btn('small','#'.$r['pid']).' '.$r['tag'];
+$ret.=tagb('h2',$r['suj']).' '.$r['social'].' '.btn('small','#'.$r['id'].'#').' '.$r['tag'];
 $ret.=div(tagb('b',$r['source']).' '.tagb('u',$r['author']));//.' '.$r['btrk']
 $ret.=div($r['tracks']);
 $ret.=div(tagb('b',$r['opt']).' '.tagb('u',$r['player']).' ('.$r['day'].')');//.' '.$r['btxt']
 $ret.=div($r['msg']);
 return $ret;}
 
-static function text_b($r){//brut/com2
+static function umcom2($r){//com2
 $ret=tagb('h4',$r['suj']);
 if($r['source'] or $r['author'])$ret.=tagb('b',$r['source']).' '.tagb('u',$r['author']).n();
-if($r['tracks'])$ret.=$r['tracks'].n();
+if($r['tracks'])$ret.=tagb('p',$r['tracks']);
 $ret.=tagb('b',$r['opt']).' '.tagb('u',$r['player']).' ('.$r['day'].')'.n();
-$ret.=$r['msg'];
+$ret.=tagb('p',$r['msg']);
 return $ret;}
 
-static function brut($r){
+static function ebook($r){
 $p=['txtbrut','trkbrut','suj','source','author','opt','player','day'];
 [$txa,$txb,$suj,$src,$ath,$opt,$player,$day]=vals($r,$p);
 $txa=str_replace(':video',':videourl',$txa);
 $txa=str_replace(':mini','',$txa);
 $txb=str_replace(':mini','',$txb);
-$ret='['.$suj.':h2] ';
+$ret='';//'['.$suj.':h2] ';
 if($src or $ath)$ret.='['.$src.':b] ['.$ath.':u]'.n();
 if($txb)$ret.='['.$txb.':p]'.n();
 $ret.='['.$opt.':b] ['.$player.':u] ('.$day.')'.n();
 $ret.='['.$txa.':p]'.n();
 return '['.$ret.':section]';}
 
-static function txtbrut($p,$o){
-if(!is_numeric($p))$p=ma::id_of_urlsuj('['.$p.']');
-$r=self::req_art_id($p);
-$rb=self::datas($r,$p,$o,'brut');
-return self::text_b($rb);}
-
 static function build($p,$o){$pg=''; $q2=0;
 if($o=='all'){$pg='all'; $o='list'; $q2=1;}
 elseif(!$o or $o=='list' or is_numeric($o)){$pg=is_numeric($o)?$o:1; $o='list'; $q2=0;}
 $lang=ses('umrlg'); $ret=''; $rc=[];
-if($o=='brut')$tmp=self::temp_brut();
-else $tmp=self::template();//list
-if($q2)$r=self::req_arts_y2($p,$pg,$lang); else//
-$r=self::req_arts_y($p,$pg,$lang); //if(auth(6))pr($r);
+$tmp=$o=='brut'?self::tpl_brut():self::tpl_art();
+if($q2)$r=self::req_arts_y2($p,$pg,$lang);
+else $r=self::req_arts_y($p,$pg,$lang);
 if($o=='table')$rc[]=['ID','Date','Question','Réponse','tags'];
-//geta('nl',1);
 if($o=='brut' or $o=='table')$save=1; else $save='';
 if($r)foreach($r as $k=>$v){
-	[$id,$day,$suj,$msg,$lk,$lg]=$v; //$_SESSION['memcom2'][$id]=1;
-	//if((auth(6) && $id==1272) or !auth(6)){}
-	$rb=self::datas($v,$lang,$o,$q2); //if(auth(6))echo pr($rb);
-	if($o=='list')$ret.=divd('umrec'.$id,vue::build($tmp,$rb));
-	//if($o=='list')$ret.=divd('umrec'.$id,vue::call($tmp,$rb));
-	elseif($o=='text')$ret.=self::text($rb);//umcom
-	//elseif($o=='brut')$ret.=vue::build($tmp,$rb);
-	//elseif($o=='brut')$ret.=self::brut($rb);
+	[$id,$day,$suj,$msg,$lk,$lg]=$v;
+	$rb=self::datas($v,$lang,$o,$q2);
+	if($o=='list')$ret.=tag('section',['id'=>'umrec'.$id],view::call($tmp,$rb));
+	elseif($o=='text')$ret.=self::umcom($rb);//umcom
 	elseif($o=='brut'){$rb['suj']=strin($rb['suj'],'[',']'); $rc[]=$rb;}
-	/*elseif($o=='brut'){//vue
-		$rb['tracks']=conb::parse($rb['tracks'],'sconn');
-		$rb['msg']=conb::parse($rb['msg'],'sconn'); $rc[]=$rb;}*/
-	elseif($o=='ebook')$rc[]=[$id,$day,$suj.' ('.($lg?$lg:'fr').')',self::brut($rb),$lg];
-	elseif($o=='table'){$t=tag('b',[],strin($rb['suj'],'[',']')); //pr($rb);
+	elseif($o=='ebook')$rc[]=[$id,$day,$suj.' ('.($lg?$lg:'fr').')',self::ebook($rb),$lg];
+	elseif($o=='table'){$t=tag('b',[],strin($rb['suj'],'[',']'));
 		$trk=''; if($rb['author'])$trk=div(tag('b',[],$rb['author']).' : '); $trk.=$rb['tracks']??'';
 		$rc[$day]=[$t,$rb['day'],$trk,$rb['msg'],$rb['tag']];}
 	elseif($o=='tags')$rc[$day]=$rb;
 	if(auth(6))echo self::twit_mem(strend($lk,'/'));}
-//rstr(13)
-//getz('nl');
 if($o=='array')pr($rb);
 elseif($o=='table')$ret=tabler($rc,'1','');
-//elseif($o=='text')$ret=conn::read($ret);
-//elseif($o=='brut')$ret=conn::read($ret,'','','');
-elseif($o=='brut')$ret=vue::call($tmp,$rc);
+elseif($o=='brut')$ret=view::batch($tmp,$rc);
 elseif($o=='tags'){
 	if($rc)foreach($rc as $k=>$v){$rd=$v['tagr']??[]; unset($v['tagr']);
 		if(is_array($rd)){
-			$res=divd('umrec'.$id,vue::build($tmp,$v));
+			$res=tag('section',['id'=>'umrec'.$id],view::call($tmp,$v));
 			foreach($rd as $kb=>$vb)$re[$kb][]=$res;}}
 	if($re)$ret=tabs($re);}
 elseif($o=='ebook'){$t='Twits_'.$lang; $f='_datas/'.$t.'.epub'; $b=1;
@@ -243,9 +247,7 @@ elseif($o=='ebook'){$t='Twits_'.$lang; $f='_datas/'.$t.'.epub'; $b=1;
 	else $ret=mkbook::build($rc,$t);}
 if($o=='list')$bt=self::pages($p,$pg); else $bt='';
 if($save){$f='_datas/twits_'.$o.'_'.ses('umrlg').'.htm';
-	//$ret=str_replace('/img/',host().'/img/',$ret);
-	//$ret=str_replace('video/',host().'video/',$ret);
-	$doc=wpg($ret,$t='',$s='',$lg='fr');
+	$doc=wpg($ret,$t='',$s='.twit{padding:10px; border:1px solid #999;}',$lg='fr');
 	write_file($f,$doc);
 	$bt.=lkt('popbt','/'.$f,pictxt('file-word','html'));}
 return $bt.$ret.$bt;}
@@ -254,6 +256,13 @@ static function date2id($p){
 if(strlen($p)==6){[$y,$m,$d]=str_split($p,2); $ti=mktime(0,0,0,$m,$d,$y);
 	return sql('id','qda','v','day>='.$ti.' limit 1');}
 else return $p;}
+
+static function callbrut($p,$o){
+if(!$p)return 'nothing';
+$o=setlng($o); if(!$o)$o='fr';
+$r=self::req_art_id($p); if(!$r)return 'nothing';
+$rb=self::datas($r,$o,'');
+return self::umcom2($rb);}
 
 static function call($p,$o,$mode=''){//p:suj,o:lg
 if(is_numeric($p))$p=self::date2id($p);
@@ -266,11 +275,10 @@ $r=self::req_art_id($p); if(!$r)return 'nothing';
 $rb=self::datas($r,$o,$mode); //pr($r);
 head::add('meta',['property','og:title',$rb['suj']]);
 head::add('meta',['property','og:description',trim(strip_tags($rb['txtbrut']))]);
-if($mode=='brut' or $mode=='ebook')$tmp=self::temp_brut(); else $tmp=self::template();
-if($mode=='com2')return self::text_b($rb);//!rstr8 (mode ajax)
-elseif($mode=='com')return delbr(self::text($rb));//format_txt
-//else return vue::call($tmp,$rb);
-else return vue::build($tmp,$rb);}
+if($mode=='com2')return self::umcom2($rb);
+elseif($mode=='com')return delbr(self::umcom($rb));
+if($mode=='brut' or $mode=='ebook')$tmp=self::tpl_brut(); else $tmp=self::tpl_art();
+return view::call($tmp,$rb);}
 
 static function callj($p,$o,$prm=[]){//p:cats,o:page
 $p=$prm[0]??$p;
@@ -285,10 +293,9 @@ if(strpos($p,',')){$r=explode(',',$p); $lang=ses('umrlg');
 		$rc[$day]=[strin($rb['suj'],'[',']'),$rb['day'],$rb['tracks']??'',$rb['msg'],$rb['tag']];}
 	return $ret=tabler($rc,'1','');}
 if(!is_numeric($p) && $p!='All' && $o!='table'){//passage délicat qui évite d'envoyer un id à call()
-	$pb=ma::id_of_urlsuj('['.$p.']');
-	if(is_numeric($pb))$p=$pb;}//when opt
-if($opt=get('opt'))return divd('umrec'.$p,self::call($opt,$lg,''));
-if(is_numeric($p))return divd('umrec'.$p,self::call($p,$lg,''));
+	$pb=ma::id_of_urlsuj('['.$p.']'); if(is_numeric($pb))$p=$pb;}//when opt
+if($opt=get('opt'))return tag('section',['id'=>'umrec'.$p],self::call($opt,$lg,''));
+if(is_numeric($p))return tag('section',['id'=>'umrec'.$p],self::call($p,$lg,''));
 if($p)return self::build($p,$o);
 else return 'no';}
 
@@ -299,7 +306,7 @@ elseif($p=='last')$p=umrec::req_last('All');
 elseif(!is_numeric($p)){$pb=ma::id_of_urlsuj('['.$p.']');
 	if(!$pb)return umsearchlang::call(trim($p),'');
 	else $p=$pb;}
-return divd('umrec'.$p,self::call($p,$o,$mode));}
+return tag('div',['id'=>'umrec'.$p],self::call($p,$o,$mode));}
 
 static function umrec_r(){
 foreach(self::$cats as $v)$ret[$v]=$v;
@@ -324,25 +331,20 @@ $ret.=lj('',$rid.'_umrec,callj__3_All_brut',picto('txt'),att('brut')).' ';
 $ret.=lj('',$rid.'_umrec,callj__3_All_table',picto('table'),att('table')).' ';
 $ret.=lj('',$rid.'_umrec,callj__3_All_tags',picto('tag'),att('tags')).' ';
 $ret.=lj('',$rid.'_umrec,callj__3_All_ebook',picto('book'),att('Ebook')).' ';
-//$ret.=ljp(att('search words'),'popup_umsearchlang,home',picto('enquiry ')).' ';
+//$ret.=lj('','popup_umsearchlang,home',picto('enquiry'),att('search words')).' ';
 $ret.=lka('/app/umrec',picto('link')).' ';
 $ret.=hlpbt('umrec');
 //$f='_datas/twits_fr.htm'; if(is_file($f))$ret.=lkt('',$f,pictxt('txt','fr')).' ';
-//$f='_datas/twits_en.htm'; if(is_file($f))$ret.=lkt('',$f,pictxt('txt','en')).' ';
 return divc('nbp',$ret);}
 
 //global lang
 static function lng($p,$o,$rid){$r=explode(' ','all '.prmb(26));//['all','fr','en','es'];
 $lg=sesb('umrlg',ses('lang')?ses('lang'):'all');
-$now=in_array_b($lg,$r); return radioj('umrlg',$r,$now);
-//foreach($r as $k=>$v)$ret.=lj($v==$g?'active':'',$rid.'_umrec,home___'.$p.'_'.$v,$v).' ';
-return btn('nbp',$ret);}
+$now=in_array_b($lg,$r); return radioj('umrlg',$r,$now);}
 
 static function home($p,$o){$rid='umrec';
 if(!$p)$bt=self::search($p,ses('umrlg'),'umrec'); else $bt='';
-sesr('db','umt','umtwits');
 //self::twit_init();
-//if(auth(6))$bt.=self::menu($p,$o,$rid);
 if(!$p)$bt.=self::lng($p,$o,$rid);
 $c=$p?'popup':''; $c='';
 if($p)$ret=self::callint($p,$o,[]);

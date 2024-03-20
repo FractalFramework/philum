@@ -1,6 +1,6 @@
-<?php //pictocss
+<?php 
 class pictocss{
-static function bt($d){return spn('','philum ic-'.$d).br();}
+static function bt($d){return span('','philum ic-'.$d).br();}
 
 static function demo($p){
 return $p.':'.self::bt($p);}

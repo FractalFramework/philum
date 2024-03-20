@@ -7,7 +7,7 @@ $w=100000; $start=$p*$w;
 $bt=btn('txtyl',$p);
 //$d=file_get_contents($f);
 //echo array_sum(count_chars($d));
-$d=file_get_contents($f,NULL,NULL,$start,$w);
+$d=file_get_contents($f,false,NULL,$start,$w);
 $ret=$d;
 //$ret=conv::call($d);
 //$ret=textarea('',$rets,44,8);
@@ -29,6 +29,6 @@ return divc('nbp',$ret);}
 static function home($p,$o){$rid=randid('plg');
 $bt=self::menu($p,$o,$rid);
 //$ret=self::build($p,$o);
-return $bt.divd($rid,$ret);}
+return $bt.divd($rid,'');}
 }
 ?>

@@ -39,7 +39,7 @@ return $a::detect($p,$o,$prm);}
 static function build($txt,$from,$to,$format,$ref){
 $a='trans_'.self::$motor;
 if(boot::auth())//
-if($txt)json::add('','trans'.mkday(),[$txt,strlen($txt),$ref,mkday('','His'),hostname()]);
+if($txt)json::add('','trans'.mkday(),[$txt,strlen($txt),$ref,mkday('','His'),ip()]);
 return $a::build($txt,$from,$to,$format);}
 
 static function cut($txt){

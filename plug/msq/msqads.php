@@ -4,7 +4,7 @@ class msqads{
 static function call($p,$o,$prm){
 [$p,$o]=prmp($prm,$p,$o);
 $p=$p?$p:'msqads'; $nod=nod($p.'_'.$o);
-$r=msql::modif('',$nod,$r,'push');
+$r=msql::modif('',$nod,$p,'push');
 $r=msql::reverse($r);
 return tabler($r,'txtblc','txtx');}
 

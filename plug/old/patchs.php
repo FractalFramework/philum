@@ -5,7 +5,7 @@
 
 //22
 function patch_msql(){
-$r=explorer('msql');
+$r=scanfiles('msql');
 foreach($r as $k=>$v){
 	$d=read_file($v);
 	$d=str_replace(msql::$m,'_',$d);
@@ -70,7 +70,7 @@ ses('ok',1);}
 
 function qlerror($ret){
 //die($ret.mysqli_error());
-$ret.=mysqli_error();
+$ret.=mysqli_error($ret);
 return $ret.br();}
 
 //181225
@@ -81,7 +81,7 @@ $rb=explode('_',$v);
 if($rb[2]=='lastupdate.txt'){echo $id=$rb[1].' ';
 $d=read_file('_datas/'.$v);
 echo $tim=strtotime($d);
-utag_sav($id,'lastup',$tim);
+meta::utag_sav($id,'lastup',$tim);
 unlink('_datas/'.$v);
 }}}
 
@@ -143,9 +143,8 @@ ALTER TABLE `'.db('qd').'_meta_art`
 ADD PRIMARY KEY (`id`);';*/
 
 foreach($table as $k=>$sql){
-	$req=mysqli_query($sql) or die(mysqli_error()); 
-	$ret.=divc('',db('qd').''.$k.': created');}
-
+//$req=mysqli_query($sql) or die(mysqli_error()); 
+$ret=divc('',db('qd').''.$k.': created');}
 $ret.=lka('/app/tagpatch/','Apply patch to fill the new databases (click on each links)');
 return $ret;}
 
@@ -169,7 +168,7 @@ $r=walk_dir('/msql','repsep');}
 
 //140615
 function patch_sql_stats(){$open=1;
-$sql='CREATE TABLE `'.ses(qd).'_ips` (
+$sql='CREATE TABLE `'.ses('qd').'_ips` (
 `id` int( 11 ) NOT NULL AUTO_INCREMENT,
 `ip` varchar( 255 ) COLLATE latin1_german1_ci NOT NULL DEFAULT "",
 `iq` int( 7 ) NOT NULL,
@@ -179,26 +178,25 @@ $sql='CREATE TABLE `'.ses(qd).'_ips` (
 PRIMARY KEY (`id`),
 KEY `ip` (`ip`)
 ) ENGINE = MYISAM DEFAULT CHARSET = latin1 COLLATE = latin1_german1_ci;';
-if($open)mysqli_query($sql) or $ret.=qlerror('ips:exists'); $ret.=$sql.br().br();
+//if($open)mysqli_query($sql) or $ret.=qlerror('ips:exists'); $ret.=$sql.br().br();
 
 $sql='
-INSERT INTO `'.ses(qd).'_ips` SELECT * FROM `'.ses(qd).'_eye` ;';
-if($open)mysqli_query($sql) or $ret.=qlerror('ips_copy_eye'); $ret.=$sql.br().br();
+INSERT INTO `'.ses('qd').'_ips` SELECT * FROM `'.ses('qd').'_eye` ;';
+//if($open)mysqli_query($sql) or $ret.=qlerror('ips_copy_eye'); $ret.=$sql.br().br();
 
-$sql='alter table '.ses(qdp).' drop iq, drop pag, add ref varchar(255) COLLATE latin1_general_ci NOT NULL after nav, add time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
-if($open)mysqli_query($sql) or $ret.=qlerror('alter_ips:error'); $ret.=$sql.br().br();
+$sql='alter table '.ses('qdp').' drop iq, drop pag, add ref varchar(255) COLLATE latin1_general_ci NOT NULL after nav, add time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
+//if($open)mysqli_query($sql) or $ret.=qlerror('alter_ips:error'); $ret.=$sql.br().br();
 
-$sql='CREATE TABLE IF NOT EXISTS `'.ses(qd).'_live` (`id` int(11) NOT NULL AUTO_INCREMENT,
+$sql='CREATE TABLE IF NOT EXISTS `'.ses('qd').'_live` (`id` int(11) NOT NULL AUTO_INCREMENT,
   `iq` int(11) NOT NULL,`qb` int(3) NOT NULL,
   `page` varchar(255) COLLATE latin1_general_ci NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`), KEY `qb` (`qb`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;';
-if($open)mysqli_query($sql) or $ret.=qlerror('live:exists'); $ret.=$sql.br().br();
+//if($open)mysqli_query($sql) or $ret.=qlerror('live:exists'); $ret.=$sql.br().br();
 
 msql::modif('server','program_patches',[1],140615);
-$_SESSION['stsys']='yes';
-return $ret;}
+$_SESSION['stsys']='yes';}
 
 //130602
 function patch_userart(){
@@ -214,7 +212,7 @@ $r=sql('id,name','qda','kv','frm="user"'); p($r);
 foreach($r as $k=>$v){sql::del('qda',$k); sql::del('qdm',$k);}}
 
 //130430
-function patch_sql(){
+function patch_sql(){$ret='';
 //qda
 $r=array('day day INT(10) NOT NULL','ib ib INT(7) NOT NULL','name name TINYTEXT CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL','mail mail TINYTEXT CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL','re re ENUM("0","1","2","3","4") NOT NULL','lu lu INT(7) NOT NULL','host host MEDIUMINT(7) NOT NULL');//'frm frm TINYTEXT CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL',
 foreach($r as $k=>$v){qr('ALTER TABLE '.db('qda').' CHANGE '.$v.';');

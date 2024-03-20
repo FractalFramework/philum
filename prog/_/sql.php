@@ -21,7 +21,7 @@ static function qrf($r){mysqli_free_result($r);}
 static function qres($v){if($v!==null)return mysqli_real_escape_string(self::$qr,stripslashes($v));}
 static function atm($v){$d=substr($v??'',0,4);
 return $d=='NULL'||$d=='NOW('||$d=='PASS'?$v:'"'.self::qres($v).'"';}//!num
-static function atmr($r){foreach($r as $k=>$v)$ret[]=self::atm($v); return $ret;}
+static function atmr($r){$rt=[]; foreach($r as $k=>$v)$rt[]=self::atm($v); return $rt;}
 static function atmrk($r){foreach($r as $k=>$v)$rt[]=$k.'='.self::atm($v); return $rt;}
 static function atmra($r,$o=''){$rb=self::atmr($r); $d=$o?'NULL,':'';
 if($rb)return '('.$d.join(',',$rb).')';}
@@ -41,7 +41,7 @@ static function sav2($b,$r,$ai=1,$o=''){//multiples
 return self::qrid('insert into '.db($b).' values '.self::atmrb($r,$ai),$o);}
 static function upd($b,$r,$q,$o='',$vrf=''){if($vrf)$r=sqldb::vrfr($r,$b);//sqlup
 self::qr('update '.db($b).' set '.self::atmrak($r).' '.self::where($q),$o);}
-static function savup($b,$r,$o=''){$ex=self::read('id',$b,'v',$r,$o);
+static function savup($b,$r,$o=''){$ex=self::read('id',$b,'v',$r,$o);//redo
 if($ex)return self::upd($b,$r,$ex,$o); else return self::sav($b,$r,$o);}
 static function del($b,$q,$o='',$ob=''){
 self::qr('delete from '.db($b).' '.self::where($q).' limit 1',$o);

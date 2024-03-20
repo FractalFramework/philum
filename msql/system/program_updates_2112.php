@@ -1,15 +1,15 @@
 <?php 
-return ["_"=>[''],
-"1"=>['1201','publication'],
-"2"=>['1205','amélioration de la gestion des langues, elle n\'impacte plus la recherche par défaut, mais propose désormais d\'afficher les traductions dans les tris.'],
-"3"=>['1208','ajout du support de timecode dans le gestionnaire d\'import, url et lecture de youtube'],
-"4"=>['1213','correctif gestion des images inimportables'],
-"5"=>['1218','correctif ginit'],
-"6"=>['1223','ajout du support de conversion des .webp vers .jpg  pourquoi ? parce que webp c\'est google donc c\'est niet.'],
-"7"=>['1224','- ajout d\'une série d\'inputs spécialisés, réfection des anciens
+return ['_'=>[''],
+1=>['1201','publication'],
+2=>['1205','amélioration de la gestion des langues, elle n\'impacte plus la recherche par défaut, mais propose désormais d\'afficher les traductions dans les tris.'],
+3=>['1208','ajout du support de timecode dans le gestionnaire d\'import, url et lecture de youtube'],
+4=>['1213','correctif gestion des images inimportables'],
+5=>['1218','correctif ginit'],
+6=>['1223','ajout du support de conversion des .webp vers .jpg  pourquoi ? parce que webp c\'est google donc c\'est niet.'],
+7=>['1224','- ajout d\'une série d\'inputs spécialisés, réfection des anciens
 - usages de ces nouveaux inputs (recherche, date)
 - réforme de l\'éditeur de date de l\'article (le composant html qui affiche un calendrier remplace le composant manuscrit antique \'calendar\')'],
-"8"=>['1227','Réforme critique du moteur ajax.
+8=>['1227','Réforme critique du moteur ajax.
 le troisième param des apps peut être, au choix, $res ou $prm.
 - $res est issu de l\'ancien dispositif, et renvoie les captures depuis la position 9 du script. Il est rédigé en pseudo-json.
 - $prm est issu des captures du param 2, qui peuvent être multiples, séparées par une virgule.

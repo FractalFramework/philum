@@ -48,8 +48,8 @@ static function publish($id,$o){
 if($o=='on' or $o=='off')sav::publish_art($o,$id,'qdi');
 return art::trkone($id);}
 
-//static function save($msg,$id,$name,$mail){$tim=time(); $iq=hostname(); //ses('iq');
-static function save($id,$o,$prm){$tim=time(); $iq=hostname();
+//static function save($msg,$id,$name,$mail){$tim=time(); $iq=ip(); //ses('iq');
+static function save($id,$o,$prm){$tim=time(); $iq=ip();
 [$msg,$name,$mail,$ib]=arr($prm,4); $suj=''; $lg=prmb(25);
 $msg=str::htmlentities_b($msg); if($msg && strpos($msg,'<'))$msg=usg::html2conn(nl2br($msg),1);
 if(is_numeric($id) or substr($id,0,4)=='wall')$local=1; else $local=0;
@@ -73,14 +73,20 @@ static function reditsav($id,$o,$prm){
 $d=$prm[0]??''; $d=preg_replace('/(\n){2,}/',"\n\n",$d);
 $r=explode("\n",$d); foreach($r as $v)$rb[]=trim($v); $d=implode("\n",$rb);
 sql::upd('qdi',['msg'=>$d],$id);
+if($o)return self::thread($id);
 return art::trkone($id,1);}
+
+static function thread($id){
+$id=sql('ib','qdi','v',$id);
+$r=ma::read_idy($id,'asc');
+return art::output_trk($r);}
 
 static function redit($id,$sz='',$cl=''){
 [$ib,$msg]=sql('ib,msg','qdi','w',$id);
 $ret=lj('popsav','trk'.$id.'_tracks,reditsav_edtrk'.$id.'__'.$id.'',picto('save'));//nms(27)
-if($cl)$ret.=lj('','track'.$ib.'_tracks,reditsav_edtrk'.$id.'_14xk_'.$id.'',picto('sclose'));
-else $ret.=lj('popbt','trkdsk_tracks,redit__x_'.$id.'_40_1',picto('popup'),att(nms(198)));
-//$ret.=bj('trk'.$id.'|tracks,redit_sav|'.$id.'|edtrk'.$id,nms(28),'popsav');
+if($cl)$ret.=lj('','track'.$ib.'_tracks,reditsav_edtrk'.$id.'_xk_'.$id.'_1',picto('sclose'));
+else $ret.=lj('popbt','trkdsk_tracks,redit__x_'.$id.'_54_1',picto('output'),att(nms(198)));
+//$ret.=bj('popsav','trk'.$id.'|tracks,redit_sav|'.$id.'|edtrk'.$id,nms(28));
 $ret.=editarea('edtrk'.$id,$msg,$sz?$sz:80);
 return $ret;}
 
@@ -103,12 +109,12 @@ static function answmsg($id){return art::trkone($id);}
 static function preview($id,$p,$prm=[]){return conn::read2($prm[0]??'');}
 
 static function form($id,$msg='',$capt=false){
-$w=cw()-100; $ret=''; $ib=''; $user=''; $nfo='';
+$w=prma('content')-100; $ret=''; $ib=''; $user=''; $nfo='';
 if(is_numeric($msg)){$ib=$msg; $msg='['.$ib.':to]'."\n\n"; $nfo='reply';}
 elseif($capt!=false){$msg='['.$msg.'|'.$capt.':callquote]'."\n\n"; $nfo='quote';}
 elseif(!is_numeric($id)){$user=$id; $id=''; $nfo='private';}
 $use=ses('USE'); if(!$use)$use=cookie('use'); $ml=cookie('mail');
-if(!$use)[$use,$ml]=sql('name,mail','qdi','r',['host'=>hostname(),'_code'=>'order by id desc limit 1']);
+if(!$use)[$use,$ml]=sql('name,mail','qdi','r',['host'=>ip(),'_code'=>'order by id desc limit 1']);
 //mode
 if($nfo=='reply')ses::$r['popt']=nms(174).' '.sql('name','qdi','v',$ib);
 elseif($nfo=='quote')ses::$r['popt']=nms(190);
@@ -116,9 +122,9 @@ elseif($nfo=='private')ses::$r['popt']=nms(84);
 //bt
 $rx=['trkname','trkmail','trkib']; $ids=implode(',',$rx); $rid='edtrk'.$id; 
 if($user)$ret.=lj('popdel','popup_tracks,save_'.$rid.','.$ids.'_x_'.$user,nms(28)).' ';
-else{$j='track'.$id.'_tracks,save_'.$rid.','.$ids;
-	$ret.=lj('popsav','track'.$id.'_tracks,save_'.$rid.','.$ids.'_14x_'.$id,picto('save')).' ';//nms(28)
-	$ret.=lj('','trkdsk_tracks,save_'.$rid.','.$ids.'_x_'.$id.'_1',picto('popup'),att(nms(198))).' ';}
+else{$j='track'.$id.'_tracks,save_'.$rid.','.$ids; $ind=get('tg')=='popup'?'14x':'14xt';
+	$ret.=lj('popsav','track'.$id.'_tracks,save_'.$rid.','.$ids.'_'.$ind.'_'.$id,pictxt('save',nms(28))).' ';//14x
+	$ret.=lj('','trkdsk_tracks,save_'.$rid.','.$ids.'_xt_'.$id.'_1',picto('output'),att(nms(198))).' ';}
 //form
 if(rstr(2) && !auth(4))$ret.=btn('small',helps('tracks_moderation'));
 if(ses('USE'))$ret.=hidden($rx[0],$use).hidden($rx[1],'').hidden('trkscr','').hidden('trkscrvrf','');

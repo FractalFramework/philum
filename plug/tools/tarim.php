@@ -11,7 +11,7 @@ return '_backup/img_'.$min.'-'.$max.'.tar';}
 
 static function tar($f,$rc){
 mkdir_r($f); if(is_file($f))unlink($f);
-if(!is_file($f) && $rc)tar::tarim($f,$rc);
+if(!is_file($f) && $rc)tar::files($f,$rc);
 if(is_file($f))$ret=lk($f,$f); elseif(!$rc)$ret='no'; else $ret='er';
 return $ret;}
 
@@ -49,7 +49,7 @@ static function copy($rc){$dr='imgd/';
 rmdir_r('imgd'); mkdir_r($dr);
 foreach($rc as $v)copy($v,$dr.substr($v,4));}
 
-static function call3($p,$o,$prm=[]{$length=ses('tilen');
+static function call3($p,$o,$prm=[]){$length=ses('tilen');
 $min=$p*$length; $max=$min+$length;
 $rq=sql::com('msg','qdm',['>id'=>$min,'<id'=>$max]);
 while($r=sql::qrw($rq)){
@@ -70,7 +70,7 @@ return self::tar($f,$rc);}
 static function nb(){$rc=scandir('img'); return count($rc);}
 
 static function menu($p,$o,$rid){$length=ses('tilen');
-$lid=ma::lastartid()/$length);
+$lid=ma::lastartid()/$length;
 $ret=$lid.' arts'.br();
 $n=ceil($lid/$length);
 for($i=0;$i<$n;$i++){
@@ -83,6 +83,6 @@ ses('tilen',5000);
 $bt=self::menu($p,$o,$rid);
 //rmdir_r('imgd/'); mkdir_r('imgd/');
 //echo tar::extract(img8.tar','imgd/');
-return divc('nbp',$bt).divd($rid,$ret);}
+return divc('nbp',$bt).divd($rid,'');}
 }
 ?>

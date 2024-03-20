@@ -17,7 +17,7 @@ $d=self::noesp($d);
 //$d=self::nonl($d);
 write_file($f,$d);}
 
-static function build($p,$o){
+static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
 $f='plug/editor.php';
 //$f='progb/lib.php';
@@ -26,7 +26,7 @@ $ret=$p.'-'.$o;
 return $ret;}
 
 static function menu($p,$o,$rid){$ret=input('inp',$p).' ';
-$ret.=lj('',$rid.'_cmpqcode,build_inp',picto('ok')).' ';
+$ret.=lj('',$rid.'_cmpqcode,call',picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid=randid('cmpqcode');

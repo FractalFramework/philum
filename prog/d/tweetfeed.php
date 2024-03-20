@@ -7,8 +7,7 @@ if($r)foreach($r as $k=>$v)$ret.=div(tlex::post(host().'/'.$k,1));
 return $ret;}
 
 static function read(){
-$ret=mod::block('tweetfeed','');
-return $ret;}
+return mod::block('tweetfeed');}
 
 static function build($minid){$rc=[];
 $w=',idlist:1,order:id asc,noheader:1'; if(is_numeric($minid))$w.=',minid:'.$minid; //echo $w;

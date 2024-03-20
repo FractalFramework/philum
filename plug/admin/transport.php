@@ -13,7 +13,6 @@ static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clu
 if(in_array($b,$r))return $b;}// else return $b;
 
 static function db_r(){$r=sqldb::$rt;
-$_SESSION[$k]=$r;
 return array_flip($r);}
 
 static function ts_db($b){$r=self::db_r(); return $r[$b]??$b;}
@@ -83,7 +82,7 @@ static function usr($p,$o){
 $ret=''; $rb=[]; $l=5000;
 [$usr,$db,$ps,$dr]=self::srv(1);
 if($o=='call'){//distant
-	$f='_backup/users_'.$p.'.tar'; $r=scandir_r('users/'.$p); //pr($r);
+	$f='_backup/users_'.$p.'.tar'; $r=scanfiles('users/'.$p); //pr($r);
 	if(is_file($f))return $f;//
 	$ret=tar::files($f,$r,0);}
 elseif($o=='menu'){$qb=ses('qb'); //$qb='shroud';
