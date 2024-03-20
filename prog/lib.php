@@ -254,7 +254,7 @@ function walk_dir($dr,$fc){
 $r=explore($dr); return explode_dir($r,$dr,$fc?$fc:'func');}
 function scanwalk($dr,$fc){$r=scanfiles($dr); $rb=[];
 foreach($r as $k=>$v){$a=$fc($dr,$k,$v); if($a)$rb[]=$a;} return $rb;}
-function walk($r,$fc){$rt=[]; foreach($r as $k=>$v)$rt[]=$fc($v); return $rt;}
+function walk($r,$fc,$p=''){$rt=[]; foreach($r as $k=>$v)$rt[]=$fc($v,$p); return $rt;}
 
 #files
 function get_file($f){return curl_get_contents($f);}
@@ -323,11 +323,10 @@ libxml_use_internal_errors(true);
 if($d)$dom->loadHtml($d,LIBXML_HTML_NODEFDTD);//LIBXML_HTML_NOIMPLIED|
 return $dom;}
 
-function fdom($f,$o=''){$ret=''; //if(!urlcheck($f))return 'no';
+function fdom($f,$o=''){$ret='';
 if($o==2){$dom=dom(''); $dom->loadHTML($f); return $dom;}
-elseif($o){$d=get_file($f); $d=toutf8($d); if($d)return dom($d);}//ascii2utf8//utf2he//utf8dec//he2utf
-else{$dom=dom(''); @$dom->loadHTMLFile($f,LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD); return $dom;}
-ecko('nothing');}
+elseif($o){$d=get_file($f); $d=toutf8($d); if($d)return dom($d);}
+else{$dom=dom(''); @$dom->loadHTMLFile($f,LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD); return $dom;}}
 
 function domattr($v,$p){if($v->hasAttribute($p))return $v->getAttribute($p);}
 
@@ -456,9 +455,6 @@ function array_add_r($ra,$rb){foreach($rb as $k=>$v)
 if(is_array($v))$ra[$k]=array_add_r($ra[$k],$v); else $ra[]=$v; return $ra;}
 function array_part($d,$s,$n){$r=explode($s,$d); return $r[$n];}
 function array_sum_r($r){$rb=[]; foreach($r as $k=>$v)$rb+=count($v); return $rb;}
-function array_walk_b($r,$fc,$p1,$p2){$n=count($r);
-for($i=0;$i<$n;$i++)$rb[]=$fc($r[$i],$p1,$p2); return $rb;}
-function walkeach($r,$fc,$p){foreach($r as $k=>$v)$rb[]=$fc($k,$v,$p); return $rb;}
 function unsetk($r,$d,$n){if($r)foreach($r as $k=>$v)if($v[$n]==$d)unset($r[$k]); return $r;}
 function unsetif(&$r,$d){if(isset($r[$d]))unset($r[$d]);}
 function trimr($v){$r=explode(',',$v); $n=count($r);
@@ -716,7 +712,8 @@ return $rb;}
 #tools
 function genpswd($nb=8){$v='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$^§:()[]{}°+-/*';
 $r=str_split($v); $n=count($r); $ret=''; for($i=0;$i<$nb;$i++)$ret.=$r[rand(0,$n)]; return $ret;}
-function exc($d){if(auth(6))return shell_exec(($d));}//system//escapeshellcmd
+function exc($d){if(auth(6))return shell_exec(escapeshellcmd($d));}
+function sys($d){if(auth(6))system(escapeshellcmd($d),$d); return $d;}
 function excdir(){$dr=__DIR__; $r=explode('/',$dr); return '/'.$r[1].'/'.$r[2];}
 function excget($u,$f){$e='wget -P '.excdir().'/'.$u.' '.$f; exc($e);}
 

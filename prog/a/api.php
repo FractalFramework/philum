@@ -171,7 +171,7 @@ for($i=0;$i<$n;$i++)if($ut[$i]){$tags=$r[$ut[$i]]??'';
 	if($tags)$sq['inner'][]=self::sql_tags_combinative($tags,$ut[$i]);}
 if($p['cmd']=='tracks'){$qdi=db('qdi'); //$sq['slct']=[$qda.'.id'];//todo:use datas
 	$sq['inner'][]='right join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id';}
-if($md=$p['media']??'' && !is_numeric($md)){$qdm=db('qdm');
+$md=$p['media']??''; if($md && !is_numeric($md)){$qdm=db('qdm');
 	if($md=='mp3')$md='.'.$md; elseif($md=='img')$md='.jpg'; else $md=':'.$md.']';
 	$sq['inner'][]='natural join '.$qdm;
 	$sq['and'][]='msg like "%'.$md.'%"';}
@@ -302,9 +302,9 @@ $ret=self::callr($ra);
 if($ra['noheader']??'')return $ret;
 $nbpg=self::head($ra);
 $js='addEvent(document,"scroll",function(){artlive2("'.$ra['rid'].'")});';
-head::add('jscode',$js); $jb='';
+head::add('jscode',$js);
 $jb=head::jscode($js);
-//if(!$ret)$ret=nmx([11,16]);
+if(!$ret)$ret=nmx([11,16]);
 return divd($ra['rid'],$nbpg.$ret).$jb;}
 
 #com

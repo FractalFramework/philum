@@ -265,8 +265,8 @@ return match($c){''=>$d,
 'thumb'=>mk::thumb_d($d,$p,''),
 'image'=>image($p),
 'anchor'=>'<a name="'.$p.'"></a>',
-'conn'=>conn::connectors($p.':'.$o,3,'','',''),
-'app'=>appin($p,$o),
+//'conn'=>conn::connectors($p.':'.$o,3,'','',''),
+'app'=>appin($p,''),
 default=>tag($c,$pr,$d)."\n"};}
 
 static function play($r){$ret='';

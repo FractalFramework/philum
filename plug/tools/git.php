@@ -5,7 +5,7 @@ static $default='';
 
 static function build($p,$o){
 if(!auth(7))return 'no';
-$u=__dir__.'/../../pub/'.$p.'.bat';
+$u=__dir__.'/../../pub/bat/'.$p.'.bat';
 //return exc($u);
 return sys($u);
 //exec('cmd /c C:['.$u.']',$ret); return $ret;

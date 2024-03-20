@@ -23,7 +23,7 @@ if(!self::$er){$d=html_entity_decode($d);
 	if(rstr(129))$lg=trans::detect($suj); //if($lg==ses('lng'))$lg='';
 	$rw=[$ib,$name,$mail,$dt,$qb,$frm,$suj,$re,0,$img,$thm,$sz,$lg];
 	$nid=sqlsav('qda',$rw,0); if($nid)$nib=sql::savi('qdm',[$nid,$d],0);
-	if($nid && $nib!=$nid)transart::repair($id);}
+	if($nid && $nib!=$nid)transart::repair($nid);}
 vacses($urlsrc,'u','x');
 if($nid){$rc=[$dt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$urlsrc,$ib,$re,$lg];
 	conb::parse($d,'savimg',$nid);

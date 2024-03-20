@@ -41,7 +41,7 @@ $id=ma::id_of_suj(get('frm')); if(!$id)return;
 $ok=sql('id','qda','v',['id'=>$id,'>re'=>'0']); if(!$ok)return;
 $ret=sql('msg','qdm','v',$ok);
 if(auth(4))$bt=ma::popart($id);
-return divc($o,$bt.conn::read($ret,'',''));}
+return divc($o,$bt.conn::read($ret,'3',''));}
 
 static function friend_art($o){$id=ses('read');
 if($id){$id=ma::id_of_suj($id); $in=ma::read_msg($id,1,'');}
@@ -289,7 +289,7 @@ $j='modtrk_md,trkmod___'.$p.'_'.$t.'_'.$d.'_';
 if($r)$ret.=self::output_arts_trk($r,$d,$pg,$j,1,($d?'desc limit 1':'asc'));//
 return divd('modtrk',$ret);}
 
-static function trkrch($g1,$g2,$prm){return self::trkarts('',$g1,'','',$prm[0]??'');}
+static function trkrch($g1,$g2,$prm=[]){return self::trkarts('',$g1,'','',$prm[0]??'');}
 static function trkmod($g1,$g2,$g3,$g4){return mod::build(['tracks',$g1,$g2,'',$g3,$g4]);}
 
 static function output_arts_trk($r,$mode,$page,$j,$re,$ord){
@@ -406,7 +406,7 @@ if($rb)foreach($rb as $k=>$v){
 $csb=$frm==$k?$cs1:$cs2;
 //$ret.=llk($csb,'cat/'.$k,$k);
 $ret.=lh('cat/'.$k,$k);
-if($frm==$k && is_array($v))$ret.=m_suj_r($v,$cs1,$cs2);}
+if($frm==$k && is_array($v))$ret.=self::m_suj_r($v,$cs1,$cs2);}
 return $ret;}
 
 static function nodes($mn,$o){//arsort($mn);
@@ -446,7 +446,7 @@ return $rb;}
 
 static function supertriad_b(){$rt=[];//descend
 $r=ma::readcache(); if(is_array($r))foreach($r as $k=>$v)
-if($v[10]??'' && s_numeric($v[10]))$rt[$k][$v[10]][$k]=1;
+if($v[10]??'' && is_numeric($v[10]))$rt[$k][$v[10]][$k]=1;
 return $rt;}
 
 static function collect_hierarchie_b($rev){$rt=[];//append

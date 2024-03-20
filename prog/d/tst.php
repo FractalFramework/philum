@@ -18,9 +18,8 @@ return $ret;}
 static function benchmark_see($p,$o){
 head::add('http-equiv',['refresh','1']);
 sesz('tst');
-sesk('tst',$chrono); $res=average(ses('tst'));
-ses::$adm['chrono'].=div($res.playr(array_reverse(ses('tst'))),'small');
-return $ret;}
+sesk('tst',$p); $res=average(ses('tst'));
+ses::$adm['chrono'].=div($res.playr(array_reverse(ses('tst'))),'small');}
 
 static function jron($r){$rt=[];
 return $rt;}
@@ -34,14 +33,14 @@ static function templates($p,$o){$ret=''; $d='';
 $id=230425;
 $r=view::read();//template
 //$d=view::mkconn($r);
-$ra=art::test($id,'');
+//$ra=art::test($id,'');
 //$r=self::jron($r);
 //$d=self::jcon($d);
 //$d=json_encode($r);
 //$r=json_decode($d,true);
 chrono();
 //for($i=0;$i<100;$i++)
-$d=view::call($r,$ra);
+//$d=view::call($r,$ra);
 //$d=cltmp2::patch('art');//convert to {var}
 //$d=conb::parse($d,'template');
 //$d=conb::build($d,$ra);
