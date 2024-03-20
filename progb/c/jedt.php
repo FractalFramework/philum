@@ -34,7 +34,7 @@ $ra=array_combine($r,['var','var','var','int']);
 $rb=array_combine($r,['com','bt','ico','0']);
 $keys=implode(',',walk($r,'unid'));
 $ret=bj('btsav','navedt|nav,save||'.$keys,picto('save'));
-$ret.=form($ra,$rb);
+$ret.=mkform($ra,$rb);
 return $ret.div('','','navedt');}
 
 static function modif($p){

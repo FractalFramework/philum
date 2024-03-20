@@ -170,7 +170,7 @@ if(!$rst[31])$rc[]='back';
 if(!$rst[43])$rc[]='cat';
 if(!$rst[6] && $r['name'] && $r['name']!=ses('qb'))$rc[]='author';
 if(!$rst[23] && $r['re']>1)$rc[]='priority';
-if(!$rst[24]){$day=mkday($r['day'],1); $rc[]=!$rst[54]?'date2':'date1';}
+if(!$rst[24]){$day=mkday($r['day'],1); $rc[]=$rst[54]?'date2':'date1';}
 if(!$rst[26])$rc[]='pid';
 if(!$rst[29])$rc[]='tag';
 if(!$nl)$rc[]='edit';

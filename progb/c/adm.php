@@ -483,11 +483,12 @@ return $bt.tabs($rt,'at');}
 static function artlist($qr,$admin,$dig){$wh=''; $ret=[]; $_SESSION['daya']=time();
 if($dig)$sqlm='AND day>"'.timeago($dig).'" AND day<"'.timeago(time_prev($dig)).'"';
 else $sqlm='AND day<'.ses('daya').' ';
-if($admin=='all_arts')$wh='';
-elseif($admin=='my_arts')$wh.='AND name="'.ses('USE').'"' ;// AND re>='1'
-elseif($admin=='users_arts')$wh.='AND name!="'.ses('USE').'"' ;
-elseif($admin=='sys_arts'){$wh.='AND frm="_system"'; $sqlm='';}
-elseif($admin=='trash'){$wh.='AND frm="_trash"'; $sqlm='';}
+if($admin=='all')$wh='';
+elseif($admin=='my')$wh.='AND name="'.ses('USE').'"' ;// AND re>='1'
+elseif($admin=='others')$wh.='AND name!="'.ses('USE').'"' ;
+elseif($admin=='_system'){$wh.='AND frm="_system"'; $sqlm='';}
+elseif($admin=='_cat'){$wh.='AND frm="_cat"'; $sqlm='';}
+elseif($admin=='_trash'){$wh.='AND frm="_trash"'; $sqlm='';}
 elseif($admin=='not_published')$wh.='AND re="0"' ;
 if($tr1=get('cat'))$wh=' AND frm="'.$tr1.'" AND re>="1"';
 if($tr2=get('triart'))$tri=$$tr2; else $tri='id';
@@ -540,8 +541,8 @@ $ret=tabler($rtr,0);
 return $btpg.$ret.$btpg;}
 
 static function articles($admin,$dig='',$page=''){$bt=''; $ret='';
-$rb=['all_arts','my_arts','users_arts','sys_arts','not_published','trash','trackbacks','discussions','categories','overcat','pictocat','reviews'];
-foreach($rb as $v)$bt.=lj(active($admin,$v),'admarts_admin___'.ajx($v),$v);
+$rb=['all','my','others','_system','_cat','not_published','_trash','trackbacks','discussions','categories','overcat','pictocat','reviews'];
+foreach($rb as $v)$bt.=lj(active($admin,$v),'admarts_adm,articles___'.ajx($v),$v);
 if($admin=='create')$ret=edit::call('','');
 elseif($admin=='categories')$ret=self::adm_categories();
 elseif($admin=='overcat')$ret=self::adm_overcat(1);
@@ -556,7 +557,9 @@ else{
 	$r=self::artlist($qr,$admin,$dig); if($r)$r=self::list_articles($r);
 	if(rstr(3))$ret.=div(pop::dig_it_j($nbj,'admarts_adm,articles___'.ajx($admin).'_'));
 	$ret.=self::adminarts_pages($r,$qrt,$admin,$dig,$page);}
-return divd('admarts',divc('menus',$bt).$ret);}
+$ret=divc('menus',$bt).$ret;
+if(!$admin)$ret=divd('admarts',$ret);
+return $ret;}
 
 //categories
 static function cat2tag($d,$tg='tag'){

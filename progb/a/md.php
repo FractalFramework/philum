@@ -41,7 +41,7 @@ $id=ma::id_of_suj(get('frm')); if(!$id)return;
 $ok=sql('id','qda','v',['id'=>$id,'>re'=>'0']); if(!$ok)return;
 $ret=sql('msg','qdm','v',$ok);
 if(auth(4))$bt=ma::popart($id);
-return divc($o,$bt.conn::read($ret,'',''));}
+return divc($o,$bt.conn::read($ret,'3',''));}
 
 static function friend_art($o){$id=ses('read');
 if($id){$id=ma::id_of_suj($id); $in=ma::read_msg($id,1,'');}

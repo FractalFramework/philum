@@ -92,7 +92,7 @@ return taga('input',$p+['id'=>$d,'type'=>'text','value'=>$v,'placeholder'=>$h,'s
 function inpsw($d,$v,$s='',$p=[]){return inputb($d,$v,$s,'password','100',['type'=>'password']);}
 function inpdate($id,$v,$min='',$max='',$o=''){$ty=$o?'datetime-local':'date';//time
 return input($id,$v,'',['type'=>$ty,'min'=>$min,'max'=>$max]);}//step=1
-function inpnb($id,$v,$j='',$p=[]){if($j)$p['onchange']=sj($j);
+function inpnb($id,$v,$j,$p=[]){if($j)$p['onchange']=sj($j);
 return input($id,$v,'',$p+['type'=>'number','name'=>$id,'min'=>1,'step'=>1,'size'=>'8']);}
 function inpclr($id,$v=''){return '<input'.atr(['type'=>'color','id'=>$id,'name'=>$id,'value'=>$v]).'>';}
 function inpmail($id,$v='',$p=[]){return '<input'.atr($p+['type'=>'mail','id'=>$id,'value'=>$v,'size'=>'16','placeholder'=>'mail','maxlength'=>'100']).'>';}
@@ -325,8 +325,9 @@ return $dom;}
 
 function fdom($f,$o=''){$ret=''; //if(!urlcheck($f))return 'no';
 if($o==2){$dom=dom(''); $dom->loadHTML($f); return $dom;}
-elseif($o){$d=get_file($f); $d=toutf8($d); if($d)return dom($d);}
-else{$dom=dom(''); @$dom->loadHTMLFile($f,LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD); return $dom;}}
+elseif($o){$d=get_file($f); $d=toutf8($d); if($d)return dom($d);}//ascii2utf8//utf2he//utf8dec//he2utf
+else{$dom=dom(''); @$dom->loadHTMLFile($f,LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD); return $dom;}
+ecko('nothing');}
 
 function domattr($v,$p){if($v->hasAttribute($p))return $v->getAttribute($p);}
 
