@@ -23,8 +23,8 @@ $RECYCLE.BIN/
 # =========================
 
 _notes
-_old
 _backup
+_old
 cnfg/*
 video
 video_u
@@ -58,5 +58,7 @@ msql/users/*
 !msql/users/public/*
 msql/clients/*
 msql/_bak/*
+msql/users/*
+!msql/users/public/*
 pub/favicons/favicon_nn*
 pub/favicons/favicon_oo*
