@@ -26,7 +26,7 @@ return $ret;}
 
 static function save($p,$o,$prm=[]){$msg=$prm[0]??''; $ret='';
 $msg=strip_tags($msg); $msg=str::embed_links($msg);
-$nid=sql::sav('qdi',[0,ses('USE'),'',date('ymd'),ses('qb'),'microart',$p,$msg,0,ses('iq'),'']);
+$nid=sql::sav('qdi',[0,ses('usr'),'',date('ymd'),ses('qb'),'microart',$p,$msg,0,ses('iq'),'']);
 return self::call($p,1);}
 
 static function create($p,$o){$ret=''; $rid=self::rid($p);

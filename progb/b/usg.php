@@ -233,7 +233,7 @@ return divc('list',$ret);}
 
 #admin
 static function putses($k,$v){
-if($k!='auth' && $k!='USE')return $_SESSION[$k]=$v;}
+if($k!='auth' && $k!='usr')return $_SESSION[$k]=$v;}
 
 static function setlng($g1){
 $ret=self::putses('lang',$g1);
@@ -246,7 +246,7 @@ $r=['iq'=>ses('iq')];
 $ex=sql('id','qdk','v',$r);
 if($ex)sqlup('qdk',['ok'=>$p],$ex,0);
 else{$r+=['ok'=>$p,'usr'=>'','time'=>sqldate()]; $ex=sqlsav('qdk',$r,0);}
-if($p==1)cookie('iq',$r['iq']); //if($use=ses('USE'))cookie('use',$use);
+if($p==1)cookie('iq',$r['iq']); //if($use=ses('usr'))cookie('use',$use);
 if($ex)ses('iqa',$p);}
 
 #convhtml

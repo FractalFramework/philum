@@ -20,6 +20,7 @@ $ret.='<br><br>';
 if($_GET['export']!="" && auth(5)){
 $file=get('export');
 //$ret.=self::export($host,$user,$pass,$db,$file);}
-return $ret;}}
+return $ret;}
+
 }
 ?>

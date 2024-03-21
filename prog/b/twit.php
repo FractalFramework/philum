@@ -104,8 +104,9 @@ setlocale(LC_TIME,prmb(25).'_'.strtoupper(prmb(25)));
 //$ret['from']='@'.$q['user']['screen_name'];
 $name=$q['user']['screen_name']??'';//'('.$q['user']['name'].') ';
 $ret['day']=$q['created_at']??''; $id=$q['id']??'';
+[$res,$nm,$sn,$dt]=self::oembed(self::lk($name,$id));
+if(!$ret['day'])$ret['day']=date('d-m-Y',$dt);
 $ret['suj']=$name.' '.date('d b Y - H:i',strtotime($ret['day']));
-[$res,$nm,$sn]=self::oembed(self::lk($name,$id));
 if($res)[$txt,$med]=self::clean($res);
 else [$txt,$med]=self::clean(($q['text']??''));
 $ret['msg']=$res;
@@ -158,6 +159,7 @@ return self::cache($p,$o,2);}
 static function edit($p,$o){$rid=randid('tw');
 $cls=implode(',',array_keys(self::r())); $ret=''; $kr=[];
 $r=sql($cls,'qdtw','a',['twid'=>$p]);
+if(!$r)$r=self::savempty($twid,$id='');
 if($r)foreach($r as $k=>$v){$kb=$k.$rid;
 	$ret.=div(goodarea($kb,$v,60).label($kb,$k,'small')); $kr[]=ajx($kb);}
 $bt=lj('popsav',$p.'_twit,edtsav_'.implode(',',$kr).'__'.$p.'_'.$o,picto('save2'));
@@ -221,7 +223,7 @@ return btn('txtyl','tweet deleted');}
 static function dump($t,$p){
 $q=$t->read($p); $ret=eco($q,1);
 $r=sql('*','qdtw','ar','twid='.$p.''); $ret.=eco($r,1);
-[$res,$nm,$sn]=self::oembed(self::lk($q['user']['screen_name']??'',$q['id']??''));
+[$res,$nm,$sn,$dt]=self::oembed(self::lk($q['user']['screen_name']??'',$q['id']??''));
 $ret.=eco($res,1);
 return $ret;}
 
@@ -355,14 +357,19 @@ static function text($f){$r=fdom($f,1);
 $ret=between($r->textContent,'document.addEventListener("compositionend",n,!1))}();','document.body.className');
 return trim($ret);}
 
+static function findate($txt,$z=''){if($z)eco($txt);
+$d=between($txt,'?ref_src=twsrc%5Etfw">','</a>',1);
+return strtotime($d);}
+
 static function oembed($u){
 $t=self::init(); $q=$t->embed($u);
 //$d=get_file('https://publish.twitter.com/oembed?url='.$u); $q=json_decode($d,true);
 $txt=$q['html']??''; $nm=$q['author_name']??''; $sn=strend($q['author_url']??'','/');
+$date=self::findate($txt);
 //$txt=self::text($u);
 $ret=delbr($txt,"\n");
 $ret=strip_tags($ret);
-return [$ret,$nm,$sn];}
+return [$ret,$nm,$sn,$date];}
 
 static function upvideo_m3u8($f){//tw_video
 $xt='.m3u8'; $fa=strprm($f,4);
@@ -529,7 +536,8 @@ $ret['name']=$q['user']['name']??'';
 $ret['screen_name']=$q['user']['screen_name']??'';
 $ret['user_id']=$q['user']['id']??0;
 $ret['date']=strtotime($q['created_at']);
-[$res,$nm,$sn]=self::oembed(self::lk(valr($q,'user','screen_name'),$q['id']));
+[$res,$nm,$sn,$dt]=self::oembed(self::lk(valr($q,'user','screen_name'),$q['id']));
+if(!$ret['date'])$ret['date']=$dt;
 if($res)[$txt,$med]=self::clean($res);
 else [$txt,$med]=self::clean($q['text']);
 $ret['text']=$txt;
@@ -558,15 +566,21 @@ $ra=['name','screen_name','user_id','date','text','media','mentions','reply_id',
 $r=sql(implode(',',$ra),'qdtw','a',['twid'=>$twid],0); //if(array_sum($r)=='0')$r=[];//not if twit not exists
 if($r && !$o)return self::play($twid,$r,[],0,$id);
 $rb=self::r(); foreach($rb as $k=>$v)$rb[$k]=$v=='int'||$v=='bint'?0:'';
-$rb['twid']=$twid; if($id)$rb['ib']=$id; $rb['date']=time(); if($sn)$rb['screen_name']=$sn;
+$rb['twid']=$twid; if($id)$rb['ib']=$id; if($sn)$rb['screen_name']=$sn;
 $lk=self::lk($sn?$sn:'unknown',$twid);
 $ret=lkt('txtx',$lk,pictxt('url',$sn));
-[$res,$nm,$sn]=self::oembed($lk);
+[$res,$nm,$sn,$dt]=self::oembed($lk);
 [$txt,$med]=self::clean($res); $med=utmsrc($med);
-$rb['text']=$txt; if($nm)$rb['name']=$nm; $rb['media']=$med; $rb['screen_name']=$sn;
+$rb['text']=$txt; if($nm)$rb['name']=$nm; $rb['media']=$med;
+$rb['screen_name']=$sn; $rb['date']=$dt?$dt:time();
 if($o && $r)sqlup('qdtw',$rb,['twid'=>$twid],0);
-elseif($txt && auth(6) && $id!='test')sqlsav('qdtw',$rb,0,0);
+elseif(auth(6) && $id!='test')sqlsav('qdtw',$rb,0,0);//$txt && 
+//else self::savempty($twid,$id);
 return self::play($twid,$rb,[],$o,$id);}
+
+static function savempty($twid,$id=''){
+$r=self::r(); $rb['twid']=$twid; $rb['ib']=$id;
+return sqlsav('qdtw',$rb,0,0);}
 
 #read
 static function cache($k,$id,$o='',$q=[]){if(!$id)$id=0;
@@ -579,7 +593,7 @@ if(auth(4) && ((!$r && $o!=2) or $o==1)){$r0=$r;
 	if($er)$r['text']=$er;
 	elseif($r0 && $r)sqlup('qdtw',$r,['twid'=>$k],0);
 	elseif($r && $k && is_numeric($k) && $id!='test'){
-		$rb=array_merge(['ib'=>is_numeric($id)?$id:0,'twid'=>$k],$r); //pr($rb);
+		$rb=array_merge(['ib'=>is_numeric($id)?$id:0,'twid'=>$k],$r);
 		if(auth(6))sqlsav('qdtw',$rb,0,0);}}
 elseif($r){$r=array_combine($ra,$r);
 	if($q){
@@ -610,7 +624,7 @@ return msql::col('',nod('twit_friends',0,1));}
 
 static function batch($r,$o){$rid=randid('tw'); $ret='';
 if($er=self::error($r))return $er;
-$rx=[]; if($o=='stp')$rx=self::stupids(); elseif($o=='mdl')$rx=self::friends(); //pr($rx);
+$rx=[]; if($o=='stp')$rx=self::stupids(); elseif($o=='mdl')$rx=self::friends();
 if(is_array($r)){foreach($r as $q)if(isset($q['id'])){$ok=1;
 		if($o=='stp'){if(in_array($q['user']['screen_name'],$rx))$ok=0;}
 		if($o=='mdl'){if(!in_array($q['user']['screen_name'],$rx))$ok=0;}
@@ -700,8 +714,8 @@ elseif($o=='frnb')$qu=$t->friends($p,'');//friends2
 elseif($o=='fav')$q=$t->favorites($p,$id);
 elseif($o=='ban')$ret=self::card($p,1);
 elseif($o=='erx' && auth(6))$ret=self::erasex('plug');
-//elseif($o=='chat'){$q=$t->messages('list','','');}//pr($q);
-elseif($o=='chat'){$q=$t->messages('new','2434088253','hello');}//echo $t->_prm; //pr($q);
+//elseif($o=='chat'){$q=$t->messages('list','','');}
+elseif($o=='chat'){$q=$t->messages('new','2434088253','hello');}//echo $t->_prm;
 //elseif($o=='chat'){$q=$t->messages('show',$id,'');}//destroy
 //elseif($o=='mnt')$q=$t->mentions($p,$id);
 elseif($o=='sql')[$q,$minid]=self::search($p,$id,'');
@@ -714,7 +728,7 @@ elseif($p){$qr=[];//if($o=='search')
 	//[$r,$minid]=self::search($p,$id,'');
 	if(strpos($p,',')){$r=explode(',',$p);//multicall
 		foreach($r as $k=>$v){$qr=$t->search($v,$n,$id,$minid);
-			if(!$er=self::error($qr))$qr=$qr['statuses']; //pr($qr);
+			if(!$er=self::error($qr))$qr=$qr['statuses'];
 			foreach($qr as $k=>$v)if($v['id']??'' && !isset($q[$v['id']]))$q[$v['id']]=$v;} krsort($q);}
 	else{$q=$t->search($p,$n,$id,$minid);//since_id not works
 		if(!$er=self::error($q))$q=$q['statuses'];}}

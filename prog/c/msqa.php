@@ -270,7 +270,7 @@ $table=$table?$table:'table';
 $idt=msql::findlast($dr,$hub,$table);
 $ret=input('dir',$dr,8);
 if(auth(5))$ret.=input('hub',$hub,8);
-elseif($hub!=ses('USE'))return btn('txtyl','forbidden');
+elseif($hub!=ses('usr'))return btn('txtyl','forbidden');
 else $ret.=hidden('prfx',$hub);
 $ret.=input('nod',$table,8);
 $ret.=input('ver',$idt,4).' ';
@@ -691,8 +691,8 @@ if($files && $b){$ra[4]=array_keys($files);//hubes
 else $ra[4]='';
 $ra[5]=$hub; $ra[6]=$files; $rf=[];
 	if($files && $auth<=$ath){foreach($files as $k=>$v){
-		if($k==ses('USE') && $k==ses('qb'))$rf[$k]=$v;
-		elseif($k==ses('USE'))$rf[$k]=['public'];
+		if($k==ses('usr') && $k==ses('qb'))$rf[$k]=$v;
+		elseif($k==ses('usr'))$rf[$k]=['public'];
 		elseif($k=='public')$rf[$k]=$v;} 
 	$files=$rf;}
 $ra[7]=$table;
@@ -727,7 +727,7 @@ if($cmd && $cmd!='='){
 $def=ajx(get('def'),1);
 if(get('see'))$ret[]=verbose($ra,'dirs');
 //auth
-$localusr=$base=='users' && $hub==ses('USE')?1:0;
+$localusr=$base=='users' && $hub==ses('usr')?1:0;
 $authorized=$ath or $localusr?1:0;
 #load
 $defs=[];
@@ -752,7 +752,7 @@ if(!$def && auth(6)){
 		$rt[]=self::opbt('merge_defs',$jurl,$lh[6],1);
 		$rt[]=self::opbt('append_update',$jurl,$lh[7],1);
 		$rt[]=self::opbt('append_values',$jurl,$lh[8],1);}
-	//if(isset($files[$hub]) && $hub==ses('USE'))
+	//if(isset($files[$hub]) && $hub==ses('usr'))
 	if($ath && $table && $hub && $is_file){
 		$rt[]=self::opbt('rename_table',$jurl,$lh[31],1);
 		$rt[]=self::opbt('duplicate_table',$jurl,$lh[32],1);

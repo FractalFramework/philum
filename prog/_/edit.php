@@ -33,7 +33,7 @@ return $ret.divd('edtbt','');}
 static function bt($id){$ret='';
 $r=sesmk('conns','',0);
 $rh=sesmk('connlg','',0);
-if(ses('USE'))$ret=self::props($id);//rid used for mc,conns
+if(ses('usr'))$ret=self::props($id);//rid used for mc,conns
 foreach($r as $k=>$v){$txt=self::icon($k); $rid=''; if($k=='nl')$v[1]='\n';
 	if($v[0]=='embed'){if($v[1])$v[0]='embedslct'; else $v[1]=$k; $rid=randid();}
 	$ret.=btd('bt'.$rid,ljb('',$v[0],[$v[1],$rid,$id],$txt,att($rh[$k]??'')));}
@@ -47,7 +47,7 @@ static function txarea($d,$id=''){return '<textarea id="txtarea" name="msg" clas
 
 //f
 static function call($link,$id){$ip=ip();
-$USE=ses('USE'); $frm=ses('frm'); $suj=''; $msg=''; $rid=randid('edt');
+$USE=ses('usr'); $frm=ses('frm'); $suj=''; $msg=''; $rid=randid('edt');
 if($USE)$us=$USE; else [$us,$ml]=sql('name,mail','qdi','r','host="'.$ip.'" order by id desc limit 1');
 if(!$frm)$frm='public';
 if(!$id && $link && substr($link,0,4)=='http'){$link=nohttps(utmsrc($link));//vacuum
@@ -65,7 +65,7 @@ else $rt['publish']=hidden('pub',0);
 if(!$id){//new
 	$rt['pstdat']=inpdate('pdat',date('Y-m-d\TH:i'),'2000-01-01T00:00','2040-01-01T00:00',1);
 	$rt['pstsuj']=inputb('suj1',$suj,'',nms(71),250,['name'=>'suj','class'=>'editor','style'=>'width:99%;']);}
-if($id)$msg=sql('msg','qdm','v',$id);
+if($id)$msg=sql::read('msg','qdm','v',$id);
 $msg=str_replace("\r",'',$msg);//msg
 $msg=str_replace(["<br />\n",'<br />','<br>'],"\n",$msg);//save
 $ids='suj1,frm,urlsrc,pdat,trkname,trkmail,addib,pub';//,sub

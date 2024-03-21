@@ -1,7 +1,7 @@
 <?php 
 class txt{
 
-static function log(){return ses('auth')>6?ses('qb'):ses('USE');}
+static function log(){return ses('auth')>6?ses('qb'):ses('usr');}
 
 static function del($d){$nd=self::log();
 if($d)unlink('msql/users/'.$nd.'_txt_'.$d.'.php');

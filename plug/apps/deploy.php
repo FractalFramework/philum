@@ -1,7 +1,7 @@
 <?php //deploy
 class deploy{
 static function home($deploy){$ret='';
-$qb=ses('qb'); $USE=ses('USE'); $raed=ma::suj_of_id($deploy);
+$qb=ses('qb'); $USE=ses('usr'); $raed=ma::suj_of_id($deploy);
 if($deploy && $USE){//prep
 	[$qauth,$subj]=sql('name,suj','qda','r','id="'.$deploy.'"');
 	$msg=sql('msg','qdm','v','id="'.$deploy.'"');

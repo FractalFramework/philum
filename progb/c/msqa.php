@@ -270,7 +270,7 @@ $table=$table?$table:'table';
 $idt=msql::findlast($dr,$hub,$table);
 $ret=input('dir',$dr,8);
 if(auth(5))$ret.=input('hub',$hub,8);
-elseif($hub!=ses('USE'))return btn('txtyl','forbidden');
+elseif($hub!=ses('usr'))return btn('txtyl','forbidden');
 else $ret.=hidden('prfx',$hub);
 $ret.=input('nod',$table,8);
 $ret.=input('ver',$idt,4).' ';
@@ -409,7 +409,7 @@ static function edtjson($r){if($r)return json_encode($r);}
 
 static function import_json($d){$r=json_decode($d,true);
 if(isset($r[0])){$rh['_']=$r[0]; unset($r[0]); $r=$rh+$r;}
-if(isset($r['_menus_'])){$rh['_']=$r['_menus_']; unset($r['_menus_']); $r=$rh+$r;}//old
+//if(isset($r['_menus_'])){$rh['_']=$r['_menus_']; unset($r['_menus_']); $r=$rh+$r;}//old
 return $r;}
 
 static function import_json_lk($f){
@@ -643,6 +643,9 @@ $r=tar::scan('msql');
 if(auth(6))tar::folder($f,$r);
 if(is_file($f))return lkt('txtyl',$f,$f); else return 'brrrr';}
 
+/*
+to revise
+*/
 #render
 static function murlread($u){
 if(!$u)$u='users/'.ses('qb');//default
@@ -667,8 +670,8 @@ return $ret;}
 
 #boot
 static function boot($msql){$auth=ses('auth'); $ath=6; $root='msql/';//self::sesm('root')
-if(substr($msql,0,7)=='/?msql=')$msql=substr($msql,7);//patch local
-$ru=self::murlread($msql); $_SESSION['murl']=$ru;
+//if(substr($msql,0,7)=='/?msql=')$msql=substr($msql,7);//patch local
+$ru=self::murlread($msql); $_SESSION['murl']=$ru; //echo $msql; pr($ru);
 [$b,$dir,$hub,$table,$version,$def]=$ru;
 if($def)geta('def',$def); $folder=$b.'/'.($dir?$dir.'/':'');
 //echo $b.'-d:'.$dir.'-p:'.$hub.'-t:'.$table.'-v:'.$version.'-d:'.$def.br();
@@ -679,7 +682,7 @@ elseif(is_file($root.$folder.$hub.'_'.$table.'.php') && $version){
 if($dir && !is_dir($root.$folder)){$folder=$b.'/'; $dir='';}
 $files=self::tables($root.$folder);
 $ra[0]=explore($root,'dirs',1);//bases
-	if($auth<6){$rdel=['lang','server','clients','radio','stats','gallery','db','system'];
+	if($auth<6){$rdel=['lang','server','clients','system'];
 		foreach($rdel as $v)unset($ra[0][$v]);}
 $ra[1]=$b;//base
 $ra[2]=$dir?explore($root.$b.'/','dirs',1):'';//dirs
@@ -691,8 +694,8 @@ if($files && $b){$ra[4]=array_keys($files);//hubes
 else $ra[4]='';
 $ra[5]=$hub; $ra[6]=$files; $rf=[];
 	if($files && $auth<=$ath){foreach($files as $k=>$v){
-		if($k==ses('USE') && $k==ses('qb'))$rf[$k]=$v;
-		elseif($k==ses('USE'))$rf[$k]=['public'];
+		if($k==ses('usr') && $k==ses('qb'))$rf[$k]=$v;
+		elseif($k==ses('usr'))$rf[$k]=['public'];
 		elseif($k=='public')$rf[$k]=$v;} 
 	$files=$rf;}
 $ra[7]=$table;
@@ -727,7 +730,7 @@ if($cmd && $cmd!='='){
 $def=ajx(get('def'),1);
 if(get('see'))$ret[]=verbose($ra,'dirs');
 //auth
-$localusr=$base=='users' && $hub==ses('USE')?1:0;
+$localusr=$base=='users' && $hub==ses('usr')?1:0;
 $authorized=$ath or $localusr?1:0;
 #load
 $defs=[];
@@ -752,7 +755,7 @@ if(!$def && auth(6)){
 		$rt[]=self::opbt('merge_defs',$jurl,$lh[6],1);
 		$rt[]=self::opbt('append_update',$jurl,$lh[7],1);
 		$rt[]=self::opbt('append_values',$jurl,$lh[8],1);}
-	//if(isset($files[$hub]) && $hub==ses('USE'))
+	//if(isset($files[$hub]) && $hub==ses('usr'))
 	if($ath && $table && $hub && $is_file){
 		$rt[]=self::opbt('rename_table',$jurl,$lh[31],1);
 		$rt[]=self::opbt('duplicate_table',$jurl,$lh[32],1);

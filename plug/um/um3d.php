@@ -16,7 +16,7 @@ foreach($r as $k=>$v){
 
 /*  [star] => HD 150680
 	[name] => Zeta Herculis
-	[planet] => Dookaïa
+	[planet] => Dooka�a
 	[status] => amical
 	[ad] => 240.68
 	[dc] => 31.36
@@ -124,7 +124,7 @@ static function menu($p,$o,$rid){$ret=input('inp',$p).' ';
 $ret.=lj('',$rid.'_um3d,call_inp',picto('ok')).' ';
 return $ret;}
 
-static function home($p,$o){
+static static function home($p,$o){
 $rid=randid('um3d');
 $bt=self::menu($p,$o,$rid);
 $ret=self::build($p,$o);

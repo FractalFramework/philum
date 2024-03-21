@@ -34,7 +34,7 @@ return view::call($rt,$ra);}
 
 #edit
 static function btedit($kem,$id,$re,$prw){
-$USE=ses('USE'); $auth=$_SESSION['auth']; $rech=ajx(get('search')); $ret='';
+$USE=ses('usr'); $auth=$_SESSION['auth']; $rech=ajx(get('search')); $ret='';
 if($re==0){if(($USE==$kem && $auth>2) or $auth>3)//publish
 	$ret=blj('txtyl','pba'.$id,'meta,priorsav__xd_1_'.$id,picto('minus'));
 	elseif($USE==$kem && $auth==2)$ret.=btn('txtyl',nms(53)).' ';}
@@ -149,7 +149,7 @@ return isset($r[$d])?picto($r[$d],16):'';}
 return isset($r[$d-1])?'['.$r[$d-1].']':'';}*/
 
 static function titles($id,$r,$rear,$nbtrk,$prw,$nl,$nb,$rb){//$rb:id,suj,css,msg
-$rst=$_SESSION['rstr']; $USE=ses('USE'); $ib=$r['ib']; $ro=$r['o']; if(!$rb)return [];
+$rst=$_SESSION['rstr']; $USE=ses('usr'); $ib=$r['ib']; $ro=$r['o']; if(!$rb)return [];
 $rf=self::favs($id);//todo:come from pecho_arts and api
 $read=ses('read'); $page=get('page'); $http=$nl?host():'';
 //actions
@@ -339,7 +339,7 @@ return $d;}
 
 //msg img suit
 static function prepare_msg($id,$msg,$r,$prw,$nl=''){
-$read=get('read'); $USE=ses('USE'); $ath='';
+$read=get('read'); $USE=ses('usr'); $ath='';
 if(rstr(21)){if($prw>1)$ath=$r['o']['authlevel'];
 	if($ath && $ath!='all' && $ath>$_SESSION['auth'])return few::restricted_area($ath);}
 if($psw=$r['o']['password']??''){if(ses('psw'.$id)!=$psw)return few::restricted_pswd($id);}
@@ -473,7 +473,7 @@ static function read($id,$tp=''){$tp=$tp?$tp:'read'; $prw=0; $ret='';
 $r=self::datas($id); $r['o']=self::metart($id); if(!$r)return; $nl=get('nl');
 ses::$r['imgrel']=pop::art_img($r['img'],$id);//finally used without rstr19
 $msg=sql('msg','qdm','v',$id);
-if($id && ($r['re']>='1' or auth(3) or ses('USE')==$r['name'])){$prw=3;
+if($id && ($r['re']>='1' or auth(3) or ses('usr')==$r['name'])){$prw=3;
 	//$ret=self::build($id,$r,$msg,$prw,$tp,$nl);
 	$ret=self::callout($id,$r,$msg,$prw,$tp,$nl);}
 elseif($id && !$r['re'])$ret=divc('frame-red',helps('not_published'));
@@ -555,7 +555,7 @@ static function tracks_to($d){
 return lj('popbt','popup_art,trkone___'.$id,$t?$t:'@'.$to);}
 
 static function tracks_read($r,$o=''){
-$USE=ses('USE'); $qb=ses('qb'); $read=ses('read');
+$USE=ses('usr'); $qb=ses('qb'); $read=ses('read');
 $ip=ip(); $rt['css']='track'; $rt['sty']=''; $trkty='';
 [$id,$ib,$name,$mail,$day,$nod,$frm,$suj,$msg,$re,$host,$lg]=$r;//frm=reply
 if($re==0 && !auth(6))return;

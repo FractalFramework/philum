@@ -23,7 +23,7 @@ return divc('nbp',$ret);}}
 static function form($id){
 $ids='vmsg'.$id.',vmfrom'.$id.',vmto'.$id.',vmsg'.$id;
 $ret=lj('popsav','vsd'.$id.'_mails,sendart_'.$ids.'__'.$id,nms(28));
-if(ses('USE'))$ret.=hidden('vmfrom'.$id,sesr('qbin','adminmail'));
+if(ses('usr'))$ret.=hidden('vmfrom'.$id,sesr('qbin','adminmail'));
 else{$ret.=label('vmfrom'.$id,ucfirst(nms(68)).':','popw').' ';
 $ret.=input('vmfrom'.$id,24).br();}
 if(auth(4))$ret.=lj('txtbox','popup_mails,slct_vmto'.$id,nms(36));
@@ -87,7 +87,7 @@ else{self::send_txt($to,$suj,$msg,$from,$url);}}
 static function send_user_mail($id,$lgtxt){//send_to_author
 $sender=$_SESSION['qbin']["adminmail"];
 [$kem,$suj]=sql('name,suj','qda','r','id="'.$id.'"');
-if($kem!=ses('USE')){
+if($kem!=ses('usr')){
 $nmsg=helps($lgtxt);//.br().br().$suj
 	$kmail=sql('mail','qdu','v','name="'.$kem.'"');
 	if($kmail!=$_SESSION['qbin']["adminmail"])

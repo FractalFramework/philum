@@ -23,7 +23,7 @@ return sql::qrid('INSERT INTO '.$qdi.' VALUES ("","","'.$name.'","","'.$pdt.'","
 
 static function form($cht){
 $tfield=btn("txtx","subject:").' ';
-$tfield.=hidden('name',ses('USE'));
+$tfield.=hidden('name',ses('usr'));
 if(!get('open'))$tfield.=inputb('text',get('suj'),15,'subject',1000,[]);
 else $tfield.=hidden('suj',get('suj'));
 $tfield.=inputb('text','',25,'message',1000,[]);

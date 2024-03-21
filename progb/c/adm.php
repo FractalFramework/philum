@@ -210,7 +210,7 @@ $ret.=lj('popsav','admail_adm,admail_amail__'.$usr,voc('save'));
 return divd('admail',$ret);}
 
 static function password($usr,$o='',$prm=[]){
-if(!$usr)$usr=ses('USE'); $ret='';
+if(!$usr)$usr=ses('usr'); $ret='';
 if(auth(6) && $prm){$old=sql('pass','qdu','v',['name'=>$usr]);
 	if($prm[0]==$old){sql::upd('qdu',['pass'=>$prm[1]],['name'=>$usr]);
 		return divc('frame-green','password have been updated');}
@@ -254,7 +254,7 @@ return tabs($r,'nl');}
 #adm
 static function messages(){
 if($_SESSION['auth']<1)return contact(nms(84),'txtcadr');
-elseif($_SESSION['auth']>6)$frm=ses('qb'); else $frm=ses('USE');
+elseif($_SESSION['auth']>6)$frm=ses('qb'); else $frm=ses('usr');
 $r=ma::read_idy(0,'desc',$frm);
 return art::output_trk($r);}
 
@@ -399,9 +399,9 @@ if(!is_file($f))$f='imgb/avatar/Gems/EmeraldSquare.gif';
 return '/'.$f.'?'.randid();}
 
 static function avatarsav($dr,$p){
-$f='imgb/usr/'.ses('USE').'_avatar.gif'; $fa='imgb/avatar/'.$dr.'/'.$p;;
+$f='imgb/usr/'.ses('usr').'_avatar.gif'; $fa='imgb/avatar/'.$dr.'/'.$p;;
 if($p=='ko' && is_file($f))unlink($f); elseif(is_file($fa))copy($fa,$f);
-return image(self::avatarimg(ses('USE')),'48','48');}
+return image(self::avatarimg(ses('usr')),'48','48');}
 
 static function avatarslct($dir){$ret='';
 $dr='imgb/avatar/'.$dir; $r=explore($dr,'files',1);
@@ -410,12 +410,12 @@ if($r)foreach($r as $k=>$v){$xt=substr($v,-3);
 	$ret.=lj('','avatar_adm,avatarsav___'.ajx($dir).'_'.ajx($v),$img);}}
 return $ret;}
 
-static function avatar($o){$f=self::avatarimg(ses('USE'));
+static function avatar($o){$f=self::avatarimg(ses('usr'));
 if(!$o)$ret=divd('avatar',image($f,'48','48')).br();
 $r=explore('imgb/avatar','dirs');
 foreach($r as $k=>$v)$rt[$k]=self::avatarslct($k);
 $rt['upload'][]=upload_j('upl','avnim').' ';
-$rt['upload'][]=lj('popbt','avatar_usg,img___'.ajx('imgb/usr/'.ses('USE').'_avatar.gif'),picto('refresh')).' ';
+$rt['upload'][]=lj('popbt','avatar_usg,img___'.ajx('imgb/usr/'.ses('usr').'_avatar.gif'),picto('refresh')).' ';
 $rt['upload'][]=lj('popdel','avatar_adm,avatarsav____ko',picto('del'));
 return $ret.tabs($rt);}
 
@@ -431,7 +431,7 @@ return $bt.divd('bckp','');}
 
 #members
 static function mbr_become($p,$o='',$prm=[]){
-$use=ses('USE'); $qb=ses('qb');
+$use=ses('usr'); $qb=ses('qb');
 if($p){sqlsav('qdb',[$p,$qb,2]); return 'Thank You!';}
 $ex=sql('id','qdb','v',['name'=>$use]);
 if(!$ex)$ret=lj('popsav','mbrbc_adm,mbr*become_mbradu__'.$use,'become member');
@@ -484,8 +484,8 @@ static function artlist($qr,$admin,$dig){$wh=''; $ret=[]; $_SESSION['daya']=time
 if($dig)$sqlm='AND day>"'.timeago($dig).'" AND day<"'.timeago(time_prev($dig)).'"';
 else $sqlm='AND day<'.ses('daya').' ';
 if($admin=='all')$wh='';
-elseif($admin=='my')$wh.='AND name="'.ses('USE').'"' ;// AND re>='1'
-elseif($admin=='others')$wh.='AND name!="'.ses('USE').'"' ;
+elseif($admin=='my')$wh.='AND name="'.ses('usr').'"' ;// AND re>='1'
+elseif($admin=='others')$wh.='AND name!="'.ses('usr').'"' ;
 elseif($admin=='_system'){$wh.='AND frm="_system"'; $sqlm='';}
 elseif($admin=='_cat'){$wh.='AND frm="_cat"'; $sqlm='';}
 elseif($admin=='_trash'){$wh.='AND frm="_trash"'; $sqlm='';}
@@ -716,7 +716,7 @@ $ret.=btd('admnu',''); //if($o)$ret=div($ret,'list');
 return $ret;}
 
 /**/static function ishub0(){//to redo
-$qb=ses('qb'); $usr=ses('USE'); $alert=''; $head='';
+$qb=ses('qb'); $usr=ses('usr'); $alert=''; $head='';
 if($usr){
 	$hubname=sql('hub','qdu','v',['name'=>$qb]);
 	if(!$hubname)$hubname=$qb;
@@ -732,14 +732,14 @@ elseif(!$usr)$head=lkc('txtx','/home',$qb).br().br().login::form($usr,ses('iq'),
 return [$hubname,$alert,$head];}
 
 static function ishub(){//to redo
-$qb=ses('qb'); $usr=ses('USE'); $alert=''; $head='';
+$qb=ses('qb'); $usr=ses('usr'); $alert=''; $head='';
 $hubname=sql('hub','qdu','v',['name'=>$qb]);
 if(!$hubname)$hubname=$qb;
 return [$hubname,$alert,$head];}
 
 static function home($nohead=''){
 if(!$_SESSION['dayx'])boot::reboot();
-$qb=ses('qb'); $usr=ses('USE'); $auth=ses('auth'); $hubname='';
+$qb=ses('qb'); $usr=ses('usr'); $auth=ses('auth'); $hubname='';
 $alert=''; $head=''; $tit=''; $ret='';
 //reboot after quit cssedit
 $admin=get('admin'); if(!$admin)$admin='console';

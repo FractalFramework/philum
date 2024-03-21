@@ -113,7 +113,7 @@ $w=prma('content')-100; $ret=''; $ib=''; $user=''; $nfo='';
 if(is_numeric($msg)){$ib=$msg; $msg='['.$ib.':to]'."\n\n"; $nfo='reply';}
 elseif($capt!=false){$msg='['.$msg.'|'.$capt.':callquote]'."\n\n"; $nfo='quote';}
 elseif(!is_numeric($id)){$user=$id; $id=''; $nfo='private';}
-$use=ses('USE'); if(!$use)$use=cookie('use'); $ml=cookie('mail');
+$use=ses('usr'); if(!$use)$use=cookie('use'); $ml=cookie('mail');
 if(!$use)[$use,$ml]=sql('name,mail','qdi','r',['host'=>ip(),'_code'=>'order by id desc limit 1']);
 //mode
 if($nfo=='reply')ses::$r['popt']=nms(174).' '.sql('name','qdi','v',$ib);
@@ -127,7 +127,7 @@ else{$j='track'.$id.'_tracks,save_'.$rid.','.$ids; $ind=get('tg')=='popup'?'14x'
 	$ret.=lj('','trkdsk_tracks,save_'.$rid.','.$ids.'_xt_'.$id.'_1',picto('output'),att(nms(198))).' ';}
 //form
 if(rstr(2) && !auth(4))$ret.=btn('small',helps('tracks_moderation'));
-if(ses('USE'))$ret.=hidden($rx[0],$use).hidden($rx[1],'').hidden('trkscr','').hidden('trkscrvrf','');
+if(ses('usr'))$ret.=hidden($rx[0],$use).hidden($rx[1],'').hidden('trkscr','').hidden('trkscrvrf','');
 else{$pr['onkeyup']=atj('log_goodname','trkname');
 	$ret.=inputb('trkname',$use,'8','name','50',$pr);
 	//$ret.=inputb('trkmail',$ml,'14','mail','50',$pr+['type'=>'mail']);

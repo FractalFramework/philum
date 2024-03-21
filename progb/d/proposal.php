@@ -42,7 +42,7 @@ return self::call($p,$o);}
 
 static function build($p,$o,$ord,$r){$ret=''; $rt=[]; $rb=[]; $rc=[];
 $j=$o.'_proposal,save_inp1,inp2_3_'.$p.'_'.$o;
-$usr=cookie('use'); if(!$usr)$usr=ses('USE'); $day=date('ymd'); //$usr='dav';
+$usr=cookie('use'); if(!$usr)$usr=ses('usr'); $day=date('ymd'); //$usr='dav';
 $ret=lj('popbt '.active($ord,1),$o.'_proposal,call__3_'.$p.'_'.$o.';1','score');
 $ret.=lj('popbt '.active($ord,2),$o.'_proposal,call__3_'.$p.'_'.$o.';2','date');
 $inp2=!$usr||auth(6)?inputj('inp2',$usr,$j,'user',8):hidden('inp2',$usr).btn('txtx',$usr);

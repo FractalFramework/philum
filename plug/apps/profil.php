@@ -39,9 +39,9 @@ return image('/'.$f,'48','48',ats('vertical-align:0px;'));}
 
 static function form($r,$o=''){
 //$ret=tagb('h2','','My Profil :)');
-$ret=hidden('user',ses('USE'));
-//$ret.=divc('',btn('popw',ses('USE')));
-$ret.=divc('',lj('txtsmall','popup_adm,avatar___1',btd('avatar',self::avatar(ses('USE')))));
+$ret=hidden('user',ses('usr'));
+//$ret.=divc('',btn('popw',ses('usr')));
+$ret.=divc('',lj('txtsmall','popup_adm,avatar___1',btd('avatar',self::avatar(ses('usr')))));
 $ret.=divc('',inputb('name',$r['name']??'').btn('popw','identit�'));
 $ret.=divc('',inputb('com',$r['com']??'').btn('popw','pr�sentation'));
 $ret.=hidden('cp','0');
@@ -73,7 +73,7 @@ return $ret;}*/
 
 static function home($p,$o){$rid='plg'.randid(); //echo $p.'-'.$o;
 self::profile_init('profil');
-$r=self::datas(ses('USE')); //p($r);
+$r=self::datas(ses('usr')); //p($r);
 if(strpos($r['gps'],'/')===false)$r['gps']='0/0';
 //head::add('js','http://maps.googleapis.com/maps/api/js');
 head::add('jscode',self::js($r['gps']));

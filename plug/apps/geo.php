@@ -47,7 +47,7 @@ $d=2*atan2(sqrt($a),sqrt(1-$a));
 return round($earth_radius*$d).' Km';}
 
 static function profil_distance($gpsv){//echo $gpsu;
-$gpsu=sql('gps','profil','v','user="'.ses('USE').'"');
+$gpsu=sql('gps','profil','v','user="'.ses('usr').'"');
 $gpsru=explode('/',$gpsu); $gpsrv=explode('/',$gpsv);
 //$da=$gpsru[0]-$gpsrv[0]; $db=$gpsru[1]-$gpsrv[1];
 //$r=algo_gps_distance($gpsru[0],$gpsru[1],100); 

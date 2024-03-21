@@ -19,6 +19,7 @@ static function qra($r){return mysqli_fetch_assoc($r);}
 static function qrw($r){return mysqli_fetch_row($r);}
 static function qrf($r){mysqli_free_result($r);}
 static function qres($v){if($v!==null)return mysqli_real_escape_string(self::$qr,stripslashes($v));}
+//static function qres($v){if($v!==null)return mysqli_real_escape_string(self::$qr,$v);}
 static function atm($v){$d=substr($v??'',0,4);
 return $d=='NULL'||$d=='NOW('||$d=='PASS'?$v:'"'.self::qres($v).'"';}//!num
 static function atmr($r){$rt=[]; foreach($r as $k=>$v)$rt[]=self::atm($v); return $rt;}
@@ -141,12 +142,31 @@ if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
 return $ret;}
 
 static function inner2($d,$b1,$b2,$k2,$b3,$k3,$p,$q,$z=''){
-$sql='select '.$d.' from '.db($b1).' 
-inner join '.db($b2).'on '.db($b1).'.id='.db($b2).'.'.$k2.'
-inner join '.db($b3).'on '.db($b2).'.id='.db($b3).'.'.$k3.' '.self::where($q);
+$sql='select '.$d.' from '.db($b1).'
+inner join '.db($b2).' on '.db($b1).'.id='.db($b2).'.'.$k2.'
+inner join '.db($b3).' on '.db($b3).'.id='.db($b2).'.'.$k3.' '.self::where($q);
 $rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
 if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
 return $ret;}
+
+static function inner2b($d,$b1,$b2,$b3,$b4,$p,$q,$z=''){
+$sql='select '.$d.' from '.db($b1[0]).'
+inner join '.db($b2[0]).' on '.db($b1[0]).'.'.$b1[1].'='.db($b2[0]).'.'.$b2[1].' 
+inner join '.db($b3[0]).' on '.db($b3[0]).'.'.$b1[1].'='.db($b4[0]).'.'.$b4[1].' 
+'.self::where($q);
+$rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
+if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
+return $ret;}
+
+static function inner3($d,$br,$p,$q,$z=''){
+$sql='select '.$d.' from '.db($br[0][0][0]).' ';
+foreach($br as [$b1,$b2])
+$sql.='inner join '.db($b2[0]).' on '.db($b1[0]).'.'.$b1[1].'='.db($b2[0]).'.'.$b2[1].' ';
+$sql.=self::where($q);
+$rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
+if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
+return $ret;}
+
 
 //ops
 static function setutf8(){self::$qr->query('set names utf8mb4');}

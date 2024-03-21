@@ -317,7 +317,7 @@ case('fav_mod'):$ret=self::fav_mod($p,$t); break;
 //users
 case('login'):$ret=md::login_btn($p,$o); break;
 case('login_popup'):$ret=self::login_btn_p($p,$o); break;
-case('log-out'):if(ses('USE'))$ret.=lkc($csb,'/logout',picto('logout')); break;
+case('log-out'):if(ses('usr'))$ret.=lkc($csb,'/logout',picto('logout')); break;
 case('search'):$ret=search_btn($o); break;
 //banner
 case('Banner'):$ret=self::make_ban($p,$o,$t); break;
@@ -483,8 +483,8 @@ return divd('titles',art::template($p,'titles'));}
 
 //usables
 static function login_btn_p($p,$o){$t=$p?$p:"login"; 
-$jx='popup_login,form___'.ses('USE').'_'.ses('iq').'_'.ajx(nms(54)).'_1';
-return lj('txtcadr',$jx,$t);}//if(!ses('USE'))
+$jx='popup_login,form___'.ses('usr').'_'.ses('iq').'_'.ajx(nms(54)).'_1';
+return lj('txtcadr',$jx,$t);}//if(!ses('usr'))
 
 static function icotag(){
 $t='related_arts related_by see_also-source source rub_taxo taxo_arts same_title tags '.prmb(18); $r=explode(' ',$t); $n=count($r);

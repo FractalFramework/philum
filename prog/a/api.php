@@ -128,7 +128,7 @@ if($p['nocat'])$sq['and'][]=$qda.'.frm'.self::sql_in($p['nocat'],1);
 if($p['nochilds'])$sq['and'][]=$qda.'.ib="0"';
 if($p['priority'])$sq['re'][]=$qda.'.re'.self::sql_in($p['priority']); else $sq['re'][]=$qda.'.re>="1"';
 if($p['notpublished']){if(auth(6))$sq['re'][]=$qda.'.re="0"';
-	elseif(auth(4))$sq['re'][]='('.$qda.'.re="0" and '.$qda.'.name="'.ses('USE').'")';}
+	elseif(auth(4))$sq['re'][]='('.$qda.'.re="0" and '.$qda.'.name="'.ses('usr').'")';}
 if($p['owner'])$sq['and'][]='name="'.$p['owner'].'"';
 //if($p['owner'])$sq['inner'][]=sql('id','qdu','v',['name'=>$p['owner']]);
 if($p['hub'])$sq['and'][]=$qda.'.nod="'.$p['hub'].'"';

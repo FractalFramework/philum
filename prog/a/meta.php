@@ -38,7 +38,7 @@ if($r)foreach($r as $k=>$v){$val=$rd[$v]; $gv=$prm[$v.$id]??'';
 	elseif($v=='lastup'){$vrf=$gv?'true':'false';}//$rst[113]
 	elseif($v=='lang'){$vrf=prmb(25); $rl=self::langs();
 		if($rl)foreach($rl as $ka=>$va){$known=$ra['lang'.$va]??''; $newval=$prm[$v.$va.$id]??'';
-			if($newval && $newval!=$known){self::utag_sav($id,'lang'.$va,$newval);
+			if(trim($newval) && $newval!=$known){self::utag_sav($id,'lang'.$va,$newval);
 				$lg=self::curlg($id); self::utag_sav($newval,'lang'.$lg,$id);
 				self::affectlgr($id,$va);}}}
 	if(!$val)$val=$vrf;//permut value with global setting
@@ -118,7 +118,7 @@ $ret.=lj($css,$id.'_meta,png2jpg___'.$id.'_'.$m,picto('gallery'),att('png2jpg'))
 $ret.=lj($css,'popup_meta,titedt___'.$id.'_'.$m,picto('popup'),att('detach'));
 $ret.=div('','','cbk'.$id);
 $ret.=tag('textarea',['id'=>'suj'.$id,'class'=>'console','style'=>'height:40px; width:100%;'],$suj).br();
-if(auth(6) && (rstr(6) or $name!=ses('USE'))){$ret.=picto('user').input('author'.$id,$name); $dn[]='author';
+if(auth(6) && (rstr(6) or $name!=ses('usr'))){$ret.=picto('user').input('author'.$id,$name); $dn[]='author';
 	if($src)$ret.=lj('popbt','author'.$id.'_meta,recapauthor__4_'.$id,'twitter author'); $ret.=br();}
 if(auth(6) && $hub!=ses('qb')){$ret.=picto('node').input('hub'.$id,$hub).br(); $dn[]='hub';}
 //img

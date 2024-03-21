@@ -2,15 +2,15 @@
 class login2{
 static function call($usr,$rg,$t,$tl){
 if($t)$ta=btn('txtsmall',$t);
-if(!ses('USE')){// or !is_numeric($rg)
+if(!ses('usr')){// or !is_numeric($rg)
 $nam=adm::nameofauthes($_SESSION['prmb'][11]);
 return '<form id="login" name="form2" method="post" action="/?log=on" onKeyPress="checkEnter(event,\'login\')">'.$ta.inputb('user',$nam,16,'',100,['name'=>'user']).' '.inpsw('pass','',16).' '.
 $ret=button('document.forms[\'login\'].submit();','ok',['class'=>'txtx']).'</form>';}
 else return lkc('txtx',"/?log=out","log_out").br();}
 
 static function home($p){
-return login::form(ses('USE'),ses('iq'),$p);
-//return self::call(ses('USE'),ses('iq'),$t,10);
+return login::form(ses('usr'),ses('iq'),$p);
+//return self::call(ses('usr'),ses('iq'),$t,10);
 //$w='.'.$_SERVER['HTTP_HOST'];
 //$ret=divc('txtcadr',helps('new_user')).br();
 $ret=input('lgg','','',['name'=>'user','onKeyPress'=>"log_finger('lgg');"]).' ';

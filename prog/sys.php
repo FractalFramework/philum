@@ -7,7 +7,7 @@ if(get('module')=='Home')geta('module','');//old htaccess
 if($cache)boot::init();
 //if(ses('dev'))error_report();
 if($log=get('log'))boot::log_mods($log);
-if(!ses('USE'))boot::define_use();
+if(!ses('usr'))boot::define_use();
 $cache=boot::deductions($cache);
 if($bim=get('rebuild_img'))ses('rebuild_img',$bim);
 $read=get('read');

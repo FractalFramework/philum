@@ -69,7 +69,7 @@ if(!$o)return btn('btpic right',$ret);
 return $ret;}
 
 static function login_btn($p,$o){$t=$p!=1?$p:""; 
-$ret=login::form(ses('USE'),ses('iq'),$t);
+$ret=login::form(ses('usr'),ses('iq'),$t);
 if($o)$ret=divc("imgr",$ret);
 return $ret;}
 

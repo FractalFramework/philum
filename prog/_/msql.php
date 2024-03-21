@@ -5,7 +5,13 @@ static $m='_';
 
 static function url($dr,$nod,$o=''){
 $dr=$dr=='lang'?$dr.'/'.(ses('lng')?ses('lng'):prmb(25)):($dr?$dr:'users');
+$f='msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod).'.php';
+mkdir_r($f); return $f;}
+
+static function url0($dr,$nod,$o=''){
+$dr=$dr=='lang'?$dr.'/'.(ses('lng')?ses('lng'):prmb(25)):($dr?$dr:'users');
 return 'msql/'.($o?'_bak/':'').$dr.'/'.$nod.'.php';}
+
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
 static function patch_m($dr,$nod){$r=msql::read($dr,$nod); $r=msqa::patch_m($r); self::save($dr,$nod,$r);}
 
@@ -19,9 +25,12 @@ if(is_array($r))foreach($r as $k=>$v)$rt['_'][]=$k; return $rt;}
 
 static function dump($r,$p=''){$rc=[]; $rt=[];
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
-	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?addslashes(stripslashes($va)):'')."'";
-		if($rb)$rc[]=(is_numeric($k)?$k:"'".$k."'").'=>['.implode(',',$rb).']';}
-	else $rc[$k]=(is_numeric($k)?$k:"'".$k."'").'=>[\''.($v?addslashes(stripslashes($v)):'').'\']';}
+	if(is_array($v)){
+		foreach($v as $ka=>$va)$rb[]="'".($va?sql::qres($va):'')."'";
+		$k=is_numeric($k)?$k:"'".addslashes($k)."'";
+		if($rb)$rc[]=$k.'=>['.implode(',',$rb).']';}
+	else $rc[$k]=(is_numeric($k)?$k:"'".$k."'").'=>[\''.($v?sql::qres($va):'').'\']';
+}
 if($rc)$rt=implode(','.n(),$rc);
 return '<?php '."\n".'return ['.$rt.']; ?>';}
 

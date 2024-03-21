@@ -29,7 +29,7 @@ if(abs(ses('dayx')-ses('daya'))>86400 or !$rst[84]){//back_in_time
 	$rt['timetravel']=popbub('timetravel','',$ico[10],$top,$hv);//archives
 	$rt['timeout']=lkc('popsav','/reload',nmx([82,199]).' '.date('Y',ses('daya')));}
 if($des=ses('desgn'))$rt['design']=lj('popbt','socket;sty,actions;;url;exit_design','design:'.$des);
-if(!$rst[48]){if($top)$nm=' '.btn('small',ses('USE'));//usr
+if(!$rst[48]){if($top)$nm=' '.btn('small',ses('usr'));//usr
 	$rt['user']=popbub('user','',$ico[14],$top,$hv);}//user on prm1=app user, on prm2=bubfast
 if($id && !$rst[89])$rt['seek']=popbub('seek','',$ico[13],$top,$hv);//metas
 if($id && auth(6)){
@@ -242,10 +242,11 @@ return $ret;}
 static function twitapi($d){[$p,$o]=cprm($d);
 return twit::call($p,$o);}
 
-static function poptwit($d,$o='',$nl=''){[$n,$nm]=cprm($d);
-if(substr($n,-8)=='/photo/1')$n=substr($n,0,-8);
-if(strpos($n,'?'))$n=strto($n,'?'); $bt=$nm?$nm:$n;
-return lj('txtx','popup_twit,call__3_'.ajx($n).'_'.$o,pictxt('tw',$bt,16));}
+static function poptwit($d,$o='',$nl=''){[$d,$nm]=cprm($d);
+if(substr($d,-8)=='/photo/1')$d=substr($d,0,-8);
+if(strpos($d,'?'))$d=strto($d,'?');
+if(substr($d,0,4)=='http')$n=strend($d,'/'); $bt=$nm?$nm:strprm($d,3);
+return lj('txtx','popup_twit,call__3_'.ajx($d).'_'.$o,pictxt('tw',$bt,16));}
 
 static function twitart($d,$id,$ty='',$nl=''){[$k,$nm]=cprm($d);
 if(substr($k,0,4)=='http')$k=strprm($k,5,'/');//let fullurl

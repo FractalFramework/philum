@@ -32,25 +32,21 @@ $prms['srvimg']=http($prms[15]);
 $_SESSION['prms']=$prms;}
 
 static function restore_mprm($f){
-$d=sql('struct','qdu','v',['name'=>ses('USE')]);
+$d=sql('struct','qdu','v',['name'=>ses('usr')]);
 write_file($f,$d);}
 
-static function define_hubs(){
-$ret=[]; $rtb=[];
+static function define_hubs(){$mn=[]; $mnd=[];
 $ex=sqb('id','qdu','v','limit 1');
-if(!$ex){$_SESSION['stsys']=1; $_SESSION['first']=1;
-	head::add('jscode',sj('popup_login,form'));}
-$wh='active="1" ';//if(!auth(7))
-$req=sql::com('name,hub,id','qdu',$wh.'order by nbarts desc');
-if($req)while($r=sql::qrw($req)){// && ($r[3] or auth(6))
-	$hub=$r[1]?$r[1]:$r[0]; $ret[$r[0]]=$hub; $rtb[$r[0]]=$r[2];}
-if($ret)$_SESSION['mn']=$ret; $_SESSION['mnd']=$rtb;}
+if(!$ex){$_SESSION['stsys']=1; $_SESSION['first']=1; head::add('jscode',sj('popup_login,form'));}
+$r=sql::read('id,name,hub','qdu','kvv',['active'=>1,'_order'=>'nbarts desc']);
+foreach($r as $k=>[$nm,$hb]){$mn[$k]=$nm; $mnd[$k]=$hb;} 
+$_SESSION['mn']=$mn; $_SESSION['mnd']=$mnd;}
 
 //use need to be declared after $rstr, declared in config(), whose declare $mn, needed to hubs() 
-static function define_closed_hub(){$use=ses('USE');
-if($use && !isset($_SESSION['mn'][$use])){
-	$v=sql('hub','qdu','v',['name'=>$use]);
-	if($v)$_SESSION['mn'][$use]=$v;}}
+static function define_closed_hub(){$uid=ses('uid');
+if($uid && !isset($_SESSION['mn'][$uid])){
+$v=sql('hub','qdu','v',['name'=>ses('usr')]);
+if($v)$_SESSION['mn'][$uid]=$v;}}
 
 static function define_qb(){$hub=get('hub');
 $r=ses('mn'); $defo=prms('default_hub'); //if(!$hub)$hub=$defo;
@@ -101,7 +97,7 @@ static function define_use(){
 if(rstr(59) && !ses('nuse')){
 	if($cuse=cookie('use')){$uid=login::verif_user($cuse,'');//id of usr
 		setcookie('uid',$uid,$_SESSION['dayx']+(86400*30));
-		if(cookie('uid')==$uid && $uid){$_SESSION['USE']=$cuse; $_SESSION['uid']=$uid;}}}
+		if(cookie('uid')==$uid && $uid){$_SESSION['usr']=$cuse; $_SESSION['uid']=$uid;}}}
 self::define_closed_hub();}
 
 #time_system
@@ -170,15 +166,16 @@ if($r)foreach($r as $k=>$v){
 	if($v[0]=='system' && $v[1]=='template')$tmp[$v[4]]=$v[2];
 	if($v[0]=='system' && $v[2])$vrf[$v[1]]=$k;
 	$key=array_shift($v); $ret[$key][$k]=$v;}
-if(!$vrf['blocks'])$ret['system'][]=['blocks','banner menu content footer'];
-if(!$vrf['design'])$ret['system'][]=['design','2'];
-if(!$vrf['content'])$ret['system'][]=['content','800'];
+if(!$vrf['blocks']??'')$ret['system'][]=['blocks','banner menu content footer'];
+if(!$vrf['design']??'')$ret['system'][]=['design','2'];
+if(!$vrf['content']??'')$ret['system'][]=['content','800'];
 $_SESSION['mods']=$ret;
 $_SESSION['tmpc']=$tmp;}
 
 static function define_modc(){//define_mods_cond
 $r=$_SESSION['mods']??[]; $cnd=$_SESSION['cond']??['','']; $ret=[];
-if(is_array($r))foreach($r as $k=>$v)if(is_array($v))foreach($v as $ka=>$va)if(isset($va[7]) && $va[7]!=1){
+if(is_array($r))foreach($r as $k=>$v)
+if(is_array($v))foreach($v as $ka=>$va)if(isset($va[7]) && $va[7]!=1){
 if($va[3]==$cnd[0] or (isset($cnd[1]) && $va[3]==$cnd[1]) or !$va[3]){
 if($va[0]=='LOAD' && isset($rb[$va[0]]))$ka=$rb[$va[0]];//substitute
 $ret[$k][$ka]=$va; $rb[$va[0]]=$ka;}}
@@ -274,14 +271,14 @@ elseif(is_numeric($n))return 'public_design_'.$n;}
 #users
 //log
 static function log_mods($log){//eco($log);
-$use=ses('USE'); $ret='';
+$use=ses('usr'); $ret='';
 switch($log){
 case('on'): $usr=post('user','login');
 	$ret=login::call($usr,post('pass'),post('mail')); break;
 case('in'): $ret=login::form('','',''); break;
-case('out'): $_SESSION['USE']=''; $_SESSION['auth']=''; $dayz=$_SESSION['dayx']-86400;
+case('out'): $_SESSION['usr']=''; $_SESSION['auth']=''; $dayz=$_SESSION['dayx']-86400;
 	setcookie('use',$use,$dayz); setcookie('uid',ses('uid'),$dayz); $_SESSION['nuse']=1; head::relod('/'); break;
-case('reboot'): $r=['qd','qb','USE','uid','iq','dev']; $rb=[];
+case('reboot'): $r=['qd','qb','usr','uid','iq','dev']; $rb=[];
 	foreach($r as $v)$rb[$v]=ses($v); $_SESSION=$rb; self::init(); head::relod('/'); break;
 case('create_hub'): $_POST['create_hub']=ses('qb'); 
 	$ret=login::call(ses('qb'),'pass',''); break;
@@ -293,7 +290,7 @@ if($ret)alert($ret);}
 //auth
 //0=no;1=read;2=tracks;3=propose;4=publish;5=edit;6=admin;7=host;
 static function ismbr($d){return sql('auth','qdb','v',['hub'=>ses('qb'),'name'=>$d]);}
-static function define_auth(){$use=ses('USE');
+static function define_auth(){$use=ses('usr');
 if(!ses('master'))$_SESSION['master']=sql('name','qdu','v',['name'=>prms('default_hub')]);
 if($use){if($use==ses('master'))$auth=7;
 	elseif($use==ses('qb'))$auth=6;
@@ -316,7 +313,7 @@ static function define_iq(){$ip=sesmk('ip');
 $iq=sql('id','qdp','v',['ip'=>$ip,'_limit'=>'1']);
 if(!$iq){$iq=cookie('iq');
 	if($iq)sqlup('qdp',['ip'=>$ip],['id'=>$iq]);}
-if(!$iq){$nav=addslashes($_SERVER['HTTP_USER_AGENT']??''); $ref=$_SERVER['HTTP_REFERER']??'';
+if(!$iq){$nav=$_SERVER['HTTP_USER_AGENT']??''; $ref=$_SERVER['HTTP_REFERER']??'';
 	$iq=sql::sav('qdp',[$ip,$nav,$ref,1,'NOW()']);}
 $_SESSION['iqa']=sql('ok','qdk','v',['iq'=>$iq],0);
 $_SESSION['ip']=$ip; $_SESSION['iq']=$iq;}
@@ -375,8 +372,9 @@ return sql('distinct(frm)','qda','k','nod="'.ses('qb').'" and re>0 and substring
 static function init(){self::master_params(); $_SESSION['philum']=checkversion();
 self::define_hubs(); self::define_qb(); self::define_config();}
 
-static function reboot(){self::reset_ses(); $_SESSION['dayx']=time();
-self::init(); self::define_use(); self::define_iq(); self::define_auth(); self::seslng(1); self::time_system('ok'); self::cache_arts(); self::define_condition(); self::define_clr();}//self::cats(); 
+static function reboot(){
+require(boot::cnc()); self::reset_ses(); $_SESSION['dayx']=time();//self::cats(); 
+self::init(); self::define_use(); self::define_iq(); self::define_auth(); self::seslng(1); self::time_system('ok'); self::cache_arts(); self::define_condition(); self::define_clr();}
 
 static function rebuild(){$_SESSION['rqt']=[]; $_SESSION['dayx']=time();
 return self::cache_arts(1);}

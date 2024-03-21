@@ -60,12 +60,12 @@ if($r){unset($r[msql::$m]); $r1=$r[1]??''; if(isset($r[1]))unset($r[1]);
 return [$r,$r1];}
 
 static function head($p,$r1){$erz='';
-if(strfrom($r1[3]??'','/')==ses('USE'))
+if(strfrom($r1[3]??'','/')==ses('usr'))
 	$erz=lj('txtsmall','chtx'.$p.'_chatxml,sav___'.$p.'_1','(x)');
 $msg=$r1[2]??''; $msg=conb::parse($msg,'sconn2'); 
 return div($erz.nl2br(stripslashes($msg)),'bkg','border-color:white; padding:4px;');}
 
-static function read($p,$r){$c='txtsmall'; $nm=ses('muse'); $use=ses('USE');
+static function read($p,$r){$c='txtsmall'; $nm=ses('muse'); $use=ses('usr');
 if($r)foreach($r as $k=>$v){$erz=''; $ml=''; $msg=$v[2];
 if($use && ($v[1]==$nm or $p==$use))
 	$erz=lj($c,'chtx'.$p.'_chatxml,sav___'.$p.'_'.$k,picto('sclose'));
@@ -77,7 +77,7 @@ $msg=conn::read($msg,'','');
 return divc('track',$ml.$bt.$erz.br().nl2br(stripslashes($msg)));}}
 
 static function home($p,$msg='',$prm=[]){if(!$p)return self::canal('public');
-$p=str::normalize($p); ses('muse',$prm[0]??ses('USE')); self::ses($p,'0');
+$p=str::normalize($p); ses('muse',$prm[0]??ses('usr')); self::ses($p,'0');
 [$r,$r1]=self::data($p); $form=self::form($p); $head=self::head($p,$r1);
 $bt=div(self::read($p,$r),'','chtx'.$p,'width:344px;');
 return $head.$form.scroll($r,$bt,5,362,'calc(100vh - 230px)');}

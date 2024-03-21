@@ -4,7 +4,7 @@ static $r=[];
 static $er='';
 
 static function save_art(){$frm=ses('frm');
-$qb=ses('qb'); $USE=ses('USE'); self::$er=''; $lg=ses('lng'); $mail=''; $nid='';
+$qb=ses('qb'); $USE=ses('usr'); self::$er=''; $lg=ses('lng'); $mail=''; $nid='';
 if(!$frm)$frm='public'; if(!auth(2))return;
 $rc=['suj','msg','name','mail','ib','pdat','pub','sub'];
 [$suj,$d,$name,$mail,$ib,$pdat,$pub,$sub]=vals(self::$r,$rc);
@@ -79,7 +79,7 @@ elseif($d=='off')sql::upd($bs,['re'=>'0'],$id);}
 
 #savart
 static function addurlsav($f,$va,$pub,$ib){if(!$f)return;//SaveIec
-ses::$urlsrc=$f; self::$r['name']=ses('USE'); $_SESSION['frm']=$va;//self::$r['frm']
+ses::$urlsrc=$f; self::$r['name']=ses('usr'); $_SESSION['frm']=$va;//self::$r['frm']
 if(substr($f,0,4)!='http' && $f)$f='http://'.$f;
 self::$r['ib']=$ib; self::$r['pub']=$pub; $nid=self::save_art(); $ret=$nid;
 if(!$nid)$ret=popup(edit::call($f,self::$er),'Article'); else geta('read',$nid);
@@ -366,7 +366,7 @@ if(stristr('.m4a.mpg.mp4.webm',$xt)!==false)$rep='video/';
 elseif(stristr('.rar.txt.pdf.svg',$xt)!==false)$rep='users/'.$qb.'/docs/';
 elseif(stristr('.mp3.mid',$xt)!==false)$rep='users/'.$qb.'/mp3/'; 
 if($type=='banim'){$fb='ban/'.$qb.'.jpg'; $dir='imgb/';}
-elseif($type=='avnim'){$fb='usr/'.ses('USE').'_avatar.gif'; $dir='imgb/';}
+elseif($type=='avnim'){$fb='usr/'.ses('usr').'_avatar.gif'; $dir='imgb/';}
 elseif($type=='css'){$fb='usr/'.$qb.'_css_'.$f; $dir='imgb/';}
 elseif($type=='bkgim'){$fb='usr/'.$qb.'_bkg.jpg'; $dir='imgb/';}
 elseif($type=='disk'){$dir='users/'.$dsk.'/'; $fb=$f; if($dsk!=$qb)mkdir_r($dir);}

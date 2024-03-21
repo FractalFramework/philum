@@ -34,7 +34,7 @@ $d.=lj('popbt',$j,picto('kright'));
 return '<form name="chat'.$p.'" action="javascript:'.sj($j).'">'.$d.'</form>';}
 
 static function home($p,$msg,$prm=[]){
-$p=$p?str::normalize($p):'public'; ses('muse',$pr[0]??ses('USE'));
+$p=$p?str::normalize($p):'public'; ses('muse',$pr[0]??ses('usr'));
 return self::form($p,$msg).divd('cht'.$p,self::read($p));}
 
 }

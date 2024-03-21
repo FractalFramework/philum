@@ -3,7 +3,7 @@ class pad{
 static function np_j($id){return 'mem_storage(\''.$id.'_m'.$id.'_1_1\')';}
 
 static function write($p,$o,$prm=[]){
-$pad=ses('USE').'_pad_'.date('ymd'); $res=$prm[0]??'';
+$pad=ses('usr').'_pad_'.date('ymd'); $res=$prm[0]??'';
 //$res=conn::read($res);
 $f='_datas/'.$pad.'.htm'; $no=write_file($f,$res); 
 if($no)echo $no; else return lkt('popbt','/'.$f,$pad);}

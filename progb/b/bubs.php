@@ -284,11 +284,11 @@ return msql::read('',nod('menublock_'.$d),1);}
 
 //user
 static function adm_user_fast(){
-if(ses('USE'))$ret=popbub('user','',mimes('login').'&nbsp;'.ses('USE'),'',1);
+if(ses('usr'))$ret=popbub('user','',mimes('login').'&nbsp;'.ses('usr'),'',1);
 return $ret;}
 static function adm_user(){$rb=msql::read('system','default_apps_user',1);
 $r=msql::read('system','default_apps',1); $r=self::r_apps_cond('user'); if($r)$r=$rb+$r;
-if(ses('USE'))$r=unsetk($r,'login',0); else $r=unsetk($r,'logout',0);
+if(ses('usr'))$r=unsetk($r,'login',0); else $r=unsetk($r,'logout',0);
 return $r;}
 
 static function adm_console($ret,$dir){

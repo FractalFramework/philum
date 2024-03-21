@@ -13,7 +13,7 @@ public function next(){++$this->position;}
 public function valid(){return isset($this->array[$this->position]);}
 }
 
-class iterator2{
+class iterator{
 static function home($p,$o){
 $it=new iterator;
 $r=$it->build1();
