@@ -1,14 +1,14 @@
 <?php 
 class rss{
 
-static function recup_fileinfob($doc){
+static function fileinfob($doc){
 if(is_file($doc))return date('d-m-Y',filemtime($doc)).'-'.round(filesize($doc)/1024).'Ko';}
 
 static function scrut_dirb($dr){$ret=[];//dev
 if(is_dir($dr)){$dir=opendir($dr);
 	while($f=readdir($dir)){$drb=$dr.'/'.$f;
 	if(is_dir($drb) && $f!='..' && $f!='.' && $f)$ret[$f]=self::scrut_dirb($drb);
-	elseif(is_file($drb))$ret[$drb]=self::recup_fileinfob($drb);}}
+	elseif(is_file($drb))$ret[$drb]=self::fileinfob($drb);}}
 return $ret;}
 
 static function del_old($da){
