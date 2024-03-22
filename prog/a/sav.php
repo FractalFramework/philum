@@ -82,7 +82,7 @@ static function addurlsav($f,$va,$pub,$ib){if(!$f)return;//SaveIec
 ses::$urlsrc=$f; self::$r['name']=ses('usr'); $_SESSION['frm']=$va;//self::$r['frm']
 if(substr($f,0,4)!='http' && $f)$f='http://'.$f;
 self::$r['ib']=$ib; self::$r['pub']=$pub; $nid=self::save_art(); $ret=$nid;
-if(!$nid)$ret=popup(edit::call($f,self::$er),'Article'); else geta('read',$nid);
+if(!$nid)$ret=popup(edit::call($f,'',self::$er),'Article'); else geta('read',$nid);
 return $ret;}
 
 static function addfromlist($p,$o,$prm=[]){

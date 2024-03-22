@@ -31,10 +31,6 @@ if(is_array($rb)){ksort($rb); $nurl=$url.$b.$d.$p.'_#';//table
 	$rt['table']=self::block($rb,$nurl,$table,'k');}
 if(is_array($rc)){ksort($rc); $nurl=$url.$b.$d.$p.$t.'_#';//version
 	$rt['version']=self::block($rc,$nurl,$ver,'k');}
-/* if(is_array($rc)){//version
-	foreach($rc as $k=>$v)$rs[$v]=strprm($v,1,'_'); ksort($rs);
-	$nurl=$url.$b.$d.$p.'_#'; $bt=self::block($rs,$nurl,$tb,'');
-	if($bt)$rt['version']=$bt;}*/
 foreach($rt as $k=>$v)$ret.=divc('cell',$v);
 return divc('table menu',$ret);}
 
@@ -168,8 +164,7 @@ static function mdfcol($murl,$k,$ka,$prm){$v=$prm[0]??''; $rid=randid('mdt');
 [$dr,$nd,$n]=self::murlvars($murl); $id=str::normalize('msqedt'.$k.'-'.$ka);
 $v=msql::val($dr,$nd,$k,$ka); $va=self::displaydata($v); if($va===null)$va='-'; $va=nl2br($va);
 $j=$id.'_msqlmodif_'.$rid.'__'.ajx($murl).'_'.ajx($k).'_'.ajx($ka).'_'.$id;
-return divarea($rid,$va,'','',sj($j),1);
-return mc::assistant($rid,'SaveJ',$j,$va,'');}
+return divarea($rid,$va,'','',sj($j),1);}
 
 static function mdfcolbt($va,$k,$ka,$murl,$rid){//randid().
 if(!trim($va)==='')$va='-'; $j=ajx($murl).'_'.ajx($k).'_'.ajx($ka);//.$id
@@ -299,7 +294,7 @@ if($md=='sort_table'){$ret=''; $rm=array_keys($r[msql::$m]??next($r)); array_uns
 return $ret;}
 
 static function dump_a($r,$p){$ret=''; if($r)foreach($r as $k=>$v){$re=[];
-if($v)foreach($v as $ka=>$va)$re[]="'".addslashes(stripslashes($va))."'";
+if($v)foreach($v as $ka=>$va)$re[]="'".sql::qres($va)."'";
 $ret.='$r['.(is_numeric($k)?$k:'"'.$k.'"').']=['.implode(',',$re).'];'."\n";}
 return "<?php //microsql/$p\n$ret";}
 
@@ -312,7 +307,7 @@ if($md=='inject_defs2')$d=str_replace('<?php ','',msql::dump($r,$nod));
 if($md=='import_conn')$d=self::edtconn($r);//use "|" for cells and "¬" for lines
 if($md=='import_csv')$d=self::mkcsv($r);
 if($md=='import_json')$d=self::edtjson($r);
-if($md=='export_mysql')$d=self::export_mysql($dr,$nod);
+//if($md=='export_mysql')$d=self::export_mysql($dr,$nod);
 if($md=='backup_msql')return self::backup_msql();
 //if($prm[0]??'')$d.="\n".delbr($prm[0],"\n");//addcsv
 $ret=textarea($md,$d??'',60,10);
@@ -638,9 +633,6 @@ $r=tar::scan('msql');
 if(auth(6))tar::folder($f,$r);
 if(is_file($f))return lkt('txtyl',$f,$f); else return 'brrrr';}
 
-/*
-to revise
-*/
 #render
 static function murlread($u){
 if(!$u)$u='users/'.ses('qb');//default
@@ -663,14 +655,6 @@ static function murlboot(){
 return self::murl($b,$dr,$nd?$nd:ses('qb'),$pr,$tb);}
 
 #boot
-/*
-static function tables($base){
-$r=explore($base,'files',1); $rt=[];
-if($r)foreach($r as $k=>$v){$v=substr($v,0,-4);
-[$nd,$bs,$sv,$op]=expl('_',$v,4); if(!$nd)$nd='root';
-if($nd && $sv!='sav' && $op!='sav')$rt[$nd][$bs][$sv]=$bs.($sv?'_'.$sv:'');}
-return $rt;}*/
-/**/
 static function tables($r){$rt=[];
 foreach($r as $k=>$v){
 	if(is_array($v))$rt[$k]=self::tables($v);
@@ -681,42 +665,25 @@ static function stage($r){$rt=[];
 foreach($r as $k=>$v)$rt[]=is_array($v)?$k:$v;
 return $rt;}
 
-/* 
-static function boot2($msql){
-$auth=ses('auth'); $root='msql/';
-$ru=self::murlread($msql); ses('murl',$ru);
-[$base,$lang,$hub,$node,$version,$def]=$ru;
-$r=explore($root,'dirs');
-$bases=self::stage($r);
-$langs=$lang?self::stage($r[$base]):[];
-$hubs=$lang?self::stage($r[$base]):[];
-$hubs=explore($root.$lang.$hub,'dirs',1);
-$nodes=explore($root.$lang.$hub.$node,'dirs',1);
-$versions=explore($root.$lang.$hub.$node.$version,'dirs',1);
-return [$base,$bases,$lang,$langs,$hub,$hubs,$node,$nodes,$version,$versions];}*/
-
 //[$bases,$base,$dirs,$dir,$hubs,$hub,$files,$table,$version,$folder,$node]=$ra;
 static function boot($msql){
 $auth=ses('auth'); $root='msql/';//self::sesm('root')
-//if(substr($msql,0,7)=='/?msql=')$msql=substr($msql,7);//patch local
 $ru=self::murlread($msql); $_SESSION['murl']=$ru; //echo $msql; 
 [$b,$dir,$hub,$table,$version,$def]=$ru; //pr($ru);
 if($def)geta('def',$def); $folder=$b.'/'.($dir?$dir.'/':'');
-//echo $b.'-d:'.$dir.'-p:'.$hub.'-t:'.$table.'-v:'.$version.'-d:'.$def.br();
 if($def=get($def))$def;
 elseif(is_file($root.$folder.$hub.'_'.$table.'_'.$version.'.php'))geta('def',$def);
 elseif(is_file($root.$folder.$hub.'_'.$table.'.php') && $version){
 	geta('def',ajx($version,1)); $version='';}
 if($dir && !is_dir($root.$folder)){$folder=$b.'/'; $dir='';}
-$ra[0]=explore($root,'dirs',1); //unset($ra[0]['_bak']);//pr($ra[0]); ////bases
+$ra[0]=explore($root,'dirs',1); unset($ra[0]['_bak']);//bases
 if($auth<6){$rdel=['lang','server','clients','system'];
 	foreach($rdel as $v)unset($ra[0][$v]);}
 $ra[1]=$b;//base
 $ra[2]=$dir?explore($root.$b,'dirs',1):'';//dirs
 $ra[3]=$dir;//dir
-//$files=self::tables($root.$folder);
-$rt=explore($root.$folder,'all'); //pr($rt);
-$files=self::tables($rt); //pr($files);
+$rt=explore($root.$folder,'all');
+$files=self::tables($rt);
 if($files && $b){$ra[4]=array_keys($files);//hubes
 	foreach($ra[4] as $k=>$v)
 		if($b=='users' && $v!='public' && ($v!=ses('qb') or $auth<7))
@@ -745,7 +712,7 @@ return lj('','popup_msqa,editors___'.$jurl.'_'.ajx($d),$lh[0]??'',att($lh[1]??''
 
 #ok, go
 static function home($cmd='',$pg=''){
-$root=self::sesm('root','msql/');
+//$root=self::sesm('root','msql/');
 $cmd=$cmd?$cmd:get('msql');
 geta('page',$pg?$pg:1);
 $ath=auth(6);
@@ -777,8 +744,8 @@ if(!$def && auth(6)){
 	if($ra)$ret['menus']=self::menublocks($ra);
 	if(auth(4))$rt[]=lj('active','popup_msqa,creatable___'.$jurl,$lh[9][0]);
 	if($table && $authorized && $hub && $is_file){//$defs && 
-		$rt[]=self::opbt('backup',$jurl,$lh[2]);//sav==
-		if(is_file($root.'_bak/'.$folder.$node.'.php')){
+		$rt[]=self::opbt('backup',$jurl,$lh[2]);
+		if(is_file(msql::url($folder,$node,1))){
 			$rt[]=self::opbt('restore',$jurl,$lh[3]);
 			$rt[]=self::opbt('del_backup',$jurl,$lh[30],1);}
 		$rt[]=self::opbt('import_defs',$jurl,$lh[5],1);
@@ -834,7 +801,7 @@ if(!$def && auth(6)){
 		$rt[]=self::opbt('import_jsonlk',$jurl,$lh[39],1);
 		$rt[]=self::opedt('import_csv',$jurl,$lh[40],1);
 		$rt[]=self::opbt('export_csv',$jurl,$lh[41],1);
-		if(auth(6))$rt[]=self::opedt('export_mysql',$jurl,$lh[42],1);
+		//if(auth(6))$rt[]=self::opedt('export_mysql',$jurl,$lh[42],1);
 		$rt[]=lj('txtx','popup_msql___lang_helps_msql','?');
 		if(auth(6))$rt[]=self::opedt('backup_msql',$jurl,$lh[43],1);}
 	if($rt)$ret['l3']=divc('menu',join(' ',$rt)); $rt=[];}

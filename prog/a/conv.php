@@ -78,6 +78,7 @@ return $rw;}
 
 static function find_defcon($f){$f=domain($f);
 $base=rstr(18)?'public':ses('qb');
+if(strpos($f,'substack'))$f=strfrom($f,'.');
 $r=msql::readsl('',$base.'_defcons');
 if($r)foreach($r as $k=>$v)if($f==$k)return [$k,$v];
 return ['',['','','','','','']];}

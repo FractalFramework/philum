@@ -167,7 +167,6 @@ $rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
 if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
 return $ret;}
 
-
 //ops
 static function setutf8(){self::$qr->query('set names utf8mb4');}
 static function setlatin(){self::$qr->query('set names latin1');}

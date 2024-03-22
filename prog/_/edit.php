@@ -46,7 +46,7 @@ return self::call($f,'');}
 static function txarea($d,$id=''){return '<textarea id="txtarea" name="msg" class="console" style="margin:0; width:100%; min-width:600px; min-height:240px;">'.$d.'</textarea>';}
 
 //f
-static function call($link,$id){$ip=ip();
+static function call($link,$id,$er=''){$ip=ip(); if($er)$er=div('frame-red',$er);
 $USE=ses('usr'); $frm=ses('frm'); $suj=''; $msg=''; $rid=randid('edt');
 if($USE)$us=$USE; else [$us,$ml]=sql('name,mail','qdi','r','host="'.$ip.'" order by id desc limit 1');
 if(!$frm)$frm='public';
@@ -86,6 +86,6 @@ if($msg)$menu.=self::correct($msg);
 $area=divd('txarea',self::txarea($msg,$id));
 $ret.=divd($rid,$menu.$area);
 //if(auth(4))$ret.=checkbox("randim","ok","rename_img",0);
-return $ret;}
+return $er.$ret;}
 }
 ?>

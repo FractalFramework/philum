@@ -22,7 +22,7 @@ return sql('art,nb','qdsra','kv','ib='.$id.' and art>'.$minid.' and art<='.$maxi
 
 static function save_results($id,$ra,$rb=[]){
 if(!is_numeric($id))$id=self::id_word($id); $r=[];
-if(!$rb)$rb=sql('art','qdsra','rv','ib='.$id);
+if(!$rb)$rb=sql('art','qdsra','rv',['ib'=>$id]);
 if(!$rb)$r=$ra; else foreach($ra as $k=>$v)if(!in_array($v[1],$rb))$r[]=$v;//new results of search
 if($r)return sql::qrid('insert into '.db('qdsra').' values '.sql::atmrb($r,1));}
 
@@ -58,26 +58,28 @@ if(!$id)$id=sql::sav('qdsr',[$p]);
 return $id;}
 
 static function saved_last($id){
-return sql('art','qdsra','v','ib='.$id.' order by art desc limit 1');}
+return sql('art','qdsra','v',['ib'=>$id,'_order'=>'art desc','_limit'=>'1']);}
 
 static function save($p,$o='',$prm=[]){
-connect(); $p=$prm[0]??$p; $lmt=$prm[1]??''; if($lmt=='-')$lmt='';
+$p=$prm[0]??$p; $lmt=$prm[1]??''; if($lmt=='-')$lmt=''; $minid=0; $ok='';
 $id=self::id_word($p); //echo $p.'-'.$id;
-//$minid=self::saved_last($id); //using add() will write recents after olders
-$ra=sql('art','qdsra','rv','ib='.$id);
-$minid=0; $maxid=ma::lastartid(); 
+//if($o)$minid=self::saved_last($id); //using add() will write recents after olders
+$ra=sql('art','qdsra','rv',['ib'=>$id,'_order'=>'art asc']);
+if($o)$minid=end($ra);
+$maxid=ma::lastartid(); 
 $na=$maxid-$minid; $nb=200000; $n=ceil($na/$nb); $nt=0;
-$ok='start:'.$minid.'-end:'.$maxid.' - loops:'.$n.br();
+$ok=div('start:'.$minid.'-end:'.$maxid.' - loops:');
 for($i=0;$i<$n;$i++){
 	$min=$minid+$nb*$i; $max=$min+$nb;
 	$ok.='from '.$min.' to '.$max.' : ';
-	$ex=sql('art','qdsra','k','ib='.$id.' and art>'.$min.' and art<='.$max);
+	$ex=sql('art','qdsra','k',['ib'=>$id,'>art'=>$min,'<=art'=>$max],0);
 	$not=$ex?implode(',',array_keys($ex)):'';
-	$ret=self::build($id,$p,$min,$max,$lmt,$not);
-	$na=count($ret); $nt+=$na;
+	$rt=self::build($id,$p,$min,$max,$lmt,$not);
+	$na=count($rt); $nt+=$na;
 	$ok.=$na.' ref added '.br();
-	if($ret)self::save_results($id,$ret,$ra);}
-$ok.='- occurrences: '.$nt;
+	if($rt)self::save_results($id,$rt,$ra);}
+$ok.='- occurrences: '.$nt.br();
+if($o)$ok.='were already_saved: '.count($ra);
 //return self::call($p,$o);
 return $ok;}
 
@@ -137,6 +139,7 @@ $ret.=lj('',$rid.'_searched,call_inp_3',picto('ok')).' ';
 if($p && auth(4))$ret.=togbub('searched,tagfull*slct',ajx($p).'_'.$rid,picto('paste')).' ';
 $ret.=select_j('lmt','-|1|2|3|4|5|10|20|50','','1',nms(199));
 $ret.=lj('',$rid.'_searched,save_inp,lmt_3',picto('save')).' ';
+$ret.=lj('',$rid.'_searched,save_inp,lmt_3__1',picto('recycle')).' ';
 return $ret;}
 
 static function home($p,$o){$rid=('srchd');//randid

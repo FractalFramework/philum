@@ -110,7 +110,7 @@ if($r)foreach($r as $k=>$v)if(!is_array($v))$r[$k]=[$v]; $f=self::url($dr,$nod);
 if(!is_file($f))return self::save($dr,$nod,$r,$rb);}
 
 static function delrow($dr,$nod,$k){
-msql::modif($dr,$nod,$k,'del');}
+return msql::modif($dr,$nod,$k,'del');}
 
 //select
 static function choose($dr,$pr,$nd){$rt=[];

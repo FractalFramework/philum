@@ -741,11 +741,10 @@ function window($d){return tag('div',['contenteditable'=>'true','style'=>'overfl
 function eco($d,$o=''){if(is_array($d))$d='<pre>'.print_r($d,true).'</pre>';
 elseif(is_object($d))$d=var_dump($d,true);
 $ret=textarea('',htmlspecialchars($d),44,12); if($o)return $ret; elseif(auth(6))echo $ret.br();}
-function verbose($r){echo implode(br(),$r).hr();}
+//function verbose($r){return tree($r);}
 function funcs(){pr(get_defined_functions());}
 function trace(){eco(debug_backtrace());}
 function er($d){return ses::$er[]=$d;}
-
 //debugdeclare(ticks=1); $calls=[]; register_tick_function('tracer');
 function tracer(){global $calls; $calls[]=array_shift(debug_backtrace());}
 ?>
