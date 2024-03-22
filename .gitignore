@@ -40,14 +40,10 @@ img
 imgc
 msql/design/*
 !msql/design/public/*
-msql/server/newsnet/*
-msql/server/philum/*
-msql/server/ummo/*
 msql/users/*
 !msql/users/public/*
 msql/clients/*
 msql/_bak/*
-msql/users/*
-!msql/users/public/*
 pub/favicons/favicon_nn*
 pub/favicons/favicon_oo*
+.vscode
