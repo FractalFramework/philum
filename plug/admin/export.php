@@ -17,10 +17,10 @@ $ret.='<a href="?export=_eye">_eye</a> ';
 $ret.='<a href="?export=_idy">_idy</a>';
 $ret.='<br><br>';
 //export
-if($_GET['export']!="" && auth(5)){
+if(get('export') && auth(5)){
 $file=get('export');
 //$ret.=self::export($host,$user,$pass,$db,$file);}
-return $ret;}
+return $ret;}}
 
 }
 ?>

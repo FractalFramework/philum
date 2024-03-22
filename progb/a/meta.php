@@ -38,7 +38,7 @@ if($r)foreach($r as $k=>$v){$val=$rd[$v]; $gv=$prm[$v.$id]??'';
 	elseif($v=='lastup'){$vrf=$gv?'true':'false';}//$rst[113]
 	elseif($v=='lang'){$vrf=prmb(25); $rl=self::langs();
 		if($rl)foreach($rl as $ka=>$va){$known=$ra['lang'.$va]??''; $newval=$prm[$v.$va.$id]??'';
-			if(trim($newval) && $newval!=$known){self::utag_sav($id,'lang'.$va,$newval);
+			if($newval!=$known){self::utag_sav($id,'lang'.$va,$newval);
 				$lg=self::curlg($id); self::utag_sav($newval,'lang'.$lg,$id);
 				self::affectlgr($id,$va);}}}
 	if(!$val)$val=$vrf;//permut value with global setting

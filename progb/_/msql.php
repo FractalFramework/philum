@@ -25,12 +25,9 @@ if(is_array($r))foreach($r as $k=>$v)$rt['_'][]=$k; return $rt;}
 
 static function dump($r,$p=''){$rc=[]; $rt=[];
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
-	if(is_array($v)){
-		foreach($v as $ka=>$va)$rb[]="'".($va?sql::qres($va):'')."'";
+	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?sql::qres($va):'')."'";
 		$k=is_numeric($k)?$k:"'".addslashes($k)."'";
-		if($rb)$rc[]=$k.'=>['.implode(',',$rb).']';}
-	else $rc[$k]=(is_numeric($k)?$k:"'".$k."'").'=>[\''.($v?sql::qres($va):'').'\']';
-}
+		if($rb)$rc[]=$k.'=>['.implode(',',$rb).']';}}
 if($rc)$rt=implode(','.n(),$rc);
 return '<?php '."\n".'return ['.$rt.']; ?>';}
 
