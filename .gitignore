@@ -29,6 +29,7 @@ _backup
 _old
 cnfg/*
 _datas
+!_datas/readme.txt
 _old
 cnfg/*
 video
@@ -69,9 +70,6 @@ users
 !users/philum/
 video
 !video/readme.txt
-dl
-datas
-!datas/readme.txt
 users
 !users/public
 video
