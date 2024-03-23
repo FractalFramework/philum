@@ -22,8 +22,11 @@ $RECYCLE.BIN/
 # Operating System Files
 # =========================
 
+.git*
+.vscode
 _notes
 _backup
+_datas
 _old
 cnfg/*
 video
@@ -46,4 +49,13 @@ msql/clients/*
 msql/_bak/*
 pub/favicons/favicon_nn*
 pub/favicons/favicon_oo*
-.vscode
+users
+!users/public
+video
+!video/readme.txt
+img
+!img/readme.txt
+imgc
+!imgc/readme.txt
+imgb
+!imgb/audio
