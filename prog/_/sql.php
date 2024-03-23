@@ -189,7 +189,7 @@ static function rollback($b){$bb='z_'.db($b); $b2=$b.'z'; sesr('db',$b2,$bb);
 if(self::ex($b2) && auth(6))self::qr('drop table '.db($b)); else return;
 self::qr('create table '.db($b).' like '.$bb); self::qr('insert into '.db($b).' select * from '.$bb); return $bb;}
 static function rename($b,$bb){self::qr('rename table '.$b.' to '.$bb.';');}
-static function cols($b){return self::call('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from INFORMATION_SCHEMA.COLUMNS where table_name="'.db($b).'"','rr');}
+static function cols($b){return self::call('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from INFORMATION_SCHEMA.COLUMNS where table_name="'.db($b).'" and table_schema="'.self::$db.'"','rr');}
 
 static function replace($b,$c,$a,$ab){
 return qr('update '.db($b).' set '.$c.'=REPLACE('.$c.',"'.$a.'","'.$b.'");');}

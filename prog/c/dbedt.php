@@ -6,8 +6,8 @@ static function upd2($p){
 $a=array_shift($p); $ka=key($p);
 [$row,$col]=explode('-',$ka); $va=current($p);
 $r=sql::read('id',$a,'rv',''); $id=$r[$row-1];
-if(in_array($col,self::$no))$va=alert('forbidden','red');
-else $nid=sql::upd($a,[$col=>$va],['id'=>$id]);
+if(in_array($col,self::$no))alert('forbidden');
+else sql::upd($a,[$col=>$va],['id'=>$id]);
 return $va;}
 
 static function upd($p){
@@ -18,8 +18,8 @@ $ra=json::read('',$a)['_']??[];
 if(in_array('uid',$ra)){$ko=in_array_k('uid',$ra); unset($ra[$ko]); $ra=array_values($ra);}//not edit uid
 $col=$ra[$col-1];
 $rt=[$col=>$va];
-if(in_array($col,self::$no))$va=alert('forbidden','red');
-else $nid=sql::upd($a,$rt,['id'=>$id]);
+if(in_array($col,self::$no))alert('forbidden');
+else sql::upd($a,$rt,['id'=>$id]);
 return $va;}
 
 static function play($p){

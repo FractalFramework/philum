@@ -18,7 +18,7 @@ if($in!==false){
 		else $mid=substr($msg,$in+1,$out);
 		$mid=match($g){
 		'template'=>self::template($mid,$op),
-		'json'=>self::json($mid,$op),
+		'json'=>self::json($mid),
 		'sconn'=>self::sconn($mid,$op),
 		'sconn2'=>self::sconn2($mid,$op),
 		'sconn3'=>self::sconn3($mid),
@@ -33,7 +33,7 @@ if($in!==false){
 		'importim'=>self::importim($mid,$op),
 		'extractimg'=>self::extractimg($mid,$op),
 		'extractlnk'=>self::extractlnk($mid,$op),
-		'conn2xhtml'=>xhtml::conn2xhtml($mid,$op),
+		'conn2xhtml'=>xhtml::conn2xhtml($mid),
 		'extract'=>self::conn_extract($mid,$op),
 		'num2nb'=>self::num2nb($mid,$op),
 		'math'=>self::math($mid,$op),
@@ -354,19 +354,19 @@ else return '['.$d.']';}
 static function math($d,$b){
 [$p,$o,$c]=unpack_conn($d);
 switch($c){
-case('frac'):return tagb('mfrac',tagb('mi',$p).tagb('mi',$o));break;
-case('sup'):return tagb('msup',tagb('mi',$p).tagb('mn',$o));break;
-case('sub'):return tagb('msub',tagb('mi',$p).tagb('mn',$o));break;
+case('frac'):return tagb('mfrac',tagb('mi',$p).tagb('mi',$o));
+case('sup'):return tagb('msup',tagb('mi',$p).tagb('mn',$o));
+case('sub'):return tagb('msub',tagb('mi',$p).tagb('mn',$o));
 case('subsup'):$mo=is_numeric($p)?'&int;':'&dd;';
-	return tagb('msubsup',tagb('mo',$mo).tagb('mn',$p).tagb('mi',$o));break;
-case('mi'):return tagb('mi',$p);break;//x
-case('mo'):return tagb('mo','&'.($p=='+/-'?'PlusMinus':$p).';');break;
-case('mrow'):return tagb('mrow',$p);break;;
+	return tagb('msubsup',tagb('mo',$mo).tagb('mn',$p).tagb('mi',$o));
+case('mi'):return tagb('mi',$p);//x
+case('mo'):return tagb('mo','&'.($p=='+/-'?'PlusMinus':$p).';');
+case('mrow'):return tagb('mrow',$p);
 case('matrix'):$rt=''; $r=explode("\n",$p);
 	foreach($r as $k=>$v){$rb=explode('|',$v); $d='';
 		foreach($rb as $ka=>$va)$d.=tagb('mtd',$va); $rt.=tagb('mtr',$d);}
-	return tag('mfenced',['open'=>'[','close'=>']'],$rt);break;
-default:if(method_exists('maths',$c))return maths::$c($p,$o);break;}
+	return tag('mfenced',['open'=>'[','close'=>']'],$rt);
+default:if(method_exists('maths',$c))return maths::$c($p,$o);}
 return '['.$p.']';}
 
 #.md
@@ -437,7 +437,7 @@ if(!$ret)$ret=match($c){
 ':picto'=>picto($p,$o),
 //high_level
 //':ajx'=>lj('',$o,$p),
-':conn'=>conn::connectors($p.':'.$o,3,'','',''),
+':conn'=>conn::connectors($p.':'.$o,3,'',''),
 ':msql'=>mk::msqcall($p,'',''),
 ':var'=>$o?ses::$r[$o]:'',
 ':setvar'=>self::setvar($o),

@@ -8,7 +8,7 @@ static function pub_float($d){[$d,$o]=cprm($d); return divs('float:'.($o?'right'
 static function pub_clr($d,$o=''){if(!$o)[$d,$o]=cprm($d); return bts('color:'.$o,$d);}
 static function pub_size($d){[$d,$o]=cprm($d); $s='font-size:'.$o.'px; line-height:'.round($o*1.2).'px;';
 return tag('font',['style'=>$s],$d);}
-static function pub_style($d){[$d,$o]=cprm($d); return tag('font',['style'=>$s],$d);}
+static function pub_style($d){[$d,$s]=cprm($d); return tag('font',['style'=>$s],$d);}
 static function pub_overline($d){return tag('font',['style'=>'text-decoration:overline'],$d);}
 static function pub_html($d){[$p,$o]=split_right('|',$d); $r=explode_k($o,' ','=');
 $ra=['css'=>'class','font'=>'font-family','size'=>'font-size']; $rb=colors(); $atb='';
@@ -91,8 +91,8 @@ else return lj('txtx','popup_usg,iframe__3_'.ajx($u),pictxt('window',$t)).' '.$b
 
 static function fb_bt($u){
 if(strpos($u,'facebook.com/plugins/video')!==false)return lkt('txtx',$u,pictxt('movie',domain($u)));
-return lj('txtx','popup_usg,fbcall__3_'.ajx($u),pictxt('fb2',domain($u)));
-return lkt('txtx',$u,pictxt('fb2',domain($u)));}
+//return lkt('txtx',$u,pictxt('fb2',domain($u)));
+return lj('txtx','popup_usg,fbcall__3_'.ajx($u),pictxt('fb2',domain($u)));}
 
 static function instagram($d,$id){
 return 'https://www.instagram.com/p/'.$d;}
@@ -189,7 +189,7 @@ foreach($r as $k=>$v)switch(substr($v,-3)){
 	case('h3]'):$rb[$n2][$k]=1; $rt[$k]=str::stripconn($v); $n3=$k; break;
 	case('h4]'):$rb[$n3][$k]=1; $rt[$k]=str::stripconn($v); $n4=$k; break;
 	case('h5]'):$rb[$n4][$k]=1; $rt[$k]=str::stripconn($v); break;}
-if(!isset($rb))return; $ret=self::taxonomy($rb,1);
+if(!isset($rb))return; $ret=self::taxonomy($rb);
 if($lk && $rt)foreach($rt as $k=>$v)$rt[$k]=lk('/'.$id.'#h'.$k,$v);
 if($o)return $t.divc('ulnone',self::make_ulb($ret[0],$rt,'ul'));
 if($ret[0]??'' and is_array($ret[0]))return $t.divc('topology',self::make_ul($ret[0],$rt,'ol'));}
@@ -248,7 +248,7 @@ else{$ret=read_file($f); if($t==1)$ret=conn::read(conv::call($ret),'','');}
 return $ret."\n\n".lkt('txtx',$f,$tb);}
 
 static function translate($d,$m){if($m<3)return $d;
-[$d,$lg]=cprm($d,'|');
+[$d,$lg]=cprm($d);
 $lng=ses('lng'); $setlg=$lng.'-'.$lg; $ref=rid($d,11);
 $ret=trans::callxt($d,$ref,$setlg,0);
 return divc('trkmsg',$ret);}
@@ -258,8 +258,8 @@ static function msqplay($r,$o=''){
 $head=isset($r[msql::$m])?array_shift($r):'';
 if(is_array($r)){
 	if($o)$r=array_reverse($r);
-	return $ret=tabler($r,$head);
-	return scroll($r,$ret,20,'',640);}
+	//return scroll($r,$ret,20,'',640);
+	return $ret=tabler($r,$head);}
 return $r;}
 
 static function msqcall($com,$id,$o){
@@ -508,8 +508,9 @@ if($r)foreach($r as $k=>$v){$rb=explode(':callquote]',$v[2]); $n=count($rb);
 return tag('div',['ondblclick'=>atjr('useslct',['this',$id])],conn::read($msg,3,$id,''));}
 
 //ephemeral conn
-static function quote2($d,$id){[$p,$o]=cprm($d); return self::stabilo($p);//from art, built by find_quotes
-return togbub('mk,quotrk',$id.'_'.$o.'_'.ajx($p),$p,'stabilo',att('notes'));}
+static function quote2($d,$id){[$p,$o]=cprm($d);
+//return togbub('mk,quotrk',$id.'_'.$o.'_'.ajx($p),$p,'stabilo',att('notes'));
+return self::stabilo($p);}//from art, built by find_quotes
 
 //called by quote2
 static function quotrk($id,$s,$pad){//todo

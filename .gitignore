@@ -24,11 +24,14 @@ $RECYCLE.BIN/
 
 .git*
 .vscode
+.git*
+.vscode
 _notes
 _backup
-_datas
 _old
 cnfg/*
+_datas
+!_datas/readme.txt
 _old
 cnfg/*
 video
@@ -65,6 +68,10 @@ msql/_bak/*
 msql/_bak/*
 pub/favicons/favicon_nn*
 pub/favicons/favicon_oo*
+users
+!users/philum/
+video
+!video/readme.txt
 users
 !users/public
 video

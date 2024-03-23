@@ -11,7 +11,7 @@ static function create($u,$rid,$prm=[]){$res=$prm[0]??'';
 if(substr($u,0,1)=='/')$u=substr($u,1);
 $r=explode('/',$u); $root='json'; $vb='';
 [$dr,$nod]=self::drnod($u); $nod.='/'.$res;
-json::read($dr,$nod,$rid);
+json::read($dr,$nod);
 return self::nav($u,$rid);}
 
 static function add($u,$rid){

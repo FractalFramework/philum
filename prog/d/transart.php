@@ -47,14 +47,14 @@ meta::utag_sav($id2,'lang'.$v,$k);}
 meta::affectlgr($id);}//inform targets
 
 static function updmetas($id,$idart){$rt=[];
-$ra=explode(' ','tag '.prmb(18));//todo:not works
+$ra=explode(' ','tag '.prmb(18));//do: not works
 foreach($ra as $k=>$cat){if($cat)$r=meta::read_tags($id,$cat);//idtag,tag
-	foreach($r as $idtag=>$tag)$rt[$cat][]=meta::add_artag($idart,$idtag,$cat,$tag);}
+	foreach($r as $idtag=>$tag)$rt[$cat][]=meta::add_artag($idart,$idtag);}
 return $rt;}
 
 static function build($id,$p){$lg='fr';
 $r=sql('ib,name,mail,day,nod,frm,suj,re,lu,img,thm,host,lg','qda','a',$p);
-$lgref=$r['lg']; $lg=ses('lng'); $lgset=$lang.'-'.$r['lg'];//to,from
+$lgref=$r['lg']; $lg=ses('lng'); $lgset=$lg.'-'.$r['lg'];//to,from
 $r['suj']=trans::call('suj'.$p,$lgset,2); //p($r);
 //[$a,$b]=split_right(' ',$r['suj']); $r['suj']='['.$a.'] '.$b; $r['frm'].='-EN';
 $r['lg']=$lg;

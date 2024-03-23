@@ -21,8 +21,8 @@ if(in_array($fa,self::$rp))switch($fa){
 	case('rumble'):$ret=between($f,'rumble.com/','-'); break;
 	case('livestream'):$ret=between($f,'com/','/'); break;
 	case('rutube'):$ret=between($f,'tracks/','.'); break;
-	case('framatube'):$ret=strend($f,'/',1); break;
-	case('crowdbunker'):$ret=strend($f,'/',1); break;
+	case('framatube'):$ret=strend($f,'/'); break;
+	case('crowdbunker'):$ret=strend($f,'/'); break;
 	default:return $fb;}
 //elseif(strpos($f,'.mp4'))return $fb;
 if($ret){
@@ -126,7 +126,7 @@ return $ret;}
 static function any($d,$id,$m,$nl=''){//p|w/h
 if($nl)return self::lk($d);
 if(strpos($d,'.mp4') or strpos($d,'.m3u8'))return video($d);
-if(rstr(132) or $id=='epub')return self::player($d,$id);
+if(rstr(132) or $id=='epub')return self::player($d);
 if(substr($d,0,4)=='http'){[$d,$tx]=cprm($d);//contourne procédure
 	$pr=self::extractpr($d); $d2=self::detect($d,$m,'',2);
 	if($tx)return self::play($d,$id,$m?$m:3);

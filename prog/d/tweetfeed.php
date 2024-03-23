@@ -52,7 +52,7 @@ $t='tweetfeed'; $voc=helps($t);
 $r['batch']=lj('popsav',$rid.'_tweetfeed,batch',nms(28)).' ';
 $r['batch'].=lj('txtbox',$rid.'_tweetfeed,read',nms(65)).' ';
 $r['batch'].=lj('txtx',$rid.'____','x').' ';
-$r['edit']=divd('modules'.$t,console::block($t,1)).hlpbt($t.'_help');
+$r['edit']=divd('modules'.$t,console::block($t)).hlpbt($t.'_help');
 $r['from']=self::menu($rid);
 return tabs($r,'nl').divd($rid,'');}
 

@@ -26,7 +26,7 @@ if(method_exists('view',$tpl))$r=view::$tpl();
 return $r;}
 
 static function template($ra,$tpl){$rt=[];
-if(!$tpl)$tpl=self::decide_tpl($tpl); //echo $tpl;
+if(!$tpl)$tpl=self::decide_tpl();
 //if($tpl)$rt=sesmk2('art','decide_view',$tpl,0);
 //view::savetmp($tpl);
 if($tpl)$rt=self::decide_view($tpl);
@@ -80,7 +80,7 @@ foreach($r as $k=>$v)if($v!=$lg && isset($rb[$v])){
 return $ret;}
 
 static function lang_rel_arts($id,$lg,$ro,$rst101,$rst115){
-$lng=ses('lng'); if(!$lg)$lg=$lng; $rb=[]; $ex=''; $ret='';
+$lng=ses('lng'); if(!$lg)$lg=$lng; $rb=[]; $ex=''; $ret=''; $rt=[];
 if($ro && !$rst101)foreach($ro as $k=>$v)if(substr($k,0,4)=='lang'){//arts
 	$lga=substr($k,4); if($v && $lga!=$lg)$ret.=ma::popart($v).flag($lga).' '; $rb[$lga]=$v;}
 $ex=sql('lang,id','trn','kv',['ref'=>'art'.$id]);//$ex=get('lang');//if($lg!=$lng)
@@ -229,7 +229,7 @@ case('btim'):$rb[$v]=lj('','popup_sav,art*gallery___'.$id.'_gallery',picto('img'
 case('author'):$rb[$v]=lj('','popup_api___owner:'.ajx($r['name']),'@'.$r['name']); break;
 case('pid'):$rb[$v]=btn('txtsmall2','#'.$id); break;
 case('tag'):$rb[$v]=self::tags($id,'',$r['lg']); break;
-case('edit'):$rb[$v]=self::btedit($r['name'],$id,$r['re'],$prw,$ro['authlevel']); break;
+case('edit'):$rb[$v]=self::btedit($r['name'],$id,$r['re'],$prw); break;
 case('source'):$rb[$v]=self::pub_link($mail); break;
 case('search'):$rb[$v]=nbof($nb,19); break;//occurences
 case('nbarts'):$rb[$v]=lj('','popup_api___parent:'.$id,nbof($rear,1)); break;
@@ -317,7 +317,7 @@ if(rstr(93)){$mg=pop::art_img($d,$id);
 	if($mg)$im=self::make_thumb_css($mg);
 	if($im)$ret=div('','thumb','','background-image:url(/imgc/'.$im.');');
 	else $ret=divc('thumb',' ');}
-else $ret=pop::minimg($d,$pr,$nl);
+else $ret=pop::minimg($d,$pr);
 $ret=lj('','popup_popart__3_'.$id.'_3',$ret);
 return $ret;}
 
@@ -415,7 +415,7 @@ $rt['msg']=scroll($rt['count'],str::clean_br_lite($ret),4,'','200');//610
 return $rt;}
 
 static function present_tracks($id,$r){$ret='';
-if(count($r)>0)$ret=self::output_trk($r,$id);
+if(count($r)>0)$ret=self::output_trk($r);
 return divd('track'.$id,$ret);}
 
 static function propose_tracks($id,$opts){if(rstr(1) or $opts['tracks']??'')
@@ -522,7 +522,7 @@ return $ret;}
 
 static function playt($id,$otp,$tp=''){//tracks
 $r=self::datas($id); $r['o']=self::metart($id); //$otp=ma::read_idy($id,'ASC');
-$trk=self::output_trk($otp,$id);
+$trk=self::output_trk($otp);
 $rt['id']=$id; $rt['suj']=$r['suj'];
 $rt['css']=$r['re']==0?'hide':'';
 $rt=self::titles($id,$r,'',$otp,1,'',ses::$n,$rt);

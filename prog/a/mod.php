@@ -33,7 +33,7 @@ if(is_numeric($p)){$r=msql::row('',nod('mods_'.prmb(1)),$p);
 elseif($r['bt'])return self::btmod('',$r);
 elseif($r){['m'=>$m,'p'=>$p,'t'=>$t]=$r;
 	if($m=='home' or $m=='cat' or $m=='read'){geta($m,$p);
-		boot::deductions($p,''); boot::define_condition();}}
+		boot::deductions($p); boot::define_condition();}}
 return self::build(array_values($r));}
 
 static function call($p,$o='',$prm=[]){
@@ -176,8 +176,8 @@ case('LOAD'):
 case('BLOCK'):$ret=self::block($p); break;
 case('MENU'):$ret=self::block($p,1); break;
 case('DESK'):$ret=self::menublock($p); break;
-case('BOOT'):$ret=self::menublock($p,2); break;
-case('ADMIN'):$ret=self::menublock($p,1); break;
+case('BOOT'):$ret=self::menublock($p); break;
+case('ADMIN'):$ret=self::menublock($p); break;
 case('ARTMOD'):$ret=self::block($p); break;
 case('TABMOD'):$ret=self::artmod($p,$d); break;
 case('ART'):$ret=self::block('article'); break;
@@ -228,8 +228,8 @@ case('rss_input'):if($p)$ret=rss::build(ajx($p),1); break;
 case('disk'):$_SESSION['dlmod']=$p; if($p && $p!='/')$pb='/'.$p;
 	$ret=divd('dsnavds',finder::home('dl','users/'.ses('qb').$pb)); break;//!
 case('finder'):$ra=['|','-']; $p=str_replace($ra,'/',$p); $o=str_replace($ra,'/',$o);
-	$ret=finder::home($p,$o,$d); break;
-case('channel'):$ret=channel::home($p,$t,$d,$o); $t=''; break;//old
+	$ret=finder::home($p,$o); break;
+case('channel'):$ret=channel::home($p,$t,$d); $t=''; break;//old
 case('hour'):timelang();
 	if($p)$dat=date($p?$p:'ymd:Hm',ses('dayx')); else $dat=mkday('',1);
 	if(!$d)$ret=btn($o,$dat); else $ret=divc($o,$dat); break;
@@ -261,10 +261,10 @@ case('folder'):$lin=desk::vfolders($p); break;
 //menus
 case('link'):$ret=md::modlk($p,$t,$o); break;
 case('app_popup'):head::add('jscode',sj(desk::read(explode(',',$p)))); break;
-case('overcats'):return mkbub(bubs::call('overcat','zero'),'inline','position:relative'); break;
-case('MenuBub'):return mkbub(bubs::call('menubub','zero',$p),'inline','position:relative'); break;
-case('timetravel'):return md::timetravel($p,$o); break;
-case('submenus'):return md::bubble_menus($p,$o); break;
+case('overcats'):return mkbub(bubs::call('overcat','zero'),'inline','position:relative');
+case('MenuBub'):return mkbub(bubs::call('menubub','zero',$p),'inline','position:relative');
+case('timetravel'):return md::timetravel();
+case('submenus'):return md::bubble_menus($p,$o);
 case('taxonomy'):$ret=md::mod_taxonomy($p,$o); break;
 case('folders'):$load=md::supertriad_ask($p,$o); $prw=$o; $obj=63; break;//rstr(5)?2:1
 case('desk'):$ret=desk::deskmod($p); break;
@@ -292,7 +292,7 @@ case('see_also-source'):[$load,$t]=md::see_also_source($o); break;
 case('siteclics'):$ret=md::siteclics($p); break;
 case('rub_tags'):$ret=md::rub_tags($p); break;
 case('rss'):$ret.=rss::home($p?$p:'rssurl',''); break;
-case('rssin'):$ret.=self::rssj_m($p,$o); break;
+case('rssin'):$ret.=self::rssj_m($p); break;
 case('chat'):if($t)$t=lj('','cht'.$p.'_chat___'.$p,$t);
 	$p=$p!=1?$p:'pub'; $in=chat::home($p,$o?$o:10); 
 	if($in)$ret=divc($cs,$in); break;
@@ -361,7 +361,7 @@ return bubs::apps($r,$m,'','');}
 //todo: modline, buildmod, fusion desk
 static function mod_lin_build($re,$t,$d,$o){$limit=is_numeric($o)?50*$o:50;
 if($d=='inline')$ret=implode('',$re);
-elseif($d=='cols')$ret=divc('menus',pop::columns($re,$o,'','menus','','mall'));
+elseif($d=='cols')$ret=divc('menus',pop::columns($re,$o,'','menus'));
 elseif($d=='icons')$ret=desk::pane_icons($re,'icones').divc('clear','');
 elseif($d=='scroll')$ret=$t.scroll($re,implode('',$re),(is_numeric($o)?$o:17));
 else $ret=$t.divc('menus',implode('',$re));
@@ -439,7 +439,7 @@ $tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';//
 $rt['jurl']=$tg.'_popart__3_'.$id.'_3';
 //$rt['purl']='popup_popart__3_'.$id.'_3';
 if($rst[32]!=1 && $amg)$rt['img1']=pop::art_img($amg,$id);
-if($rst[36]!=1){$rt['back']=art::back($id,$ib,$frm,0); $rt['cat']=$frm;}
+if($rst[36]!=1){$rt['back']=art::back($id,$ib); $rt['cat']=$frm;}
 if($rst[7]!=1)$rt['date']=mkday($day);
 if($rst[4]!=1){$r=art::tags($id,1); if($r)$rt+=$r;}
 if($re)return divc('pubart',art::template($rt,$tpl));}
@@ -500,7 +500,7 @@ foreach($ra as $k=>$v)if($v[0]=='ARTMOD')$rm=$v; $d=$v[4]; $o=$v[5];
 foreach($r as $k=>$v){$v[1]=$id; $k=$ico[$v[1]]??$v[2];
 	$md=self::build($v); if($md)$rt[$k]=$md?scroll(0,$md,''):nmx([11,1]);}//
 if($d=='tabs')return tabs($rt,randid('tmd'));
-return $rt?join('',$rt):nmx(11,16);}
+return $rt?join('',$rt):nmx([11,16]);}
 
 static function fav_mod($p,$t){$ret='';
 $r=msql::read('',nod('coms'),1); $r=array_reverse($r);

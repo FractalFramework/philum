@@ -6,7 +6,7 @@ if($tg=='self')$tg='socket'; elseif(!$tg)$tg='popup';
 return lj($c,$tg.'_console,actions___'.ajx($p).'_'.ajx($o),$t,att($tt)).' ';}
 
 static function select_mods_m(){
-$r=msql::choose('users',ses('qb'),'mods'); if($r)sort($r); $nw=msql::nextnod($r);
+$r=msqa::choose('users',ses('qb'),'mods'); if($r)sort($r); $nw=msql::nextnod($r);
 $ret=slctmnuj($r,'admcnt_console,actions___slct*mods_',prmb(1),' ','v');
 $ret.=self::admactbt('newfrom_mods','','admcnt',$nw,nms(99).':'.$nw);//new
 $prmb=sql('config','qdu','v','name="'.ses('qb').'"');

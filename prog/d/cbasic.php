@@ -4,7 +4,7 @@ static $cb='cbs';
 
 static function exrun($p,$o,$c){$ret='';
 switch($c){
-case(':exec'):$ret=self::run($p,$o);break;
+case(':exec'):self::run($p,$o);break;
 case(':split'):$ret=explode($o,$p);break;
 case(':cut'):[$s,$e]=explode('/',$o); $ret=between($p,$s,$e);break;
 case(':core'):if(is_array($p))$ret=$o($p,'',''); else{$pb=opt($p,'/',4);

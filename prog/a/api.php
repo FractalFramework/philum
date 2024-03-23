@@ -408,8 +408,9 @@ $ra['order']=prmb(9); $ra['nbyp']=prmb(6); $ra['page']=get('page');
 //$ra['verbose']=1;$ra['seesql']=1;//$ra['group']='id';
 return $ra;}
 
-static function tag_ci($d){return $d=str::protect_url($d,1);
-return sql('tag','qdt','v',['tag'=>$d]);}
+static function tag_ci($d){
+//return sql('tag','qdt','v',['tag'=>$d]);
+return $d=str::protect_url($d,1);}
 
 static function tag_id($d){
 return sql('cat,tag','qdt','w',['id'=>$d]);}
@@ -420,7 +421,7 @@ if($ut)foreach($ut as $k=>$v){$vb=str::eradic_acc($v); if($g=get($vb))
 
 //mod-articles
 static function load_rq(){$g=ses::$r['get'];//boot build_content
-$rb=valk($g,['tag','search','source','parent','folder','author','rubtag','tagid','utag','cluster'],0);
+$rb=valk($g,['tag','search','source','parent','folder','author','rubtag','tagid','utag','cluster']);
 if($d=$rb['tag']){$ra['tag']=self::tag_ci($d); $ra['ti']='tag';}
 elseif($d=$rb['search']){$ra['search']=str::protect_url($d,1); $ra['ti']='search';}
 elseif($d=$rb['author']){$ra['owner']=str::protect_url($d,1); $ra['ti']='author';}

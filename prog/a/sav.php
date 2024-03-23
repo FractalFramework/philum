@@ -31,7 +31,7 @@ if($nid){$rc=[$dt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$urlsrc,$ib,$re,$lg];
 	$rc[3]=self::orderim($nid);
 	ma::cacherow($nid,$rc);
 	msql::modif('',nod('cache'),$rc,'one','',$nid);
-	geta('read',$nid); boot::deductions($nid,''); self::$r=[];}
+	geta('read',$nid); boot::deductions($nid); self::$r=[];}
 $_SESSION['dayx']=$dt; $_SESSION['daya']=$dt;
 if($nid)msql::modif('',nod('last'),[$nid,$dt],'one','',1);
 return $nid;}

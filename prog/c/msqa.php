@@ -284,7 +284,7 @@ elseif($md=='delcol')$d='0';
 else $d=$p;
 if($md=='export_csv' or $md=='sort_table'){
 	[$dr,$nod]=self::node_decompil($p); $r=msql::read($dr,$nod);}
-if($md=='export_csv')return csvfile($nod,$r,$nod,1);
+if($md=='export_csv')return csvfile($nod,$r,$nod);
 $ret=input('msqop',$d,32);
 $rl='x';//$md=='rename_table'||$md=='duplicate_table'?'url':
 $ret.=lj('','admsql_msqlops_msqop_'.$rl.'_'.ajx($p).'_'.ajx($md).'_'.$oa,picto('ok'));
@@ -520,12 +520,14 @@ return $ret;}
 static function addition($r,$n){
 $rh=$r[msql::$m]??[$n=>'']; $rk=array_column($r,$n); //p($rk);
 if(isset($rk[msql::$m]))unset($rk[msql::$m]);
-echo tabler(['addition',$rh[$n],array_sum($rk)]);}
+echo tabler(['addition',$rh[$n],array_sum($rk)]);
+return [];}
 
 static function average($r,$n){
 $rh=$r[msql::$m]??[$n=>'']; unset($r[msql::$m]); $rk=array_keys_r($r,$n);
 if(isset($rk[msql::$m]))unset($rk[msql::$m]);
-echo tabler(['addition',$rh[$n],array_sum($rk)/count($rk)]);}
+echo tabler(['addition',$rh[$n],array_sum($rk)/count($rk)]);
+return [];}
 
 static function intersecter($r){$ra=[]; $rb=[]; $rc=[]; $re=[]; $rt=[]; $rtb=[];
 foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1); $r0=msql::read($dr,$nod,1);
@@ -654,15 +656,37 @@ static function murlboot(){
 [$b,$dr,$nd,$pr,$tb,$vn]=self::murlread(self::sesm('murl'));
 return self::murl($b,$dr,$nd?$nd:ses('qb'),$pr,$tb);}
 
+static function mknode($f){
+$f=str_replace('.php','',$f);
+$f=str_replace('msql/','',$f);
+$r=explode('/',$f); $dr=$r[0]; $n=1;
+if($r[1]=='lang'){$dr.='/'.$r[1].'/'.$r[2]; $n=3;}
+else $nod=join('_',array_slice($r,$n));
+return [$dr,$nod];}
+
+static function mknodes($r){$rt=[];
+foreach($r as $k=>$v)$rt[$k]=self::mknode($v)[1];
+return $rt;}
+
+static function mknodesname($r){$rt=[];
+$r=self::mknodes($r);
+foreach($r as $k=>$v)$rt[$k]=strend($v,'_');
+return $rt;}
+
+//select
+static function choose($dr,$pr='',$nd=''){$rt=[];
+$u=joinif('/',['msql',$dr?$dr:'users',$pr,$nd]);
+$r=scanfiles($u); if(!$r)return;
+if($nd)$rt=msqa::mknodesname($r);
+else $rt=msqa::mknodes($r);
+//pr($rt);
+return $rt;}
+
 #boot
 static function tables($r){$rt=[];
 foreach($r as $k=>$v){
 	if(is_array($v))$rt[$k]=self::tables($v);
 	else{$v=substr($v,0,-4); $rt[$v]=$v;}}
-return $rt;}
-
-static function stage($r){$rt=[];
-foreach($r as $k=>$v)$rt[]=is_array($v)?$k:$v;
 return $rt;}
 
 //[$bases,$base,$dirs,$dir,$hubs,$hub,$files,$table,$version,$folder,$node]=$ra;

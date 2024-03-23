@@ -13,7 +13,7 @@ return tagb('blockquote',$ret.divc('clear',''));}
 static function imgyt($u){return 'https://img.youtube.com/vi/'.strin($u,'=','&').'/hqdefault.jpg';}
 
 static function metas($u,$d=''){
-if(!$d)$d=vaccum_ses(http($u),''); if($d)$d=str::clean_acc($d);
+if(!$d)$d=vaccum_ses(http($u)); if($d)$d=str::clean_acc($d);
 if(!$d)return ['','','']; $dom=dom($d); $ti=''; $tx='';
 if(!$ti)$ti=dom::extract($dom,'title:property:meta');
 if(!$ti)$ti=dom::extract($dom,'name:itemprop:meta');

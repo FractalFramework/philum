@@ -44,7 +44,7 @@ if(auth(4))$bt=ma::popart($id);
 return divc($o,$bt.conn::read($ret,'3',''));}
 
 static function friend_art($o){$id=ses('read');
-if($id){$id=ma::id_of_suj($id); $in=ma::read_msg($id,1,'');}
+if($id){$id=ma::id_of_suj($id); $in=ma::read_msg($id,1);}
 if(is_numeric($id))return divc($o,$in);}
 
 static function timetravel(){$r=pop::timetravel();
@@ -241,7 +241,7 @@ return $r;}
 static function special_polls($id,$t,$o){
 $n=sql('poll','qdf','v',['ib'=>$id,'type'=>$t,'iq'=>ses('iq')]);
 $bt=btn('txtcadr',$t.' ['.str_replace('|',', ',$o).']');
-$ret=art::favs_polls($id,$n,$t);
+$ret=art::favs($id);
 return $bt.divd($t.$id,$ret);}
 
 static function quality_stats($id,$t,$o){//dev
