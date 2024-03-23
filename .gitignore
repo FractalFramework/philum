@@ -24,8 +24,6 @@ $RECYCLE.BIN/
 
 .git*
 .vscode
-.git*
-.vscode
 _notes
 _backup
 _old
