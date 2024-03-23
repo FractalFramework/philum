@@ -1,3 +1,3 @@
 __config.txt /general config
-_nfo_config.txt //database 'nfo' config
+_hub_config.txt //database 'hub' config
 [yoursite.com].php //software config
