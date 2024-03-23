@@ -29,7 +29,7 @@ return $ret;}
 
 static function weather2($ic){
 $ic=image('imgb/meteo/'.$ic.'.svg',32,32);//9729//b/w
-$ri=[127785=>'orage',127784=>'neige',127783=>'bruine',127783=>'pluie',127781=>'nuage',127780=>'soleil'];
+$ri=[127785=>'orage',127784=>'neige',127783=>'pluie',127781=>'nuage',127780=>'soleil'];
 $ri=[9889=>'orage',10052=>'neige',128166=>'bruine',9748=>'pluie',9925=>'nuage',127774=>'soleil'];//color
 //foreach($ri as $k=>$v)if(stripos($nm,$v)!==false)$ic='&#'.$k.';';
 return $ic;}

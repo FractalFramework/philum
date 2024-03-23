@@ -80,7 +80,7 @@ $ret=match($c){
 'picto'=>picto($p,$o),
 //high_level
 'split'=>explode($o,$p),
-'conn'=>conn::connectors($p.':'.$o,3,'','',''),//from pop
+'conn'=>conn::connectors($p.':'.$o,3,'',''),//from pop
 //'exec'=>cbasic::run($p,$id),
 'app'=>appin($p,$o),
 'var'=>$r[$p]??'',//here is the core

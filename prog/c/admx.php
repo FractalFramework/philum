@@ -259,7 +259,6 @@ $edtapi=toggle('popbt','amc_apicom,build___'.ajx($p).'_'.$rvs['mp'],pictxt('emis
 if(in_array($mod,['BLOCK','MENU','ARTMOD','BOOT','DESK','ADMIN','PHI']))//
 	$edit=div(console::block($p?$p:$mod.$mid),'frame-white','mdls'.$p);
 switch($mod){
-case('submenus'):$edit=self::menus_h($mid); if($option)$p=self::menu_h_g($option);break;
 case('Banner'):$edit=lkc('popbt','/admin/banner','edit_banner');break;
 case('template'):$ra=msql::row('',nod('template'),'',1); 
 	if($ra){$rb=array_keys_r($ra,1,'k'); $edit=jump_btns($rvs['mp'],$rb,'');}break;
@@ -279,6 +278,7 @@ case('api'):$edit=$edtapi;break;
 case('api_arts'):$edit=$edtapi;break;
 case('api_mod'):$edit=$edtapi;break;
 case('design'):if(prmb(5))$edit=picto('alert').helps('prmb5');break;
+//case('submenus'):$edit=self::menus_h($mid); if($option)$p=self::menu_h_g($option);break;
 case('submenus'):$edit=textarea($rvs['mp'],$p,42,4);break;}
 //exceptions
 $rx=[];
@@ -431,7 +431,7 @@ if($b!='=' && is_array($r))sql::upd('qdu',['rstr'=>implode('',$r)],['name'=>ses(
 
 static function restrictions(){
 $edt=divc('nbp',self::edit_rstr());
-$prm=self::showparams('','');
+$prm=self::showparams();
 return $edt.divd('rstr',$prm);}
 
 //menuh

@@ -90,7 +90,7 @@ return taga('input',$p+['id'=>$d,'type'=>'text','value'=>$v,'placeholder'=>$h,'s
 function inpsw($d,$v,$s='',$p=[]){return inputb($d,$v,$s,'password','100',['type'=>'password']);}
 function inpdate($id,$v,$min='',$max='',$o=''){$ty=$o?'datetime-local':'date';//time
 return input($id,$v,'',['type'=>$ty,'min'=>$min,'max'=>$max]);}//step=1
-function inpnb($id,$v,$j,$p=[]){if($j)$p['onchange']=sj($j);
+function inpnb($id,$v,$j='',$p=[]){if($j)$p['onchange']=sj($j);
 return input($id,$v,'',$p+['type'=>'number','name'=>$id,'min'=>1,'step'=>1,'size'=>'8']);}
 function inpclr($id,$v=''){return '<input'.atr(['type'=>'color','id'=>$id,'name'=>$id,'value'=>$v]).'>';}
 function inpmail($id,$v='',$p=[]){return '<input'.atr($p+['type'=>'mail','id'=>$id,'value'=>$v,'size'=>'16','placeholder'=>'mail','maxlength'=>'100']).'>';}
@@ -456,6 +456,7 @@ function implode_j($d){$rb=[]; if(!is_array($d))$r[]=$d; else $r=$d;
 foreach($r as $k=>$v)if($v=='this' or $v=='event')$rb[]=$v; else $rb[]='\''.$v.'\'';
 if($rb)return implode(',',$rb);}
 function implode_keys($r,$a=''){$rb=array_keys($r); if($rb)return implode($a,$rb);}
+function joinif($a,$r){$rt=[]; foreach($r as $k=>$v)if($v)$rt[]=$v; if($rt)return join($a,$rt);}
 
 #filters
 function delbr($d,$o=''){return str_replace(['<br />','<br/>','<br>'],$o,$d??'');}

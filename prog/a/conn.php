@@ -26,7 +26,7 @@ return $deb.$mid.$end;}
 static function read($d,$m='',$id='',$nl=''){$r13=rstr(13);
 //if(strpos($d,'<'))$ret=retape_html($d);
 self::$nl=$nl;
-if(!$r13)$d=self::connbr($d);
+//if(!$r13)$d=self::connbr($d);
 $d=self::parser($d,$m,$id,$nl);
 if($r13)$d=embed_p($d);
 if(rstr(70))self::art_retape($d,$id);
@@ -35,7 +35,7 @@ return $d;}
 
 static function read2($d,$p='',$o='',$nl=''){
 self::$nl=$nl;
-if($p)$d=self::connbr($d);
+//if($p)$d=self::connbr($d);
 $ret=self::parser($d,3,'',$nl);
 if(!$p)$ret=embed_p($ret);
 if(!$o)$ret=nl2br($ret);
@@ -47,7 +47,7 @@ $d=embed_p($d);
 $d=nl2br($d);
 return $d;}
 
-static function connbr($msg){return $msg;
+static function connbr($msg){
 $r=[':q]',':h]',':h1]',':h2]',':h3]',':h4]',':ul]',':ol]',':pre]',':table]',':figure]',':video]',':php]',':photo]',':iframe]']; $n=count($r);
 for($i=0;$i<$n;$i++)$msg=str_replace($r[$i]."\n\n",$r[$i]."\n",$msg);
 return $msg;}
@@ -242,7 +242,7 @@ if($c)$ret=match($c){
 ':purple'=>mk::pub_clr($d,'#d2d'),
 ':yellow'=>mk::pub_clr($d,'#dd2'),
 ':underline'=>mk::underline($d,$m),
-':overline'=>mk::pub_overline($d,$m),
+':overline'=>mk::pub_overline($d),
 //':parma'=>mk::pub_clr($d,'#993399'),
 ':numlist'=>mk::make_li($d,'ol'),
 ':anchor'=>mk::anchor($d),
@@ -293,7 +293,7 @@ if($c)$ret=match($c){
 ':vid'=>pop::getmp4($d,$id,1),
 ':video'=>video::any($d,$id,$m,$nl),
 ':videourl'=>video::lk($d),
-':play'=>video::call($d,$id,$pw,$m,$nl),
+':play'=>video::call($d,$id,$pw),
 ':audio'=>pop::getmp3(goodroot($d),$id,0),
 ':pdf'=>mk::pdfreader($d,$m),
 ':photos'=>mk::photos($d,$id),
@@ -308,8 +308,8 @@ if($c)$ret=match($c){
 ':chat'=>chat::home($d?$d:$id,5),
 ':chatxml'=>chatxml::home($d?$d:$id),
 ':room'=>lj('','popup_chatxml,home___'.$d,pictxt('chat',$d)),
-':shop'=>cart::home('shop',$d,$id),//unused
-':prod'=>cart::home('prod',$d,$id),//unused
+':shop'=>cart::home('shop',$d),//unused
+':prod'=>cart::home('prod',$d),//unused
 ':forum'=>forum::home($d?$d:$id),//unused
 ':draw'=>draw::home(),
 ':scan'=>mk::scan_txt($d,$m),
@@ -396,13 +396,13 @@ $ret=match($c){
 default=>''};
 if($ret)return $ret;
 if($c)switch($c){
-case(':app'):[$p,$o,$fc]=unpack_conn($d); return appin($fc,'home',$p,$o); break;
-case(':header'):head::add($o?$o:'code',delbr($p,"\n")); return; break;
-case(':jscode'):head::add('jscode',delbr($d,"\n")); return; break;
-case(':jslink'):head::add('jslink',delbr($d,"\n")); return; break;
-case(':private'):if(auth(6))return $d.' '.picto('secret'); break;
+case(':app'):[$p,$o,$fc]=unpack_conn($d); return appin($fc,'home',$p,$o);
+case(':header'):head::add($o?$o:'code',delbr($p,"\n")); return;
+case(':jscode'):head::add('jscode',delbr($d,"\n")); return;
+case(':jslink'):head::add('jslink',delbr($d,"\n")); return;
+case(':private'):if(auth(6))return $d.' '.picto('secret');
 case(':dev'):if(auth(4))return $d; break;
-case(':no'):return ''; break;}
+case(':no'):return '';}
 //[$p,$o]=cprm($da);
 if($da=='--')return hr();
 elseif($xt=='.pdf')return mk::pdfdoc($da,$nl,$pw);

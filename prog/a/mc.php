@@ -39,8 +39,8 @@ $ret=match($p){
 'radio'=>radio::select(),
 'module'=>admx::modeditpop(1),
 'ajax'=>admx::modeditpop(0),//not public
-'articles'=>admx::artmod_edit($p),
-'svg'=>mbd_editsvg($p),
+'articles'=>mod::artmod($idart,$p),
+'svg'=>svg::com($p),
 'search'=>$defo,
 'rss_art'=>$defo,
 'api_read'=>$defo,
@@ -165,8 +165,8 @@ return $ret;}
 
 static function mkt_build($d){
 $d=str_replace(',','|',$d); $d=str_replace("\n",'¬',$d); $h=hidden('mktb',$d);
-return lj('popbt','socket_jump__5_____mktb','ok').$h;
-return ljb('popbt','insert',ajx($d),'ok');}
+//return ljb('popbt','insert',ajx($d),'ok');
+return lj('popbt','socket_jump__5_____mktb','ok').$h;}
 
 static function mktable($d){
 if($d)return self::mkt_build($d);
@@ -180,7 +180,7 @@ return $ret;}
 
 #wyg
 static function wygbt($id,$o){
-if($o)return btj(picto('save','','active'),atj('saveart',$id));
+if($o)return btj(picto('save',''),atj('saveart',$id),'active');
 else return btj(picto('editor'),atj('editart',$id));}
 
 static function artsconn($id){

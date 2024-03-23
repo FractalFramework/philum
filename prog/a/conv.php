@@ -351,93 +351,92 @@ static function bal_conv($ba,$bin,$bb,$b,$h){
 static $fig; static $dd; static $dt; static $td=[]; static $tr=[];
 $n="\n"; $taga=''; $tagb='';//echo $ba.' '.$bb.' '.$b.$n.$n;
 switch($ba){
-case('a'):$b=self::treat_link($bin,$b); break;
-case('img'):$b=$n.self::treat_img($bin,$b,$fig).$n; break;
-//case('picture'):$b=str::prop_detect($bin,'src'); break;
-case('blockquote'):
+case 'a':$b=self::treat_link($bin,$b); break;
+case 'img':$b=$n.self::treat_img($bin,$b,$fig).$n; break;
+//case 'picture':$b=str::prop_detect($bin,'src'); break;
+case 'blockquote':
 	if(strpos($bin,'twitter-')!==false){$d=$b;
 		if(strpos($d,':twitter'))$d=between($d,'[https://twitter.com/',':twitter]',1);
 		if($d)$b='[https://twitter.com/'.$d.':twitter]'.$n;}
 	elseif(self::notin($b,':q]'))$b=$n.$n.'['.$b.':q]'.$n.$n; break;
-case('p'):$b=$n.$n.$b.$n.$n; break;
-case('strong'):if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
-case('bold'):if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
-case('em'):	if(self::notin($b,':em]'))$b='['.$b.':i]'; break;
-case('h1'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h1':'h').']'.$n.$n; break;//
-case('h2'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h2':'h').']'.$n.$n; break;//
-case('h3'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h3':'h').']'.$n.$n; break;//
-case('h4'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h4':'h').']'.$n.$n; break;//
-case('h5'):if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h5':'h').']'.$n.$n; break;//
-case('i'):if(self::notin($b,':i]'))$b='['.$b.':i]'; break;
-case('b'):if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
-case('u'):if(self::notin($b,':u]'))$b='['.$b.':u]'; break;
-case('q'):if(self::notin($b,':q]'))$b='['.$b.':qu]'; break;
-case('td'):$td[]=self::prep_table($b); break;
-case('th'):$td[]=self::prep_table($b); break;
-case('tr'):$tr[]=$td; $td=[]; break;
-case('table'):$b=$n.$n.'['.implode_r($tr,self::$splitable,'|').':table]'; $tr=[]; break;
-case('li'):$b=trim($b); $b.=$n; break;//whichsplit $b=deln($b,' ');
-case('ul'):$b=$n.'['.$b.':list]'.$n; break;
-case('ol'):$b=$n.'['.$b.':numlist]'.$n; break;
-case('strike'):$b='['.$b.':k]'; break;
-case('del'):$b='['.$b.':k]'; break;
-case('small'):$b='['.$b.':s]'; break;
-case('big'):$b='['.$b.':h]'; break;
-case('sup'):$b='['.$b.':e]'; break;
-case('pre'):$b='['.$b.':pre]'; break;
-case('code'):$b='['.$b.':code]'; break;
-case('center'):$b='['.$b.':center]'; break;
-case('red'):$b='['.$b.':red]'; break;//wyg
-case('txtclr'):$b='['.$b.':c]'; break;//wyg
-case('fact'):$b='['.$b.':fact]'; break;//xlhtml
-case('quote'):$b='['.$b.':quote]'; break;//xlhtml
-case('stabilo'):$b='['.$b.':stabilo]'; break;//wyg
-case('p'):$taga=$n; $tagb=$n; break;
-case('dir'):$b=$n.'['.$b.':q]'; break;
-case('br'):if(get('nobr')=='ok')$taga=$n; $tagb=$n; break;
-case('hr'):$tagb='[--]'; break;
-case('span'):$b=self::dico($bin,$b); break;
-case('div'):$taga=$n.$n; $tagb=$n.$n;//$taga=$n;
+case 'strong':if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
+case 'bold':if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
+case 'em':	if(self::notin($b,':em]'))$b='['.$b.':i]'; break;
+case 'h1':if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h1':'h').']'.$n.$n; break;//
+case 'h2':if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h2':'h').']'.$n.$n; break;//
+case 'h3':if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h3':'h').']'.$n.$n; break;//
+case 'h4':if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h4':'h').']'.$n.$n; break;//
+case 'h5':if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h5':'h').']'.$n.$n; break;//
+case 'i':if(self::notin($b,':i]'))$b='['.$b.':i]'; break;
+case 'b':if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
+case 'u':if(self::notin($b,':u]'))$b='['.$b.':u]'; break;
+case 'q':if(self::notin($b,':q]'))$b='['.$b.':qu]'; break;
+case 'td':$td[]=self::prep_table($b); break;
+case 'th':$td[]=self::prep_table($b); break;
+case 'tr':$tr[]=$td; $td=[]; break;
+case 'table':$b=$n.$n.'['.implode_r($tr,self::$splitable,'|').':table]'; $tr=[]; break;
+case 'li':$b=trim($b); $b.=$n; break;//whichsplit $b=deln($b,' ');
+case 'ul':$b=$n.'['.$b.':list]'.$n; break;
+case 'ol':$b=$n.'['.$b.':numlist]'.$n; break;
+case 'strike':$b='['.$b.':k]'; break;
+case 'del':$b='['.$b.':k]'; break;
+case 'small':$b='['.$b.':s]'; break;
+case 'big':$b='['.$b.':h]'; break;
+case 'sup':$b='['.$b.':e]'; break;
+case 'pre':$b='['.$b.':pre]'; break;
+case 'code':$b='['.$b.':code]'; break;
+case 'center':$b='['.$b.':center]'; break;
+case 'red':$b='['.$b.':red]'; break;//wyg
+case 'txtclr':$b='['.$b.':c]'; break;//wyg
+case 'fact':$b='['.$b.':fact]'; break;//xlhtml
+case 'quote':$b='['.$b.':quote]'; break;//xlhtml
+case 'stabilo':$b='['.$b.':stabilo]'; break;//wyg
+case 'p':$taga=$n.$n; $tagb=$n.$n; break;
+case 'dir':$b=$n.'['.$b.':q]'; break;
+case 'br':if(get('nobr')=='ok')$taga=$n; $tagb=$n; break;
+case 'hr':$tagb='[--]'; break;
+case 'span':$b=self::dico($bin,$b); break;
+case 'div':$taga=$n.$n; $tagb=$n.$n;//$taga=$n;
 	if(strpos($bin,'class="notes')!==false){$taga='['; $tagb=':q]';} break;
-case('dt'):if(is_img(self::delhook($b)))$dt=trim($b); else $dd.=trim($b).$n.$n; $b=''; break;//dl(dt.dd)
-case('dd'):$dd=trim($b).''; $b=''; break;
-case('dl')://prevent double img from <a<img
+case 'dt':if(is_img(self::delhook($b)))$dt=trim($b); else $dd.=trim($b).$n.$n; $b=''; break;//dl(dt.dd)
+case 'dd':$dd=trim($b).''; $b=''; break;
+case 'dl'://prevent double img from <a<img
 	if($dt && strpos($dt,'|')){[$oa,$ob]=explode('|',self::delhook($dt));
 		if(is_img($oa))$dt=$oa; else $dt=$ob;}
 	if($dd && $dt)$b=$n.'['.self::delhook($dt).'|'.$dd.':figure]'.$n;//delhook
 	elseif($dt)$b=$n.$dt.$n; elseif($dd)$b=$n.$dd.$n;
 	$dt=''; $dd=''; break;
-case('figure'):
+case 'figure':
 	if(strpos($b,':video')===false && is_img($b)){if(strpos($b,'|'))[$b,$fig]=expl('|',$b);}//$b=self::delhook($b); 
 	if($fig){$b=$n.$n.'['.($b).'|'.conb::rmconn($fig,':q').':figure]'.$n.$n; $fig='';} break;
-case('figcaption'):$fig=trim($b); if(is_img($fig))$fig=self::delhook($b); $b='';break;
-//case('aside'):$b=$n.'['.$b.'|1:msq_graph]'.$n; break;
-//case('source'):$bim=self::treat_link($bin,'');//inside audio
+case 'figcaption':$fig=trim($b); if(is_img($fig))$fig=self::delhook($b); $b='';break;
+//case 'aside':$b=$n.'['.$b.'|1:msq_graph]'.$n; break;
+//case 'source':$bim=self::treat_link($bin,'');//inside audio
 	//if($bim)$b=$n.$n.$bim.$n.$n; else $b=''; break;
-case('source'):$u=between($bin,'src="','"');
+case 'source':$u=between($bin,'src="','"');
 	if($u)$b='['.goodsrc($u).']'; break;
-case('video'):$u=between($bin,'src="','"');
+case 'video':$u=between($bin,'src="','"');
 	if($u)$b='['.goodsrc($u).':video]'; break;
-case('audio'):$u=between($bin,'src="','"');
+case 'audio':$u=between($bin,'src="','"');
 	if($u)$b='['.goodsrc($u).':audio]'; break;
-case('time'):$b='['.trim($b).':time]'; break;
-case('param'):if(strpos($bin,'soundFile'))$b=self::piege_mp3_b64($bin); break;
-case('script'):
+case 'time':$b='['.trim($b).':time]'; break;
+case 'param':if(strpos($bin,'soundFile'))$b=self::piege_mp3_b64($bin); break;
+case 'script':
 	if(strpos($b,'jwplayer'))$b=self::piege_jsm($b);
 	elseif(strpos($bin,'telegram.org/js')!==false){
 		//$d=str::prop_detect($bin,'data-telegram-post');
 		$d=between($bin,'data-telegram-post="','"');
 		$b='[https://t.me/'.$d.'?embed=1:iframe]'; $tagb=$n.$n;}
 	else $b=''; break;
-//case('noscript'):$b=''; break;//self::treat_link($bin,'');
-case('embed'):$taga=$n; $tagb=$n;
+//case 'noscript':$b=''; break;//self::treat_link($bin,'');
+case 'embed':$taga=$n; $tagb=$n;
 	if(strpos($bin,'dailymotion')!==false)$b=self::piege_daily($bin);
 	elseif(strpos($bin,'youtube')!==false)$b=self::piege_utube($bin);
 	elseif(strpos($bin,'youtu.be')!==false)$b=self::piege_utub2($bin);
 	elseif(strpos($bin,'rutube')!==false)$b=self::piege_rutube($bin);
 	elseif(strstr($bin,'.mp')!==false)$b=self::piegemedia($bin);
 	else $b='<'.self::correct_widths($bin).'>'; break;
-case('iframe'):
+case 'iframe':
 	if(strpos($bin,'data-tweet-id')!==false){
 		$d=between($bin,'data-tweet-id="','"'); $b='['.$d.':twitter]';}
 	elseif(strpos($bin,'youtube.com')!==false){$d=self::trap_v_id($bin,'embed/');

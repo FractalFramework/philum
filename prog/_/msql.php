@@ -75,9 +75,9 @@ return $rb;}
 static function inc($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak); $r=[];
 if(is_file($f)){try{$ra=require($f);}catch(Exception $e){echo 'bruu: '.$nod;}}
 elseif($rh)self::save($dr,$nod,[],$bak);
-if(isset($ra) && is_array($ra) && !$r)$r=$ra;
-//if(!isset($r)){$nd=str_replace('_sav','',$nod); $r=$$nd; echo $nd.' ';}//patch_old
-if(is_array($r))$r=self::sl($r);
+if(isset($ra) && is_array($ra) && !$r)$r=$ra;//patch
+//if(!isset($r)){echo $nod; $nd=strfrom($nod,'_'); $r=$$nd; echo $nd.' ';}//patch_old
+//$r=self::sl($r);
 return $r;}
 
 static function read($dr,$nod,$u='',$rh=[],$bak=''){
@@ -111,7 +111,7 @@ if($r)foreach($r as $k=>$v)if(!is_array($v))$r[$k]=[$v]; $f=self::url($dr,$nod);
 if(!is_file($f))return self::save($dr,$nod,$r,$rb);}
 
 static function delrow($dr,$nod,$k){
-return msql::modif($dr,$nod,$k,'del');}
+msql::modif($dr,$nod,$k,'del');}
 
 //select
 static function choose($dr,$pr,$nd){$rt=[];

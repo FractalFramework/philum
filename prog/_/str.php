@@ -75,11 +75,6 @@ foreach($r as $k=>$v){
 	else $ret.=$v;}
 return ($ret);}//hed
 
-static function utflatindecode($d){return $d;//if(!$d)
-$a=["%u201C","%u201D","%u2019","%u2026","%u0153","%u20AC","%u2013","%u2022"];
-$b=['"','"',"'","...","&#339;","€","-","•"];//oe
-return str_replace($a,$b,$d);}
-
 static function urlenc($d,$o=''){//urlencode(utf8enc($d))
 $a=["à","â","é","è","ê","ë","î","ï","ô","ö","û","ü","ù","’","'"];
 $b=["%C3%A0","%C3%A2","%C3%A9","%C3%A8","%C3%AA","%C3%AB","%C3%AE","%C3%AF","%C3%B4","%C3%B6","%C3%BB","%C3%BC","%C3%B9","%E2%80%99",'%E2%80%99'];
@@ -182,7 +177,7 @@ $d=self::clean_whitespaces($d);
 $d=delsp($d);
 $d=self::clean_punctuation($d);
 if(rstr(104))$d=self::lowercase($d);
-$d=self::add_nbsp($d,1);
+$d=self::add_nbsp($d);
 $d=self::trim($d);
 $d=self::clean_inclusive($d);
 $d=self::nicequotes($d);

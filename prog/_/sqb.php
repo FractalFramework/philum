@@ -1,12 +1,13 @@
 <?php
 class sqb{
+static $db;
 static $qr;
 static $sq;
 static $r;
 
 function __construct(){if(!self::$qr)self::dbq();}
 
-static function dbq(){[$h,$n,$p,$b]=sql::$r;
+static function dbq(){[$h,$n,$p,$b]=sql::$r; self::$db=$b;
 $dsn='mysql:host='.$h.';dbname='.$b.';charset=utf8';
 $ro=[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,PDO::ATTR_PERSISTENT=>true,PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,PDO::MYSQL_ATTR_INIT_COMMAND=>'set character set utf8mb4'];
 self::$qr=new PDO($dsn,$n,$p,$ro);}
@@ -46,7 +47,7 @@ return $rt;}
 
 static function where($r){$rb=[]; $rt=[]; $w='';
 if(is_numeric($r))$r=['id'=>$r]; $i=0;
-foreach($r as $k=>$v){$i++;
+if(is_array($r))foreach($r as $k=>$v){$i++;
 	$c=substr($k,0,1); $kb=substr($k,1); $kc=$kb.$i;
 	if($k=='_order')$w=' order by '.$v;
 	elseif($k=='_group')$w.=' group by '.$v;
@@ -116,9 +117,9 @@ $stmt=self::prep($sql,$r,$z);
 return self::$qr->lastInsertId();}
 
 static function sav2($b,$q,$z=''){$rt=[];
-$cols=implode(',',array_keys($q)); $vals=self::mkv($q);
-$sql='insert into '.$b.' ('.$cols.') value ('.$vals.')';
-$stmt=self::prep($sql,$q,$z);
+$ra=self::cols($b); $r=array_combine($ra,$q);
+$sql='insert into '.$b.' ('.join(',',$ra).') value ('.self::mkv($r).')';
+$stmt=self::prep($sql,$r,$z);
 return self::$qr->lastInsertId();}
 
 static function upd($b,$r,$q,$z=''){$rt=[];
@@ -136,19 +137,15 @@ $ret=$p=='v'?'':[];
 if($rt){$ret=self::format($rt,$p);}
 return $ret;}
 
-static function call($sql,$p){
-$qr=self::rq(); $stmt=$qr->query($sql); $rt=self::fetch($stmt,$p); return self::format($rt,$p);}
-static function call2($sql,$p){
-$qr=self::rq(); $stmt=$qr->query($sql); return self::fetch($stmt,$p);}
-static function com($sql){
-return self::rq()->query($sql);}
-static function com2($sql,$z=''){
-return self::qr($sql,$z);}
+static function call($sql,$p,$z=''){return self::format(self::fetch(self::qr($sql,$z),$p),$p);}
+static function call2($sql,$p,$z=''){return self::fetch(self::qr($sql,$z),$p);}
+static function com2($sql){return self::rq()->query($sql);}
+static function com($sql,$z=''){return self::qr($sql,$z);}
 
-static function sqcols($b){return 'select column_name from information_schema.columns where table_name="'.$b.'"';}
-static function sqcols2($b){return 'select column_name,data_type,character_maximum_length from information_schema.columns where table_name="'.$b.'"';}
+static function sqcols($b){return 'select column_name from information_schema.columns where table_name="'.$b.'" and table_schema="'.self::$db.'"';}
+static function sqcols2($b){return 'select column_name,data_type,character_maximum_length from information_schema.columns where table_name="'.$b.'" and table_schema="'.self::$db.'"';}
 static function cols($b,$n=1){$fc='cols'.$n; $r=self::$fc($b); return $r;}
-static function cols1($b){return self::call(self::sqcols($b),'rv');}
+static function cols1($b){return self::call(self::sqcols($b),'rv',1);}
 static function cols2($b){return self::call(self::sqcols2($b),'rv');}
 static function sqdrop($b){return 'drop table '.$b;}
 static function sqtrunc($b){return 'truncate table '.$b;}

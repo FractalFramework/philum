@@ -10,7 +10,7 @@ $r=json_decode($d,true);
 $r[]=array_values($v);
 $d=json_encode($r);
 putfile($f,$d);
-return alert('saved','green');}
+return alert('saved');}
 
 //editable
 static function update($a,$k,$col,$val){
@@ -26,15 +26,15 @@ $d=json_encode($r);
 
 static function save($p){
 $com=array_shift($p);
-return self::add('cnfg/nav',$com,$p);}
+return self::add('cnfg/nav',$com);}
 
 static function create(){
 $r=['com','bt','ico','auth'];
 $ra=array_combine($r,['var','var','var','int']);
-$rb=array_combine($r,['com','bt','ico','0']);
+//$rb=array_combine($r,['com','bt','ico','0']);
 $keys=implode(',',walk($r,'unid'));
 $ret=bj('btsav','navedt|nav,save||'.$keys,picto('save'));
-$ret.=mkform($ra,$rb);
+$ret.=mkform($ra);
 return $ret.div('','','navedt');}
 
 static function modif($p){
@@ -67,7 +67,7 @@ return $bt.$ret.div('','','navedt');}
 static function savext($p){
 $f=json::url('',$p['a']);
 putfile($f,$p['inp']);
-return alert('saved','green');}
+return alert('saved');}
 
 static function editxt($p){
 $f=json::url('',$p['a']);

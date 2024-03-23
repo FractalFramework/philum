@@ -22,7 +22,7 @@ $d=htmlspecialchars($d);
 return ($d);}//utf8_encode
 
 //0:day 1:frm 2:suj 3:img 4:nod 5:tag 6:lu 7:re 9:lk 12:lang
-static function datas($r,$prw,&$rt){$http=host();
+static function datas($r,$prw,$rt){$http=host();
 $minday=time()-86400; $i=0;
 if($r)foreach($r as $k=>$v)if($i<40){
 if(substr($v[1],0,1)!='_' && $v[7]){$i++;

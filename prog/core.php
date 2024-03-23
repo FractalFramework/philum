@@ -148,7 +148,7 @@ return mkbub($ret,'','1','popz+=1; this.style.zIndex=popz;');}
 //$ret=select_jb('inp','backup|progb|plug',$p,1,'');
 function select_jb($id,$pr,$v='',$o='',$oj=''){$rid=randid();//pr='a|b|c'
 $j=ajx(addslashes($pr)).'_'.$id.'_'.$rid.'_'.($oj); $t=picto('kdown');
-if($o==1)$h=input($id,$v,7); else $h=hidden($id,$id,$v);
+if($o==1)$h=input($id,$v,7); else $h=hidden($id,$v);
 return bubslct($j,$t).$h.$t;}
 
 //select_j //existing_list
@@ -362,9 +362,9 @@ function voc($d,$b='helps_voc'){$r=sesmk('msqlang',$b,0); return $r[$d][0]??$d;}
 function msqlang($d){return msql::read('lang',$d,1);}
 function usrconn(){return msql::kv('',nod('connectors'));}
 function scanplug(){return explore('plug','dirs',1);}
-function emoj(){return msql::kv('system','edition_pictos_4',1);}
+function emoj(){return msql::kv('system','edition_pictos_4');}
 function conns(){return msql::read('system','connectors_basic',1);}
-function connlg(){return msql::kv('lang','connectors_basic',1);}
+function connlg(){return msql::kv('lang','connectors_basic');}
 function flags(){return msql::kn('system','edition_flags_8',2,1);}
 function template($d){return msql::val('system','edition_template_'.$d,1);}
 

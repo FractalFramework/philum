@@ -99,9 +99,9 @@ case('restore_clrset'):$r=msql::read('design',$noc,'',[],1); $clrst[0]='';
 	if($r)foreach($r as $k=>$v)$clrst[]=$v[0]; $_SESSION['clrs'][$desgn]=$clrst; self::save_clr($noc); 
 	self::build_css($ftmp,$defs); break;
 case('exit_design'):sesz('desgn'); $_SESSION['clrset']=''; ses::$adm['design']='';
-	boot::define_mods(); boot::define_condition(); boot::define_clr(); return '/admin'; break;
-case('displaycss'):return nl2br(read_file($fcss)); break;
-case('displaycsstmp'):return nl2br(read_file($ftmp)); break;}
+	boot::define_mods(); boot::define_condition(); boot::define_clr(); return '/admin';
+case('displaycss'):return nl2br(read_file($fcss));
+case('displaycsstmp'):return nl2br(read_file($ftmp));}
 //if(in_array($p,['save','make_public','make_default','make_global','displaycss','displaycsstmp']))
 if(get('tg')=='alertmsg')return btn('popdel',$p.' '.$fcss.': ok');
 return self::home(0);}

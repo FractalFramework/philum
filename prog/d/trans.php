@@ -289,7 +289,7 @@ sqlop::install('translation',['ref'=>'var11','txt'=>'text','lang'=>'var2'],0);}
 
 static function home($p,$o){$rid=randid('translation');
 //if($p=='install')self::install();
-$ret=self::menu($p,$o);
+$ret=self::menu($p);
 $bt=msqbt('',nod(self::$motor));
 return $bt.divd($rid,$ret);}
 }
