@@ -13,7 +13,7 @@ return 'https://fr.wikipedia.org/wiki/'.$pg.''.($p);}
 
 static function build($u){//hip32578
 $d=get_file($u); $dom=dom($d); 
-$r=$dom->getElementsByTagName('table'); $n=count($r);
+$r=$dom->getElementsByTagName('table');
 $rt=self::detect_table($r[3]);
 $rt=self::cleanup($rt);
 return $rt;}
@@ -28,13 +28,13 @@ if(strpos($v[0],$t)!==false)$rb[$t]=$v[1];
 if($k==2){$p=explode(' ',$v[1]);
 	if($k==2)$t='ICRS'; if($k==3)$t='FK4';
 	$rb['ICRS AD']=$p[0].'h'.$p[1].'m'.$p[2].'s';
-	$rb['ICRS DC']=$p[3].'°'.$p[4].'"'.$p[5]."'";}
+	$rb['ICRS DC']=$p[3].'ï¿½'.$p[4].'"'.$p[5]."'";}
 if($k==3){$p=explode(' ',$v[1]);
 	$rb['FK4 AD']=$p[0].'h'.$p[1].'m'.$p[2].'s';
-	$rb['FK4 DC']=$p[3].'°'.$p[4].'"'.$p[5]."'";}
+	$rb['FK4 DC']=$p[3].'ï¿½'.$p[4].'"'.$p[5]."'";}
 if($k==4){$p=explode(' ',$v[1]);
-	$rb['degAD']=$p[0].'°';
-	$rb['degDC']=$p[1].'°';}
+	$rb['degAD']=$p[0].'ï¿½';
+	$rb['degDC']=$p[1].'ï¿½';}
 $t='Proper motions mas/yr';
 if(strpos($v[0],$t)!==false){
 	$p=explode(' ',$v[1]);
@@ -80,7 +80,7 @@ return $bt.divd('smbd',$ret);}
 
 static function callr($p){
 $p=str_replace(' ','',$p);
-if(!$p)return ['00h00m',"00°00'",'0'];
+if(!$p)return ['00h00m',"00ï¿½00'",'0'];
 $u=self::url($p);
 $r=self::build($u);
 return [$r['ICRS AD'],$r['ICRS DC'],$r['Distance (LY)']];}
@@ -95,7 +95,7 @@ return $ret;}
 static function home($p,$o){
 $rid=randid(self::$a); $ret='';
 $bt=self::menu($p,$o,$rid);
-if($p)$ret=self::build($p,$o);
+if($p)$ret=self::build($p);
 return $bt.divd($rid,$ret);}
 
 }

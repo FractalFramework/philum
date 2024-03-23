@@ -1,10 +1,10 @@
 <?php 
 class msqmerge{
-//conjoint à msqarts, qui fabrique des tables par catégories
+//conjoint ï¿½ msqarts, qui fabrique des tables par catï¿½gories
 
 static function msg($d){
 $d=str_replace('&nbsp;',' ',$d);
-$r=explode(' ',$d);
+$r=explode(' ',$d); $ret='';
 foreach($r as $k=>$v){if(substr($v,0,1)!='@')$ret.=$v;
 	if(substr($v,-1)!="\n")$ret.=' ';}
 return $ret;}
@@ -12,7 +12,7 @@ return $ret;}
 static function merge($r,$d){$d=strend($d,'_');
 if($r)foreach($r as $k=>$v){$dy=substr($v[1],0,6); 
 $msg=$v[2]; 
-$msg=delconn($msg);
+$msg=conb::delconn($msg);
 $msg=self::msg($msg);
 //$msg=miniconn($msg);
 //$msg=str::embed_links($msg);

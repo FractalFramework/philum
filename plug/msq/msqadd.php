@@ -3,7 +3,7 @@ class msqadd{
 static function build($p,$o,$prm){
 [$p,$o]=prmp($prm,$p,$o);
 $dfb[msql::$m]=['day','text'];
-$nod=nod($p); $rb=explode(',',$msg);
+$nod=nod($p); $rb=explode(',',$p);
 $r=msql::modif('',$nod,$rb,'push',$dfb);
 $bt=msqbt('users',$nod);
 return $bt.self::call($p);}

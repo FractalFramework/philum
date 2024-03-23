@@ -24,7 +24,7 @@ return $ret;}
 static function build($p,$o){$ret='';
 if(!auth(6))return;
 //if($p=='fixtags')$ret=fixtags();
-if($p=='imgsizes')$ret=imgsizes();
+if($p=='imgsizes')$ret=self::imgsizes();
 return $ret;}
 
 static function call($p,$o,$prm=[]){

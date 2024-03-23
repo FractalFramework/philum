@@ -1,14 +1,15 @@
 <?php 
 class msqedit{//used by configmod
 
-static function save($p,$o,$res){$r=ajxr($res);
-msql::modif('',nod($p),$r,'push','','');
+static function save($p,$o,$prm=[]){
+msql::modif('',nod($p),$prm,'push','','');
 return self::build($p,$o);}
 
 static function add($p,$o){
-$r=explode(',',$o); $ret=''; $j='admsql_msqedit,save__x_';
-foreach($r as $k=>$v){$id='inp'.$v; $ids[]=$id; $ret.=$v.' '.input($id,'').br();}
-$ret.=lj('',$j.ajx($p).'__'.implode('|',$ids),pictxt('save2'));
+$r=explode(',',$o); $ret=''; 
+foreach($r as $k=>$v){$id='inp'.$v; $ids[]=$id; $ret.=div($v.' '.input($id,''));}
+$j='admsql_msqedit,save_'.implode(',',$ids).'_x_'.ajx($p);
+$ret.=lj('',$j,pictxt('save2'));
 return $ret;}
 
 static function build($p,$o){

@@ -86,7 +86,7 @@ $pr=['onclick'=>$j,'onkeypress'=>$j,'class'=>'console','id'=>'twpost','cols'=>50
 $ret=tag('textarea',$pr,$ret).br();
 $r=self::apikeys(); if($r)foreach($r as $i=>$nm)
 	$ret.=lj('popbt',$rid.'_twit,send_twpost___'.$i,pictxt('send',$nm)).' ';//send
-$ret.=spn('','txtsmall','strcount');
+$ret.=span('','txtsmall','strcount');
 return divd($rid,$ret);}
 
 static function botshare($p,$o=''){//build mini before
@@ -104,8 +104,9 @@ setlocale(LC_TIME,prmb(25).'_'.strtoupper(prmb(25)));
 //$ret['from']='@'.$q['user']['screen_name'];
 $name=$q['user']['screen_name']??'';//'('.$q['user']['name'].') ';
 $ret['day']=$q['created_at']??''; $id=$q['id']??'';
+[$res,$nm,$sn,$dt]=self::oembed(self::lk($name,$id));
+if(!$ret['day'])$ret['day']=date('d-m-Y',$dt);
 $ret['suj']=$name.' '.date('d b Y - H:i',strtotime($ret['day']));
-[$res,$nm,$sn]=self::oembed(self::lk($name,$id));
 if($res)[$txt,$med]=self::clean($res);
 else [$txt,$med]=self::clean(($q['text']??''));
 $ret['msg']=$res;
@@ -143,7 +144,7 @@ msql::modif('',nod('twit_'.$p),$defs,'arr');
 return btn('frame-blue',helps('userforms'));}
 
 static function apikeys(){
-$r=msql::choose('',ses('qb'),'twit'); sort($r); $rb=[];
+$r=msqa::choose('',ses('qb'),'twit'); sort($r); $rb=[];
 if($r)foreach($r as $k)if(is_numeric($k))$rb[$k]=msql::val('',nod('twit_'.$k),'token_identifier');
 return $rb;}
 
@@ -158,6 +159,7 @@ return self::cache($p,$o,2);}
 static function edit($p,$o){$rid=randid('tw');
 $cls=implode(',',array_keys(self::r())); $ret=''; $kr=[];
 $r=sql($cls,'qdtw','a',['twid'=>$p]);
+if(!$r)$r=self::savempty($p);
 if($r)foreach($r as $k=>$v){$kb=$k.$rid;
 	$ret.=div(goodarea($kb,$v,60).label($kb,$k,'small')); $kr[]=ajx($kb);}
 $bt=lj('popsav',$p.'_twit,edtsav_'.implode(',',$kr).'__'.$p.'_'.$o,picto('save2'));
@@ -221,7 +223,7 @@ return btn('txtyl','tweet deleted');}
 static function dump($t,$p){
 $q=$t->read($p); $ret=eco($q,1);
 $r=sql('*','qdtw','ar','twid='.$p.''); $ret.=eco($r,1);
-[$res,$nm,$sn]=self::oembed(self::lk($q['user']['screen_name']??'',$q['id']??''));
+[$res,$nm,$sn,$dt]=self::oembed(self::lk($q['user']['screen_name']??'',$q['id']??''));
 $ret.=eco($res,1);
 return $ret;}
 
@@ -326,8 +328,8 @@ return 'data:image/'.$x.';base64,'.base64_encode(get_file($f));}
 static function img($f,$o=''){
 if(is_file('img/'.$f))$im='img/'.$f;
 else $im=self::getimg($f,$o);
-return mk::mini_b($im,'');
-return img($im);}//
+//return img($im);
+return mk::mini_b($im,'');}
 
 //fulltext
 static function tco($f){
@@ -355,14 +357,19 @@ static function text($f){$r=fdom($f,1);
 $ret=between($r->textContent,'document.addEventListener("compositionend",n,!1))}();','document.body.className');
 return trim($ret);}
 
+static function findate($txt,$z=''){if($z)eco($txt);
+$d=between($txt,'?ref_src=twsrc%5Etfw">','</a>',1);
+return strtotime($d);}
+
 static function oembed($u){
 $t=self::init(); $q=$t->embed($u);
 //$d=get_file('https://publish.twitter.com/oembed?url='.$u); $q=json_decode($d,true);
-$txt=$q['html']??''; $nm=$q['author_name']??''; $sn=strend($q['author_url'],'/');
+$txt=$q['html']??''; $nm=$q['author_name']??''; $sn=strend($q['author_url']??'','/');
+$date=self::findate($txt);
 //$txt=self::text($u);
 $ret=delbr($txt,"\n");
 $ret=strip_tags($ret);
-return [$ret,$nm,$sn];}
+return [$ret,$nm,$sn,$date];}
 
 static function upvideo_m3u8($f){//tw_video
 $xt='.m3u8'; $fa=strprm($f,4);
@@ -384,19 +391,20 @@ $e=strrpos($ref,'#EXT-X-ENDLIST'); $ref=trim(substr($ref,0,$e));
 $xt='.mp4';//$xt=xt($ref);//.ts=>.mp4
 $fb='video/'.$fa.'_2'.$xt;
 $lk='https://video.twimg.com/'.$ref;
-return lkt('',$lk,pictxt('movie',nms(187)));//waiting solution
-if(!is_file($fb))copy($lk,$fb);//video src
+return lkt('',$lk,pictxt('movie',nms(187)));}//waiting solution
+/* if(!is_file($fb))copy($lk,$fb);//video src
 if(is_file($fb))return video('/'.$fb);
-return lj('','popup_usg,iframe___'.ajx($fb),domain($f));}
+return lj('','popup_usg,iframe___'.ajx($fb),domain($f));*/
 
 static function upvideo_mp4($f,$id){
 $fa='https://twitter.com/i/videos/tweet/'.$id;
 if(strpos($f,'video.twimg.com'))$fb='video/'.strprm($f,4).'.mp4';//tw
 elseif(substr($f,0,7)=='/users/')return video($f);//local
-elseif(strpos($f,'/users/'))$fb='video/'.strend($f,'/');//abs
-else $fb='video/'.$id.'.mp4';//new
+elseif(strpos($f,'video/')!==false)$fb='video/'.strend($f,'/');//abs
+else $fb='video/'.strend($f,'/');//abs
+//else $fb='video/'.$id.'.mp4';//new
 if(!is_file($fb) && auth(4))@copy($f,$fb);
-if(!is_file($fb) && auth(4))@copy($fa,$fb);//not works
+if(!is_file($fb) && auth(4))copy($fa,$fb);//not works because it's in js
 if(is_file($fb))return video('/'.$fb);
 return lj('','popup_usg,iframe___'.ajx($fb),domain($f));}
 
@@ -405,8 +413,9 @@ $xt='.ts'; $fb='video/'.strprm($f,4).$xt;
 if(!is_file($fb) && auth(4))@copy($f,$fb);
 //if(is_file($fb))$tmp=read_file($fb); else return; eco($tmp);
 return lkt('',$fb,pictxt('movie',nms(187)));
-if(is_file($fb))return video('/'.$fb);
-return lj('','popup_usg,iframe___'.ajx($fb),domain($f));}
+//if(is_file($fb))return video('/'.$fb);
+//return lj('','popup_usg,iframe___'.ajx($fb),domain($f));
+}
 
 static function playtxt($id){
 return sql('text','qdtw','v','twid="'.$id.'"',0);}
@@ -419,6 +428,7 @@ if($rb)foreach($rb as $v)if($v){$v=trim($v);
 	elseif(is_img($v) && !$vid)$txt.=self::img($v,1);
 	elseif(strpos($v,'format=jpg') && !$vid)$txt.=self::img($v,1);
 	elseif(strpos($v,'format=png') && !$vid)$txt.=self::img($v,1);
+	elseif(strpos($v,'twitter.com/i/videos/tweet'))$txt.=self::upvideo_mp4($v,$id);
 	elseif(strpos($v,'twitter.com')){
 		if(strend($v,'/')!=$id)$txt.=$quoid?'':self::cache(strend($v,'/'),ses('read'));}
 	//elseif(strpos($v,'.mp4'))$txt.=video($v);
@@ -478,9 +488,10 @@ return div($ret,'twit',$id);}
 $ra=['name','screen_name','user_id','date','text','media','mentions','reply_id','reply_name','favs','retweets','followers','friends','quote_id','quote_name','retweeted','lang'];//ib,twid,
 $r=sql(implode(',',$ra),'qdtw','a',['twid'=>$k],0);
 [$nm,$sn,$date,$rplid,$favs,$favd,$rtw,$rtwd,$flw,$friends,$txt,$med,$mnt,$quoid,$lg]=vals($r,$ra);
-$url=self::lk($sn); $ret=spn('@'.$sn,'popbt').' ';
+$url=self::lk($sn); $ret=span('@'.$sn,'popbt').' ';
 $ret.=lkt('small',$url.'/status/'.$k,pictxt('chain',date('d/m/Y H:i:s',$date))).'';
 $ret.=blockquote($txt);
+$ret.=self::playmed($med);
 return $ret;}
 
 static function urls($r,$rtw,$id){$rb=[];
@@ -526,7 +537,8 @@ $ret['name']=$q['user']['name']??'';
 $ret['screen_name']=$q['user']['screen_name']??'';
 $ret['user_id']=$q['user']['id']??0;
 $ret['date']=strtotime($q['created_at']);
-[$res,$nm,$sn]=self::oembed(self::lk(valr($q,'user','screen_name'),$q['id']));
+[$res,$nm,$sn,$dt]=self::oembed(self::lk(valr($q,'user','screen_name'),$q['id']));
+if(!$ret['date'])$ret['date']=$dt;
 if($res)[$txt,$med]=self::clean($res);
 else [$txt,$med]=self::clean($q['text']);
 $ret['text']=$txt;
@@ -552,18 +564,24 @@ return $ret;}
 static function twalter($u,$id,$o=''){$sn='';
 if(strpos($u,'/')){$ra=explode('/',$u); $sn=$ra[3]??''; $twid=$ra[5]??'';} else $twid=$u;//forbidden situation
 $ra=['name','screen_name','user_id','date','text','media','mentions','reply_id','reply_name','favs','retweets','followers','friends','quote_id','quote_name','retweeted','lang'];//ib,twid,
-$r=sql(implode(',',$ra),'qdtw','a',['twid'=>$twid],0);
+$r=sql(implode(',',$ra),'qdtw','a',['twid'=>$twid],0); //if(array_sum($r)=='0')$r=[];//not if twit not exists
 if($r && !$o)return self::play($twid,$r,[],0,$id);
 $rb=self::r(); foreach($rb as $k=>$v)$rb[$k]=$v=='int'||$v=='bint'?0:'';
-$rb['twid']=$twid; if($id)$rb['ib']=$id; $rb['date']=time(); if($sn)$rb['screen_name']=$sn;
+$rb['twid']=$twid; if($id)$rb['ib']=$id; if($sn)$rb['screen_name']=$sn;
 $lk=self::lk($sn?$sn:'unknown',$twid);
 $ret=lkt('txtx',$lk,pictxt('url',$sn));
-[$res,$nm,$sn]=self::oembed($lk);
+[$res,$nm,$sn,$dt]=self::oembed($lk);
 [$txt,$med]=self::clean($res); $med=utmsrc($med);
-$rb['text']=$txt; if($nm)$rb['name']=$nm; $rb['media']=$med; $rb['screen_name']=$sn;
+$rb['text']=$txt; if($nm)$rb['name']=$nm; $rb['media']=$med;
+$rb['screen_name']=$sn; $rb['date']=$dt?$dt:time();
 if($o && $r)sqlup('qdtw',$rb,['twid'=>$twid],0);
-elseif($txt && auth(6) && $id!='test')sqlsav('qdtw',$rb,0,0);
+elseif(auth(6) && $id!='test')sqlsav('qdtw',$rb,0,0);//$txt && 
+//else self::savempty($twid,$id);
 return self::play($twid,$rb,[],$o,$id);}
+
+static function savempty($twid,$id=''){
+$r=self::r(); $rb['twid']=$twid; $rb['ib']=$id;
+return sqlsav('qdtw',$rb,0,0);}
 
 #read
 static function cache($k,$id,$o='',$q=[]){if(!$id)$id=0;
@@ -576,7 +594,7 @@ if(auth(4) && ((!$r && $o!=2) or $o==1)){$r0=$r;
 	if($er)$r['text']=$er;
 	elseif($r0 && $r)sqlup('qdtw',$r,['twid'=>$k],0);
 	elseif($r && $k && is_numeric($k) && $id!='test'){
-		$rb=array_merge(['ib'=>is_numeric($id)?$id:0,'twid'=>$k],$r); //pr($rb);
+		$rb=array_merge(['ib'=>is_numeric($id)?$id:0,'twid'=>$k],$r);
 		if(auth(6))sqlsav('qdtw',$rb,0,0);}}
 elseif($r){$r=array_combine($ra,$r);
 	if($q){
@@ -600,14 +618,14 @@ if($ret)$ret.=lj('',$rid.'_twit,stream__3_'.$v['twid'].'_'.$n,divc('txtcadr',pic
 return $ret.divd($rid,'').divd('end','');}
 
 static function stupids(){
-return msql::col('',nod('twit_stupids',0,1));}
+return msql::col('',nod('twit_stupids'),0,1);}
 
 static function friends(){
-return msql::col('',nod('twit_friends',0,1));}
+return msql::col('',nod('twit_friends'),0,1);}
 
 static function batch($r,$o){$rid=randid('tw'); $ret='';
 if($er=self::error($r))return $er;
-$rx=[]; if($o=='stp')$rx=self::stupids(); elseif($o=='mdl')$rx=self::friends(); //pr($rx);
+$rx=[]; if($o=='stp')$rx=self::stupids(); elseif($o=='mdl')$rx=self::friends();
 if(is_array($r)){foreach($r as $q)if(isset($q['id'])){$ok=1;
 		if($o=='stp'){if(in_array($q['user']['screen_name'],$rx))$ok=0;}
 		if($o=='mdl'){if(!in_array($q['user']['screen_name'],$rx))$ok=0;}
@@ -669,10 +687,10 @@ $t=self::init(); $minid=0; $usr=$t->_usr;
 if(is_numeric($p) && isset($prm[0])){$id=$p; $p=$prm[0];}
 elseif($prm)[$p,$o]=prmp($prm,$p,$o);
 //if($o=='stream' && $p){$minid=$p; $p='';}
-//if(rstr(158))return self::twalter($p,$o);
+if(rstr(158))return self::twalter($p,$o);
 if(substr($p,0,4)=='http')$p=strend($p,'/');
 /**/if($p=='plug' or substr($o,0,9)=='twit/app'){
-//json::add('','twit'.mkday(),[$p.':stopped',$o,$id,$minid,$prm[0],0,mkday('','His'),hostname()]);
+//json::add('','twit'.mkday(),[$p.':stopped',$o,$id,$minid,$prm[0],0,mkday('','His'),ip()]);
 return;}
 $p=$p?$p:$usr;//msql::val('',nod('twit_'.ses('apk')),5)
 $o=$o?$o:'search'; ses('twusr',$p); $n=sesb('nbp',40);
@@ -682,7 +700,7 @@ if(is_numeric($p)){//$q=$t->read($p);
 	if($o=='rtw')$qu=$t->retweeters($p,$id);
 	elseif($o=='thread')$ret=self::thread($t,$p);
 	elseif($o=='rpl')$q=self::replies($p,$id);
-	elseif($o=='mnt')$qu=self::playmentions($p,$id);
+	elseif($o=='mnt')$qu=self::playmentions($p);
 	elseif($o=='del')$ret=self::delete($t,$p);
 	elseif($o=='erz' && auth(6)){self::erasefromtwid($p); $ret='deleted';}
 	elseif($o=='eco')$ret=self::dump($t,$p);
@@ -697,12 +715,12 @@ elseif($o=='frnb')$qu=$t->friends($p,'');//friends2
 elseif($o=='fav')$q=$t->favorites($p,$id);
 elseif($o=='ban')$ret=self::card($p,1);
 elseif($o=='erx' && auth(6))$ret=self::erasex('plug');
-//elseif($o=='chat'){$q=$t->messages('list','','');}//pr($q);
-elseif($o=='chat'){$q=$t->messages('new','2434088253','hello');}//echo $t->_prm; //pr($q);
+//elseif($o=='chat'){$q=$t->messages('list','','');}
+elseif($o=='chat'){$q=$t->messages('new','2434088253','hello');}//echo $t->_prm;
 //elseif($o=='chat'){$q=$t->messages('show',$id,'');}//destroy
 //elseif($o=='mnt')$q=$t->mentions($p,$id);
 elseif($o=='sql')[$q,$minid]=self::search($p,$id,'');
-elseif($o=='uwd')$ret=self::wordusrs($p,1);
+elseif($o=='uwd')$ret=self::wordusrs($p);
 elseif($o=='all')$ret=self::stream('');
 elseif($o=='stream'){
 	//[$ret,$minid]=self::search($p,$id,'tl'); $minid=0;//patch
@@ -711,7 +729,7 @@ elseif($p){$qr=[];//if($o=='search')
 	//[$r,$minid]=self::search($p,$id,'');
 	if(strpos($p,',')){$r=explode(',',$p);//multicall
 		foreach($r as $k=>$v){$qr=$t->search($v,$n,$id,$minid);
-			if(!$er=self::error($qr))$qr=$qr['statuses']; //pr($qr);
+			if(!$er=self::error($qr))$qr=$qr['statuses'];
 			foreach($qr as $k=>$v)if($v['id']??'' && !isset($q[$v['id']]))$q[$v['id']]=$v;} krsort($q);}
 	else{$q=$t->search($p,$n,$id,$minid);//since_id not works
 		if(!$er=self::error($q))$q=$q['statuses'];}}
@@ -721,7 +739,7 @@ if($q)$ret=self::batch($q,$o);
 if($qu)$ret=self::usrs($qu,$p,$o);
 if(!is_numeric($p))$ret.=hidden('home',$o);
 //if($o)$bt=lkt('txtx','/plug/twit/'.$p.'/'.$o,$o.': '.$p);
-//if(is_array($q))json::add('','twit'.mkday(),[$p,$o,$id,$minid,$prm[0],count($q),mkday('','His'),hostname()]);
+//if(is_array($q))json::add('','twit'.mkday(),[$p,$o,$id,$minid,$prm[0],count($q),mkday('','His'),ip()]);
 return $bt.$ret;}
 
 static function menu($p,$o,$rid){

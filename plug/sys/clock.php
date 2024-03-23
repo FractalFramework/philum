@@ -1,6 +1,6 @@
 <?php 
 class clock{
-static function uclock_needle($id,$sz,$clr,$w,$h){return '
+static function needle($id,$sz,$clr,$w,$h){return '
 	#'.$id.'{
 		background:'.$clr.';
 		width:'.$w.'px;
@@ -17,7 +17,7 @@ static function uclock_needle($id,$sz,$clr,$w,$h){return '
 		transition: all 0.2s linear;
 	}';}
 
-static function head(){
+static function css(){
 	$unit=15;
 	$size1=$unit*10;//xee
 	$size2=$unit*15;//xsi
@@ -29,14 +29,11 @@ static function head(){
 	
 	head::add('csscode','
 	#clockFrame{
-		background:#fff;
 		width:'.($size3+40).'px;
 		height:'.($size3+60).'px;
 		padding:10px;
-		position:relative;
 	}
 	#clock{
-		background:#fff;
 		border:2px solid grey;
 		width:'.$size3.'px;
 		height:'.$size3.'px;
@@ -90,12 +87,10 @@ static function head(){
 		top:calc(50% - 9px);
 		border-radius:8px;
 	}
-	'.self::uclock_needle('needleHour',$size1,$hourclr,8,$size1/2).'
-	'.self::uclock_needle('needleMin',$size2,$minclr,6,$size2/2).'
-	'.self::uclock_needle('needleSec',$size3,$secclr,4,$size3/2).'
+	'.self::needle('needleHour',$size1,$hourclr,8,$size1/2).'
+	'.self::needle('needleMin',$size2,$minclr,6,$size2/2).'
+	'.self::needle('needleSec',$size3,$secclr,4,$size3/2).'
 	');
-	
-	head::add('jscode',self::js());
 }
 
 static function js(){return '
@@ -119,6 +114,10 @@ static function js(){return '
 		el.style.transform="rotate("+deg+"deg)";
 	}
 	setInterval(function(){clock();},1000);';}
+
+static function head(){
+head::add('csscode',self::css());
+head::add('jscode',self::js());}
 
 static function home($p,$o){
 self::head();

@@ -15,8 +15,8 @@ return $nod;}
 
 static function call($p,$o,$prm=[]){$rt=[];
 [$p,$o]=prmp($prm,$p,$o);
-$r=scandir_r('msql');
-foreach($r as $k=>$v)if(strpos($v,'_sav')===false){
+$r=scanfiles('msql');
+foreach($r as $k=>$v)if(strpos($v,'/_bak/')===false){
 if(strpos($v,'msql/users/')!==false){
 	if(strpos($v,'/public_')!==false)$rt[]=$v;}
 elseif(strpos($v,'msql/design/')!==false){
@@ -36,9 +36,9 @@ $ret=inputb('fto',$p,18,'directory');
 $ret.=lj('popbt','pbm_pubmsql,call_fto_',picto('ok'));
 return $ret;}
 
-static function home($p){
+static function home($p,$o){
 $bt=self::menu($p); $ret='';
-if($p)$ret=self::call($p);
+if($p)self::call($p,$o);
 return $bt.divd('pbm',$ret);}
 }
 ?>

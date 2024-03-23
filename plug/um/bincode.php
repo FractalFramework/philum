@@ -18,8 +18,8 @@ $clr=umbin::clr();
 return umbin::tabler_clr($r,$clr);}
 
 //char to bin
-static function c2b_find($d,$b,$id){
-$n=strpos($d,$v); $nb=strlen($b);
+static function c2b_find($r,$d,$b,$id){
+$n=strpos($d,$b); $nb=strlen($b);
 if($n!==false){$rb=[];
 	for($i=$n;$i<$n+$nb;$i++)$rb[]=$r[$i]??'';
 	return $id.' matched: {'.implode(' ',$rb).'}'.br();}

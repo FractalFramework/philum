@@ -80,7 +80,7 @@ $ret=match($c){
 'picto'=>picto($p,$o),
 //high_level
 'split'=>explode($o,$p),
-'conn'=>conn::connectors($p.':'.$o,3,'','',''),//from pop
+'conn'=>conn::connectors($p.':'.$o,3,'',''),//from pop
 //'exec'=>cbasic::run($p,$id),
 'app'=>appin($p,$o),
 'var'=>$r[$p]??'',//here is the core
@@ -91,8 +91,7 @@ default=>''};
 if($ret)return $ret;
 if($c=='cut'){[$s,$e]=explode('/',$o); return between($p,$s,$e);}
 if($c=='each'){foreach($p as $v)$ret.=cbasic::exec($v,'','',''); return $ret;}
-if($c=='core'){if(is_array($p))return call_user_func($o,$p,'','');
-	else{$pb=explode('/',$p); return call_user_func_array($o,$pb);}}
+if($c=='core'){if(is_array($p))return $o($p,'',''); else{$pb=explode('/',$p); return $o($pb);}}
 if(strpos($o,',')){$rp=array_combine(['class','id','style'],expl(',',$o,3)); return tag($c,$rp,$p);}//mmh
 if($p && $o && $c)return '<'.$c.' '.$o.'>'.$p.'</'.$c.'>';
 if($p && $c)return tagb($c,$p);
@@ -104,7 +103,7 @@ static function build($tmp,$r){//self::$r=$r;
 $rb=sesmk2('cltmp2','vars','',1);
 $r+=$rb; $rc=[]; foreach($r as $k=>$v)$rc[$k]='{'.$k.'}';//mkvars
 foreach($r as $k=>$v)if(!$v)$tmp=str_replace('{'.$k.'}','',$tmp);//delempty
-$d=self::parser($tmp,$r); //eco($d);
+$d=self::parser($tmp,$r);
 foreach($r as $k=>$v)if($v)$d=str_replace('{'.$k.'}',$v,$d);
 return $d;}
 

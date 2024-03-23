@@ -2,11 +2,11 @@
 class tagpatch{
 
 static function erase_unused_datas(){
-qr('ALTER TABLE '.db('qdd').' DROP day, DROP cat;'); $ret.='datas deleted';
+qr('ALTER TABLE '.db('qdd').' DROP day, DROP cat;'); $ret='datas deleted';
 qr('UPDATE '.db('qda').' SET thm=""'); $ret.='old tags deleted';
 return $ret;}
 
-static function call($p,$o,$prm=[]){$p=$p?$p:0;
+static function call($p,$o,$prm=[]){$p=$p?$p:0; $ra=[];
 $r=sql('id,thm','qda','kv','id>'.$p.' limit 10000'); 
 if($r)foreach($r as $k=>$v){$r[$k]=trimr($v);
 	foreach($r[$k] as $ka=>$va){if($va){$ra[$va]+=1; $rb[$k][]=$va;}}}
@@ -21,14 +21,14 @@ if($rb)foreach($rb as $k=>$v){
 	foreach($v as $ka=>$va){
 		$idtag=$rtag[$va];
 		if($idtag)$ex=sql('id','qdta','v',['idart'=>$k,'idtag'=>$idtag]);
-		if(!$ex)sql::sav('qdta',$k,$idtag]);
+		if(!$ex)sql::sav('qdta',$k,$idtag);
 		//echo $ex.'/'.$k.':'.$va.'-'.$idtag.br();
 		}
 }
 $ret=$p.':'.sql('count(id)','qdt','v','').'-'.sql('count(id)','qdta','v','');
 return $ret;}
 
-static function u($p,$o,$prm=[]){//$p='type';
+static function u($p,$o,$prm=[]){$ra=[]; 
 $r=sql('ib,msg','qdd','kv','val="'.$p.'"');//id>'.$p.' limit 10000
 foreach($r as $k=>$v){$r[$k]=trimr($v);
 	foreach($r[$k] as $ka=>$va){if($va){$ra[$va]+=1; $rb[$k][]=$va;}}}
@@ -41,7 +41,7 @@ foreach($rb as $k=>$v){
 	foreach($v as $ka=>$va){
 		$idtag=$rtag[$va];
 		$ex=sql('id','qdta','v','idart="'.$k.'" and idtag="'.$idtag.'"');
-		if(!$ex)sql::sav('qdta',[$k,$idtag];}
+		if(!$ex)sql::sav('qdta',[$k,$idtag]);}
 }
 $ret=$p.':'.sql('count(id)','qdt','v','').'-'.sql('count(id)','qdta','v','');
 return $ret;}
@@ -60,15 +60,14 @@ return $r;}
 
 //patch tags
 static function home($p,$o){$rid='plg'.randid(); return;
-$bt=btn('popsav','Transfert datas to the new tables').br();
+$bt=btn('popsav','Transfert datas to the new tables').br(); $ret='';
 sesr('db','qdt','meta'); sesr('db','qdta','meta_art'); sesr('db','qdtag','tag');
 $n=12;//echo $n=ceil(ma::lastartid()/10000);
 for($i=0;$i<$n;$i++)$bt.=lj('txtbox',$rid.'_tagpatch,call___'.($i*10000),$i);//jb
 //patch user_tags
 if(prmb(18)){$utags=explode(' ',prmb(18)); $ico=explode(' ',prmb(19));
 foreach($utags as $k=>$v)$bt.=lj('txtbox',$rid.'_tagpatch,u___'.ajx($v),$v).' ';}
-
-if($p=='finalize')erase_unused_datas();
+if($p=='finalize')self::erase_unused_datas();
 else $ret.=lkc('popsav','/app/tagpatch/finalize','Finalize (delete unused datas !)');
 //$ret=meta::admin_tags($p?($p):'tag');//utf8_encode
 return $bt.divd($rid,$ret);}

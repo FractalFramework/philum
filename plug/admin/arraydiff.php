@@ -18,7 +18,7 @@ $ret.=tabler($r['banned']);
 return $ret;}
 
 static function call($p,$o,$prm=[]){
-[$p,$o,$n]=prmp($prm);
+[$p,$o,$n]=prmp($prm,$p,$o);
 $ret=self::build($p,$o,$n);
 return $ret;}
 

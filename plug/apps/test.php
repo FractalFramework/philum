@@ -14,7 +14,7 @@ $rb=msql::read('',nod('test_1')); $ret=[];
 $t=divc('txtcadr',count($r).' modules');
 foreach($r as $k=>$v){
 	$rid=str::normalize('prm'.$k); $j='popup_test,playmod_'.$rid.'_3_'.ajx($k);
-	$ret[]=[$k,$rh[$k][0],inputj($rid,valr($rb,$k,0),$j),lj('',$j,picto('ok'))];}
+	$ret[]=[$k,$rh[$k][0]??'',inputj($rid,valr($rb,$k,0),$j),lj('',$j,picto('ok'))];}
 return $t.tabler($ret);}
 
 static function playconn($p,$o,$prm=[]){
@@ -34,7 +34,7 @@ $t=divc('txtcadr',$i.' connectors');
 return $t.tabler($ret);}
 
 static function matchres($p,$o,$prm=[]){
-$d=prm[0]??''; $o=strpos($d,' ')?' IN BOOLEAN MODE':'';
+$d=$prm[0]??''; $o=strpos($d,' ')?' IN BOOLEAN MODE':'';
 $sql='select art.id,MATCH (msg) AGAINST ("'.$d.'"'.$o.') as score from art inner join txt on txt.id=art.id where day>'.timeago(90).' and day<'.ses('dayx').' and nod="'.ses('qb').'" and substring(frm,1,1)!="_" and re>0 and MATCH (msg) AGAINST ("'.$d.'"'.$o.') order by score DESC';
 $r=sql::call($sql,''); //pr($r);
 return tabler($r);}
@@ -47,7 +47,7 @@ return $ret;}
 
 static function searchapp($p,$rid,$prm=[]){
 $d=$prm[0]??''; $ret='';
-$ra=scandir_r('plug'); $rb=scandir_r('progb'); $r=array_merge($ra,$rb);
+$ra=scanfiles('plug'); $rb=scanfiles('progb'); $r=array_merge($ra,$rb);
 foreach($r as $k=>$v)if(strpos($v,$d))$ret.=div($v);
 return $ret?$ret:'no';}
 
@@ -65,7 +65,7 @@ if($p=='match')return self::match($p,$o);
 if($p=='search')return self::search($p,$o);
 if($p=='backup')return backup::home('','');
 if($p=='backupim')return backupim::home('','');
-if($p=='backupmsql')return msqa::backup_msql('');
+if($p=='backupmsql')return msqa::backup_msql();
 if($p=='reduceim')return reduceim::home($p,$o);}
 
 static function menu($p,$o,$rid){

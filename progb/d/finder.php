@@ -66,7 +66,7 @@ return $ret;}
 
 static function select_subarray($p,$r,$o){
 $ra=explode('/',$p); $n=count($ra);
-for($i=0;$i<$n;$i++){if($ra[$i] && strpos($ra[$i],'.')===false)$r=$r[$ra[$i]];}//
+for($i=0;$i<$n;$i++){$a=$ra[$i]??''; if($a && strpos($a,'.')===false)$r=$ra[$a]??'';}//
 return $r;}
 
 //shared
@@ -75,7 +75,7 @@ if($r)foreach($r as $k=>$v)if(isset($v[0]) && !is_file('users/'.$v[0]))unset($r[
 return is_array($r)?$r:[];}
 
 static function distrib_virtual_dir(){$rc=[]; $dr='users'; $nd='shared';
-$ra=msql::choose($dr,'',$nd); $n=count($ra);
+$ra=msqa::choose($dr,'',$nd); $n=count($ra);
 for($i=0;$i<$n;$i++)if(isset($ra[$i])){
 	$r=msql::read($dr,$ra[$i],1); $r=self::unset_nofile($r);
 	if($r)$rc=array_merge($rc,$r);}
@@ -229,7 +229,7 @@ static function reader($d,$dist){$id=randid();
 $dr=self::droot(); $f=$dr.$d; $dj=ajx($d).'_'.$id; $xt=xtb($f); $ret='';
 //$ret.=blj('',randid().'fidel','finder,del___'.ajx($d),self::pic('delete')).br();
 if($xt && is_file($f)){
-	if(strpos('.jpg.png.gif',$xt)!==false)$ret.=self::show_img_b($f,'').' ';
+	if(strpos('.jpg.png.gif',$xt)!==false)$ret.=self::show_img_b($f).' ';
 	elseif(strpos('.mp3.mid.flac',$xt)!==false)$ret.=audio($f);
 	else switch($xt){
 	case('.txt'):$ret.=lj('','popup_usg,poptxt___'.ajx($f,''),self::pic('pdf',32)); break;
@@ -333,7 +333,7 @@ foreach($r as $k=>$v){if(isset($v['j'])){
 	$ico=$v['img']??''; if(!$ico)$ico=mimes($v['typ'],'','32');
 	//$ico=isset($v['typ'])?$im:'';
 	$conn=$v['conn']??'';
-	//$div=spn('','',$v['id']);
+	//$div=span('','',$v['id']);
 	//if($v['r'])$lk=toggle('icones','popup_finder,home___'.$v['j'].$o,$ico.br().$v['f']);
 	if($v['r'])$lk=lj('icones','popup_finder,home___'.$v['j'].$o,$ico.br().$v['f']);
 	else $lk=ljb('icones','insert',$conn,$ico.br().$v['f']).' ';

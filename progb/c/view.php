@@ -5,114 +5,104 @@ class view{
 static function art(){return [
 ['header',['id'=>'meta{id}'],[
 	['','','{cat}{back}{avatar}'],
-	['span','txtbox','{search}'],
-	['span','txtnoir','{nbarts}'],
-	['span','txtsmall2','{date}'],
-	['span','txtsmall','{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}']]],
-['span','right','{edit}'],
+	['span',['class'=>'txtbox'],'{search}'],
+	['span',['class'=>'txtnoir'],'{nbarts}'],
+	['span',['class'=>'txtsmall2'],'{date}'],
+	['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}']]],
 ['','','{thumb}'],
 ['h4','','{parent}'],
-['h1','','{suj}'],
+['span',['class'=>'right'],'{edit}'],
+['h1','','{title}'],
 ['','','{artedit}{float}'],
-['span','grey right','{artlang}{social}{words}{open}'],
-['div','txtsmall','{tag}'],
+['span',['class'=>'grey right'],'{artlang} {social} {words} {open}'],
+['div',['class'=>'txtsmall'],'{tag}'],
 ['clear','',''],
-['article',['id'=>'art{id}','class'=>'justy','onclick'=>'{js}'],'{msg}']
+['article',['id'=>'art{id}','class'=>'justy','onclick'=>'{js}'],'{msg} ']
 ];}
 
 static function cat(){return [
-['div','grid-art',[
-	['div','row1 col1',[
-		['div','panel txtsmall','{tag}']]],
-	['div','row1 col2',[
+['div',['class'=>'grid-art'],[
+	['div',['class'=>'row1 col1'],[
+		['div',[],'{thumb}'],
+		['div',['class'=>'panel txtsmall hide-simple'],'{tag}']]],
+	['div',['class'=>'row1 col2'],[
 		['header','',[
 			['div',['id'=>'meta{id}'],[
-				['span','txtbox','{search}'],
-				['span','txtnoir','{nbarts}'],
-				['span','txtsmall2','{date}'],
-				['span','txtsmall','{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}']]]],
-			['h4','','{parent}'],[
-			['span','right','{edit}'],
-			['h2','','{suj}'],
-			['div','grey tright','{artlang}{social}{words}{open}']]]],
+				['span','','{cat} {back} {avatar}'],
+				['span',['class'=>'txtbox'],'{search}'],
+				['span',['class'=>'txtnoir'],'{nbarts}'],
+				['span',['class'=>'txtsmall2'],'{date}'],
+				['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}'],
+				['span',['class'=>'right'],'{togprw}']]],
+			['h4','','{parent}'],
+			['span',['class'=>'right'],'{edit}'],
+			['h2','','{title}'],
+			['div',['class'=>'grey tright'],'{artlang} {social} {words} {open}']]],
 		['','','{float}'],
 		['','','{artedit}'],
-		['article',['id'=>'art{id}'],'{msg}']]]]];}
+		['article',['id'=>'art{id}'],'{msg}']]]]]];}
 
 static function read(){return [
 ['header','',[
-	['divd',['id'=>'meta{id}'],[
+	['div',['id'=>'meta{id}'],[
 		['','','{avatar}'],
-		['span','txtbox','{search}'],
+		['span',['class'=>'txtbox'],'{search}'],
 		['','','{cat}{back}'],
-		['span','txtsmall2','{date}'],
-		['span','txtnoir','{nbarts}'],
-		['span','txtsmall','{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}']]],
+		['span',['class'=>'txtsmall2'],'{date}'],
+		['span',['class'=>'txtnoir'],'{nbarts}'],
+		['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}']]],
 	['h4','','{parent}'],
-	['span','right','{edit}'],
-	['h1','','{suj}'],
-	['span','grey right','{artlang}{social}{words}{open}'],
+	['span',['class'=>'right'],'{edit}'],
+	['h1','','{title}'],
+	['span',['class'=>'grey right'],'{artlang} {social} {words} {open}'],
 	['clear','',''],
 	['','','{float}'],
-	['div','panel txtsmall','{tag}']]],
+	['div',['class'=>'panel txtsmall'],'{tag}']]],
 ['','','{artedit}'],
 ['article',['id'=>'art{id}','class'=>'justy'],[
 	['','','{msg}'],
 	['clear','','']]]];}
 
-static function little(){return [
-['div','grid-little',[
-	['div','row1 colspan1',[
-		['header','',[
-			['div',['id'=>'meta{id}'],[
-				['span','popbt','{cat}'],
-				['span','txtbox','{search}'],
-				['span','txtnoir','{nbarts}'],
-				['span','txtsmall2','{date}'],
-				['span','txtsmall','{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}']]],
-			['h4','','{parent}'],
-			['span','right','{edit}'],
-			['h2','','{suj}'],
-		['div','grey tright','{artlang}{social}{words}{open}']]]]],
-	['div','row2 col1',[
-		['div','panel scrollb txtsmall','{tag}']]],
-	['div','row2 col2',[
-		['article',['id'=>'art{id}'],'{msg}']]]]]];}
-
-static function little2(){return [
-['div','grid-3',[
-	['div','row1 colspan2',[
-		['header','',[
-			['span','right','{edit}'],
-			['div',['id'=>'meta{id}'],[
-				['span','popbt','{cat}'],
-				['span','txtbox','{search}'],
-				['span','txtnoir','{nbarts}'],
-				['span','txtsmall2','{date}'],
-				['span','txtsmall','{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}']]],
-			['h4','','{parent}'],
-			['h2','','{suj}']]]]],
-	['div','row2 col1','{thumb}'],
-	['div','row2 col2',[
-		['div','panel scrollb txtsmall','{tag}']]],
-	['div','row2 col3',[
-		['div','grey tright','{artlang}{social}{words}{open}'],
-		['article',['id'=>'art{id}'],'{msg}']]]]]];}
-
+//prw1
 static function simple(){return [
-['header','',[
-	['divd',['id'=>'meta{id}'],[
-		['','','{cat}{back}{avatar}'],
-		['span','txtbox','{search}'],
-		['span','txtnoir','{nbarts}'],
-		['span','txtsmall2','{date}'],
-		['span','txtsmall','{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}']]],
-	['h4','','{parent}'],
-	['span','right','{edit}{artlang}{open}'],
-	['h2','','{suj}']]],
-['','','{artedit}'],
-['article',['id'=>'art{id}','class'=>'panel'],[
-	['','','{msg}']]]];}
+['div',['class'=>'grid-art'],[
+	['div',['class'=>'row1 col1 simple'],[
+		['div',[],'{thumb}']]],
+	['div',['class'=>'row1 col2'],[
+		['header','',[
+			['div',['id'=>'meta{id}'],[
+				['span','','{cat} {back} {avatar}'],
+				['span',['class'=>'txtbox'],'{search}'],
+				['span',['class'=>'txtnoir'],'{nbarts}'],
+				['span',['class'=>'txtsmall2'],'{date}'],
+				['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}'],
+				['span',['class'=>'right'],'{togprw}']]],
+			['h4','','{parent}'],
+			['span',['class'=>'right'],'{edit}'],
+			['h2','','{title}']]],
+		['','','{float}'],
+		['','','{artedit}'],
+		['article',['id'=>'art{id}'],'{msg}']]]]]];}
+
+//search
+static function little(){return [
+['div',['class'=>'grid-little'],[
+	['div',['class'=>'row1 colspan1'],[
+		['header','',[
+			['div',['id'=>'meta{id}'],[
+				['span',['class'=>'popbt'],'{cat}'],
+				['span',['class'=>'txtbox'],'{search}'],
+				['span',['class'=>'txtnoir'],'{nbarts}'],
+				['span',['class'=>'txtsmall2'],'{date}'],
+				['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}']]],
+			['h4','','{parent}'],
+			['span',['class'=>'right'],'{edit}'],
+			['h2','','{title}'],
+		['div',['class'=>'grey tright'],'{artlang} {social} {words} {open}']]]]],
+	['div',['class'=>'row2 col1'],[
+		['div',['class'=>'panel scrollb txtsmall'],'{tag}']]],
+	['div',['class'=>'row2 col2'],[
+		['article',['id'=>'art{id}'],'{msg}']]]]]];}
 
 static function fast(){return [
 ['div',[],[
@@ -122,65 +112,65 @@ static function fast(){return [
 	['','','{msg}']]]];}
 
 static function tracks(){return [
-['div',[],[
-	['anchor','','trk_{id}'],
-	['','','{avatar}{author}'],
-	['anchor','','trk_{id}'],
-	['span','txtsmall2','{date} #{id}'],
-	['','','{edit}']]],
-['div',['id'=>'art{id}','class'=>'trkmsg'],'{msg}']];}
+['div',['class'=>'{css}','style'=>'{sty}'],[
+	['div','',[
+		['anchor','','trk{id}'],
+		['span',[],'{avatar} {author}'],
+		['span',['class'=>'txtsmall2'],'{date} #{id}'],
+		['','','{edit}']]],
+	['div',['id'=>'art{id}'],[
+		['div',['class'=>'trkmsg'],'{msg}']]]]]];}
 
 static function titles(){return [
 ['div',[],[
 	['','','{float}'],
-	['h3','','{suj}'],
-	['span','txtblc','{nbarts}'],
-	['','','{date}{opt}{parent}']]]];}
+	['h3','','{title}'],
+	['span',['class'=>'txtblc'],'{nbarts}'],
+	['','','{date} {opt} {parent}']]]];}
 
 static function pubart(){return [
-['div','imgl',[
+['div',['class'=>'imgl'],[
 	['thumb','44/44','{img1}']]],
-['span','small','{auteurs}'],
+['span',['class'=>'author'],'{auteurs}'],
 ['h4','',[
 	['hurl','{url}','{suj}']]],
-['','','{video}'],
-['clear','','']];}
+['','','{video}']];}
 
-static function pubart_j(){return [
-['div','imgl',[
+static function popart(){return [
+['div',['class'=>'imgl'],[
 	['thumb','44/44','{img1}']]],
-['span','small','{auteurs}'],
+['span',['class'=>'author'],'{auteurs}'],
 ['h4','',[
-	['jurl','{purl}','{suj}']]],
-['','','{video}'],
-['clear','','']];}
+	['jurl','{jurl}','{suj}']]],
+['','','{video}']];}
 
-static function pubart_b(){return [
+static function pubartb(){return [
 ['url','{url}',[
 	['thumb','200/100','{img1}']]],
-['span','small','{auteurs}'],
+['span',['class'=>'author'],'{auteurs}'],
 ['h4','',[
 	['hurl','{url}','{suj}']]],
 ['','','{video}']];}
 
 static function panart(){return [
 ['hurl','{url}',[
-	['div','panart',[
+	['div',['class'=>'panart'],[
 		['div',['class'=>'panbkg','style'=>'{sty}'],[
-			['div','pantxt',[
-				['div','small','{auteurs}'],
-				['','','{cat}{suj}']]]]]]]]]];}
+			['div',['class'=>'pantxt'],[
+				['span',['class'=>'author'],'{auteurs}'],
+				['div',['class'=>'title'],'{cat} {suj}'],
+				['clear','','']]]]]]]]]];}
 
-static function panart_j(){return self::panart();}
+static function panartj(){return self::panart();}
 static function pubkg(){return self::panart();}
 
 static function cover(){return [
-['div','cover',[
+['div',['class'=>'cover'],[
 	['hurl','{url}',[
 		['div',['class'=>'coverbkg','style'=>'{sty}'],[
 			['div',['class'=>'covertxt'],[
-				['div','small','{auteurs}',
-				['','','{suj}']]]]]]]]]]];}
+				['div',['class'=>'author'],'{auteurs}'],
+				['','','{suj}']]]]]]]]]];}
 
 static function weblink(){return [
 ['blockquote','',[
@@ -191,11 +181,21 @@ static function weblink(){return [
 		['div',[],'{msg}']]],
 	['clear','','']]]];}
 
+static function bublh(){
+return [['hurl','{url}','{suj}']];}
+
+static function bublj(){
+return [['jurl','{jurl}','{suj}']];}
+
+static function bublk(){
+if(rstr(149))return self::bublh();
+else return self::bublj();}
+
 static function book(){return [
 ['div',['class'=>'book'],[
 	['div',[],[
 		['','','{back}'],
-		['h2','','{suj}'],
+		['h2','','{title}'],
 		['','','{opt}{date}{tag}{length}{player}']]],
 	['div',['class'=>'panel justy'],[
 		['','','{msg}']]]]]];}
@@ -218,9 +218,16 @@ static function product(){return [
 		['','','{add2cart}']]]]]];}
 
 static function vars(){
-$d='artedit pid id jurl purl hurl url edit title suj cat msg img1 video btim back avatar author date day nbarts tag priority words search parent rss social open tracks source length player lang artlang opt css sty addclr thumb trkbk float js auteurs btrk btxt '.str::eradic_acc(prmb(18)); $r=explode(' ',$d); $rt=[];
+$d='artedit pid id jurl hurl url edit title suj cat msg img1 video btim back avatar author date day nbarts tag priority words search parent rss social open tracks source length player lang artlang opt css sty addclr thumb trkbk float js ovc btrk btxt togprw '.str::eradic_acc(prmb(18)); $r=explode(' ',$d); $rt=[];// purl
 foreach($r as $v)$rt[$v]='';
 return $rt;}
+
+static function detectvars($r){static $rv=[];
+foreach($r as $k=>$v)
+	if(is_array($v[2]))self::vars($v[2]);
+	elseif(substr($v[2],0,1)=='{'){//todo: multiples vars
+		$rv[]=substr($v[2],1,-1);}
+return $rv;}
 
 //r to tmp
 //view::mkconn(view::little());
@@ -229,9 +236,19 @@ foreach($r as $k=>$v){[$v1,$v2,$v3]=$v;
 	if(is_array($v[2]))$v3=self::mkconn($v3);
 	if(is_array($v[1])){$v2='';
 		foreach($v[1] as $ka=>$va)$v2.='['.$va.':'.$ka.']';}
-	else $v2='['.$v2.':class]';
-	$ret.='['.$v3.'|'.$v2.':'.$v1.']';}
+	//else $v2='['.$v2.':class]';
+	if($v1=='url' or $v1=='hurl' or $v1=='jurl')$ret.='['.$v2.'|'.$v3.':'.$v1.']';
+	elseif(!$v1)$ret.=$v3;
+	else $ret.='['.$v3.'|'.$v2.':'.$v1.']';}
 return $ret;}
+
+static function savetmp($tmp){
+$r=self::$tmp(); $d=self::mkconn($r);
+if($d)msql::modif('system','edition_template_'.$tmp,[$d],'row',['code'],'1');}
+
+static function updatmp(){
+$r=msql::read('system','edition_template',1);
+foreach($r as $k=>$v)self::savetmp($k);}
 
 //tmp to r
 static function mkr($d){$rt=[];
@@ -239,41 +256,52 @@ return $rt;}
 
 //r to render
 static function repl($c,$p,$pr,$d){
-return match($c){
-''=>$d,
+//$p=$pr['class']??'';//plaster
+return match($c){''=>$d,
 'url'=>lka($p,$d?$d:preplink($p)),
 'hurl'=>lh($p,$d?$d:preplink($p)),
 'jurl'=>lj('',$p,$d),
 'clear'=>divc($c,$d),
 'thumb'=>mk::thumb_d($d,$p,''),
+'image'=>image($p),
+'anchor'=>'<a name="'.$p.'"></a>',
+//'conn'=>conn::connectors($p.':'.$o,3,'','',''),
+'app'=>appin($p,''),
 default=>tag($c,$pr,$d)."\n"};}
 
-static function play($r,$ra,$rc){$ret='';
-foreach($r as $k=>$v){[$c,$p,$d]=$v;
-	if(is_array($v[2]))$d=self::play($d,$ra,$rc);
+static function play($r){$ret='';
+$ra=self::$ra; $rc=self::$rc;
+foreach($r as $k=>$v){[$c,$p,$d]=$v; $pr=[];
+	if(is_array($v[2]))$d=self::play($d);
 	else $d=str_replace($rc,$ra,$d);
-	$pr=is_array($p)?$p:['class'=>$p];
-	if($pr)foreach($pr as $kp=>$vp)
+	//$pr=is_array($p)?$p:['class'=>$p];//bad service
+	if(is_array($p))foreach($p as $kp=>$vp)
 		$pr[$kp]=str_replace($rc,$ra,$vp);
+	else $p=str_replace($rc,$ra,$p);
 	if($d)$ret.=self::repl($c,$p,$pr,$d);}
 return $ret;}
 
-static function call($r,$ra){$rb=self::vars();
+static array $ra;
+static array $rc;
+
+/*static function call0($r,$ra){$rb=self::detectvars($r);
+$rc=array_diff($ra,$rb); foreach($ra as $k=>$v)$rc[$k]='{'.$k.'}';
+self::$ra=$ra; self::$rc=$rc;
+$d=self::play($r);
+return $d;}*/
+
+static function call($r,$ra){$rb=sesmk2('view','vars');
 $ra+=$rb; $rc=[]; foreach($ra as $k=>$v)$rc[$k]='{'.$k.'}';
-$d=self::play($r,$ra,$rc);
+self::$ra=$ra; self::$rc=$rc;
+$d=self::play($r);
 return $d;}
 
-static function build($r){$ret='';
-foreach($r as $k=>$v){[$c,$p,$d]=$v;
-	if(is_array($v[2]))$d=self::build($d);
-	$pr=is_array($p)?$p:['class'=>$p];
-	$ret.=self::repl($c,$p,$pr,$d);}
-return $ret;}
+static function batch($r,$rb){$rt=[];
+foreach($rb as $k=>$v)$rt[]=self::call($r,$v);
+return join('',$rt);}
 
-static function call0($r,$ra){$rb=self::vars();
-$d=self::build($r); $ra+=$rb;
-foreach($ra as $k=>$v)$d=str_replace('{'.$k.'}',$v,$d);
-return $d;}
+static function com($tmp,$ra){
+return self::call(self::$tmp(),$ra);}
 
 }
 ?>

@@ -1,21 +1,22 @@
 <?php //study
 class study{
 static function sav($p,$o,$prm=[]){
-[$nod,$row,$col]=explode('-',$p);
-$ret=$prm[0]??''; $d=deln($ret);  $d=delbr($d,"\n"); //$d=delr($d);
+[$nod,$row,$col]=explode('-',$p); $d=$prm[0]??'';
+$d=str_replace(['<div></div>','<div>','</div>'],["\n",'',''],$d);
+$d=strip_tags($d); //eco($d); //$d=delbr($d,"\n");
 msql::modif('',nod('study_'.$nod),$d,'shot',trim($col),trim($row));
-return $ret;}
+return $d;}
 
 static function read($r,$p=1){
-$s='border:1px dotted silver; width:22vw; min-height:22px;';
+$s='border:1px dotted silver; width:22vw; min-height:22px; white-space:break-spaces;';
 foreach($r as $k=>$v){
-	if(auth(3) && $k!=msql::$m)for($i=0;$i<4;$i++){//nb of columns to add
+	if(auth(3) && $k!=msql::$m)for($i=0;$i<4;$i++){//nb of columns to add//
 		$j='stda'.$k.$i.'_study,sav_stda'.$k.$i.'__'.$p.'-'.$k.'-'.$i;
 		//$bt=lj('',$j,picto('save')).' ';.$bt
-		$t=isset($v[$i])?$v[$i]:'';//stripslashes
+		$t=stripslashes($v[$i]??'');
 		$t=conb::parse($t,'sconn'); //$t=htmlentities($t);
-		$t=nl2br($t);
-		if($i==0)$v[$i]=divc('track',$t);
+		$t=nl2br($t??'');
+		if($i==0)$v[$i]=div($t,'track');
 		else $v[$i]=divarea('stda'.$k.$i,$t,'track',$s,sj($j),1);}
 	$rb[]=[$v[0],$v[1],$v[2],$v[3]];}
 return tabler($rb,'txtbox');}
@@ -36,7 +37,7 @@ foreach($r as $v)if($v)$rb[]=[trim(addslashes($v)).'.','','',''];
 $rb=msql::save('',nod('study_'.$p),$rb,['text','description','commentaires','references']);
 return self::read($rb,$p);}
 
-static function build($p,$o,$prm=[]){$id=prm[0]??'';
+static function build($p,$o,$prm=[]){$id=$prm[0]??'';
 $d=sql('msg','qdm','v','id='.$id);
 if(is_array($d))return 'no';
 $d=conb::parse($d,'delconn');
@@ -52,7 +53,7 @@ $ret.=lj('poph',$j,picto('ok'));
 return $ret;}
 
 static function menu($p,$rid){$ret='';
-$r=msql::choose('',ses('qb'),'study'); if($r)sort($r);//$v==$p?'active':
+$r=msqa::choose('',ses('qb'),'study'); if($r)sort($r);//$v==$p?'active':
 if($r)foreach($r as $v)$ret.=lj($p==$v?'active':'',$rid.'_study,call___'.$v.'_'.$rid,$v);
 return btn('nbp',$ret).' ';}
 

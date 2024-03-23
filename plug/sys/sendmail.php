@@ -1,6 +1,6 @@
 <?php //sendmail
 class sendmail{
-static function form($arr,$goto){
+static function form($arr,$goto){$ret='';
 if($_GET["kill"]) $r=["from"=>$_GET["kill"],"dest"=>$_GET["dest"],"suj"=>$_GET["suj"]];
 	foreach($arr as $k=>$v){
 	if($v=="text"){
@@ -10,9 +10,9 @@ if($_GET["kill"]) $r=["from"=>$_GET["kill"],"dest"=>$_GET["dest"],"suj"=>$_GET["
 	if($v!="submit")$ret.=tag('label',["for"=>$k],$k).br();}
 	return form("",$ret);}
 
-static function home(){
-$ret.=lkc("","sendmail.php","index").br();
-$ip=hostname();
+static function home(){$ret='';
+$ret=lkc("","sendmail.php","index").br();
+$ip=ip();
 $arr=["from"=>"text","dest"=>"text","suj"=>"text","msg"=>"textarea","ok"=>"submit"];
 if($_POST["submit"]=="ok"){
 foreach($arr as $k=>$v){$$k=$_POST[$k]; $ret.=$k.': '.$$k."\n";}

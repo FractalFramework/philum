@@ -69,10 +69,10 @@ static function save($d){$f='img/draw_temp.png'; //$d.='=';
 write_file($f,base64_decode(substr($d,22)));
 return image($f);}
 
-static function home($w=580,$h=420){//cw();
+static function home($w=580,$h=420){
 head::add('jslink','/js/jquery.js');
 head::add('jscode',self::js());
-head::add('csscode',self::css());
+head::add('csscode',self::css()); $cl='';
 $ret=tag('canvas',['id'=>'canvas','width'=>$w.'px','height'=>$h.'px'],'');
 $r=['black','white','blue','green','yellow','orange','brown','red','indigo','violet','pink','cyan']; $n=count($r);
 for($i=0;$i<$n;$i++){
@@ -80,10 +80,10 @@ for($i=0;$i<$n;$i++){
 	$cl.=tagb('li',lka($c,$r[$i]));}
 $ret.=tag('ul',['id'=>'couleurs'],$cl);
 $inp=label('largeur_pinceau','width');
-$inp.=inp('largeur_pinceau','',1,['type'=>'range','min'=>2,'max'=>20]);
+$inp.=input('largeur_pinceau','',1,['type'=>'range','min'=>2,'max'=>20]);
 //$inp.=tag('output',['id'=>'output'],'pixels');
-$inp.=inp('reset','reset','',['type'=>'reset']);
-$inp.=inp('save','save','',['type'=>'button']);
+$inp.=input('reset','reset','',['type'=>'reset']);
+$inp.=input('save','save','',['type'=>'button']);
 $ret.='<form id="largeurs_pinceau">'.$inp.'</form>';
 return $ret;}
 }

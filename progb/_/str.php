@@ -11,12 +11,14 @@ $a=['À','Á','Â','Ã','Ä','Å','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','
 $b=['A','A','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y'];
 return str_replace($a,$b,$d);}
 
-static function eradic_punct($d){
-$r=['/','.',',',';',':','|','§','%','&','$','#','_','!','+','=','?','\n','\\','~','(',')','[',']','{','}','«','»'];
+static function eradic_punct($d,$o=''){
+$r=['/',',',';',':','|','§','%','&','$','#','_','!','+','=','?','\n','\\','~','(',')','[',']','{','}','«','»'];
+if($o!=2){$r[]='.';}//images
 return str_replace($r,'',$d);}
 
-static function normalize_alpha($d,$o=''){if(!$d)return; $d=self::eradic_punct($d);
-if($o)$d=str_replace([' ','&nbsp;','-',"'",'"'],'',$d); return $d;}
+static function normalize_alpha($d,$o=''){if(!$d)return; $d=self::eradic_punct($d,$o);
+if($o)$d=str_replace([' ','&nbsp;','-',"'",'"'],'',$d);//
+return $d;}
 
 static function normalize_ext($d){if(!$d)return;
 return str_replace(['.JPG','.JPEG','.jpeg','.GIF','.PNG'],['.jpg','.jpg','.jpg','.gif','.png'],$d);}
@@ -73,11 +75,6 @@ foreach($r as $k=>$v){
 	else $ret.=$v;}
 return ($ret);}//hed
 
-static function utflatindecode($d){return $d;//if(!$d)
-$a=["%u201C","%u201D","%u2019","%u2026","%u0153","%u20AC","%u2013","%u2022"];
-$b=['"','"',"'","...","&#339;","€","-","•"];//oe
-return str_replace($a,$b,$d);}
-
 static function urlenc($d,$o=''){//urlencode(utf8enc($d))
 $a=["à","â","é","è","ê","ë","î","ï","ô","ö","û","ü","ù","’","'"];
 $b=["%C3%A0","%C3%A2","%C3%A9","%C3%A8","%C3%AA","%C3%AB","%C3%AE","%C3%AF","%C3%B4","%C3%B6","%C3%BB","%C3%BC","%C3%B9","%E2%80%99",'%E2%80%99'];
@@ -96,20 +93,6 @@ $msk=str_replace(['[',']'],['\[','\]'],$msk);
 preg_match_all($msk,$msg,$r,PREG_OFFSET_CAPTURE);//preg_quote
 if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)$rb[$va[1]]=$va[0];//kill doublons
 return $rb;}
-
-static function embed_detect($v,$a,$b,$n=0){
-$pa=mb_strpos($v,$a); $pb=false; $n=$n?$n:0; if($pa===false)return;
-else{$ns=strlen($a); $pa+=$ns; $pa+=$n; $pb=mb_strpos($v,$b,$pa);
-	if($pb===false){$vb=str_replace("\n",' ',$v); $pb=mb_strpos($vb,$b,$pa);}}//used for defcons
-if($pb!==false)$ret=substr($v,$pa,$pb-$pa-$n);
-else $ret=substr($v,$pa);
-return $ret;}
-
-static function prop_detect($d,$s){$pb=false;
-if(mb_strpos($d,"='"))$d=str_replace(["'=","' "],['"=','" '],$d); 
-$pa=mb_strpos($d,$s.'="');
-if($pa!==false){$pa+=mb_strlen($s)+2; $pb=mb_strpos($d,'"',$pa);}
-if($pb!==false)return mb_substr($d,$pa,$pb-$pa);}
 
 #correctors
 //links
@@ -194,7 +177,7 @@ $d=self::clean_whitespaces($d);
 $d=delsp($d);
 $d=self::clean_punctuation($d);
 if(rstr(104))$d=self::lowercase($d);
-$d=self::add_nbsp($d,1);
+$d=self::add_nbsp($d);
 $d=self::trim($d);
 $d=self::clean_inclusive($d);
 $d=self::nicequotes($d);

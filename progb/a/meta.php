@@ -38,13 +38,14 @@ if($r)foreach($r as $k=>$v){$val=$rd[$v]; $gv=$prm[$v.$id]??'';
 	elseif($v=='lastup'){$vrf=$gv?'true':'false';}//$rst[113]
 	elseif($v=='lang'){$vrf=prmb(25); $rl=self::langs();
 		if($rl)foreach($rl as $ka=>$va){$known=$ra['lang'.$va]??''; $newval=$prm[$v.$va.$id]??'';
+			//if(!$newval && $know)self::utag_sav($id,'lang'.$va,''); else
 			if($newval && $newval!=$known){self::utag_sav($id,'lang'.$va,$newval);
 				$lg=self::curlg($id); self::utag_sav($newval,'lang'.$lg,$id);
-				self::affectlgr($id,$va);}}}
+				self::affectlgr($id);}}}
 	if(!$val)$val=$vrf;//permut value with global setting
 	if($gv==$vrf && $val)$gv='';//erase if not usefull
 	if($gv!=$val)self::utag_sav($id,$v,$gv);}
-return art::playd($id,$m);}//$gv &&
+return art::playd($id,$m,get('g2'));}//$gv &&
 
 static function priorsav($v,$id){
 if($v=='trash')sql::upd('qda',['frm'=>'_trash'],$id);
@@ -54,7 +55,7 @@ return self::prior_edit($v,$id);}
 
 static function prior_edit($va,$id){
 $j='rdbt'.$id.'_meta,priorsav___'; $ret='';
-$ra=prmb('typarts'); if($ra)$r=[1=>$ra[0]==1?'-':$ra[0],2=>$ra[1]==2?picto('s1'):$ra[1],3=>$ra[2]==3?picto('s2'):$ra[2],4=>$ra[3]==4?picto('s3'):$ra[3],5=>$ra[4]==5?picto('stars'):$ra[4]];
+$ra=opt(prmb(7),';',5); if($ra)$r=[1=>$ra[0]==1?'-':$ra[0],2=>$ra[1]==2?picto('s1'):$ra[1],3=>$ra[2]==3?picto('s2'):$ra[2],4=>$ra[3]==4?picto('s3'):$ra[3],5=>$ra[4]==5?picto('stars'):$ra[4]];
 else $r=[2=>picto('s1'),3=>picto('s2'),4=>picto('s3'),5=>picto('stars')];
 if($va==0)$ret.=lj('',$j.'trash_'.$id,picto('trash')).' ';
 if($va==0)$ret.=lj('active',$j.'del_'.$id,picto('del'),att(nms(43))).' ';
@@ -110,7 +111,7 @@ $ret.=toggle($css,'cbk'.$id.'_transart,home___'.$id,picto('translate'));
 //$rb[]=['f'=>'lj','p1'=>$css,'p2'=>'popup_meta,titedt___'.$id.'_'.$m,'p3'=>'[detach:picto]'];
 $dn=['ib','suj','img','src','frm1']; if(rstr(38))$dn[]='url';
 $ret.=toggle($css,'cbk'.$id.'_meta,editday___'.$id,picto('time'));
-if(ses('qb')=='ummo')$ret.=lj($css,'suj'.$id.'_umrenum,last__4_'.ajx($frm).'_'.$id,picto('bb'),att('Oay'));
+if(ses::$oom)$ret.=lj($css,'suj'.$id.'_umrenum,last__4_'.ajx($frm).'_'.$id,picto('bb'),att('Oay'));
 if(prms('srvmirror'))$ret.=lj($css,$id.';sav,art_mirror;;;'.$id.';'.$m,picto('symetry-v'),att('mirror'));
 $ret.=lj($css,$id.'_meta,addfoot___'.$id.'_'.$m,picto('anchor'),att('add anchors'));
 $ret.=lj($css,$id.'_meta,png2jpg___'.$id.'_'.$m,picto('gallery'),att('png2jpg'));
@@ -118,7 +119,7 @@ $ret.=lj($css,$id.'_meta,png2jpg___'.$id.'_'.$m,picto('gallery'),att('png2jpg'))
 $ret.=lj($css,'popup_meta,titedt___'.$id.'_'.$m,picto('popup'),att('detach'));
 $ret.=div('','','cbk'.$id);
 $ret.=tag('textarea',['id'=>'suj'.$id,'class'=>'console','style'=>'height:40px; width:100%;'],$suj).br();
-if(auth(6) && (rstr(6) or $name!=ses('USE'))){$ret.=picto('user').input('author'.$id,$name); $dn[]='author';
+if(auth(6) && (rstr(6) or $name!=ses('usr'))){$ret.=picto('user').input('author'.$id,$name); $dn[]='author';
 	if($src)$ret.=lj('popbt','author'.$id.'_meta,recapauthor__4_'.$id,'twitter author'); $ret.=br();}
 if(auth(6) && $hub!=ses('qb')){$ret.=picto('node').input('hub'.$id,$hub).br(); $dn[]='hub';}
 //img
@@ -151,7 +152,7 @@ if(auth(4)){sql::upd('qda',['frm'=>$frm],$id); ma::cacheval($id,1,$frm);}
 return self::catedit($id,$frm);}
 
 static function catslctm($id,$frm,$r=[]){$ret='';
-if(!$r)$r=sql('distinct(frm)','qda','k',['nod'=>ses('qb'),'-frm'=>'_','_order'=>'frm']);
+if(!$r)$r=sql('distinct(frm)','qda','k',['nod'=>ses('qb'),'_order'=>'frm']);//,'-frm'=>'_'
 if($r)foreach($r as $k=>$v)
 	$ret.=lj('','frm'.$id.'_meta,catsav_frm1'.$id.'__'.$id.'_'.ajx($k),$k).' ';//catpic($k,20).
 return $ret;}
@@ -244,7 +245,7 @@ if($r)foreach($r as $k=>$v){$val=$rd[$v]; $hlp=''; $sid=str::normalize($v).$id; 
 		foreach($lgs as $lg2)$rl[]='lang'.$lg2.$id; $j=implode(',',$rl).'_meta,affectlangs___'.$id.'_'.$lg;
 		$ret.=picto('translate').lj('poph',$j,nms(163));}
 //$ret.=btn('',picto('valid').' '.nms(166));
-if($v=='authlevel'){$ret.=btn('txtx',$v).' '.jumpmenu('|1|2|3|4|5|6|7|8',$sid,$val,'1').' ';}
+if($v=='authlevel'){$ret.=btn('txtx',$v).' '.jumpmenu('|1|2|3|4|5|6|7|8',$sid,$val).' ';}
 //if($v=='authlevel'){$rp=explode('|','all|1|2|3|4|5|6|7|8'); $ret.=select(['id'=>$sid],$rp,'kv',$val).br();}
 elseif($v=='template'){$val=$val?$val:' '; $hlp=btd('tmp'.$id,'');
 	$tmpub=msql::kv('','public_template');
@@ -252,7 +253,7 @@ elseif($v=='template'){$val=$val?$val:' '; $hlp=btd('tmp'.$id,'');
 	$arr=array_merge_b($tmpub,$tmprv); $arr[' ']=[''=>1];
 	$rp='|'.implode('|',array_keys($arr));
 	//$ret.=select(['id'=>$sid],$rp,'kv',$val);
-	$ret.=btn('txtx',$v).' '.jumpmenu($rp,$sid,$val?trim($val):$v,'1').' ';}
+	$ret.=btn('txtx',$v).' '.jumpmenu($rp,$sid,$val?trim($val):$v).' ';}
 //elseif($v=='agenda')$ret.=inpdate($sid,$val,'','',1).$hlp.br();
 elseif($v=='password')$ret.=inputb($sid,$val,'4','pswd');
 elseif($v=='tracks'){if((!$rst[1] && !$val) or $val=='true')$chk=1; else $chk=0;
@@ -448,9 +449,9 @@ $j=atjr('autocomp',[$id,'tag '.prmb(18)]); $rj=['onkeyup'=>$j,'onclick'=>$j];
 $bt.=lj('','popup_meta,metall___'.$id.'_'.$m,picto('popup')).' ';
 $bt.=inputb('inp'.$id,nms(24),12,1,255,$rj);
 $rj=[]; foreach($rc as $k=>$v)$rj[]='slct'.str::normalize($v).$id; 
-$bt.=lj('',implode(',',$rj).'_meta,matchall__json_'.$id,picto('enquiry'),att('search'));
+$bt.=lj('','_meta,matchall__json_'.$id,picto('enquiry'),att('search'));
 $rj=[]; foreach($rc as $k=>$v)$rj[]=str::normalize($v).$id; 
-$bt.=lj('',implode(',',$rj).'_meta,delalltags__json_'.$id,picto('del'),att('del all'));
+$bt.=lj('','_meta,delalltags__json_'.$id,picto('del'),att('del all'));
 $bt.=toggle('','cls'.$id.'_clusters,viewart___'.$id,picto('network'),'',att('edit clusters')).' ';
 $bt.=toggle('','cls'.$id.'_meta,importags___'.$id,picto('import'),'',att('tags from translation'));
 $bt.=divd('cls'.$id,'');
@@ -547,14 +548,14 @@ static function rmtag($idtag){//from editor
 if(!security())return;
 $rb=sql('idart','qdta','rv',['idtag'=>$idtag]);//existing
 if(!$rb)sql::del2('qdt',$idtag);
-json::add('','rmtag',[$idtag=>hostname()]);
+json::add('','rmtag',[$idtag=>ip()]);
 return 'ok';}
 
 static function removetag($idtag){//from admin
 if(!auth(6))return;//security()
 if($idtag){sql::del2('qdta',['idtag'=>$idtag]);
 sql::del('qdt',$idtag);
-json::add('','rmtag',[$idtag=>hostname()]);}
+json::add('','rmtag',[$idtag=>ip()]);}
 return divc('frame-orange','remove: '.$idtag);}
 
 //rename

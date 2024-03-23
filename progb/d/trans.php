@@ -39,7 +39,7 @@ return $a::detect($p,$o,$prm);}
 static function build($txt,$from,$to,$format,$ref){
 $a='trans_'.self::$motor;
 if(boot::auth())//
-if($txt)json::add('','trans'.mkday(),[$txt,strlen($txt),$ref,mkday('','His'),hostname()]);
+if($txt)json::add('','trans'.mkday(),[$txt,strlen($txt),$ref,mkday('','His'),ip()]);
 return $a::build($txt,$from,$to,$format);}
 
 static function cut($txt){
@@ -289,7 +289,7 @@ sqlop::install('translation',['ref'=>'var11','txt'=>'text','lang'=>'var2'],0);}
 
 static function home($p,$o){$rid=randid('translation');
 //if($p=='install')self::install();
-$ret=self::menu($p,$o);
+$ret=self::menu($p);
 $bt=msqbt('',nod(self::$motor));
 return $bt.divd($rid,$ret);}
 }

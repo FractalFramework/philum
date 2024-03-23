@@ -13,7 +13,6 @@ static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clu
 if(in_array($b,$r))return $b;}// else return $b;
 
 static function db_r(){$r=sqldb::$rt;
-$_SESSION[$k]=$r;
 return array_flip($r);}
 
 static function ts_db($b){$r=self::db_r(); return $r[$b]??$b;}
@@ -29,7 +28,7 @@ if(auth(6))return ['root',$r[3],$r[2],$sbr.'/'.$r[3]];}
 static function msql($p,$o){$ret='ok';
 $fa='_backup/msql_'.$p.'.tar'; $rb=[];
 if($o){//distant
-	$r=msql::choose('users',$p,''); //pr($r);
+	$r=msqa::choose('users',$p); //pr($r);
 	if(is_file($fa))unlink($fa);
 	if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)
 		$rb[]='msql/users/'.$p.'_'.$k.($va?'_'.$va:'').'.php'; //pr($rb);
@@ -83,7 +82,7 @@ static function usr($p,$o){
 $ret=''; $rb=[]; $l=5000;
 [$usr,$db,$ps,$dr]=self::srv(1);
 if($o=='call'){//distant
-	$f='_backup/users_'.$p.'.tar'; $r=scandir_r('users/'.$p); //pr($r);
+	$f='_backup/users_'.$p.'.tar'; $r=scanfiles('users/'.$p); //pr($r);
 	if(is_file($f))return $f;//
 	$ret=tar::files($f,$r,0);}
 elseif($o=='menu'){$qb=ses('qb'); //$qb='shroud';
@@ -179,7 +178,7 @@ static function call($p,$o){
 if($o=='last')return self::last($p);
 elseif($o=='d')return backup::dump($p);//dump
 elseif($o=='dj')return backup::json($p);//dump
-elseif($o=='d2')return self::dumpall($p);//dump2
+elseif($o=='d2')return self::dumpall();//dump2
 elseif($o=='up')return backup::build($p,0,1);//updates
 elseif(is_numeric($o))return backup::build($p,$o,0);}//inserts
 

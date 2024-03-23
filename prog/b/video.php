@@ -2,7 +2,7 @@
 class video{
 static $rp=['youtube','youtu','vimeo','rumble','vk','rutube','dailymotion','framatube','crowdbunker','ted','livestream'];
 
-static function detect($f,$o='',$t='',$op=''){$fb=$f;
+static function detect($f,$o='',$t='',$op=''){if(!$f)return; $fb=$f;
 //if(strpos($f,'/')===false)return '['.$f.'|'.$t.':'.$o.'video]';
 $f=nohttp($f); $fa=httproot($f); $ret='';
 if(strpos($f,'#'))$f=strto($f,'#'); $f=urldecode($f);//if(strpos($f,'?'))$f=strend($f,'?');
@@ -21,8 +21,8 @@ if(in_array($fa,self::$rp))switch($fa){
 	case('rumble'):$ret=between($f,'rumble.com/','-'); break;
 	case('livestream'):$ret=between($f,'com/','/'); break;
 	case('rutube'):$ret=between($f,'tracks/','.'); break;
-	case('framatube'):$ret=strend($f,'/',1); break;
-	case('crowdbunker'):$ret=strend($f,'/',1); break;
+	case('framatube'):$ret=strend($f,'/'); break;
+	case('crowdbunker'):$ret=strend($f,'/'); break;
 	default:return $fb;}
 //elseif(strpos($f,'.mp4'))return $fb;
 if($ret){
@@ -31,7 +31,7 @@ if($ret){
 	else return '['.$ret.$t.':video]';}}
 
 static function extractid($g1,$o,$prm=[]){$p1=$prm[0]??$g1;
-$d=video::detect($p1,'','',''); if(!$d)$d='['.$g1.':video]';
+$d=self::detect($p1,'','',''); if(!$d)$d='['.$g1.':video]';
 return $d;}
 
 static function extractpr($f){
@@ -106,18 +106,17 @@ else $p=self::providers($d);
 $u=self::url($d,$p); $rid=rid($d); $im=''; $tx='';
 if($u)[$ti,$tx,$im]=web::read($u,0,$id); else $ti=$o&&$o!=1?$o:$p;
 if($im)$im=self::img($d,$id,$im);
-if($im && !$o && $m>2)$j=$rid.'_video,call___'.ajx($d).'_'.$p.'_640';//$m=idtrack
+if($im && !$o && $m>2)$j=$rid.'_video,call___'.ajx($d).'_'.$p.'_auto';//$m=idtrack
 elseif($o)$j='popup_video,call___'.ajx($d).'_'.$p.'_640';
-else $j=$rid.'_video,call___'.ajx($d).'_'.$p.'_640';
+else $j=$rid.'_video,call___'.ajx($d).'_'.$p.'_auto';
 $t=$o&&$o!='1'?$o:($ti);
 if($p=='youtube' or $p=='vimeo')$ic=$p; else $ic='video';
 $lk=lkt('',http($u),$t).' ';
 if($im && ((!$o && $m>2) or $m=='vd'))$ic=image($im); else $ic=picto($ic,28);
 $bt=lj('',$j,$ic).sti();
-//if($tx)$lk.=' '.pop::bubble_note($tx,picto('lys')).' ';//toggle_note//togbth//togbt//pop::divtog($tx,1)
 if($tx)$lk.=togbub('video,txt',ajx($d).'_'.$id,picto('bubble'));
-//if(auth(4))$lk.=lj('','popup_web,redit___'.ajx($u).'_'.$rid.'_'.$id,picto('editxt'));
 if(auth(4))$lk.=togbub('web,redit',ajx($u).'_'.$rid.'_'.$id,picto('editxt'));
+if(auth(5))$lk.=lj('',$rid.'_web,resav___'.ajx($u).'_1',picto('refresh'));
 if($m=='vd')$ret=div($bt,'video',$rid).$lk;
 elseif($o)$ret=btp(att($ti).atd($rid),$bt.$lk);
 elseif($m<3 or $m=='noimages')$ret=btd($rid,$bt.$lk);
@@ -127,7 +126,7 @@ return $ret;}
 static function any($d,$id,$m,$nl=''){//p|w/h
 if($nl)return self::lk($d);
 if(strpos($d,'.mp4') or strpos($d,'.m3u8'))return video($d);
-if(rstr(132) or $id=='epub')return self::player($d,$id);
+if(rstr(132) or $id=='epub')return self::player($d);
 if(substr($d,0,4)=='http'){[$d,$tx]=cprm($d);//contourne procédure
 	$pr=self::extractpr($d); $d2=self::detect($d,$m,'',2);
 	if($tx)return self::play($d,$id,$m?$m:3);
@@ -144,9 +143,9 @@ if($o)return self::lk($d);
 $pv=self::providers($p); $w=prma('content')-80;
 return self::reader($p,$pv,$w,'','');}
 
-static function reader($d,$p,$w,$h,$id){
-if($id){$w='100%'; $h=($h?$h-10:320).'px';}
-else{if($w==1)$w=''; if(!$h && $w)$h=$w*0.5; $w=$w?$w:440; $h=$h?$h:320; $w.='px'; $h.='px';}
+static function reader($d,$p,$w,$h,$id){$w='100%'; $h='320px';
+//if($id){$w='100%'; $h=($h?$h-10:320).'px';}
+//else{if($w==1)$w=''; if(!$h && $w)$h=$w*0.5; $w=$w?$w:440; $h=$h?$h:320; $w.='px'; $h.='px';}
 [$d,$tm]=expl('|',$d); if($tm)$tm='?start='.$tm; else $tm='';
 if($p=='youtube')return iframe('https://www.youtube.com/embed/'.$d.''.$tm,$w,$h);
 elseif($p=='rumble')return iframe('https://rumble.com/embed/'.$d,$w,$h);

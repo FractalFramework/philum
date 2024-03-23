@@ -9,7 +9,7 @@ elseif($ca<$cb){$nb=$cb-$ca; $t='"["';}
 if(isset($nb))return btn('txtyl',$nb.$t.'missing');}
 
 static function urledt($id){$b=rstr(18)?'public':ses('qb');
-$u=is_numeric($id)?ma::rqtv($id,'mail'):$id; [$k]=conv::verif_defcon($u);
+$u=is_numeric($id)?ma::rqtv($id,'mail'):$id; [$k]=conv::find_defcon($u);
 return lj('','popup_msqa,editmsql___users/'.$b.'*defcons_'.ajx($k).'_'.ajx($u),picto('config'));}
 
 //menus
@@ -33,7 +33,7 @@ return $ret.divd('edtbt','');}
 static function bt($id){$ret='';
 $r=sesmk('conns','',0);
 $rh=sesmk('connlg','',0);
-if(ses('USE'))$ret=self::props($id);//rid used for mc,conns
+if(ses('usr'))$ret=self::props($id);//rid used for mc,conns
 foreach($r as $k=>$v){$txt=self::icon($k); $rid=''; if($k=='nl')$v[1]='\n';
 	if($v[0]=='embed'){if($v[1])$v[0]='embedslct'; else $v[1]=$k; $rid=randid();}
 	$ret.=btd('bt'.$rid,ljb('',$v[0],[$v[1],$rid,$id],$txt,att($rh[$k]??'')));}
@@ -46,8 +46,8 @@ return self::call($f,'');}
 static function txarea($d,$id=''){return '<textarea id="txtarea" name="msg" class="console" style="margin:0; width:100%; min-width:600px; min-height:240px;">'.$d.'</textarea>';}
 
 //f
-static function call($link,$id){ses::$r['curdiv']='content'; $ip=hostname();
-$USE=ses('USE'); $frm=ses('frm'); $suj=''; $msg=''; $rid=randid('edt');
+static function call($link,$id,$er=''){$ip=ip(); if($er)$er=div('frame-red',$er);
+$USE=ses('usr'); $frm=ses('frm'); $suj=''; $msg=''; $rid=randid('edt');
 if($USE)$us=$USE; else [$us,$ml]=sql('name,mail','qdi','r','host="'.$ip.'" order by id desc limit 1');
 if(!$frm)$frm='public';
 if(!$id && $link && substr($link,0,4)=='http'){$link=nohttps(utmsrc($link));//vacuum
@@ -65,7 +65,7 @@ else $rt['publish']=hidden('pub',0);
 if(!$id){//new
 	$rt['pstdat']=inpdate('pdat',date('Y-m-d\TH:i'),'2000-01-01T00:00','2040-01-01T00:00',1);
 	$rt['pstsuj']=inputb('suj1',$suj,'',nms(71),250,['name'=>'suj','class'=>'editor','style'=>'width:99%;']);}
-if($id)$msg=sql('msg','qdm','v',$id);
+if($id)$msg=sql::read('msg','qdm','v',$id);
 $msg=str_replace("\r",'',$msg);//msg
 $msg=str_replace(["<br />\n",'<br />','<br>'],"\n",$msg);//save
 $ids='suj1,frm,urlsrc,pdat,trkname,trkmail,addib,pub';//,sub
@@ -86,6 +86,6 @@ if($msg)$menu.=self::correct($msg);
 $area=divd('txarea',self::txarea($msg,$id));
 $ret.=divd($rid,$menu.$area);
 //if(auth(4))$ret.=checkbox("randim","ok","rename_img",0);
-return $ret;}
+return $er.$ret;}
 }
 ?>

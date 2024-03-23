@@ -6,7 +6,7 @@ $msq=new mysql('qda'); //echo $msq::$b;
 $msq::read('id,day','kv','frm="oaxiiboo 6" order by day ASC');
 $r=$msq::$ret;
 setlocale(LC_ALL,"fr_FR");
-$dr=['jan'=>'jan','fev'=>'feb','mars'=>'mar','avr.'=>'apr','mai'=>'may','juin'=>'jun','juil'=>'jul','août'=>'aug','sept'=>'sep','oct'=>'oct','nov'=>'nov','déc'=>'dec'];
+$dr=['jan'=>'jan','fev'=>'feb','mars'=>'mar','avr.'=>'apr','mai'=>'may','juin'=>'jun','juil'=>'jul','aoï¿½t'=>'aug','sept'=>'sep','oct'=>'oct','nov'=>'nov','dï¿½c'=>'dec'];
 foreach($r as $k=>$v){$nb++;
 //14.12.28 00.50 (122)
 //$suj=date('y.m.d H.i',$v).' ('.$nb.')';
@@ -59,7 +59,7 @@ foreach($rc as $k=>$v){
 }
 
 static function lang_es(){$lg=ses('lang');
-$nod='admin_restrictions';
+$nod='admin_restrictions'; $ret='';
 //require('msql/lang/fr/helps_nominations.php');
 $r=msql::read('lang/fr',$nod);
 $rk=array_keys($r);
@@ -127,8 +127,8 @@ $r=$_SESSION['memcom']; //pr($r);
 return implode(' ',array_keys($r));
 }
 
-static function patchweb(){
-$r=msql::choose('',ses('qb'),'web'); pr($r);
+static function patchweb(){$ret='';
+$r=msqa::choose('',ses('qb'),'web'); pr($r);
 foreach($r as $k=>$v){
 $rb=msql::read('',nod('web_'.$v)); pr($rb);
 }
@@ -136,10 +136,10 @@ return $ret;}
 
 static function dieguez(){$ret='ok';
 //$r=sql('id','qda','rv','nod="dav" and name!="dav"','');
-$r=sql('idart','qdta','rv','idtag="954"','');//1000=author:dav//954=Manuel de Diéguez//994=Aline
-//$r=sql::inner('id','qda','qdm','id','rv','nod="MARIALI" and msg like "%Manuel de Diéguez%"','');
+$r=sql('idart','qdta','rv','idtag="954"','');//1000=author:dav//954=Manuel de Diï¿½guez//994=Aline
+//$r=sql::inner('id','qda','qdm','id','rv','nod="MARIALI" and msg like "%Manuel de Diï¿½guez%"','');
 pr($r);
-//foreach($r as $k=>$v)$rb[$v]=sqlup('qda',['name'=>'Manuel de Diéguez'],['id'=>$v],1);
+//foreach($r as $k=>$v)$rb[$v]=sqlup('qda',['name'=>'Manuel de Diï¿½guez'],['id'=>$v],1);
 return $ret;}
 
 static function test_xml($f){
@@ -221,7 +221,7 @@ sql::sav2($b,$r,$ai=0,1);
 return $ret;}
 
 static function reform_msql_menus(){
-$r=scandir_r('msql'); //pr($r);
+$r=scanfiles('msql'); //pr($r);
 //echo count($r);
 function reform($f){
 $d=read_file($f); //eco($d);

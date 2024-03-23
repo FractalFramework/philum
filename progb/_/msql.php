@@ -3,9 +3,15 @@ class msql{
 static $dr,$nod,$f,$r;
 static $m='_';
 
-static function url($dr,$nod,$o=''){if($o)$nod.='_sav'; $lg=ses('lng')?ses('lng'):prmb(25);
-$dr=$dr=='lang'?$dr.'/'.$lg:($dr?$dr:'users');//prmb(25)
-return 'msql/'.$dr.'/'.$nod.'.php';}//groot('msql/')
+static function url($dr,$nod,$o=''){
+$dr=$dr=='lang'?$dr.'/'.(ses('lng')?ses('lng'):prmb(25)):($dr?$dr:'users');
+$f='msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod).'.php';
+mkdir_r($f); return $f;}
+
+static function url0($dr,$nod,$o=''){
+$dr=$dr=='lang'?$dr.'/'.(ses('lng')?ses('lng'):prmb(25)):($dr?$dr:'users');
+return 'msql/'.($o?'_bak/':'').$dr.'/'.$nod.'.php';}
+
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
 static function patch_m($dr,$nod){$r=msql::read($dr,$nod); $r=msqa::patch_m($r); self::save($dr,$nod,$r);}
 
@@ -19,17 +25,23 @@ if(is_array($r))foreach($r as $k=>$v)$rt['_'][]=$k; return $rt;}
 
 static function dump($r,$p=''){$rc=[]; $rt=[];
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
-	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?addslashes(stripslashes($va)):'')."'";
-		if($rb)$rc[]=('"'.$k.'"').'=>['.implode(',',$rb).']';}
-	else $rc[$k]=('"'.$k.'"').'=>[\''.($v?addslashes(stripslashes($v)):'').'\']';}
+	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?sql::qres($va):'')."'";
+		$k=is_numeric($k)?$k:"'".addslashes($k)."'";
+		if($rb)$rc[]=$k.'=>['.implode(',',$rb).']';}
+	else $rc[$k]=(is_numeric($k)?$k:'"'.$k.'"').'=>[\''.($v?sql::qres($v):'').'\']';}
 if($rc)$rt=implode(','.n(),$rc);
 return '<?php '."\n".'return ['.$rt.']; ?>';}
 
 static function del($dr,$nod,$o=''){$f=self::url($dr,$nod,$o); if(is_file($f) && auth(4))unlink($f);}
 
+static function valid($r){
+if(is_array($r)){$r1=current($r);
+	if(is_array($r1)){$r2=current($r1);
+		if(is_string($r2))return 1;}}}
+
 static function save($dr,$nod,$r,$rh=[],$bak=''){if(!$r)$r=[];
 if($rh && !isset($r['_']))$r=array_merge(['_'=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
-$f=self::url($dr,$nod,$bak); $d=self::dump($r,$nod); putfile($f,$d); return $r;}
+$f=self::url($dr,$nod,$bak); $d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); return $r;}
 
 static function init($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak);
 if(!is_file($f))$r=self::save($dr,$nod,[],$rh,$bak);}
@@ -63,13 +75,10 @@ return $rb;}
 static function inc($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak); $r=[];
 if(is_file($f)){try{$ra=require($f);}catch(Exception $e){echo 'bruu: '.$nod;}}
 elseif($rh)self::save($dr,$nod,[],$bak);
-if(isset($ra) && is_array($ra) && !$r)$r=$ra;//patch
-//if(!isset($r)){echo $nod; $nd=strfrom($nod,'_'); $r=$$nd; echo $nd.' ';}//patch_old
-//$r=self::sl($r);
+if(isset($ra) && is_array($ra) && !$r)$r=$ra;
+//if(!isset($r)){$r=$$nd; echo $nd.' ';}//patch_old
+if(is_array($r))$r=self::sl($r);
 return $r;}
-
-static function rollback($dr,$nod){
-$r=self::read($dr,$nod,'',[],1); self::save($dr,$nod,$r);}
 
 static function read($dr,$nod,$u='',$rh=[],$bak=''){
 $r=self::inc($dr,$nod,$rh,$bak);
@@ -81,12 +90,12 @@ if($r)return self::sl($r[$in]??$r);}
 
 static function row($dr,$nod,$in,$o='',$rh=[]){
 $r=self::inc($dr,$nod,$rh);
-if($o && isset($r['_']))return array_combine_a($r['_'],$r[$in]);
+if($o && isset($r['_']))return array_combine_a($r['_'],$r[$in]??[]);
 return $r[$in]??[];}
 
 static function col($dr,$nod,$n=0,$u=1,$rh=[]){$rb=[];
 $r=self::read($dr,$nod,$u,$rh);
-if($r)foreach($r as $k=>$v)$rb[$k]=$v[$n]??'';
+if(is_array($r))foreach($r as $k=>$v)$rb[$k]=$v[$n]??'';
 return $rb;}
 
 static function val($dr,$nod,$in,$k=0,$rh=[]){
@@ -102,18 +111,7 @@ if($r)foreach($r as $k=>$v)if(!is_array($v))$r[$k]=[$v]; $f=self::url($dr,$nod);
 if(!is_file($f))return self::save($dr,$nod,$r,$rb);}
 
 static function delrow($dr,$nod,$k){
-msql::modif($dr,$nod,$k,'del');}
-
-//select
-static function choose($dr,$pr,$nd){$rt=[];
-$r=explore('msql/'.($dr?$dr:'users'),'',1); if(!$r)return; $n=count($r);//groot('msql/')
-for($i=0;$i<$n;$i++){$rb=preg_split("/[_\.]/",$r[$i]);
-if(!empty($rb[2]) && $rb[2]!='sav' && (empty($rb[3]) or $rb[3]!='sav')){
-	if($pr && $rb[0]==$pr && !$nd && $rb[1] && $rb[2]!='php')$rt[$rb[1]][]=$rb[2];
-	elseif($pr && $rb[0]==$pr && $rb[1]==$nd && $rb[2]!='php')$rt[]=$rb[2];//versions
-	elseif(!$pr && $nd){if($rb[1]==$nd)$rt[]=$rb[0].'_'.$rb[1];}
-	elseif(!$pr)$rt[]=$rb[0].'_'.$rb[1];}}
-return $rt;}
+return msql::modif($dr,$nod,$k,'del');}
 
 static function findlast($dr,$pr,$nod){//next table
 $r=self::choose($dr,$pr,$nod); return self::nextnod($r);}//
@@ -155,7 +153,7 @@ static function assoc($dr,$nod){$r=self::read($dr,$nod); $rb=[]; $rh=$r['_']??[]
 if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)if($rh[$ka]??'')$rb[$k][$rh[$ka]]=$va; return $rb;}
 static function select($dr,$nod,$d,$n=0){$r=self::read($dr,$nod,1); $rb=[];
 if($r)foreach($r as $k=>$v)if($v[$n]==$d)$rb[$k]=$v; return $rb;}
-static function strip($dr,$nod,$u=1){$r=self::read($dr,$nod,$u); if($r)$r=self::sl($r); return $r;}
+static function readsl($dr,$nod,$u=1){$r=self::read($dr,$nod,$u); if($r)$r=self::sl($r); return $r;}
 static function prep($b,$d){$r=self::read($b,$d,1); $rb=[];
 if($r)foreach($r as $k=>[$ka,$va])$rb[$ka][$k]=$va; return $rb;}
 static function two($b,$d,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];
@@ -198,6 +196,8 @@ static function nb($r){$i=0; foreach($r as $k=>$v){$i++; $rt[$i]=[$v];} return $
 static function prevnext($r,$d){$keys=array_keys($r);
 foreach($keys as $k=>$v)if($v==$d)return [$keys[$k-1],$keys[$k+1]];}
 static function copy($da,$na,$db,$nb){$r=self::read($da,$na); self::save($db,$nb,$r); return $r;}
+static function backup($dr,$nod){$r=self::read($dr,$nod); self::save($dr,$nod,$r,[],1);}
+static function rollback($dr,$nod){$r=self::read($dr,$nod,'',[],1); self::save($dr,$nod,$r);}
 static function num($dr,$nod,$d){$r=self::read($dr,$nod); $i=0;
 foreach($r as $k=>$v){$i++; if($k==$d)return $i;}}
 static function push($dr,$nod,$r){if(!is_array($r))$r=[$r];

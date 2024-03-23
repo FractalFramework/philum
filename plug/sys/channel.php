@@ -2,7 +2,7 @@
 class channel{
 static function arts($http,$otp){
 $npg=$_SESSION['prmb'][6]; $page=get('page');
-$min=($page-1)*$npg; $max=$page*$npg;
+$min=($page-1)*$npg; $max=$page*$npg; $ret=''; $i=0; $rb=[];
 	if(is_array($otp)){foreach($otp as $id=>$nb){if(is_numeric($id)){$i++; 
 	if($i>=$min && $i<$max){$mg=$http.'/imgc/'.pop::art_img($nb[3],$rb[1]);
 		if(is_link($mg))$ret.=btn('imgl',image($mg,'',50));
@@ -11,7 +11,7 @@ $min=($page-1)*$npg; $max=$page*$npg;
 		if(rstr(27))$ret.=btn('txtsmall',mkday($nb[0],1)).' '.art::pub_link($nb[9]).' ';
 		if(rstr(25))$ret.=btn('txtsmall',art::length($nb[8]));
 		$ret.=br().br();}}}}
-$n_pages=nb_page($i,$npg,$page);
+$n_pages=usg::nb_pages_j($i,$npg,$page);
 return $n_pages.$ret.$n_pages;}
 
 static function tri($r,$d,$n){
@@ -33,7 +33,7 @@ if($load){
 	if($sc['last'])$load=array_slice($load,0,$sc['last'],true);
 	$t=mod::title($load,(!$t?$sc['hub']:$t),1,$sc['hub']);
 	if($d=='articles'){
-		if($site)$ret.=sef::arts($site,$load);
+		if($site)$ret.=self::arts($site,$load);
 		else $ret.=ma::output_arts($load,2,'');}
 	elseif($load){
 		foreach($load as $k=>$v)$re[]=llk('',$site.'/'.$k,html_entity_decode($v[2]));

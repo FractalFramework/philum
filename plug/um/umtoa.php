@@ -1,4 +1,4 @@
-<?php //umtoa
+<?php 
 class umtoa{
 static $clr=['#ffffff','#ff0000','#0000ff','#ffff00','#00ff00','#00ffff','#ff9900','#cccccc','#666666','#000000'];
 
@@ -22,9 +22,9 @@ return $rc;}
 
 static function equiv($nbxee){
 $now=ses('dayx');
-$aeon4_timestamp=1059184800; //echo mktime(4,0,0,7,26,2003).' ';//26/07/2003
+$aeon4_timestamp=1057732530; //echo mktime(6,35,30,7,9,2003).' ';//09/07/2003
 $aeon4_xees=29750; //nb xees until aeon 4
-$xee_sec=6679066.23889199298; //seconds
+$xee_sec=6679102.239954; //seconds
 $xees_diff=$aeon4_xees-$nbxee;
 $xees_diff_sec=$xees_diff*$xee_sec;
 $utime=round($aeon4_timestamp-$xees_diff_sec);
@@ -60,7 +60,7 @@ return $draw=svg::draw();}
 //return divc('grid-art',divc('col1',$ret).divc('col2',$draw));
 
 static function home($p,$o){$rid='plg'.randid();
-$ret=self::build($p,$o);
+$ret=self::build();
 $bt=msqbt('',nod('umtoa_1'));
 return $bt.divd($rid,$ret);}
 }

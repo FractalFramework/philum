@@ -1,21 +1,21 @@
 <?php
-class jedt{
+class jedt{//etc
 
 //punctual
 static function add($a,$v){
 $f=json::url('',$a);
-$d=getfile($f);
+$d=readfile($f);
 $r=json_decode($d,true);
 //if($r[$k]??'')return alert('really?','red');
 $r[]=array_values($v);
 $d=json_encode($r);
 putfile($f,$d);
-return alert('saved','green');}
+return alert('saved');}
 
 //editable
 static function update($a,$k,$col,$val){
 $f=json::url('',$a);
-$d=getfile($f);
+$d=readfile($f);
 $r=json_decode($d,true);
 if($col=='k')$r[$k]=$val;
 else $r[$k][$col]=$val;
@@ -26,19 +26,19 @@ $d=json_encode($r);
 
 static function save($p){
 $com=array_shift($p);
-return self::add('cnfg/nav',$com,$p);}
+return self::add('cnfg/nav',$com);}
 
 static function create(){
 $r=['com','bt','ico','auth'];
 $ra=array_combine($r,['var','var','var','int']);
-$rb=array_combine($r,['com','bt','ico','0']);
+//$rb=array_combine($r,['com','bt','ico','0']);
 $keys=implode(',',walk($r,'unid'));
 $ret=bj('btsav','navedt|nav,save||'.$keys,picto('save'));
-$ret.=form::call($ra,$rb);
+$ret.=mkform($ra);
 return $ret.div('','','navedt');}
 
 static function modif($p){
-$r=json::call('cnfg','nav'); [$ka,$col]=explode('-',key($p)); $val=current($p); $i=0;
+$r=json::read('cnfg','nav'); [$ka,$col]=explode('-',key($p)); $val=current($p); $i=0;
 foreach($r as $k=>$v){$i++; if($i==$ka)$ka=$k;}
 self::update('cnfg/nav',$ka,$col,$val);
 return $val;}
@@ -67,7 +67,7 @@ return $bt.$ret.div('','','navedt');}
 static function savext($p){
 $f=json::url('',$p['a']);
 putfile($f,$p['inp']);
-return alert('saved','green');}
+return alert('saved');}
 
 static function editxt($p){
 $f=json::url('',$p['a']);

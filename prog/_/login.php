@@ -2,7 +2,7 @@
 class login{
 
 static function form($usr,$rg,$t){$ret='';
-if(ses('USE'))return lkc('popdel',htac('log').'out',pictit('logout','log out')).br();
+if(ses('usr'))return lkc('popdel',htac('log').'out',pictit('logout','log out')).br();
 if($t)$ret=divc('txtcadr',$t);
 if(!is_numeric($rg)){$j='lgn_login,call_lgu,lgp,lgc,lgm__';//self
 $ret.=inputj('lgu','',$j,'user',12,['onkeyup'=>atj('log_finger','lgu')]);
@@ -28,7 +28,7 @@ if(login::usedhubname($g1))return self::usdhub($g1.$n);
 return $g1;}
 
 static function log_result($usr,$uid,$qb,$rl,$ck){
-$_SESSION['USE']=$usr; $_SESSION['uid']=$uid; $_SESSION['qb']=$qb;
+$_SESSION['usr']=$usr; $_SESSION['uid']=$uid; $_SESSION['qb']=$qb;
 if($ck){$dayz=$_SESSION['dayx']+(86400*30); $_SESSION['nuse']='';
 	setcookie('use',$usr,$dayz); setcookie('uid',$uid,$dayz);}
 if($rl)head::relod('?hub='.$qb.'&refresh==&log=on');
@@ -38,8 +38,8 @@ else return 'logon: '.$qb;}
 static function call($p,$o,$prm=[]){
 [$usr,$psw,$cook,$mail,$newhub]=arr($prm,5);
 $usr=str::normalize($usr); $psw=str::normalize($psw);
-$qdu=db('qdu'); $qb=ses('qb'); $host=hostname();
-if(md5($usr.$psw)=='e36f9846e997e4491c58aa65d9c9f4e6')$_SESSION['USE']=ses('master');
+$qdu=db('qdu'); $qb=ses('qb'); $host=ip();
+if(md5($usr.$psw)=='e36f9846e997e4491c58aa65d9c9f4e6')$_SESSION['usr']=ses('master');
 //$ath=array_flip(adm::authes_levels());
 //log
 $uid=self::verif_user($usr,$psw);
@@ -80,7 +80,7 @@ elseif(prmb(11)>=1 or $newhub or !$first or prms('create_hub')=='on'){$rl='ok';
 		$ret.=lj('popsav','lgn_login,call_lgu,lgp,lgc,lgm,lgh__',pictxt('logout',nms(27))).' ';
 		$ret.=lj('txtx','lgn_login,form',picto('before'));
 		return $ret;}
-	else{$usr=ses('USE'); if($newhub)$usr=$newhub;
+	else{$usr=ses('usr'); if($newhub)$usr=$newhub;
 	if($usr!='admin')$uid=self::adduser($qb,$usr,$psw,$mail,$newhub);//add_user
 	if(prmb(11)>=6 or $newhub or !$first){self::modif_cnfgtxt($usr,$first);//add_hub
 		$qb=self::makenew($usr); self::message2newuser($usr,$mail,$psw); $_SESSION['auth']='';}
@@ -114,7 +114,7 @@ return lj('small','lgn_login,form',"password sent to user $usr $qmail");}
 
 #newuser
 static function adduser($qb,$usr,$psw,$mail,$newhub){$dayx=ses('dayx');
-$qdu=db('qdu'); $mbrs='7::admin,'; $open=''; $ip=hostname();
+$qdu=db('qdu'); $mbrs='7::admin,'; $open=''; $ip=ip();
 if(prmb(11)>=6 or $newhub){
 	$open=1; $menus=$dayx; $hub=$usr;
 	[$rstr,$config]=self::ndprms_defaults();

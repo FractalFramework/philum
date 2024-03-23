@@ -3,9 +3,9 @@ class sqlop{static private $b; static private $t; static public $ret;
 function __construct($b){self::$b=$b; self::$t=ses($b);}
 static function table($b){self::$b=$b; self::$t=ses($b);}
 static function read($d,$p,$q,$bug=''){self::$ret=sql($d,self::$b,$p,$q,$bug);}
-static function reflush(){self::$ret=sql::reflush(self::$b);}
+static function reflush(){sql::reflush(self::$b);}
 static function insert($r){self::$ret=sql::sav(self::$b,$r);}
-static function update($col,$val,$wh,$row){self::$ret=sql::upd(self::$b,[$col=>$val],[$wh=>$row]);}
+static function update($col,$val,$wh,$row){sql::upd(self::$b,[$col=>$val],[$wh=>$row]);}
 static function sqldel($id){sql::del(self::$b,$id);} 
 static function show(){self::$ret=sql::call('show columns from '.self::$t,'kv');}
 static function trunc(){if(auth(6))qr('truncate '.self::$t);}
@@ -19,7 +19,7 @@ case('mdf'):$r[$n]=$ra; break;
 case('del'):unset($r[$n]); break;
 case('mdv'):$r[$n][$nb]=$ra; break;
 case('push'):array_unshift($r,$ra); break;
-case('mdf'):foreach($ra as $k=>$v)$r[$k]=$v; break;
+//case('mdf'):foreach($ra as $k=>$v)$r[$k]=$v; break;
 case('append'):foreach($ra as $k=>$v)$r[]=$v; break;}
 return $r;}
 

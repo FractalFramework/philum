@@ -8,7 +8,7 @@ var ctx=c.getContext("2d");
 '.$d.'';}
 
 static function com($d,$id){
-$r=explode(' ',$d); $n=count($r);
+$r=explode(' ',$d); $n=count($r); $ret='';
 for($i=0;$i<$n;$i++){[$p,$o]=explode('=',$r[$i]); $ra=explode(',',$o);
 switch($p){
 case('line'):$ret.='ctx.fillStyle="#'.$ra[4].'"; ctx.moveTo('.$ra[0].','.$ra[1].'); ctx.lineTo('.$ra[2].','.$ra[3].'); ctx.stroke();'; break;
@@ -28,13 +28,13 @@ $ret=tag('canvas',['id'=>'canvas'.$id,'width'=>$w.'px','height'=>$h.'px','style'
 $ret.=self::com($d,$id);
 return $ret;}
 
-static function iframe($id,$b,$prm){$d=prm[0]??'';
+static function iframe($id,$b,$prm){$d=$prm[0]??'';
 $d=str_replace("\n",' ',$d);
 return iframe('/app/canvas/'.$d.'/'.$id.'&fz=420-300',440);}
 
 static function edit($d,$id){
 $d=str_replace(' ',"\n",$d);
-$ret.=lj('popbt','graph'.$id.'_canvas,iframe_graphjs__'.$id,'see').br();
+$ret=lj('popbt','graph'.$id.'_canvas,iframe_graphjs__'.$id,'see').br();
 $ret.=textarea('',$d,50,16,['id'=>'graphjs']);
 return $ret;}
 
@@ -56,7 +56,7 @@ static function home($d,$s){
 $id=randid(); if($s)$_SESSION['graphsz']=$s;
 if(!$d)$d=self::ex();
 $d=str_replace("\n",' ',$d);
-$ret.=lj('popbt','popup_canvas,edit___'.ajx($d).'_'.$id,'edit');
+$ret=lj('popbt','popup_canvas,edit___'.ajx($d).'_'.$id,'edit');
 $ret.=divd('graph'.$id,self::call($d,$id,$s));
 return $ret;}
 }

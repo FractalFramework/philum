@@ -18,7 +18,7 @@ if($in!==false){
 		else $mid=substr($msg,$in+1,$out);
 		$mid=match($g){
 		'template'=>self::template($mid,$op),
-		'json'=>self::json($mid,$op),
+		'json'=>self::json($mid),
 		'sconn'=>self::sconn($mid,$op),
 		'sconn2'=>self::sconn2($mid,$op),
 		'sconn3'=>self::sconn3($mid),
@@ -33,7 +33,7 @@ if($in!==false){
 		'importim'=>self::importim($mid,$op),
 		'extractimg'=>self::extractimg($mid,$op),
 		'extractlnk'=>self::extractlnk($mid,$op),
-		'conn2xhtml'=>xhtml::conn2xhtml($mid,$op),
+		'conn2xhtml'=>xhtml::conn2xhtml($mid),
 		'extract'=>self::conn_extract($mid,$op),
 		'num2nb'=>self::num2nb($mid,$op),
 		'math'=>self::math($mid,$op),
@@ -52,9 +52,12 @@ if($d)return nl2br($d);}
 
 static function png2jpg($id,$o=''){
 $d=sql('msg','qdm','v',$id); get('read',$id);
-if(rstr(48))$d=conb::parse($d,'correct','webp2jpg');
-if($o)$d=conb::parse($d,'correct','forcewebp2jpg');
-return conb::parse($d,'correct','png2jpg');}
+if(rstr(48))$d=self::parse($d,'correct','webp2jpg');
+if($o)$d=self::parse($d,'correct','forcewebp2jpg');
+return self::parse($d,'correct','png2jpg');}
+
+static function rmconn($d,$o){
+return self::parse($d,'correct',$o);}
 
 #templater
 static function build($d,$r){
@@ -191,9 +194,6 @@ $ret=match($c){
 ':appbt'=>pop::btapp($d,''),
 ':connbt'=>pop::connbt($d,''),
 ':bt'=>pop::connbt($d,''),
-':ascii'=>ascii($p,$o),
-':picto'=>picto($d),
-':oomo'=>oomo($d),
 ':msql'=>mk::msqcall($d,'',''),
 ':popimg'=>mk::mini_d($d,$b,''),
 ':quote'=>mk::quote2($d,$c),
@@ -226,7 +226,7 @@ if(!$ret)$ret=match($c){
 ':cyan'=>mk::pub_clr($d,'#2dd'),
 ':purple'=>mk::pub_clr($d,'#d2d'),
 ':yellow'=>mk::pub_clr($d,'#dd2'),
-':bkgclr'=>mk::pub_bkgclr($d),
+':bkgclr'=>mk::bkgclr($d),
 ':video'=>video::titlk($p,''),
 ':videourl'=>video::titlk($p,''),
 ':figure'=>pop::figure($d,'','1'),
@@ -243,6 +243,11 @@ if(!$ret)$ret=match($c){
 ':download'=>lka($p),
 ':pdf'=>lka($p),
 ':img'=>image($p),
+':picto'=>picto($p,$o),
+':ascii'=>ascii($p,$o),
+':glyph'=>glyph($p,$o),
+':oomo'=>oomo($p,$o),
+':typo'=>mk::typo($p,$o),
 ':w'=>lka($p),
 ':no'=>'',
 default=>''};
@@ -349,19 +354,19 @@ else return '['.$d.']';}
 static function math($d,$b){
 [$p,$o,$c]=unpack_conn($d);
 switch($c){
-case('frac'):return tagb('mfrac',tagb('mi',$p).tagb('mi',$o));break;
-case('sup'):return tagb('msup',tagb('mi',$p).tagb('mn',$o));break;
-case('sub'):return tagb('msub',tagb('mi',$p).tagb('mn',$o));break;
+case('frac'):return tagb('mfrac',tagb('mi',$p).tagb('mi',$o));
+case('sup'):return tagb('msup',tagb('mi',$p).tagb('mn',$o));
+case('sub'):return tagb('msub',tagb('mi',$p).tagb('mn',$o));
 case('subsup'):$mo=is_numeric($p)?'&int;':'&dd;';
-	return tagb('msubsup',tagb('mo',$mo).tagb('mn',$p).tagb('mi',$o));break;
-case('mi'):return tagb('mi',$p);break;//x
-case('mo'):return tagb('mo','&'.($p=='+/-'?'PlusMinus':$p).';');break;
-case('mrow'):return tagb('mrow',$p);break;;
+	return tagb('msubsup',tagb('mo',$mo).tagb('mn',$p).tagb('mi',$o));
+case('mi'):return tagb('mi',$p);//x
+case('mo'):return tagb('mo','&'.($p=='+/-'?'PlusMinus':$p).';');
+case('mrow'):return tagb('mrow',$p);
 case('matrix'):$rt=''; $r=explode("\n",$p);
 	foreach($r as $k=>$v){$rb=explode('|',$v); $d='';
 		foreach($rb as $ka=>$va)$d.=tagb('mtd',$va); $rt.=tagb('mtr',$d);}
-	return tag('mfenced',['open'=>'[','close'=>']'],$rt);break;
-default:if(method_exists('maths',$c))return maths::$c($p,$o);break;}
+	return tag('mfenced',['open'=>'[','close'=>']'],$rt);
+default:if(method_exists('maths',$c))return maths::$c($p,$o);}
 return '['.$p.']';}
 
 #.md
@@ -401,7 +406,7 @@ $ret=self::sconn_html($p,$o,$c);
 if(!$ret)$ret=match($c){
 //elements
 ':tag'=>tagb($p,$o),
-':span'=>$p?spn($p,$o):'',
+':span'=>$p?span($p,$o):'',
 ':css'=>$p?btn($o,$p):'',
 ':div'=>$p?divp($o,$p):'',
 ':divc'=>$p?divc($o,$p):'',
@@ -432,7 +437,7 @@ if(!$ret)$ret=match($c){
 ':picto'=>picto($p,$o),
 //high_level
 //':ajx'=>lj('',$o,$p),
-':conn'=>conn::connectors($p.':'.$o,3,'','',''),
+':conn'=>conn::connectors($p.':'.$o,3,'',''),
 ':msql'=>mk::msqcall($p,'',''),
 ':var'=>$o?ses::$r[$o]:'',
 ':setvar'=>self::setvar($o),

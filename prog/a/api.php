@@ -128,7 +128,7 @@ if($p['nocat'])$sq['and'][]=$qda.'.frm'.self::sql_in($p['nocat'],1);
 if($p['nochilds'])$sq['and'][]=$qda.'.ib="0"';
 if($p['priority'])$sq['re'][]=$qda.'.re'.self::sql_in($p['priority']); else $sq['re'][]=$qda.'.re>="1"';
 if($p['notpublished']){if(auth(6))$sq['re'][]=$qda.'.re="0"';
-	elseif(auth(4))$sq['re'][]='('.$qda.'.re="0" and '.$qda.'.name="'.ses('USE').'")';}
+	elseif(auth(4))$sq['re'][]='('.$qda.'.re="0" and '.$qda.'.name="'.ses('usr').'")';}
 if($p['owner'])$sq['and'][]='name="'.$p['owner'].'"';
 //if($p['owner'])$sq['inner'][]=sql('id','qdu','v',['name'=>$p['owner']]);
 if($p['hub'])$sq['and'][]=$qda.'.nod="'.$p['hub'].'"';
@@ -170,8 +170,8 @@ $ut=explode(' ','utag tag '.prmb(18)); $ut[]=ses('iq'); $n=count($ut);
 for($i=0;$i<$n;$i++)if($ut[$i]){$tags=$r[$ut[$i]]??'';
 	if($tags)$sq['inner'][]=self::sql_tags_combinative($tags,$ut[$i]);}
 if($p['cmd']=='tracks'){$qdi=db('qdi'); //$sq['slct']=[$qda.'.id'];//todo:use datas
-	$sq['inner'][]='inner join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id';}
-if($md=$p['media']){$qdm=db('qdm');
+	$sq['inner'][]='right join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id';}
+$md=$p['media']??''; if($md && !is_numeric($md)){$qdm=db('qdm');
 	if($md=='mp3')$md='.'.$md; elseif($md=='img')$md='.jpg'; else $md=':'.$md.']';
 	$sq['inner'][]='natural join '.$qdm;
 	$sq['and'][]='msg like "%'.$md.'%"';}
@@ -254,24 +254,23 @@ if(empty($ra['nopages']))$ret.=self::pages($ra);
 $ra['page']=1;//reinit page 1 after dig //$ra['page']??1
 $com=implode_k($ra,',',':');
 $ret.=hidden('hid'.$ra['rid'],$com);
-return tagb('header',$ret);}//['id'=>'ti'.$ra['rid']]
+return tagb('header',$ret);}
 
 #build
 static function build($r,$ra){$n=count($r); $rm=[]; $rd=[]; $rt=[];
 $rk=['preview','template','nl','cmd','render','search','random'];
 [$prw,$tp,$nl,$cmd,$rnd,$rch,$rid]=vals($ra,$rk);
-$pr=art::slct_media($prw); $pr=art::slct_media($prw);
-if($rch){$pr='rch'; geta('search',$rch); ses::$r['look']=$rch;}
+$prw1=art::slct_media($prw);
+if($rch){$prw1='rch'; geta('search',$rch); ses::$r['look']=$rch;}
 if($rid){$n=array_rand($r); $rb[$n]=$r[$n]; $r=$rb;}
 if($cmd=='panel')foreach($r as $k=>$v)$rt[]=mod::pane_art($k,'',$tp,'',$v);//cmd panel/cover
-elseif($cmd=='tracks')foreach($r as $k=>$v)//cmd tracks
-	$rt[]=art::playb($k,1).art::output_trk(ma::read_idy($k,'asc'));
-else{foreach($r as $k=>$v){$prw=$pr=='auto'?($v['re']>=2?2:1):$pr; $id=$v['id']; $rc[$id]=$v;
+elseif($cmd=='tracks')foreach($r as $k=>$v)$rt[]=art::playtrk($k);
+else{foreach($r as $k=>$v){$id=$v['id']; $rc[$id]=$v; $prw=$prw1=='auto'?($v['re']>2?2:1):$prw; $pr[$id]=$prw;
 		if($prw>1 or $prw=='rch' or substr($prw,0,4)=='conn')$rd[$id]=$id;}
 	if($ra['lg']??'')foreach($r as $k=>$v){$id=$v['id']; $rm[$id]=$v['txt']; unset($rd[$id]);}
 	if($rd)$rm+=sql('id,msg','qdm','kv','id in ("'.implode('","',$rd).'")');
-	foreach($rc as $k=>$v){$v['img1']=pop::art_img($v['img']);
-		$rt[]=art::call($v['id'],$v,$rm[$k]??'',$prw,$tp,$nl);}}
+	foreach($rc as $k=>$v){//$v['img1']=pop::art_img($v['img']);
+		$rt[]=tag('section',['id'=>$v['id']],art::call($v['id'],$v,'',$rm[$k]??'',$pr[$k],$tp,$nl));}}
 if(!empty($ra['cols']))return pop::columns($rt,$ra['cols']);
 elseif($cmd=='panel')return divc('inline',implode('',$rt));
 return implode('',$rt);}
@@ -291,6 +290,23 @@ if(isset($ra['seesql']))echo $sql;
 $r=self::qr($sql);
 return $r;}
 
+#load //from url
+static function load($ra){
+$ra['rid']=$ra['rid']??'loadmodart';//randid('load');
+if($md=$ra['media']??'')$ra['preview']='conn'.$md;
+else $ra['preview']=art::slct_media($ra['preview']??'');
+$ra['nl']=$ra['nl']??get('nl');
+if(!($ra['ti']??''))$ra['ti']=self::tit($ra);
+if($ra['id']??'' && !$ra['json']??''){$ra['nodig']=1; $ra['preview']=3; $ra['noheader']=1; $ra['template']='read';}
+$ret=self::callr($ra);
+if($ra['noheader']??'')return $ret;
+$nbpg=self::head($ra);
+$js='addEvent(document,"scroll",function(){artlive2("'.$ra['rid'].'")});';
+head::add('jscode',$js);
+$jb=head::jscode($js);
+if(!$ret)$ret=nmx([11,16]);
+return divd($ra['rid'],$nbpg.$ret).$jb;}
+
 #com
 static function callr($ra){
 if($ra)$r=self::datas($ra);
@@ -302,23 +318,6 @@ static function callj($p,$b=''){
 $ra=explode_k($p,',',':'); $rb=explode_k($b,',',':');
 $ra=self::defaults_rq($ra,$rb);
 if($ra)return self::callr($ra);}
-
-#load //from url
-static function load($ra){
-$ra['rid']=$ra['rid']??randid('load');
-if($md=$ra['media']??'')$ra['preview']='conn'.$md;
-else $ra['preview']=art::slct_media($ra['preview']??'');
-$ra['nl']=$ra['nl']??get('nl');
-if(!($ra['ti']??''))$ra['ti']=self::tit($ra);
-if($ra['id']??'' && !$ra['json']??''){$ra['nodig']=1; $ra['preview']=3; $ra['noheader']=1; $ra['template']='read';}
-$ret=self::callr($ra);
-if($ra['noheader']??'')return $ret;
-$nbpg=self::head($ra);
-$js='addEvent(document,"scroll",function(){artlive2("'.$ra['rid'].'")});';
-head::add('jscode',$js); $jb='';
-//$jb=head::jscode($js);
-//if(!$ret)$ret=nmx([11,16]);
-return divd($ra['rid'],$nbpg.$ret).$jb;}
 
 #call
 static function call($p,$o='',$prm=[]){
@@ -351,7 +350,6 @@ static function tracks($t){//tracks
 $ra=self::arts_rq('',ses('nbj'));
 //$ra['select']=db('qda').'.id,'.db('qdi').'.re';
 $ra['cmd']='tracks'; $ra['preview']=1; $ra['t']=$t;
-//$ra['seesql']=1; p($ra);
 return self::load($ra);}
 
 #get
@@ -410,8 +408,9 @@ $ra['order']=prmb(9); $ra['nbyp']=prmb(6); $ra['page']=get('page');
 //$ra['verbose']=1;$ra['seesql']=1;//$ra['group']='id';
 return $ra;}
 
-static function tag_ci($d){return $d=str::protect_url($d,1);
-return sql('tag','qdt','v',['tag'=>$d]);}
+static function tag_ci($d){
+//return sql('tag','qdt','v',['tag'=>$d]);
+return $d=str::protect_url($d,1);}
 
 static function tag_id($d){
 return sql('cat,tag','qdt','w',['id'=>$d]);}
@@ -422,7 +421,7 @@ if($ut)foreach($ut as $k=>$v){$vb=str::eradic_acc($v); if($g=get($vb))
 
 //mod-articles
 static function load_rq(){$g=ses::$r['get'];//boot build_content
-$rb=valk($g,['tag','search','source','parent','folder','author','rubtag','tagid','utag','cluster'],0);
+$rb=valk($g,['tag','search','source','parent','folder','author','rubtag','tagid','utag','cluster']);
 if($d=$rb['tag']){$ra['tag']=self::tag_ci($d); $ra['ti']='tag';}
 elseif($d=$rb['search']){$ra['search']=str::protect_url($d,1); $ra['ti']='search';}
 elseif($d=$rb['author']){$ra['owner']=str::protect_url($d,1); $ra['ti']='author';}

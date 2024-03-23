@@ -62,7 +62,7 @@ return $ret;}
 
 static function menu($p,$o){
 $j=self::$cb.'_'.self::$a.',call_adnp,adno,adnn_3__'.$o;
-$ret=inpnb('adnp',$p?$p:1,$j);
+$ret=inpnb('adnp',$p,$j);
 $ret.=lj('',$j,picto('ok')).' ';
 $ret.=checkbox('adno',$o,'rollback');
 $ret.=checkbox('adnn',$o,'reimport');

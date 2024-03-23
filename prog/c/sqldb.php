@@ -3,7 +3,7 @@ class sqldb{
 static $r=[];
 static $er=false;
 static $rb=[];
-static $rt=['qda'=>'art','qdm'=>'txt','qdd'=>'data','qdu'=>'user','qdi'=>'trk','qdg'=>'img','qdf'=>'favs','qdc'=>'cat','qdh'=>'hub','qdb'=>'mbr','qdt'=>'meta','qdta'=>'meta_art','qdtc'=>'meta_clust','qdsr'=>'search','qdsra'=>'search_art','trn'=>'trans','qdw'=>'web','qdtw'=>'twit','qdp'=>'ips','qdv'=>'live','qdv2'=>'live2','qds'=>'stat','qdk'=>'iqs','qdy'=>'_sys','qdya'=>'_prog','qdyar'=>'_progr','qdyb'=>'_plug','umt'=>'umtwits','dicoen'=>'dicoen','dicofr'=>'dicofr','dicoum'=>'dicoum','qdtm'=>'meta_mul','qdmb'=>'txb'];//,'qdt-en'=>'meta_en','qdl'=>'clust','qdla'=>'clust_art'
+static $rt=['qda'=>'art','qdm'=>'txt','qdd'=>'data','qdu'=>'user','qdi'=>'trk','qdg'=>'img','qdf'=>'favs','qdc'=>'cat','qdh'=>'hub','qdb'=>'mbr','qdt'=>'meta','qdta'=>'meta_art','qdtc'=>'meta_clust','qdsr'=>'search','qdsra'=>'search_art','trn'=>'trans','qdw'=>'web','qdtw'=>'twit','qdp'=>'ips','qdv'=>'live','qdv2'=>'live2','qds'=>'stat','qdk'=>'iqs','qdy'=>'_sys','qdya'=>'_prog','qdyar'=>'_progr','qdyb'=>'_plug','umt'=>'umtwits','dicoen'=>'dicoen','dicofr'=>'dicofr','dicoum'=>'dicoum','qdtm'=>'meta_mul','qdmb'=>'txb','hip'=>'hipparcos'];//,'qdt-en'=>'meta_en','qdl'=>'clust','qdla'=>'clust_art'
 static $ty=['ai','aib','int','bint','sint','var','svar','mvar','bvar','var2','var11','text','long','time','psw'];
 
 function construct(){self::$r=self::defs();}

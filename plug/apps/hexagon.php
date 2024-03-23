@@ -34,7 +34,7 @@ $ret.='['.$clr.','.$bdr.':attr]'.'['.implode('-',$rb).',poly1-2:polygon]';
 return $ret;}
 
 static function ring($n,$sz,$w,$h,$clr,$bdr){$rb=[];
-$r=self::hexa($n,$w,$h,$sz);
+$r=self::hexa($n);
 $r=self::repos($r,$w,$h,$sz); //pr($r);
 if($n==4)$d=self::section1($r,$n,$w,$clr,$bdr);
 else $d=self::sections($r,$n,$w,$clr,$bdr);
@@ -57,7 +57,7 @@ return $ret;}
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$$p;
 $ret=self::build($p,$o);
-return $bt.$ret;}
+return $ret;}
 
 static function menu($p,$o,$rid){
 $j=$rid.'_hexagon_call_inp';

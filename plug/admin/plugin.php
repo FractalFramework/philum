@@ -25,7 +25,7 @@ $plug=msql::read('system','program_plugs');
 $help=msql::read('lang','program_plugs');
 $mt=msql::prep('system','program_plugs_types'); 
 //$re=explore($dir,'files',1); sort($re);
-$re=scandir_r($dir); //eco($re);
+$re=scanfiles($dir); //eco($re);
 $rt=['url','app','open','edit','do','usage','tag','private','interface','dev','old','modified'];
 foreach($re as $k=>$v){$va=between($v,'/','.',1,1); $plg=arr(val($plug,$va),7);
 	$fi=auth(4)?lj('','popup_editmsql___system/program*plugs_'.ajx($va).'__1',$ico).' ':'';

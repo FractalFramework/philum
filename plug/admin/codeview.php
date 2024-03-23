@@ -55,7 +55,8 @@ foreach($r as $v)self::save_funcs('progb/'.$v.'.php',$v);}
 
 static function savefunc_plug(){//save_all
 $r=explore('plug','full',1); //pr($r);
-$ra=['edit','dev','admin','ummo','photo']; //$ra=explore('plug','dirs',1);
+$ra=['edit','dev','admin','photo']; //$ra=explore('plug','dirs',1);
+if(ses::$oom)$ra[]='ummo';
 if($ra)foreach($ra as $v){$rb=explore('plug/'.$v,'full');}
 //if($rb)foreach($rb as $vb)$r[]=$vb;
 foreach($r as $v)if($v!='userdl.tar.gz'){$p=strend($v,'/'); $p=strto($p,'.'); self::save_funcs($v,$p);}}
@@ -157,7 +158,7 @@ if(!$r)return 'null';
 foreach($r as $k=>$v)$rb[]=self::ffunc_row($v); $n=count($rb);
 return btn('txtcadr','static function '.$p.'() '.$n.' '.plurial($n,19).'').tabler($rb,'txtblc');}
 
-static function home($dr,$f,$fc=''){db('qdy','_sys');
+static function home($dr,$f,$fc=''){
 if($dr=='param')$dr=$f=''; $ret=''; $res='';
 if(!$f && $fc)$f=sql::call('select page from _sys where name="'.$fc.'"','v');
 if(strpos($f,'.')===false && $f)$f.='.php'; if($fc=='all')$fc='';
@@ -178,13 +179,13 @@ if(auth(5)){
 	$ret.=self::slct_sj($rep,$f,'codeview_codeview,home__15_'.ajx($dr).'_');
 	//page
 	if($f && auth(6)){$ret.=lj('','popup_codev,home___'.$dr.'_'.$jp,picto('editxt')).' '; 
-	if($dr=='plug')$ret.=lj('','popup_plugin___'.$jp,picto('window')).' ';}
+	if($dr=='plug')$ret.=lj('','popup_'.$jp.',home',picto('window')).' ';}
 	//list
 	$rec=array_values($_SESSION['rec']); array_unshift($rec,'all'); //if($rec)ksort($rec);
 	if($f)$ret.=self::slct_sj($rec,$fc,'codeview_codeview,home__15_'.ajx($dr).'_'.ajx($f).'_');
 	//func
 	if($fc && auth(6)){$ret.=lj('','popup_codev,home___'.$dr.'_'.$jp.'_'.ajx($fc),picto('editxt')).' ';
-		if($dr=='plug')$ret.=lj('','popup_plug___'.$jp.'_'.ajx($fc),picto('window')).' ';}
+		if($dr=='plug')$ret.=lj('','popup_'.$jp.',home___'.ajx($fc),picto('window')).' ';}
 	//search
 	$ret.=input('funcsrch',$fc,8).' '.lj('popbt','popup_codeview,findfunc_funcsrch','find').' '.lj('popbt','popup_coremap,map_funcsrch','map');
 }

@@ -12,7 +12,7 @@ if(strpos($p,'=')===false && strpos($p,'&')===false)$pg='sim-id?Ident='; else $p
 return 'http://simbad.u-strasbg.fr/simbad/'.$pg.''.urlencode($p);}
 
 static function find_names($r){$rb=[]; //pr($r);
-foreach($r as $k=>$v)foreach($v as $ka=>$va)
+foreach($r as $k=>$v)foreach($v as $ka=>$va)if($va)
 if(substr($va,0,2)=='HD')$rb['hd']=substr($va,3);
 elseif(substr($va,0,3)=='HIP')$rb['hip']=substr($va,4);
 elseif(substr($va,0,3)=='LHS')$rb['hip']=substr($va,4);

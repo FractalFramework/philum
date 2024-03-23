@@ -12,11 +12,11 @@ curl_close($ch);
 return $ret;}
 
 static function xml2array($n){$ret=array();
-foreach($n->childNodes as $nc)($nc->hasChildNodes())
-?($n->firstChild->nodeName== $n->lastChild->nodeName&&$n->childNodes->length>1)
-?$ret[$nc->nodeName][]=xml2array($item)
-:$ret[$nc->nodeName]=xml2array($nc)
-:$ret=$nc->nodeValue;
+foreach($n->childNodes as $nc)if($nc->hasChildNodes()){
+if($n->firstChild->nodeName==$n->lastChild->nodeName && $n->childNodes->length>1)
+$ret[$nc->nodeName][]=self::xml2array('item');
+elseif(self::xml2array($nc))$ret[$nc->nodeName]=self::xml2array($nc);
+else $ret=$nc->nodeValue;}
 return $ret;}
 
 /*static function dom2array($n,&$a,$dom){static $depth=0; static $sz='';
@@ -80,7 +80,7 @@ echo htmlspecialchars($innerHTML);}*/
 	catch(Exception $e){$ret.='';}
 */
 
-static function explore($r){
+static function explore($r){$ret='';
 foreach($r->childNodes as $k=>$v){
 	if($v->hasChildNodes()){
 		//$attr=$v->getAttribute('href');
@@ -118,7 +118,7 @@ foreach($r->childNodes as $k=>$v){
 return $ret;}
 
 //$r=msql::read('',nod('dom_1'));//p($r);
-static function build($f,$o){
+static function build($f,$o){$ret='';
 //self::test();
 //echo $f='https://fr.dompedia.org/wiki/'.$p;
 //$d=get_file($f);

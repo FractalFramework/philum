@@ -139,7 +139,6 @@ if(self::$save)$ret=self::state($o);
 return $ret;}
 
 ##prog/plug
-
 //see
 static function funcsee($r){$rb=[];$rt=[];//child=>parent
 foreach($r as $k=>$v)foreach($v as $ka=>$va)$rb[$k][$va]=1;
@@ -241,7 +240,7 @@ static function build($p,$o){
 $r=explore(self::$dr);
 $ra=self::capture($r); $rb=[]; $rc=[]; $rd=[]; $ret=''; //dr/page=>func
 $rb=self::funcount($ra); //dr/page=>func=>dr/page=>nb
-$rc=self::funclist($rb,0); //page=>func=>content
+$rc=self::funclist($rb); //page=>func=>content
 $rd=self::functree($rc);
 //$re=self::funcsee($rd);
 if($p)$ret=self::rapport($rd,$p);
@@ -257,11 +256,11 @@ return div($ret,'frame-blue');}
 
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$p; if($o)self::$dr=$o; if($p)self::$save=0;
-if($o=='see')$ret=self::see($p,$o);
+if($o=='see')$ret=self::see($p);
 elseif($o=='see2')$ret=self::see2($p);
 elseif($o=='tree')$ret=self::tree($p,$o);
-elseif($o=='vue')$ret=self::vue($p);
-elseif($o=='doc')$ret=self::doc($p);
+elseif($o=='vue')$ret=self::vue();
+elseif($o=='doc')$ret=self::doc();
 else $ret=self::build($p,$o);
 return $ret;}
 
@@ -284,9 +283,6 @@ static function install(){
 }
 
 static function home($p,$o){
-db('qdya','_prog');
-db('qdyar','_progr');
-db('qdyb','_plug');
 if(!auth(6))self::$save=0;
 //self::install();
 $bt=self::menu($p,$o);

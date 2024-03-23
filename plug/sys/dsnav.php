@@ -21,9 +21,9 @@ if($ds=="ic" && !$isr)return $ret; elseif($ret)return '&#9500;'.$ret.br();}
 static function topo($r,$d,$c){$ret='';
 if($r)foreach($r as $k=>$v){
 	if(is_array($v)){//asort($v);
-		if($k!='_error')$ret.=embedli($d,$k,1).self::topo($v,$d.'/'.$k,$c);}
+		if($k!='_error')$ret.=self::embedli($d,$k,1).self::topo($v,$d.'/'.$k,$c);}
 	elseif($v && str_replace(array('users/','imgb/icons/'),"",$d)==$c)
-		$ret.=embedli($d,$v,0);}
+		$ret.=self::embedli($d,$v,0);}
 return div($ret,'Taxonomy','','margin-left:10px');}
 
 static function home($c,$dir){$_SESSION["nbsd"]=0;

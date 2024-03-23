@@ -31,7 +31,7 @@ foreach($r as $k=>$v){$pos=strpos($v,'(');
 	if($pos!==false)$rb[substr($v,0,$pos).'(']='f'.$k.'(';}
 return $rb;}
 
-static function list_vars($d){$r=explode("$",$d); $rb=[];
+static function list_vars($d){$r=explode("$",$d); $rb=[]; $kb=0;
 $ra=array(';','.',',','=','[',']',')','+','-','!','?','<','>','|','&','"',"'");
 $no=['_GET','_POST',' _SESSION','_SERVER'];//,'_GLOBAL'
 foreach($r as $k=>$v){$end=''; if(substr($v,0,1)!='_')
@@ -97,7 +97,7 @@ return trim($ret);}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
-$ret=self::build($p,$o);
+$ret=self::build($p);
 //$ret=self::clean_code($ret);
 //$ret=self::clean_namefunc($ret);
 //$ret=self::code_machine($ret);

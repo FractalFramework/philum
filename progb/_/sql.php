@@ -19,9 +19,10 @@ static function qra($r){return mysqli_fetch_assoc($r);}
 static function qrw($r){return mysqli_fetch_row($r);}
 static function qrf($r){mysqli_free_result($r);}
 static function qres($v){if($v!==null)return mysqli_real_escape_string(self::$qr,stripslashes($v));}
+//static function qres($v){if($v!==null)return mysqli_real_escape_string(self::$qr,$v);}
 static function atm($v){$d=substr($v??'',0,4);
 return $d=='NULL'||$d=='NOW('||$d=='PASS'?$v:'"'.self::qres($v).'"';}//!num
-static function atmr($r){foreach($r as $k=>$v)$ret[]=self::atm($v); return $ret;}
+static function atmr($r){$rt=[]; foreach($r as $k=>$v)$rt[]=self::atm($v); return $rt;}
 static function atmrk($r){foreach($r as $k=>$v)$rt[]=$k.'='.self::atm($v); return $rt;}
 static function atmra($r,$o=''){$rb=self::atmr($r); $d=$o?'NULL,':'';
 if($rb)return '('.$d.join(',',$rb).')';}
@@ -41,7 +42,7 @@ static function sav2($b,$r,$ai=1,$o=''){//multiples
 return self::qrid('insert into '.db($b).' values '.self::atmrb($r,$ai),$o);}
 static function upd($b,$r,$q,$o='',$vrf=''){if($vrf)$r=sqldb::vrfr($r,$b);//sqlup
 self::qr('update '.db($b).' set '.self::atmrak($r).' '.self::where($q),$o);}
-static function savup($b,$r,$o=''){$ex=self::read('id',$b,'v',$r,$o);
+static function savup($b,$r,$o=''){$ex=self::read('id',$b,'v',$r,$o);//redo
 if($ex)return self::upd($b,$r,$ex,$o); else return self::sav($b,$r,$o);}
 static function del($b,$q,$o='',$ob=''){
 self::qr('delete from '.db($b).' '.self::where($q).' limit 1',$o);
@@ -141,9 +142,27 @@ if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
 return $ret;}
 
 static function inner2($d,$b1,$b2,$k2,$b3,$k3,$p,$q,$z=''){
-$sql='select '.$d.' from '.db($b1).' 
-inner join '.db($b2).'on '.db($b1).'.id='.db($b2).'.'.$k2.'
-inner join '.db($b3).'on '.db($b2).'.id='.db($b3).'.'.$k3.' '.self::where($q);
+$sql='select '.$d.' from '.db($b1).'
+inner join '.db($b2).' on '.db($b1).'.id='.db($b2).'.'.$k2.'
+inner join '.db($b3).' on '.db($b3).'.id='.db($b2).'.'.$k3.' '.self::where($q);
+$rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
+if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
+return $ret;}
+
+static function inner2b($d,$b1,$b2,$b3,$b4,$p,$q,$z=''){
+$sql='select '.$d.' from '.db($b1[0]).'
+inner join '.db($b2[0]).' on '.db($b1[0]).'.'.$b1[1].'='.db($b2[0]).'.'.$b2[1].' 
+inner join '.db($b3[0]).' on '.db($b3[0]).'.'.$b1[1].'='.db($b4[0]).'.'.$b4[1].' 
+'.self::where($q);
+$rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
+if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
+return $ret;}
+
+static function inner3($d,$br,$p,$q,$z=''){
+$sql='select '.$d.' from '.db($br[0][0][0]).' ';
+foreach($br as [$b1,$b2])
+$sql.='inner join '.db($b2[0]).' on '.db($b1[0]).'.'.$b1[1].'='.db($b2[0]).'.'.$b2[1].' ';
+$sql.=self::where($q);
 $rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
 if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
 return $ret;}
@@ -170,7 +189,7 @@ static function rollback($b){$bb='z_'.db($b); $b2=$b.'z'; sesr('db',$b2,$bb);
 if(self::ex($b2) && auth(6))self::qr('drop table '.db($b)); else return;
 self::qr('create table '.db($b).' like '.$bb); self::qr('insert into '.db($b).' select * from '.$bb); return $bb;}
 static function rename($b,$bb){self::qr('rename table '.$b.' to '.$bb.';');}
-static function cols($b){return self::call('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from INFORMATION_SCHEMA.COLUMNS where table_name="'.db($b).'"','rr');}
+static function cols($b){return self::call('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from INFORMATION_SCHEMA.COLUMNS where table_name="'.db($b).'" and table_schema="'.self::$db.'"','rr');}
 
 static function replace($b,$c,$a,$ab){
 return qr('update '.db($b).' set '.$c.'=REPLACE('.$c.',"'.$a.'","'.$b.'");');}

@@ -10,12 +10,12 @@ else $s=' ';
 $r1=explode($s,$txt1);
 $r2=explode($s,$txt2);
 $arr=array_diff($r1,$r2);
-$ret=divc('txtalert','résultat: '.count($arr).' différences').br();
+$ret=divc('txtalert','rÃ©sultat: '.count($arr).' diffÃ©rences').br();
 if($arr)foreach($arr as $k=>$v)$ret.=$v.':'.$r2[$k].hr();
 return $ret;}
 
 static function menu($p,$o,$rid){
-$ret.=lj('txtx',$rid.'_comparetxt,call_inp1,inp2__sentences','sentences').' ';
+$ret=lj('txtx',$rid.'_comparetxt,call_inp1,inp2__sentences','sentences').' ';
 $ret.=lj('txtx',$rid.'_comparetxt,call_inp1,inp2__lines','lines').' ';
 $ret.=lj('txtx',$rid.'_comparetxt,call_inp1,inp2__words','words').br();
 $ex1="version.\nversion\nversion v f d";
@@ -24,7 +24,7 @@ $ret.=textarea('inp1',$ex1,54,8).' ';
 $ret.=textarea('inp2',$ex2,54,8).' ';
 return $ret;}
 
-static function home(){
+static function home($p,$o){
 $rid='plg'.randid();
 $bt=self::menu($p,$o,$rid);
 $ret=self::call($p,$o);

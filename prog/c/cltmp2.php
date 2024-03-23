@@ -34,22 +34,5 @@ static function vars(){
 $d='artedit pid id jurl purl hurl url edit title suj cat msg img1 video btim back avatar author date day nbarts tag priority words search parent rss social open tracks source length player lang artlang opt css sty addclr thumb trkbk float js auteurs btrk btxt '.str::eradic_acc(prmb(18)); $r=explode(' ',$d); $rt=[];
 foreach($r as $v)$rt[$v]='';
 return $rt;}
-
-//renove
-static function patch($c='art'){$ret='';
-$d=cltmp::$c();
-$r=explode('_',$d);
-foreach($r as $k=>$v){$p=[]; $v=trim($v);
-$n=strpos($v,' '); if($n!==false)$p[]=$n;
-$n=strpos($v,':'); if($n!==false)$p[]=$n;
-$n=strpos($v,'|'); if($n!==false)$p[]=$n;
-$n=strpos($v,'['); if($n!==false)$p[]=$n;
-$n=strpos($v,']'); if($n!==false)$p[]=$n;
-$m=$p?min($p):strlen($v); 
-$va=substr($v,0,$m);
-$vb='{'.strtolower($va).'}';
-$v=str_replace($va,$vb,$v);
-$ret.=$v;}
-eco($ret);}
 }
 ?>

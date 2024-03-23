@@ -2,7 +2,7 @@
 class phonesdata{
 static $nod='phonesdata';
 static $default='https://phonesdata.com/fr/smartphones/xiaomi/xiaomi-redmi-note-13-pro-5463977/';
-static $avoid=['Boîtier','Couleurs','Écran tactile','Profondeur de couleur','Zone d\'écran','Ratio (Hauteur:Largeur)','Ratio (écran:corps)','Protection de l’écran','Caractéristiques','Fonctionnalités','Ratio (écran:corps)','Protection de l’écran','Autres','DxOMark Résultat Général','DxOMark Selfie Résultat','DxOMark Photos','DxOMark Vidéo','Caractéristiques','Fonctionnalités'];
+static $avoid=['BoÃ®tier','Couleurs','Ã©cran tactile','Profondeur de couleur','Zone d\'Ã©cran','Ratio (Hauteur:Largeur)','Ratio (Ã©cran:corps)','Protection de l\'Ã©cran','CaractÃ©ristiques','FonctionnalitÃ©s','Ratio (Ã©cran:corps)','Protection de l\'Ã©cran','Autres','DxOMark RÃ©sultat GÃ©nÃ©ral','DxOMark Selfie RÃ©sultat','DxOMark Photos','DxOMark VidÃ©o','CaractÃ©ristiques','FonctionnalitÃ©s'];
 static $root='';
 static $rid='2';
 
@@ -51,7 +51,7 @@ return $rt;}
 
 static function call($a,$b,$prm=[]){
 [$u,$p,$o]=arr($prm,3); self::rid($u);
-$r=self::build($u,$p,$o);
+$r=self::build($u,$p);
 return tabler($r,1);}
 
 static function rid($u){

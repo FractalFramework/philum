@@ -1,5 +1,5 @@
 <?php 
-class petition[
+class petition{
 
 static function hlp($d){return msql::val('lang','helps_petition',$d);}
 
@@ -17,11 +17,11 @@ return mail($mail,$title,$msg,'From: '.$url."\n","");}
 
 static function insert_verif($mail){
 $r=msql::read('',nod('petition_'.ses('read')));
-if($r)foreach($r as $k=>$v){if($v[5]==hostname() or $v[1]==$mail)return true;}}
+if($r)foreach($r as $k=>$v){if($v[5]==ip() or $v[1]==$mail)return true;}}
 
 static function insert($id,$optb,$prm=[]){$day=time();
 [$name,$mail,$web,$city,$country]=arr($prm,5);
-$arr=array($name,$mail,$web,$city,$country,hostname(),0);
+$arr=array($name,$mail,$web,$city,$country,ip(),0);
 $bk=lj('txtbox','petform_petition,form_'.$id,picto('before'));
 if(self::insert_verif($mail)==true)return self::hlp('alert_exists');
 if(strpos($mail,'@')===false or !$name)return $bk.' '.self::hlp('alert_value');
@@ -36,7 +36,8 @@ return divd('petform',$ret);}
 
 static function count_valid($r){$i=0; foreach($r as $k=>$v){if($v[6]==1)$i++;} return $i;}
 
-static function read($r,$nba,$page){$limit=($page-1)*$nba; $nbr=self::count_valid($r);
+static function read($r,$nba,$page){
+$limit=($page-1)*$nba; $nbr=self::count_valid($r); $i=0;
 $ret=str_replace('_NB',$nbr,self::hlp('actually')).br().br();
 $head=$r[msql::$m]; unset($r[msql::$m]); krsort($r); $id=ses('read');
 //$head=explode(',',self::hlp('entries'));

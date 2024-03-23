@@ -3,7 +3,7 @@ class sconn{
 
 static function build($p,$o){
 if($o)$p='['.$p.']';
-$ret=conb::read($p,'','test');
+$ret=conb::read($p);
 return $ret;}
 
 static function call($p,$o,$prm=[]){

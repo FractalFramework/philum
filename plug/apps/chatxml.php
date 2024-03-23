@@ -30,7 +30,7 @@ $msg=str_replace('_NAME',$nm,helps('chatcall')); $url=host().'/module/chatxml/'.
 if($to){mails::send_txt($to,$msg,$url,$nm,''); return nms(109).' '.nms(79).'e';}
 else return nms(114);}
 
-static function nam($p,$nm,$prm=[]){$res=$rm[0]?'';
+static function nam($p,$nm,$prm=[]){$res=$prm[0]??'';
 $j='popup_chatxml,home__x_'.$p.'_'.$res.'_namx'.$p;
 $d=inputb('namx'.$p,'',8,'name',20,[]);
 return $d.lj('popbt',$j,picto('kright'));}
@@ -46,7 +46,7 @@ $d.=lj('','popup_chatxml,canal__x_'.$p,picto('rss')).' ';
 $d.=lj('','popup_chatxml,invite___'.$p,picto('mail')).' ';
 //$d.=lj('','chtx'.$p.'_chatxml,sav___'.$p.'_2',picto('del')).' ';
 if(auth(6))$d.=msqbt('clients','chat_'.$p).' '; $d.=hlpbt('sconn').br();
-if($nm)$j='chtx'.$p.'_chatxml,sav_msgx'.$p.'_before_'.$p.'_'.$nm).atjr('jumpvalue',['msgx'.$p,''];
+if($nm)$j='chtx'.$p.'_chatxml,sav_msgx'.$p.'_before_'.$p.'_'.$nm.atjr('jumpvalue',['msgx'.$p,'']);
 else $j='popup__chatxmlnam__x_'.$p.'__msgx'.$p;
 $sty='min-height:24px; border:1px solid #777; max-width:330px; max-height:200px; overflow-y:auto; padding:4px;';
 $d.=divarea('msgx'.$p,'','track',$sty);//divedit
@@ -60,12 +60,12 @@ if($r){unset($r[msql::$m]); $r1=$r[1]??''; if(isset($r[1]))unset($r[1]);
 return [$r,$r1];}
 
 static function head($p,$r1){$erz='';
-if(strfrom($r1[3]??'','/')==ses('USE'))
+if(strfrom($r1[3]??'','/')==ses('usr'))
 	$erz=lj('txtsmall','chtx'.$p.'_chatxml,sav___'.$p.'_1','(x)');
 $msg=$r1[2]??''; $msg=conb::parse($msg,'sconn2'); 
 return div($erz.nl2br(stripslashes($msg)),'bkg','border-color:white; padding:4px;');}
 
-static function read($p,$r){$c='txtsmall'; $nm=ses('muse'); $use=ses('USE');
+static function read($p,$r){$c='txtsmall'; $nm=ses('muse'); $use=ses('usr');
 if($r)foreach($r as $k=>$v){$erz=''; $ml=''; $msg=$v[2];
 if($use && ($v[1]==$nm or $p==$use))
 	$erz=lj($c,'chtx'.$p.'_chatxml,sav___'.$p.'_'.$k,picto('sclose'));
@@ -77,7 +77,7 @@ $msg=conn::read($msg,'','');
 return divc('track',$ml.$bt.$erz.br().nl2br(stripslashes($msg)));}}
 
 static function home($p,$msg='',$prm=[]){if(!$p)return self::canal('public');
-$p=str::normalize($p); ses('muse',$prm[0]??ses('USE')); self::ses($p,'0');
+$p=str::normalize($p); ses('muse',$prm[0]??ses('usr')); self::ses($p,'0');
 [$r,$r1]=self::data($p); $form=self::form($p); $head=self::head($p,$r1);
 $bt=div(self::read($p,$r),'','chtx'.$p,'width:344px;');
 return $head.$form.scroll($r,$bt,5,362,'calc(100vh - 230px)');}

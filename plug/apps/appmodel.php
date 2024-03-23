@@ -15,7 +15,7 @@ return $ret;}
 
 static function menu($p,$o,$rid){
 if(!$p)$p=self::$default; $inpid='inp'.$rid;
-$j=$rid.'_appmodel,call_'.$inpid.'_3_'.$p.'_'.$o;
+$j=$rid.'_'.__class__.',call_'.$inpid.'_3_'.$p.'_'.$o;
 $ret=inputj($inpid,$p,$j);
 //$ret=textarea('inp',$p,40,4,['class'=>'console']);
 $ret.=lj('',$j,picto('ok')).' ';

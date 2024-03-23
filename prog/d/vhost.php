@@ -5,7 +5,7 @@ static $f='_datas/vhost.txt';
 static $fa='/etc/apache2/sites-available';
 
 static function root(){
-retur, '/home/'.sql::$db.'/';}
+return '/home/'.sql::$db.'/';}
 
 static function save($p,$o,$prm=[]){
 $d=$prm[0]??$p; $f=self::$f; write_file($f,$d); $fa=self::$fa;

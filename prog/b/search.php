@@ -13,7 +13,7 @@ static function dropmenu($r,$id,$d,$j){$i=0; $rt='';
 foreach($r as $k=>$v){$jx=atjr('jumpvalue',[$id,$k]).' ';
 	$jx.=atjr('active_list',['div'.$id,$i,'active','']).' '.$j; $i++;
 	$rt.=btj($v,$jx,active($d,$k)).' ';}
-$ret=spn($rt,'nbp','div'.$id).hidden($id,$d);
+$ret=span($rt,'nbp','div'.$id).hidden($id,$d);
 return $ret;}
 
 static function dig($n,$rid){$r=pop::define_digr(); $nprev=time_prev($n);
@@ -79,7 +79,7 @@ if(!isset($_SESSION['rstr62']))$_SESSION['rstr62']=rstr(62);
 if(rstr(3))$rt3.=togses('rstr62',pictit('after',nms(134),16)).' ';//dig
 //$urg=self::mkurl(['bool','titles','cat','tag']);
 if($rech)$rt3.=lh('search/'.$rech.($dig?'/'.$dig:''),picto('link',16)).' ';//.$urg
-if(ses('qb')=='ummo'){$rt3.=lj('popbt','popup_umvoc,home___'.ajx($rech).'_1','vocables');//bdvoc
+if(ses::$oom){$rt3.=lj('popbt','popup_umvoc,home___'.ajx($rech).'_1','vocables');//bdvoc
 	$rt3.=lj('popbt','popup_umrec,home__3_'.ajx($rech),'twits');}
 	$ret.=div($rt3);
 $ret.=div(self::pages($tot,$rid));//pages
@@ -137,7 +137,7 @@ $qb=ses('qb'); $qda=db('qda'); $qdm=db('qdm'); $qdt=db('qdt'); $qdta=db('qdta');
 //sql
 $fr='k';//filter
 $ft='';//fulltext//score:1->11//bool:nb of verified words
-//if(ses('qb')=='ummo')
+//if(ses::$oom)
 //$ft='MATCH (msg) AGAINST ("'.$rch.'")';//'.($bol?' IN BOOLEAN MODE':'').'//method of intersect
 if(rstr(3)){$days=$days?$days:ses('nbj'); $sq['daymin']='day>'.timeago($days);}
 $daya=time_prev($days); $daya=$daya?timeago($daya):ses('daya');
@@ -151,12 +151,13 @@ if(!$tit && $rch){
 	$sqin['msg']='natural join '.$qdm;
 	if($ft)$sqnd['msg']=$ft;
 	elseif($seg)$sqnd['msg']=$qdm.'.msg REGEXP "[[:<:]]'.$rch.'[[:>:]]"';
+	//elseif($seg)$sqnd['msg']=$qdm.'.msg regexp "^[[:blank:]]'.$rch.'[[:blank:]]$"';
 	else $sqnd['msg']=$qdm.'.msg like "%'.html_entity_decode($rch).'%" ';}//COLLATE utf8mb4_unicode_ci
 if($cat)$sq['cat']=self::cat($cat);
 if($tag)$sqin['tag']=self::tag($tag,'tag');
 if($ovc)$sq['ovc']=self::overcats($ovc);
 if($lng)$sq['lng']=self::adds($lng,'lg');
-if($pri)$sq['re']=self::adds($pri,'re');
+if($pri)$sq['re']=self::adds($pri,'re'); else $sq['re']='re>0';
 if($len){if($len==60)$min=30; elseif($len=='more'){$min=60; $len=1000;} else $min=$len-10;
 $sq['host']='(host between '.($min*1400).' and '.($len*1400).')';}
 //$rchb=$seg?'[[:<:]]'.$rch.'[[:>:]]':$rch;//REGEXP_REPLACE//(?i) //mariadb is sensitive
@@ -199,7 +200,7 @@ static function rech($p){
 if(isset($_SESSION['recache'][$p])){$_SESSION['recache'][$p]=[]; return 'x';}
 elseif(isset($_SESSION['recache']))$_SESSION['recache']=[]; return 'xx';}
 
-static function good_rech($d){if(!$d)return; $d=str::clean_acc($d);
+static function good_rech($d){if(!$d)return; //$d=str::clean_acc($d);
 $d=str_replace("&nbsp;",' ',$d); $d=strip_tags($d); $d=stripslashes($d); return trim(urldecode($d));}
 
 static function home($d0,$n0,$prm=[]){chrono(); $load=[]; $ret='';

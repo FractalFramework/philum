@@ -103,8 +103,8 @@ return $ret;}
 //clbasic_preview
 static function clview_basic_j($t,$s,$pr=[]){[$p,$re]=$pr;
 if(!$re)$re=msql::val('users',nod($t),$s);
-//if($t=='template' && $re)$ret=conb::parse($re,'template');
-if($t=='template' && $re)$ret=vue::build($re,[]);
+if($t=='template' && $re)$ret=conb::parse($re,'template');
+//if($t=='template' && $re)$ret=vue::build($re,[]);//todo with view
 else $ret=cbasic::read($re,$p);
 if(strpos($ret,'<br')===false)$ret=nl2br($ret);
 return divc('track',$ret).br().textarea('',$ret,40,5);}
@@ -152,9 +152,8 @@ if($slct){//save
 	if($slct=='titles' && !rstr(66))$ret.=pictxt('alert','rstr(66)');
 	if($slct=='book' && !rstr(67))$ret.=pictxt('alert','rstr(67)');
 	if($local && $type=='templates'){
-		if($slct=='articles')$msg=cltmp2::art();
-		//elseif($slct=='rssin')$msg=cltmp2::rss();
-		elseif(method_exists('cltmp2',$slct))$msg=cltmp2::slct();}
+		if($slct=='articles')$msg=msql::val('system','edition_template_art',1);
+		else $msg=msql::val('system','edition_template_'.$slct,1);}
 	$ret.=self::conb_editor($msg,$type,$slct).br();
 	if(!$pubase)$ret.=lj('txtx',$j.'mkpub_'.$slct,'make public').' ';
 	else $ret.=lj('txtx',$j.'mkpriv_'.$slct,'make private').' ';
@@ -211,7 +210,7 @@ $ret.=lj('popsav','admail_adm,admail_amail__'.$usr,voc('save'));
 return divd('admail',$ret);}
 
 static function password($usr,$o='',$prm=[]){
-if(!$usr)$usr=ses('USE'); $ret='';
+if(!$usr)$usr=ses('usr'); $ret='';
 if(auth(6) && $prm){$old=sql('pass','qdu','v',['name'=>$usr]);
 	if($prm[0]==$old){sql::upd('qdu',['pass'=>$prm[1]],['name'=>$usr]);
 		return divc('frame-green','password have been updated');}
@@ -249,13 +248,13 @@ $r['batch']=lj('popsav','popup_newsletter,batch__3',nms(28)).' ';
 $r['batch'].=lj('txtbox','popup_newsletter,read__3',nms(65)).' ';
 $r['batch'].=msqbt('users',ses('qb').'_mails');
 $r['mails']=textarea('nwsm','',64,4);
-$r['edit']=divd('mdls'.$t,console::block($t,1));
+$r['edit']=divd('mdls'.$t,console::block($t));
 return tabs($r,'nl');}
 
 #adm
 static function messages(){
 if($_SESSION['auth']<1)return contact(nms(84),'txtcadr');
-elseif($_SESSION['auth']>6)$frm=ses('qb'); else $frm=ses('USE');
+elseif($_SESSION['auth']>6)$frm=ses('qb'); else $frm=ses('usr');
 $r=ma::read_idy(0,'desc',$frm);
 return art::output_trk($r);}
 
@@ -274,7 +273,7 @@ return $ret;}
 static function adm_tcm($n){$ret='';
 foreach(['templates','connectors','modules'] as $k=>$v)$ret.=lj(active($k,$n),'admcnt_admin___'.$v,$v);
 return divc('menus',$ret);}
-static function connectors(){
+static function userconns(){
 $lk=lj('txtblc','popup_adm,conn*help',pictxt('info','connectors_infos'));
 return self::adm_tcm(1).self::cortex('connectors').br().$lk;}
 static function templates(){return self::adm_tcm(0).self::cortex('templates');}
@@ -372,8 +371,9 @@ static function config($sup){$prms=[];
 if($sup){$f=boot::cnf();
 	if(is_file($f))$prms=explode('#',read_file($f));
 	$ra=msql::prep('system','admin_config');}
-else{$pm=sql('config','qdu','v',['name'=>ses('qb')]);//$pm=$_SESSION['prmb'];
-	$prms=boot::prmb_defaults($pm); $ra=msql::prep('system','admin_params');}
+else{$qbcnfg=sql('config','qdu','v',['name'=>ses('qb')]);//$pm=$_SESSION['prmb'];
+	$pm=opt($qbcnfg,'#',28); $prms=boot::prmb_defaults($pm);
+	$ra=msql::prep('system','admin_params');}
 $ret=self::cnfgform($ra,$prms,$sup);
 if($sup)$ret.=lj('txtbox','admprm_adm,config','hub').' ';
 elseif(auth(7))$ret.=lj('txtbox','admprm_adm,config___1','server').' ';
@@ -399,9 +399,9 @@ if(!is_file($f))$f='imgb/avatar/Gems/EmeraldSquare.gif';
 return '/'.$f.'?'.randid();}
 
 static function avatarsav($dr,$p){
-$f='imgb/usr/'.ses('USE').'_avatar.gif'; $fa='imgb/avatar/'.$dr.'/'.$p;;
+$f='imgb/usr/'.ses('usr').'_avatar.gif'; $fa='imgb/avatar/'.$dr.'/'.$p;;
 if($p=='ko' && is_file($f))unlink($f); elseif(is_file($fa))copy($fa,$f);
-return image(self::avatarimg(ses('USE')),'48','48');}
+return image(self::avatarimg(ses('usr')),'48','48');}
 
 static function avatarslct($dir){$ret='';
 $dr='imgb/avatar/'.$dir; $r=explore($dr,'files',1);
@@ -410,12 +410,12 @@ if($r)foreach($r as $k=>$v){$xt=substr($v,-3);
 	$ret.=lj('','avatar_adm,avatarsav___'.ajx($dir).'_'.ajx($v),$img);}}
 return $ret;}
 
-static function avatar($o){$f=self::avatarimg(ses('USE'));
+static function avatar($o){$f=self::avatarimg(ses('usr'));
 if(!$o)$ret=divd('avatar',image($f,'48','48')).br();
 $r=explore('imgb/avatar','dirs');
 foreach($r as $k=>$v)$rt[$k]=self::avatarslct($k);
 $rt['upload'][]=upload_j('upl','avnim').' ';
-$rt['upload'][]=lj('popbt','avatar_usg,img___'.ajx('imgb/usr/'.ses('USE').'_avatar.gif'),picto('refresh')).' ';
+$rt['upload'][]=lj('popbt','avatar_usg,img___'.ajx('imgb/usr/'.ses('usr').'_avatar.gif'),picto('refresh')).' ';
 $rt['upload'][]=lj('popdel','avatar_adm,avatarsav____ko',picto('del'));
 return $ret.tabs($rt);}
 
@@ -431,7 +431,7 @@ return $bt.divd('bckp','');}
 
 #members
 static function mbr_become($p,$o='',$prm=[]){
-$use=ses('USE'); $qb=ses('qb');
+$use=ses('usr'); $qb=ses('qb');
 if($p){sqlsav('qdb',[$p,$qb,2]); return 'Thank You!';}
 $ex=sql('id','qdb','v',['name'=>$use]);
 if(!$ex)$ret=lj('popsav','mbrbc_adm,mbr*become_mbradu__'.$use,'become member');
@@ -483,11 +483,12 @@ return $bt.tabs($rt,'at');}
 static function artlist($qr,$admin,$dig){$wh=''; $ret=[]; $_SESSION['daya']=time();
 if($dig)$sqlm='AND day>"'.timeago($dig).'" AND day<"'.timeago(time_prev($dig)).'"';
 else $sqlm='AND day<'.ses('daya').' ';
-if($admin=='all_arts')$wh='';
-elseif($admin=='my_arts')$wh.='AND name="'.ses('USE').'"' ;// AND re>='1'
-elseif($admin=='users_arts')$wh.='AND name!="'.ses('USE').'"' ;
-elseif($admin=='sys_arts'){$wh.='AND frm="_system"'; $sqlm='';}
-elseif($admin=='trash'){$wh.='AND frm="_trash"'; $sqlm='';}
+if($admin=='all')$wh='';
+elseif($admin=='my')$wh.='AND name="'.ses('usr').'"' ;// AND re>='1'
+elseif($admin=='others')$wh.='AND name!="'.ses('usr').'"' ;
+elseif($admin=='_system'){$wh.='AND frm="_system"'; $sqlm='';}
+elseif($admin=='_cat'){$wh.='AND frm="_cat"'; $sqlm='';}
+elseif($admin=='_trash'){$wh.='AND frm="_trash"'; $sqlm='';}
 elseif($admin=='not_published')$wh.='AND re="0"' ;
 if($tr1=get('cat'))$wh=' AND frm="'.$tr1.'" AND re>="1"';
 if($tr2=get('triart'))$tri=$$tr2; else $tri='id';
@@ -540,8 +541,8 @@ $ret=tabler($rtr,0);
 return $btpg.$ret.$btpg;}
 
 static function articles($admin,$dig='',$page=''){$bt=''; $ret='';
-$rb=['all_arts','my_arts','users_arts','sys_arts','not_published','trash','trackbacks','discussions','categories','overcat','pictocat','reviews'];
-foreach($rb as $v)$bt.=lj(active($admin,$v),'admarts_admin___'.ajx($v),$v);
+$rb=['all','my','others','_system','_cat','not_published','_trash','trackbacks','discussions','categories','overcat','pictocat','reviews'];
+foreach($rb as $v)$bt.=lj(active($admin,$v),'admarts_adm,articles___'.ajx($v),$v);
 if($admin=='create')$ret=edit::call('','');
 elseif($admin=='categories')$ret=self::adm_categories();
 elseif($admin=='overcat')$ret=self::adm_overcat(1);
@@ -556,7 +557,9 @@ else{
 	$r=self::artlist($qr,$admin,$dig); if($r)$r=self::list_articles($r);
 	if(rstr(3))$ret.=div(pop::dig_it_j($nbj,'admarts_adm,articles___'.ajx($admin).'_'));
 	$ret.=self::adminarts_pages($r,$qrt,$admin,$dig,$page);}
-return divd('admarts',divc('menus',$bt).$ret);}
+$ret=divc('menus',$bt).$ret;
+if(!$admin)$ret=divd('admarts',$ret);
+return $ret;}
 
 //categories
 static function cat2tag($d,$tg='tag'){
@@ -603,24 +606,51 @@ if($id)sql::upd('qdd',['msg'=>$over.'/'.$cat],$id);
 else sql::sav('qdd',[ses('qbd'),'surcat',$over.'/'.$cat]);
 return self::adm_overcat(1);}
 
-static function adm_overcat($o=''){$rb=[];
+static function update_cats($r,$rb){
+$rc=msql::read('',nod('pictocat'),1); foreach($rc as $k=>$v)$rd[$v[0]]=$v[1];
+foreach($r as $k=>$v)sql::savup('qdc',['cat'=>$k,'pic'=>$rd[$k]??'','no'=>0]);}
+
+static function patch_overcats(){
 $r=sql('id,msg','qdd','kv',['val'=>'surcat']);//'ib'=>ses('qbd'),
+if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rb[$cat]=$ov;}
+$rh=['cat','overcat'];
+foreach($rb as $k=>$v)$rc[]=[$k,$v]; 
+msql::save('',nod('overcat'),$rc,$rh);}
+
+static function adm_overcat($o=''){$rb=[];
+self::patch_overcats();
+$r=sql('id,msg','qdd','kv',['val'=>'surcat']);
 if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rb[$cat]=[$ov,$k];}
 $r=sql('frm','qda','k','nod="'.ses('qb').'" and substring(frm,1,1)!="_" order by frm');
+self::update_cats($r,$rb);
 $jb='scat_adm,overcatdel___';
 $ret=div(helps('overcat').hlpbt('overcats_menu')); $rt=[];
 if($r)foreach($r as $k=>$v){$id=randid();
-	$rbk1=$rb[$k][1]??'';
+	$rbk0=$rb[$k][0]??''; $rbk1=$rb[$k][1]??'';
 	if($rbk1)$ret.=lj('popdel',$jb.ajx($rbk1),picto('del')).' ';
 	$j='scat_adm,overcatsav_'.$id.'_3_'.ajx($k).'_'.$rbk1;
-	$ret.=$k.' '.inputj($id,$rb[$k][0]??'',$j);
+	$ret.=$k.' '.inputj($id,$rbk0,$j);
 	//$ret.=lj('',$j,picto('ok')).' ';
 	if(isset($rb[$k]))unset($rb[$k]);
 	$ret.=br();}
 //if($rb)pr($rb);//unused cats
-if($rb)foreach($rb as $k=>$v)$ret.=lj('popdel',$jb.$rb[$k][1],pictxt('del',$cat)).' ';
+if($rb)foreach($rb as $k=>$v)$ret.=lj('popdel',$jb.$v[1],pictxt('del',$cat)).' ';
+$ret.=self::overcat_clr();
 if(!$o)return divd('scat',$ret);
 return $ret;}
+
+static function txt2clr($d){
+$d=base64_decode($d);
+$d=bin2hex($d);
+return substr($d,0,6);}
+
+static function overcat_clr(){
+$r=msql::read('',nod('overcat'));
+foreach($r as $k=>$v)$rb[$v[1]]=$r[$k][2]??'';
+foreach($rb as $k=>$v)$rc[]=[$k,self::txt2clr($k),$v];
+$rh=['overcat','clr','pic'];
+msql::save('',nod('overcat_clr'),$rc,$rh);
+return tabler($rc);}
 
 static function pictocatsav(){
 $r=sql('distinct(frm)','qda','kv','');
@@ -638,7 +668,7 @@ $r=sql('date_format(date,"%y%m%d.%H%i"),msg','qdmb','w',$id);
 return tagb('h2',$r[0]).divc('justy',conn::call($r[1]));}
 
 static function reviewfromsq($id){$rt=[];
-$r=msql::choose('',ses('qb'),'backup'); //pr($r);
+$r=msqa::choose('',ses('qb'),'backup'); //pr($r);
 foreach($r as $k=>$v){$ra=msql::read('',nod('backup_'.$v),1);
 	$ex=sql('id','qdmb','v',['ib'=>$v]);
 	if(!$ex)foreach($ra as $ka=>$va){
@@ -672,9 +702,9 @@ if($r)foreach($r as $k=>$v)if(isset($rico[$k]))$ret.=popbub('admn',$k,picto($ric
 return $ret;}
 
 static function fastmenus($o,$m){$rt=[];
-$r=self::authmenus(0); $tg=$o?'popup':'admcnt';//'modules','templates'
-if(!$m)$rm=['console','desktop','config','rstr','css','msql','articles','tags','api','images','pictos','finder','connectors','stats','software','twit','apps','txt','pad','exec','jsonadm','test','members'];
-else $rm=['nodes','newsletter','banner','favicon','dev','backup','htaccess','links','rssurl','mail','password','descrption','icons','pictography','authes','avatar','messages'];
+$r=self::authmenus(1); $tg=$o?'popup':'admcnt';//'modules','templates'
+if(!$m)$rm=['console','desktop','config','rstr','css','msql','articles','tags','api','images','pictos','finder','templates','stats','software','twit','apps','txt','pad','exec','jsonadm','test','messages','members'];
+else $rm=['nodes','newsletter','tweetfeed','banner','favicon','dev','backup','htaccess','links','rssurl','mail','password','description','icons','pictography','authes','avatar','funcs','ssh','vhost','connectors','keygen','jedt','chmod','git']; sort($rm);
 foreach($rm as $v){$j='admin___'.ajx($v);//'sty,home__head__'//
 	if($v=='css' && !$o)$j='admin__url_css_1';
 	if($r && in_array($v,$r))$rt[]=lj('',$tg.'_'.$j,pictxt(mime($v),$v,22));}
@@ -686,11 +716,11 @@ $ret.=btd('admnu',''); //if($o)$ret=div($ret,'list');
 return $ret;}
 
 /**/static function ishub0(){//to redo
-$qb=ses('qb'); $usr=ses('USE'); $alert=''; $head='';
+$qb=ses('qb'); $usr=ses('usr'); $alert=''; $head='';
 if($usr){
 	$hubname=sql('hub','qdu','v',['name'=>$qb]);
 	if(!$hubname)$hubname=$qb;
-	$r=sql('name,hub','qdu','r',['ip'=>hostname()]);
+	$r=sql('name,hub','qdu','r',['ip'=>ip()]);
 	[$autologok,$userhub]=arr($r,2);}
 //verif_user
 if($usr!=$qb && $usr && $userhub)$hub=lk('/'.$usr,$usr);//$hub?
@@ -702,14 +732,14 @@ elseif(!$usr)$head=lkc('txtx','/home',$qb).br().br().login::form($usr,ses('iq'),
 return [$hubname,$alert,$head];}
 
 static function ishub(){//to redo
-$qb=ses('qb'); $usr=ses('USE'); $alert=''; $head='';
+$qb=ses('qb'); $usr=ses('usr'); $alert=''; $head='';
 $hubname=sql('hub','qdu','v',['name'=>$qb]);
 if(!$hubname)$hubname=$qb;
 return [$hubname,$alert,$head];}
 
 static function home($nohead=''){
 if(!$_SESSION['dayx'])boot::reboot();
-$qb=ses('qb'); $usr=ses('USE'); $auth=ses('auth'); $hubname='';
+$qb=ses('qb'); $usr=ses('usr'); $auth=ses('auth'); $hubname='';
 $alert=''; $head=''; $tit=''; $ret='';
 //reboot after quit cssedit
 $admin=get('admin'); if(!$admin)$admin='console';
@@ -728,7 +758,7 @@ if($usr)$home.=lkc('popbt','/admin',pictxt('user',$usr.' '.picto('p'.$auth)).' (
 //menus
 $head.=divc('',$home.$alert);
 $head.=divc('menu',self::fastmenu());
-if($auth>=7 && $admin=='software')$ret=software::home('=','');
+if($auth>=7 && $admin=='software')$ret=software::home('=');
 $curauth=self::$curauth;
 if($auth>=$curauth && $curauth){
 switch($admin){//global
@@ -738,12 +768,12 @@ case('msql'):$ret=msqa::home(msqa::murlboot()); break;
 case('messages'):
 	if($qb==$usr or $auth>=$curauth)$ret=self::messages();
 	else $ret=contact(nms(84),'txtcadr'); break;
-case('hubs'):$ret=self::adm_hubs($auth); break;
+case('hubs'):$ret=self::adm_hubs(); break;
 case('nodes'):$ret=self::nodes(); break;
 case('stats'):[$pa,$oa]=explode('/',$set); $ret=stats::home($pa,$oa); break;
 case('newsletter'):$ret=self::newsletter(); break;
 case('tweetfeed'):$ret=tweetfeed::home(''); break;
-case('tickets'):$ret=tickets::home('',''); break;
+case('tickets'):$ret=tickets::home(); break;
 case('faq'):$r=msql::read('system','program_faq'); $ret=nl2br(stripslashes(divtable($r,1))); break;}
 if(ses('set')=='Articles')$ret=self::articles($admin,get('dig'),get('page'));//articles
 switch($admin){//configs
@@ -766,20 +796,21 @@ case('discussions'):$ret=chat::home('',''); break;
 //constructors
 case('css'):$ret=sty::home(1); break;
 case('fonts'):$ret=few::edit_fonts(); break;
-case('connectors'):$ret=self::connectors(); break;
+case('connectors'):$ret=self::userconns(); break;
 case('templates'):$ret=self::templates(); break;
 case('modules'):$ret=self::modules(); break;
 case('apps'):$ret=plugin::home('',''); break;
 case('msql'):$ret=self::msql(''); break;
-case('dev'):$ret=dev::home('',''); break;
+case('dev'):$ret=dev::home(); break;
 case('tags'):$ret=meta::admin_tags(get('set')); break;
 case('finder'):$ret=finder::home($qb,'disk'); break;
 case('backup'):$ret=self::backup('',''); break;
-case('software'):$ret=software::home('=',''); break;
+case('software'):$ret=software::home('='); break;
 //case('update_notes'):$ret=adm_update_notes('',1); break;
 case('images'):$ret=adimg::home('',''); break;
 case('pictos'):$ret=pictos::home('',''); break;
 case('pictography'):$ret=pictography::home('',''); break;
+case('chmod'):$ret=fchmod(vhost::root(),'777'); break;
 case('api'):$ret=apicom::home('',1); break;}
 if($admin && !$ret && $auth>=$curauth)if(method_exists($admin,'home'))$ret=$admin::home('','');
 }//end if auth
@@ -800,7 +831,7 @@ elseif($d=='css')$ret=sty::home();
 elseif($d=='conn_help')$ret=self::conn_help();
 elseif($d=='tags')$ret=meta::admin_tags('');
 elseif($d=='descript')$ret=self::hubprm('descript');
-elseif($d=='software' && auth(7))$ret=software::home('','');
+elseif($d=='software' && auth(7))$ret=software::home('');
 elseif($d=='admin')$ret=self::ifradmin($va);//!
 elseif($d=='apps')$ret=plugin::home($va,$opt);
 elseif(method_exists('adm',$d))$ret=self::$d($va,$opt);

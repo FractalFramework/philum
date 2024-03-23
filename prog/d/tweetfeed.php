@@ -7,8 +7,7 @@ if($r)foreach($r as $k=>$v)$ret.=div(tlex::post(host().'/'.$k,1));
 return $ret;}
 
 static function read(){
-$ret=mod::block('tweetfeed','');
-return $ret;}
+return mod::block('tweetfeed');}
 
 static function build($minid){$rc=[];
 $w=',idlist:1,order:id asc,noheader:1'; if(is_numeric($minid))$w.=',minid:'.$minid; //echo $w;
@@ -53,7 +52,7 @@ $t='tweetfeed'; $voc=helps($t);
 $r['batch']=lj('popsav',$rid.'_tweetfeed,batch',nms(28)).' ';
 $r['batch'].=lj('txtbox',$rid.'_tweetfeed,read',nms(65)).' ';
 $r['batch'].=lj('txtx',$rid.'____','x').' ';
-$r['edit']=divd('modules'.$t,console::block($t,1)).hlpbt($t.'_help');
+$r['edit']=divd('modules'.$t,console::block($t)).hlpbt($t.'_help');
 $r['from']=self::menu($rid);
 return tabs($r,'nl').divd($rid,'');}
 
