@@ -66,7 +66,7 @@ return $ret;}
 
 static function select_subarray($p,$r,$o){
 $ra=explode('/',$p); $n=count($ra);
-for($i=0;$i<$n;$i++){if($ra[$i] && strpos($ra[$i],'.')===false)$r=$r[$ra[$i]];}//
+for($i=0;$i<$n;$i++){$a=$ra[$i]??''; if($a && strpos($a,'.')===false)$r=$ra[$a]??'';}//
 return $r;}
 
 //shared
@@ -75,7 +75,7 @@ if($r)foreach($r as $k=>$v)if(isset($v[0]) && !is_file('users/'.$v[0]))unset($r[
 return is_array($r)?$r:[];}
 
 static function distrib_virtual_dir(){$rc=[]; $dr='users'; $nd='shared';
-$ra=msql::choose($dr,'',$nd); $n=count($ra);
+$ra=msqa::choose($dr,'',$nd); $n=count($ra);
 for($i=0;$i<$n;$i++)if(isset($ra[$i])){
 	$r=msql::read($dr,$ra[$i],1); $r=self::unset_nofile($r);
 	if($r)$rc=array_merge($rc,$r);}

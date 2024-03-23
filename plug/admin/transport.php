@@ -28,7 +28,7 @@ if(auth(6))return ['root',$r[3],$r[2],$sbr.'/'.$r[3]];}
 static function msql($p,$o){$ret='ok';
 $fa='_backup/msql_'.$p.'.tar'; $rb=[];
 if($o){//distant
-	$r=msql::choose('users',$p,''); //pr($r);
+	$r=msqa::choose('users',$p); //pr($r);
 	if(is_file($fa))unlink($fa);
 	if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)
 		$rb[]='msql/users/'.$p.'_'.$k.($va?'_'.$va:'').'.php'; //pr($rb);

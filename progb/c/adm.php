@@ -668,7 +668,7 @@ $r=sql('date_format(date,"%y%m%d.%H%i"),msg','qdmb','w',$id);
 return tagb('h2',$r[0]).divc('justy',conn::call($r[1]));}
 
 static function reviewfromsq($id){$rt=[];
-$r=msql::choose('',ses('qb'),'backup'); //pr($r);
+$r=msqa::choose('',ses('qb'),'backup'); //pr($r);
 foreach($r as $k=>$v){$ra=msql::read('',nod('backup_'.$v),1);
 	$ex=sql('id','qdmb','v',['ib'=>$v]);
 	if(!$ex)foreach($ra as $ka=>$va){

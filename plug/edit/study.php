@@ -53,7 +53,7 @@ $ret.=lj('poph',$j,picto('ok'));
 return $ret;}
 
 static function menu($p,$rid){$ret='';
-$r=msql::choose('',ses('qb'),'study'); if($r)sort($r);//$v==$p?'active':
+$r=msqa::choose('',ses('qb'),'study'); if($r)sort($r);//$v==$p?'active':
 if($r)foreach($r as $v)$ret.=lj($p==$v?'active':'',$rid.'_study,call___'.$v.'_'.$rid,$v);
 return btn('nbp',$ret).' ';}
 

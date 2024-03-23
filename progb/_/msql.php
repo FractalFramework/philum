@@ -113,17 +113,6 @@ if(!is_file($f))return self::save($dr,$nod,$r,$rb);}
 static function delrow($dr,$nod,$k){
 return msql::modif($dr,$nod,$k,'del');}
 
-//select
-static function choose($dr,$pr,$nd){$rt=[];
-$r=explore('msql/'.($dr?$dr:'users'),'',1); if(!$r)return; $n=count($r);//groot('msql/')
-for($i=0;$i<$n;$i++){$rb=preg_split("/[_\.]/",$r[$i]);
-if(!empty($rb[2]) && $rb[2]!='sav' && (empty($rb[3]) or $rb[3]!='sav')){
-	if($pr && $rb[0]==$pr && !$nd && $rb[1] && $rb[2]!='php')$rt[$rb[1]][]=$rb[2];
-	elseif($pr && $rb[0]==$pr && $rb[1]==$nd && $rb[2]!='php')$rt[]=$rb[2];//versions
-	elseif(!$pr && $nd){if($rb[1]==$nd)$rt[]=$rb[0].'_'.$rb[1];}
-	elseif(!$pr)$rt[]=$rb[0].'_'.$rb[1];}}
-return $rt;}
-
 static function findlast($dr,$pr,$nod){//next table
 $r=self::choose($dr,$pr,$nod); return self::nextnod($r);}//
 static function nextnod($r){if($r){$mx=max($r); asort($r); $i=0;

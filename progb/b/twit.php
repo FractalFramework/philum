@@ -144,7 +144,7 @@ msql::modif('',nod('twit_'.$p),$defs,'arr');
 return btn('frame-blue',helps('userforms'));}
 
 static function apikeys(){
-$r=msql::choose('',ses('qb'),'twit'); sort($r); $rb=[];
+$r=msqa::choose('',ses('qb'),'twit'); sort($r); $rb=[];
 if($r)foreach($r as $k)if(is_numeric($k))$rb[$k]=msql::val('',nod('twit_'.$k),'token_identifier');
 return $rb;}
 

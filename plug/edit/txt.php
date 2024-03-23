@@ -14,7 +14,7 @@ $ret.=ljb('','mem_storage','txtarea_m1_1__ckb0',picto('refresh'),atd('ckb1').att
 return btn('nbp',$ret).' ';}
 
 static function files($nd,$tx){$ret='';
-$r=msql::choose('',$nd,'txt'); if($r)asort($r); $r=array_reverse($r);
+$r=msqa::choose('',$nd,'txt'); if($r)asort($r); $r=array_reverse($r);
 if($r)foreach($r as $k=>$i){$txt=msql::val('',$nd.'_txt_'.$i,1);
 	if($txt)$ret.=lj('','plgtxt_txt,home___'.$i.'_'.$tx,$i.': '.$txt);}
 return divc('list',$ret);}
@@ -94,7 +94,7 @@ return btn('txtyl','ok');}
 
 //mnu
 static function btn($d,$nd,$tx){//version,node,
-$r=msql::choose('',$nd,'txt'); $nxt=msql::nextnod($r); $ret='';
+$r=msqa::choose('',$nd,'txt'); $nxt=msql::nextnod($r); $ret='';
 if($d){$ret.=btd('bck','').' ';
 	$ret.=lj('popbt','bck_txt,call_tit,txtarea_xd_'.$d,nms(27)).' ';//save
 	$ret.=lj('txtx','plgtxt_txt,call___'.$d.'_'.$tx,$d).' ';//reload

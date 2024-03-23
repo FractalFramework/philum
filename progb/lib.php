@@ -456,6 +456,7 @@ function implode_j($d){$rb=[]; if(!is_array($d))$r[]=$d; else $r=$d;
 foreach($r as $k=>$v)if($v=='this' or $v=='event')$rb[]=$v; else $rb[]='\''.$v.'\'';
 if($rb)return implode(',',$rb);}
 function implode_keys($r,$a=''){$rb=array_keys($r); if($rb)return implode($a,$rb);}
+function joinif($a,$r){$rt=[]; foreach($r as $k=>$v)if($v)$rt[]=$v; if($rt)return join($a,$rt);}
 
 #filters
 function delbr($d,$o=''){return str_replace(['<br />','<br/>','<br>'],$o,$d??'');}

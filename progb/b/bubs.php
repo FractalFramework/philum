@@ -126,7 +126,7 @@ return $ret;}
 
 //msql
 static function msql($cat,$a,$b,$c){
-$r=msql::choose($a,$b,$c); $j='msql___'.$a.'_'.$b.'_'; if($c && $r)sort($r);
+$r=msqa::choose($a,$b,$c); $j='msql___'.$a.'_'.$b.'_'; if($c && $r)sort($r);
 if($r)foreach($r as $k=>$v){if(is_array($v)){sort($v); $kp=in_array_b('php',$v);
 	if($kp!==false){unset($v[$kp]);
 		$ret[]=['This','ajax','popup',$j.$k,'','',$cat.'/'.$k,'msql'];}

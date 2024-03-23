@@ -24,7 +24,7 @@ $ret.=self::build($p,$o);
 return $ret;}
 
 static function scan($d){$rb=[]; $n=strlen($d)+1;
-$r=msql::choose('',ses('qb'),self::$pr); //pr($r);
+$r=msqa::choose('',ses('qb'),self::$pr); //pr($r);
 foreach($r as $k=>$v)if(substr($v,0,$n)==$d.'-')$rb[]=$v; //pr($rb);
 sort($rb);
 return $rb;}

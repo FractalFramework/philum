@@ -656,6 +656,32 @@ static function murlboot(){
 [$b,$dr,$nd,$pr,$tb,$vn]=self::murlread(self::sesm('murl'));
 return self::murl($b,$dr,$nd?$nd:ses('qb'),$pr,$tb);}
 
+static function mknode($f){
+$f=str_replace('.php','',$f);
+$f=str_replace('msql/','',$f);
+$r=explode('/',$f); $dr=$r[0]; $n=1;
+if($r[1]=='lang'){$dr.='/'.$r[1].'/'.$r[2]; $n=3;}
+else $nod=join('_',array_slice($r,$n));
+return [$dr,$nod];}
+
+static function mknodes($r){$rt=[];
+foreach($r as $k=>$v)$rt[$k]=self::mknode($v)[1];
+return $rt;}
+
+static function mknodesname($r){$rt=[];
+$r=self::mknodes($r);
+foreach($r as $k=>$v)$rt[$k]=strend($v,'_');
+return $rt;}
+
+//select
+static function choose($dr,$pr='',$nd=''){$rt=[];
+$u=joinif('/',['msql',$dr?$dr:'users',$pr,$nd]);
+$r=scanfiles($u); if(!$r)return;
+if($nd)$rt=msqa::mknodesname($r);
+else $rt=msqa::mknodes($r);
+//pr($rt);
+return $rt;}
+
 #boot
 static function tables($r){$rt=[];
 foreach($r as $k=>$v){
@@ -663,9 +689,9 @@ foreach($r as $k=>$v){
 	else{$v=substr($v,0,-4); $rt[$v]=$v;}}
 return $rt;}
 
-static function stage($r){$rt=[];
+/*static function stage($r){$rt=[];
 foreach($r as $k=>$v)$rt[]=is_array($v)?$k:$v;
-return $rt;}
+return $rt;}*/
 
 //[$bases,$base,$dirs,$dir,$hubs,$hub,$files,$table,$version,$folder,$node]=$ra;
 static function boot($msql){
