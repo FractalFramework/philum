@@ -689,10 +689,6 @@ foreach($r as $k=>$v){
 	else{$v=substr($v,0,-4); $rt[$v]=$v;}}
 return $rt;}
 
-/*static function stage($r){$rt=[];
-foreach($r as $k=>$v)$rt[]=is_array($v)?$k:$v;
-return $rt;}*/
-
 //[$bases,$base,$dirs,$dir,$hubs,$hub,$files,$table,$version,$folder,$node]=$ra;
 static function boot($msql){
 $auth=ses('auth'); $root='msql/';//self::sesm('root')
