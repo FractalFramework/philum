@@ -96,7 +96,7 @@ return $ret;}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
-$ret=spiclr::table($p,$o);
+$ret=spiclr::table($p);
 return $ret;}
 
 static function home($d){if(!$d)$d=118;

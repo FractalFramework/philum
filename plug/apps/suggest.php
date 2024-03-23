@@ -47,8 +47,8 @@ if($ra[1] && $alx)return lj('txtyl',$rap,nms(56));
 $r[]=[date('ymdHi'),'',$ra[3],$ra[0],$ra[1],$ra[2],ses('iq')]; if(isset($r[0]))$r=msql::reorder($r);
 if(!$ra[0] or !$ra[1] or !$ra[2])return btn('txtyl','niet').$back;
 elseif(!$alx){msql::save('',$nod,$r); if($ra[0])self::sugmail($ra[0],$ra[1]);
-	return btn('txtred',helps('userforms')).$back;
-	return lj('txtred','popup_sav,batchpreview__3_'.ajx($ra[2]),nms(56));}
+	//return lj('txtred','popup_sav,batchpreview__3_'.ajx($ra[2]),nms(56));
+	return btn('txtred',helps('userforms')).$back;}
 else return lj('txtyl',$rap,nms(37)).$back;}
 
 static function web(){

@@ -16,7 +16,7 @@ static function home($p,$o){$rid=randid('plg');
 head::add('csslink','/css/_oomo.css'); $bt='';
 //$bt=self::menu($p,$o,$rid);
 if(auth(6))$bt.=msqbt('system','edition_pictos_2');
-$ret=self::all($p,$o);
+$ret=self::all();
 return $bt.divd($rid,$ret);}
 }
 ?>

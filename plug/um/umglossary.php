@@ -5,7 +5,7 @@ if($r)foreach($r as $v){$p=strrpos($v,'['); if($p)$v=substr($v,$p+1);
 	if($v)$ret[]='img/'.$v.$xt;}
 return $ret;}*/
 
-static function umwords_dicos($v){
+static function dicos($v){
 $n=sql::call('select id from dicofr where mot like "'.$v.'";','v');
 if(!$n)$n=sql::call('select id from dicoen where mot like "'.$v.'";','v');
 return $n;}
@@ -31,10 +31,10 @@ if($r)foreach($r as $k=>$v){
 			//idart,voc,pos,sound
 			$rc[$va]=array($k,$va,$ka,soundex($va));}}
 //if(auth(6))self::sav($rc);
-return $rd;
-$ret=count($rc);
-$ret.=tabler($rc);
-return $ret;}
+//$ret=count($rc);
+//$ret.=tabler($rc);
+//return $ret;
+return $rd;}
 
 static function liaisons($p,$o){
 $rb=self::build($p,$o);
@@ -43,8 +43,8 @@ foreach($r as $k=>$v)
 	if($rb)foreach($rb as $ka=>$va)
 		if($va[1]==$v)$rc[]=[$k,$va[0],$va[2]];
 //if(auth(6))$nid=sql::qrid('insert into '.ses('qdvoc_b').' values '.sql::atmrb($rc,1));
-return tabler($rb);
-return count($rc);}
+//return count($rc);
+return tabler($rb);}
 
 static function see($p,$o,$prm=[]){
 $p=$prm[0]??$p;

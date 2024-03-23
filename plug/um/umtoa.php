@@ -60,7 +60,7 @@ return $draw=svg::draw();}
 //return divc('grid-art',divc('col1',$ret).divc('col2',$draw));
 
 static function home($p,$o){$rid='plg'.randid();
-$ret=self::build($p,$o);
+$ret=self::build();
 $bt=msqbt('',nod('umtoa_1'));
 return $bt.divd($rid,$ret);}
 }

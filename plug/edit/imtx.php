@@ -4,8 +4,8 @@ static function conn($p,$w){ses('out','_datas/imtx.png');
 return imgtxt::home($p,'Fixedsys','out');}
 
 static function call($p,$o,$prm=[]){$d=$prm[0]??'';
-return imgtxt::home($d,'Fixedsys','out');
-return image(ses('out').'?'.randid());}
+//return image(ses('out').'?'.randid());
+return imgtxt::home($d,'Fixedsys','out');}
 
 static function home($p,$o){$rid='plg'.randid(); ses('out','_datas/imtx.png'); $w=400; $h=300;
 $j=$rid.'_imtx,call_txtarec__'.$w.'_'.$h; $sj='SaveJ(\''.$j.'\')';

@@ -131,7 +131,7 @@ static function inject_fonts(){$dr='fonts/'; $ret='';
 $ra=msql::read('server','edition_typos'); $vra=array_keys_r($ra,0);
 $rb=msql::read('system','edition_typos'); $vrb=array_keys_r($rb,0);
 $rc=explore($dr,'files',1); $vrf[]=1;
-if($rc)foreach($rc as $k=>$v){[$nm,$xt]=split_right('.',$v,1,1);//add
+if($rc)foreach($rc as $k=>$v){[$nm,$xt]=split_right('.',$v);//add
 	if($xt=='woff' or $xt=='eot' or $xt=='svg'){// or $xt=='ttf'
 	if(!in_array($nm,$vra) && !in_array($nm,$vrb) && !in_array($nm,$vrf)){
 		$rb[]=[$nm,'user','','','']; $vrf[]=$nm; $add[]=$nm;}

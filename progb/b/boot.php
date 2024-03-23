@@ -1,8 +1,8 @@
 <?php 
 class boot{
 
+static function cnc(){return 'cnfg/'.hst().'.php';}
 static function cnf(){return 'cnfg/_'.sql::$db.'_config.txt';}
-static function cnc(){return 'cnfg/'.str_replace('www.','',$_SERVER['HTTP_HOST']).'.php';}
 static function reset_mjx(){for($i=1;$i<12;$i++)$_SESSION['heremjx'.$i]='';}
 static function reset_ses(){self::reset_mjx(); $r=['mdc','modc','mods','mem','digr','icotag','recache','adminauthes','msqmimes','msqlang','negcss','delaytext','scanplug','scandir_b','simplified','connedit','lang','lng','flags','murl','prma','prms','prmb','prmb1','editbt'];
 foreach($r as $v)unset($_SESSION[$v]);}
@@ -88,7 +88,7 @@ self::define_mods();
 //$_SESSION['ovc']=msql::two('',nod('overcat'));
 //$_SESSION['oclr']=msql::two('',nod('overcat_clr'));
 $_SESSION['nms']=msql::col('lang','helps_nominations',0,1);
-if(rstr(112))$_SESSION['catpic']=msql::two('',nod('pictocat'),'',1);
+if(rstr(112))$_SESSION['catpic']=msql::two('',nod('pictocat'),'');
 if(rstr(46))$_SESSION['catemo']=msql::kn('',nod('pictocat'),0,2);
 $_SESSION['art_options']=['related','folder','agenda','lang','template','authlevel','password','tracks','2cols','fav','like','poll','bckp','artstat','quote','lastup','plan','mood','agree'];
 $_SESSION['mobile']=mobile(); $_SESSION['switch']=''; $_SESSION['prma']=[];}
@@ -348,7 +348,8 @@ return $ret;}
 
 static function deskpage(){$ret=self::state();
 head::add('jscode',desk::desktop_js('boot'));
-if($ret)head::add('jscode',sj('popup_'.$ret));}
+if($ret)head::add('jscode',sj('popup_'.$ret));
+return '';}
 
 #cache
 static function cache_arts($x=''){

@@ -2,7 +2,7 @@
 
 #store
 class ses{static $r=[]; static $s=[]; static $adm=[]; static $st=[]; static $er=[]; static $enc='';
-static $urlsrc=''; static $loader=''; static $local=0; static $tw=1; static $n=0; static $nb=0; static $oom='';
+static $urlsrc=''; static $loader=''; static $local=0; static $tw=1; static $n=0; static $nb=0; static $oom=''; static $cnfg;
 static function adm($k){return self::$adm[$k]??'';}
 static function s($k,$v=''){return self::$s[$k]??(self::$s[$k]=$v);}
 static function k($k,$v){return self::$r[$k]=$v;}

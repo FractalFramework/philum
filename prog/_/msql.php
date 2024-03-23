@@ -27,7 +27,8 @@ static function dump($r,$p=''){$rc=[]; $rt=[];
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
 	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?sql::qres($va):'')."'";
 		$k=is_numeric($k)?$k:"'".addslashes($k)."'";
-		if($rb)$rc[]=$k.'=>['.implode(',',$rb).']';}}
+		if($rb)$rc[]=$k.'=>['.implode(',',$rb).']';}
+	else $rc[$k]=(is_numeric($k)?$k:'"'.$k.'"').'=>[\''.($v?sql::qres($v):'').'\']';}
 if($rc)$rt=implode(','.n(),$rc);
 return '<?php '."\n".'return ['.$rt.']; ?>';}
 
@@ -43,7 +44,7 @@ if($rh && !isset($r['_']))$r=array_merge(['_'=>$rh],$r); if(isset($r[0]))$r=self
 $f=self::url($dr,$nod,$bak); $d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); return $r;}
 
 static function init($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak);
-if(!is_file($f))$r=self::save($dr,$nod,[],$rh,$bak);}
+if(!is_file($f))return self::save($dr,$nod,[],$rh,$bak);}
 
 static function modif($dr,$nod,$ra,$act,$rh=[],$n=''){
 if(!$dr)$dr='users'; $r=self::read($dr,$nod,'',$rh);

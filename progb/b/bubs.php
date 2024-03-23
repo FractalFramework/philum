@@ -333,7 +333,7 @@ if(strto($k,'/')==strto($dir,'/')){
 		elseif(strtolower($ka)=='hubs' && auth(5) && is_array($mn))foreach($mn as $kb=>$vb)
 			$ret[]=[$vb?$vb:$kb,'link','',subdomain($kb),'','',$k.'/'.$ka,$ico];
 		elseif($ka=='console')$ret=self::adm_console($ret,$k.'/'.$ka);
-		elseif($ka=='restrictions')$ret=self::adm_rstr($ret,$k,$ka,$t,$ico);
+		elseif($ka=='restrictions')$ret=self::adm_rstr($ret,$k,$ka,$t);
 		elseif($ka=='tickets')$ret[]=[$t,'app','chatxml,home','tickets','','',$k,'chat'];
 		elseif($ka=='update')$ret[]=[$t,'ajax','popup','admin__3_'.ajx($ka),'','',$k,'download',''];
 		else $ret[]=[$t,'ajax','popup','admin__3_'.ajx($ka),'','',$k,$ico,''];}}}}

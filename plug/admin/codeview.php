@@ -158,7 +158,7 @@ if(!$r)return 'null';
 foreach($r as $k=>$v)$rb[]=self::ffunc_row($v); $n=count($rb);
 return btn('txtcadr','static function '.$p.'() '.$n.' '.plurial($n,19).'').tabler($rb,'txtblc');}
 
-static function home($dr,$f,$fc=''){db('qdy','_sys');
+static function home($dr,$f,$fc=''){
 if($dr=='param')$dr=$f=''; $ret=''; $res='';
 if(!$f && $fc)$f=sql::call('select page from _sys where name="'.$fc.'"','v');
 if(strpos($f,'.')===false && $f)$f.='.php'; if($fc=='all')$fc='';

@@ -14,7 +14,7 @@ foreach($r as $k=>$v){$ret.=divc('txtcadr',$k); $rc=[];
 		//$ret.=lj('','popup_clusters,edit__2_'.ajx($ka),$ka).' ';
 		$ret.=btn('popbt',$ka.' ('.$va.')').' ';}}
 //$f='_datas/clusters/tags.csv'; $d=array2csv($rd); mkdir_r($f); write_file($f,$d); $bt=lk('/'.$f);
-$bt=csvfile('clusters_tags',$rd,'clusters of tags','',1);
+$bt=csvfile('clusters_tags',$rd,'clusters of tags');
 return $bt.divc('list',$ret);}//nbp
 
 #edit words
@@ -87,7 +87,7 @@ return $ret;}
 
 static function view($cat,$o,$prm=[]){$ret=''; $bt=''; $rb=[];
 if(!$cat)$cat='tag'; $nbj=$prm[1]??30; $len=$prm[2]??200;
-if(is_numeric($cat))return self::viewart($cat,$o);//
+if(is_numeric($cat))return self::viewart($cat);//
 $ret=self::classtags('clst_clusters,view__3_');
 $r=self::clustags($cat,$nbj,$len);//tag=>0=>tag,idtag,idclust,word,count
 foreach($r as $k=>$v){$del='';
@@ -106,8 +106,8 @@ $r=ma::art_tags($id,'krr'); $rt=[];//cat[tag=>idtag]
 foreach($r as $k=>$v)foreach($v as $ka=>$va){
 	$bt=self::viewone($id,$va[2]);
 	$rt[$k][]=divc('row',divc('cell',$va[1]).div($bt,'cell','edt'.$va[2]));}
-return tabs($rt);
-return divc('table',self::implode_b('',$rt));}
+//return divc('table',self::implode_b('',$rt));
+return tabs($rt);}
 
 static function implode_b($r,$a=''){$rb=[]; foreach($r as $k=>$v)
 	if(is_array($v))$rb=array_merge($rb,self::implode_b($v)); else $rb[]=$v;

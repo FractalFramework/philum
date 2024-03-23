@@ -284,7 +284,7 @@ elseif($md=='delcol')$d='0';
 else $d=$p;
 if($md=='export_csv' or $md=='sort_table'){
 	[$dr,$nod]=self::node_decompil($p); $r=msql::read($dr,$nod);}
-if($md=='export_csv')return csvfile($nod,$r,$nod,1);
+if($md=='export_csv')return csvfile($nod,$r,$nod);
 $ret=input('msqop',$d,32);
 $rl='x';//$md=='rename_table'||$md=='duplicate_table'?'url':
 $ret.=lj('','admsql_msqlops_msqop_'.$rl.'_'.ajx($p).'_'.ajx($md).'_'.$oa,picto('ok'));
@@ -520,12 +520,14 @@ return $ret;}
 static function addition($r,$n){
 $rh=$r[msql::$m]??[$n=>'']; $rk=array_column($r,$n); //p($rk);
 if(isset($rk[msql::$m]))unset($rk[msql::$m]);
-echo tabler(['addition',$rh[$n],array_sum($rk)]);}
+echo tabler(['addition',$rh[$n],array_sum($rk)]);
+return [];}
 
 static function average($r,$n){
 $rh=$r[msql::$m]??[$n=>'']; unset($r[msql::$m]); $rk=array_keys_r($r,$n);
 if(isset($rk[msql::$m]))unset($rk[msql::$m]);
-echo tabler(['addition',$rh[$n],array_sum($rk)/count($rk)]);}
+echo tabler(['addition',$rh[$n],array_sum($rk)/count($rk)]);
+return [];}
 
 static function intersecter($r){$ra=[]; $rb=[]; $rc=[]; $re=[]; $rt=[]; $rtb=[];
 foreach($r as $k=>$v){[$dr,$nod]=split_right('/',$v,1); $r0=msql::read($dr,$nod,1);

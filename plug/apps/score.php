@@ -2,7 +2,7 @@
 class score{
 static $a=__CLASS__;
 static $default='';
-static $r=['jdapoll'=>'soutiens','jdatrk'=>'commentaires','approve'=>'approbations','disapprove'=>'désapprobations','nbtags'=>'nombre de tags','tagweight'=>'popularité des tags','nbwords'=>'nombre de mots','wordweight'=>'popularité des mots','likes'=>'likes','faisability'=>'faisabilité','efficiency'=>'efficacité','relevance'=>'pertinence'];//'poll'=>'jugement','agree'=>'appréciation'
+static $r=['jdapoll'=>'soutiens','jdatrk'=>'commentaires','approve'=>'approbations','disapprove'=>'dï¿½sapprobations','nbtags'=>'nombre de tags','tagweight'=>'popularitï¿½ des tags','nbwords'=>'nombre de mots','wordweight'=>'popularitï¿½ des mots','likes'=>'likes','faisability'=>'faisabilitï¿½','efficiency'=>'efficacitï¿½','relevance'=>'pertinence'];//'poll'=>'jugement','agree'=>'apprï¿½ciation'
 
 static function pivot_array($r){$rb=[];
 foreach($r as $k=>$v){foreach($v as $ka=>$va)$rb[$ka][$k]=$va;}
@@ -24,7 +24,7 @@ case('tagweight'):$rd=[]; $re=[];
 	$rc=sqb('idart,idtag','qdta','kr','inner join meta on meta.id=meta_art.idtag where cat="tag"'); //pr($rc);
 	//nombre d'occurrence de chaque tag
 	foreach($rc as $kb=>$v)foreach($v as $ka=>$va)$rd[$kb][$va]=$rb[$va]; //pr($rd);
-	//célébrité moyenne de chaque tag
+	//cï¿½lï¿½britï¿½ moyenne de chaque tag
 	foreach($rd as $kb=>$v)$re[$kb]=array_sum($v)/count($v); //pr($re);
 	$r[$k]=$re; break;
 case('nbwords'):$r[$k]=sqb('idart,count(idtag) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="mot" group by idart order by nb desc '.$limit); break;
@@ -40,9 +40,9 @@ case('wordweight'):$rd=[]; $re=[];
 case('likes'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="like" group by ib order by nb desc '.$limit); break;
 case('poll'): $r[$k]=sql('ib,avg(poll)','qdf','kv','type="poll" '.$limit); break;
 case('agree'): $r[$k]=sql('ib,avg(poll) as nb','kv','kv','type="agree" group by ib order by nb desc '.$limit); break;
-case('faisability'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Faisabilité" group by ib order by nb desc '.$limit); break;
-case('efficiency'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Efficacité" group by ib order by nb desc '.$limit); break;
-case('relevance'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Efficacité" group by ib order by nb desc '.$limit); break;}}
+case('faisability'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Faisabilitï¿½" group by ib order by nb desc '.$limit); break;
+case('efficiency'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Efficacitï¿½" group by ib order by nb desc '.$limit); break;
+case('relevance'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Efficacitï¿½" group by ib order by nb desc '.$limit); break;}}
 //pr($r);
 //pr($r['approve']);
 
@@ -67,10 +67,10 @@ foreach($ra as $k=>$v)if($r[$k] && $v){$rb=$r[$k];
 $re=[]; $rab=['id']; $rab+=$ra; $re[]=array_keys($rab);
 foreach($rc as $k=>$v){$re[$k][]=$k;
 	foreach($ra as $ka=>$va)$re[$k][]=val($v,$ka);}
-$bt=csvfile('scores_rates',$re,'rates','',1);
+$bt=csvfile('scores_rates',$re,'rates');
 //pr($re);
 
-#moyenne=somme/qté de coefs (5*2+10*1=20/3)
+#moyenne=somme/qtÃ© de coefs (5*2+10*1=20/3)
 $rd=[];
 $coefs=array_sum($ra); //$nbprm=count($ra);
 //foreach($rc as $k=>$v)$rd[$k]=array_sum($v)/$coefs; //pr($rd); //$coefs
@@ -91,7 +91,7 @@ $f='scores_'.str::normalize(strfrom($cat,') ')).'_'.implode('-',$ra);
 $rav=[]; foreach(self::$r as $k=>$v)$rav[$v]=$ra[$k];//french cols
 $rb=[]; $rb[]=['config',implode_k($rav,',','=')]; $rb[]=['id','rating'];
 foreach($rd as $k=>$v)$rb[]=[$k,$v];
-$bt.=csvfile($f,$rb,'csv','',1);
+$bt.=csvfile($f,$rb,'csv');
 
 //arts
 ses('score',$rd);//get('score','1');

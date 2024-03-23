@@ -177,7 +177,6 @@ switch($d){
 	case('ovcat'):$r=sesmk2('usg','overcats'); if($r)array_unshift($r,''); if($r)ksort($r); break;
 	case('pri'):$r=[1=>0,2=>1,3=>2,4=>3,5=>4]; break;
 	case('vfld'):$r=sql('msg','qdd','k','val="folder"'); $cl=0; break;
-	case('lang'):$r=array_flip(explode(' ',prmb(26))); $cl=0; break;
 	case('msql'):[$dr,$nd,$vn]=msqa::murlvars($o); $r=msql::read($dr,$nd,1);
 		if($r)$r=array_flip(array_keys($r)); break;
 	case('msqlb'):[$dr,$nd,$vn]=msqa::murlvars($o); $r=msql::kx($dr,$nd,$vn?$vn:0); break;
@@ -203,7 +202,7 @@ if($r)foreach($r as $k=>$v)$ret.=btj($v,'selectprnt(\''.$id.'\',\''.$k.'\');',ac
 return scroll($r,divc('list',$ret),10,'','240');}
 
 static function hidslct($id,$d,$vrf='',$o='',$prm=[]){//hidj//select_j()
-$vrf=$prm[0]??$vrf; if($d=='date')return self::dropmenuform($id,$id,$vrf,'bt',$o);
+$vrf=$prm[0]??$vrf; if($d=='date')return self::dropmenuform($id,$id,$vrf,'bt');
 $r=self::slct_r($d,$o,$vrf); $ret=''; ses::$r['popw']=320;
 if($d=='msql')$o='1'; elseif($d=='msqlb' or $d=='msqlc')$o='';
 elseif($d=='pclass')$o=3; //elseif($d=='tag')$o=1;
@@ -211,9 +210,9 @@ if(is_array($r))foreach($r as $k=>$v){$c=active($k,$vrf); $k=addslashes($k);//ad
 	if(is_array($v) or is_numeric($v))$v=$k; $v=stripslashes($v);
 	if(strpos($d,'|')===false)$t=$k?$k:$d; elseif($k)$t=$k; elseif($vrf)$t=$vrf; else $t='';
 	if($t=='-')$t='...';
-	if($v && ($d=='tag' or $d=='lang'))$ret.=ljb($c,'addval',[$id,ajx($t),'|'],$v);//
+	if($v && ($d=='tag' or $d=='lang'))$ret.=ljb($c,'addval',[$id,ajx($t),'|'],$v);
 	elseif($v)$ret.=ljb($c,'hidslct',[$id,$k,ajx($t),$o],$v);}
-if($o>=2)$ret.=self::dropmenuform($id,$id,$vrf,'bt',$o);
+if($o>=2)$ret.=self::dropmenuform($id,$id,$vrf,'bt');
 //$ret=scroll($r,$ret,40,'');
 return divc('list',$ret);}
 
@@ -228,7 +227,7 @@ if(is_array($r))foreach($r as $k=>$v){$c=active($k,$vrf); $k=addslashes($k);
 	if($t=='-')$t='...'; $c=''; $vb=$v; if(isset($rb[$v])){$vb=$rb[$v]; $c='active';}
 	if($v)$ret.=ljb($c,'cases_j',[$id,$v,$i],$vb,atd('bt'.$id.$i));
 	$i++;}
-if($o>=2)$ret.=self::dropmenuform($id,$id,$vrf,'bt',$o);
+if($o>=2)$ret.=self::dropmenuform($id,$id,$vrf,'bt');
 return divc('list',$ret);}
 
 #admin

@@ -109,8 +109,7 @@ static function motor(){return [
 static function clr($d=''){
 $r=sesmk('colors','',1); $rb=array_keys($r);
 if($d=='rand')$d=rand(0,count($rb)-1);
-return is_numeric($d)?$rb[$d]:$d;
-return arr($rb,$d);}
+return is_numeric($d)?$rb[$d]:$d;}
 
 static function prop($d){return str_replace(['/','-','_'],[',',' ','-'],$d);}
 
@@ -127,9 +126,8 @@ if(isset($pr['transform']))$pr['transform']=self::prop($pr['transform']);
 if(isset($pr['fill']))$pr['fill']=self::clr($pr['fill']);
 if(isset($pr['stroke']))$pr['stroke']=self::clr($pr['stroke']);
 if(isset($pr['onclick']) && $b=='lj'){$pr['onclick']=sj(str_replace(';',',',$pr['onclick'])); $b='a';}
-if(isset($pr['onclick']) && $b=='js'){$pr['onclick']=$pr['onclick']; $b='a';}
-if(isset($pr['onmouseover']) && $b=='lj'){$pr['onmouseover']=sj($pr['onmouseover']); $b='a';}
-if(isset($pr['onmouseover']) && $b=='js'){$pr['onmouseover']=$pr['onmouseover']; $b='a';}
+if(isset($pr['onclick']) && $b=='js'){$b='a';}
+if(isset($pr['onmouseover'])){$b='a'; if($b=='lj')$pr['onmouseover']=sj($pr['onmouseover']);}
 if($b=='tog')return togbt($pr['txt'],$v);
 if($b=='bub')return bubjs($pr['txt'],$v);
 //if($b=='bubj')pr($pr);

@@ -97,7 +97,7 @@ return trim($ret);}
 
 static function call($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
-$ret=self::build($p,$o);
+$ret=self::build($p);
 //$ret=self::clean_code($ret);
 //$ret=self::clean_namefunc($ret);
 //$ret=self::code_machine($ret);

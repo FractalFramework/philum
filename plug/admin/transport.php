@@ -178,7 +178,7 @@ static function call($p,$o){
 if($o=='last')return self::last($p);
 elseif($o=='d')return backup::dump($p);//dump
 elseif($o=='dj')return backup::json($p);//dump
-elseif($o=='d2')return self::dumpall($p);//dump2
+elseif($o=='d2')return self::dumpall();//dump2
 elseif($o=='up')return backup::build($p,0,1);//updates
 elseif(is_numeric($o))return backup::build($p,$o,0);}//inserts
 

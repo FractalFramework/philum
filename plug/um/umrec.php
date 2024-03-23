@@ -182,14 +182,15 @@ return [
 ['article','','{msg}']];}
 
 static function umcom($r){//:umcom
-return deln(view::call(self::tpl_art(),$r));
+return deln(view::call(self::tpl_art(),$r));}
+/* 
 $ret=divc('nbp',$r['lang']);
 $ret.=tagb('h2',$r['suj']).' '.$r['social'].' '.btn('small','#'.$r['id'].'#').' '.$r['tag'];
 $ret.=div(tagb('b',$r['source']).' '.tagb('u',$r['author']));//.' '.$r['btrk']
 $ret.=div($r['tracks']);
 $ret.=div(tagb('b',$r['opt']).' '.tagb('u',$r['player']).' ('.$r['day'].')');//.' '.$r['btxt']
 $ret.=div($r['msg']);
-return $ret;}
+return $ret;*/
 
 static function umcom2($r){//com2
 $ret=tagb('h4',$r['suj']);

@@ -34,8 +34,8 @@ if($r)foreach($r as $k=>$v){$i++; $imn='gallery/mini/'.$v[1];
 	if(is_file($imn)){$im=image($imn,$v[5],$v[6]);
 	$gdp=(0-$w+(($w/2)-($v[5]/2))); if($gdp<$limit)$gdp=$limit; if($gdp>0)$gdp=0;
 	$ret.=ljb('','sliderjnav_'.$a,[$gdp,$k],$im); $w+=$v[5];}}
-$ret=div($ret,'sdjv'.$a,'','margin-left:0px;',$ret);
-$ret=div($ret,'','','overflow:hidden; width:'.($w).'px; height:75px;',$ret);
+$ret=div($ret,'sdjv'.$a,'','margin-left:0px;');
+$ret=div($ret,'','','overflow:hidden; width:'.($w).'px; height:75px;');
 return $ret;}
 
 static function js($f,$a){

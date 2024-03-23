@@ -2,7 +2,7 @@
 class boot{
 
 static function cnf(){return 'cnfg/_'.sql::$db.'_config.txt';}
-static function cnc(){return 'cnfg/'.str_replace('www.','',$_SERVER['HTTP_HOST']).'.php';}
+static function cnc(){return 'cnfg/'.hst().'.php';}
 static function reset_mjx(){for($i=1;$i<12;$i++)$_SESSION['heremjx'.$i]='';}
 static function reset_ses(){self::reset_mjx(); $r=['mdc','modc','mods','mem','digr','icotag','recache','adminauthes','msqmimes','msqlang','negcss','delaytext','scanplug','scandir_b','simplified','connedit','lang','lng','flags','murl','prma','prms','prmb','prmb1','editbt'];
 foreach($r as $v)unset($_SESSION[$v]);}

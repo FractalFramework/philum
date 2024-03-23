@@ -1,9 +1,9 @@
 <?php //console
 class console{
 
-static function admactbt($p,$t,$x='',$o='',$tt='',$c=''){
-if($x=='self'){$tg='socket'; $x='';} elseif(!$x){$tg='popup'; $x='xx';} else $tg=$x;
-return lj($c,$tg.'_console,actions__'.$x.'_'.ajx($p).'_'.ajx($o),$t,att($tt)).' ';}
+static function admactbt($p,$t,$tg='',$o='',$tt='',$c=''){
+if($tg=='self')$tg='socket'; elseif(!$tg)$tg='popup';
+return lj($c,$tg.'_console,actions___'.ajx($p).'_'.ajx($o),$t,att($tt)).' ';}
 
 static function select_mods_m(){
 $r=msql::choose('users',ses('qb'),'mods'); if($r)sort($r); $nw=msql::nextnod($r);
@@ -81,7 +81,7 @@ static function block($vl){$r=boot::context_mods($vl); $ret=self::see_conds($vl)
 $ret.=lj('','popup_admx,addmod___'.$vl,picto('add',16)).' ';
 //$ret.=lj('','popup_sty,editcss___'.$vl,picto('css',16)).' ';
 if(is_array($r))foreach($r as $k=>$v)$ret.=self::console_module($k,$v,$vl).' ';//defd
-if($vl=='system')$ret.=self::console_system($r);
+if($vl=='system')$ret.=self::console_system();
 return $ret;}
 
 static function console_nav(){$ret='';
@@ -96,7 +96,7 @@ foreach($r as $k=>$v)if($v && $v!='clear'){$rt='';
 return $ret;}
 
 static function home($p=''){
-if($p && !is_numeric($p))return divd('mdls'.$p,self::block($p,1));
+if($p && !is_numeric($p))return divd('mdls'.$p,self::block($p));
 $ret=self::select_mods_m();//mods
 if(auth(6))$ret.=self::backup_console_bt();
 $ret.=self::see_conds_b();//conditions
@@ -132,13 +132,13 @@ case('backup_mods'):copy(msql::url('',$nod),$fb); break;
 case('mk_default'):msql::copy('users',$nod,'system','default_mods');
 msql::copy('users',$nod,'users','public_mods_1'); alert('system/default_mods;public_mods_1'); break;
 case('restore_mods'):copy($fb,msql::url('',$nod)); boot::define_mods(); boot::define_condition(); $rl=1; break;
-case('refresh_mods'):boot::define_mods(); boot::define_condition(); return self::home(); break;
+case('refresh_mods'):boot::define_mods(); boot::define_condition(); return self::home();
 case('make_copy'):msql::copy('users',ses('qb').'_mods_'.ses('prmb1'),'users',$nod);
 	boot::define_mods(); boot::define_condition(); break;
 case('default_mods'):msql::copy('system','default_mods','users',$nod);
 	boot::define_mods(); boot::define_condition(); break;
 case('set_cond'):boot::setcond($o,1); boot::define_modc(); boot::define_prma();
-	return self::home(); break;}
+	return self::home();}
 return $rl?self::home():$ret;}
 }
 ?>

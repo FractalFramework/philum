@@ -27,7 +27,8 @@ static function dump($r,$p=''){$rc=[]; $rt=[];
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
 	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?sql::qres($va):'')."'";
 		$k=is_numeric($k)?$k:"'".addslashes($k)."'";
-		if($rb)$rc[]=$k.'=>['.implode(',',$rb).']';}}
+		if($rb)$rc[]=$k.'=>['.implode(',',$rb).']';}
+	else $rc[$k]=(is_numeric($k)?$k:'"'.$k.'"').'=>[\''.($v?sql::qres($v):'').'\']';}
 if($rc)$rt=implode(','.n(),$rc);
 return '<?php '."\n".'return ['.$rt.']; ?>';}
 
@@ -75,7 +76,7 @@ static function inc($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak); $r=[];
 if(is_file($f)){try{$ra=require($f);}catch(Exception $e){echo 'bruu: '.$nod;}}
 elseif($rh)self::save($dr,$nod,[],$bak);
 if(isset($ra) && is_array($ra) && !$r)$r=$ra;
-//if(!isset($r)){$nd=str_replace('_sav','',$nod); $r=$$nd; echo $nd.' ';}//patch_old
+//if(!isset($r)){$r=$$nd; echo $nd.' ';}//patch_old
 if(is_array($r))$r=self::sl($r);
 return $r;}
 

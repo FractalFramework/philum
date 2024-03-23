@@ -60,8 +60,7 @@ return self::$r;}
 
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$p;//[$p,$o]=prmp($p,$o,$prm);
-$r=self::build($p,$o);
-$ret=echor($r);
+//$r=self::build($p);
 $ret=self::sav($p);
 return $ret;}
 

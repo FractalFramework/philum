@@ -49,10 +49,7 @@ if($r)foreach($r as $k=>$v){
 				//idart,voc,pos,sound
 			$rc[$va]=array($k,$va,$ka,soundex($va));}}}
 //if(auth(6))self::sav($rc);
-return $rd;
-$ret=count($rc);
-$ret.=tabler($rc);
-return $ret;}
+return $rd;}
 
 static function liaisons($p,$o){
 $rb=self::build($p,$o);
@@ -93,8 +90,8 @@ $id=sql('id','qda','v','suj like "['.$v.']%" and re="1" and lg="fr"');
 if($id){sql::upd('thesaurus',['idart'=>$id],$k);}}
 return count($r);}
 
-static function home($p,$o){$rid='plg'.randid();
-db('thesaurus','thesaurus'); $ret='';
+static function home($p,$o){
+$rid='plg'.randid(); $ret='';
 sesr('db','qdvoc','umvoc');
 sesr('db','qdvoc_b','umvoc_arts');
 sesr('db','qdvoc_b1','umvoc_arts_a');

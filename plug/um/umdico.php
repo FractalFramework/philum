@@ -9,7 +9,7 @@ if($r)foreach($r as $k=>$v){if($k!=msql::$m)
 	$v[2]=is_numeric($v[2])?$ry[$v[2]]:$v[2];
 	if($rb){$rb=array_keys($rb); $v[3]=count($rb)?implode(', ',$rb):'';}
 $rc[$k]=$v;}
-$r=msql::modif('','ummo_umvoc_1',$rc,'arr','','');}
+msql::modif('','ummo_umvoc_1',$rc,'arr','','');}
 
 static function imz($f,$n='2'){
 [$w,$h]=fwidth($f);
@@ -17,7 +17,7 @@ $w=round($w/$n); $h=round($h/$n);
 return divs('width:'.$w.'px;',image('/'.$f,$w,$h));}
 
 static function build($p){
-if($p=='1' && auth(6))$r=self::source();
+if($p=='1' && auth(6))self::source();
 $r=msql::read('users','ummo_umvoc_1',1);
 if($r)foreach($r as $k=>$v)$ra[$v[0]]=$v; ksort($ra);
 if($ra)foreach($ra as $k=>$v){

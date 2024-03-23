@@ -37,11 +37,11 @@ if($rb)foreach($rb as $k=>$v){$ret.=tagb('h2',$k); $bt='';
 return $ret;}
 
 static function pictos_mimes(){$rb=[];
-return msqa::home('system/program_mimes');//
-$r=msql::col('system','program_mimes',0,1);
-$ret=msqbt('system','program_mimes');
-foreach($r as $k=>$v)$rb[]=[$k,picto($v),$v];
-return $ret.tabler($rb);}
+return msqa::home('system/program_mimes');}
+//$r=msql::col('system','program_mimes',0,1);
+//$ret=msqbt('system','program_mimes');
+//foreach($r as $k=>$v)$rb[]=[$k,picto($v),$v];
+//return $ret.tabler($rb);
 
 static function pct_nam(){$ret='';
 $r=msql::col('system','edition_pictos',0,1);
@@ -100,10 +100,10 @@ return self::home($p,$o);}
 
 static function home($p,$o){
 if(!$p)$bt=self::pct_menu($p); else $bt='';
-if($p=='glyphes')$ret=divd('',self::glyphes($p)).br();
-elseif($p=='oomo')$ret=divd('',self::oomo($p)).br();
-elseif($p=='ascii')$ret=divd('',self::ascii($p)).br();
-else $ret=divd('',self::pictos($o)).br();
+if($p=='glyphes')$ret=divd('',self::glyphes()).br();
+elseif($p=='oomo')$ret=divd('',self::oomo()).br();
+elseif($p=='ascii')$ret=divd('',self::ascii()).br();
+else $ret=divd('',self::pictos()).br();
 return $bt.divd('pct',$ret);}
 
 }

@@ -22,7 +22,7 @@ $ref=sql('msg','qdd','v','ib="'.$id.'" AND val="'.$ch.'"');}
 $stock=sql('msg','qdd','v','ib="'.$id.'" AND val="'.$ch.'"');}
 return [$prx,$ref,$stock];}
 
-static function home(){$save=''; $total=0;
+static function home($p,$o){$save=''; $total=0;
 if($_GET["del"])unset($_SESSION['cart'][$_GET["del"]]);
 $ar[]=["","réf","titre","prix","qté","sub_total","x"];//"ancien prix","remise",
 if($_SESSION['cart']){

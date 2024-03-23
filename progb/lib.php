@@ -90,7 +90,7 @@ return taga('input',$p+['id'=>$d,'type'=>'text','value'=>$v,'placeholder'=>$h,'s
 function inpsw($d,$v,$s='',$p=[]){return inputb($d,$v,$s,'password','100',['type'=>'password']);}
 function inpdate($id,$v,$min='',$max='',$o=''){$ty=$o?'datetime-local':'date';//time
 return input($id,$v,'',['type'=>$ty,'min'=>$min,'max'=>$max]);}//step=1
-function inpnb($id,$v,$j,$p=[]){if($j)$p['onchange']=sj($j);
+function inpnb($id,$v,$j='',$p=[]){if($j)$p['onchange']=sj($j);
 return input($id,$v,'',$p+['type'=>'number','name'=>$id,'min'=>1,'step'=>1,'size'=>'8']);}
 function inpclr($id,$v=''){return '<input'.atr(['type'=>'color','id'=>$id,'name'=>$id,'value'=>$v]).'>';}
 function inpmail($id,$v='',$p=[]){return '<input'.atr($p+['type'=>'mail','id'=>$id,'value'=>$v,'size'=>'16','placeholder'=>'mail','maxlength'=>'100']).'>';}
@@ -552,7 +552,7 @@ function findroot($u){$r=explode('/',$u); $r=array_slice($r,0,3); if($r)return i
 function utmsrc($f){if(!$f)return; $r=['?fbclid','&fbclid','?utm','&utm'];
 foreach($r as $k=>$v)if($n=strpos($f,$v))$f=strto($f,$v); return $f;}
 function host(){return 'http://'.$_SERVER['HTTP_HOST'];}
-function hst(){return $_SERVER['HTTP_HOST'];}
+function hst(){return str_replace('www.','',$_SERVER['HTTP_HOST']);}
 function ip(){$ip=$_SERVER['REMOTE_ADDR']??'';
 if(strstr($ip,' ')){$r=explode(' ',$ip); return $r[0];} else return gethostbyaddr($ip);}
 function mobile(){$s=$_SERVER['HTTP_USER_AGENT']??'';

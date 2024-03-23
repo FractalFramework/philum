@@ -50,7 +50,7 @@ return ['ajax.php','app.php','call.php','index.php','install.php'];}
 static function exceptions($dr,$f){$no=0;
 if($dr=='msql/design' or $dr=='msql/users')if(strpos($f,$dr.'/public')===false)$no=1;
 if($dr=='css')if(strpos($f,$dr.'/_')===false && strpos($f,$dr.'/public')===false)$no=1;
-if(strpos($f,'_sav'))$no=1;
+if(strpos($f,'/_bak/'))$no=1;
 return $no;}
 
 static function datas($dr,$k,$f){$no=self::exceptions($dr,$f);
@@ -98,7 +98,7 @@ $f=upsrv().'/call/software,archive/'.nohttp(host());//distant will build archive
 if(ses::$local)$fa=curl_get_contents($f,json_encode($rc),1);
 else $fa=file_get_contents($f);
 $fb='_backup/upd.tar.gz'; copy(upsrv().'/'.$fa,$fb);
-tar::untar($fb,'');//install files
+tar::untar($fb);//install files
 return divd('updb',self::state($p).self::rapport($rc).self::tabler($rc));}
 
 static function home($p){//autoload

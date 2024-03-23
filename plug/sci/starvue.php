@@ -66,7 +66,7 @@ static function draw($r,$sq,$p){
 $w=self::$w; $h=$w; $im=new svg($w,$h);
 [$white,$black]=self::$clr;
 svg::rect(0,0,$w,$h,$black);
-self::map($r,$sq);
+self::map($r);
 self::dots($r,$p);
 //self::legend($r);
 return svg::draw();}

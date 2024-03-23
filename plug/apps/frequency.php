@@ -40,7 +40,7 @@ if($r)foreach($r as $k=>$v)if($v){$day=date('ymd',$v); $rb[$day][]=1;}
 if($rb)foreach($rb as $k=>$v)$rc[$k]=count($v);
 return self::graph($rc,1000);}
 
-static function tags($p,$o){$w; $rb=[]; $rc=[]; $sq=[]; //$o=100;
+static function tags($p,$o){$rb=[]; $rc=[]; $sq=[]; //$o=100;
 $sq['tag']=$p; if($o)$sq['>day']=timeago($o); $sq['_order']='art.id asc'; //$sq['_group']='day';
 //date_format(day,"%d/%m/%Y")
 //$r=sql::inner('idart','qdt','qdta','idtag','rv',$sq,1);
@@ -54,7 +54,7 @@ if($r)foreach($r as $k=>$v)if($v){$day=date($dt,$v); $rb[$day][]=1;}
 if($rb)foreach($rb as $k=>$v)$rc[$k]=count($v); //pr($rc);
 return self::render($rc,$p,$o);}
 
-static function words($p,$o){$w; $rb=[]; $rc=[]; $sq=[]; //$o=100;
+static function words($p,$o){$rb=[]; $rc=[]; $sq=[]; //$o=100;
 $sq['word']=$p; if($o)$sq['>day']=timeago($o); $sq['_order']='art.id asc';
 $br=[[['qdsr','id'],['qdsra','ib']],[['qdsra','art'],['qda','id']]];
 $r=sql::inner3('day',$br,'rv',$sq,0); //pr($r);
@@ -98,7 +98,7 @@ foreach($rb as $k=>$v)if($v)$rt[]=$v.' '.$ra[$k].($v>1?'s':'');
 return implode(', ',$rt);}
 
 static function build($p,$o){
-[$a,$b]=arr($p,',',2); $r=[];
+[$a,$b]=arr($p,','); $r=[];
 if($b && method_exists($a,$b))$r=$a::$b($p);
 elseif(function_exists($a))$r=$p($o);
 if($r)return self::graph($r,200);}

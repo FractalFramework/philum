@@ -51,7 +51,7 @@ return $rt;}
 
 static function call($a,$b,$prm=[]){$ret='';
 [$u,$p,$o]=arr($prm,3); self::rid($u);
-$r=self::build($u,$p,$o);
+$r=self::build($u,$p);
 if($r)$ret=csvfile(self::$nod,$r);
 $ret.=msqbt('',self::$nod);
 $ret.=tabler($r,1);

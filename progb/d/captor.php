@@ -50,7 +50,7 @@ static function call($a,$b,$prm=[]){$ret='';
 [$u,$p,$o]=arr($prm,3); self::rid($u);
 $r=msql::read('',self::$nod);
 if(!$r or $a){
-	$r=self::build($u,$p,$o); //eco($r);
+	$r=self::build($u,$p); //eco($r);
 	$r=self::capture($r,$o); //eco($r);
 	$r=self::mkdatas($r,$prm,$a);} //eco($r);
 if($r)$ret=csvfile(self::$nod,$r);

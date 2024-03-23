@@ -552,7 +552,7 @@ function findroot($u){$r=explode('/',$u); $r=array_slice($r,0,3); if($r)return i
 function utmsrc($f){if(!$f)return; $r=['?fbclid','&fbclid','?utm','&utm'];
 foreach($r as $k=>$v)if($n=strpos($f,$v))$f=strto($f,$v); return $f;}
 function host(){return 'http://'.$_SERVER['HTTP_HOST'];}
-function hst(){return $_SERVER['HTTP_HOST'];}
+function hst(){return str_replace('www.','',$_SERVER['HTTP_HOST']);}
 function ip(){$ip=$_SERVER['REMOTE_ADDR']??'';
 if(strstr($ip,' ')){$r=explode(' ',$ip); return $r[0];} else return gethostbyaddr($ip);}
 function mobile(){$s=$_SERVER['HTTP_USER_AGENT']??'';

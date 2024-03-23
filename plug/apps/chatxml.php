@@ -30,7 +30,7 @@ $msg=str_replace('_NAME',$nm,helps('chatcall')); $url=host().'/module/chatxml/'.
 if($to){mails::send_txt($to,$msg,$url,$nm,''); return nms(109).' '.nms(79).'e';}
 else return nms(114);}
 
-static function nam($p,$nm,$prm=[]){$res=$rm[0]??'';
+static function nam($p,$nm,$prm=[]){$res=$prm[0]??'';
 $j='popup_chatxml,home__x_'.$p.'_'.$res.'_namx'.$p;
 $d=inputb('namx'.$p,'',8,'name',20,[]);
 return $d.lj('popbt',$j,picto('kright'));}

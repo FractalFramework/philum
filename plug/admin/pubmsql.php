@@ -16,7 +16,7 @@ return $nod;}
 static function call($p,$o,$prm=[]){$rt=[];
 [$p,$o]=prmp($prm,$p,$o);
 $r=scanfiles('msql');
-foreach($r as $k=>$v)if(strpos($v,'_sav')===false){
+foreach($r as $k=>$v)if(strpos($v,'/_bak/')===false){
 if(strpos($v,'msql/users/')!==false){
 	if(strpos($v,'/public_')!==false)$rt[]=$v;}
 elseif(strpos($v,'msql/design/')!==false){
@@ -38,7 +38,7 @@ return $ret;}
 
 static function home($p,$o){
 $bt=self::menu($p); $ret='';
-if($p)$ret=self::call($p,$o);
+if($p)self::call($p,$o);
 return $bt.divd('pbm',$ret);}
 }
 ?>

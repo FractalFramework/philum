@@ -7,18 +7,18 @@ return $p.':'.self::bt($p);}
 
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??$p;
-$ret=self::demo($p,$o);
+$ret=self::demo($p);
 return $ret;}
 
 static function all(){$ret='';
-$r=msql::kv('system','edition_pictos','',1);
+$r=msql::kv('system','edition_pictos');
 foreach($r as $k=>$v)$rb[$k]=hexdec($v); asort($rb);
 foreach($rb as $k=>$v)$ret.=btp(att($k),picto($k,24)).' ';
 return $ret;}
 
 static function build($p,$o){
 $f='css/_pictos.css';
-$r=msql::kv('system','edition_pictos','',1);
+$r=msql::kv('system','edition_pictos');
 $ret='@font-face {font-family: "philum"; src: url("/fonts/philum.eot?iefix") format("eot"), url("/fonts/philum.woff?v15.'.date('ymdhi').'") format("woff"), url("/fonts/philum.svg#philum") format("svg"), url("/fonts/philum.ttf") format("truetype");}
 .philum{font-family:"philum";}'."\n";
 foreach($r as $k=>$v){

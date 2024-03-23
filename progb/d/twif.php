@@ -8,7 +8,7 @@ function __construct($n=''){self::login(6);}
 
 //access_token,token_secret,consumer_key,consumer_secret,token_identifier
 static private function login($n=''){if(!$n)$n=ses::$tw;
-self::$r=msql::kv('',nod('twit_'.$n),'',1);}
+self::$r=msql::kv('',nod('twit_'.$n));}
 
 static function q1(){$r=self::$r;
 return new twifer($r['consumer_key'],$r['consumer_secret'],$r['access_token'],$r['token_secret']);}

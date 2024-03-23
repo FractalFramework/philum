@@ -229,7 +229,7 @@ static function reader($d,$dist){$id=randid();
 $dr=self::droot(); $f=$dr.$d; $dj=ajx($d).'_'.$id; $xt=xtb($f); $ret='';
 //$ret.=blj('',randid().'fidel','finder,del___'.ajx($d),self::pic('delete')).br();
 if($xt && is_file($f)){
-	if(strpos('.jpg.png.gif',$xt)!==false)$ret.=self::show_img_b($f,'').' ';
+	if(strpos('.jpg.png.gif',$xt)!==false)$ret.=self::show_img_b($f).' ';
 	elseif(strpos('.mp3.mid.flac',$xt)!==false)$ret.=audio($f);
 	else switch($xt){
 	case('.txt'):$ret.=lj('','popup_usg,poptxt___'.ajx($f,''),self::pic('pdf',32)); break;

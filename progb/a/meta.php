@@ -38,9 +38,10 @@ if($r)foreach($r as $k=>$v){$val=$rd[$v]; $gv=$prm[$v.$id]??'';
 	elseif($v=='lastup'){$vrf=$gv?'true':'false';}//$rst[113]
 	elseif($v=='lang'){$vrf=prmb(25); $rl=self::langs();
 		if($rl)foreach($rl as $ka=>$va){$known=$ra['lang'.$va]??''; $newval=$prm[$v.$va.$id]??'';
-			if($newval!=$known){self::utag_sav($id,'lang'.$va,$newval);
+			//if(!$newval && $know)self::utag_sav($id,'lang'.$va,''); else
+			if($newval && $newval!=$known){self::utag_sav($id,'lang'.$va,$newval);
 				$lg=self::curlg($id); self::utag_sav($newval,'lang'.$lg,$id);
-				self::affectlgr($id,$va);}}}
+				self::affectlgr($id);}}}
 	if(!$val)$val=$vrf;//permut value with global setting
 	if($gv==$vrf && $val)$gv='';//erase if not usefull
 	if($gv!=$val)self::utag_sav($id,$v,$gv);}
@@ -244,7 +245,7 @@ if($r)foreach($r as $k=>$v){$val=$rd[$v]; $hlp=''; $sid=str::normalize($v).$id; 
 		foreach($lgs as $lg2)$rl[]='lang'.$lg2.$id; $j=implode(',',$rl).'_meta,affectlangs___'.$id.'_'.$lg;
 		$ret.=picto('translate').lj('poph',$j,nms(163));}
 //$ret.=btn('',picto('valid').' '.nms(166));
-if($v=='authlevel'){$ret.=btn('txtx',$v).' '.jumpmenu('|1|2|3|4|5|6|7|8',$sid,$val,'1').' ';}
+if($v=='authlevel'){$ret.=btn('txtx',$v).' '.jumpmenu('|1|2|3|4|5|6|7|8',$sid,$val).' ';}
 //if($v=='authlevel'){$rp=explode('|','all|1|2|3|4|5|6|7|8'); $ret.=select(['id'=>$sid],$rp,'kv',$val).br();}
 elseif($v=='template'){$val=$val?$val:' '; $hlp=btd('tmp'.$id,'');
 	$tmpub=msql::kv('','public_template');
@@ -252,7 +253,7 @@ elseif($v=='template'){$val=$val?$val:' '; $hlp=btd('tmp'.$id,'');
 	$arr=array_merge_b($tmpub,$tmprv); $arr[' ']=[''=>1];
 	$rp='|'.implode('|',array_keys($arr));
 	//$ret.=select(['id'=>$sid],$rp,'kv',$val);
-	$ret.=btn('txtx',$v).' '.jumpmenu($rp,$sid,$val?trim($val):$v,'1').' ';}
+	$ret.=btn('txtx',$v).' '.jumpmenu($rp,$sid,$val?trim($val):$v).' ';}
 //elseif($v=='agenda')$ret.=inpdate($sid,$val,'','',1).$hlp.br();
 elseif($v=='password')$ret.=inputb($sid,$val,'4','pswd');
 elseif($v=='tracks'){if((!$rst[1] && !$val) or $val=='true')$chk=1; else $chk=0;

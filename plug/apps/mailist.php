@@ -36,7 +36,7 @@ $rk=array_keys_r($r,0); $k=in_array_b($p,$rk);
 if($r[$k][2]==$_GET['confirm']){$r[$k][2]=0; self::rs($r);
 return divc('txtalert',$voc['unregister_success']).br();}}
 
-static function unsb($a,$b,$prm){
+static function unsb($a,$b,$prm=[]){
 $r=self::ra(); $p=$prm[0]??''; $ret='';
 $rk=array_keys_r($r,0); $k=in_array_b($p,$rk);
 $voc=sesmk2('mailist','mailvoc');
@@ -60,7 +60,7 @@ static function read(){
 return mod::block('newsletter');}
 
 static function home($p,$o){//$id=randid('cbk');
-if($p=='')$ret=self::form($o);
+if($p=='')$ret=self::form();
 if($p=='uns')$ret=self::uns($o);
 if($p=='read')$ret=self::read();
 $ret.=br().br(); $voc=sesmk2('mailist','mailvoc');

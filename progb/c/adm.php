@@ -248,7 +248,7 @@ $r['batch']=lj('popsav','popup_newsletter,batch__3',nms(28)).' ';
 $r['batch'].=lj('txtbox','popup_newsletter,read__3',nms(65)).' ';
 $r['batch'].=msqbt('users',ses('qb').'_mails');
 $r['mails']=textarea('nwsm','',64,4);
-$r['edit']=divd('mdls'.$t,console::block($t,1));
+$r['edit']=divd('mdls'.$t,console::block($t));
 return tabs($r,'nl');}
 
 #adm
@@ -758,7 +758,7 @@ if($usr)$home.=lkc('popbt','/admin',pictxt('user',$usr.' '.picto('p'.$auth)).' (
 //menus
 $head.=divc('',$home.$alert);
 $head.=divc('menu',self::fastmenu());
-if($auth>=7 && $admin=='software')$ret=software::home('=','');
+if($auth>=7 && $admin=='software')$ret=software::home('=');
 $curauth=self::$curauth;
 if($auth>=$curauth && $curauth){
 switch($admin){//global
@@ -768,12 +768,12 @@ case('msql'):$ret=msqa::home(msqa::murlboot()); break;
 case('messages'):
 	if($qb==$usr or $auth>=$curauth)$ret=self::messages();
 	else $ret=contact(nms(84),'txtcadr'); break;
-case('hubs'):$ret=self::adm_hubs($auth); break;
+case('hubs'):$ret=self::adm_hubs(); break;
 case('nodes'):$ret=self::nodes(); break;
 case('stats'):[$pa,$oa]=explode('/',$set); $ret=stats::home($pa,$oa); break;
 case('newsletter'):$ret=self::newsletter(); break;
 case('tweetfeed'):$ret=tweetfeed::home(''); break;
-case('tickets'):$ret=tickets::home('',''); break;
+case('tickets'):$ret=tickets::home(); break;
 case('faq'):$r=msql::read('system','program_faq'); $ret=nl2br(stripslashes(divtable($r,1))); break;}
 if(ses('set')=='Articles')$ret=self::articles($admin,get('dig'),get('page'));//articles
 switch($admin){//configs
@@ -801,11 +801,11 @@ case('templates'):$ret=self::templates(); break;
 case('modules'):$ret=self::modules(); break;
 case('apps'):$ret=plugin::home('',''); break;
 case('msql'):$ret=self::msql(''); break;
-case('dev'):$ret=dev::home('',''); break;
+case('dev'):$ret=dev::home(); break;
 case('tags'):$ret=meta::admin_tags(get('set')); break;
 case('finder'):$ret=finder::home($qb,'disk'); break;
 case('backup'):$ret=self::backup('',''); break;
-case('software'):$ret=software::home('=',''); break;
+case('software'):$ret=software::home('='); break;
 //case('update_notes'):$ret=adm_update_notes('',1); break;
 case('images'):$ret=adimg::home('',''); break;
 case('pictos'):$ret=pictos::home('',''); break;
@@ -831,7 +831,7 @@ elseif($d=='css')$ret=sty::home();
 elseif($d=='conn_help')$ret=self::conn_help();
 elseif($d=='tags')$ret=meta::admin_tags('');
 elseif($d=='descript')$ret=self::hubprm('descript');
-elseif($d=='software' && auth(7))$ret=software::home('','');
+elseif($d=='software' && auth(7))$ret=software::home('');
 elseif($d=='admin')$ret=self::ifradmin($va);//!
 elseif($d=='apps')$ret=plugin::home($va,$opt);
 elseif(method_exists('adm',$d))$ret=self::$d($va,$opt);

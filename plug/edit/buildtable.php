@@ -18,9 +18,10 @@ if(strpos($p,'¬')===false)$p=str_replace("\n",'¬',$p);
 $r=explode('¬',$p);
 foreach($r as $k=>$v){$rb=explode('|',$v);
 	foreach($rb as $ka=>$va)$rc[$k][$ka]='"'.self::bt_func($va).'"';}
-foreach($rc as $k=>$v)if(is_array($v))$ret.='$r['.($k+1).']=['.implode(',',$v).'];'; return $ret;
+foreach($rc as $k=>$v)if(is_array($v))$ret.='$r['.($k+1).']=['.implode(',',$v).'];';
 //foreach($rc as $k=>$v)if(is_array($v))$ret.=($k+1).'=>['.implode(',',$v).']';
-return '$r=['.$ret.']';}
+//return '$r=['.$ret.']';
+return $ret;}
 
 static function jb($p,$o,$prm=[]){
 $p=$prm[0]??$p; $ret=''; $p=trim($p); $rt=[];

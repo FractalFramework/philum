@@ -15,7 +15,7 @@ static function gps_ok(position){
 static function gps_ko(error){switch(error.code){
 	case error.PERMISSION_DENIED: console.log('refus utilisateur'); break;      
 	case error.POSITION_UNAVAILABLE: console.log('localisation impossible'); break;
-	case error.TIMEOUT: console.log('pas de r�ponse'); break;}}
+	case error.TIMEOUT: console.log('pas de réponse'); break;}}
 static function initialize(){var mapProp={
 	center:new google.maps.LatLng(".$lon.",".$lat."),zoom:15,
 	mapTypeId:google.maps.MapTypeId.ROADMAP};
@@ -30,7 +30,7 @@ static function sav($p,$o,$r){
 $rb=sesmk('db'); $i=0;
 if($rb)foreach($rb as $k=>$v){$ra[$k]=$r[$i]; $i++;}
 $id=sql('id','profil','v','user="'.$r[0].'"');
-if($id)qr('update profil set '.implode(',',sql::atmrk($ra,'')).' where user="'.$r[0].'" limit 1');
+if($id)qr('update profil set '.implode(',',sql::atmrk($ra)).' where user="'.$r[0].'" limit 1');
 else sql::sav('profil',$ra);
 return btn('txtyl','ok');}
 

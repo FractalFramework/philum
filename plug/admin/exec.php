@@ -39,7 +39,7 @@ static function js(){return 'function jumpMenuIns(fc){
 	var lk=fc+\'(\'+vr+\')\';
 	insert_b(lk,\'codarea\');}';}
 
-static function run($a,$b,$prm){[$d]=$prm;
+static function run($a,$b,$prm=[]){[$d]=$prm;
 if(!auth(6))return;
 //if(ip()!='86.49.245.213.rev.sfr.net')return;
 $f='_datas/exec/'.date('ymd').'.php'; mkdir_r($f);

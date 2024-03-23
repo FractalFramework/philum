@@ -51,7 +51,7 @@ return $rt;}
 
 static function call($a,$b,$prm=[]){
 [$u,$p,$o]=arr($prm,3); self::rid($u);
-$r=self::build($u,$p,$o);
+$r=self::build($u,$p);
 return tabler($r,1);}
 
 static function rid($u){

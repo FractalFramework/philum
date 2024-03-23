@@ -145,8 +145,8 @@ $ret=self::build($p,$o);
 return $ret;}
 
 static function menu($p,$o,$rid){
-$j=$rid.'_spiline,call_inpln_2__'.$o; $pr=['onchange'=>sj($j)];
-$ret=inputj('inpln',$p,$j,'',4,$pr,'number').lj('',$j,picto('ok')).' ';
+$j=$rid.'_spiline,call_inpln_2__'.$o;
+$ret=inpnb('inpln',$p,$j).lj('',$j,picto('ok')).' ';
 return $ret;}
 
 static function nav($p,$o,$rid){$ret=''; $bt='';

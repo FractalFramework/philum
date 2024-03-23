@@ -65,7 +65,7 @@ if($p=='match')return self::match($p,$o);
 if($p=='search')return self::search($p,$o);
 if($p=='backup')return backup::home('','');
 if($p=='backupim')return backupim::home('','');
-if($p=='backupmsql')return msqa::backup_msql('');
+if($p=='backupmsql')return msqa::backup_msql();
 if($p=='reduceim')return reduceim::home($p,$o);}
 
 static function menu($p,$o,$rid){

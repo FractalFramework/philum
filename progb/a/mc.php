@@ -165,8 +165,8 @@ return $ret;}
 
 static function mkt_build($d){
 $d=str_replace(',','|',$d); $d=str_replace("\n",'¬',$d); $h=hidden('mktb',$d);
-return lj('popbt','socket_jump__5_____mktb','ok').$h;
-return ljb('popbt','insert',ajx($d),'ok');}
+//return ljb('popbt','insert',ajx($d),'ok');
+return lj('popbt','socket_jump__5_____mktb','ok').$h;}
 
 static function mktable($d){
 if($d)return self::mkt_build($d);
@@ -180,7 +180,7 @@ return $ret;}
 
 #wyg
 static function wygbt($id,$o){
-if($o)return btj(picto('save','','active'),atj('saveart',$id));
+if($o)return btj(picto('save',''),atj('saveart',$id),'active');
 else return btj(picto('editor'),atj('editart',$id));}
 
 static function artsconn($id){
