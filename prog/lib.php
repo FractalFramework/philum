@@ -253,7 +253,7 @@ function scanwalk($dr,$fc){$r=scanfiles($dr); $rb=[];
 foreach($r as $k=>$v){$a=$fc($dr,$k,$v); if($a)$rb[]=$a;} return $rb;}
 function walk($r,$fc,$p=''){$rt=[]; foreach($r as $k=>$v)$rt[]=$fc($k,$v,$p); return $rt;}
 function walkr($r,$o=''){$fc=fn($k,$v)=>$o?$o:"$k=>$v";
-return array_map($fc,array_keys($ar),array_values($ar));}
+return array_map($fc,array_keys($r),array_values($r));}
 
 #files
 function get_file($f){return curl_get_contents($f);}

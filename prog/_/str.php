@@ -16,6 +16,10 @@ $r=['/',',',';',':','|','§','%','&','$','#','_','!','+','=','?','\n','\\','~','
 if($o!=2){$r[]='.';}//images
 return str_replace($r,'',$d);}
 
+static function urlencode($d){
+$ra=['%','&nbsp;'];$rb=['%25',' '];
+return str_replace($ra,$rb,$d);}
+
 static function normalize_alpha($d,$o=''){if(!$d)return; $d=self::eradic_punct($d,$o);
 if($o)$d=str_replace([' ','&nbsp;','-',"'",'"'],'',$d);//
 return $d;}

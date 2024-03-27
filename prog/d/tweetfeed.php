@@ -26,20 +26,19 @@ $tag=$author?$author:($source?httproot($source):$cat); //$tag=ucwords(str::norma
 $suj='['.$tag.'] '.$suj;
 //$im=sql('img','qda','v',$id); if($im)$img=' '.host().pop::art_img($im,$id);
 $url=host().urlread($id);
-$ret=lkt('','http://twitter.com/intent/tweet?url='.$url.'&text='.$suj,pictxt('tw',$suj));
-//$ret.=' '.input('',$suj.' '.$url,80);
-return divc('list',$ret);}
+$ret=lkt('','http://twitter.com/intent/tweet?url='.$url.'&text='.str::urlencode($suj),pictxt('tw',$suj));
+return $ret;}
 
 static function batch($p,$o,$prm=[]){
 $rok=[]; $vx=0; $minid=$prm[0]??''; $f='/_datas/twfeed.txt';
 $r=msql::read('',nod('tweetfeed'),1,['lastid']); if(!$minid)$minid=$r[1][0]??'';//read_file($f)
 $r=self::build($minid); //p($r);
-//if($r)foreach($r as $k=>$v){$rok[]=div($v.': '.twit::botshare($v)); sleep(1);}//apikey:4
-if($r)foreach($r as $k=>$v){$rok[]=div(self::content($v),'track');}
-if($r)$vx=max($r); if($vx>$minid && !twit::$er){
+//if($r)foreach($r as $k=>$v){$rok[]=div($v.': '.twapi::botshare($v)); sleep(1);}//apikey:4
+if($r)foreach($r as $k=>$v){$rok[]=self::content($v);}
+if($r)$vx=max($r); if($vx>$minid && !twapi::$er){
 	msql::modif('',nod('tweetfeed'),$vx,'val',0,1);}//write_file($f,$vx);
 $ret=divc('',count($r).' tweets have been sent');
-if($rok)$ret.=implode('',$rok);
+if($rok)$ret.=divc('list',implode('',$rok));
 $ret.=self::tlex($minid);
 return $ret;}
 

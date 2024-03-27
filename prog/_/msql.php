@@ -115,7 +115,7 @@ static function delrow($dr,$nod,$k){
 return msql::modif($dr,$nod,$k,'del');}
 
 static function findlast($dr,$pr,$nod){//next table
-$r=self::choose($dr,$pr,$nod); return self::nextnod($r);}//
+$r=msqa::choose($dr,$pr,$nod); return self::nextnod($r);}
 static function nextnod($r){if($r){$mx=max($r); asort($r); $i=0;
 foreach($r as $v){$i++; if($v!=$i)return $i;} return $mx+1;} return 1;}
 static function nextentry($r){if(!$r)return; ksort($r); $i=0; $n=isset($r['_'])?1:0;//next free

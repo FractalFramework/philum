@@ -163,7 +163,8 @@ static function build($r){$cs='panel'; $csb='small';
 $lin=[]; $load=[]; $api=[]; $ret=''; $prw=''; $id=''; $obj='';
 [$m,$p,$t,$c,$d,$o,$ch,$hd,$tp,$bt,$dv,$pv,$pp]=arr($r,13);
 if($bt)return self::btmod('',$r);
-if($pv && auth(6) or !$pv)
+if(auth(6))$pv=0;
+if(!$hd && !$pv)
 switch($m){
 //main
 case('LOAD'):
@@ -332,8 +333,8 @@ else $ret=contact($t,$o?$o:$csb); break;
 case('iframe'):$ret=iframe::home('',''); break;
 case('suggest'):$ret=self::mdtitle(nms(126)).suggest::home($o); break;
 case('create_art'):$ret=edit::call('',''); break;
-case('twitter'):if($p)$ret=twit::call($p,$o); break;
-//case('twits'):if($t)$ret=self::title('',$t,''); $ret.=twit::stream($p,$o); break;//too slow
+case('twitter'):if($p)$ret=twapi::call($p,$o); break;
+//case('twits'):if($t)$ret=self::title('',$t,''); $ret.=twapi::stream($p,$o); break;//too slow
 case('webs'):if($t)$ret=self::title('',$t,''); $ret.=web::stream($p,$o); break;
 //case('social'):$ret=social::home($p,$o); break;//empty
 //case('profil'):$ret=profil::home($p,$o); break;

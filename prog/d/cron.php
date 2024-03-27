@@ -6,14 +6,14 @@ static $cb='crn';
 static $cr=[];
 
 /**/static function followers($p){
-$t=twit::init(); $qu=$t->followers($p,'');
-$r=twit::usrlist($p['ids']);
+$t=twapi::init(); $qu=$t->followers($p,'');
+$r=twapi::usrlist($p['ids']);
 return;}
 
 /**/static function favorites($p){
-$t=twit::init(); $q=$t->favorites($p,$p,1);
+$t=twapi::init(); $q=$t->favorites($p,$p,1);
 $r=twit::datas($q);
-//$ret=twit::batch($q,'');
+//$ret=twapi::batch($q,'');
 //$ret=twit::play($k,$r,$q,$o);
 return;}
 
@@ -56,7 +56,7 @@ $ret=self::read($p);
 return $bt.divd('crn',$ret);}
 
 static function card($p){
-$t=twit::init(); $q=$t->show($p);
+$t=twapi::init(); $q=$t->show($p);
 unset($q['entities']);
 $q['withheld_in_countries']=implode(',',$q['withheld_in_countries']??[]);
 $q['description']=($q['description']??'');

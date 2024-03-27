@@ -354,7 +354,8 @@ elseif($prw==1)$msg='';
 elseif(substr($prw,0,4)=='conn'){$cn=substr($prw,4);
 	if($cn=='jpg' or $cn=='mp3' or $cn=='mp4' or $cn=='pdf')$cn='.'.$cn;
 	elseif($cn=='img')$cn='.jpg'; else $cn=':'.$cn;
-	$msg=conn::read(self::play_conn($msg,$cn),3,$id);}
+	$ret=self::play_conn($msg,$cn);
+	$msg=conn::read($ret,3,$id);}
 elseif($id!=$read or $prw==2)$msg=self::preview($msg,$r['host']);
 if($look=ses::r('look'))$msg=self::str_detect($msg,$look);
 if($r['o']['2cols'] && $prw>2 && strlen($msg)>1000)$msg=divc('cols',$msg);

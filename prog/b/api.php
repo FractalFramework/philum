@@ -270,7 +270,8 @@ else{foreach($r as $k=>$v){$id=$v['id']; $rc[$id]=$v; $prw=$prw1=='auto'?($v['re
 	if($ra['lg']??'')foreach($r as $k=>$v){$id=$v['id']; $rm[$id]=$v['txt']; unset($rd[$id]);}
 	if($rd)$rm+=sql('id,msg','qdm','kv','id in ("'.implode('","',$rd).'")');
 	foreach($rc as $k=>$v){//$v['img1']=pop::art_img($v['img']);
-		$rt[]=tag('section',['id'=>$v['id']],art::call($v['id'],$v,'',$rm[$k]??'',$pr[$k],$tp,$nl));}}
+		$ret=art::call($v['id'],$v,'',$rm[$k]??'',$pr[$k],$tp,$nl);
+		$rt[]=tag('section',['id'=>$v['id']],$ret);}}
 if(!empty($ra['cols']))return pop::columns($rt,$ra['cols']);
 elseif($cmd=='panel')return divc('inline',implode('',$rt));
 return implode('',$rt);}

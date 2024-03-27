@@ -282,7 +282,7 @@ if($c)$ret=match($c){
 ':twitter'=>pop::twitart($d,$id,'',$nl),
 ':twapi'=>pop::twitapi($d),
 ':twits'=>pop::twits($d,$id),
-':twusr'=>twit::play_usrs($d),
+':twusr'=>twapi::play_usrs($d),
 ':twimg'=>twit::img($d,1),
 ':img'=>image($d),
 ':jpg'=>image($d.'.jpg'),//old
@@ -460,7 +460,7 @@ elseif($par){
 		else return lkt('',$o,img(goodroot($p)));}
 	else return lkt('',$p,$o);}
 elseif(substr($da,0,1)=='@' && $tw=substr($da,1))return pop::poptwit($da,'ban',$nl);
-elseif(substr($da,0,1)=='#' && $tw=substr($da,1))return pop::poptwit($da,'search',$nl);
+//elseif(substr($da,0,1)=='#' && $tw=substr($da,1))return pop::poptwit($da,'search',$nl);
 elseif(strpos($da,'@') && !$par)return str_replace('@',picto('arobase'),$da);
 }//avoid plugs
 

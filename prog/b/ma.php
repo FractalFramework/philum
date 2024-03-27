@@ -67,7 +67,7 @@ return $r;}
 
 #rqt
 static function rqtall($c='',$kv='',$sq=[],$z=''){
-$sq+=['nod'=>ses('qb'),'>re'=>0];
+$sq+=['nod'=>ses('qb'),'>re'=>'0'];
 $sq['<day']=ses('daya'); if(rstr(3))$sq['>day']=ses('dayb');
 if(!isset($sq['frm']))$sq['-frm']='_';
 if(!isset($sq['_order']))$sq['_order']=prmb(9);
