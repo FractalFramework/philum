@@ -11,7 +11,7 @@ setTimeout("twlive()",10);//
 ');}
 
 static function build($p,$o){
-$ret=twit::call($p,$o);
+$ret=twapi::call($p,$o);
 return $ret;}
 
 static function call($p,$o,$prm=[]){

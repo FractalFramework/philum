@@ -206,7 +206,7 @@ foreach($ra as $k=>$v){
 return 'ok:'.$i;}
 
 static function menu($p,$o,$rid){$length=self::$length; //self::patchmrc();
-$n=ma::lastartid();
+echo $n=ma::lastartid();
 //unlink('_backup/img_0-5000.tar');
 //mkdir_r('/imgb/cod');
 //$n=sesmk('backupim_nb','',''); $ret=$n.' images'.br();//ja

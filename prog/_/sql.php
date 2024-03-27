@@ -18,7 +18,7 @@ static function qrr($r){return mysqli_fetch_array($r);}
 static function qra($r){return mysqli_fetch_assoc($r);}
 static function qrw($r){return mysqli_fetch_row($r);}
 static function qrf($r){mysqli_free_result($r);}
-static function qres($v){if($v!==null)return mysqli_real_escape_string(self::$qr,stripslashes($v));}
+static function qres($v){if($v!==null)return mysqli_real_escape_string(self::$qr,($v));}//stripslashes
 //static function qres($v){if($v!==null)return mysqli_real_escape_string(self::$qr,$v);}
 static function atm($v){$d=substr($v??'',0,4);
 return $d=='NULL'||$d=='NOW('||$d=='PASS'?$v:'"'.self::qres($v).'"';}//!num

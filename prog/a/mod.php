@@ -418,10 +418,10 @@ static function pane_art($id,$o,$tp='',$pp='',$ra=[]){
 $o='auteurs'; if(!$tp)$tp='panart';
 if($ra['tag']??'')$p[$o]=$ra['tag'];
 else $p[$o]=sql::inner('tag','qdt','qdta','idtag','v',['cat'=>$o,'idart'=>$id]);
-if($ra)$ra=vals($ra,['id','frm','suj','img','nod','thm','lu','name','host','mail','ib','re','lg']);//api
+if($ra)$ra=vals($ra,['id','frm','suj','img']);//api
 else $ra=ma::rqtart($id); if(!$ra)return;
-[$day,$frm,$suj,$amg,$nod,$thm,$lu,$name,$nbc,$src,$ib,$re,$lg]=$ra;
-$p['url']=urlread($id); $p['suj']=ma::suj_of_id($id);
+[$day,$frm,$suj,$amg]=$ra;
+$p['url']=urlread($id); $p['suj']=$suj;
 $tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';
 $p['jurl']=$tg.'_popart__3_'.$id.'_3';
 $p['cat']=catpict($frm,22); //$p+=art::tags($id,1);
@@ -431,17 +431,18 @@ return art::template($p,$tp);}
 
 #pubart
 static function pub_art($id,$tpl='',$pp=''){
-$rst=$_SESSION['rstr']; if(!$tpl)$tpl='pubart'; if($pp)$tpl='popart';
+$rst=$_SESSION['rstr']; if(!$tpl)$tpl='pubart';
 $ra=ma::rqtart($id); if(!$ra)return;
 [$day,$frm,$suj,$amg,$nod,$thm,$lu,$name,$nbc,$src,$ib,$re,$lg]=arr($ra,13);
 $rt['url']=urlread($id); $rt['suj']=$suj;
-$tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';//
+$tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';
+ if($tg=='content')$tpl='pubartb';//hurl
 $rt['jurl']=$tg.'_popart__3_'.$id.'_3';
-//$rt['purl']='popup_popart__3_'.$id.'_3';
 if($rst[32]!=1 && $amg)$rt['img1']=pop::art_img($amg,$id);
 if($rst[36]!=1){$rt['back']=art::back($id,$ib); $rt['cat']=$frm;}
 if($rst[7]!=1)$rt['date']=mkday($day);
 if($rst[4]!=1){$r=art::tags($id,1); if($r)$rt+=$r;}
+$rt['auteurs']=$rt['auteurs']??'';
 if($re)return divc('pubart',art::template($rt,$tpl));}
 
 static function m_pubart($r,$o,$p,$tp='',$pp=''){$re=[]; $ret='';

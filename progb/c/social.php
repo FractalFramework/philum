@@ -74,7 +74,7 @@ if(!$n && !$d)return true;}
 static function build($id,$suj='',$ro=[],$rf=[],$prw=''){
 if(!$ro){$ro=art::metart($id); $rf=art::favs($id); $suj=sql('suj','qda','v',$id);}
 $root=host().urlread($id); $rst=arr(ses('rstr'),180); $ret='';
-$rsoc=[44=>'http://www.facebook.com/sharer.php?u='.$root,45=>'http://twitter.com/intent/tweet?url='.$root.'&text='.($suj)];//,46=>'http://wd.sharethis.com/api/sharer.php?destination=stumbleupon&url='.$root
+$rsoc=[44=>'http://www.facebook.com/sharer.php?u='.$root,45=>'http://twitter.com/intent/tweet?url='.$root.'&text='.str::urlencode($suj)];//,46=>'http://wd.sharethis.com/api/sharer.php?destination=stumbleupon&url='.$root
 if(!$rst[100] && auth(6))$ret.=togbub('tlex,share',$id,picto('tlex')).' ';//,'color:gray'
 if(!$rst[99] && auth(6))$ret.=togbub('twit,share',$id,picto('tw')).' ';//,'color:gray'
 if(!$rst[45] && $prw>2)$ret.=lkt('',$rsoc[45],picto('tw2')).' ';

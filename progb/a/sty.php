@@ -1,104 +1,109 @@
 <?php 
 class sty{
 
+static function cssnode($d){return nod('css_'.$d);}
+static function clrnode($d){return nod('clr_'.$d);}
+
 static function actions($p,$o,$prm){$res=$prm[0]??'';
-$bd='design'; $bs='system'; $qb=ses('qb'); $lh=sesmk2('adm','csslang');
+$qb=ses('qb'); $lh=sesmk2('adm','csslang');
 $defsb=['div','class','element','color','bkg','border','free'];
-$numb=ses('desgn');//desgn
-if($numb && $numb!='='){$_SESSION['desgn']=$numb; $_SESSION['clrset']=$numb;
-	$_SESSION['clrs'][$numb]=msql::kv('design',$qb.'_clrset_'.$numb);
-	$defs=msql::read('design',nod('design_'.ses('desgn')),'',$defsb);}
-$desgn=ses('desgn'); $prmd=ses('prmd');
-$clrset=$_SESSION['clrset']=ses('clrset',$prmd);
-$nod=$qb.'_design_'.$desgn; $noc=$qb.'_clrset_'.$clrset;
-$fcss='css/'.$nod.'.css'; $ftmp='css/'.$qb.'_design_dev_'.$desgn.'.css';
+$cssn=ses('cssn');
+if($cssn){
+	ses('cssn',$cssn); ses('clrn',$cssn);
+	sesr('clrs',$cssn,msql::kv('',self::clrnode($cssn)));
+	$defs=msql::read('',self::cssnode(ses('cssn')),'',$defsb);}
+$cssn=ses('cssn'); $prmd=ses('prmd');
+$clrn=ses('clrn',$prmd);
+$nod=self::cssnode($cssn); $noc=self::clrnode($clrn);
+$fcss='css/'.$qb.'_design_'.$cssn.'.css';
+$ftmp='css/'.$qb.'_design_dev_'.$cssn.'.css';
 switch($p){
-case('new_from'):$tbn=msql::findlast('design',$qb,'design');
-	msql::save($bd,$qb.'_design_'.$tbn,$defs);
-	msql::copy('design',$noc,'design',$qb.'_clrset_'.$tbn);
-	$_SESSION['clrs'][$tbn]=$_SESSION['clrs'][$desgn];
-	$_SESSION['desgn']=$_SESSION['clrset']=$tbn;
-	$nod=$qb.'_design_'.$tbn; $noc=$qb.'_clrset_'.$tbn;
-	msql::modif('','public_design',self::dsnam_arr(self::desname($qb,$desgn)),'one','',$tbn);
-	self::build_css('css/'.$qb.'_design_dev_'.$tbn.'.css',$defs); break;//return '/admin/css&design='.$tbn; 
-case('make_public'):if($o)$tbn=$desgn;
-	else $tbn=msql::findlast('design','public','design');
-	msql::save($bd,'public_design_'.$tbn,$defs);
-	msql::copy('design',$noc,'design','public_clrset_'.$tbn);
-	msql::modif('','public_design',self::dsnam_arr(self::desname($qb,$desgn)),'one','',$desgn);
+case('new_from'):$tbn=msql::findlast('',$qb,'css');
+	msql::save('',self::cssnode($tbn),$defs);
+	msql::copy('',$noc,'',self::clrnode($tbn));
+	$_SESSION['clrs'][$tbn]=$_SESSION['clrs'][$cssn];
+	$_SESSION['cssn']=$_SESSION['clrn']=$tbn;
+	$nod=self::cssnode($tbn); $noc=self::clrnode($tbn);
+	msql::modif('',pub('css'),self::dsnam_arr(self::desname($qb,$cssn)),'one','',$tbn);
+	self::build_css('css/'.$qb.'_design_dev_'.$tbn.'.css',$defs); break;
+case('make_public'):if($o)$tbn=$cssn;
+	else $tbn=msql::findlast('','public','css');
+	msql::save('',pub('css_'.$tbn),$defs);
+	msql::copy('',$noc,'',pub('clr_'.$tbn));
+	msql::modif('',pub('css'),self::dsnam_arr(self::desname($qb,$cssn)),'one','',$cssn);
 	self::build_css('css/public_design_'.$tbn.'.css',$defs);
 	alert('created: public_design_'.$tbn); break;
 case('make_admin'):self::build_css('css/_admin.css',$defs);
-	msql::save($bs,'default_css_3',$defs); 
+	msql::save('system','default_css_3',$defs); 
 	alert('modified: system/default_css_3, _admin.css'); break;
 case('make_global'):self::build_css('css/_global.css',$defs);
-	msql::save($bs,'default_css_1',$defs);
-	msql::copy('design',$noc,'system','default_clr_1'); 
+	msql::save('system','default_css_1',$defs);
+	msql::copy('',$noc,'system','default_clr_1'); 
 	alert('modified: system/default_css_1, _global.css'); break;
 case('make_default'):self::build_css('css/_classic.css',$defs);
-	msql::save($bs,'default_css_2',$defs);
-	msql::copy('design',$noc,'system','default_clr_2');
+	msql::save('system','default_css_2',$defs);
+	msql::copy('',$noc,'system','default_clr_2');
 	$defse=self::empty_design($defs,'clr'); self::build_css('css/_default.css',$defse);
 	alert('modified: table system/default_css_2, _classic.css, _default.css (no colors)'); break;
-case('reset_clr'):$_SESSION['clrs'][$clrset]=msql::kv('system','default_clr_2'); 
+case('reset_clr'):sesr('clrs',$clrn,msql::kv('system','default_clr_2')); 
 	self::save_clr($noc); break;
 case('reset_default'):$defs=self::css_default(); unset($defs[msql::$m]);
-	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
+	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
 case('reset_global'):$defs=self::css_default(1); unset($defs[msql::$m]);
-	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
-case('public_clr'):$_SESSION['clrs'][$clrset]=msql::kv('design','public_clrset_'.$o);
+	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
+case('public_clr'):sesr('clrs',$clrn,msql::kv('',pub('clr_'.$o)));
 	self::save_clr($noc); break;
-case('public_design'):$defs=msql::read('design','public_design_'.$o); unset($defs[msql::$m]);
-	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
+case('public_design'):$defs=msql::read('',pub('css_'.$o)); unset($defs[msql::$m]);
+	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
 case('empty_design'):$defs=self::empty_design($defs,'css');
-	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
-case('null_clr'):$_SESSION['clrs'][$clrset]=['','','','','','','',''];
+	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
+case('null_clr'):sesr('clrs',$clrn,['','','','','','','','']);
 	self::save_clr($noc); break;
 case('null_design'):$defs=self::css_default(); $defs=self::empty_design($defs,'css');
-	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
+	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
 case('append'):$defsc=self::css_default(); unset($defsc[msql::$m]);
-	$defs=self::array_append_css($defs,$defsc); msql::save($bd,$nod,$defs);
+	$defs=self::array_append_css($defs,$defsc); msql::save('',$nod,$defs);
 	self::build_css($ftmp,$defs); break;
 case('append_global'):$defsc=self::css_default(); unset($defsc[msql::$m]);
-	$defs=self::array_append_css($defs,$defsc); msql::save($bd,$nod,$defs);
+	$defs=self::array_append_css($defs,$defsc); msql::save('',$nod,$defs);
 	self::build_css($ftmp,$defs); break;
 case('inject_global'):$defsc=self::css_default(); unset($defsc[msql::$m]);
-	$defs=self::append_design($defs,$defsc); msql::save($bd,$nod,$defs);
+	$defs=self::append_design($defs,$defsc); msql::save('',$nod,$defs);
 	self::build_css($ftmp,$defs); break;
 case('reset_this'):$defsc=self::css_default(); $ecb=self::find_value($defsc,$defs[$o]);
-	if($ecb){$defs[$o]=$defsc[$ecb]; msql::save($bd,$nod,$defs);
+	if($ecb){$defs[$o]=$defsc[$ecb]; msql::save('',$nod,$defs);
 	self::build_css($ftmp,$defs);} break;
-case('open_design'):$_SESSION['desgn']=$o; $_SESSION['clrset']=$o; break;//return '/admin/css&design='.$o;
+case('open_design'):ses('cssn',$o); ses('clrn',$o); break;
 case('herit_design'):[$qbb,$nbd]=explode('_',$o);
-	$defs=msql::read('design',$qbb.'_design_'.$nbd,'',$defsb);
-	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
+	$defs=msql::read('',$qbb.'_css_'.$nbd,'',$defsb);
+	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
 case('herit_clrset'):[$qbb,$nbd]=explode('_',$o);
-	$_SESSION['clrs'][$clrset]=msql::kv('design',$qbb.'_clrset_'.$nbd);
+	sesr('clrs',$clrn,msql::kv('',$qbb.'_clr_'.$nbd));
 	self::save_clr($noc); self::build_css($ftmp,$defs); break;
 case('addff'):$defs=self::defs_adder_ff($defs,$o);
-	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
-case('save_img'):$defs=self::img_adder($defs); msql::save($bd,$nod,$defs);
+	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
+case('save_img'):$defs=self::img_adder($defs); msql::save('',$nod,$defs);
 	self::build_css($ftmp,$defs); break;
-case('invert_clr'):$_SESSION['clrs'][$clrset]=self::invert_defsclr();
+case('invert_clr'):sesr('clrs',$clrn,self::invert_defsclr());
 	self::save_clr($noc); self::build_css($ftmp,$defs); break;
 case('erase'):$defs=self::save_css_j_del($defs,$o); 
-	msql::save($bd,$nod,$defs); break;
+	msql::save('',$nod,$defs); break;
 case('newfrom'):$defs=self::save_css_newfrom($defs,$o);
-	msql::save($bd,$nod,$defs); break;
+	msql::save('',$nod,$defs); break;
 case('atpos'):$n=count($defs); $defs=self::save_css_displace($defs,$res,$o);
-	if(count($defs)==$n)msql::save($bd,$nod,$defs); break;
-case('save'):msql::save($bd,$nod,$defs); //if(rstr(63))
+	if(count($defs)==$n)msql::save('',$nod,$defs); break;
+case('save'):msql::save('',$nod,$defs); //if(rstr(63))
 	self::build_css($ftmp,$defs); self::build_css($fcss,$defs); self::build_css($fcss,$defs,1); break;
-case('backup'):msql::save($bd,$nod,$defs,[],1); self::save_clr($noc,1); break;
-case('apply'):msql::save($bd,$nod,$defs); self::save_clr($noc);
+case('backup'):msql::save('',$nod,$defs,[],1); self::save_clr($noc,1); break;
+case('apply'):msql::save('',$nod,$defs); self::save_clr($noc);
 	self::build_css($fcss,$defs); self::informe_config_design(); break;
-case('test_design'):$_SESSION['prmd']=ses('desgn'); break;
-case('restore_design'):$defs=msql::read('design',$nod,1,$defsb,1);
-	msql::save($bd,$nod,$defs); self::build_css($ftmp,$defs); break;
-case('restore_clrset'):$r=msql::read('design',$noc,'',[],1); $clrst[0]='';
-	if($r)foreach($r as $k=>$v)$clrst[]=$v[0]; $_SESSION['clrs'][$desgn]=$clrst; self::save_clr($noc); 
+case('test_design'):ses('prmd',ses('cssn')); break;
+case('restore_css'):$defs=msql::read('',$nod,1,$defsb,1);
+	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
+case('restore_clr'):$r=msql::read('',$noc,'',[],1); $clrst[0]='';
+	if($r)foreach($r as $k=>$v)$clrst[]=$v[0]; sesr('clrs',$cssn,$clrst); self::save_clr($noc); 
 	self::build_css($ftmp,$defs); break;
-case('exit_design'):sesz('desgn'); $_SESSION['clrset']=''; ses::$adm['design']='';
+case('exit_design'):sesz('cssn'); sesz('clr'); ses::$adm['css']='';
 	boot::define_mods(); boot::define_condition(); boot::define_clr(); return '/admin';
 case('displaycss'):return nl2br(read_file($fcss));
 case('displaycsstmp'):return nl2br(read_file($ftmp));}
@@ -121,40 +126,38 @@ return lj($c,$tg.'_sty,actions_'.$id.'_'.$x.'_'.ajx($p).'_'.ajx($o),$t,att($tt))
 static function home($on=''){if($on)self::clrpckr_js();//
 $qb=ses('qb'); $lh=sesmk2('adm','csslang'); $defs='';
 $defsb=['div','class','element','color','bkg','border','free'];
-$numb=sesb('desgn',$_SESSION['prmd']);
-//$numb=get('desgn');
-if($numb && $numb!='='){$_SESSION['desgn']=$numb;
-	$_SESSION['clrset']=$numb; $_SESSION['prmd']=$numb;
-	$_SESSION['clrs'][$numb]=msql::kv('design',$qb.'_clrset_'.$numb);
-	$defs=msql::read('design',$qb.'_design_'.$numb,'',$defsb);}
-$prmd=$_SESSION['prmd']; $desgn=$_SESSION['desgn']; //if(strpos($desgn,'_neg'))$desgn=substr($desgn,0,-4);
-$clrset=sesb('clrset',$prmd);
-$nod=$qb.'_design_'.$desgn;
-$noc=$qb.'_clrset_'.$clrset;
-$fcss='css/'.$nod.'.css';
+$cssn=sesb('cssn',$_SESSION['prmd']);
+//$cssn=get('cssn');
+if($cssn && $cssn!='='){$_SESSION['cssn']=$cssn;
+	ses('clr',$cssn); ses('prmd',$cssn);
+	sesr('clrs',$cssn,msql::kv('',self::clrnode($cssn)));
+	$defs=msql::read('',self::cssnode($cssn),'',$defsb);}
+$prmd=ses('prmd'); $cssn=ses('cssn'); $clrn=sesb('clr',$prmd);
+$nod=self::cssnode($cssn); $noc=self::clrnode($clrn);
+$fcss='css/'.$qb.'_design_'.$prmd.'.css';
 $ftmp='css/'.$qb.'_design_dev_'.$prmd.'.css';
 #load
-if(!$defs)$defs=msql::read('design',$nod,1,$defsb);//good_nb
+if(!$defs)$defs=msql::read('',$nod,1,$defsb);//good_nb
 unset($defs[0]); $defs=self::reorder_keys($defs);
 if(!is_file($ftmp))self::build_css($ftmp,$defs);
 #body
 $rt[]=lkc('txtcadr','/admin/css',$nod).' ';
-$rt[]=self::dsnamedt($qb,$desgn,[]);
+$rt[]=self::dsnamedt($qb,$cssn,[]);
 $rt[]=hlpbt('design').' ';
-$rt[]=msqbt('design',$qb.'_design_'.$desgn).' ';
+$rt[]=msqbt('design',self::cssnode($cssn)).' ';
 $rt[]=self::cssactbt('exit_design',pictxt('logout',nms(112)),'url','','');//'','','');
 if(prmb(5))$rt[]=picto('alert').helps('prmb5').' ';
 $rt[]=hlpbt('designcond');
 $ret=div(implode('',$rt)); $rt=[];
-$rt[]=lj('txtbox','popup_sty,chargesets','design:'.$desgn.'/clrset:'.$clrset).' ';
+$rt[]=lj('txtbox','popup_sty,chargesets','css:'.$cssn.'/clr:'.$clrn).' ';
 $rt[]=self::cssactbt('backup','backup','self','','');//'','',''
-if(is_file(msql::url('design',$nod))){
-	$rt[]=self::cssactbt('restore_design',nms(95).' design','self','');
-	$rt[]=self::cssactbt('restore_clrset',nms(95).' clr','self','');}
-if($_SESSION['prmd']!=$_SESSION['desgn'])
-	$rt[]=self::cssactbt('test_design','test design '.$desgn,'self','');
-if($_SESSION['desgn']!=$_SESSION['prma']['design'])
-	$rt[]=self::cssactbt('apply',nms(66).' (mods:'.prmb(1).'-'.$_SESSION['prma']['design'].')','self','sav');
+if(is_file(msql::url('',$nod))){
+	$rt[]=self::cssactbt('restore_css',nms(95).' design','self','');
+	$rt[]=self::cssactbt('restore_clr',nms(95).' clr','self','');}
+if(ses('prmd')!=ses('cssn'))
+	$rt[]=self::cssactbt('test_design','test design '.$cssn,'self','');
+if(ses('cssn')!=prma('design'))
+	$rt[]=self::cssactbt('apply',nms(66).' (mods:'.prmb(1).'-'.prma('design').')','self','sav');
 $rt[]=self::cssactbt('save',nms(27),'','','').' ';
 $rt[]=span('','','alertmsg');
 //$rt[]=self::cssactbt('build_css',nms(93),'','');//rebuild
@@ -164,7 +167,7 @@ $rt[]=self::cssactbt('empty_design',nms(46),'self','');
 $rt[]=self::cssactbt('invert_clr',nms(115),'self','');
 $rt[]=self::cssactbt('make_public',$lh[4],'','');//make_public
 $rt[]=self::cssactbt('make_public',$lh[5],'','1');//inform_public
-if($_SESSION['auth']>5){$r=msql::row('',$qb.'_design',$desgn); 
+if(auth(5)){$r=msql::row('',self::cssnode($cssn),0); 
 	$desgname=!empty($r[0])?$r[0]:$r['name']??'';
 	if($desgname=='admin')$make='make_admin';
 	elseif($desgname=='global')$make='make_global';
@@ -188,7 +191,7 @@ $rt[]=self::cssactbt('displaycss',$lh[10],'3','');
 $rt[]=self::cssactbt('displaycsstmp',$lh[11],'3','');
 $rt[]=lj('txtx','popup_sty,chargeclr','clrset').' ';
 $rt[]=btn('txtx',count($defs).' '.nms(117)).' ';
-$rt[]=btn('txtx',mkday(filemtime(msql::url('design',$nod)))).' ';
+$rt[]=btn('txtx',mkday(filemtime(msql::url('',$nod)))).' ';
 $ret.=div(implode('',$rt)).br();
 $ret.=div(self::clrset_edit()).br();//colors
 if($defs)$ret.=self::design_edit($defs,$defsb,'',1).br();
@@ -199,9 +202,9 @@ static function css_default($o=''){$o=$o?$o:'2';
 return msql::read('system','default_css_'.$o);}
 
 static function save_clr($nod,$o=''){
-$r=$_SESSION['clrs'][$_SESSION['clrset']]; 
+$r=sesr('clrs',ses('clrn')); 
 if($r)foreach($r as $k=>$v)if($v)$rb[$k]=[$v]; $rb[]=[];
-if($rb)msql::save('design',$nod,$rb,[],$o); return $rb;}
+if($rb)msql::save('',$nod,$rb,[],$o); return $rb;}
 
 static function reorder_keys($r){$i=0; $ret=[];
 if($r)foreach($r as $k=>$v){if($k!=msql::$m){$i++; $k=$i;} $ret[$k]=$v;}
@@ -250,17 +253,18 @@ foreach($r as $k=>$v)if($v)$r[$k]=invert_color($v,0);
 return $r;}
 
 #rename
-static function desname($qb,$desgn){
-return msql::val('users',$qb.'_design',$desgn);}
+static function desname($qb,$cssn){
+return msql::val('users',$qb.'_css',$cssn);}
 static function dsnam_arr($res){
 return [$res,array_part($_SERVER['HTTP_HOST'],'.',0),date('ymdHi',time()),prmb(1)];}
-static function dsnamedt($qb,$desgn,$prm=[]){$res=$prm[0]??'';
-$nd=$qb.'_'.$desgn; $ret=self::desname($qb,$desgn);
+
+static function dsnamedt($qb,$cssn,$prm=[]){$res=$prm[0]??'';
+$nd=$qb.'_'.$cssn; $ret=self::desname($qb,$cssn);
 if($res=='init')return self::dsnmform('rnt',$nd,'',$ret?$ret:'table_name');
 $defb=[msql::$m=>['name','site','last-update','mods']];
 $r=self::dsnam_arr($res);
 if($res && $res!='init'){
-	msql::modif('',$qb.'_design',$r,'one',$defb,$desgn);
+	msql::modif('',nod('css'),$r,'one',$defb,$cssn);
 	return self::dsnmform('rnt',$nd,$res,'');}
 return self::dsnmform('rnt',$nd,$ret,'');}
 
@@ -272,28 +276,28 @@ return hidden('zero','init').btd($id,$ret);}
 
 #select_design
 static function clrset_view($d){
-$r=msql::kv('design',$d); $ret='';
+$r=msql::kv('',$d); $ret='';
 if(is_array($r))foreach($r as $k=>$v){
 if($k>0){$sty='color:#'.invert_color($v,1).'; background-color:#'.$v.'; ';
 if(!$v)$v='none'; $ret.=bts($sty,'__').' ';}}
 return $ret;}
 
 static function chargesets(){$qb=ses('qb');
-$r=explore('msql/design/','files',1); asort($r);
+$r=explore('msql/users/'.$qb.'/css','files',1); asort($r);
 if($r){foreach($r as $k=>$v){$v=substr($v,0,-4); [$nd,$dr,$nb,$sv]=opt($v,'_',4);
 	if($sv!='sav' && $nd && is_numeric($nb) && ($nd==$qb or ($nd=='public' or $_SESSION['auth']>6)))
 		$rb[$nd][$nb][$dr]=$nb;}
 $tab[]=['open','herit','colors']; 
 if($rb)foreach($rb as $k=>$v){
 	if(is_array($v)){$taba=[]; $tabb=[];
-	$ra=msql::read('',$k.'_design','');
+	$ra=msql::read('',$k.'_css','');
 	foreach($v as $nb=>$bs){
-		$ds=$bs['design']??''; $cl=$bs['clrset']??'';
+		$ds=$bs['css']??''; $cl=$bs['clr']??'';
 		$na=isset($ra[$nb][0])?$ra[$nb][0]:$ds;//name
 		if($k==$qb)$tabt[$nb]=self::cssactbt('open_design',$na,'url',$ds);
 		else $tabt[$nb]=$nb;
 		if($ds)$taba[$nb]=self::cssactbt('herit_design',$nb,'self',$k.'_'.$ds);
-		if($cl){$bt=self::clrset_view($k.'_clrset_'.$cl);
+		if($cl){$bt=self::clrset_view($k.'_clr_'.$cl);
 			$tabb[$nb]=self::cssactbt('herit_clrset',$bt,'self',$k.'_'.$ds);}}
 	if($taba)$nbd=count($taba); if($tabb)$nbc=count($tabb);
 	$tab[]=[btn('txtcadr',$k),'','']; $nb=count($taba);
@@ -301,12 +305,12 @@ if($rb)foreach($rb as $k=>$v){
 return scroll($tab,tabler($tab),20,320,320);}//txtblc//txtx
 
 static function clrset_edit(){$ret='';
-$ndc=$_SESSION['clrset']?$_SESSION['clrset']:$_SESSION['prmd'];
-$clr=msql::kv('design',nod('clrset_'.$ndc)); $nb=count($clr);
+$ndc=sesb('clrn',ses('prmd'));
+$clrs=msql::kv('',self::clrnode($ndc)); $nb=count($clrs);
 $clrn=['','bkg','border','bloc','identity','active','art_bkg','art_txt','txt'];
-for($i=1;$i<=$nb;$i++){$name=$i.(isset($clrn[$i])?':'.$clrn[$i]:'');
-$bt=divs('background-color: #'.$clr[$i].';',$name.input('colorpickerField'.$i,$clr[$i],5));
-$ret.=div($bt,'clrp','colorpick'.$i,'color:#'.invert_color($clr[$i],1));}
+for($i=1;$i<=$nb;$i++){$name=$i.(isset($clrs[$i])?':'.$clrs[$i]:'');
+$bt=divs('background-color: #'.$clrs[$i].';',$name.input('colorpickerField'.$i,$clrs[$i],5));
+$ret.=div($bt,'clrp','colorpick'.$i,'color:#'.invert_color($clrs[$i],1));}
 return $ret.br().ljb('txtbox','SaveClr',$nb,nms(27)).divd('clrreponse','');}
 
 #editor
@@ -350,12 +354,12 @@ return divs('min-width:440px',tabs($ra,'css'.$edit));}
 
 static function saveclr($p){
 $qb=ses('qb'); $tosave=$p[0];
-$ndd=ses('desgn',ses('prmd'));
-$ndc=ses('clrset',ses('prmd'));
-$nod=$qb.'_design_'.$ndd; $f_c=$qb.'_clrset_'.$ndc;
-if(!ses('desgn'))$f_css_temp='css/'.$qb.'_design_'.$ndd.'.css';
+$ndd=ses('cssn',ses('prmd'));
+$ndc=ses('clrn',ses('prmd'));
+$nod=self::cssnode($ndd); $f_c=self::clrnode($ndc);
+if(!ses('cssn'))$f_css_temp='css/'.$qb.'_design_'.$ndd.'.css';
 else $f_css_temp='css/'.$qb.'_design_dev_'.$ndd.'.css';
-$defs=msql::read('design',$nod,1);
+$defs=msql::read('',$nod,1);
 $tosave=str_replace('/','_',$tosave);
 if(substr($tosave,-1)=='_')$tosave=substr($tosave,0,-1);
 setclrs(opt($tosave,'_',9));
@@ -391,10 +395,10 @@ head::add('csslink',$jsp.'css/layout.css');
 head::add('jscode',self::clrpckr_layout());}
 
 //see_css
-static function editcss($d){$qb=ses('qb'); $prmd=ses('prmd'); $nod=$qb.'_design_'.getb('desgn',$prmd);
-$r=msql::read('design',$nod); return self::form_facilities($r,$d);}
-static function chargeclr(){$qb=ses('qb'); $prmd=ses('prmd'); $ndc=$qb.'_clrset_'.getb('clrset',$prmd);
-$r=msql::kv('design',$ndc); return tabler($r,'txtblc','txtx');}
+static function editcss($d){$prmd=ses('prmd'); $nod=self::cssnode(getb('cssn',$prmd));
+$r=msql::read('',$nod); return self::form_facilities($r,$d);}
+static function chargeclr(){$prmd=ses('prmd'); $ndc=self::clrnode(getb('clr',$prmd));
+$r=msql::kv('',$ndc); return tabler($r,'txtblc','txtx');}
 
 static function save_css_j_del($r,$n){//vrf n
 foreach($r as $k=>$v)if($k!=$n)$ret[]=$v;//$k
@@ -429,17 +433,17 @@ $ret.=div($va,$r[1],$r[0]).divc('clear','');
 return $ret;}
 
 static function savcss($k,$c,$prm=[]){//facil_css//stylsav
-$ndd=$_SESSION['desgn']?$_SESSION['desgn']:$_SESSION['prmd'];
-$bd='design'; $nod=nod('design_'.$ndd); $v=$prm[0];
-if($_SESSION['desgn'])$nodb=ses('qb').'_design_dev_'.$ndd; else $nodb=$nod;
-$defs=msql::read('design',$nod);
+$ndd=sesb('cssn',ses('prmd'));
+$nod=self::cssnode($ndd); $v=$prm[0];
+$defs=msql::read('',$nod);
 if($c==1)$defs=self::save_css_clr($defs,$k,$prm);//clr
 elseif($c==2)$defs=self::save_css_bkg($defs,$k,$v);//img
 elseif($c==3)$defs=self::save_css_clname($defs,$k,$prm);//classname
 elseif($c==4)return self::save_css_tst($defs[$k],$k,$v);//tst
 //elseif($c=='x')$defs=self::save_css_j_del($defs,$k);//del
 else $defs=self::save_css($defs,$k,$v);//css
-if($defs){msql::save($bd,$nod,$defs); self::build_css('css/'.$nodb.'.css',$defs);}
+if(ses('cssn'))$nodb=nod('design_dev_'.$ndd); else $nodb=nod('design_'.$ndd);
+if($defs){msql::save('',$nod,$defs); self::build_css('css/'.$nodb.'.css',$defs);}
 return self::form_facilities($defs,$k);}
 
 static function save_css_bkg($defs,$k,$v){$val=$defs[$k][6];
@@ -578,9 +582,9 @@ if($defs)foreach($defs as $k=>$v)//find
 	if($v[0]==$css[0] && $v[1]==$css[1] && $v[2]==$css[2])return $k;}
 
 static function informe_config_design(){
-$cnd=$_SESSION['cond']; $cndb=$cnd[1]?$cnd[1]:$cnd[0]; $r=boot::context_mods('system');
+$cnd=ses('cond'); $cndb=$cnd[1]?$cnd[1]:$cnd[0]; $r=boot::context_mods('system');
 foreach($r as $k=>$v)if($v[0]=='design'){
-$v[1]=$_SESSION['desgn']; $_SESSION['prma'][$v[0]]=$v[1]; $_SESSION['prmd']=$v[1];
+$v[1]=ses('cssn'); sesr('prma',$v[0],$v[1]); ses('prmd',$v[1]);
 if($k=='push')$_SESSION['mods']['system'][]=$v; else $_SESSION['mods']['system'][$k]=$v;
 array_unshift($v,'system');
 msql::modif('',$_SESSION['modsnod'],$v,$k);}}
@@ -651,7 +655,7 @@ return form($url.'#'.$k,$t);}
 
 static function facil_globalc($k,$nc){$r=self::css_default(1);
 $ret=btn('txtcadr','herit from _global.css').' ';
-$ret.=msqbt('design','public_design_1').br().br();
+$ret.=msqbt('',pub('css_1')).br().br();
 if($r)foreach($r as $k=>$v){$ncb=self::name_classe($v);
 	if($ncb==$nc)$ret.=self::name_line_j($k,$v,1,1);}
 return $ret;}

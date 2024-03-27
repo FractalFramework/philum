@@ -95,15 +95,8 @@ return self::$p($p1,$o,$prm);}
 #msql
 //msql/lang/fr/node_table_num_sav.php
 static function nod($dr,$k,$v,$o=''){
-$v=str_replace('.php','',$v);
-$v=str_replace('msql/','',$v);
-//[$d,$l,$p,$t,$n,$s]=msqa::murlread($v);
-[$d,$l,$nod]=expl('/',$v,3);
-if($nod)$d.='/'.$l; else $nod=$l; //echo $nod.' ';
-//$nod=msqa::mnod($p,$t,$n,$s);
-if($o)$f=msql::url0($d,$nod);
-else $f=msql::url($d,$nod);
-//if(is_file($f))echo $d.';'.$l.';'.$p.';'.$t.';'.$n.';'.$s.' ';
+[$d,$nod]=msqa::mknode($v);
+$f=msql::url($d,$nod);
 if(is_file($f))return [$d,$nod,$f]; else return [$v,'',''];}
 
 static function renove_utf($dr,$k,$v){

@@ -54,13 +54,14 @@ if($r)foreach($r as $k=>$v)if($v){$day=date($dt,$v); $rb[$day][]=1;}
 if($rb)foreach($rb as $k=>$v)$rc[$k]=count($v); //pr($rc);
 return self::render($rc,$p,$o);}
 
-static function words($p,$o){$rb=[]; $rc=[]; $sq=[]; //$o=100;
+static function words($p,$o){$rb=[]; $rc=[]; $sq=[];//$o=100;
 $sq['word']=$p; if($o)$sq['>day']=timeago($o); $sq['_order']='art.id asc';
 $br=[[['qdsr','id'],['qdsra','ib']],[['qdsra','art'],['qda','id']]];
-$r=sql::inner3('day',$br,'rv',$sq,0); //pr($r);
+$r=sql::inner3('day,nb',$br,'kv',$sq,0);//pr($r);
 $n=count($r); if($o>10000)$dt='Y'; elseif($o>1000)$dt='y/m'; else $dt='y-m-d';
-if($r)foreach($r as $k=>$v)if($v){$day=date($dt,$v); $rb[$day][]=1;}
-if($rb)foreach($rb as $k=>$v)$rc[$k]=count($v); //pr($rc);
+if($r)foreach($r as $k=>$v)if($v){$day=date($dt,$k); $rb[$day][]=$v;}
+//if($rb)foreach($rb as $k=>$v)$rc[$k]=count($v); //pr($rc);
+for($i=0;$i<$o;$i++)$rc[$i]=count($rb[date($dt,timeago($o-$i))]??[]); //pr($rc);
 return self::render($rc,$p,$o);}
 
 static function arts($p,$o){$rb=[]; $cat=$o?'frm="'.$o.'" and ':'';
@@ -116,7 +117,7 @@ return $ret;}
 static function menu($p,$o,$rid){
 if(!$p)$p=self::$default;
 $j=$rid.'_frequency,call_inp,ind_3_'.$p.'_'.$o;
-$ret=inputj('inp',$p,$j,'type or tag');
+$ret=inputj('inp',$p,$j,'word');
 $ret.=inpnb('ind',30,$j);
 $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}

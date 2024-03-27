@@ -174,12 +174,13 @@ foreach($r as $k=>$v)$ret.=self::build($v,$p);
 return $ret;}
 
 //distant
-static function call($p,$o){
+static function call($p,$o,$prm=[]){$p=$prm[0]??$p;
 if($o=='last')return self::last($p);
 elseif($o=='d')return backup::dump($p);//dump
 elseif($o=='dj')return backup::json($p);//dump
 elseif($o=='d2')return self::dumpall();//dump2
 elseif($o=='up')return backup::build($p,0,1);//updates
+elseif($o=='z')return backup::build($p,0,2);//reinit
 elseif(is_numeric($o))return backup::build($p,$o,0);}//inserts
 
 static function menu($p,$o,$rid){

@@ -5,7 +5,7 @@ static $a=__CLASS__;
 static $default='';
 
 static function build($p,$o){
-$ret=twit::call($p,'stream');
+$ret=twapi::call($p,'stream');
 return $ret;}
 
 static function call($p,$o,$prm=[]){

@@ -33,7 +33,7 @@ if($nid){$rc=[$dt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$urlsrc,$ib,$re,$lg];
 	msql::modif('',nod('cache'),$rc,'one','',$nid);
 	geta('read',$nid); boot::deductions($nid); self::$r=[];}
 $_SESSION['dayx']=$dt; $_SESSION['daya']=$dt;
-if($nid)msql::modif('',nod('last'),[$nid,$dt],'one','',1);
+if($nid)msql::modif('',nod('last'),[$nid,$dt],'one','',1); 
 return $nid;}
 
 static function saveart_url($u){$cat=vacses($u,'c'); if(!auth(4))return;
@@ -352,7 +352,7 @@ $ret.=tagb('section',tagb('header',$ti).tag('article',$rp,$d));
 return $ret;}
 
 //upload
-static function uploadsav($id,$type,$dsk){$rid='upfile'.$id; //echo ini_get("upload_max_filesize");
+static function uploadsav($id,$type,$opt){$rid='upfile'.$id; //echo ini_get("upload_max_filesize");
 $f=$_FILES[$rid]['name']??''; $ft=$_FILES[$rid]['tmp_name']??''; $fn=$_FILES[$rid]['full_path']??'';
 if(!$f)return 'no file uploaded '; $er=''; $rep=''; $w='';
 $f=str::normalize($f,2); $xt=xt($f); $qb=ses('qb'); if(!auth(4))return;
@@ -369,7 +369,7 @@ if($type=='banim'){$fb='ban/'.$qb.'.jpg'; $dir='imgb/';}
 elseif($type=='avnim'){$fb='usr/'.ses('usr').'_avatar.gif'; $dir='imgb/';}
 elseif($type=='css'){$fb='usr/'.$qb.'_css_'.$f; $dir='imgb/';}
 elseif($type=='bkgim'){$fb='usr/'.$qb.'_bkg.jpg'; $dir='imgb/';}
-elseif($type=='disk'){$dir='users/'.$dsk.'/'; $fb=$f; if($dsk!=$qb)mkdir_r($dir);}
+elseif($type=='disk'){$dir='users/'.$opt.'/'; $fb=$f; if($opt!=$qb)mkdir_r($dir);}
 elseif($type=='trk'){$fb=$qb.'_'.substr($id,2).'_'.substr(md5($f),0,6).$xt; $dir=$rep?$rep:'img/';}
 else{$fb=$qb.'_'.$id.'_'.substr(md5($f),0,6).$xt; $dir=$rep?$rep:'img/';}
 if(!is_dir($dir))mkdir_r($dir); $fc=$dir.$fb;
@@ -380,9 +380,11 @@ if(is_uploaded_file($ft)){// && !$er
 else $er.='upload refused: '.$fb;
 if(!$er && $type=='avnim')img::build($fc,$fc,72,72,2);
 if($er)return divc('frame-red',picto('false').' '.$fc.': '.$er);
-elseif($type=='disk' or !is_img($fc))return divc('frame-blue',ljb('','insert','['.$fc.']',$fc));
+elseif($type=='disk')return divc('frame-blue',ljb('','insert','['.$fc.']',$fc));
 elseif($type=='art')return self::placeim($id);
 elseif($type=='trk')return self::placeimtrk($fb,$id);
+elseif($type=='twt')return divc('frame-blue',ljb('','jumpvalue',[$opt,$fc],$fc));
+elseif(!is_img($fc))return divc('frame-blue',ljb('','insert','['.$fc.']',$fc));
 else return image($fc,48,48).btn('txtx',picto('true').' '.$fc);}
 
 }

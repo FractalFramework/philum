@@ -8,10 +8,6 @@ $dr=$dr=='lang'?$dr.'/'.(ses('lng')?ses('lng'):prmb(25)):($dr?$dr:'users');
 $f='msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod).'.php';
 mkdir_r($f); return $f;}
 
-static function url0($dr,$nod,$o=''){
-$dr=$dr=='lang'?$dr.'/'.(ses('lng')?ses('lng'):prmb(25)):($dr?$dr:'users');
-return 'msql/'.($o?'_bak/':'').$dr.'/'.$nod.'.php';}
-
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
 static function patch_m($dr,$nod){$r=msql::read($dr,$nod); $r=msqa::patch_m($r); self::save($dr,$nod,$r);}
 
@@ -23,12 +19,17 @@ static function menus($r){$rt=[];
 if(isset($r['_']))return $r['_']; $n=count($r); if($r)$r=current($r);
 if(is_array($r))foreach($r as $k=>$v)$rt['_'][]=$k; return $rt;}
 
+static function qres($v){
+//if($v!==null)return mysqli_real_escape_string(sql::$qr,$v);//give rn
+//return addslashes($v);//krunch bigdata
+return str_replace("'","\'",$v);}
+
 static function dump($r,$p=''){$rc=[]; $rt=[];
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
-	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?sql::qres($va):'')."'";
+	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?self::qres($va):'')."'";
 		$k=is_numeric($k)?$k:"'".addslashes($k)."'";
 		if($rb)$rc[]=$k.'=>['.implode(',',$rb).']';}
-	else $rc[$k]=(is_numeric($k)?$k:'"'.$k.'"').'=>[\''.($v?sql::qres($v):'').'\']';}
+	else $rc[$k]=(is_numeric($k)?$k:'"'.$k.'"').'=>[\''.($v?self::qres($v):'').'\']';}
 if($rc)$rt=implode(','.n(),$rc);
 return '<?php '."\n".'return ['.$rt.']; ?>';}
 
@@ -68,7 +69,7 @@ elseif(substr($act,0,1)=='@'){$n=substr($act,1); $nx=self::nextentry($r);
 //	if($act=='mdf')$r[$k]=$ra; elseif($act=='del')unset($r[$k]);}}
 elseif($act)$r[$act]=$ra;
 if(isset($r[0]))$r=self::reorder($r); if(isset($rb))$rb+=$r; else $rb=$r;
-self::save($dr,$nod,$rb);
+self::save($dr,$nod,$rb); //pr($rb);
 //json::write($dr,$nod,$r);
 return $rb;}
 
@@ -114,7 +115,7 @@ static function delrow($dr,$nod,$k){
 return msql::modif($dr,$nod,$k,'del');}
 
 static function findlast($dr,$pr,$nod){//next table
-$r=self::choose($dr,$pr,$nod); return self::nextnod($r);}//
+$r=msqa::choose($dr,$pr,$nod); return self::nextnod($r);}
 static function nextnod($r){if($r){$mx=max($r); asort($r); $i=0;
 foreach($r as $v){$i++; if($v!=$i)return $i;} return $mx+1;} return 1;}
 static function nextentry($r){if(!$r)return; ksort($r); $i=0; $n=isset($r['_'])?1:0;//next free

@@ -7,15 +7,15 @@ if($t==1)$t=self::suj_of_id($id); $t=pictxt('articles',$t);
 $tg=rstr(136)?'pagup':'popup';
 return lj('',$tg.'_popart__3_'.$id.'_3',$t);}
 
-static function find_art_link($d){
-if(is_numeric($d))$wh='id="'.$d.'"'; else $wh='suj="'.$d.'"';
-return sql('id','qda','v',$wh.' AND nod="'.ses('qb').'"');}
+static function find_art_link($d){$sq=['nod'=>ses('qb')];
+if(is_numeric($d))$sq['id']=$d; else $sq['suj']=$d;
+return sql('id','qda','v',$sq);}
 
 static function jread($c,$id,$t){$ic=self::find_art_link($id);
 return self::popart(is_numeric($ic)?$ic:$id,$t);}
 
 static function read_msg($d,$m){$id=self::find_id($d); if(!$id)return;// and substring(frm,1,1)!='_'
-$ok=sql('id','qda','v','id='.$id.' and (re>0 or name="'.ses('usr').'")'); if(!$ok)return;
+$ok=sql('id','qda','v',['id'=>$id,'>re'=>'0','name'=>ses('usr')]); if(!$ok)return;
 $ret=sql('msg','qdm','v',$id);
 if($m==2 or $m=='noimages' or $m=='nl')$ret=art::preview($ret,$id);
 elseif($m=='inner')$ret=conn::parser($ret,$m,$id);
@@ -67,7 +67,7 @@ return $r;}
 
 #rqt
 static function rqtall($c='',$kv='',$sq=[],$z=''){
-$sq+=['nod'=>ses('qb'),'>re'=>0];
+$sq+=['nod'=>ses('qb'),'>re'=>'0'];
 $sq['<day']=ses('daya'); if(rstr(3))$sq['>day']=ses('dayb');
 if(!isset($sq['frm']))$sq['-frm']='_';
 if(!isset($sq['_order']))$sq['_order']=prmb(9);

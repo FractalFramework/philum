@@ -351,7 +351,7 @@ static function msqusrs($d,$o=''){
 $r=msql::goodtable($d);
 [$b,$nd]=split_right('/',$d);
 if(auth(6))$bt=msqbt($b,$nd); $csv=csvfile($b.$nd,$r);
-$rb=twit::render_usrs($r); $ret=tabler($rb);
+$rb=twapi::render_usrs($r); $ret=tabler($rb);
 return divc('scroll',$ret).msqbt('',$nd).$csv;}
 
 //:thumb

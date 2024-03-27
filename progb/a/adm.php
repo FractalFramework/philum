@@ -697,7 +697,7 @@ if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[]=$ka;
 return $rt;}
 
 static function menus(){$top='d';//rstr(69)?'':'d';
-$rico=['Global'=>'admin','Articles'=>'articles','User'=>'user','Builders'=>'builders','Microsql'=>'server','txt'=>'editxt','pad'=>'txt']; $r=sesmk2('adm','adminauthes',0,1); $ret='';
+$rico=['Global'=>'admin','Articles'=>'articles','User'=>'user','Builders'=>'builders','Tools'=>'tools','Microsql'=>'server','txt'=>'editxt','pad'=>'txt']; $r=sesmk2('adm','adminauthes',0,1); $ret='';
 if($r)foreach($r as $k=>$v)if(isset($rico[$k]))$ret.=popbub('admn',$k,picto($rico[$k]),$top,1);
 return $ret;}
 

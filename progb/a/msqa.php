@@ -128,7 +128,7 @@ $r=split_right('/',$d,1);
 if(!$r[0])$r[0]='users';
 return $r;}
 
-static function msqlsav($id,$rg,$prm){geta('msql',$id);
+static function msqlsav($id,$rg,$prm=[]){geta('msql',$id);
 [$dir,$node]=self::node_decompil($id); $rk=array_shift($prm);
 if($rk!=$rg && substr($rg,0,1)!='@'){msql::modif($dir,$node,$rg,'mdfk',$rk); $rg=$rk;}
 $r=msql::modif($dir,$node,$prm,$rg);
@@ -555,14 +555,14 @@ return $rtb;}
 static function connexions($d0,$d){
 $rtb=self::intersect($d0,$d); $ret='';
 foreach($rtb as $k=>$v){$pb=msql::url('',nod('frn_'.str_replace('_','-',$v[1])).'-'.date('ymd'));
-	if(!is_file($pb))$ret.=twit::call($v[1],'frnb'); else $ret.=btn('txtx','alx:'.$pb);}
+	if(!is_file($pb))$ret.=twapi::call($v[1],'frnb'); else $ret.=btn('txtx','alx:'.$pb);}
 echo $ret;
 return $rtb;}
 
 static function friends($r,$d){$ret='';
 echo $rid=substr(md5($d),0,6); $nodb=nod('frn_'.$rid); msql::save('',$nodb,$r);
 foreach($r as $k=>$v){$pb=msql::url('',nod('frn_'.str_replace('_','-',$v[1])).'-'.date('ymd'));
-	if(!is_file($pb))$ret.=twit::call($v[1],'frnb'); else $ret.=btn('txtx','alx:'.$pb);}
+	if(!is_file($pb))$ret.=twapi::call($v[1],'frnb'); else $ret.=btn('txtx','alx:'.$pb);}
 echo $ret;
 return $r;}
 

@@ -6,7 +6,7 @@ $rst=ses('rstr'); $top=!$rst[69]?'':'d'; $hv=1;
 $ra=[0=>prmb(8),1=>'loading',2=>'admin',3=>'desktop',4=>'download',5=>'search',6=>'articles',7=>'add',8=>'link',9=>'language',10=>'time',11=>'circle-full',12=>'circle-empty',13=>'list',14=>'user',15=>'menu',16=>'circle-half']; 
 foreach($ra as $k=>$v)$ico[$k]=picto($v);
 $rt['home']=popbub('home','',$ico[0],$top,$hv);//if(!$rst[20])
-if(!$rst[94])$rt['menuB']=popbub('menubub','',$ico[15],$top,$hv);
+if(prma('MenuBub'))$rt['menuB']=popbub('menubub','',$ico[15],$top,$hv);//if(!$rst[94])
 if(!$rst[95])$rt['menuO']=popbub('overcat','',$ico[15],$top,$hv);
 if(!$rst[51])$rt['desk']=popbub('desk','',$ico[3],$top,$hv);
 if($auth>4){
@@ -245,15 +245,16 @@ return twit::call($p,$o);}
 static function poptwit($d,$o='',$nl=''){[$d,$nm]=cprm($d);
 if(substr($d,-8)=='/photo/1')$d=substr($d,0,-8);
 if(strpos($d,'?'))$d=strto($d,'?');
-if(substr($d,0,4)=='http')$n=strend($d,'/'); $bt=$nm?$nm:strprm($d,3);
+//if(substr($d,0,4)=='http')$n=strend($d,'/');
+$bt=$nm?$nm:strprm(strend($d,'/'),3);
 return lj('txtx','popup_twit,call__3_'.ajx($d).'_'.$o,pictxt('tw',$bt,16));}
 
 static function twitart($d,$id,$ty='',$nl=''){[$k,$nm]=cprm($d);
 if(substr($k,0,4)=='http')$k=strprm($k,5,'/');//let fullurl
 if($nm==1)$nm=$k;
 if($nm=='thread')return self::twitapi($d);
-if($nm=='users')return twit::play_usrs($d);
-if(strpos($k,' '))return self::twits($d,$id);
+if($nm=='users')return twapi::play_usrs($d);
+//if(strpos($k,' '))return self::twits($d,$id);
 if($nm or !is_numeric($k))return self::poptwit($k.'|'.$nm,$ty,$nl);
 //if($nl)return lk(twit::lk('z',$k),$k);
 if($k && rstr(158))return twit::twalter($k,$id);//twdie

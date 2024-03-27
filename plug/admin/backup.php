@@ -9,14 +9,17 @@ static function atm($v){return '"'.sql::qres(($v)).'"';}//utf8_encode
 static function atmr($r){foreach($r as $k=>$v)$ret[]=self::atm($v); return $ret;}
 static function atmrk($r){foreach($r as $k=>$v)$ret[]=$k.'='.self::atm($v); return $ret;}
 static function atmra($r,$o=''){$rb=self::atmr($r); $d=$o?'"",':''; if($rb)return '('.$d.implode(',',$rb).')';}
-static function atmrak($r,$o=''){$rb=self::atmrk($r); $d=$o?'"",':''; if($rb)return $d.implode(',',$rb);}
+static function atmrak($r,$o=''){$rb=self::atmrk($r); $d=$o?'"",':''; if($rb)return '('.$d.implode(',',$rb).')';}
+static function atmrup($r,$o=''){$rb=self::atmrk($r); array_shift($rb); if($rb)return '('.implode(',',$rb).')';}
 
-static function build($db,$id,$o=''){
+static function build($db,$id,$o=''){//if(!auth(6))return;
 $ret=''; $rb=[]; $err=''; $b=transport::pub($db);//$rb=[];
 $ra=self::dbcols($b); $cols=implode(',',array_keys($ra)); //pr($ra);
 $r=sql::call('select '.$cols.' from '.($b).' where id>"'.$id.'"','ar',0);
-if($o==1){$deb='update `'.($b).'` set ';
-	if($r)foreach($r as $k=>$v)$rb[]=$deb.self::atmrak($v).' where id="'.$v['id'].'";'.n();}
+if($o==1){$deb='insert into `'.($b).'` values ';
+	if($r)foreach($r as $k=>$v)$rb[]=$deb.self::atmrak($v).' on duplicate key update '.self::atmrup($v).';'.n();}
+/* if($o==1){$deb='update `'.($b).'` set ';
+	if($r)foreach($r as $k=>$v)$rb[]=$deb.self::atmrak($v).' where id="'.$v['id'].'";'.n();}*/
 else{$deb='INSERT INTO `'.($b).'` ('.$cols.') VALUES ';
 	if($r)foreach($r as $k=>$v)$rb[]=self::atmra($v);}//pr($rb);// on duplicate key update id=id
 if($rb){if($o==1)$ret=implode("\n",$rb); else $ret=$deb.implode(",\n",$rb).';';}

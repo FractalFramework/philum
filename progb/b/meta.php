@@ -78,8 +78,7 @@ return $ret;}
 
 static function recapauthor($id){
 $d=sql('mail','qda','v',$id); $p=strend($d,'/');
-$nm=sql::call('select screen_name from umtwits where twid='.$p,'v');
-if(!$nm){$q=twit::read($p); $r=twit::datas($q); $nm=$r['screen_name'];}
+$nm=sql::read('screen_name','qdtw','v',['twid'=>$p]);
 return $nm;}
 
 static function artopt($id){return tabler(art::metart($id));}

@@ -30,6 +30,9 @@ _old
 cnfg/*
 _datas
 !_datas/readme.txt
+_datas/csv
+_datas/exec
+_datas/md
 _old
 cnfg/*
 video

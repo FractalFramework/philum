@@ -262,6 +262,10 @@ $d=conn::read($d,'',$g1,1); return str_replace('</p>',"</p>\n",$d);}
 static function slctmod($g1){
 return boot::select_mods(yesnoses('slctm')?$g1:'');}
 
+static function homepage($g1){
+boot::define_condition();
+return join('',mod::blocks());}
+
 static function iframe($g1){$sz=get('sz'); [$w,$h]=expl('-',$sz); $s=$w>400?$w:prma('content');
 ses::$r['popm']=lkt('',$g1,pictxt('pdf',domain($g1))); ses::$r['popw']=$s;
 return iframe($g1,$s-20);}

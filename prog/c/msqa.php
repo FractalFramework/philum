@@ -128,7 +128,7 @@ $r=split_right('/',$d,1);
 if(!$r[0])$r[0]='users';
 return $r;}
 
-static function msqlsav($id,$rg,$prm){geta('msql',$id);
+static function msqlsav($id,$rg,$prm=[]){geta('msql',$id);
 [$dir,$node]=self::node_decompil($id); $rk=array_shift($prm);
 if($rk!=$rg && substr($rg,0,1)!='@'){msql::modif($dir,$node,$rg,'mdfk',$rk); $rg=$rk;}
 $r=msql::modif($dir,$node,$prm,$rg);

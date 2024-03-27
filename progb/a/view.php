@@ -133,18 +133,18 @@ static function pubart(){return [
 	['thumb','44/44','{img1}']]],
 ['span',['class'=>'author'],'{auteurs}'],
 ['h4','',[
-	['hurl','{url}','{suj}']]],
-['','','{video}']];}
-
-static function popart(){return [
-['div',['class'=>'imgl'],[
-	['thumb','44/44','{img1}']]],
-['span',['class'=>'author'],'{auteurs}'],
-['h4','',[
 	['jurl','{jurl}','{suj}']]],
 ['','','{video}']];}
 
 static function pubartb(){return [
+['div',['class'=>'imgl'],[
+	['thumb','44/44','{img1}']]],
+['span',['class'=>'author'],'{auteurs}'],
+['h4','',[
+	['hurl','{url}','{suj}']]],
+['','','{video}']];}
+
+static function pubartc(){return [
 ['url','{url}',[
 	['thumb','200/100','{img1}']]],
 ['span',['class'=>'author'],'{auteurs}'],

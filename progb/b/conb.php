@@ -185,7 +185,7 @@ $ret=match($c){
 //':room'=>lj('','popup_chatxml,home___'.$d,pictxt('chat',$d)),//old
 ':twitter'=>pop::twitart($d,$b,'',$o),
 ':twapi'=>pop::twitapi($d),
-':twusr'=>twit::play_usrs($d),
+':twusr'=>twapi::play_usrs($d),
 //':poptwit'=>pop::poptwit($d),
 ':search'=>lj('popw','popup_search,home___'.ajx($d),pictxt('search',$d)),
 ':video'=>$b=='epub'?video::titlk($d,''):video::any($d,$b,3,''),

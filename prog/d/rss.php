@@ -60,41 +60,36 @@ foreach($r as $k=>$v){
 		else $ret.=tagb($k,$v)."\n";}}
 return $ret;}
 
-static function build($p,$prw){$http=host(); $rt=[];
+static function build($r,$lastid){$http=host(); $rt=[]; $prw=2;
 $qb=ses('qb'); $desc=sql('dscrp','qdu','v',['name'=>$qb]);
-$r=msql::read('',nod('cache'),1);
-//$nb_arts=count($r);
-$lastid=ma::lastartid(); $last_art=$r[$lastid];
-//$newest=key($r); $oldest=array_pop($r);
-//$nb_days=round((time()-$oldest[0])/86400);
 //header('Content-Type: application/rss+xml; charset=utf-8');
 header('Content-Type: text/xml');
 $ret='<?xml version="1.0" encoding="utf-8" ?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-<channel>
-	';
+<channel>';
 $rt['title']=$qb;
 $rt['link']=$http;
 $rt['description']=self::parsetxt($desc);
 $rt['language']='fr';
-$rt['lastBuildDate']=date('r',$last_art[0]);
-self::datas($r,$prw,$rt);
+$rt['lastBuildDate']=date('r',end($r)[0]);
+$rt=self::datas($r,$prw,$rt);
 $ret.=self::xml($rt);
 $ret.='</channel>
 </rss>';
 return $ret;}
 
 static function home($hub,$prw){
-$rebuild=1; $cache=1;
+$rebuild=0; $cache=1;
 if(!$hub)return slctmnu(ses('mn'),'/rss/','','','','kv');
 $r=msql::read('',nod('cache'),1);//$nb_arts=count($r);
-$lastid=ma::lastartid(); $last_art=$r[$lastid];
-$newest=key($r); $oldest=array_pop($r);
-$nb_days=round((time()-$oldest[0])/86400);
+$lastid=ma::lastartid(); //$last_art=$r[$lastid];
+$newest=key($r); $oldest=end($r)[0];
+if($lastid!=$newest)$rebuild=1;
+$nb_days=round((time()-$oldest)/86400);
 //$f='_datas/rss/'.nod($newest.'_'.$prw).'.xml';
 $f='_datas/rss/'.ses('qb').'.xml'; mkdir_r($f);
 if(is_file($f) && !$rebuild && $cache)$ret=read_file($f);
-else{$ret=self::build($r,$prw); write_file($f,$ret);}//self::del_old($newest);
+else{$ret=self::build($r,$lastid); write_file($f,$ret);}//self::del_old($newest);
 eye('rss');//eye
 return $ret;}
 

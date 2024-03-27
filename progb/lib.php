@@ -158,8 +158,8 @@ $hb=substr_count($v,"\n"); if($hb>$h)$h=$hb>10?10:$h; if($h==0)$h=1;
 return textarea($id,$v,$n,$h,['wrap'=>'false','onkeyup'=>atjr('areasize',['this'])]);}
 
 //upload
-function upload_j($id,$typ,$o=''){if($o)$o=hidden('opt'.$id,$o);//send this val to uploadsav(id,typ,val)
-return '<form id="upl'.$id.'" action="" style="display:inline-block" method="POST" onchange="upload(\''.$id.'\')" accept-charset="utf-8"><label class="uplabel btn"><input type="file" id="upfile'.$id.'" name="upfile'.$id.'" multiple />'.hidden('typ'.$id,$typ).$o.picto('upload').'</label></form>'.btd($id.'up','').btd($id.'prg','');}
+function upload_j($id,$typ,$o=''){if($o)$o=hidden('opt'.$id,$o);//send this val to sav::uploadsav(id,typ,val)
+return '<form id="upl'.$id.'" style="display:inline-block" method="POST" onchange="upload(\''.$id.'\')" accept-charset="utf-8"><label class="uplabel btn"><input type="file" id="upfile'.$id.'" name="upfile'.$id.'" multiple />'.hidden('typ'.$id,$typ).$o.picto('upload').'</label></form>'.btd($id.'up','').btd($id.'prg','');}
 
 //select
 function select($ra,$r,$kv='',$h='',$j='',$o=''){$ret=''; $pr=[];
@@ -251,7 +251,9 @@ function walk_dir($dr,$fc){
 $r=explore($dr); return explode_dir($r,$dr,$fc?$fc:'func');}
 function scanwalk($dr,$fc){$r=scanfiles($dr); $rb=[];
 foreach($r as $k=>$v){$a=$fc($dr,$k,$v); if($a)$rb[]=$a;} return $rb;}
-function walk($r,$fc,$p=''){$rt=[]; foreach($r as $k=>$v)$rt[]=$fc($v,$p); return $rt;}
+function walk($r,$fc,$p=''){$rt=[]; foreach($r as $k=>$v)$rt[]=$fc($k,$v,$p); return $rt;}
+function walkr($r,$o=''){$fc=fn($k,$v)=>$o?$o:"$k=>$v";
+return array_map($fc,array_keys($r),array_values($r));}
 
 #files
 function get_file($f){return curl_get_contents($f);}
@@ -696,11 +698,13 @@ function excdir(){$dr=__DIR__; $r=explode('/',$dr); return '/'.$r[1].'/'.$r[2];}
 function excget($u,$f){$e='wget -P '.excdir().'/'.$u.' '.$f; exc($e);}
 
 //utils
+function pt($r){echo tree($r);}
 function pr($r){echo '<pre>'.print_r($r,true).'</pre>';}
 function code($d){echo '<code><pre>'.$d.'</pre></code>';}
 function vd($r){is_object($r)?var_dump($r):pr($r);}
-function pt($r){echo tree($r);}
 function backtrace(){var_dump(debug_backtrace());}
+function eco($d,$o=''){if(is_array($d))$d='<pre>'.print_r($d,true).'</pre>';
+$ret=textarea('',htmlspecialchars($d),44,12); if($o)return $ret; elseif(auth(6))echo $ret.br();}
 function dump($r,$o=''){$rb=[]; $i=0; if(is_array($r))foreach($r as $k=>$v){$ka='';
 if(is_array($v))$va=dump($v,$o); else $va='\''.addslashes(stripslashes($v)).'\'';
 if($k!=$i or $o)$ka=is_numeric($k)?$k:'\''.addslashes(stripslashes($k)).'\''; $rb[]=($ka?$ka.'=>':'').$va; $i++;}
@@ -710,8 +714,6 @@ if($d)return btn('small',$d.':'.round($ret,5));}
 function chrono_average($o=''){static $r=[]; static $t0; static $i; if($o){$r=[]; $i=0;}
 if(!$t0)$t0=$_SERVER['REQUEST_TIME_FLOAT']; $t1=microtime(true); $r[$i]=$t1-$t0;
 $ret=$i.'. '.round(array_sum($r)/count($r),5); $t0=$t1; $i++; return $ret;}
-function eco($d,$o=''){if(is_array($d))$d='<pre>'.print_r($d,true).'</pre>';
-$ret=textarea('',htmlspecialchars($d),44,12); if($o)return $ret; elseif(auth(6))echo $ret.br();}
 function funcs(){pr(get_defined_functions());}
 function trace(){eco(debug_backtrace());}
 function er($d){return ses::$er[]=$d;}

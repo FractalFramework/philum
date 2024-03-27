@@ -160,8 +160,8 @@ static function edit($p,$o){$rid=randid('tw');
 $cls=implode(',',array_keys(self::r())); $ret=''; $kr=[];
 $r=sql($cls,'qdtw','a',['twid'=>$p]);
 if(!$r)$r=self::savempty($p);
-if($r)foreach($r as $k=>$v){$kb=$k.$rid;
-	$ret.=div(goodarea($kb,$v,60).label($kb,$k,'small')); $kr[]=ajx($kb);}
+if($r)foreach($r as $k=>$v){$kb=$k.$rid; $up=''; if($k=='media')$up=upload_j('up'.$kb,'twt',$kb);
+	$ret.=div(goodarea($kb,$v,60).$up.label($kb,$k,'small')); $kr[]=ajx($kb);}
 $bt=lj('popsav',$p.'_twit,edtsav_'.implode(',',$kr).'__'.$p.'_'.$o,picto('save2'));
 return divd('edt'.$p,$bt.$ret);}
 
