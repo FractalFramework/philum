@@ -11,9 +11,9 @@ return div($bt);}
 
 static function build($p,$tmp){
 [$nd,$k]=expl('|',$p,2); if(!$k)$k=1; $r=msql::row('',$nd,$k,1); $n=$r?count($r):0;
-if(!$tmp){$tmp=''; if($r)foreach($r as $k=>$v)$tmp.='[{'.$k.'}:div]';}
-$ret=self::viewer($nd,$k,$n);
-if($r)return vue::build($tmp,$r);}
+if(!$tmp){$tmp=''; if($r)foreach($r as $k=>$v)$tmp.=div($k);}
+//$ret=self::viewer($nd,$k,$n);
+if($r)return $tmp;}
 
 static function call($p,$o,$prm=[]){$p=$prm[0]??$p;
 $ret=self::build($p,$o);
