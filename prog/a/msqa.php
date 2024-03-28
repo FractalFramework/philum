@@ -679,7 +679,6 @@ $u=joinif('/',['msql',$dr?$dr:'users',$pr,$nd]);
 $r=scanfiles($u); if(!$r)return;
 if($nd)$rt=msqa::mknodesname($r);
 else $rt=msqa::mknodes($r);
-//pr($rt);
 return $rt;}
 
 #boot

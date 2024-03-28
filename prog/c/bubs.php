@@ -341,14 +341,14 @@ return $ret;}
 
 static function adm_admn($dir){
 $r=self::adminauthes2(1); $rm=msql::kv('lang','admin_authes');
-$ret[]=['backoffice','link','blank','/admin/msql','','','Microsql','link'];
-$ret[]=['hub','ajax','popup','msql___users_'.ses('qb'),'','','Microsql','window'];
-if(auth(6))$ret[]=['lang','ajax','popup','msql___lang','','','Microsql','window'];
+$ret[]=['Microsql','link','blank','/admin/msql','','','Microsql','link'];
+$ret[]=['users','ajax','popup','msql___users_'.ses('qb'),'','','Microsql','window'];
 if(auth(6))$ret[]=['system','ajax','popup','msql___system','','','Microsql','window'];
-$r[]=[ses('murl'),'ajax','bubble','bubs,call','msql','',ses('murl'),''];
-foreach($r as $k=>$v){if($k==$dir)foreach($v as $ka=>$va){$t=$rm[$ka]??$ka;
+if(auth(6))$ret[]=['lang','ajax','popup','msql___lang','','','Microsql','window'];
+if($u=ses('murl'))$r[]=[$u,'ajax','bubble','bubs,call','','','Microsql','window'];
+/*foreach($r as $k=>$v){if($k==$dir)foreach($v as $ka=>$va){$t=$rm[$ka]??$ka;
 	if($k!='Microsql')$ret[]=[$t,'ajax','popup','admin___'.ajx($ka),'','',$k,mime($ka)];
-	else $ret[]=[$t,'ajax','popup','msql___users_'.ses('qb').'_'.$ka,'','',$k,'window'];}}
+	else $ret[]=[$t,'ajax','popup','msql___users_'.ses('qb').'_'.$ka,'','',$k,'window'];}}*/
 return $ret;}
 
 //build
