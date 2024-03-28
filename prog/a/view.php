@@ -1,7 +1,6 @@
 <?php
 class view{
 
-/**/
 static function art(){return [
 ['header',['id'=>'meta{id}'],[
 	['','','{cat}{back}{avatar}'],
@@ -224,8 +223,8 @@ return $rt;}
 
 static function detectvars($r){static $rv=[];
 foreach($r as $k=>$v)
-	if(is_array($v[2]))self::vars($v[2]);
-	elseif(substr($v[2],0,1)=='{'){//todo: multiples vars
+	if(is_array($v[2]))self::detectvars($v[2]);
+	elseif(substr($v[2],0,1)=='{'){//multiples vars
 		$rv[]=substr($v[2],1,-1);}
 return $rv;}
 
