@@ -85,7 +85,7 @@ return [$ret['suj'],$ret['msg'],$ret['day']];}
 static function slct_apikey($nd,$rid){$ret='';//$r=[1=>'dav8119',2=>'tlexfr'];
 $r=self::apikeys(); if($r)foreach($r as $i=>$nm)
 	$ret.=lj(active($i,$nd),$rid.'_twit,config__3_'.$i,$nm.'('.$i.')').' ';
-$ret.='default_server: '.ses::$tw;
+$ret.='default_server: '.ses::$s['tw'];
 return divc('nbp',$ret);}
 
 static function config($nd){
@@ -411,7 +411,7 @@ require_once('plug/tiers/Twitter.php'); return new Twitter($n);}
 static function r(){return ['ib'=>'int','twid'=>'bint','name'=>'var','screen_name'=>'var','user_id'=>'bint','date'=>'int','text'=>'var','media'=>'var','mentions'=>'var','reply_id'=>'bint','reply_name'=>'var','favs'=>'int','retweets'=>'int','followers'=>'int','friends'=>'int','quote_id'=>'bint','quote_name'=>'var','retweeted'=>'bint','lang'=>'var'];}//geo,coordinates
 
 static function apk(){
-$n=!empty(ses::$tw)?ses::$tw:1;
+$n=!empty(ses::$s['tw'])?ses::$s['tw']:1;
 return $n;}
 
 static function com($d){[$p,$o]=cprm($d);

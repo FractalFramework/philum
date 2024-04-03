@@ -18,9 +18,9 @@ static function call($p,$o,$prm=[]){$rt=[];
 $r=scanfiles('msql');
 foreach($r as $k=>$v)if(strpos($v,'/_bak/')===false){
 if(strpos($v,'msql/users/')!==false){
-	if(strpos($v,'/public_')!==false)$rt[]=$v;}
-elseif(strpos($v,'msql/design/')!==false){
-	if(strpos($v,'/public_')!==false)$rt[]=$v;}
+	if(strpos($v,'/public/')!==false)$rt[]=$v;}
+elseif(strpos($v,'msql/_bak/')!==false){
+	if(strpos($v,'_bak/users//public/')!==false)$rt[]=$v;}
 else $rt[]=$v;}
 //msql/lang/fr/connectors_clbasic.php
 /**/foreach($rt as $k=>$v){

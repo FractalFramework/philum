@@ -104,7 +104,7 @@ case('restore_clr'):$r=msql::read('',$noc,'',[],1); $clrst[0]='';
 	if($r)foreach($r as $k=>$v)$clrst[]=$v[0]; sesr('clrs',$cssn,$clrst); self::save_clr($noc); 
 	self::build_css($ftmp,$defs); break;
 case('exit_design'):sesz('cssn'); sesz('clr'); ses::$adm['css']='';
-	boot::define_mods(); boot::define_condition(); boot::define_clr(); return '/admin';
+	boot::define_mods(); boot::define_condition(); return '/admin'; //boot::define_clr();
 case('displaycss'):return nl2br(read_file($fcss));
 case('displaycsstmp'):return nl2br(read_file($ftmp));}
 //if(in_array($p,['save','make_public','make_default','make_global','displaycss','displaycsstmp']))

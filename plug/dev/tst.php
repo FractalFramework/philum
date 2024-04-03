@@ -41,7 +41,6 @@ $r=view::read();//template
 chrono();
 //for($i=0;$i<100;$i++)
 //$d=view::call($r,$ra);
-//$d=cltmp2::patch('art');//convert to {var}
 //$d=conb::parse($d,'template');
 //$d=conb::build($d,$ra);
 echo chrono('e');

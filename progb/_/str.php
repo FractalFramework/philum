@@ -85,7 +85,7 @@ $b=["%C3%A0","%C3%A2","%C3%A9","%C3%A8","%C3%AA","%C3%AB","%C3%AE","%C3%AF","%C3
 if($o)[$b,$a]=[$a,$b];
 return str_replace($a,$b,$d);}
 
-static function htmlentities_a($d){if($d)return htmlentities($d,ENT_QUOTES,ses::$enc);}
+static function htmlentities_a($d){if($d)return htmlentities($d,ENT_QUOTES,ses::$s['enc']);}
 static function htmlentities_b($d){if($d)return str_replace(['&','<','>'],['&amp;',"&lt;","&gt;"],$d);}
 
 #detect

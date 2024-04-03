@@ -1,8 +1,8 @@
 <?php 
-header('Content-Type: text/html; charset='.ses::$enc);
+header('Content-Type: text/html; charset='.ses::$s['enc']);
 $ret='<!DOCTYPE HTML>'."\n";
 $ret.='<html lang="'.prmb(25).'"><head>'."\n";
-$ret.='<meta charset="'.ses::$enc.'">'."\n";
+$ret.='<meta charset="'.ses::$s['enc'].'">'."\n";
 $ret.='<title>'.$meta['title'].'</title>'."\n";
 $ret.='<link rel="shortcut icon" href="'.$meta['favicon'].'">'."\n";
 $ret.='<base href="'.$host.'/">'."\n";
@@ -37,7 +37,7 @@ $rh[]=['meta'=>['name','google-site-verification',prms('goog')]];
 $rh[]=['css'=>'_global'];
 $rh[]=['css'=>'_pictos'];
 //$rh[]=['css'=>'_glyphs'];
-if(ses::$oom)$rh[]=['css'=>'_oomo'];
+if(ses::$s['oom'])$rh[]=['css'=>'_oomo'];
 $rh[]=['css'=>$meta['css']];
 $rh[]=['jscode'=>'read="'.$read.'"; flow="'.$flow.'";
 fixpop="'.ses('mobile').'"; fulpop="1"; var design="'.$meta['css'].'";

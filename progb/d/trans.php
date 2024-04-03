@@ -39,8 +39,18 @@ return $a::detect($p,$o,$prm);}
 static function build($txt,$from,$to,$format,$ref){
 $a='trans_'.self::$motor;
 if(boot::auth())//
-if($txt)json::add('','trans'.mkday(),[$txt,strlen($txt),$ref,mkday('','His'),ip()]);
+if($txt)json::add('',nod('trans'.mkday()),[$txt,strlen($txt),$ref,mkday('','Ymd.His'),ip(),ses('qb')]);
 return $a::build($txt,$from,$to,$format);}
+
+//txt,len,day,ip,qb
+static function barometer(){
+$r=scanfiles('json/usr'); $rc=[]; $rd=[]; $n=0;
+foreach($r as $k=>$v){
+	$f=between($v,'/','.',1); $dayf=substr($f,-6);
+	if(substr($f,0,5)=='trans'){$rb=json::read('',$f); $rlen=array_column($rb,1);
+	foreach($rlen as $ka=>$va)$rc[substr($dayf,0,4)][]=$va;}}
+foreach($rc as $k=>$v)$rd[$k]=array_sum($v); ksort($rd);
+return tabler($rd);}
 
 static function cut($txt){
 $na=2000; $nb=strlen($txt); $n=ceil($nb/$na); $r=explode(' ',$txt); $nc=0; $ret='';
@@ -282,6 +292,7 @@ $ret.=select('lng',['en','es','fr','it','de'],'vv');
 $ret.=lj('popbt',$rid.'_trans,callin_txt,lng_1',nms(153).' '.self::$motor);
 $ret.=lj('popbt',$rid.'_trans,detect_txt_1','detection');
 $ret.=lj('popbt',$rid.'_trans,getlangs','langs');
+$ret.=lj('popbt',$rid.'_trans,barometer','barometer');
 return $ret.divd($rid,'');}
 
 static function install(){

@@ -70,7 +70,7 @@ static function send_html($dest,$suj,$v,$from,$url){
 $msg=self::prep_mail_html($suj,$v,$url); $n="\r\n";
 $admail=$_SESSION['qbin']['adminmail']; $head='';
 $dest=$dest?$dest:$admail; $from=$from?$from:$admail;
-$rh=['Mime-Version'=>'1.0','Content-Type'=>'text/html; charset="'.ses::$enc.'"','X-Priority'=>'1','From'=>$from,'To'=>$dest,'Cc'=>'','Bcc'=>'','Reply-To'=>$from,'X-Mailer'=>'PHP/'.phpversion(),'Date'=>date('D, j M Y H:i:s')];
+$rh=['Mime-Version'=>'1.0','Content-Type'=>'text/html; charset="'.ses::$s['enc'].'"','X-Priority'=>'1','From'=>$from,'To'=>$dest,'Cc'=>'','Bcc'=>'','Reply-To'=>$from,'X-Mailer'=>'PHP/'.phpversion(),'Date'=>date('D, j M Y H:i:s')];
 foreach($rh as $k=>$v)$head.=$k.': '.$v.$n;
 if(mail($dest,$suj,$msg,$head))return btn('txtyl','mail_sent_to: '.$dest); 
 else return btn('txtyl','not_sent');}

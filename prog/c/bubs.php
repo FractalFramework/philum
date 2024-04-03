@@ -201,10 +201,10 @@ return $ret;}
 #admin
 static function adminauthes2($o=''){
 if(isset($_SESSION['admath']) && !$o)return $_SESSION['admath'];
-$r=msql::prep('system','admin_authes');
+$r=msql::prep('system','admin_authes'); $rt=[];
 foreach($r as $k=>$v)foreach($v as $ka=>$va)
-if($va<=$_SESSION['auth'])$ret[$k][$ka]=$va;
-$_SESSION['admath']=$ret; return $ret;}
+if(auth($va))$rt[$k][$ka]=$va;
+ses('admath',$rt); return $rt;}
 
 static function fastmenu(){//$arw=rightarrow();$arw.
 $r=msql::kv('lang','admin_menus'); $rt=[];
@@ -346,9 +346,9 @@ $ret[]=['users','ajax','popup','msql___users_'.ses('qb'),'','','Microsql','windo
 if(auth(6))$ret[]=['system','ajax','popup','msql___system','','','Microsql','window'];
 if(auth(6))$ret[]=['lang','ajax','popup','msql___lang','','','Microsql','window'];
 if($u=ses('murl'))$r[]=[$u,'ajax','bubble','bubs,call','','','Microsql','window'];
-/*foreach($r as $k=>$v){if($k==$dir)foreach($v as $ka=>$va){$t=$rm[$ka]??$ka;
+foreach($r as $k=>$v){if($k==$dir)foreach($v as $ka=>$va){$t=$rm[$ka]??$ka;
 	if($k!='Microsql')$ret[]=[$t,'ajax','popup','admin___'.ajx($ka),'','',$k,mime($ka)];
-	else $ret[]=[$t,'ajax','popup','msql___users_'.ses('qb').'_'.$ka,'','',$k,'window'];}}*/
+	else $ret[]=[$t,'ajax','popup','msql___users_'.ses('qb').'_'.$ka,'','',$k,'window'];}}
 return $ret;}
 
 //build

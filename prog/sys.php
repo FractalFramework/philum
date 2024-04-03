@@ -24,7 +24,7 @@ if($cache)boot::cache_arts();
 //condition
 boot::define_condition();
 //design
-if($cache)boot::define_clr();
+//if($cache)boot::define_clr();
 //mods
 $p1=ses('prmb1'); if($p1 && $p1!=prmb(1))ses::$adm['alert']='mod:'.prmb(1);
 #eye

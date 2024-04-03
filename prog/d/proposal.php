@@ -108,5 +108,4 @@ else $ret=self::stream($p,$rid);
 return $bt.divd($rid,$ret);}
 
 }
-
 ?>

@@ -51,7 +51,7 @@ var ctx=c.getContext("2d"); ctx.font="12px Arial";
 '.$d);}
 
 static function canvas_mk($r,$w,$h,$t=''){$t='yes';
-$clr=$_SESSION['clrs'][$_SESSION['prmd']];
+$clr=getclrs();
 $xr=max($r); $bars=count($r); $x1=0;
 if($bars<$w/2)$esp=2; $ecart=$w/$bars; if($ecart<10)$t='off';
 $ret='ctx.clearRect(0,0,1000,'.$h.'); '."\n";
@@ -82,7 +82,7 @@ return self::draw_canvas($ret,$w,$h);}
 //graph
 static function graph_mk($r,$w,$h){
 $dr='_datas/stats/'; $f=$dr.'/'.date('ymd').'.png'; mkdir_r($f); if(!is_dir($dr))mkdir($dr);
-if($r)img::graphics($f,$w,$h,$r,'000000','yes');//$_SESSION['clrs'][$_SESSION['prmd']][7]
+if($r)img::graphics($f,$w,$h,$r,'000000','yes');//getclrs('',7);
 return image('/'.$f.'?'.randid(),'','');}
 
 static function graph($c,$n,$prm){
@@ -178,8 +178,8 @@ $rid='sts'; $o=$o?$o:100;
 $p=sqb('id','qdv','v','order by id desc limit 1');
 $j=sj($rid.'_statsee,call___'.$p.'_'.$o);
 $js=head::temporize('sttimer',$j,3000);
-//echo head::jscode($js);
-head::add('jscode',$js);
+echo head::jscode($js);
+//head::add('jscode',$js);
 return divd($rid,self::call($p,$o));}
 
 //plug

@@ -198,7 +198,6 @@ static function optimize($db){$b=db($db);
 self::qr('rename table '.$b.' to '.$b.'a;');
 self::qr('create table '.$b.' like '.$b.'a');
 self::qr('insert into '.$b.' select * from '.$b.'a');
-if(self::ex($db))self::qr('drop table '.$b.'a;');
+if(self::ex($db))self::qr('drop table '.$b.'a;');}
 }
-
-}?>
+?>

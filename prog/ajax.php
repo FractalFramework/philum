@@ -3,7 +3,7 @@
 $grm=gets();
 $prm=posts();
 define_ses();
-//header('Content-Type: text/html; charset='.ses::$enc);
+//header('Content-Type: text/html; charset='.ses::$s['enc']);
 if(rstr(22))boot::block_crawls();
 if(!isset($_SESSION['qb']))boot::reboot();
 [$app,$sz,$tg]=vals($grm,['app','sz','tg']);

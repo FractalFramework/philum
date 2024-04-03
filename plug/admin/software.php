@@ -43,12 +43,12 @@ $r[]=self::patch();
 foreach($r as $k=>$v)$ret.=divc('',$v);
 return $ret;}
 
-static function dirs(){return ['progb','prog','plug','msql/system','msql/server','msql/lang','msql/design','msql/users','js','css','fonts','json/system','imgb/icons','imgb/avatar','imgb/usr','pub'];}
+static function dirs(){return ['progb','prog','plug','msql/system','msql/server','msql/lang','msql/users','js','css','fonts','json/system','imgb/icons','imgb/avatar','imgb/usr','pub'];}
 static function files(){
 return ['ajax.php','app.php','call.php','index.php','install.php'];}
 
 static function exceptions($dr,$f){$no=0;
-if($dr=='msql/design' or $dr=='msql/users')if(strpos($f,$dr.'/public')===false)$no=1;
+if($dr=='msql/users')if(strpos($f,$dr.'/public')===false)$no=1;
 if($dr=='css')if(strpos($f,$dr.'/_')===false && strpos($f,$dr.'/public')===false)$no=1;
 if(strpos($f,'/_bak/'))$no=1;
 return $no;}
@@ -95,7 +95,7 @@ if($rb)$rc=self::compare($ra,$rb);
 if($rc)foreach($rc[2] as $k=>$v)unlink($v);//old files
 json::write('srv','upd',$rc);//needed files
 $f=upsrv().'/call/software,archive/'.nohttp(host());//distant will build archive
-if(ses::$local)$fa=curl_get_contents($f,json_encode($rc),1);
+if(ses::$s['local'])$fa=curl_get_contents($f,json_encode($rc),1);
 else $fa=file_get_contents($f);
 $fb='_backup/upd.tar.gz'; copy(upsrv().'/'.$fa,$fb);
 tar::untar($fb);//install files

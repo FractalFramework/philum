@@ -79,7 +79,7 @@ if(!isset($_SESSION['rstr62']))$_SESSION['rstr62']=rstr(62);
 if(rstr(3))$rt3.=togses('rstr62',pictit('after',nms(134),16)).' ';//dig
 //$urg=self::mkurl(['bool','titles','cat','tag']);
 if($rech)$rt3.=lh('search/'.$rech.($dig?'/'.$dig:''),picto('link',16)).' ';//.$urg
-if(ses::$oom){$rt3.=lj('popbt','popup_umvoc,home___'.ajx($rech).'_1','vocables');//bdvoc
+if(ses::$s['oom']){$rt3.=lj('popbt','popup_umvoc,home___'.ajx($rech).'_1','vocables');//bdvoc
 	$rt3.=lj('popbt','popup_umrec,home__3_'.ajx($rech),'twits');}
 	$ret.=div($rt3);
 $ret.=div(self::pages($tot,$rid));//pages
@@ -137,7 +137,7 @@ $qb=ses('qb'); $qda=db('qda'); $qdm=db('qdm'); $qdt=db('qdt'); $qdta=db('qdta');
 //sql
 $fr='k';//filter
 $ft='';//fulltext//score:1->11//bool:nb of verified words
-//if(ses::$oom)
+//if(ses::$s['oom'])
 //$ft='MATCH (msg) AGAINST ("'.$rch.'")';//'.($bol?' IN BOOLEAN MODE':'').'//method of intersect
 if(rstr(3)){$days=$days?$days:ses('nbj'); $sq['daymin']='day>'.timeago($days);}
 $daya=time_prev($days); $daya=$daya?timeago($daya):ses('daya');
@@ -201,7 +201,8 @@ if(isset($_SESSION['recache'][$p])){$_SESSION['recache'][$p]=[]; return 'x';}
 elseif(isset($_SESSION['recache']))$_SESSION['recache']=[]; return 'xx';}
 
 static function good_rech($d){if(!$d)return; $d=str::clean_acc($d);
-$d=str_replace("&nbsp;",' ',$d); return $d=strip_tags($d);}//$d=stripslashes($d); return trim(urldecode($d));
+//$d=strip_tags($d); $d=stripslashes($d); $d=urldecode($d);
+$d=str_replace("&nbsp;",' ',$d); return $d=trim($d);}
 
 static function home($d0,$n0,$prm=[]){chrono(); $load=[]; $ret='';
 [$d,$n,$b,$o,$t,$sg,$pg,$cat,$tag,$ovc,$lim,$lng,$pri,$len]=arr($prm,14); $d=$d?$d:$d0; $n=$n?$n:$n0;

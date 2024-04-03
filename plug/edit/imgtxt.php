@@ -44,7 +44,7 @@ static function home($t,$fnt,$cod=''){
 $t=str_replace('/','|',$t);//nodirs
 $t=$t?$t:'error'; $fnt=$fnt?$fnt:'Fixedsys';
 $font='fonts/gdf/'.$fnt.'.gdf'; mkdir_r('imgb/cod');
-$clr=$_SESSION['clrs'][$_SESSION['prmd']][7];
+$clr='#000000';
 if($cod=='out'){$f=ses('out');}
 elseif($cod or $fnt=='crackman')$f='imgb/cod/cod'.$t.'.png';
 else $f='imgb/cod/'.ses('read').'_imgtxt.png';

@@ -6,7 +6,7 @@ static function trkplay($g1){$_SESSION['read']=$g1;
 return art::output_trk(ma::read_idy($g1,'ASC'));}
 
 static function delconn($g1){$d=sql('msg','qdm','v',$g1); 
-$d=html_entity_decode($d,true,ses::$enc);
+$d=html_entity_decode($d,true,ses::$s['enc']);
 $d=conb::parse($d,'delconn'); return str::clean_lines($d);}
 
 static function editbrut($g1,$g2,$prm){

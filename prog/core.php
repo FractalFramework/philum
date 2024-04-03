@@ -1,8 +1,8 @@
 <?php 
 
 #store
-class ses{static $r=[]; static $s=[]; static $adm=[]; static $st=[]; static $er=[]; static $enc='';
-static $urlsrc=''; static $loader=''; static $local=0; static $tw=1; static $n=0; static $nb=0; static $oom=''; static $cnfg;
+class ses{static $r=[]; static $s=[]; static $adm=[]; static $st=[]; static $er=[];
+static $urlsrc=''; static $loader=''; static $n=0; static $nb=0; static $qb='';
 static function adm($k){return self::$adm[$k]??'';}
 static function s($k,$v=''){return self::$s[$k]??(self::$s[$k]=$v);}
 static function k($k,$v){return self::$r[$k]=$v;}
@@ -46,7 +46,7 @@ $r=sesmk('usrconn','',0);
 if($r)foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[','|1:'.$k.']',$id],$k,att($v));
 //$ret.=togbub('mc,navs','trk_'.$id,'...');
 $ret.=togbub('mc,navs','ascii_'.$id,ascii(128578));
-if(ses::$oom)$ret.=togbub('mc,navs','oomo_'.$id,oomo('UMMOAELEWE',20));
+if(ses::$s['oom'])$ret.=togbub('mc,navs','oomo_'.$id,oomo('UMMOAELEWE',20));
 return btn('nbp',$ret);}
 
 function editarea($rid,$d='',$w=80,$h=16,$js=[],$o=''){$ret=connbt($rid,$o);
@@ -56,7 +56,7 @@ return $ret;}
 
 #msql
 function pub($d){return 'public_'.$d;}
-function nod($d){return $_SESSION['qb'].'_'.$d;}
+function nod($d){return ses::$qb.'_'.$d;}
 function msqbt($b,$p,$d=''){if($d)return msqedt($b,$p,$d);
 $u=($b?$b:'users').'_'.ajx($p).($d?'~'.ajx($d):'');
 return lj('grey','popup_msql__3_'.$u,pictit('msql',$p));}
@@ -330,25 +330,9 @@ function yesnoses($d){return $_SESSION[$d]=($_SESSION[$d]??'')==1?0:1;}
 function nbof($n,$i){if(!$n)return nms(11)."&nbsp;".nms($i); else return $n.' '.($n>1?nms($i+1):nms($i));}
 function plurial($n,$i){return $n>1?nms($i+1):nms($i);}
 
-//function auth($n){return (ses::$s['auth']??'')>=$n?true:false;}
-//function rstr($n){return (ses::$s['rstr'][$n]??1)?0:1;}
-//function prms($n){return (ses::$s['prms'][$n]??1)?0:1;}
-//function prma($n){return (ses::$s['prma'][$n]??1)?0:1;}
-//function prmb($n){return (ses::$s['prmb'][$n]??1)?0:1;}
-//function nms($n){return (ses::$s['prmb'][$n]??1)?0:1;}
-//function mn($n){return (ses::$s['mn'][$n]??1)?0:1;}
-//function db($n){return ses::$s['db'][$n]??'';}
-
 function define_ses(){
-ses::$s['auth']=ses('auth');
-//ses::$s['rstr']=ses('rstr');
-//ses::$s['prms']=ses('prms');
-//ses::$s['prma']=ses('prma');
-//ses::$s['prmb']=ses('prmb');
-//ses::$s['nms']=ses('nms');
-//ses::$s['mn']=ses('mn');
-//ses::$s['db']=ses('db');
-}
+ses::$s['auth']=ses('auth');//boot::define_auth()
+ses::$qb=ses('qb',ses::$s['qb']);}
 
 function security(){
 $ip=sql('ip','qdu','v',['name'=>ses('qb')]);
@@ -361,7 +345,7 @@ function voc($d,$b='helps_voc'){$r=sesmk('msqlang',$b,0); return $r[$d][0]??$d;}
 //sesmk
 function msqlang($d){return msql::read('lang',$d,1);}
 function usrconn(){return msql::kv('',nod('connectors'));}
-function scanplug(){return explore('plug','dirs',1);}
+//function scanplug(){return explore('plug','dirs',1);}
 function emoj(){return msql::kv('system','edition_pictos_4');}
 function conns(){return msql::read('system','connectors_basic',1);}
 function connlg(){return msql::kv('lang','connectors_basic');}
@@ -492,7 +476,7 @@ function checkversion($n=1){return msql::val('system','program_version',$n);}
 function forbidden_img($nm){$r=explode(' ',prmb(21));
 if($r)foreach($r as $v)if($v && strpos($nm,$v)!==false)return false; return $nm;}
 function antipuces($v){if(forbidden_img($v)!==false && strpos($v,'puce')===false)return $v;}
-function opcache($d){if(!ses::$local)opcache_invalidate($d);}
+function opcache($d){if(!ses::$s['local'])opcache_invalidate($d);}
 function unlinkb($f){$fb='_backup/imtrash/'.$f; mkdir_r($fb); copy($f,$fb); unlink($f);}
 function rm($f){if(!is_dir($f) && boot::auth()){unlinkb($f); json::add('','rmim',[$f,ip(),mkday()]);}}
 

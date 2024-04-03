@@ -56,7 +56,7 @@ foreach($r as $v)self::save_funcs('progb/'.$v.'.php',$v);}
 static function savefunc_plug(){//save_all
 $r=explore('plug','full',1); //pr($r);
 $ra=['edit','dev','admin','photo']; //$ra=explore('plug','dirs',1);
-if(ses::$oom)$ra[]='ummo';
+if(ses::$s['oom'])$ra[]='ummo';
 if($ra)foreach($ra as $v){$rb=explore('plug/'.$v,'full');}
 //if($rb)foreach($rb as $vb)$r[]=$vb;
 foreach($r as $v)if($v!='userdl.tar.gz'){$p=strend($v,'/'); $p=strto($p,'.'); self::save_funcs($v,$p);}}

@@ -138,15 +138,15 @@ return ['0'.implode('',$rstr),$config];}
 
 static function makenew($qb,$restore=''){
 $qdu=db('qdu'); if(!auth(4))$_SESSION['auth']=4;
-msql::copy('system','default_css_1','design',$qb.'_design_1');
-msql::copy('system','default_clr_1','design',$qb.'_clrset_1');
-msql::copy('system','default_css_2','design',$qb.'_design_2');
-msql::copy('system','default_clr_2','design',$qb.'_clrset_2');
-msql::copy('system','default_mods','users',$qb.'_mods_1');
-msql::copy('system','default_rstr','users',$qb.'_rstr');
-msql::copy('system','default_apps','users',$qb.'_apps');
-//$r=msqa::import_defs('','http://philum.fr/users/philum_rstr'); msql::save('',$qb.'_rstr',$r);
-//$r=msqa::import_defs('','http://philum.fr/users/philum_mods_1'); $r[2][2]=2; msql::save('',$qb.'_mods_1',$r);
+msql::copy('system','default/css/1','design',$qb.'/css/1');
+msql::copy('system','default/clr/1','design',$qb.'/clr/1');
+msql::copy('system','default/css/2','design',$qb.'/css/2');
+msql::copy('system','default/clr/2','design',$qb.'/clr/2');
+msql::copy('system','default/mods','users',$qb.'/mods/1');
+msql::copy('system','default/rstr','users',$qb.'/rstr');
+msql::copy('system','default/apps','users',$qb.'/apps');
+//$r=msqa::import_defs('','http://philum.fr/users/philum/rstr'); msql::save('',$qb.'_rstr',$r);
+//$r=msqa::import_defs('','http://philum.fr/users/philum/mods/1'); $r[2][2]=2; msql::save('',$qb.'_mods_1',$r);
 if($restore){[$rstr,$config]=self::ndprms_defaults();
 sql::upd('qdu',['rstr'=>$rstr],['name'=>ses('qb')]);
 sql::upd('qdu',['config'=>$config],['name'=>ses('qb')]);}

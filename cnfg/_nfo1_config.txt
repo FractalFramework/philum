@@ -1,1 +1,1 @@
-#yes##newsnet##newsnet.fr###Europe/Paris#E_ALL##1##1#newsnet.fr#newsnet.fr#
+#yes##newsnet##newsnet.fr###Europe/Paris#E_ALL##1###newsnet.fr#newsnet.fr#1

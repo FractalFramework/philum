@@ -21,7 +21,7 @@ if($r[9])$color='color:#'.$r[9].'; ';
 if($r[10])$align='text-align:'.$r[10].'; ';
 $alp=($r[12]<33?20:($r[12]<66?50:($r[12]<90?75:90)));
 if($r[12]!==false)$alpha='background-image:url(bkg/shadow/black'.$alp.'.png); ';
-else $sty.='background-color:#'.$_SESSION['clrs'][$_SESSION['prmd']][6].'; ';
+else $sty.='background-color:rgba(119,119,119,.4); ';
 if($r[11]=='inside')$pos='position:absolute; margin-left:'.$wb.'px;';
 $ret=self::nav($_SESSION[$sdj],$na,$nb,$f);
 if($r[7])$ret=divs($sty.$font.$color.$align.$alpha.$pos,$ret.$r[7]);

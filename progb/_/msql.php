@@ -3,10 +3,11 @@ class msql{
 static $dr,$nod,$f,$r;
 static $m='_';
 
-static function url($dr,$nod,$o=''){
+static function url($dr,$nod,$o=''){//if(!$nod)return;
 $dr=$dr=='lang'?$dr.'/'.(ses('lng')?ses('lng'):prmb(25)):($dr?$dr:'users');
 $f='msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod).'.php';
-mkdir_r($f); return $f;}
+if($nod)mkdir_r($f); return $f;}
+//json::add('',nod('msqldir'.mkday('ymnHis')),[$nod]);
 
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
 static function patch_m($dr,$nod){$r=msql::read($dr,$nod); $r=msqa::patch_m($r); self::save($dr,$nod,$r);}

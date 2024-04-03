@@ -47,5 +47,11 @@ return ['_'=>['date','text'],
 - fix scrolling continu
 - réorganisation des dossiers de l\'application
 - séparation de twit en deux éléments de taille égale, ceux utilisés et ceux rendus obsolètes par l\'abandon du support de l\'api twitter'],
-18=>['0327','- les tables msql design sont intégrées aux utilisateurs
-- rénovation de sty, l\'éditeur css']]; ?>
+18=>['0327','- réorganisation des tables msql design, logées chez les utilisateurs
+- upgrade en conséquence et relifting de sty, l\'éditeur css'],
+19=>['0328','- remise à niveau de chargesets, là où était né le principe de choose()
+- mise en prod des modifs de relocation des designs, appelés css et clr
+- suppression de vue et cltmp2, rendus inusités'],
+20=>['0329','- ajout d\'un baromètre à trans, pour mesurer la quantité de données envoyées à deepl
+- fix (on l\'espère) le truc qui éradique la table data à chaque fois qu\'on efface un lien de traduction'],
+21=>['0330','- ']]; ?>
