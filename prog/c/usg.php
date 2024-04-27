@@ -86,8 +86,8 @@ return divs($s,image($img,'100%','auto'));}
 //video
 static function playvideo($iv,$n){
 $r=$_SESSION['iv'.$iv];
-$jx='iv'.$iv.'_usg,playvideo___'.$iv.'_';
-$ret=divc('nbp right',self::nb_pages_j($r,$jx,$n));
+$j='iv'.$iv.'_usg,playvideo___'.$iv.'_';
+$ret=divc('nbp right',self::nb_pages_j($r,$j,$n));
 $ret.=tagb('h3',lk(htac('read').$r[$n][0],ma::suj_of_id($r[$n][0])));
 $ret.=video::any(strfrom($r[$n][1],'|'),$r[$n][0],3);
 return $ret.br();}
@@ -112,14 +112,14 @@ while($rq=sql::qrw($req))if(in_array($rq[0],$ra)){
 return $ret;}
 
 //pages
-static function nb_pages_j($r,$jx,$n){$nb=1; $na=count($r); $ret='';
-if($n>=$nb && $n)$ret.=lj('',$jx.(0),1);//first
-$nab=round($n/2); if($n-$nb>$nab)$ret.=lj('',$jx.($nab-1),$nab);
-if($r[$n-1])$ret.=lj('',$jx.($n-1),picto('kleft'));
-$ret.=lj('active',$jx.($n),$n+1);
-if($r[$n+1])$ret.=lj('',$jx.($n+1),picto('kright'));
-$nab=$n+round(($na-$n)/2); if($n+$nb<$nab)$ret.=lj('',$jx.($nab-1),$nab);
-if($n<$na-$nb && $n!=$na-1)$ret.=lj('',$jx.($na-1),$na);//last
+static function nb_pages_j($r,$j,$n){$nb=1; $na=count($r); $ret='';
+if($n>=$nb && $n)$ret.=lj('',$j.(0),1);//first
+$nab=round($n/2); if($n-$nb>$nab)$ret.=lj('',$j.($nab-1),$nab);
+if($r[$n-1]??'')$ret.=lj('',$j.($n-1),picto('kleft'));
+$ret.=lj('active',$j.($n),$n+1);
+if($r[$n+1]??'')$ret.=lj('',$j.($n+1),picto('kright'));
+$nab=$n+round(($na-$n)/2); if($n+$nb<$nab)$ret.=lj('',$j.($nab-1),$nab);
+if($n<$na-$nb && $n!=$na-1)$ret.=lj('',$j.($na-1),$na);//last
 return $ret;}
 
 //footnotes

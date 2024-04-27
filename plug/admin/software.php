@@ -48,9 +48,10 @@ static function files(){
 return ['ajax.php','app.php','call.php','index.php','install.php'];}
 
 static function exceptions($dr,$f){$no=0;
-if($dr=='msql/users')if(strpos($f,$dr.'/public')===false)$no=1;
-if($dr=='css')if(strpos($f,$dr.'/_')===false && strpos($f,$dr.'/public')===false)$no=1;
-if(strpos($f,'/_bak/'))$no=1;
+if($dr=='msql/users'){if(strpos($f,$dr.'/public')===false)$no=1;}
+elseif($dr=='msql/server'){if(strpos($f,$dr.'/edition')===false && strpos($f,$dr.'/program')===false && strpos($f,$dr.'/shared')===false)$no=1;}
+elseif($dr=='msql/lang'){if(strpos($f,'/edition')===false && strpos($f,'/program')===false && strpos($f,'/admin')===false && strpos($f,'/helps')===false && strpos($f,'/connectors')===false && strpos($f,'/tags')===false)$no=1;}
+elseif($dr=='css'){if(strpos($f,$dr.'/_')===false && strpos($f,$dr.'/public')===false)$no=1;}
 return $no;}
 
 static function datas($dr,$k,$f){$no=self::exceptions($dr,$f);
@@ -60,7 +61,7 @@ static function recense($dr){$r=scanfiles($dr); $rb=[];
 foreach($r as $k=>$v)if(!self::exceptions($dr,$v))$rb[$v]=ftime($v); return $rb;}
 
 static function build($p=''){$rb=[];
-$r=self::files(); foreach($r as $k=>$v)$rb[$v]=$rb[$v]=ftime($v);
+$r=self::files(); foreach($r as $k=>$v)$rb[$v]=ftime($v);
 $r=self::dirs(); foreach($r as $k=>$v)$rb+=self::recense($v);
 if($p==2)$ra=json::read('srv','software');
 json::write('srv','software',$rb);
@@ -72,7 +73,7 @@ if($p==2){
 return $rb;}
 
 static function compare($ra,$rb){$rc=[]; $rd=[]; $re=[];
-foreach($ra as $k=>$v)if(!isset($rb[$k]))$re[]=$k;//del
+foreach($ra as $k=>$v)if(!isset($rb[$k]) && strpos($k,ses('qb'))===false)$re[]=$k;//del
 foreach($rb as $k=>$v)if(!isset($ra[$k]))$rd[]=$k;//new
 foreach($ra as $k=>$v)if(isset($rb[$k]) && $v<$rb[$k])$rc[]=$k;//update
 return [$rc,$rd,$re];}

@@ -100,7 +100,7 @@ if($r)foreach($r as $k=>$v)if($k)//id
 	//$ret[]=[$k,'ajax','popup_api___'.$d.':'.$k,'','','','','tag'];
 return $ret;}
 static function seek(){
-$r=explode(' ','tag '.prmb(18)); $rt=[];
+$r=sesmk('tags'); $rt=[];
 foreach($r as $k=>$v)$rt=self::seek_merge($v,$rt);
 //if($v)$rt[]=[$v,'bub','seektag',ajx($v),'','','','folder2'];
 return $rt;}

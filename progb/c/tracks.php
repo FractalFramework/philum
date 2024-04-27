@@ -12,12 +12,17 @@ $url=urlread(ses('read'));
 mails::send_mail('html',$from,host().$url,$ret,$from,$url);
 return br().btn('',helps('formail'));}
 
+static function findtwusr($id){
+$d=sql('msg','qdi','v',$id);
+return '@'.twit::recupnm($d);}
+
 static function trkowner($id,$o,$prm){
 if($prm)sql::upd('qdi',['name'=>$prm[0]],$id);
-$nm=sql('name','qdi','v','id="'.$id.'"');
+$nm=sql('name','qdi','v',$id);
 //$r=sql('name','qdi','rv','nod="'.ses('qb').'"');
 $j='trknm'.$id.'_tracks,trkowner_trkchgnm__'.$id;
 $ret=inputj('trkchgnm',$nm,$j).lj('',$j,picto('ok'));
+$ret.=lj('','trkchgnm_tracks,findtwusr__4_'.$id,picto('enquiry'));
 return divd('trknm'.$id,$ret);}
 
 static function trkstatus($id,$st){$ret='';

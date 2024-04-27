@@ -31,7 +31,8 @@ elseif($type=='like'){
 	$n=is_numeric($n)&&$n?btn('txtsmall',$n):'';
 	$ret=lj('small',$j.'_1',picto($ic,$s),att($type)).$n;}
 elseif($type=='fav')$ret=lj('small',$j.'_1',picto($ic,$s),att($type));
-elseif($type=='dock')$ret=btj(picto('input'),atj('dock',$id),'','',['title'=>nms($poll?203:202)]);
+elseif($type=='dock')
+	$ret=btj(picto($poll?'output':'input'),atj('dock',$id),'','dk'.$id,['title'=>nms($poll?203:202)]);
 return $o?$ret:btd($type.$id,$ret);}
 
 static function stars($r,$n,$j,$poll){$ret='';
@@ -71,18 +72,27 @@ if($d=='false')$d='';
 if($n && $d=='true')return true;
 if(!$n && !$d)return true;}
 
+static function content($id){//twit::content
+$suj=ma::suj_of_id($id); //$suj=html_entity_decode($suj);//str_replace("&nbsp;",' ',$suj);
+$author=sql::inner('tag','qdt','qdta','idtag','v',['cat'=>'auteurs','idart'=>$id]);
+[$cat,$source]=sql('frm,mail','qda','w',$id);
+$tag=$author?$author:($source?httproot($source):$cat); //$tag=ucwords(str::normalize($tag));//http_root
+//$utagr=sql::inner('tag','qdt','qdta','idtag','v','cat>0 and idart="'.$id.'"');
+//if($utagr)$tag=implode(' #',$utagr);
+//$im=sql('img','qda','v',$id); if($im)$img=' '.host().pop::art_img($im,$id);
+return '['.$tag.'] '.delnbsp($suj);}
+
+static function twlink($id){//twit::content
+$txt=self::content($id); $url=host().urlread($id);
+return 'http://twitter.com/intent/tweet?url='.$url.'&text='.hed($txt);}
+
+static function fblink($id){$url=host().urlread($id);
+return 'http://www.facebook.com/sharer.php?u='.hed($url);}
+
 static function build($id,$suj='',$ro=[],$rf=[],$prw=''){
 if(!$ro){$ro=art::metart($id); $rf=art::favs($id); $suj=sql('suj','qda','v',$id);}
-$root=host().urlread($id); $rst=arr(ses('rstr'),180); $ret='';
-$rsoc=[44=>'http://www.facebook.com/sharer.php?u='.$root,45=>'http://twitter.com/intent/tweet?url='.$root.'&text='.str::urlencode($suj)];//,46=>'http://wd.sharethis.com/api/sharer.php?destination=stumbleupon&url='.$root
-if(!$rst[100] && auth(6))$ret.=togbub('tlex,share',$id,picto('tlex')).' ';//,'color:gray'
-if(!$rst[99] && auth(6))$ret.=togbub('twit,share',$id,picto('tw')).' ';//,'color:gray'
-if(!$rst[45] && $prw>2)$ret.=lkt('',$rsoc[45],picto('tw2')).' ';
-if(!$rst[44] && $prw>2)$ret.=lkt('',$rsoc[44],picto('fb2')).' ';
-//if(!$rst[46] && $prw>2)$ret.=lkt('',$rsoc[46],icon('stumble')).' ';
-if(!$rst[118] && $prw>2)$ret.=lkt('','/apicom/id:'.$id.',json:1',picto('emission'),att('Api')).' ';
-if(!$rst[130] && $prw>2)$ret.=lj('','popup_mkbook,call___'.$id.'_art',picto('book2'),att('Ebook')).' ';
-if(!$rst[131] && $prw>2)$ret.=lj('','popup_api__3_id:'.$id.',preview:3,file:'.ajx($suj),picto('file-txt'),att('Html')).' ';
+$rst=arr(ses('rstr'),180); $ret='';
+$rsoc=[44=>self::fblink($id),45=>self::twlink($id)];//,46=>'http://wd.sharethis.com/api/sharer.php?destination=stumbleupon&url='.$root
 //if(!$rst[118])$ret.=lj('','popup_api___id:'.$id.',json:1',picto('rss2')).' ';
 if(self::rstopt($rst[52],$ro['fav']))$ret.=self::edt($id,'fav',$rf['fav']).' ';
 if(self::rstopt($rst[90],$ro['like']))$ret.=self::edt($id,'like',$rf['like']).' ';
@@ -91,10 +101,18 @@ if(self::rstopt($rst[91],$ro['poll']))$ret.=self::edt($id,'poll',$rf['poll']).' 
 if(self::rstopt($rst[125],$ro['agree']))$ret.=self::edt($id,'agree',$rf['agree']).' ';
 if(self::rstopt($rst[71],$ro['artstat']))$ret.=lj('','popup_stats,graph___nbp_'.$id,picto('stats',16)).' ';
 //if(self::rstopt($rst[86],!$ro['tracks']))$ret.=lj($css,'popup_tracks,form___'.$id,picto('forum')).' ';
+if(!$rst[100] && auth(6))$ret.=togbub('tlex,share',$id,picto('tlex')).' ';//,'color:gray'
+if(!$rst[99] && auth(6))$ret.=togbub('twit,share',$id,picto('tw')).' ';//,'color:gray'
+if(!$rst[45] && $prw>2)$ret.=lkt('',$rsoc[45],picto('tw2')).' ';
+if(!$rst[44] && $prw>2)$ret.=lkt('',$rsoc[44],picto('fb2')).' ';
+//if(!$rst[46] && $prw>2)$ret.=lkt('',$rsoc[46],icon('stumble')).' ';
+if(rstr(141))$ret.=lj('','pagup_book,read__css_'.$id.'__1',picto('script'),att('Player')).' ';
+if(!$rst[118] && $prw>2)$ret.=lkt('','/apicom/id:'.$id.',json:1',picto('emission'),att('Api')).' ';
+if(!$rst[130] && $prw>2)$ret.=lj('','popup_mkbook,call___'.$id.'_art',picto('book2'),att('Ebook')).' ';
+if(!$rst[131] && $prw>2)$ret.=lj('','popup_api__3_id:'.$id.',preview:3,file:'.ajx($suj),picto('file-word'),att('Html')).' ';
 if(!$rst[47])$ret.=togbub('mails,sendart',$id,picto('mail')).' ';
 if(!$rst[12])$ret.=btj(picto('print'),'window.print()').' ';
 if(rstr(58))$ret.=lj('','popup_usg,editbrut___'.$id,picto('conn'));
-if(rstr(141))$ret.=lj('','pagup_book,read__css_'.$id.'__1',picto('book')).' ';
 //if(!$rst[155])$ret.=btj(picto('input'),atj('dock',$id)).' ';
 if(!$rst[155])$ret.=self::edt($id,'dock',$rf['dock']).' ';
 if(self::rstopt($rst[106],$ro['bckp']))$ret.=div(art::reviews($id,$ro['review']));//156

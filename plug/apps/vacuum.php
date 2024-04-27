@@ -1,4 +1,4 @@
-<?php //vacuum
+<?php 
 class vacuum{
 
 static function array_to_xml($r,&$xml){
@@ -15,15 +15,16 @@ static function build($f,$o){
 $f=ajx($f,1); if(!$f)return; $er='';
 $f=str_replace('|','/',urldecode($f)); ses::$urlsrc=http($f);
 [$ti0,$tx0,$im]=web::metas($f);
-[$ti,$tx,$html,$defid,$defs]=conv::vacuum($f,'');
+[$ti,$tx]=conv::vacuum($f,'');//,$html,$defid,$defs
 //if($defs)foreach($defs as $k=>$v)$defs[$k]=htmlentities($v);
 //$rb=['text-start','text-end','title-start','title-end','footer','utf8','post-treat','last-update','option-start','option-end']; $rb=array_combine($rb,$defs); $rb=json_encode($rb);
 if(!$im){$ims=art::play_conn($f,'.jpg'); $img=between($ims,'[',']');
 $domain=strto($f,'/'); if($img)$im=http($domain.'/'.$img);}
 $r=['title'=>$ti?$ti:$ti0,'image'=>$im];//,'defs'=>$rb
 //$tx=hooks($tx);
-if($o=='conn')$r['content']=$tx?$tx:$tx0;
-else $r['content']=$html?$html:$tx0; //parse($tx);
+//if($o=='conn')
+$r['content']=$tx?$tx:$tx0;
+//else $r['content']=$html?$html:$tx0; //parse($tx);
 //$xml=self::mkxml($r,$f); //eco($r['content']);
 $ret=mkjson($r);
 $er=json_last_error();//echo $er;

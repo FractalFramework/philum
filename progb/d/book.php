@@ -73,25 +73,24 @@ ses::$r['popw']=1000;
 return $ret;}
 
 static function reload($id){//need read or art_id
-return self::home($_SESSION['book'][$id]??'',ses('boko'));}
+return self::home(sesr('book',ses('boko')),ses('boko'));}
 
 static function home($p,$id){
-//head::add('csscode',self::css());
-//head::add('jscode',self::js());
 $_SESSION['book'][$id]=$p; $_SESSION['boko']=$id;
 if($id=='fav' or $id=='like' or $id=='poll')$r=sql('ib','qdf','k',['type'=>$id,'iq'=>$p]);
 elseif($id=='visit')$r=array_flip(array_keys(ses('mem')));
 elseif(is_numeric($p))$r=sql('ib','qdd','k',['msg'=>$p,'val'=>$id]);
 else $r=api::mod($p);//.',verbose:1,sql:1'
-//if($r[$p])unset($r[$id]);
 if(!$r)return; else $_SESSION['bookr']=$r;
 if(is_array($r))$d=implode(' ',$r); $i=0; $msg='';
-$here='book'; $rid=randid();
-if($p)$rb['opt']=lj('','popup_book,ifr___'.$p,pictxt('get','iframe'));
+$here='book'; $rid=randid(); $p=sesr('book',ses('boko'));
+$ra=explode_k($p,',',':');
+if($ra['t']??'')$rb['title']=$ra['t'];
+$rb['opt']=lj('','popup_book,ifr___'.sesr('book',$id),pictxt('get','iframe'));
 foreach($r as $k=>$v){$i++; $io=$i.'. ';
 	$lk='book'.$rid.'_book,read___'.$k.'_'.$rid;
 	$lgh=art::length(sql('host','qda','v','id="'.$k.'"'));
-	$msg.=lj('',$lk,picto('kright').' '.$io.ma::suj_of_id($k).btn('small',' ('.$lgh.')')).br();}
+	$msg.=lj('',$lk,picto('circle-empty').' '.$io.ma::suj_of_id($k).btn('small',' ('.$lgh.')')).br();}
 $rb['msg']=self::scroll($msg,$rid);
 $ret=divd('book'.$rid,art::template($rb,'book'));
 $ret.=head::jscode(self::js()).head::csscode(self::css());

@@ -9,9 +9,9 @@ foreach($r as $v)unset($_SESSION[$v]);}
 
 #master_cnfg//qd
 static function master_params(){
-$aqb=ses('aqb'); $subd=ses('subd'); $f=self::cnf();
-$d=is_file($f)?read_file($f):''; 
-$prms=expl('#',$d,16); //pr($prms);
+$aqb=ses::$s['qb']; //$subd=ses('subd');//obs
+$f=self::cnf(); $d=is_file($f)?read_file($f):''; 
+$prms=expl('#',$d,16);
 //$prms=msql::kx('system','default_config',1); pr($prms);
 $_SESSION['db']=sqldb::$rt;
 //$_SESSION['db']['qd']=$qd;
@@ -57,6 +57,7 @@ if(!ses('qbd') && ses('qb'))$_SESSION['qbd']=sql('id','qdu','v',['name'=>ses('qb
 
 static function prmb_defaults($pm){
 //if(!$pm[0])$pm[0]=ses('qb');//hub
+if($pm[0])ses::$s['qb'];//hub
 if(!$pm[1] or !is_numeric($pm[1]))$pm[1]='1';//mods
 if(!$pm[3])$pm[3]=400;//kmax
 if(!$pm[6])$pm[6]=20;//nb_arts_by_page
@@ -65,10 +66,12 @@ if(!$pm[8])$pm[8]='phi';//logo
 if(!$pm[9])$pm[9]='id desc';//order
 if(!$pm[10])$pm[10]=nms(21).'/'.nms(171).'/'.nms(91).'/'.nms(182);//tracks
 if(!$pm[17])$pm[17]='ymd.Hi';//date
-if(!$pm[19])$pm[19]='fr en es';//langs
+if(!$pm[18])$pm[18]='tag';//tags
+if(!$pm[19])$pm[19]='tag';//pctg
 if(!$pm[23])$pm[23]='.txt.webp.pdf';//ext
 if(!$pm[24])$pm[24]='http://philum.fr';//server
 if(!$pm[25])$pm[25]='fr';//lang
+if(!$pm[26])$pm[26]='fr en es';//langs
 if(!$pm[27])$pm[27]='440/320';//thumb
 return $pm;}
 
@@ -77,8 +80,10 @@ $qbn=sql('mail,config,dscrp','qdu','a',['name'=>$qb]);
 $rst=msql::col('',$qb.'_rstr',0,1); if(!$rst)$rst=msql::col('system','default_rstr',0,1);
 $_SESSION['rstr']=arr($rst,180);
 $pm=opt($qbn['config']??'','#',28); //pr($pm);
-//$pm=msql::kv('',nod('config'),1); pr($pm);
-$_SESSION['prmb']=self::prmb_defaults($pm); //pr($_SESSION['prmb']);
+//$pm=msql::kv('server',nod('config'),1); pr($pm);
+$_SESSION['prmb']=self::prmb_defaults($pm); //pr(ses('prmb'));
+//$_SESSION['cats']=msql::kv('server',nod('cats'),1); pr(ses('cats'));
+//$_SESSION['cats']=sql('id,cat','qdc','kv',['no'=>'0']);
 $qbin['adminmail']=$qbn['mail']??'';
 $qbin['dscrp']=$qbn['dscrp']??'';
 $_SESSION['qbin']=$qbin;
@@ -90,8 +95,8 @@ self::define_mods();
 $_SESSION['nms']=msql::col('lang','helps_nominations',0,1);
 if(rstr(112))$_SESSION['catpic']=msql::two('',nod('pictocat'),'');
 if(rstr(46))$_SESSION['catemo']=msql::kn('',nod('pictocat'),0,2);
-$_SESSION['art_options']=['related','folder','agenda','lang','template','authlevel','password','tracks','2cols','fav','like','poll','bckp','artstat','quote','lastup','plan','mood','agree'];
-$_SESSION['mobile']=mobile(); $_SESSION['switch']=''; $_SESSION['prma']=[];}
+$_SESSION['art_options']=['related','folder','agenda','lang','template','authlevel','password','tracks','2cols','fav','like','poll','bckp','artstat','quote','lastup','plan','mood','agree','review','front'];
+ses('mobile',mobile()); ses('switch',''); $_SESSION['prma']=[];}
 
 static function define_use(){
 if(rstr(59) && !ses('nuse')){
@@ -102,15 +107,14 @@ self::define_closed_hub();}
 
 #time_system
 static function time_system($cache){$prmb16=prmb(16); $gnbj=get('nbj'); $snbj=ses('nbj');
-if($gnbj){$_SESSION['nbj']=$gnbj; $cache='ok';}
+if($gnbj){ses('nbj',$gnbj); $cache='ok';}
 if((!$snbj or $cache=='ok') && !$gnbj){
-	if(rstr(3) or $prmb16=='auto')$_SESSION['nbj']=self::dayslength(ses('qb'),50);
-	else{$_SESSION['dayb']=0; $_SESSION['nbj']='';}
-	if(is_numeric($prmb16))$_SESSION['nbj']=$prmb16;}
-if(!ses('daya') or date('d',$_SESSION['daya'])==date('d',$_SESSION['dayx']) or $cache=='ok')
-	$_SESSION['daya']=$_SESSION['dayx'];
-if($gtim=get('timetravel')){$_SESSION['daya']=inpday($gtim);}// $cache='ok';
-if($_SESSION['nbj'])$_SESSION['dayb']=timeago($_SESSION['nbj']);
+	if(rstr(3) or $prmb16=='auto')ses('nbj',self::dayslength(ses('qb'),50));
+	else{ses('dayb',0); ses('nbj','');}
+	if(is_numeric($prmb16))ses('nbj',$prmb16);}
+if(!ses('daya') or ses('dayx')-ses('daya')<86400 or $cache=='ok')ses('daya',ses('dayx'));
+if($gtim=get('timetravel')){ses('daya',inpday($gtim));}
+if(ses('nbj'))ses('dayb',timeago(ses('nbj')));
 return $cache;}
 
 static function dayslength($qb,$limit){
@@ -153,7 +157,7 @@ return $cache;}
 
 static function repair_mods($nod){
 $r=msql::read('',$nod,'',[],1);
-if($r){$r=msql::copy('',$nod,'users/_bak',$nod);
+if($r){$r=msql::copy('',$nod,'_bak/users',$nod);
 	if(auth(2))alert('backup mods restored');}
 if(!$r){$r=msql::read('system','default_mods');
 	if($r)$r=msql::copy('system','default_mods','users',$nod);
@@ -184,7 +188,8 @@ if($ret)ksort($ret); $_SESSION['modc']=$ret;}
 #config
 static function define_prma(){$r=sesr('modc','system'); $_SESSION['prma']=[];
 if($r)foreach($r as $k=>$v){
-if($v[0]=='design' && empty($_SESSION['desgn'])){$_SESSION['prmd']=$v[1];
+//if($v[0]=='design' && empty($_SESSION['desgn'])){$_SESSION['prmd']=$v[1];
+if($v[0]=='design' && !ses('cssn')){$_SESSION['prmd']=$v[1];
 	if($v[5])head::add('jslink','/css/'.self::csslayer($v[5]).'.css');}
 if($v[0]=='csscode' && $v[1])head::add('csscode',$v[1]);
 elseif($v[0]=='jscode' && $v[1])head::add('jscode',$v[1]);
@@ -241,12 +246,12 @@ if($n=$_SESSION['prmb'][5])$nod=ses('qb').'_auto';
 else $nod=ses('qb').'_design_'.ses('prmd');
 $f='css/'.$nod.'_neg.css'; $tima=ftime('css/'.$nod.'.css','ymdHi'); $timb=ftime($f,'ymdHi');
 if($tima>$timb){$clr=getclrs(); $klr=sty::invertclrs($clr);
-	//setclrs($klr,ses('prmd').'_neg');
-	if($n){if($n<4)$r=msql::read('system','default_css_'.$n);
-		elseif(is_numeric($n))$r=msql::read('design','public_design_'.$n);}
-	else $r=msql::read('design',$nod);
-	//foreach($r as $k=>$v)if($v[2]=='img')$r[$k][6]='filter:invert(100%);';
-	sty::build_css($f,$r,$klr);}}
+//setclrs($klr,ses('prmd').'_neg');
+if($n){if($n<4)$r=msql::read('system','default_css_'.$n);
+	elseif(is_numeric($n))$r=msql::read('design','public_design_'.$n);}
+else $r=msql::read('design',$nod);
+//foreach($r as $k=>$v)if($v[2]=='img')$r[$k][6]='filter:invert(100%);';
+sty::build_css($f,$r,$klr);}}
 
 static function night(){
 $r=ses::$r['night']??[]; //if($r)return $r;//from meteo
@@ -256,9 +261,9 @@ return [$r['sunrise'],$r['sunset']];}
 static function define_design(){
 if(rstr(63))$_SESSION['negcss']=1;
 $qb=ses('qb'); if(!$qb)$qb='public'; $nod=$qb.'_design';
-if(ses('desgn'))$nod.='_dev';
+if(ses('cssn'))$nod.='_dev';
 if($sw=ses('switch'))$nod.='_'.$sw; else $nod.='_'.ses('prmd');
-if(prmb(5) && !isset($_SESSION['desgn']))$nod=nod('auto');
+if(prmb(5) && !ses('cssn'))$nod=nod('auto');
 if(ses('tablet'))head::add('csscode',tablet::home());
 if(ses('negcss')){$nod.='_neg'; self::negcss();}
 elseif(rstr(122)){[$h1,$h2]=self::night(); $dt=ses('dayx');//sesmk2('boot','night','')
@@ -366,8 +371,12 @@ if(($lastart && !isset($main[$lastart])) or $x){
 elseif($main && rstr(140))$_SESSION['rqt']=$main;
 return divc('frame-blue',count($rt).' articles');}
 
-static function cats(){
-return sql('distinct(frm)','qda','k','nod="'.ses('qb').'" and re>0 and substring(frm,1,1)!="_" order by frm');}
+static function cats($o){
+//$r=sql('id,cat','qdc','kv',['no'=>'0']);
+$sq=['nod'=>ses('qb'),'re>'=>'0','_order'=>'frm'];
+if(!$o)$sq['-frm']='_';
+$r=sql('distinct(frm)','qda','k',$sq);
+return $r;}
 
 #ignition
 static function init(){self::master_params(); $_SESSION['philum']=checkversion();

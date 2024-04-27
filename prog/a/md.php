@@ -57,14 +57,14 @@ static function prevnext_art($b,$o,$id,$tg=''){$wh=''; $rb=[];
 $id=$id?$id:ses('read'); $ta=picto('kleft'); $tb=picto('kright'); $htacc=htacc('read');
 if($b=='rub')$wh='and frm="'.get('frm').'" '; else $wh='and substring(frm,1,1)!="_"';
 $ord=strtolower(prmb(9)); $col=strto($ord,' ');
-$w='and nod="'.ses('qb').'" and re>"0" '.$wh;
+$w='and nod="'.ses('qb').'" and re>"0" '.$wh; $dy=0;
 if($col=='day'){$dy=sql('day','qda','v',$id); $w1='day<"'.$dy.'"'; $w2='day>"'.$dy.'"';}
-else{$w1='id<"'.$id.'"'; $w2='id>"'.$id.'"';}
+if($col=='id' or $dy==0){$col='id'; $w1='id<"'.$id.'"'; $w2='id>"'.$id.'"';}
 $k1=sql('id','qda','v',$w1.' '.$w.' order by '.$col.' desc limit 1');
 $k2=sql('id','qda','v',$w2.' '.$w.' order by '.$col.' asc limit 1');
 if($tg)$j='pagup_popart__x_'; elseif($o)$j='popup_popart__x_'; else $j='content_mod,playmod__u_read_';
-$ret=!$k1?btn('hide',$ta):lj('',$j.$k1,$ta);
-$ret.=!$k2?btn('hide',$tb):lj('',$j.$k2,$tb);
+$ret=!$k1?btn('hide',$ta):lj('',$j.$k1,$ta,att($k1));
+$ret.=!$k2?btn('hide',$tb):lj('',$j.$k2,$tb,att($k2));
 if(!$o)return btn('btpic right',$ret);
 return $ret;}
 
@@ -219,12 +219,12 @@ if($r)foreach($r as $k=>$v)$ret.=lj('','popup_search,home__3_'.$v,$v);
 return divc('menus',$ret);}
 
 static function frequent_tags($p,$o){
-$ra=$p?[$p]:explode(' ',prmb(18)); $r=[];
+$ra=$p?[$p]:sesmk('tags'); $rt=[];
 foreach($ra as $ka=>$va){$rb=ma::tags_list_nb($va,ses('nbj')); if($rb){arsort($rb);
 	foreach($rb as $kb=>$vb)$rc[$vb][]=['',$va,$kb,$kb.' ('.$vb.')'];}}
 if($rc)krsort($rc);
-foreach($rc as $k=>$v)foreach($v as $ka=>$va)$ret[]=$va;
-return $ret;}
+foreach($rc as $k=>$v)foreach($v as $ka=>$va)$rt[]=$va;
+return $rt;}
 
 static function most_read($dyb,$mx=''){
 $dayb=$dyb?timeago($dyb):$_SESSION['dayb']; $mx=$mx?$mx:50;
@@ -309,11 +309,11 @@ if($d)return array_flip(explode(' ',$d));}
 static function related_by($id){if(!$id)$id=ses('read');//msg like "%'.ses('read').'%"');
 return sql('ib','qdd','k','val="related" and (msg="'.$id.'" or msg like "'.$id.' %" or msg like "% '.$id.'")');}
 
+static function parent_art($id){if(!$id)$id=ses('read');
+return sql('ib','qda','k',['id'=>$id,'!ib'=>'0']);}
+
 static function child_arts($id){if(!$id)$id=ses('read');
 return sql('id','qda','k',['ib'=>$id]);}
-
-static function parent_art($id){if(!$id)$id=ses('read');
-return sql('ib','qda','k',['id'=>$id]);}
 
 static function same_title($id){if(!$id)$id=ses('read');
 return sql('id','qda','k',['suj'=>$id,'nod'=>ses('qb'),'!id'=>$id,'_order'=>prmb(9)]);}
@@ -378,6 +378,11 @@ ses::$urlsrc=$p='http://'.$p.'/'.ajx($t,1);
 $po['msg']=conn::read($d,3,'');
 $po['source']=picto('link').' '.art::pub_link($p);
 return art::template($po,'');}
+
+static function book($p,$t){$rt=[];//iq,title,api,pub
+$r=msql::read('',nod('coms'),1); $r=array_reverse($r);
+if($r)foreach($r as $v)if($v[3])$rt[]=div(favs::bt($v));
+return divc('books',join('',$rt));}
 
 static function modlk($p,$t,$o=''){$u='';
 if(is_numeric($p)){$u='/'.$p; $ic='article';}

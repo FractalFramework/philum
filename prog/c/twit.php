@@ -35,11 +35,11 @@ return twapi::send($p,$o,[$ret]);}
 //philum::save
 static function vacuum($f){
 $p=strend($f,'/'); $p=strto($p,'?');
-[$res,$nm,$sn,$dt]=self::oembed($f);
+[$res,$nm,$sn,$dt,$lg]=self::oembed($f);
 $day=date('d-m-Y',$dt);
-$suj=$nm.' '.date('d b Y - H:i',$dt);
+$suj=$nm.' '.$day;
 [$txt,$med]=self::clean($res);
-return [$suj,$txt,$day];}
+return [$suj,$txt,$dt,$lg,$nm];}
 
 //edit
 static function edtsav($p,$o,$ra){
@@ -61,7 +61,7 @@ return divd('edt'.$p,$bt.$ret);}
 static function dump($t,$p){
 $q=$t->read($p); $ret=eco($q,1);
 $r=sql('*','qdtw','ar',['twid'=>$p]); $ret.=eco($r,1);
-[$res,$nm,$sn,$dt]=self::oembed(self::lk($q['user']['screen_name']??'',$q['id']??''));
+[$res,$nm,$sn,$dt,$lg]=self::oembed(self::lk($q['user']['screen_name']??'',$q['id']??''));
 $ret.=eco($res,1);
 return $ret;}
 
@@ -130,11 +130,11 @@ static function oembed($u){
 $t=twapi::init(); $q=$t->embed($u);
 //$d=get_file('https://publish.twitter.com/oembed?url='.$u); $q=json_decode($d,true);
 $txt=$q['html']??''; $nm=$q['author_name']??''; $sn=strend($q['author_url']??'','/');
-$date=self::findate($txt);
-//$txt=self::text($u);
+$date=self::findate($txt); $lang=between($txt,'<p lang="','"'); //$txt=self::text($u);
+if(!$nm)$nm=$sn=self::recupnm($u);
 $ret=delbr($txt,"\n");
 $ret=strip_tags($ret);
-return [$ret,$nm,$sn,$date];}
+return [$ret,$nm,$sn,$date,$lang];}
 
 static function upvideo_m3u8($f){//tw_video
 $xt='.m3u8'; $fa=strprm($f,4);
@@ -224,28 +224,30 @@ if($date)$ret.=lkt('small',$url.'/status/'.$id,pictxt('chain',date('d/m/Y H:i:s'
 if($rplid)$ret.=lj('',$j.$id.'_thread',picto('topo'),att('parents')).'';
 if($mnt)$ret.=lj('',$j.$id.'_mnt',picto('oversight'),att(str_replace(' ',n(),$mnt))).'';
 //if($mnt)$ret.=togbub('twit,call',$id.'_mnt',picto('oversight'),att(str_replace(' ',n(),$mnt))).'';
-$ret.=lj('',$j.$id.'_rpl',picto('dialog'),att('answers')).'';
+//$ret.=lj('',$j.$id.'_rpl',picto('dialog'),att('answers')).'';
 //if(!$q)$q=twapi::read($id);
-if($favd)$ret.=btd('fav'.$id,twapi::btfav($id,$favs,$favd)).' ';
-if($rtwd)$ret.=btd('rtw'.$id,twapi::btrtw($id,$rtw,$rtwd)).' ';
-if($friends)$ret.=pictxt('users',$flw.'/'.$friends).'';
+//if($favd)$ret.=btd('fav'.$id,twapi::btfav($id,$favs,$favd)).' ';
+//if($rtwd)$ret.=btd('rtw'.$id,twapi::btrtw($id,$rtw,$rtwd)).' ';
+//if($friends)$ret.=pictxt('users',$flw.'/'.$friends).'';
 if(auth(6)){
 	$ret.=lj('',$id.'_twit,recache___'.$id.'_'.$aid,picto('reload'));
-	if($sn==$own)$ret.=lj('',$id.'_twit,call___'.$id.'_del',picto('del'));
-	$ret.=lj('','popup_twit,call___'.$id.'_eco',picto('code'));
+	$ret.=lj('',$id.'_twit,resetname___'.$id.'_'.$aid,picto('recycle'));
+	//if($sn==$own)$ret.=lj('',$id.'_twit,call___'.$id.'_del',picto('del'));
+	//$ret.=lj('','popup_twit,call___'.$id.'_eco',picto('code'));
 	$ret.=lj('','popup_twit,edit___'.$id.'_eco',picto('editxt'));
-	$ret.=lj('',$id.'_twit,call___'.$id.'_erz',picto('erase'));}
+	//$ret.=lj('',$id.'_twit,call___'.$id.'_erz',picto('erase'));
+	}
 $ref='twt'.substr($id,-8); $lng=ses('lng');
 //if($lg!=$lng)$ret.=lj('',$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,picto('translate'));
-if($lg!=$lng)$ret.=ljtog('','trn'.$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,'trn'.$ref.'_twit,playtxt___'.$id,picto('language'));
+if($lg!=$lng && auth(4))$ret.=ljtog('','trn'.$ref.'_trans,calltw___'.$id.'_'.$lng.'-'.$lg,'trn'.$ref.'_twit,playtxt___'.$id,picto('language'));
 //$ret.=lkt('',twapi::lk($sn,$id),picto('chain'));
-$ret.=lkt('','app/twit/'.$id,picto('url'));
+//$ret.=lkt('','app/twit/'.$id,picto('url'));
 $ret=divc('nbp',$ret);
 $txt=divd('trn'.$ref,str_replace('|','-',$txt));//nl2br
 if($med)$txt.=self::playmed($med,$id,$quoid,$aid);
 if($quoid){$txt.=br().self::cache($quoid,$id);}
 //elseif($r['retweeted']){$txt.=br().self::cache($r['retweeted'],$id);}
-$ret.=divc('panel',$txt);
+$ret.=div($txt);
 if($o)return $ret;
 return div($ret,'twit',$id);}
 
@@ -286,7 +288,7 @@ $ret['name']=$q['user']['name']??'';
 $ret['screen_name']=$q['user']['screen_name']??'';
 $ret['user_id']=$q['user']['id']??0;
 $ret['date']=strtotime($q['created_at']);
-[$res,$nm,$sn,$dt]=self::oembed(self::lk(valr($q,'user','screen_name'),$q['id']));
+[$res,$nm,$sn,$dt,$lg]=self::oembed(self::lk(valr($q,'user','screen_name'),$q['id']));
 if(!$ret['date'])$ret['date']=$dt;
 if($res)[$txt,$med]=self::clean($res);
 else [$txt,$med]=self::clean($q['text']);
@@ -312,16 +314,18 @@ return $ret;}
 #twdie
 static function twalter($u,$id,$o=''){$sn='';
 if(strpos($u,'/')){$ra=explode('/',$u); $sn=$ra[3]??''; $twid=$ra[5]??'';} else $twid=$u;//forbidden situation
+if(!is_numeric($twid))return;
 $ra=['name','screen_name','user_id','date','text','media','mentions','reply_id','reply_name','favs','retweets','followers','friends','quote_id','quote_name','retweeted','lang'];//ib,twid,
 $r=sql(implode(',',$ra),'qdtw','a',['twid'=>$twid],0); //if(array_sum($r)=='0')$r=[];//not if twit not exists
 if($r && !$o)return self::play($twid,$r,[],0,$id);
 $rb=self::r(); foreach($rb as $k=>$v)$rb[$k]=$v=='int'||$v=='bint'?0:'';
-$rb['twid']=$twid; if($id)$rb['ib']=$id; if($sn)$rb['screen_name']=$sn;
+if(!$sn)$sn=self::recupnm($u);
+$rb['twid']=$twid; if(is_numeric($id))$rb['ib']=$id;
 $lk=self::lk($sn?$sn:'unknown',$twid);
 $ret=lkt('txtx',$lk,pictxt('url',$sn));
-[$res,$nm,$sn,$dt]=self::oembed($lk);
+[$res,$nm,$sn,$dt,$lg]=self::oembed($lk);
 [$txt,$med]=self::clean($res); $med=utmsrc($med);
-$rb['text']=$txt; if($nm)$rb['name']=$nm; $rb['media']=$med;
+$rb['text']=$txt; $rb['name']=$nm; $rb['screen_name']=$sn; $rb['media']=$med; $rb['lang']=$lg;
 $rb['screen_name']=$sn; $rb['date']=$dt?$dt:time();
 if($o && $r)sqlup('qdtw',$rb,['twid'=>$twid],0);
 elseif(auth(6) && $id!='test')sqlsav('qdtw',$rb,0,0);//$txt && 
@@ -331,6 +335,15 @@ return self::play($twid,$rb,[],$o,$id);}
 static function savempty($twid,$id=''){
 $r=self::r(); $rb['twid']=$twid; $rb['ib']=$id;
 return sqlsav('qdtw',$rb,0,0);}
+
+static function recupnm($u){
+return between($u,'twitter.com/','/status');}
+
+static function resetname($k,$id){
+$d=sql::read('msg','qdm','v',$id);
+$nm=self::recupnm($d);
+sql::upd('qdtw',['screen_name'=>$nm],['twid'=>$k]);
+return self::cache($k,$id,2);}
 
 #read
 static function cache($k,$id,$o='',$q=[]){if(!$id)$id=0;

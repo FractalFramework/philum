@@ -2,12 +2,14 @@
 class api{
 static $o='';
 
-static function official_cols($r){$ret=[];
-$r1=['id','ib','day','mail','frm','suj','img','nod','thm','name','lu','re','host','msg','lg'];
-$r2=['id','parent','time','source','category','title','image','hub','url-explicit','admin','views','priority','length','content','lang'];
+static function official_cols($r){$rt=[];
+$ra=['id'=>'id','ib'=>'parent','day'=>'time','mail'=>'source','frm'=>'category','suj'=>'title','img'=>'image','nod'=>'hub','thm'=>'url-explicit','name'=>'admin','lu'=>'views','re'=>'priority','host'=>'length','lg'=>'lang','msg'=>'content','txt'=>'translation'];
 if($r)foreach($r as $k=>$v)
-	foreach($v as $ka=>$va){$kb=in_array_b($ka,$r1); $ka=$r2[$kb]; $ret[$k][$ka]=$va;}
-return $ret;}
+	foreach($v as $ka=>$va){$kb=$ra[$ka]; $rt[$k][$kb]=$va;}
+return $rt;}
+
+static function order($d){
+return $d?$d:str_replace(' ','-',strtolower(prmb(9)));}
 
 #export
 static function json_prep($r,$ra){$rt=[];
@@ -15,13 +17,25 @@ header('Content-Type: application/json');
 if($r)foreach($r as $k=>$v){$re=[];
 	foreach($v as $ka=>$va){
 		if($ka=='content')$va=($ra['conn']??'')?$va:conn::read($va,'3','','nl');
+		elseif($ka=='translation0')$va=($ra['conn']??'')?$va:conn::read($va,'3','','nl');
 		elseif($ka=='image' && $va){$va=host().'/img/'.pop::art_img($va);
 			$re['catalog-images']=$v['image'];}//$ka='lead_image_url';
 		elseif($ka=='url-explicit')$va=host().'/art/'.$va;
 		elseif($ka=='source'){$re['url']=host().'/'.$k;}
 		elseif($ka=='lang' && !$va)$va=ses('lng');
 		$re[$ka]=$va;}
+	$re['_links']=self::json_relay($k);
 	$rt[$k]=$re;}
+return $rt;}
+
+static function mklink($id){
+$rt['title']=ma::suj_of_id($id);
+$rt['url']=host().'/apicom/id:'.$id.',json:1';
+return $rt;}
+
+static function json_relay($id){$rt=[];
+$ra=['parent_art','related_art','related_by','child_arts'];
+foreach($ra as $k=>$v){$ids=md::$v($id); if($ids)$rt[$v]=walk('api::mklink',$ids);} //pr($rt);
 return $rt;}
 
 static function dump($ra,$o=''){
@@ -143,14 +157,14 @@ elseif($p['date'])$sq['and'][]=self::sql_date($p['date']);
 if($p['minid'])$sq['and'][]=$qda.'.id>"'.$p['minid'].'"';
 if($p['maxid'])$sq['and'][]=$qda.'.id<"'.$p['maxid'].'"';
 if($p['source'])$sq['and'][]='mail like "%'.$p['source'].'%"';
-if($p['parent'])$sq['and'][]=$qda.'.ib="'.$p['parent'].'"';
+if($p['parent'])$sq['and'][]='('.$qda.'.id="'.$p['parent'].'" or '.$qda.'.ib="'.$p['parent'].'")';
 if($p['nbchars'])$sq['and'][]='host'.self::comp($p['nbchars']);
 if($p['id'])$sq['and'][]=$qda.'.id'.self::sql_in($p['id']);
-if($p['lang'] && !rstr(107))$sq=self::sql_lang($p['lang'],$sq);
+if($p['lang'])$sq=self::sql_lang($p['lang'],$sq);// && !rstr(107)
 if($p['search'])$sq=self::search($p['search'],$sq,$p['search_whole']);
 if($p['fullsearch'])$sq=self::search2($p['search'],$sq);
 if($p['avoid'])$sq=self::avoid($p['avoid'],$sq);
-if($p['title'])$sq['and'][]='suj LIKE "%'.$p['title'].'%"';
+if($p['title'])$sq['and'][]='suj like "%'.$p['title'].'%"';
 if($p['folder']){$qdd=db('qdd'); $sq['inner'][]='inner join '.$qdd.' on '.$qda.'.id='.$qdd.'.ib and val="folder" and '.$qdd.'.msg="'.$p['folder'].'"';}
 if($p['related']){$qdd=db('qdd'); $sq['inner'][]='inner join '.$qdd.' on '.$qda.'.id='.$qdd.'.ib and val="related" and '.$qdd.'.ib="'.$p['related'].'"';}
 if($p['relatedby']){$qdd=db('qdd'); $sq['inner'][]='inner join '.$qdd.' on '.$qda.'.id='.$qdd.'.ib and val="related" and '.$qdd.'.msg like "%'.$p['relatedby'].'%"';}
@@ -164,10 +178,10 @@ if($p['famous']??''){$rt=sql::inner('tag,count(tag) as n','qdt','qdta','idtag','
 if($p['overcat'])$sq['and'][]=self::sql_overcat($p['overcat']);
 if($p['classtag']){$sq['inner'][]=self::sql_tags_inner(); $sq['slct'][]='tag';
 	$sq['and'][]='cat="'.$p['classtag'].'"';}
-if($p['lg']){$trn=ses('trn'); $sq['slct'][]='txt';
+if($p['lg']){$trn=db('trn'); $sq['slct'][]=$trn.'.txt';
 	$sq['inner'][]='inner join '.$trn.' on ref=concat(\'art\','.$qda.'.id) and lang="'.$p['lg'].'"';}
-$ut=explode(' ','utag tag '.prmb(18)); $ut[]=ses('iq'); $n=count($ut);
-for($i=0;$i<$n;$i++)if($ut[$i]){$tags=$r[$ut[$i]]??'';
+$ut=sesmk('tags'); $ut[]='utag'; $ut[]=ses('iq'); $n=count($ut);
+for($i=1;$i<=$n;$i++)if($ut[$i]??''){$tags=$r[$ut[$i]]??'';
 	if($tags)$sq['inner'][]=self::sql_tags_combinative($tags,$ut[$i]);}
 if($p['cmd']=='tracks'){$qdi=db('qdi'); //$sq['slct']=[$qda.'.id'];//todo:use datas
 	$sq['inner'][]='right join '.$qdi.' on '.$qdi.'.ib='.$qda.'.id';}
@@ -298,7 +312,9 @@ if($md=$ra['media']??'')$ra['preview']='conn'.$md;
 else $ra['preview']=art::slct_media($ra['preview']??'');
 $ra['nl']=$ra['nl']??get('nl');
 if(!($ra['ti']??''))$ra['ti']=self::tit($ra);
-if($ra['id']??'' && !$ra['json']??''){$ra['nodig']=1; $ra['preview']=3; $ra['noheader']=1; $ra['template']='read';}
+if($ra['id']??'' && !$ra['json']??''){$ra['nodig']=1; $ra['noheader']=0;}
+if(($ra['preview']??'')==3 && !$ra['json']??''){$ra['nodig']=1; $ra['noheader']=1; $ra['template']='read';}
+if($ra['parent']??''){$ra['nodig']=1; $ra['order']='id-asc';}
 $ret=self::callr($ra);
 if($ra['noheader']??'')return $ret;
 $nbpg=self::head($ra);
@@ -338,7 +354,7 @@ return self::load($ra);}
 //frm mod
 static function arts($frm,$pr,$tp,$od=''){
 $ra=self::arts_rq($frm,get('dig'));
-$ra['order']=$od?$od:prmb(9);
+$ra['order']=self::order($od);
 $ra['preview']=art::slct_media($pr);
 $ra['prw']=$ra['preview'];//mem
 $ra['nbyp']=prmb(6);
@@ -356,11 +372,11 @@ return self::load($ra);}
 #get
 static function defaults_rq($ra,$rb=[]){if(!$ra)$ra=[];
 [$pg,$to,$dig,$prw,$lg]=vals($rb,['pg','to','dig','prw','lg']);
-if($to){$ord=strtolower($ra['order']??prmb(9));
-	if($ord=='id desc')$ra['maxid']=$to;
-	elseif($ord=='day desc')$ra['maxtime']=sql('day','qda','v',$to);
-	elseif($ord=='day asc')$ra['mintime']=sql('day','qda','v',$to);
-	elseif($ord=='id asc')$ra['minid']=$to;}
+if($to){$ord=self::order($ra['order']??'');
+	if($ord=='id-desc')$ra['maxid']=$to;
+	elseif($ord=='day-desc')$ra['maxtime']=sql('day','qda','v',$to);
+	elseif($ord=='day-asc')$ra['mintime']=sql('day','qda','v',$to);
+	elseif($ord=='id-asc')$ra['minid']=$to;}
 if($ra['until']??'')$ra['nodig']=1;// or $ra['maxtime']??''
 if(empty($ra['hub']) && !rstr(105))$ra['hub']=ses('qb');
 //$ra['maxday']=daysfrom($ra['maxtime']); $ra['maxtime']='';
@@ -374,15 +390,18 @@ elseif(empty($ra['minday']) && !isset($ra['id']) && empty($ra['mintime']) && emp
 elseif(!empty($ra['maxtime'])){$ra['nbdays']=30; $ra['mintime']=$ra['maxtime']-(84600*30); $dig='';}
 $ra['page']=$pg?$pg:$ra['page']??sesb('page',1);
 if($lg)$ra['lg']=$lg;
+if($ra['id']??'')if(strpos($ra['id'],' ')){$ra['id']=str_replace(' ','|',$ra['id']);}//facilitate edit favs
+if($ra['id']??'' or $ra['parent']??''){
+	if(isset($ra['minday']))unset($ra['minday']); if(isset($ra['maxday']))unset($ra['maxday']);}
 //if(!isset($ra['lg']) && ses('lang')!='all')$ra['lg']=ses('lang');
 if($prw)$ra['preview']=$prw; //$ra['nl']=get('nl');
 if(empty($ra['nbyp']) && !isset($ra['nopages']))$ra['nbyp']=prmb(6);
-$ra['order']=$ra['order']??prmb(9);
+$ra['order']=self::order($ra['order']??'');
 //$ra['verbose']=1;
 return $ra;}
 
 static function tit($ra){
-$r=explode(' ','cat tag search author source folder '.prmb(18)); $n=count($r);
+$r=array_merge(['cat','tag','search','author','source','folder'],sesmk('tags')); $n=count($r);
 for($i=0;$i<$n;$i++)if(isset($ra[$r[$i]]))return $r[$i];}
 
 #config
@@ -405,7 +424,7 @@ elseif($dig){$ra['minday']=$dig; $ra['maxday']=time_prev($dig);}
 elseif(ses('nbj')){$ra['mintime']=ses('dayb'); $ra['maxtime']=ses('daya'); $ra['minday']='';}
 else{$ra['mintime']=''; $ra['maxtime']=''; $ra['minday']='';}
 $lg=ses('lang'); $ra['lang']=$lg!='all'?$lg:''; //$ra['nl']=get('nl');
-$ra['order']=prmb(9); $ra['nbyp']=prmb(6); $ra['page']=get('page');
+$ra['order']=self::order(''); $ra['nbyp']=prmb(6); $ra['page']=get('page');
 //$ra['verbose']=1;$ra['seesql']=1;//$ra['group']='id';
 return $ra;}
 
@@ -416,9 +435,10 @@ return $d=str::protect_url($d,1);}
 static function tag_id($d){
 return sql('cat,tag','qdt','w',['id'=>$d]);}
 
-static function detect_uget($d=''){$ut=explode(' ',$d.' '.prmb(18));
+static function detect_uget($d=''){
+$ut=sesmk('tags'); $ut[]=$d;
 if($ut)foreach($ut as $k=>$v){$vb=str::eradic_acc($v); if($g=get($vb))
-	return [$vb,urldecode($g),urldecode($v)];}}
+return [$vb,urldecode($g),urldecode($v)];}}
 
 //mod-articles
 static function load_rq(){$g=ses::$r['get'];//boot build_content
@@ -447,7 +467,7 @@ if(strpos($v,';'))$v=str_replace(';',',',$v);
 $ra=explode_k($v,',',':'); if(!rstr(105))$ra['hub']=ses('qb'); $ra['minday']='';
 if($ra['nbdays']??''){$ra['minday']=$ra['nbdays']; unset($ra['nbdays']);}
 if($ra['hours']??'')$ra['mintime']=timeago($ra['hours']/24);
-$ra['order']=$ra['order']??prmb(9);
+$ra['order']=self::order($ra['order']??'');
 $ra['preview']=art::slct_media($ra['preview']??'');//$ra['preview']?:art::slct_media()
 $ra['lang']=ses('lang');
 //if(!get('frm'))$ra['t']=nms(69);

@@ -2,8 +2,9 @@
 /*fill the table cron with [$tablename=>[$twitteruser]]*/
 //cron: wget -i /home/umm/_backup/ 'http://site.com/call/cron' -O cron.txt
 class cron{
-static $cb='crn';
-static $cr=[];
+static string $cb='crn';
+static array $cr=[];
+static string $er='';
 
 /**/static function followers($p){
 $t=twapi::init(); $qu=$t->followers($p,'');
@@ -53,7 +54,7 @@ $bt.=lj('','crn_cron,call',picto('refresh'),att('run cron')).' ';
 $bt.=btj(picto('start'),atjr('jtimbt',['crnbt','crn_cron,read__27_',60000]),'','crnbt',['title'=>'runtime']);
 if(auth(6))$bt.=msqbt('',nod('cron'));
 $ret=self::read($p);
-return $bt.divd('crn',$ret);}
+return $bt.divd('crn',$ret).self::$er;}
 
 static function card($p){
 $t=twapi::init(); $q=$t->show($p);
@@ -71,7 +72,7 @@ return $q;}
 
 static function build($nm,$usr){$d=date('ymd.Hi');
 $r=self::card($usr); $r['date']=$d; $rc=[]; $rd=[]; $bt='';
-if($r['errors']??''){eco($r['errors']); $r=[];}
+if($r['errors']??''){self::$er=divc('frame-red',$r['errors'][0]['message']); $r=[];}
 write_file('_backup/cron_last.txt',$d);
 $rh=array_keys($r);
 $nod=nod('cron_'.$nm);
@@ -108,7 +109,7 @@ return $ret;}
 
 static function home($p,$o){
 $bt=self::menu($p,$o);
-$ret=self::call($p,$o);
+$ret=self::call($p,$o).self::$er;
 return $bt.divd(self::$cb,$ret);}
 }
 ?>

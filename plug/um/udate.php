@@ -1,6 +1,6 @@
 <?php 
 class udate{//OomoDateTime
-static $cb='utm';
+static string $cb='utm';
 //date = zero_time+timestamp
 //duration = actual_time-timestamp
 
@@ -8,38 +8,38 @@ static $cb='utm';
 
 //600*60*6000=216000000
 //600.0117*60*6000=216004121
-//static $uiwsec=185.526;//3.0921 min (D37-2)
-static $uiwsec=185.527;//(D21, NR21)
-static $aeon4_date='2003-07-09 06:35:30';
-static $aeon4_ts=1057732530;//mktime(6,35,30,7,9,2003).' '; (NR18)
-static $blacknight=11750;//xee (2491 years)
+//static float $uiwsec=185.526;//3.0921 min (D37-2)
+static float $uiwsec=185.527;//(D21, NR21)
+static string $aeon4_date='2003-07-09 06:35:30';
+static int $aeon4_ts=1057732530;//mktime(6,35,30,7,9,2003).' '; (NR18)
+static int $blacknight=11750;//xee (2491 years)
 
-static $xsiuiw=600;
-static $xsisec=111316.2;//600uiw
-static $xeesec=6678972;//60xsi
-static $aeonsec=40073832000;//6000xee
-static $aeon3_uts=120221496000;//aeon*3
-static $aeon4_uts=160295328000;//aeon*4
-static $earth_uts=159237595470;//aeon4_uts-aeon4_ts//1970.01.01
-static $blacknightsec=78477921000;
+static int $xsiuiw=600;
+static float $xsisec=111316.2;//600uiw
+static int $xeesec=6678972;//60xsi
+static int $aeonsec=40073832000;//6000xee
+static int $aeon3_uts=120221496000;//aeon*3
+static int $aeon4_uts=160295328000;//aeon*4
+static int $earth_uts=159237595470;//aeon4_uts-aeon4_ts//1970.01.01
+static int $blacknightsec=78477921000;
 
-static $xsiuiw2=600.0117;
-static $xsisec2=111318.3706659;//600.0117uiw
-static $xeesec2=6679102.239954;//60xsi2
-static $aeonsec2=40074613439.724;//6000xee2
-static $aeon3_uts2=120223840319.17;//aeon*3
-static $aeon4_uts2=160298453758.9;//aeon*4
-static $earth_uts2=159240721228.9;//aeon4_uts-aeon4_ts//1970.01.01
-static $blacknightsec2=78479451319.46;
+static float $xsiuiw2=600.0117;
+static float $xsisec2=111318.3706659;//600.0117uiw
+static float $xeesec2=6679102.239954;//60xsi2
+static float $aeonsec2=40074613439.724;//6000xee2
+static float $aeon3_uts2=120223840319.17;//aeon*3
+static float $aeon4_uts2=160298453758.9;//aeon*4
+static float $earth_uts2=159240721228.9;//aeon4_uts-aeon4_ts//1970.01.01
+static float $blacknightsec2=78479451319.46;
 
-static $yeardays=365;
-static $yearsec=31536000;
-static $yeardays2=365.24219;
-static $yearsec2=31556925.216;
-static $type='date';//else duration
-static $seed='earth';//else oomo
-static $use_blacknight=0;
-static $process='';
+static int $yeardays=365;
+static int $yearsec=31536000;
+static float $yeardays2=365.24219;
+static float $yearsec2=31556925.216;
+static string $type='date';//else duration
+static string $seed='earth';//else oomo
+static int $use_blacknight=0;
+static string $process='';
 static $ts=null;//earth_timestamp
 
 static function constants(){
@@ -73,24 +73,18 @@ return $r;}
 
 static function ts(){return self::$ts??self::$ts=time();}
 
-static function compute_time($sec){$rt=[]; if($sec<0){$sec=-$sec; $rt[]='-';}
-//if($sec>self::$aeon3_uts)$sec+=self::$blacknightsec;
-$min=60; $hour=$min*60; $day=$hour*24; $year=self::$type=='duration'?self::$yearsec:self::$yearsec2; $month=$year/12;
-if($sec>$year){$n=floor($sec/$year); $sec-=$year*$n; $rt[]=$n.' year'.($n>1?'s':'');}
-if($sec>$month){$n=floor($sec/$month); $sec-=$month*$n; $rt[]=$n.' month'.($n>1?'s':'');}
-if($sec>$day){$n=floor($sec/$day); $sec-=$day*$n; $rt[]=$n.' day'.($n>1?'s':'');}
-if($sec>$hour){$n=floor($sec/$hour); $sec-=$hour*$n; $rt[]=$n.' hour'.($n>1?'s':'');}
-if($sec>$min){$n=floor($sec/$min); $sec-=$min*$n; $rt[]=$n.' minute'.($n>1?'s':'');}
-$n=round($sec); $rt[]=$n.' second'.($n>1?'s':'');
+static function compute_time($s){$rt=[]; if($sec<0){$sec=-$sec; $rt[]='-';}
+$yrs=self::$type=='duration'?self::$yearsec:self::$yearsec2;
+$r=['year'=>$yrs,'month'=>2629744,'week'=>604800,'day'=>86400,'hour'=>3600,'minute'=>60,'second'=>1];
+foreach($r as $k=>$v)if($s>$v){$n=floor($s/$v); $s-=$v*$n; $rt[]=$n.' '.$k.($n>1?'s':'');}
 return join(' ',$rt);}
 
-static function compute_utime($sec){$rt=[]; if($sec<0){$sec=-$sec; $rt[]='-';}
-//if($sec>self::$aeon3_uts)$sec+=self::$blacknightsec;
-$uiw=self::$uiwsec; $xsi=self::$type=='duration'?self::$xsisec:self::$xsisec2; $xee=$xsi*60; $aeon=$xee*6000;
-if($sec>$aeon){$n=floor($sec/$aeon); $sec-=$aeon*$n; $rt[]=$n.' aeon'.($n>1?'s':'');}
-if($sec>$xee){$n=floor($sec/$xee); $sec-=$xee*$n; $rt[]=$n.' xee';}
-if($sec>$xsi){$n=floor($sec/$xsi); $sec-=$xsi*$n; $rt[]=$n.' xsi';}
-$rt[]=round($sec/$uiw,2).' uiw';
+static function compute_utime($s){$rt=[];  if($s<0){$sec=-$s; $rt[]='-';}
+$aeon=self::$type=='duration'?self::$aeonsec:self::$aeonsec2;
+$xee=self::$type=='duration'?self::$xeesec:self::$xeesec2;
+$xsi=self::$type=='duration'?self::$xsisec:self::$xsisec2;
+$r=['aeon'=>$aeon,'xee'=>$xee,'xsi'=>$xsi,'uiw'=>self::$uiwsec,'suiw'=>self::$uiwsec/100];
+foreach($r as $k=>$v)if($s>$v){$n=floor($s/$v); $s-=$v*$n; $rt[]=$n.' '.$k.($n>1?'s':'');}
 return join(' ',$rt);}
 
 static function aeon4(){//1057732530

@@ -175,8 +175,7 @@ function addhead(json){var ia=0;
 
 function okbt(tg,res){
 var el=getbyid(tg); var bt=el.innerHTML; el.innerHTML="ok";
-x=setTimeout(function(){el.innerHTML=bt},1500);
-}
+x=setTimeout(function(){el.innerHTML=bt},1500);}
 
 //new canal
 //target,tg2|app,mth|p1=var1,var2|inp1,inp2|3 //tg;a;tp;g;p
@@ -385,7 +384,7 @@ else{closeotherbubs(li.parentNode); active_list_bubble(li.parentNode);
 
 //panup
 function panh(bub,top){
-if(bub.style)bub.style.maxHeight=''; var adjust=60;
+if(bub.style)bub.style.maxHeight=''; var adjust=80;
 var ha=innerH(); var hb=bub.offsetHeight; //alert(hb+'-'+top);
 if(top+hb>ha){//var newH=(ha-top-adjust); if(newH>320)
 	bub.style.maxHeight=(ha-top-adjust)+'px';

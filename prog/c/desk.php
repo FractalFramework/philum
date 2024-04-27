@@ -130,7 +130,7 @@ if($r)foreach($r as $k=>$v)$rc[]=[$k,'art','auto',$k,$cnd,'',$v,'articles'];
 return $rc;}
 
 static function apps_arts($cnd,$cat,$p,$o){$rt=[];
-if($p)$sq['id']=$p; elseif($cat)$sq=['frm'=>$cat]; else $sq=[];
+if($p)$sq['id']=$p; elseif($cat)$sq=['frm'=>$cat]; else $sq=[];//,'lg'=>ses('lng')
 $r=ma::rqtall('id,frm','',$sq,0);
 if($r)foreach($r as $k=>$v){[$id,$frm]=$v;
 	$rt[]=[$id,'art','auto',$id,$cnd,'',$frm,'articles'];}
@@ -216,9 +216,9 @@ static function randimg($dr){
 $r=explore($dr); $n=count($r);
 return $dr.'/'.($r[rand(0,$n-1)]??'');}
 
-static function deskbkg(){$klr=0;
+static function deskbkg($o=''){$klr=0;
 $prmd=$_SESSION['prmd']; if(isset($_SESSION['negcss']))$prmd.='_neg';
-$clr=getclrs($prmd); $g=prma('desktop'); ses::$r['popm']=lj('','page_desk,deskbkg',picto('desktop'));//
+$clr=getclrs($prmd); $g=prma('background'); ses::$r['popm']=lj('','page_desk,deskbkg',picto('desktop'));//
 if($g)$g=goodroot($g); if(!$g)$g='top,#_4,#_2'; else $g=stripfirst($g,'/');
 $s='background-size:cover; background-color:black; background-repeat:no-repeat;
 background-position:center center; background-attachment:fixed;';
@@ -228,10 +228,10 @@ elseif(strpos($g,',')===false && $g){$ret='background-color:'.sty::affect_rgba($
 else{$g=sty::affect_rgba($g,$clr); $gh=$g?$g:'#'.$clr[4].',#'.$clr[1]; $klr=self::medclr($gh);
 	if(!$g)$g='to bottom, '.hexrgb($clr[4],0.4).', '.hexrgb($clr[1],1).'';
 	$ret='height:100%; background:linear-gradient('.$g.') no-repeat fixed;';}
-return head::csscode('body {'.$ret.'}
-	#desktop {padding:20px;}
-	#desktop a, #desktop .philum {color:#'.invert_color($klr,1).';}
-	#desktop #page {padding:0; margin:0 40px 0 0; border:0; box-shadow:none; background:rgba(0,0,0,0.4);}');}
+$code='body {'.$ret.'}
+	#desktop a, #desktop .philum {color:#'.invert_color($klr,1).';}';
+if($o)return $code;
+return head::csscode($code);}
 
 static function poplist(){$rid=randid('ppl');
 ses::$r['popm']=ljb('philum','poplist',$rid,btd($rid,'='));}
@@ -265,8 +265,8 @@ return [$ret,''];}
 
 static function call($id){
 $r=msql::row('',nod('apps'),$id); $ra[$id]=$r;
-$ret=self::build($ra,$r[5],$r[6],$r[3],$r[4]);
-return self::pane_icons($ret,'icones').divc('clear','');}
+$rt=self::build($ra,$r[5],$r[6],$r[3],$r[4]);
+return self::pane_icons($rt,'icones').divc('clear','');}
 
 }
 ?>

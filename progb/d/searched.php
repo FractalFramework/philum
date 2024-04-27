@@ -5,7 +5,7 @@ static function tagfull($cat,$tag){if(!meta::tag_auth($cat))return;
 $r=sql::inner('art','qdsr','qdsra','ib','k','word="'.$tag.'" order by art desc');
 if($r)foreach($r as $k=>$v)meta::sav_tag('',$k,$cat,$tag);}
 
-static function tagfull_slct($srch,$rid){$r=explode(' ','tag '.prmb(18)); $ret='';
+static function tagfull_slct($srch,$rid){$r=sesmk('tags'); $ret='';
 foreach($r as $v)$ret.=lj('',$rid.'_searched,tagfull___'.ajx($v).'_'.ajx($srch),$v);
 return divc('list',$ret).div('','alert','svtg');}
 

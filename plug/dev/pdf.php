@@ -66,10 +66,11 @@ static function tri_tags($r){$ret=[];
 if(is_array($r)){foreach($r as $k=>$v){$rb=trimr($k);
 foreach($rb as $ka=>$va)if($va)$ret[$va]+=$v;}} return $ret;}
 
-static function call(){//echo $_GET['nom'];
+//! very old thing
+static function call(){//echo get('nom');
 $r=['dya','dyb','cat','nocat','tag','notag','order'];
-$cll=explode("~",$_SESSION['call']); $cal='';
-$get=explode("_",$_GET['nom']);
+$cll=explode('~',get('call')); $cal='';
+$get=explode('_',get('nom'));
 foreach($r as $k=>$v){if($k){
 	$rb=self::tri_tags($r);
 	if($get[$k])$cl[$v]=ajx($get[$k],1); //else $cl[$v]=$cll[$k];

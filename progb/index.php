@@ -49,7 +49,7 @@ $rh[]=['js'=>'core'];
 $rh[]=['meta'=>['http-equiv','cache-control','no-cache']];
 $rh[]=['meta'=>['http-equiv','expires','0']];
 $rh[]=['meta'=>['http-equiv','pragma','no-cache']];*/
-if(ses('desgn'))$rh[]=['jslink'=>'/js/live.js#css'];
+if(ses('cssn'))$rh[]=['jslink'=>'/js/live.js#css'];
 $rh[]=['jscode'=>mod::jsmap('rha')];
 $ret.=head::call($rh);
 $ret.='</head>'."\n";

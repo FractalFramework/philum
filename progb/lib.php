@@ -154,11 +154,11 @@ return tag('div',$rp,$d?$d:' ');}
 function divedit($id,$c,$s,$j,$d){return diveditbt($id).divarea($id,$d,$c,$s,$j);}
 function form($go,$d){return '<form method="post" action="'.$go.'">'.$d.'</form>';}
 function goodarea($id,$v,$n=44,$o=''){$nb=ceil(mb_strlen($v)/$n); $h=$nb>10?10:$nb;
-$hb=substr_count($v,"\n"); if($hb>$h)$h=$hb>10?10:$h; if($h==0)$h=1;
-return textarea($id,$v,$n,$h,['wrap'=>'false','onkeyup'=>atjr('areasize',['this'])]);}
+$hb=substr_count($v,"\n"); if($hb>$h)$h=$hb>10?10:$h; if($h==0)$h=1; $hx='height:'.(22*$h).'px;';
+return textarea($id,$v,$n,$h,['wrap'=>'false','onkeyup'=>atjr('areasize',['this']),'style'=>$hx]);}
 
 //upload
-function upload_j($id,$typ,$o=''){if($o)$o=hidden('opt'.$id,$o);//send this val to sav::uploadsav(id,typ,val)
+function upload_j($id,$typ,$o=''){$o=hidden('opt'.$id,$o);//send this val to sav::uploadsav(id,typ,val)
 return '<form id="upl'.$id.'" style="display:inline-block" method="POST" onchange="upload(\''.$id.'\')" accept-charset="utf-8"><label class="uplabel btn"><input type="file" id="upfile'.$id.'" name="upfile'.$id.'" multiple />'.hidden('typ'.$id,$typ).$o.picto('upload').'</label></form>'.btd($id.'up','').btd($id.'prg','');}
 
 //select
@@ -172,42 +172,6 @@ if($r)foreach($r as $k=>$v){
 	if(strlen($v)>20)$v=substr($v,0,20).'...';
 	$ret.=tag('option',$pr+['value'=>$k],$v);}
 return tag('select',$ra,$ret);}
-
-#headers
-class head{static $r=[]; static $rid='';
-static function add($k,$v){self::$r[][$k]=$v;}
-static function ra($r){foreach($r as $k=>$v)self::$r[][$k]=$v;}
-static function meta($d,$v,$c=''){return taga('meta',[$d=>$v,'content'=>$c])."\n";}
-static function csslink($d){return taga('link',['href'=>$d,'rel'=>'stylesheet'])."\n";}
-static function jslink($d){return tag('script',['src'=>$d,'id'=>between($d,'/','.',1)],'')."\n";}
-static function csscode($d){return tag('style',['type'=>'text/css'],$d)."\n";}
-static function jscode($d){return tag('script',['type'=>'text/javascript'],$d)."\n";}
-static function css($d){$c=self::$rid;
-return taga('link',['href'=>'/css/'.$d.'.css'.$c,'rel'=>'stylesheet','id'=>$d])."\n";}
-static function js($d){$c=self::$rid; $b=ses('dev');
-return tag('script',['src'=>'/prog'.$b.'/j/'.$d.'.js'.$c,'id'=>$d],'')."\n";}
-static function link($d,$v){return taga('link',['href'=>$v,'rel'=>$d])."\n";}
-static function temporize($name,$func,$p){$i=randid();
-return 'function '.$name.$i.'(){'.$func.' setTimeout(\''.$name.$i.'()\','.$p.');} '.$name.$i.'();';}
-static function relod($v){echo self::jscode('window.location="'.$v.'"');}
-static function build(){$r=self::$r; $rt=[];
-if($r)foreach($r as $k=>$v){$va=current($v); $ka=key($v); $rt[]=match($ka){
-'css'=>self::css($va),'js'=>self::js($va),
-'csslink'=>self::csslink($va),'jslink'=>self::jslink($va),
-'csscode'=>self::csscode($va),'jscode'=>self::jscode($va),
-'name'=>self::meta('name',$va[0],$va[1]),'code'=>$va."\n",
-'meta'=>self::meta($va[0],$va[1],$va[2]),'link'=>self::link($va[0],$va[1]),
-'tagb'=>tagb($va[0],$va[1])."\n",'taga'=>taga(key($va),current($va))."\n",
-default=>self::meta($ka,$va[0],$va[1])};}
-return implode('',$rt);}
-static function html($lg='fr'){return '<!DOCTYPE html>'."\n".'<html lang="'.$lg.'" xml:lang="'.$lg.'">';}
-static function generate($lg='fr'){return self::html($lg).tagb('head',self::build());}
-static function page($d,$lg){return self::generate($lg).tagb('body',$d).'</html>';}
-static function call($r=[]){if($r)self::$r=array_merge($r,self::$r); return self::build();}
-static function get(){return self::build();}}
-function wpg($d,$t='',$s='',$lg='fr'){
-$head=taga('meta',['charset'=>'utf-8']).tagb('title',$t).tag('style',['type'=>'text/css'],$s);
-return head::html($lg).tagb('head',$head).tagb('body',$d).'</html>';}
 
 #dirs
 function mkdir_r($u){$nu=explode('/',$u); if(count($nu)>10)return;
@@ -224,7 +188,7 @@ function scandir_r($d,$r=[]){$dr=opendir($d);
 while($f=readdir($dr))if($f!='..' && $f!='.' && $f!='_notes'){$df=$d.'/'.$f;
 	if(is_dir($df)){$r[]=$df; $r+=scandir_r($df,$r);}}
 return $r;}
-function scanfiles($d,$r=[]){$dr=opendir($d);
+function scanfiles($d,$r=[]):array{if(!is_dir($d))return []; $dr=opendir($d);
 while($f=readdir($dr))if($f!='..' && $f!='.' && $f!='_notes'){$df=$d.'/'.$f;
 	if(is_dir($df))$r=scanfiles($df,$r); else $r[]=$df;}
 return $r;}
@@ -251,7 +215,7 @@ function walk_dir($dr,$fc){
 $r=explore($dr); return explode_dir($r,$dr,$fc?$fc:'func');}
 function scanwalk($dr,$fc){$r=scanfiles($dr); $rb=[];
 foreach($r as $k=>$v){$a=$fc($dr,$k,$v); if($a)$rb[]=$a;} return $rb;}
-function walk($r,$fc,$p=''){$rt=[]; foreach($r as $k=>$v)$rt[]=$fc($k,$v,$p); return $rt;}
+function walk($fc,$r,$p=''){$rt=[]; foreach($r as $k=>$v)$rt[]=$fc($k,$v,$p); return $rt;}
 function walkr($r,$o=''){$fc=fn($k,$v)=>$o?$o:"$k=>$v";
 return array_map($fc,array_keys($r),array_values($r));}
 
@@ -471,7 +435,7 @@ function delnbsp($d){return str_replace("&nbsp;",' ',$d??'');}
 function delr_r($r){foreach($r as $k=>$v)$r[$k]=delr($v); return $r;}
 
 function yesno($d){return $d?0:1;}
-function rid($p,$n=6){return substr(md5($p),2,$n);}
+function rid($p,$n=6){return substr(md5($p),0,$n);}
 function randid($p=''){return $p.substr(microtime(),2,7);}//uniqid()
 function nchar($o,$n){$ret=''; for($i=0;$i<$o;$i++){$ret.=$n;}return $ret;}
 function count_r($r){$n=0;
@@ -525,16 +489,18 @@ function sesz($d){if(isset($_SESSION[$d]))unset($_SESSION[$d]);}
 function sesr($d,$k,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=[];
 if(!isset($_SESSION[$d][$k]))$_SESSION[$d][$k]='';
 if($v)$_SESSION[$d][$k]=$v; return $_SESSION[$d][$k];}
-function sesrr($d,$k,$v=[]){if(!isset($_SESSION[$d]))$_SESSION[$d]=[];
+function sesrr($d,$k,$v=[]){if(!isset($_SESSION[$d]) or is_string($_SESSION[$d]))$_SESSION[$d]=[];
 if(!isset($_SESSION[$d][$k]))$_SESSION[$d][$k]='';
 return $v?$_SESSION[$d][$k]=$v:($_SESSION[$d][$k]??[]);}
 function sesrz($d,$k){if(array_key_exists($k,$_SESSION[$d]))unset($_SESSION[$d][$k]);}
 function sesg($v,$d){$s=ses($v); $g=get($v); return $g?$g:($s?$s:$d);}
 function sesk($d,$v){$_SESSION[$d][]=$v; return $_SESSION[$d];}
-function sesmk($v,$p='',$b=''){if(!isset($_SESSION[$v.$p]) or $b)
-if(function_exists($v))$_SESSION[$v.$p]=$v($p); return $_SESSION[$v.$p]??[];}
-function sesmk2($a,$m,$p='',$b=''){if(empty($_SESSION[$a.$m.$p]) or $b)
-if(method_exists($a,$m))$_SESSION[$a.$m.$p]=$a::$m($p); return $_SESSION[$a.$m.$p]??'';}
+function sesmk($v,$p='',$b=''){$k=$v.$p; if(!($_SESSION[$k]??[]) or $b)
+if(function_exists($v))$_SESSION[$k]=$v($p); return $_SESSION[$k]??[];}
+function sesmkb($v,$p='',$o='',$b=''){$k=$v.$p.$o; if(empty($_SESSION[$k]) or $b)
+if(function_exists($v))$_SESSION[$k]=$v($p,$o); return $_SESSION[$k]??[];}
+function sesmk2($a,$m,$p='',$b=''){$k=$a.$m.$p; if(empty($_SESSION[$k]) or $b)
+if(method_exists($a,$m))$_SESSION[$k]=$a::$m($p); return $_SESSION[$k]??'';}
 function setses($d,$o=''){return !isset($_SESSION[$d])?$_SESSION[$d]=$o:$_SESSION[$d];}
 
 #csv

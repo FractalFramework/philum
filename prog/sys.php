@@ -38,6 +38,8 @@ elseif(prma('desktop') && (!rstr(146) or $_SESSION['cond'][0]=='home'))//rstr(85
 else $out=mod::blocks();
 #admin
 if(!rstr(98) or auth(4))$madmin=pop::popadmin($stime);
+if(rstr(155) && !prma('desktop') && !$adm)head::add('jscode',sj('desktop_favs,dock___dock'));
+if(prma('background') && !$adm)head::add('csscode',desk::deskbkg(1));
 #meta
 $host=host();
 $meta['favicon']='favicon.ico';
@@ -53,7 +55,6 @@ head::$rid='?'.randid();//if(ses('dev')
 if($adm or $msq)$meta['css']='_admin';
 else $meta['css']=boot::define_design();
 boot::verif_update();
-//if(rstr(155))head::add('jscode',sj('desktop_favs,dock'));
 if(get('flow') or rstr(39))$flow=1; else $flow=0;
 //alert(playr(ses::r('spl')));
 ?>

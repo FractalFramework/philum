@@ -47,7 +47,7 @@ meta::utag_sav($id2,'lang'.$v,$k);}
 meta::affectlgr($id);}//inform targets
 
 static function updmetas($id,$idart){$rt=[];
-$ra=explode(' ','tag '.prmb(18));//do: not works
+$ra=sesmk('tags');//do: not works
 foreach($ra as $k=>$cat){if($cat)$r=meta::read_tags($id,$cat);//idtag,tag
 	foreach($r as $idtag=>$tag)$rt[$cat][]=meta::add_artag($idart,$idtag);}
 return $rt;}
@@ -60,7 +60,7 @@ $r['suj']=trans::call('suj'.$p,$lgset,2); //p($r);
 $r['lg']=$lg;
 if($r['ib'])$r['ib']=sql('msg','qdd','v',['ib'=>$r['ib'],'val'=>'lang'.$r['lg']]);
 sqlup('qda',$r,$id);
-$msg=trans::call('art'.$p,$lgset,2);//p($r); eco($msg);
+$msg=trans::call('art'.$p,$lgset,2);
 //$msg=conv::call($msg,'');
 sqlup('qdm',['msg'=>$msg],$id,0);
 self::oklangs($p,$id,$lgref,$lg);
@@ -88,8 +88,13 @@ return $ret;}
 #tools
 static function repair($p){
 $id=sql('id','qdm','v',$p);
-if(!$id)$id=sql::sav('qdm',['empty']);
+if(!$id && auth(6))$id=sql::sav('qdm',['empty']);
 return $id;}
+
+static function empty($p){
+$id=sql('id','qdm','v',$p); $msg='empty';
+if($id && auth(6))$id=sql::upd('qdm',['msg'=>$msg],['id'=>$id]);
+return $msg;}
 
 static function convert($p){
 $msg=sql('msg','qdm','v',$p);

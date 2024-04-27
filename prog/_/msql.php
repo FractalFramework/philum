@@ -5,8 +5,7 @@ static $m='_';
 
 static function url($dr,$nod,$o=''){//if(!$nod)return;
 $dr=$dr=='lang'?$dr.'/'.(ses('lng')?ses('lng'):prmb(25)):($dr?$dr:'users');
-$f='msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod).'.php';
-if($nod)mkdir_r($f); return $f;}
+$f='msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod??'').'.php'; return $f;}
 //json::add('',nod('msqldir'.mkday('ymnHis')),[$nod]);
 
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
@@ -25,16 +24,20 @@ static function qres($v){
 //return addslashes($v);//krunch bigdata
 return str_replace("'","\'",$v);}
 
-static function dump($r,$p=''){$rc=[]; $rt=[];
+static function dump($r,$p=''){$rc=[]; $ret='';
 if(is_array($r))foreach($r as $k=>$v){$rb=[];
 	if(is_array($v)){foreach($v as $ka=>$va)$rb[]="'".($va?self::qres($va):'')."'";
-		$k=is_numeric($k)?$k:"'".addslashes($k)."'";
-		if($rb)$rc[]=$k.'=>['.implode(',',$rb).']';}
-	else $rc[$k]=(is_numeric($k)?$k:'"'.$k.'"').'=>[\''.($v?self::qres($v):'').'\']';}
-if($rc)$rt=implode(','.n(),$rc);
-return '<?php '."\n".'return ['.$rt.']; ?>';}
+		if($rb)$rc[]=("'".addslashes($k)."'").'=>['.implode(',',$rb).']';}
+	else $rc[$k]=('"'.$k.'"').'=>[\''.($v?self::qres($v):'').'\']';}
+if($rc)$ret=implode(','.n(),$rc);
+return '<?php '."\n".'return ['.$ret.']; ?>';}
 
-static function del($dr,$nod,$o=''){$f=self::url($dr,$nod,$o); if(is_file($f) && auth(4))unlink($f);}
+static function del($dr,$nod,$o=''){
+$f=self::url($dr,$nod,$o); if(is_file($f) && auth(4))unlink($f);}
+
+static function delemptydirs(){$r=scandir_r('msql');
+$fc=fn($v)=>scanfiles($v)?1:(rmdir($v)?$v:'');
+$rb=array_map($fc,$r); pr($rb);}
 
 static function valid($r){
 if(is_array($r)){$r1=current($r);
@@ -43,7 +46,8 @@ if(is_array($r)){$r1=current($r);
 
 static function save($dr,$nod,$r,$rh=[],$bak=''){if(!$r)$r=[];
 if($rh && !isset($r['_']))$r=array_merge(['_'=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
-$f=self::url($dr,$nod,$bak); $d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); return $r;}
+$f=self::url($dr,$nod,$bak); if($nod)mkdir_r($f);
+$d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); return $r;}
 
 static function init($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak);
 if(!is_file($f))$r=self::save($dr,$nod,[],$rh,$bak);}
@@ -162,8 +166,8 @@ static function two($b,$d,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];
 if($r)foreach($r as $k=>[$ka,$va])$rb[$ka]=$va; return $rb;}
 
 static function rk($b,$d){$r=self::read($b,$d,'',1); return $r?array_keys($r):[];}
-static function kv($b,$d){return self::col($b,$d,0,1);}
 static function rv($b,$d){$r=self::col($b,$d,0,0); return array_values($r);}
+static function kv($b,$d){return self::col($b,$d,0,1);}
 static function kx($b,$d,$n=0,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];//like col
 if($r)foreach($r as $k=>$v)$rb[$k]=$v[$n]; return $rb;}
 static function kn($b,$d,$n=0,$n2=1,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];
@@ -192,7 +196,7 @@ static function moveafter($r,$id,$to){$rk=$r[$id]; unset($r[$id]); $i=0; $rt=[];
 foreach($r as $k=>$v){$i++; $rt[$k=='_'?$k:$i]=$v; if($k==$to){$i++; $rt[$i]=$rk;}} return $rt;}
 static function displace($r,$id,$to){if($id==$to)return $r; $rk=$r[$id]; unset($r[$id]); $rt=[];
 foreach($r as $k=>$v){if($k==$to)$rt[$id]=$rk; $rt[$k]=$v;} return $rt;}
-static function walk($r,$n,$fn,$p){foreach($r as $k=>$v){$r[$k][$n]=$fn($k,$v[$n],$v,$p);} return $r;}
+static function walk($fn,$r,$n,$p){foreach($r as $k=>$v){$r[$k][$n]=$fn($k,$v[$n],$v,$p);} return $r;}
 static function walk_k($r,$fn){foreach($r as $k=>$v){$kb=$fn($k,$v); $rt[$kb]=$v;} return $rt;}
 static function nb($r){$i=0; foreach($r as $k=>$v){$i++; $rt[$i]=[$v];} return $rt;}//prep
 static function prevnext($r,$d){$keys=array_keys($r);

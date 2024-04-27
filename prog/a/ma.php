@@ -14,7 +14,7 @@ return sql('id','qda','v',$sq);}
 static function jread($c,$id,$t){$ic=self::find_art_link($id);
 return self::popart(is_numeric($ic)?$ic:$id,$t);}
 
-static function read_msg($d,$m){$id=self::find_id($d); if(!$id)return;// and substring(frm,1,1)!='_'
+static function read_msg($d,$m){$id=self::find_id($d); if(!$id)return;//'-frm'=>'_'
 $ok=sql('id','qda','v',['id'=>$id,'>re'=>'0','name'=>ses('usr')]); if(!$ok)return;
 $ret=sql('msg','qdm','v',$id);
 if($m==2 or $m=='noimages' or $m=='nl')$ret=art::preview($ret,$id);
@@ -67,7 +67,7 @@ return $r;}
 
 #rqt
 static function rqtall($c='',$kv='',$sq=[],$z=''){
-$sq+=['nod'=>ses('qb'),'>re'=>'0'];
+$sq+=['>re'=>'1'];//'nod'=>ses('qb'),//??!1
 $sq['<day']=ses('daya'); if(rstr(3))$sq['>day']=ses('dayb');
 if(!isset($sq['frm']))$sq['-frm']='_';
 if(!isset($sq['_order']))$sq['_order']=prmb(9);
@@ -117,7 +117,7 @@ $min=($page-1)*$npg; $max=$page*$npg; $md=art::slct_media($md); $i=0;
 if(is_array($r))foreach($r as $id=>$nb)if($id>0){$i++;
 	if($md=='prw')$media=$nb; elseif($rch)$media='rch'; else $media=$md;
 	if($i>=$min && $i<$max)$ret.=art::playb($id,$media,$tp,'',$nb);
-	elseif($fw)$ret.=divp(atd('d'.$id).atb('data-prw',$media),'');}
+	elseif($fw)$ret.=tag('socket',['id'=>'d'.$id,'data-prw'=>$media],'');}
 $nbpg=!$fw?pop::btpages($npg,$page,$i,$j):'';
 return $nbpg.$ret.$nbpg;}
 

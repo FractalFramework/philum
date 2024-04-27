@@ -135,14 +135,10 @@ $xt=xt($da); $qb=ses('qb'); if($id=='test')return $da; $b64='';
 if(strpos($da,';base64,'))return self::b64img($da,$id,$m);
 if(!$xt or $xt=='.php' or $xt=='.jpeg')$xt='.jpg'; $ok='';// or $xt=='.webp'
 //if(forbidden_img($da)===false)return;//rev
-if($id){$nmw=$qb.'_'.$id.'_'.substr(md5($da),0,6).$xt;//soon, del qb
-	if(get('randim'))$nmw=$qb.'_'.$id.'_'.substr(md5(rand(0,100000)),0,6).$xt;//
+if($id){$nmw=$qb.'_'.$id.'_'.rid($da).$xt;//soon, del qb
 	if($m=='trk' && is_file('img/'.$nmw))return $nmw;//keep original name
 	else{
-		if(strpos($da,'Capture-'))$da=str_replace("'","%E2%80%99",$da);//’
-		/*if(strpos($dc,'&#x')){
-			$dc=mb_decode_numericentity($dc,[0x0,0x2FFFF,0,0xFFFF],'UTF-8');
-			$dc=utf8dec_b($dc); $dc=str::html_entity_decode_b($dc);}*/
+		if(strpos($da,'Capture-'))$da=str_replace("'","%E2%80%99",$da);
 		$dcb=preg_replace('/-[0-9]+x[0-9]+/','',$da); if($dcb!=$da && is_file($dcb))$da=$dcb;//
 		$dc=($da);//urlencode
 		if(strpos($dc,' '))$dc=urlencode($dc);
@@ -302,6 +298,7 @@ if($c)$ret=match($c){
 //':sliderJ'=>mk::sliderj($d,$id,$nl),
 ':jukebox'=>mk::jukebox($d,$m,$id),
 ':radio'=>radio::call($d,'',$id),
+':numb'=>clean_nb($d),
 ':script'=>'<script src="'.$d.'"></script>'."\n",
 ':search'=>lj('popw','popup_search,home___'.ajx($d),pictxt('search',$d)),
 ':formail'=>mk::form($d,'mailform'.$id.'_tracks,formail',''),

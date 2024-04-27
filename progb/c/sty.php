@@ -18,7 +18,7 @@ $nod=self::cssnode($cssn); $noc=self::clrnode($clrn);
 $fcss='css/'.$qb.'_design_'.$cssn.'.css';
 $ftmp='css/'.$qb.'_design_dev_'.$cssn.'.css';
 switch($p){
-case('new_from'):$tbn=msql::findlast('',$qb,'css');
+case('new_from'):$tbn=msql::findlast('',$qb,'css');//not works
 	msql::save('',self::cssnode($tbn),$defs);
 	msql::copy('',$noc,'',self::clrnode($tbn));
 	$_SESSION['clrs'][$tbn]=$_SESSION['clrs'][$cssn];
@@ -144,7 +144,7 @@ if(!is_file($ftmp))self::build_css($ftmp,$defs);
 $rt[]=lkc('txtcadr','/admin/css',$nod).' ';
 $rt[]=self::dsnamedt($qb,$cssn,[]);
 $rt[]=hlpbt('design').' ';
-$rt[]=msqbt('design',self::cssnode($cssn)).' ';
+$rt[]=msqbt('',self::cssnode($cssn)).' ';
 $rt[]=self::cssactbt('exit_design',pictxt('logout',nms(112)),'url','','');//'','','');
 if(prmb(5))$rt[]=picto('alert').helps('prmb5').' ';
 $rt[]=hlpbt('designcond');
@@ -152,7 +152,7 @@ $ret=div(implode('',$rt)); $rt=[];
 $rt[]=lj('txtbox','popup_sty,chargesets','css:'.$cssn.'/clr:'.$clrn).' ';
 $rt[]=self::cssactbt('backup','backup','self','','');//'','',''
 if(is_file(msql::url('',$nod))){
-	$rt[]=self::cssactbt('restore_css',nms(95).' design','self','');
+	$rt[]=self::cssactbt('restore_css',nms(95).' css','self','');
 	$rt[]=self::cssactbt('restore_clr',nms(95).' clr','self','');}
 if(ses('prmd')!=ses('cssn'))
 	$rt[]=self::cssactbt('test_design','test design '.$cssn,'self','');
@@ -463,7 +463,7 @@ if($c=='cat' && $fb && $fb!='-'){$r['category']=$fb;
 	if(!$_SESSION['fntcat'][$fb])$_SESSION['fntcat'][$fb]=1;}
 if($k && $_SESSION['auth']>5)msql::modif('server','edition_typos',$r,$k);
 foreach($r as $ka=>$v){$rb[]=$v;}
-return self::preview_ff_p($k,$rb,'',$p);}
+return self::preview_ff_p($k,$rb);}
 
 static function ffeditcall($k,$c,$prm){
 return self::ffeditprw($k,$c,'',$prm);}

@@ -41,39 +41,44 @@ $arb=array("\t",'(','(',')',')','.','.','>','<','=','=',"\n","\n",'{','{','}',',
 $d=preg_replace('/( ){2,}/',' ',$d);
 return str_replace($ara,$arb,$d);}
 
-static function act($txt,$d,$enc){$ret='';
-if($d=='html2conn'){$ret=conv::call($txt);}
-elseif($d=='conn2html'){$ret=conn::read($txt);}
-elseif($d=='utf8')$ret=$enc?utf8enc($txt):utf8dec_b($txt);
-elseif($d=='base64')$ret=$enc?base64_encode($txt):base64_decode($txt);
-elseif($d=='htmlentities')$ret=$enc?htmlentities($txt):html_entity_decode($txt);//,ENT_QUOTES,'utf-8',false
-elseif($d=='url')$ret=$enc?urlencode($txt):urldecode($txt);
-elseif($d=='ajx')$ret=ajx($txt,$enc?0:1);
-elseif($d=='case')$ret=$enc?strtoupper($txt):str::lowercase($txt);
-elseif($d=='unescape')$ret=$enc?$ret:str::decode_nonutf8($txt);//unicode_decode
-elseif($d=='ascii'){if($enc)$ret=self::ascii_encode($txt); else $ret=self::ascii_decode($txt);}
-elseif($d=='binary')$ret=$enc?self::ascii2bin($txt):self::bin2ascii($txt);
-elseif($d=='bin/dec')$ret=$enc?decbin($txt):bindec($txt);
-elseif($d=='timestamp')$ret=$enc?strtotime($txt):date('d/m/Y H:i:s',$txt);
-elseif($d=='php')$ret=self::clean_code($txt);
-elseif($d=='hexdec')$ret=hexdec($txt);
-elseif($d=='dechex')$ret=dechex($txt);
-elseif($d=='deg2rad')$ret=deg2rad($txt);
-elseif($d=='rad2deg')$ret=rad2deg($txt);
-elseif($d=='sin')$ret=sin(deg2rad($txt));
-elseif($d=='cos')$ret=cos(deg2rad($txt));
-elseif($d=='tan')$ret=tan(deg2rad($txt));
-elseif($d=='asin')$ret=rad2deg(asin($txt));
-elseif($d=='acos')$ret=rad2deg(acos($txt));
-elseif($d=='atan')$ret=rad2deg(atan($txt));
-elseif($d=='indent')$ret=indent::build($txt);
-elseif($d=='md')$ret=conb::parse($txt,'md');
-elseif($d=='meta'){[$ti,$tx]=web::metas($txt); $ret='ti:'.$ti.n().'tx:'.$tx;}
+static function act($txt,$d,$enc){
+$ret=match($d){
+'html2conn'=>conv::call($txt),
+'conn2html'=>conn::read($txt),
+'utf8'=>$enc?utf8enc($txt):utf8dec_b($txt),
+'base64'=>$enc?base64_encode($txt):base64_decode($txt),
+'htmlentities'=>$enc?htmlentities($txt):html_entity_decode($txt),//,ENT_QUOTES,'utf-8',false
+'url'=>$enc?urlencode($txt):urldecode($txt),
+'ajx'=>ajx($txt,$enc?0:1),
+'case'=>$enc?strtoupper($txt):str::lowercase($txt),
+'unescape'=>$enc?$ret:str::decode_nonutf8($txt),//unicode_decode
+'ascii'=>$enc?self::ascii_encode($txt):self::ascii_decode($txt),
+'binary'=>$enc?self::ascii2bin($txt):self::bin2ascii($txt),
+'bin/dec'=>$enc?decbin($txt):bindec($txt),
+'timestamp'=>$enc?strtotime($txt):date('d/m/Y H:i:s',$txt),
+'urldec'=>str::urldec($d),
+'clean_acc'=>str::clean_acc($d),
+'clean_punct'=>str::clean_punctuation($d),
+'php'=>self::clean_code($txt),
+'hexdec'=>hexdec($txt),
+'dechex'=>dechex($txt),
+'deg2rad'=>deg2rad($txt),
+'rad2deg'=>rad2deg($txt),
+'sin'=>sin(deg2rad($txt)),
+'cos'=>cos(deg2rad($txt)),
+'tan'=>tan(deg2rad($txt)),
+'asin'=>rad2deg(asin($txt)),
+'acos'=>rad2deg(acos($txt)),
+'atan'=>rad2deg(atan($txt)),
+'indent'=>indent::build($txt),
+'md'=>conb::parse($txt,'md'),
+default=>''};
+if($d=='meta'){[$ti,$tx]=web::metas($txt); $ret='ti:'.$ti.n().'tx:'.$tx;}
 elseif($d=='counts'){$r=explode(' ',$txt); $ret=strlen($txt).' chars, '.count($r).' words';}
 elseif(in_array($d,['pc2al','pc2km','al2km','al2pc','deg2ra','ra2deg','deg2dec','dec2deg','mas2al','al2mas'])){
 	$m=new maths(20); $ret=$m::$d($txt);}
 elseif($d=='twostars'){$m=new maths(20); $r=explode(',',$txt); $ret=$m::stars_distance($r[0],$r[1]??'');}
-elseif(function_exists($d))$ret=$d($txt);
+elseif(!$ret && function_exists($d))$ret=$d($txt);
 if($ret)stripslashes($ret);
 return $ret;}
 
@@ -82,14 +87,14 @@ return self::act($d,$p,$o);}
 
 static function menu($p,$o,$rid){$ria=$rid.'a';
 $ret=lj('','popup_converts,home','(+)'); $ret=''; $j=$rid.'_converts,call_'.$ria.'_4_';
+$ret.=lj('txtx',$j.'html2conn','html2conn').' '.lj('txtx',$j.'conn2html','conn2html').' ';
 $r=['utf8','htmlentities','url','case','ajx','unescape','base64','ascii','binary','bin/dec','timestamp'];
-	$ret.=lj('txtx',$j.'html2conn','html2conn').' ';
-	$ret.=lj('txtx',$j.'conn2html','conn2html').' ';
-foreach($r as $v){$ret.=btn('txtx',$v.': '.lj('',$j.''.$v.'_1','&uarr;').' '.lj('',$j.''.$v.'','&darr;')).' ';}
-$r=['php','hexdec','dechex','deg2rad','rad2deg','sin','cos','tan','asin','acos','atan','pc2al','pc2km','al2km','al2pc','deg2ra','ra2deg','deg2dec','dec2deg','mas2al','al2mas','twostars(,)','indent','md','meta'];
+$uarr=picto('arrow-top'); $darr=picto('arrow-down');//'&uarr;''&darr;'
+foreach($r as $v){$ret.=btn('popbt',$v.': '.lj('',$j.''.$v.'_1',$uarr).''.lj('',$j.''.$v.'',$darr)).' ';}
+$r=['urldec','clean_acc','clean_punct','php','hexdec','dechex','deg2rad','rad2deg','sin','cos','tan','asin','acos','atan','pc2al','pc2km','al2km','al2pc','deg2ra','ra2deg','deg2dec','dec2deg','mas2al','al2mas','twostars(,)','indent','md','meta'];
 foreach($r as $v)$ret.=lj('txtx',$j.''.$v.'_1',$v).' ';
 	$ret.=lj('txtx',$j.'counts_1','counts').' ';
-	$ret.=ljb('txtx','transhtml',[$rid,$ria],'&uarr;').' ';
+	$ret.=ljb('txtx','transhtml',[$rid,$ria],$darr).' ';
 $ret.=br().textarea($ria,$p,51,8,['class'=>'console']);
 return $ret;}
 

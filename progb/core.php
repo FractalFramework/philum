@@ -1,8 +1,8 @@
 <?php 
 
 #store
-class ses{static $r=[]; static $s=[]; static $adm=[]; static $st=[]; static $er=[];
-static $urlsrc=''; static $loader=''; static $n=0; static $nb=0; static $qb='';
+class ses{static $r=[]; static $s=[]; static $adm=[]; static $st=[]; static $er=[]; static $enc='';
+static $urlsrc=''; static $loader=''; static $local=0; static $tw=1; static $n=0; static $nb=0; static $oom=''; static $cnfg;
 static function adm($k){return self::$adm[$k]??'';}
 static function s($k,$v=''){return self::$s[$k]??(self::$s[$k]=$v);}
 static function k($k,$v){return self::$r[$k]=$v;}
@@ -17,8 +17,8 @@ $j='popart__x_'.$g1; $tg=get('tg')=='pagup'?1:0;
 //boot::deductions($g1,'');
 if($g1=='last')$g1=ma::lastid('qda');
 if(rstr(155)){
-	//$ex=sql('ib','qdf','k',['ib'=>$id,'type'=>'dock','iq'=>ses('iq')]);
-	$bt=btj(picto('input'),atj('dock',$g1));}
+	$ex=sql('ib','qdf','k',['ib'=>$g1,'type'=>'dock','iq'=>ses('iq')]);
+	$bt=btj(picto($ex?'output':'input'),atj('dock',$g1));}
 if($tg)$bt.=lj('','popup_'.$j,pictxt('popup')); else $bt.=lj('','pagup_'.$j,pictxt('popup'));
 if(rstr(144))$bt.=md::prevnext_art('arts',1,$g1,$tg);
 if(auth(6))$bt.=lj('','popup_meta,metall___'.$g1.'_3',picto('tag',20)).lj('','popup_meta,titedt___'.$g1.'_3',picto('meta',20)).lj('','popup_edit,call____'.$g1,picto('edit',20)).btj(picto('edit2',20),atj('editart',$g1));
@@ -56,7 +56,7 @@ return $ret;}
 
 #msql
 function pub($d){return 'public_'.$d;}
-function nod($d){return ses::$qb.'_'.$d;}
+function nod($d){return $_SESSION['qb'].'_'.$d;}
 function msqbt($b,$p,$d=''){if($d)return msqedt($b,$p,$d);
 $u=($b?$b:'users').'_'.ajx($p).($d?'~'.ajx($d):'');
 return lj('grey','popup_msql__3_'.$u,pictit('msql',$p));}
@@ -138,6 +138,42 @@ function offon($d,$t=''){return pictxt($d?'true':'false',$t,'color:#'.($d?'428a4
 function togon($d,$t=''){return pictxt($d?'switch-on':'switch-off',$t,$d?'color:#428a4a;':'');}
 function valid($d,$t=''){return pictxt($d?'check-valid':'check-empty',$t);}
 function order($d,$t=''){return pictxt($d?'arrow-top':'arrow-down',$t);}
+
+#headers
+class head{static $r=[]; static $rid='';
+static function add($k,$v){self::$r[][$k]=$v;}
+static function ra($r){foreach($r as $k=>$v)self::$r[][$k]=$v;}
+static function meta($d,$v,$c=''){return taga('meta',[$d=>$v,'content'=>$c])."\n";}
+static function csslink($d){return taga('link',['href'=>$d,'rel'=>'stylesheet'])."\n";}
+static function jslink($d){return tag('script',['src'=>$d,'id'=>between($d,'/','.',1)],'')."\n";}
+static function csscode($d){return tag('style',['type'=>'text/css'],$d)."\n";}
+static function jscode($d){return tag('script',['type'=>'text/javascript'],$d)."\n";}
+static function css($d){$c=self::$rid;
+return taga('link',['href'=>'/css/'.$d.'.css'.$c,'rel'=>'stylesheet','id'=>$d])."\n";}
+static function js($d){$c=self::$rid; $b=ses('dev');
+return tag('script',['src'=>'/prog'.$b.'/j/'.$d.'.js'.$c,'id'=>$d],'')."\n";}
+static function link($d,$v){return taga('link',['href'=>$v,'rel'=>$d])."\n";}
+static function temporize($fc,$code,$p){$fc.=randid();
+return 'function '.$fc.'(){'.$code.' clearTimeout(x); x=setTimeout(\''.$fc.'()\','.$p.');} '.$fc.'();';}
+static function relod($v){echo self::jscode('window.location="'.$v.'"');}
+static function build(){$r=self::$r; $rt=[];
+if($r)foreach($r as $k=>$v){$va=current($v); $ka=key($v); $rt[]=match($ka){
+'css'=>self::css($va),'js'=>self::js($va),
+'csslink'=>self::csslink($va),'jslink'=>self::jslink($va),
+'csscode'=>self::csscode($va),'jscode'=>self::jscode($va),
+'name'=>self::meta('name',$va[0],$va[1]),'code'=>$va."\n",
+'meta'=>self::meta($va[0],$va[1],$va[2]),'link'=>self::link($va[0],$va[1]),
+'tagb'=>tagb($va[0],$va[1])."\n",'taga'=>taga(key($va),current($va))."\n",
+default=>self::meta($ka,$va[0],$va[1])};}
+return implode('',$rt);}
+static function html($lg='fr'){return '<!DOCTYPE html>'."\n".'<html lang="'.$lg.'" xml:lang="'.$lg.'">';}
+static function generate($lg='fr'){return self::html($lg).tagb('head',self::build());}
+static function page($d,$lg){return self::generate($lg).tagb('body',$d).'</html>';}
+static function call($r=[]){if($r)self::$r=array_merge($r,self::$r); return self::build();}
+static function get(){return self::build();}}
+function wpg($d,$t='',$s='',$lg='fr'){
+$head=taga('meta',['charset'=>'utf-8']).tagb('title',$t).tag('style',['type'=>'text/css'],$s);
+return head::html($lg).tagb('head',$head).tagb('body',$d).'</html>';}
 
 #slct
 function mkbub($d,$c='',$s='',$o=''){if($s=='1'){$c='bub '.$c; $s='';}
@@ -330,9 +366,8 @@ function yesnoses($d){return $_SESSION[$d]=($_SESSION[$d]??'')==1?0:1;}
 function nbof($n,$i){if(!$n)return nms(11)."&nbsp;".nms($i); else return $n.' '.($n>1?nms($i+1):nms($i));}
 function plurial($n,$i){return $n>1?nms($i+1):nms($i);}
 
-function define_ses(){
-ses::$s['auth']=ses('auth');//boot::define_auth()
-ses::$qb=ses('qb',ses::$s['qb']);}
+function define_ses(){//boot::define_auth()
+ses::$s['auth']=ses('auth');}
 
 function security(){
 $ip=sql('ip','qdu','v',['name'=>ses('qb')]);
@@ -351,10 +386,13 @@ function conns(){return msql::read('system','connectors_basic',1);}
 function connlg(){return msql::kv('lang','connectors_basic');}
 function flags(){return msql::kn('system','edition_flags_8',2,1);}
 function template($d){return msql::val('system','edition_template_'.$d,1);}
+function tags(){return msql::kv('server',nod('tags'));}
+function tagsic(){return msql::kn('server',nod('tags'));}
+function tagslg($lg,$n){return msql::kx('lang/'.$lg,nod('tags_'.$n),0);}
 
 //mimes
 function msqmimes(){return msql::kv('system','edition_mimes');}
-function mime($d,$o='less'){$r=sesmk('msqmimes','',1); return $r[$d]??$o;}
+function mime($d,$o='less'){$r=sesmk('msqmimes','',0); return $r[$d]??$o;}
 function mimes($d,$t='',$sz=''){$ta=mime($d,$t);
 if($ta && $ta!='less')$t=$ta; if(!$t)$t='file'; if($t)return picto($t,$sz);}
 
@@ -366,8 +404,8 @@ function conn_ref(){return msql::rk('system','connectors_all');}
 #ajax
 function ajx($v,$p=''){#dont edit!
 $r=['*','_','(star)']; $a=$p?1:0; $b=$p?0:1; $c=$p?0:2; $d=$p?2:0;
-$a=[$r[$a],$r[$b],'_','&','+',"'"];//,':','#','/','"'
-$b=[$r[$c],$r[$d],'(und)','(and)','(add)','(quote)'];//,'(ddot)','(diez)','(slash)','(dquote)'
+$a=[$r[$a],$r[$b],'_','&','+',"'",' '];//,':','#','/','"'
+$b=[$r[$c],$r[$d],'(und)','(and)','(add)','(quote)','(space)'];//,'(ddot)','(diez)','(slash)','(dquote)'
 if($p)[$b,$a]=[$a,$b]; if($v)$v=str_replace($a,$b,$v);
 return $v;}
 
@@ -379,7 +417,7 @@ function preplink($u){$u=nohttp($u); $pos=strpos($u,'/',1);
 if($pos===false)$pos=strpos($u,'.'); return substr($u,0,$pos);}
 function prepdlink($d){[$p,$o]=cprm($d);
 if(!$o or $o==$p)$o=domain($p); return [$p,$o];}
-function flag($d,$s=''){$r=sesmk('flags','',0); return bts($s?'font-size:'.$s.'px':'',$r[$d]??$d);}
+function flag($d,$s=''){$r=sesmk('flags','',0); return span($r[$d]??$d,'','',$s?'font-size:'.$s.'px':'');}
 function svg($f,$w='',$h=''){return taga('img',['src'=>$f.'.svg','width'=>$w,'height'=>$h?$h:$w]);}
 function picto($d,$s=''){if(is_numeric($s))$s='font-size:'.$s.'px;'; return span('','philum ic-'.$d,'',$s);}
 function pictxt($p,$t='',$s=''){return picto($p,$s).($t?'&#8239;'.$t:'');}
@@ -443,9 +481,10 @@ return [$p,$o,$c];}
 function vacurl($f){$f=nohttp($f); return str::normalize($f,2);}
 function vacses($f,$k='',$v=''){$u=vacurl($f);//v,t,d(data),c(cat),u(url),p(parent),b(brut)
 if($v=='x' && $r=sesr('vac',$u)){sesrz('vac',$u); return $r[$k]??'';}
-elseif($v){sesrr('vac',$u,[$k=>$v]); $_SESSION['vac'][$u]['u']=$f;}//pre_clean
+//elseif($v)sesrr('vac',$u,[$k=>$v,'u'=>$f]);//
+elseif($v){$_SESSION['vac'][$u][$k]=$v; $_SESSION['vac'][$u]['u']=$f;}
 return $_SESSION['vac'][$u][$k]??'';}
-function vaccum_ses($f){$d=vacses($f,'b');//obso
+function vaccum_ses($f){$d=vacses($f,'b');
 if(strpos($d,'This page appears when Google'))return;
 if(!$d){$d=get_file($f); vacses($f,'b',$d);}
 return $d;}

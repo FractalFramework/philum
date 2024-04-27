@@ -8,7 +8,7 @@ self::$oAuth=$d;}
 static function post($p,$o){
 $oAuth=self::$oAuth;
 //$f='http://logic.ovh/api.php?app=tlxcall&mth=post&msg='.rawurlencode($p).'&prm=oAuth:'.$oAuth;
-$f='http://logic.ovh/api.php?oAuth='.$oAuth.'&msg='.rawurlencode($p);
+$f='http://logic.ovh/api.php?oAuth='.$oAuth.'&msg='.($p);
 return file_get_contents($f);}
 
 static function read($p,$o){

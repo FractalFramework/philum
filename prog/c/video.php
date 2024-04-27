@@ -9,8 +9,8 @@ if(strpos($f,'#'))$f=strto($f,'#'); $f=urldecode($f);//if(strpos($f,'?'))$f=stre
 if(in_array($fa,self::$rp))switch($fa){
 	case('youtube'): $f=strend($f,'?'); //if(strpos($f,'channel')!==false)return http($f);
 	$p=strpos($f,'v='); $f=substr($f,$p+2); $pe=strpos($f,'&'); $tm='';
-		if($pt=strpos($f,'&t='))$tm=substr($f,$pt+3,-1); if($tm)$tm='|'.$tm; $f=trim($f);
-		if($pe!==false)$ret=subtopos($f,0,$pe).$tm; else $ret=$f; break;
+		if($pt=strpos($f,'&t='))$tm=substr($f,$pt+3,-1); $tm=$tm?'|'.$tm:''; $f=trim($f);
+		if($pe!==false)$ret=substr($f,0,$pe).$tm; else $ret=$f; break;
 	case('youtu'):$f=strto($f,'?'); $p=strrpos($f,'/'); if($p)$f=substr($f,$p+1); $pe=strpos($f,'?'); $tm='';
 		if($pt=strpos($f,'&t='))$tm=substr($f,$pt+3); if($tm)$tm='|'.$tm; $f=trim($f);
 		if($pe!==false)$ret=subtopos($f,0,$pe).$tm; else $ret=$f; break;

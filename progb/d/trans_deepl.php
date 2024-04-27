@@ -16,7 +16,7 @@ else $r=$r['translations'][0]??[];
 return $r;}
 
 static function getlangs(){
-$rb=['EN','FR','ES','IT','DE','NL','PL','JA','PT','RU','SV','TR','ZH'];
+$rb=['EN','FR','ES','IT','DE','NL','PL','JA','PT','RU','SV','TR','ZH','NB'];
 //,'BG','CS','DA','EL','ET','HU','ID','LT','LV','PL','RO','SK','SL','UK'
 return implode(',',$rb);}
 

@@ -30,7 +30,9 @@ foreach($rb as $k=>$v)
 	$ret.=ljb('','insert_b',[$v[0].'('.$v[1].');','codarea'],$v[0].'('.$v[1].')');
 return divc('list',$ret);}
 
-static function fast(){$ref=['function done(){}','{}','[]','if()','foreach($r as $k=>$v)','$ret=\'\';','strpos($d,\'x\')!==false','return $ret;','.br()','echo \'ee\';',"\r"]; $ret='';
+static function fast(){$ref=['{}','[]','if()','pr($r);','$ret=\'\';',
+'function done(){}','foreach($r as $k=>$v)','strpos($d,\'x\')!==false',
+'$r=msql::read(null,$d);','$rf=fn($d)=>$d;','eco($d);','.br()']; $ret='';
 foreach($ref as $k=>$v)$ret.=ljb('txtx','insert',[$v,'codarea'],$v);
 return divc('list',$ret);}
 
@@ -56,14 +58,14 @@ if(!auth(6))return btn('txtalert','need auth>6');
 $j=$rid.'_exec,run_codarea_2';
 $f='_datas/exec/'.date('ymd').'.php'; mkdir_r($f);
 if(!$p && is_file($f)){$p=read_file($f); if($p)$p=substr($p,6);}
-$bt=togbub('exec,lib','','lib').' ';
-$bt.=togbub('exec,fast','','fast').' ';
+$bt=lj('','popup_exec,lib','lib').' ';
+$bt.=lj('','popup_exec,fast','fast').' ';
 //$bt.=select($r,'');
 $bt.=msqbt('system','program_core').' ';
 $bt.=lj('popsav',$j,'exec');
 $ret=head::jscode(self::js());
 $sj=atjr('SaveJtim',[$j,1000]); //$onk=atjr('autocomp','codarea');
-$ret.=textarea('codarea',$p?$p:'$d=\'hello\';',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);
+$ret.=textarea('codarea',$p?$p:'$ret=(\'hello\');',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);
 return $bt.div(divc('col1',$ret).div('','col2 scroll',$rid),'grid-pad','','min-width:640px');}
 }
 ?>

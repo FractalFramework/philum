@@ -65,8 +65,8 @@ sesr('db','qdt','meta'); sesr('db','qdta','meta_art'); sesr('db','qdtag','tag');
 $n=12;//echo $n=ceil(ma::lastartid()/10000);
 for($i=0;$i<$n;$i++)$bt.=lj('txtbox',$rid.'_tagpatch,call___'.($i*10000),$i);//jb
 //patch user_tags
-if(prmb(18)){$utags=explode(' ',prmb(18)); $ico=explode(' ',prmb(19));
-foreach($utags as $k=>$v)$bt.=lj('txtbox',$rid.'_tagpatch,u___'.ajx($v),$v).' ';}
+$rg=sesmk('tags');
+foreach($rg as $k=>$v)$bt.=lj('txtbox',$rid.'_tagpatch,u___'.ajx($k),$k).' ';}
 if($p=='finalize')self::erase_unused_datas();
 else $ret.=lkc('popsav','/app/tagpatch/finalize','Finalize (delete unused datas !)');
 //$ret=meta::admin_tags($p?($p):'tag');//utf8_encode

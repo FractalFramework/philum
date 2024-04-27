@@ -33,9 +33,8 @@ static function mkurl($r){$n=count($r); $ret='';
 for($i=0;$i<$n;$i++){if($g=self::$rp[$r[$i]])$ret.='&'.$r[$i].'='.$g;}
 return $ret;}
 
-static function pictag($d,$t=''){
-$r=array_combine(explode(' ','tag '.prmb(18)),explode(' ','tag '.prmb(19)));
-return pictxt($r[$d]??'tag',$t);}
+static function pictag($d,$t=''){$r=sesmk('tagsic');
+return pictxt($r[$d],$t);}
 
 //titles
 static function titles($vrf,$tot,$cac){$rt3='';
@@ -43,14 +42,17 @@ static function titles($vrf,$tot,$cac){$rt3='';
 $load=ses('load'); $rid=randid('search');
 $rj=['onkeyup'=>atj('checksearch',$rid)];
 $rt1=btn('search',inputb($rid,$rech,32,'',150,$rj)).' ';
-//$rmd=explode(' ','word tag '.prmb(18)); if(auth(6))$rt1.=select(['id'=>'mode'],$rmd);
+//$rmd=sesmk('tags'); if(auth(6))$rt1.=select(['id'=>'mode'],$rmd);
 $rt1.=ljb('popsav','Search2',$rid,picto('search').' '.nms(24)).' '.hlpbt('search').' ';
 $rg=sql('cat','qdt','rv',['tag'=>$rech]);
 if($rg)foreach($rg as $k=>$v)$rt1.=lj('popbt','popup_api__3_'.$v.':'.ajx($rech),self::pictag($v),att($v));
 if($cac)$rt1.=blj('popbt','srcac','search,rech___'.$vrf,picto('del'),att('del cache'));
 if($rech && strpos($rech,','))$api='search:'.$rech; else $api='search:'.$rech.',cat:'.str_replace('+','|',$cat).',tag:'.str_replace('+','|',$tag);
+if($rech)$rt1.=lh('search/'.$rech.($dig?'/'.$dig:''),picto('link',16)).' ';//.$urg
 $rt1.=toggle('txtx','apicom_apicom,build___'.ajx($api).'_'.$rid,pictxt('atom','Api')).' ';
 if($load)$rt1.=btn('txtnoir',nbof(count($load),1));//if(auth(6))$rt1.=nbof(array_sum_r($load),16);
+if(ses::$s['oom']){$rt1.=lj('popbt','popup_umvoc,home___'.ajx($rech).'_1','vocables');//bdvoc
+	$rt1.=lj('popbt','popup_umrec,home__3_'.ajx($rech),'twits');}
 $ret=div($rt1);
 //2
 $bt=checkact('srord',$ord,nms(165)).' ';
@@ -63,7 +65,7 @@ $rt2.=slct_cases('srcat','cat',$cat,1,nms(9)).' ';//chkslct
 //$rt2.=slct_cases('srtag','tag',$tag,'','tag').' ';//prm4=catag; 0=all
 $rt2.=hidden('srtag','');//hidden('srcat','').
 $rt2.=slct_cases('srovc','ovcat',$ovc,1,nms(207)).' ';//chkslct
-//$tgs=prmb(18); $ru=explode(' ',$tgs);
+//$ru=sesmk('tags');
 //foreach($ru as $k=>$v)$rt2.=slct_cases('srtag'.$k,$v,$tag,'',$v);
 //$rt2.=hlpbt('search_cases').' ';
 $rt2.=select_j('limit','-|1|2|3|4|5|10|20|50',$lim,'1',$lim?$lim:nms(199)).' ';
@@ -78,10 +80,7 @@ if(rstr(3) && !isset(self::$rp['nodig']))$rt3=self::dig($dig,$rid); else $rt3.=h
 if(!isset($_SESSION['rstr62']))$_SESSION['rstr62']=rstr(62);
 if(rstr(3))$rt3.=togses('rstr62',pictit('after',nms(134),16)).' ';//dig
 //$urg=self::mkurl(['bool','titles','cat','tag']);
-if($rech)$rt3.=lh('search/'.$rech.($dig?'/'.$dig:''),picto('link',16)).' ';//.$urg
-if(ses::$s['oom']){$rt3.=lj('popbt','popup_umvoc,home___'.ajx($rech).'_1','vocables');//bdvoc
-	$rt3.=lj('popbt','popup_umrec,home__3_'.ajx($rech),'twits');}
-	$ret.=div($rt3);
+$ret.=div($rt3);
 $ret.=div(self::pages($tot,$rid));//pages
 return $ret;}
 
@@ -140,6 +139,7 @@ $ft='';//fulltext//score:1->11//bool:nb of verified words
 //if(ses::$s['oom'])
 //$ft='MATCH (msg) AGAINST ("'.$rch.'")';//'.($bol?' IN BOOLEAN MODE':'').'//method of intersect
 if(rstr(3)){$days=$days?$days:ses('nbj'); $sq['daymin']='day>'.timeago($days);}
+if(ses('dayx')-ses('daya')<86400)ses('daya',time());
 $daya=time_prev($days); $daya=$daya?timeago($daya):ses('daya');
 $sq['daymax']='day<'.$daya;
 $sqnd['suj']='suj like "%'.$rch.'%" ';
@@ -176,7 +176,6 @@ $sql='select '.implode(',',$slct).' from '.$qda.' '.$inner.$w;
 $ret=sql::call($sql,$fr,0);
 if($ord && $ret)arsort($ret);
 //loop
-//if(auth(6))echo ses('rstr62').'-'.count($ret);
 if(!$ret && $rch && (rstr(62) or ses('rstr62'))){
 	$ndig=self::next_sptime($days); if($ndig)self::$rp['dig']=$ndig;
 	if($ndig)return self::call($rch,$ndig);}
@@ -200,13 +199,15 @@ static function rech($p){
 if(isset($_SESSION['recache'][$p])){$_SESSION['recache'][$p]=[]; return 'x';}
 elseif(isset($_SESSION['recache']))$_SESSION['recache']=[]; return 'xx';}
 
-static function good_rech($d){if(!$d)return; $d=str::clean_acc($d);
-//$d=strip_tags($d); $d=stripslashes($d); $d=urldecode($d);
-$d=str_replace("&nbsp;",' ',$d); return $d=trim($d);}
+static function good_rech($d){
+if(!$d)return;//%E2%80%AF (&#8239;)
+//$d=urldecode($d); //$d=strip_tags($d); $d=stripslashes($d);
+$d=str::clean_acc($d); $d=delnbsp($d); //eco($d);
+return trim($d);}
 
 static function home($d0,$n0,$prm=[]){chrono(); $load=[]; $ret='';
 [$d,$n,$b,$o,$t,$sg,$pg,$cat,$tag,$ovc,$lim,$lng,$pri,$len]=arr($prm,14); $d=$d?$d:$d0; $n=$n?$n:$n0;
-$rech=self::good_rech($d); $pg=$pg?$pg:1; if(!$n)$n=ses('nbj'); $cac=''; $nb=0;
+$rech=self::good_rech($d); $pg=$pg?$pg:1; if(!$n)$n=ses('nbj'); $cac=''; $nb=0; //eco($rech); 
 if($lim=='-')$lim=''; if($lng=='-')$lng=''; if($pri=='-')$pri=''; if($len=='-')$len='';
 if(!$lng && ses('lang')!='all')$lng='+'.ses('lng');//autolang
 geta('search',$rech); geta('page',$pg); ses('rech',$rech);

@@ -306,7 +306,7 @@ cpop_dify=old_mousep.y-old_mousex.y;}
 function stop_drag(ev){cpop=0;}
 
 function goodheight(e,n,h){var v=e.value; var ch=e.style.height.replace('px','');
-var s=Math.ceil((v.length/n)); for(i=0;i<v.length;i++){if(v[i]=="\n")s=s+1;}
+var s=Math.floor(v.length/n); for(i=0;i<v.length;i++){if(v[i]=="\n")s=s+1;}
 var s=s>5?5:s; var eh=s?s*h:h; if(eh>ch)e.style.height=eh;}
 
 //forms
@@ -395,8 +395,8 @@ ul.className=a?'on':'off';}
 //utils
 function ajx(val,n){
 if(!val || val=='undefined' || val>0)return val;
-var arr=['_','*','&','+','_'];//'?',':','#','’','“','”','/',"'",'"'
-var arb=['(und)','(star)','(and)','(add)','*'];//,'(qmark)','(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)','(quote)','(dquote)'
+var arr=['_','*','&','+','_'];//'?',':','#','’','“','”','/',"'",'"',' '
+var arb=['(und)','(star)','(and)','(add)','*'];//,'(qmark)','(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)','(quote)','(dquote)','(space)'
 if(n){for(var i=0;i<arr.length;i++){val=strreplace(arb[i],arr[i],val);}}//decode
 else{for(var i=0;i<arr.length;i++){val=strreplace(arr[i],arb[i],val);}}
 return val;}

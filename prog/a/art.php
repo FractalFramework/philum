@@ -34,7 +34,7 @@ return view::call($rt,$ra);}
 
 #edit
 static function btedit($kem,$id,$re,$prw){
-$USE=ses('usr'); $auth=$_SESSION['auth']; $rech=ajx(get('search')); $ret='';
+$USE=ses('usr'); $auth=$_SESSION['auth']; $rech=get('search'); $ret='';
 if($re==0){if(($USE==$kem && $auth>2) or $auth>3)//publish
 	$ret=blj('txtyl','pba'.$id,'meta,priorsav__xd_1_'.$id,picto('minus'));
 	elseif($USE==$kem && $auth==2)$ret.=btn('txtyl',nms(53)).' ';}
@@ -60,7 +60,8 @@ static function metart($id){
 //$r=sql('val,msg','qdd','kv',['ib'=>$id]);
 $r=sqb::read('val,msg','data','kv',['ib'=>$id]);
 if(rstr(17))$r['2cols']=1;
-$rk=['fav','like','poll','2cols','artstat','authlevel','template','lastup','tracks','folder','bckp','plan','mood','agree','review']; $rl=explode(' ',prmb(26)); foreach($rl as $k=>$v)$rk[]='lang'.$v;
+//['related','agenda','lang','password','quote']//unused
+$rk=['fav','like','poll','2cols','artstat','authlevel','template','lastup','tracks','folder','bckp','plan','mood','agree','review','front']; $rl=explode(' ',prmb(26)); foreach($rl as $k=>$v)$rk[]='lang'.$v;
 return valk($r,$rk);}
 
 static function favs($id){
@@ -76,7 +77,7 @@ $r=explode(' ',prmb(26)); //$rb=sql('lang,id','trn','kv',['ref'=>'art'.$id]);
 foreach($r as $k=>$v)if($v!=$lg && isset($rb[$v])){
 	//$ja='art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg; $jb='art'.$id.'_ma,read*msg___'.$id;
 	//$ret.=ljtog('',$ja,$jb,flag($v),att(nms(153))).' ';
-	$ret.=lj('txtx','art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg,flag($v)).' ';}
+	$ret.=lj('','art'.$id.'_trans,call___art'.$id.'_'.$v.'-'.$lg,flag($v)).' ';}
 return $ret;}
 
 static function lang_rel_arts($id,$lg,$ro,$rst101,$rst115){
@@ -92,19 +93,18 @@ if(!$ret)$ret=self::lang_art_others($id,$lg,$ex);
 return $ret;}
 
 //tags
-static function tagn(){
-$rt=explode(' ','tag '.prmb(18)); $rn=[];
-foreach($rt as $k=>$v)$rn[$v]=$k+1;
-return $rn;}
+static function tagn(){$rt=[]; $rg=sesmk('tags');
+foreach($rg as $k=>$v)$rt[$v]=$k+1;
+return $rt;}
 
 static function tags($id,$o='',$lg=''){
 $r=ma::art_tags($id); if(!$r)return; $sep=sti(); $ret=[]; $lga=prmb(25);
-$ica=explode(' ',prmb(18)); $ico=explode(' ',prmb(19)); if($lg)$rn=self::tagn();
-if(count($ica)==count($ico))
-$rico=['tag'=>'tag']+array_combine($ica,$ico); $rico['utag']='like';
+if($lg)$rn=self::tagn();
+$rico=sesmk('tagsic'); $rico['utag']='like';
 if($r)foreach($rico as $cat=>$ico){$rt=[]; if(is_numeric($cat))$cat='utag';
 	if(isset($r[$cat])){
-		if($lg && $lg!=$lga){$n=$rn[$cat]; $rb=msql::kx('',nod('tags_'.$n.$lg),0); $rc=[];
+		if($lg && $lg!=$lga){$n=$rn[$cat]; $rc=[];
+			$rb=sesmkb('tagslg',$lg,$n); //$rb=msql::kx('lang/'.$lg,nod('tags_'.$n),0);
 			foreach($rb as $k=>$v)if(in_array($k,$r[$cat]))$rc[$v]=$k; if($rc)$r[$cat]=$rc;}
 		foreach($r[$cat] as $ka=>$va)
 		$rt[$ka]=lj('','popup_api__3_'.$cat.':'.$va,$ka);}//.',t:'.ajx($ka)
@@ -182,6 +182,7 @@ if($ib>0 && $ib){$sujb=ma::suj_of_id($ib); if($sujb)$rc[]='parent';}// && $read!
 if(!$rst[58] && !$nl)$rc[]='open1';
 if(!$rst[141])$rc[]='open2';
 if(!$rst[138])$rc[]='open3';
+if(!$rst[155])$rc[]='open10';
 $rc[]='open4';//if(!$rst[38])
 if($ro['plan'])$rc[]='open5';
 if(!$rst[37] && !$nl)$rc[]='open6';
@@ -245,6 +246,8 @@ case('lastup'):$rb['lang'][]=btn('txtsmall',nms(118).' '.mkday($d,1)); break;
 case('reviews'):$rb['lang'][]=btn('txtsmall',self::reviews($id,$ro['review'])); break;
 //case('open1'):$rb['open'][]=lj('','popup_usg,editbrut___'.$id,picto('conn')); break;
 //case('open2'):$rb['open'][]=lj('','pagup_book,read__css_'.$id.'__1',picto('book')); break;
+case('open10'):if($rf['dock']){$ic='output'; $t=nms(203);} else{$ic='input'; $t=nms(202);}
+	$rb['open'][]=btj(picto($ic,20),atj('dock',$id),'','dk'.$id,['title'=>$t]); break;
 case('open3'):$rb['open'][]=ljb('','toggleFullscreen',$id,picto('fscreen-op')); break;
 case('open4'):$rb['open'][]=lh('art/'.$r['thm'],picto('chain')); break;
 case('open5'):$rb['open'][]=lj('','popup_mk,plan___'.$id.'_3__1',picto('numlist'),att('Plan')); break;
@@ -266,26 +269,32 @@ case('social1'):$rb['social'][]=asciinb($ro['authlevel']); break;
 case('social2'):$rb['social'][]=togbub('social,call',$id.'_'.$prw,picto('share'),'',att('social')); break;
 case('social3'):$rb['social'][]=togbub('meta,editag',$id.'_utag_tag',picto('diez'),'',att('usertags')); break;
 case('social4'):$rb['social'][]=social::edt($id,'mood',$rf['mood']); break;
-case('togprw'):$bt=btj(picto('input',16),atj('dock',$id),'','',['title'=>'']).' ';
-	$bt.=lj('',$id.'_art,playd__2_'.$id.'_'.($prw==2?1:2),picto('check-remove',16));
-	$rb['togprw']=$bt; break;}
+case('togprw'):
+	if($prw==1){$ic='drawer-on'; $t=nms(25);} else{$ic='drawer-off'; $t=nms(42);}
+	$rb['togprw']=btj(picto($ic,16),atj('fold',$id),'','fd'.$id,['title'=>$t,'data-prw'=>$prw]); break;}
 $rb['sty']='';
 //compile
-$rd=['lang','words','social','open','opt'];
+$rd=['lang','words','social','opt','open'];
 foreach($rd as $k=>$v)$rb[$v]=isset($rb[$v])?implode(' ',$rb[$v]):'';
 return $rb;}
 
 //subarts
-static function ib_arts_nb($id){$wh='ib="'.$id.'"';
-if(!auth(1))$wh.=' and re>=1';// and substring(frm,1,1)!="_"
-return $ids=sql('COUNT(id)','qda','v',$wh);}
+static function ib_arts_nb($id){$sq['ib']=$id;
+if(!auth(1))$sq['>=re']='1';// $sq['-frm']='_';
+return $ids=sql('COUNT(id)','qda','v',$sq);}
 
-static function ibload($id,$ord){//$r=ma::id_of_ib($ib);
+static function ibload($id,$ord,$pg=1){//$r=ma::id_of_ib($ib);
 $w=auth(4)?'':'and re>="1" and substring(frm,1,1)!="_"'; $bt='';
 $load=sql('id','qda','k','ib="'.$id.'" '.$w.' order by id '.($ord?'desc':'asc'));
-if(count($load)>1)$bt=lj('txtbox','ch'.$id.'_art,ibload___'.$id.'_'.yesno($ord),nms($ord?41:40),att(nms($ord?40:41)));
-if(rstr(43))$bt=hr().div(btn('txtcadr',nms(39)).' '.$bt);
+[$is,$go]=$ord?[41,40]:[40,41]; 
+if(count($load)>1)$bt=lj('txtbox','ch'.$id.'_art,ibload___'.$id.'_'.yesno($ord),nms($is),att(nms($go)));
+if(rstr(43))$bt=hr().divc('txtcadr',nms(39).' '.$bt);
+//$j='ch'.$id.'_art,ibartpage___'.$id.'_'.$ord.'_'.$pg.'_';
+//$bt.=divc('nbp right',usg::nb_pages_j(array_keys($load),$j,prmb(6)));
 if($load)return $bt.ma::output_arts($load,'flow','');}
+
+/*static function ibartspage($id,$ord,$pg,$from){
+if($ret)return self::ibload($id,$ord);}*/
 
 static function ib_arts($id,$prw){//child
 $ret=self::ibload($id,rstr(134));
@@ -323,18 +332,19 @@ return $ret;}
 
 static function preview($d,$id,$l=''){
 if(mb_strlen($l)<15 && strpos($d,':import')){[$p,$o,$c]=poc($d); $d=sql('d','qdm','v',['id'=>$p]);}
-if(rstr(64))$d=conb::parse($d,'stripconn','figure q twitter table msql iframe');//thumb
-if(rstr(34)){
+if(rstr(64))$d=conb::parse($d,'stripconn','figure q twitter table msql iframe');//thumb 
+if(rstr(34)){//bitchs
 	$d=conb::parse($d,'corrfast','b i u h c l h1 h2 h3 h4 list numlist figure');
 	$d=conb::parse($d,'correct','striplink');
 	$d=conb::parse($d,'corrfastb','color');
 	$d=conb::parse($d,'correct','stripvideo');}
-if(rstr(117)){
+if(rstr(117)){//firstlines
 	$d=conb::parse($d,'correct','stripimg');
 	$d=self::firstlines($d);}
 else $d=str::kmax($d);
 $d=conn::read($d,'noimages',$id);//if(strlen($d)>400)$d=etc($d);
-$d=str::clean_br_lite($d);//if(rstr(9))
+//$d=str::clean_br_lite($d);//if(rstr(9))
+$d=delnl($d,' ');
 return $d;}
 
 //msg img suit
@@ -376,7 +386,7 @@ if($rb)return implode("\n",$rb);}
 
 static function str_detect($msg,$d){
 $r=str::detect_words($msg,$d,ses::r('seg')); $ret=''; $end='';
-$sz=mb_strlen($d); $len=mb_strlen($msg); $nb=0; $nd=0; if(!$r)return $msg;
+$sz=strlen($d); $len=strlen($msg); $nb=0; $nd=0; if(!$r)return $msg;
 foreach($r as $k=>$v){$pos=$k; $ba=0; $bb=0; $nb+=1; //$sz=mb_strlen($v);
 	$part=substr($msg,$pos,$sz); $repl=$part;
 	$deb=substr($msg,$nd,$pos-$nd); $end=substr($msg,$pos+$sz);
@@ -387,7 +397,7 @@ foreach($r as $k=>$v){$pos=$k; $ba=0; $bb=0; $nb+=1; //$sz=mb_strlen($v);
 return $ret.$end;}
 
 static function find_word($msg,$rch,$n,$id){
-$len=mb_strlen($rch); $lenmsg=mb_strlen($msg); $sz=100; $ret=''; $nd=0; $seg=ses::r('seg');
+$len=strlen($rch); $lenmsg=strlen($msg); $sz=100; $ret=''; $nd=0; $seg=ses::r('seg');
 $r=str::detect_words($msg,$rch,$seg); $n=count($r); ses::$n+=$n; $look=$seg?'find':'look';
 foreach($r as $k=>$v){$pos=$k; $nd+=1; //$len=mb_strlen($v);
 	$prev=$pos-$sz; $next=$pos+$len; if($prev<0)$prev=0; if($next>$lenmsg)$next=$lenmsg;
@@ -404,7 +414,7 @@ foreach($r as $k=>$v){$pos=$k; $nd+=1; //$len=mb_strlen($v);
 return $ret;}
 
 static function prepare_rech($id,$msg,$rt){if(!$msg)return;
-$rch=search::good_rech(get('search')); $nbp=0; $ret=''; ses::$n=0;
+$rch=get('search'); $nbp=0; $ret=''; ses::$n=0;
 if(get('bool')){$r=explode(' ',trim($rch)); $nbp=count($r);}
 if(strpos($rch,'|')){$r=explode('|',$rch); $nbp=count($r);}
 $msg=str::stripconn($msg); $msgi=strtolower($msg); $msgb=$msg;//$msg=strip_tags($msg); 
@@ -412,7 +422,7 @@ if(get('titles'))$rt['msg']='';
 elseif($nbp>1){foreach($r as $k=>$v)if($v){$ret.=self::find_word($msg,$v,'',$id);}}
 else $ret=self::find_word($msg,$rch,'',$id);
 $rt['count']=ses::$n; ses::$nb+=ses::$n;
-$rt['msg']=scroll($rt['count'],str::clean_br_lite($ret),4,'','200');//610
+$rt['msg']=scroll($rt['count'],$ret,4,'','200');//str::clean_br_lite()
 return $rt;}
 
 static function present_tracks($id,$r){$ret='';
@@ -456,8 +466,9 @@ $ret=self::call($id,$r,$otp,$msg,$prw,$tp,$nl,$n,$trk);
 $ret=divd($id,$ret);//.atn($id)//used by rstr31
 if($prw==3)$ret.=self::propose_tracks($id,$r['o']);//$id==get('read')
 if($prw==3 or $trk)$ret.=self::present_tracks($id,$otp);
+$ret=tag('section',[],$ret)."\n";
 if($prw==3 && rstr(33))$ret.=self::ib_arts($id,$prw);
-return tagb('section',$ret)."\n";}
+return $ret;}
 
 //conn player
 static function play_conn($msg,$conn){
@@ -509,7 +520,7 @@ geta('read',$id); $msg='';
 if($prw==1)$tp='simple';
 elseif($prw=='rch' && !$tp)$prw=2;//from titsav, no $tp
 elseif($prw=='rch' && $tp){ses::$r['look']=$tp; get('search',$tp); $tp='little';}
-elseif($prw==3)$tp=$tp?$tp:'read';//$prw=self::slct_media($prw);
+elseif($prw==3)$tp='read';//$prw=self::slct_media($prw);//$tp?$tp:
 $r=self::datas($id); if(!$r)return;
 if(($prw>=2) && $r['re'])$msg=sql('msg','qdm','v',$id);//rstr(5) or
 return self::call($id,$r,'',$msg,$prw,$tp,$nl,$n='',$trk='');}

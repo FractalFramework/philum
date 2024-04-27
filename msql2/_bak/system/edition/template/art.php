@@ -1,0 +1,3 @@
+<?php 
+return ['_'=>['code'],
+1=>['[[{thumb}[{tag}|panel txtsmall scrollb:divc]|row1 col1:divc]n[[[{cat}{back}{avatar}[{search}|txtbox:css] [{nbarts}|txtnoir:css] [{date}|txtsmall2:css] [{author}{source}{length}{priority}{btim}{tracks}{opt}{lang}{pid}|txtsmall:css]|[meta{id}:id]:div]n[{parent}:h4]n[{edit}|right:css][{title}:h2]n[{artlang}{social}{words}{open}|[grey tright:class]:div]:header]{float}{artedit}[{msg}|[art{id}:id]:article]|row1 col2:divc]n|grid-art:divc][:clear]']]; ?>

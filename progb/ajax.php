@@ -33,6 +33,7 @@ return div(div(ljb('','Close','popup',picto('close')).$m.tagb('small',$t),'popa'
 function tit($a,$b,$g1,$g2){$k=$a.'::'.$b;
 $r=['edit::call'=>107,'art::trkone'=>65,'tracks::form'=>21,'meta::catslct'=>9,'usg::artmod'=>39,'mod::callmod'=>187,'mod::playmod'=>$g1=='read'?2:187,'conn::read2'=>65,'usg::trkplay'=>22,'tracks::redit'=>107,'sav::batchpreview'=>65,'deploy::home'=>28,'art::social'=>47,'mails::sendart'=>28,'desk::deskroot'=>196,'finder::home'=>197,'search::home'=>24,'microarts::home'=>$g1,'umrec::home'=>206,'api'=>$g1,'app'=>$g1,'msql'=>$g2,'chkj'=>$g2,'jump'=>$g2,'lj'=>$g2];
 if(isset($r[$k]))return nms($r[$k]);
+if($k=='art::look')return'{'.$g2.'} '.ma::suj_of_id($g1);
 if($b=='home')return $a;
 return $k;}
 

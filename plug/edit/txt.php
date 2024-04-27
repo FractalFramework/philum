@@ -40,7 +40,7 @@ return $ret;}
 static function act($p,$o,$prm){
 [$d,$d1,$d2]=arr($prm,3); $ret='';
 switch($p){
-case('src'):ses::$urlsrc=$d; if($d)[$t,$ret,$reb]=conv::vacuum($d,'',1); break;
+case('src'):ses::$urlsrc=$d; if($d)[$t,$ret]=conv::vacuum($d,'',1); break;
 //case('brut'):[$t,$b,$ret]=conv::vacuum($d,''); break;
 case('brut'):$ret=get_file($d); break;
 case('conn2html'):$d=self::mkquotes($d); $ret=conn::read($d,0,''); break;

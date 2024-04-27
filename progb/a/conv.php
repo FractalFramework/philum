@@ -1,13 +1,14 @@
 <?php
 class conv{
-static function ptvars(){return 'line:1|line:last|line:title|del:|linewith:|boldline:1|linenolink:1|del-link:|striplink:|delconn:s|replconn-pre-q|stripconn|deltables|delqmark|delblocks|cleanmail|anchors|stripvk|since:|to:';}//png2jpg|//msqa::editmsql/post-treat|-??|???
+static function ptvars(){return 'line:1|line:last|line:title|del:|linewith:|boldline:1|linenolink:1|del-link:|striplink:|delconn:s|replconn-pre-q|stripconn:center|deltables|delqmark|delblocks|cleanmail|anchors|stripvk|since:|to:';}//png2jpg|//msqa::editmsql/post-treat|-??|???
 
 #vacuum
 static function post_treat($v,$t,$p){$todo=explode('|',$p); $ret='';//admin/editmsql
 foreach($todo as $ka=>$va){[$act,$pb]=split_one(':',$va,0);//global
 	if($act=='deltables' && $v)$v=mc::del_tables($v);
 	elseif($act=='delblocks' && $v)$v=conb::parse($v,'correct',':q');
-	elseif($act=='stripconn' && $v)$v=conb::parse($v,'correct','stripconn');
+	//elseif($act=='stripconn' && $v)$v=conb::parse($v,'correct','stripconn');
+	elseif($act=='stripconn' && $v)$v=conb::parse($v,'stripconn',$pb);
 	elseif($act=='striplink' && $v)$v=conb::parse($v,'correct','striplink');
 	elseif($act=='delconn' && $pb && $v)$v=conb::parse($v,'correct',':'.$pb);
 	elseif($act=='replconn' && $pb && $v)$v=conb::parse($v,'correct','replconn-'.$pb);
@@ -51,9 +52,8 @@ if($r)foreach($r as $k=>$v){
 	[$cl,$at,$tag]=opt(':',$v,3); if(!$at)$at='class';
 	//$ex=dom::capture($dom,$v,$rec)->saveHTML();
 	//$ex=dom::detect($d,$v);
-	if($d && strpos($d,$at.'="'.$cl) && !$ret)$ret=$v;
+	if($d && strpos($d,$at.'="'.$cl) && !$ret)$ret=$v;}
 	//elseif($ex && !$ret)$ret=$v;
-	}
 return $ret;}
 
 static function known_defcon($d){$tx=''; $tt='';
@@ -78,7 +78,7 @@ return $rw;}
 
 static function find_defcon($f){$f=domain($f);
 $base=rstr(18)?'public':ses('qb');
-if(strpos($f,'substack'))$f=strfrom($f,'.');
+if($f && strpos($f,'substack'))$f=strfrom($f,'.');
 $r=msql::readsl('',$base.'_defcons');
 if($r)foreach($r as $k=>$v)if($f==$k)return [$k,$v];
 return ['',['','','','','','']];}
@@ -105,9 +105,10 @@ $f=$srv.'/apicom/id:'.$id.',json:1';//,conn:1
 $d=read_file($f); $r=json_decode($d,true);
 return [$r['title'],$r['content']];}
 
-static function vacuum($f,$sj='',$h=''){//$f=https($f);
-$f=http($f); $f=utmsrc($f); $suj=''; $rec=''; $ret=''; $enc='';
+static function vacuum($f,$sj='',$h=''){
+$f=http($f); $f=utmsrc($f); $suj=''; $rec=''; $ret=''; $enc=''; $lg='';
 $reb=vaccum_ses($f); if(!$reb){vacses($f,'b','x'); return ['','','','',''];}
+//if($t=vacses($f,'t'))return [$t,vacses($f,'d'),''];
 [$defid,$defs]=self::find_defcon($f);//defcons
 //if(substr($reb,0,1)=='{')return self::vacuum_json($reb);
 $auv=video::detect($f);
@@ -115,7 +116,6 @@ if(!$defs && !$auv)$defs=self::add_defcon($f,$reb);
 $defs=arr($defs,11);
 //$reb=str::clean_html($reb);
 if($defs[5]==1)$reb=utf8dec2($reb);
-//if($defs[5]==2)$reb=utf8dec($reb);
 if($defs[2]){$suj=dom::detect($reb,$defs[2]);//suj
 	$suj=trim(str::del_n($suj)); $suj=self::interpret_html($suj,'ok','');}
 else [$suj,$rec]=web::metas($f,$reb);
@@ -128,13 +128,13 @@ if($defs[10])$rec=dom::del($rec,$defs[10]);//jump_div
 if($auv){$ret=$auv;//video
 	$rb=web::read($f,1); $suj=$rb[0]; $rec=$rb[1];
 	if($rec)$ret.=n().n().strip_tags($rec);}
-elseif(strpos($f,'twitter.com'))[$suj,$ret,$day]=twit::vacuum($f);
+elseif(strpos($f,'twitter.com'))[$suj,$ret,$day,$lg]=twit::vacuum($f);
 elseif($rec)$ret=self::call($rec,$h);
-if(!$suj)$suj=$sj?$sj:'Title'; $title=str::clean_title($suj);
-if($defs[6]??'')$ret=self::post_treat($ret,$title,$defs[6]);//post_treat
+if(!$suj)$suj=$sj?$sj:'Title'; $tit=str::clean_title($suj);
+if($defs[6]??'')$ret=self::post_treat($ret,$tit,$defs[6]);//post_treat
 if(ses::$r['sugm']??'')$sug=self::sugnote(); else $sug='';
 if(!$auv)$ret.="\n\n".$sug.'['.$f.']';
-return [$title,$ret,$rec];}
+return [$tit,$ret,$lg];}//,$rec
 
 //
 static function master($d,$defs){$ret='';
@@ -152,7 +152,7 @@ $f=http($f); $f=utmsrc($f); $d=vaccum_ses($f);
 if(!$d){vacses($f,'b','x'); return ['','','','',''];}
 [$defid,$defs]=self::find_defcon($f); $defs=arr($defs,11);
 $ret=video::detect($f); if($ret){[$t,$reb]=web::read($f,1); if($reb)$ret.=n().n().strip_tags($reb);}
-elseif(strpos($f,'twitter.com'))[$t,$ret]=twit::vacuum($f);
+elseif(strpos($f,'twitter.com'))[$t,$ret,$dt,$lg]=twit::vacuum($f);
 else [$t,$ret]=self::master($d,$defs);
 $t=trim(str::del_n($t)); $t=self::interpret_html($t,'ok','');
 if($defs[6])$ret=self::post_treat($ret,$t,$defs[6]);
@@ -235,6 +235,7 @@ elseif($src){$src=trim($src);
 	if($srcim)$src=str_replace(' ','%20',$src);
 	if(substr($src,0,2)=='//' && strpos($src,'.'))$src='https:'.$src;
 	if(strpos($src,'http')===false && $root)$rot=$root;//urlroot($src)
+	if($rot && substr($rot,-1)!='/')$rot.='/';
 	$delroot=host(); $nr=strlen($delroot);//wygsav figure
 	if(substr($src,0,$nr)==$delroot)$src=substr($src,$nr);
 	if(!$rot && substr($src,0,4)=='img/')$src=substr($src,4);
@@ -265,7 +266,7 @@ elseif($src){$src=trim($src);
 				if(!is_img($txt) && $txt!='https')$mid='['.$rot.$src.($txt?'|'.$txt:'').']';
 				else $mid='['.$rot.$src.'|'.$txt.']';}
 			//elseif(domain($txt)==domain($rot.$src))$mid='['.$rot.$src.'] ';//kill img§src
-			elseif($src && strin($txt,'/','.')==strin($src,'/','.'))$mid='['.$rot.$src.']';//ri kill links
+			elseif($src && strin($txt,'/','.')==strin($rot.$src,'/','.'))$mid='['.$rot.$src.']';//ri kill links
 			elseif($src && is_http($txt) && strpos($rot.$src,substr($txt,0,-4))!==false)$mid='['.$rot.$src.']';
 			//elseif(strpos($rot.$src,domain($txt))!==false)$mid='['.$rot.$src.'] ';//
 			else $mid='['.$rot.$src.'|'.$txt.']';}
@@ -280,7 +281,7 @@ static function treat_img($bin,$b,$o=''){$im='';
 if(strpos($bin,'data-src="'))$im=between($bin,'data-src="','"');
 elseif(strpos($bin,'src="'))$im=between($bin,'src="','"');
 //elseif(strpos($bin,'src=\''))$im=between($bin,'src=\'','\'');
-elseif(strpos($bin,'srcset'))$im=between($bin,'srcset="',' ');
+//elseif(strpos($bin,'srcset'))$im=between($bin,'srcset="',' ');
 //elseif(strpos($bin,'data-orig-file'))$im=between($bin,'data-orig-file="','"');
 elseif(strpos($bin,'data-original'))$im=between($bin,'data-original="','"'); if(!$im)return;
 if(strpos($im,';base64'))return '['.($im).':b64]';//self::b64img

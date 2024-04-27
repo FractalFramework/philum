@@ -618,9 +618,23 @@ if(mna[0]!=undefined)return mna[0].innerHTML; else return mnu.innerHTML;}
 function dock(id){
 var pp=getbyid('pop'+curid); var ex=0;
 var rd=getbyid('desktop').getElementsByTagName("a");
+var bt=getbyid('dk'+id); var bta=bt.getElementsByTagName("span")[0];
 for(i=0;i<rd.length;i++){var idb=rd[i].id; if(idb=='ic'+id)ex=1;}
-if(ex){Remove('ic'+id); ajaxcall('socket','favs,favdel',[id,'dock'],[],'');}
-else{ajaxcall('desktop','desk,icoart',[id],[],'after'); ajaxcall('socket','favs,favsav',[id,'dock','1'],[],'');}
+if(ex){Remove('ic'+id);
+	ajaxcall('socket','favs,favdel',[id,'dock'],[],'');
+	bta.className='philum ic-input'; bt.title='ajouter au dock';}
+else{ajaxcall('desktop','desk,icoart',[id],[],'after');
+	ajaxcall('socket','favs,favsav',[id,'dock','1'],[],'');
+	bta.className='philum ic-output'; bt.title='retirer du dock';}}
+
+//prw
+function fold(id){
+var bt=getbyid('fd'+id); var bta=bt.getElementsByTagName("span")[0];
+var prw=bt.dataset.prw;
+if(prw=='2'){ajaxcall(id,'art,playd',[id,'1'],[],'2');
+	bta.className='philum drawer-off'; bt.title='fermer';}
+else{ajaxcall(id,'art,playd',[id,'2'],[],'2');
+	bta.className='philum drawer-on'; bt.title='ouvrir';}
 Close('popup');}
 
 //continuous scroll
@@ -640,8 +654,24 @@ if(idx==-1 && scrl>pos.y){exs.push(id);
 	var rq=getbyid('hid'+div);
 	if(rq.value!='undefined'){
 		ajaxcall(div,'api,callj',[rq.value,'to:'+id],[],'after');}}}//addiv()
-
 addEvent(document,'scroll',function(){artlive2('loadmodart')});
+
+function artlive(){var ret=''; var ia=0;
+var scrl=pageYOffset+innerHeight;
+var mnud=getbyid('content');
+if(mnud!=undefined){var mnu=mnud.getElementsByTagName("socket");
+if(mnu.length)for(i=0;i<mnu.length;i++){var did=mnu[i].id; var id=did.substring(1);
+	if(parseInt(id)>1){
+		if(mnu[i].innerHTML==''){
+			var pos=getPosition(mnu[i]); var pos=pos.y;
+			if(scrl>pos){ia++;
+				var idx=exs.indexOf(id);
+				if(ia==20)i=mnu.length;//stop loop
+				if(idx==-1 && ia<20){
+					exs.push(id); if(mnu[i])var md=mnu[i].dataset.prw;
+					ajaxcall(did,'art,playb',[id,md],[],'2');}}}}}}}
+if(typeof read==='string' && flow==1)
+addEvent(document,'scroll',function(){artlive()});
 
 function upload(id){
 var form=getbyid("upl"+id);
@@ -664,6 +694,7 @@ for(var i=0;i<files.length;i++){//1
 	new AJAX(gets,id+'up',jo,fd);}}
 
 function cancelupload(rid){clearTimeout(xb); uploaded=0; jumphtml(rid+'prg','');}
+function cleartimeout(){clearTimeout(x);}
 
 function upload_progress(rid){
 if(uploaded>95){var div=''; clearTimeout(xb);}

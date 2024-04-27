@@ -7,7 +7,7 @@ return sql::call('select id from '.($b).' order by id desc limit 1','v');}
 static function dumpall(){
 $r=self::tables(); foreach($r as $k=>$v)backup::dump($v);}
 
-static function tables(){return ['art','cat','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','stat','cat','hub','mbr','img','_sys','_prog','_progr'];}//,'umvoc','umvoc_arts','umtwits','bdvoc','dicoen','dicofr','dicoum','hipparcos','gaia','live','live2'
+static function tables(){return ['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','stat','cat','hub','mbr','img','_sys','_prog','_progr'];}//,'umvoc','umvoc_arts','umtwits','bdvoc','dicoen','dicofr','dicoum','hipparcos','gaia','live','live2'
 
 static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','live','live2','stat','cat','hub','mbr','img'];//,'umvoc','umvoc_arts','umtwits'
 if(in_array($b,$r))return $b;}// else return $b;

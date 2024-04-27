@@ -1,7 +1,7 @@
 <?php 
 class plugin{
 static function r(){
-$r=['backup','backupim','codev','coreflush','exec','pictocss','updateimg','genpswd','know','star','xhtml','test','operations','ops','sun','connectors','indent','msqadd','spt','atomic','microform','superpoll','chat','chatxml','crypt','phi','svg','tar','vacuum'];
+$r=['backup','backupim','codev','coreflush','funcs','exec','test','patches','pictocss','updateimg','genpswd','know','star','xhtml','test','operations','ops','sun','connectors','frequency','indent','msqadd','spt','atomic','microform','superpoll','chat','chatxml','crypt','phi','svg','tar','vacuum']; sort($r);
 return array_combine($r,$r);}
 
 static function call($p,$o,$prm=[]){

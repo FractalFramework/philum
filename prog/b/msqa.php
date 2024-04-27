@@ -4,14 +4,13 @@ class msqa{
 static function gpage($p=''){return $p?'&page='.get('page',$p):'';}
 
 //menu
-static function block($r,$nurl,$vf,$kv){
-$nurl=str_replace('/msql/','',$nurl); $ret=''; $qb=ses('qb');
+static function block($r,$nurl,$vf){
+$nurl=str_replace('/msql/','',$nurl); $ret=''; $ex=[];
 foreach($r as $k=>$v){
-	if($kv=='k')$v=$k; elseif($kv=='v')$k=$v;
-	$lk=str_replace('#',$k,$nurl); $cs=$vf==$k?'active':''; 
-	//if($k==$qb && $vf!=$k)$cs='txtblc';
+	$ka=is_array($v)?$k:$v; if(!in_array($ka,$ex)){$ex[]=$ka;//when folder==file
+	$lk=str_replace('#',$ka,$nurl); $cs=$vf==$ka?'active':'';
 	if($v=='lang' && strpos($lk,'lang')!==false)$lk=str_replace('lang','lang/'.prmb(25),$lk);
-	if($v)$ret.=lj($cs,'msqdiv_msqa,home___'.ajx($lk),$v).' ';}
+	if($v)$ret.=lj($cs,'msqdiv_msqa,home___'.ajx($lk),$ka).' ';}}
 return $ret;}
 
 static function slct($id,$k,$murl){
@@ -22,15 +21,15 @@ static function menublocks($ra){
 $rb=$files[$hub]??''; $rc=$rb[$table]??''; $url=self::sesm('url'); $ret='';
 $b=$base.'/'; $d=$dir?$dir.'/':''; $p=$hub; $t='_'.$table; $tb=$t.'_'.$ver; 
 if($bases){asort($bases); $nurl=$url.'#/'.$d.$p.$t;//base
-	$rt['base']=self::block($bases,$nurl,$base,'k');}
+	$rt['base']=self::block($bases,$nurl,$base);}
 if($dirs){asort($dirs); $nurl=$url.$b.'#/'.$p.$t;//dir
-	$rt['directory']=self::block($dirs,$nurl,$dir,'k');}
+	$rt['directory']=self::block($dirs,$nurl,$dir);}
 if($hubs){asort($hubs); $nurl=$url.$b.$d.'#'.$t;//hub
-	$rt['hub']=self::block($hubs,$nurl,$hub,'v');}
+	$rt['hub']=self::block($hubs,$nurl,$hub);}
 if(is_array($rb)){ksort($rb); $nurl=$url.$b.$d.$p.'_#';//table
-	$rt['table']=self::block($rb,$nurl,$table,'k');}
+	$rt['table']=self::block($rb,$nurl,$table);}
 if(is_array($rc)){ksort($rc); $nurl=$url.$b.$d.$p.$t.'_#';//version
-	$rt['version']=self::block($rc,$nurl,$ver,'k');}
+	$rt['version']=self::block($rc,$nurl,$ver);}
 foreach($rt as $k=>$v)$ret.=divc('cell',$v);
 return divc('table menu',$ret);}
 
@@ -128,9 +127,16 @@ $r=split_right('/',$d,1);
 if(!$r[0])$r[0]='users';
 return $r;}
 
+static function format($v){
+return strip_tags(str_replace('</div><div>',"\n",$v));}
+
+static function format_r($r){
+return walk('msqa::format',$r);}
+
 static function msqlsav($id,$rg,$prm=[]){geta('msql',$id);
 [$dir,$node]=self::node_decompil($id); $rk=array_shift($prm);
 if($rk!=$rg && substr($rg,0,1)!='@'){msql::modif($dir,$node,$rg,'mdfk',$rk); $rg=$rk;}
+//$prm=self::format_r($prm);
 $r=msql::modif($dir,$node,$prm,$rg);
 geta('def',$rg);
 return self::editable($id,$r);}
@@ -171,14 +177,16 @@ if(!trim($va)==='')$va='-'; $j=ajx($murl).'_'.ajx($k).'_'.ajx($ka);//.$id
 return '<a onclick="'.sj($rid.'_msqledit_'.$rid.'__'.$j).'">'.($va).'</a>';}
 
 static function msqlmdf($g1,$g2,$g3,$g4,$prm){
-[$dr,$nd,$n]=self::murlvars($g1); $d=$prm[0]; $d=deln($d); $d=delbr($d,"\n");//$d=delr($d);
+[$dr,$nd,$n]=self::murlvars($g1); $d=$prm[0];  $d=deln($d); $d=delbr($d,"\n");//$d=delr($d);
+$d=delbr($d,"\n"); $d=self::format($d);
 msql::modif($dr,$nd,trim(strip_tags($d)),'shot',$g3,$g2);
 return self::mdfcolbt(nl2br(self::cutat($d)),$g2,$g3,$g1,$g4);}
 
 static function mopen($g1,$g2,$g3,$g4){
 if($g4)$g4='_'.$g4; [$w,$h]=arv(expl('-',get('sz')),[980,640]); ses::$r['popw']=$w;
-$u=($g1=='lang'?$g1.'/'.prmb(25):$g1).'/'.$g2.($g3?'_'.$g3.$g4:'');//return self::home($u);
-return iframe('/msql/'.$u,$w-20,$h-40);}
+$u=($g1=='lang'?$g1.'/'.prmb(25):$g1).'/'.$g2.($g3?'_'.$g3.$g4:'');
+//return iframe('/msql/'.$u,$w-20,$h-40);
+return self::home($u);}
 
 static function codearea($k,$v){$n=40; $h=20; $s=ceil(strlen($v)/$n); if($s>5)$s=5;
 if(strpos($v,'<')!==false)$v=str::htmlentities_b($v);
@@ -194,7 +202,7 @@ msql::modif($dir,$node,$rt,'row',[],$d);
 return self::editmsql($nod,$d,$o,$ob);}
 
 static function editmsql($nod,$va,$o,$ob){
-$qb=ses('qb'); $tg=$ob?'socket':'admsql'; $rid=randid(); $rh=[];
+$tg=$ob?'socket':'admsql'; $rid=randid(); $rh=[];
 [$dir,$node]=self::node_decompil($nod); $nodb=ajx($nod); $pn=''; $rc=[]; $kb=''; $kyb='';
 $r=msql::read($dir,$node); $h=isset($r[msql::$m])?1:0; if($r)$rh=$h?$r[msql::$m]:current($r);
 if($r)$nxtk=msql::nextentry($r); $idn=randid();
@@ -336,6 +344,8 @@ case('delcol'):$r=self::delcol($r,$d); break;
 case('repair'):$r=self::repair_table($r,$dr,$nod); $ok=1; break;
 case('repair_cols'):$r=self::repair_cols($r); break;
 case('repair_enc'):$r=utf_r($r); break;
+case('repair_rn'):$r=self::repair_rn($r); break;
+case('delemptydir'):$r=msql::delemptydirs($r); break;
 case('resav'):$r=self::resav($r); break;
 case('patch_m'):$r=self::patch_m($r); break;
 case('patch_s'):$r=self::patch_s($r); break;
@@ -429,7 +439,7 @@ return $rc?$rc:$r;}
 //ops
 static function optable($dr,$nd,$d,$o=0){
 $u=msql::url($dr,$nd); [$dr,$nd]=split_right('/',$d,1); $ub=msql::url($dr,$nd);
-if($o)copy($u,$ub); else rename($u,$ub);
+mkdir_r($ub); if($o)copy($u,$ub); else rename($u,$ub);
 return [$dr,$nd];}
 
 static function deltable($dr,$nd,$o=0){
@@ -482,6 +492,11 @@ $rm=$r[msql::$m]??[]; $n=1; $ret=[]; if(isset($rm))$n=count($rm);
 else{foreach($r as $k=>$v)$n=count($v)>$n?count($v):$n; $ret[msql::$m]=array_pad([],$n,'');}
 foreach($r as $k=>$v)for($i=0;$i<$n;$i++)$ret[$k][]=$v[$i]??'';
 return $ret;}
+
+static function repair_rn($r){
+$rn=fn($v)=>str_replace('rn',"\n",$v);
+if($r)foreach($r as $k=>$v)$r[$k]=array_map($rn,$v);
+return $r;}
 
 static function repair_table($r,$dr,$nod){$rb=[];
 if($r)foreach($r as $k=>$v){if(!is_array($v))$v=[$v]; if($k && $v[0])$rb[$k]=$v;}
@@ -681,16 +696,16 @@ if($nd)$r=msqa::mknodesname($r);
 return $r;}
 
 #boot
-static function tables($r){$rt=[];
+static function tables($r){$rt=[]; asort($r);
 foreach($r as $k=>$v){
 	if(is_array($v))$rt[$k]=self::tables($v);
-	else{$v=substr($v,0,-4); $rt[$v]=$v;}}
+	else{$v=substr($v,0,-4); $rt[]=$v;}}
 return $rt;}
 
 //[$bases,$base,$dirs,$dir,$hubs,$hub,$files,$table,$version,$folder,$node]=$ra;
 static function boot($msql){
 $auth=ses('auth'); $root='msql/';
-$ru=self::murlread($msql); $_SESSION['murl']=$ru;
+$ru=self::murlread($msql); ses('murl',$ru);
 [$b,$dir,$hub,$table,$version,$def]=$ru;
 if($def)geta('def',$def); $folder=$b.'/'.($dir?$dir.'/':'');
 if($def=get($def))$def;
@@ -705,7 +720,7 @@ $ra[1]=$b;//base
 $ra[2]=$dir?explore($root.$b,'dirs',1):'';//dirs
 $ra[3]=$dir;//dir
 $rt=explore($root.$folder,'all'); //pr($rt);
-$files=self::tables($rt);
+$files=self::tables($rt); //pr($files);
 if($files && $b){$ra[4]=array_keys($files);//hubes
 	foreach($ra[4] as $k=>$v)
 		if($b=='users' && $v!='public' && ($v!=ses('qb') or $auth<7))
@@ -741,7 +756,7 @@ $ath=auth(6);
 #boot
 if($f && $f!='='){
 	$url=self::sesm('url','/msql/');
-	$ra=self::boot($f); ses('msql_boot',$ra);
+	$ra=self::boot($f);
 	[$bases,$base,$dirs,$dir,$hubs,$hub,$files,$table,$version,$folder,$node]=$ra;
 	//build url
 	$murl=self::sesm('murl',self::murl($base,$dir,$hub,$table,$version));//b/d/p_t_v
@@ -799,6 +814,8 @@ if(!$def && auth(6)){
 		if($is_file && auth(6)){
 			$rt[]=self::opbt('repair_cols',$jurl,$lh[13]);
 			$rt[]=self::opbt('repair_enc',$jurl,$lh[37]);
+			$rt[]=self::opbt('repair_rn',$jurl,['rn','']);
+			$rt[]=self::opbt('delemptydir',$jurl,$lh[49]);
 			//$rt[]=self::opbt('patch_m',$jurl,['patch_m','patch_menu']);
 			//$rt[]=self::opbt('patch_s',$jurl,['patch_s','patch_splitter']);
 			}
@@ -850,6 +867,5 @@ $out=divd('admsql',self::draw_table($defs,$murl,''));
 $ret[]=$out.br();}
 else $ret[]=divd('admsql','');
 return divd('msqdiv',implode('',$ret));}
-
 }
 ?>

@@ -1,0 +1,18 @@
+<?php 
+return ['_'=>['button','type','process','param','option','condition','root','icon','hide','private'],
+1=>['Site','ajax','popup','site___desktop_ok__autosize','','menu','desk','window','',''],
+2=>['plugin','plug','plug','','','desk menu','dev','peak','',''],
+3=>['Fichiers','mod','desktop_files','global|virtual','//dev|img','desk','','folder2','',''],
+4=>['article test','art','auto','1170','','desk','articles','articles','',''],
+5=>['Articles','mod','desktop_varts','cache','','desk','','virtual','',''],
+6=>['exec','plug','exec','','','menu','dev','edit','','7'],
+7=>['codev','plug','plug','codev_plug_lib','','menu','dev','edit','','7'],
+8=>['codev','plug','codev','','','menu','dev','edit','1','7'],
+9=>['dev','plug','dev','','','menu','dev','edit','','7'],
+10=>['test','plug','test','','','menu','dev/test','edit','','7'],
+11=>['test-edit','ajax','popup','plupin__3_codev_plug_test','','menu','dev/test','conn','','7'],
+12=>['msqadd','plug','msqadd','msqadd_1','','menu','dev','right','','6'],
+13=>['philumsize','link','','/plugin/philumsize','','menu','dev','phi','','6'],
+14=>['hubs','mod','hubs','','','desk','','smile','',''],
+15=>['hub ?','ajax','popup','rssart___philum.org/1170_1','','menu desk','','info','',''],
+16=>['login','mod','login','','','desk menu','','logout','','']]; ?>

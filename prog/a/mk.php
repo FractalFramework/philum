@@ -107,7 +107,7 @@ return divs($s,'');}
 
 static function lastup($v,$id){
 $r=art::metart($id); $d=$r['lastup']??'';
-if(!$d){$d=time(); meta::utag_sav($id,'lastup',$d);}
+if(!$d && $id){$d=time(); meta::utag_sav($id,'lastup',$d);}
 if($d)return btn('txtsmall2',nms(118).' : '.mkday($d,1));}
 
 static function table($d){
@@ -371,8 +371,10 @@ else return self::popim($v,$img,$id);}
 //:mini
 static function mini_b($d,$id){//mode w/h max//adlin
 [$im,$sz]=split_one('|',$d,1); if(!$sz)$sz='320/320';//prmb(27);
-if(!is_file('img/'.$im))return;
+if(!is_file('img/'.$im)){ses::$er[]=$im; return;}
+if(file_get_contents('img/'.$im)=='404'){ses::$er[]=$im; return;}
 [$w,$h]=explode('/',$sz); [$wo,$ho,$ty]=getimagesize('img/'.$im);
+if(!$wo or !$ho)return;
 [$w,$h]=img::sz($wo,$ho,$w,$h); $imb=img::thumbname($im,$w,$h);
 if(!file_exists($imb) or ses('rebuild_img'))img::build('img/'.$im,$imb,$w,$h,'');
 return self::popim($im,img('/'.$imb),$id);}
@@ -455,7 +457,7 @@ return $bt.divc('list',$ret);}
 static function modpop($d){
 return lj('','popup_mod,callmod__3_'.ajx($d),picto('get'));}
 
-//:form
+//:form//see microform
 //$d='date=date,choix1/choix2=list,entr|e1,entr|e2,message=text,image=upload,mail=mail,ok=button';
 static function form($d,$tg,$p=''){
 $prod=explode(',',$d); $n=count($prod); $ret=''; $ia=0;

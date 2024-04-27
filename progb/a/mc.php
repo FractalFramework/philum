@@ -249,10 +249,6 @@ elseif($va=='delqmark')$rt=self::del_qmark($d);//old
 elseif($va=='imglabel')$rt=self::add_comments($d);
 elseif($va=='oldconn'){$rt=sav::conn_retape($d,$va);}
 elseif($va=='replace')$rt=str_replace($rep,$by,$d);
-elseif($va=='randim'){geta('randim',1); $read=ses('read');
-	if(is_numeric($read))sql::upd('qdm',['msg'=>$d],$read);
-	$ret=conn::read($d,3,$read);
-	$rt=sql('msg','qdm','v',$read); getz('randim');}
 elseif($va=='revert')$rt=sql('msg','qdm','v',ses('read'));
 elseif($va=='postreat')$rt=conv::post_treat($d,$va,$opt);
 elseif($va=='delh')$rt=str_replace([':h1',':h2',':h3',':h4',':h5'],':h',$d);

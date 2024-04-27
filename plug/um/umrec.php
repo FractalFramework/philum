@@ -1,9 +1,9 @@
-<?php //umrec
+<?php 
 class umrec{
-static $cats=['O6'=>'Oaxiiboo 6','OW'=>'Oolga Waam','OT'=>'Oomo Toa','OAY'=>'Oyagaa Ayoo Yissaa','312oay'=>'312oay','UM'=>'Unio_Mentalis','EH'=>'EpheHellenica'];
+static $cats=['O6'=>'Oaxiiboo 6','OW'=>'Oolga Waam','OT'=>'Oomo Toa','OAY'=>'Oyagaa Ayoo Yissaa','312oay'=>'312oay'];//,'EF'=>'EF'
 
 static function cats($p){$r=self::$cats;
-return $p=='All'?implode('","',$r):$r[$p];}
+return $p=='All'?implode('","',$r):$r[$p]??$p;}
 
 static function req_arts_c($p){$w=self::cats($p);
 return sql('count(id)','qda','v','frm in ("'.$w.'")');}
@@ -11,7 +11,7 @@ return sql('count(id)','qda','v','frm in ("'.$w.'")');}
 static function req_last($p='All'){$w=self::cats($p);
 return sql('id','qda','v','frm in ("'.$w.'") order by day desc limit 1');}
 
-static function req_arts_y($p,$pg,$cat){$nbp=prmb(6);
+static function req_arts_y($p,$pg,$lg){$nbp=prmb(6);
 if($pg!='all' && is_numeric($pg))$limit='limit '.(($pg-1)*20).',20'; else $limit='';//limit 10
 $qda=db('qda'); $qdm=db('qdm'); $qdi=db('qdi');
 $wh=$qda.'.frm in ("'.self::cats($p).'") and '.$qda.'.re>1';
@@ -183,8 +183,8 @@ return [
 
 static function umcom($r){//:umcom
 return deln(view::call(self::tpl_art(),$r));}
-/* 
-$ret=divc('nbp',$r['lang']);
+
+/*$ret=divc('nbp',$r['lang']);
 $ret.=tagb('h2',$r['suj']).' '.$r['social'].' '.btn('small','#'.$r['id'].'#').' '.$r['tag'];
 $ret.=div(tagb('b',$r['source']).' '.tagb('u',$r['author']));//.' '.$r['btrk']
 $ret.=div($r['tracks']);
@@ -307,7 +307,7 @@ elseif($p=='last')$p=umrec::req_last('All');
 elseif(!is_numeric($p)){$pb=ma::id_of_urlsuj('['.$p.']');
 	if(!$pb)return umsearchlang::call(trim($p),'');
 	else $p=$pb;}
-return tag('div',['id'=>'umrec'.$p],self::call($p,$o,$mode));}
+return tag('section',['id'=>'umrec'.$p,'class'=>'panel'],self::call($p,$o,$mode));}
 
 static function umrec_r(){
 foreach(self::$cats as $v)$ret[$v]=$v;
@@ -320,13 +320,12 @@ $ret=inputj('umrsrch',$p,$j,nms(24));
 $ret.=lj('',$j,picto('search'),att($t)).' ';
 $ret.=hlpbt('umrsrch').' ';
 $ret.=lj('',$rid.'_umrec,callj__3_All',picto('globe'),att('All')).' ';
-$ret.=lj('',$rid.'_umrec,callj__3_O6','O6').' ';
-$ret.=lj('',$rid.'_umrec,callj__3_OW','OW').' ';
-$ret.=lj('',$rid.'_umrec,callj__3_OT','OT').' ';
-$ret.=lj('',$rid.'_umrec,callj__3_OAY','OAY').' ';
 $ret.=lj('',$rid.'_umrec,callj__3_312oay','312').' ';
-$ret.=lj('',$rid.'_umrec,callj__3_UM','UM').' ';
-$ret.=lj('',$rid.'_umrec,callj__3_EH','EH').' ';
+$ret.=lj('',$rid.'_umrec,callj__3_OAY','OAY').' ';
+$ret.=lj('',$rid.'_umrec,callj__3_OT','OT').' ';
+$ret.=lj('',$rid.'_umrec,callj__3_OW','OW').' ';
+$ret.=lj('',$rid.'_umrec,callj__3_O6','O6').' ';
+//$ret.=lj('',$rid.'_umrec,callj__3_EF','EF').' ';
 //$ret.=lj('',$rid.'_umrec,callj__3_All_list',picto('filelist'),att('list')).' ';
 $ret.=lj('',$rid.'_umrec,callj__3_All_brut',picto('txt'),att('brut')).' ';
 $ret.=lj('',$rid.'_umrec,callj__3_All_table',picto('table'),att('table')).' ';

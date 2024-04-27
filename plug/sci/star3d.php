@@ -1,4 +1,4 @@
-<?php //star3d
+<?php 
 
 class star3d{
 //var datas=[["Milky Way",4.4637,-0.5061,26100,10,-221258.63,126445.65,-64240.84,white,"0","","Milky Way"],["Oomo",3.15,0.16,14.6,10,-1.21,24.49,-145.99,green,"0","","Oomo"]
@@ -129,6 +129,7 @@ return $ret;}
 
 static function js($p,$o='',$prm=[]){
 $p=$prm[0]??$p;
+if(!$p)$p='81693,88601,99461';
 $vars=self::build($p); //eco($vars);
 $bab=file_get_contents('js/bab.js');
 $bab.=file_get_contents('js/bab_star.js');

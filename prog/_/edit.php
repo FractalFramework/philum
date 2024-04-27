@@ -9,8 +9,8 @@ elseif($ca<$cb){$nb=$cb-$ca; $t='"["';}
 if(isset($nb))return btn('txtyl',$nb.$t.'missing');}
 
 static function urledt($id){$b=rstr(18)?'public':ses('qb');
-$u=is_numeric($id)?ma::rqtv($id,'mail'):$id; [$k]=conv::find_defcon($u);
-return lj('','popup_msqa,editmsql___users/'.$b.'*defcons_'.ajx($k).'_'.ajx($u),picto('config'));}
+$u=is_numeric($id)?ma::rqtv($id,'mail'):$id; if($u){[$k]=conv::find_defcon($u);
+return lj('','popup_msqa,editmsql___users/'.$b.'*defcons_'.ajx($k).'_'.ajx($u),picto('config'));}}
 
 //menus
 static function icon($v){$rp=sesmk('msqmimes','',0);//pictos

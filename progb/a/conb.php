@@ -97,7 +97,7 @@ elseif($op=='stripvideo'){if($c==':video')return '['.$p.'|1:video]';}
 elseif($op=='striplink'){
 	if(is_numeric($p))return $o?$o:host().urlread($p);
 	elseif(substr($p,0,4)=='http')return $o?$o:domain($p);
-	elseif($c==':pub')return ma::suj_of_id($p).' ('.host().urlread($p).') ';
+	elseif($c==':pub'){if(!is_numeric($p))$p=ma::id_of_suj($p); return ma::suj_of_id($p).' ('.host().urlread($p).') ';}
 	elseif($c==':figure')return $o;}
 elseif($op=='stripvk')return '['.mc::stripvk($p).($o?'|'.mc::stripvk($o):'').($c?$c:'').']';
 elseif($op=='striputm'){if(is_http($p))$p=utmsrc($p); if(is_http($o))$o=utmsrc($o);
@@ -300,15 +300,16 @@ static function stripconn($da,$op){$no='';
 [$d,$c]=split_one(':',$da,1);
 $r=explode(' ',$op); $n=count($r);
 for($i=0;$i<$n;$i++)if($c==$r[$i])$no=1;
-if(!$no)return '['.$da.']';}
+if(!$no)return '['.$da.']';
+else return $d;}
 
 static function striptw($d,$op){
 if(strpos($d,'//t.co')!==false)return;
+if(strpos($d,':twitter'))return '['.$d.']';
 if(strpos($d,'/status/')!==false)return;
-if(strpos($d,':twitter'))return;
 if(substr($d,0,1)=='@'){if(substr($d,-2)==':b' or substr($d,-2)==':u')return '['.$d.']'; else return;}
 if(strpos($d,'twitter.com/hashtag'))return '#'.between($d,'twitter.com/hashtag/','?');
-if(strpos($d,'https://twitter.com')!==false)return;
+//if(strpos($d,'https://twitter.com')!==false)return;
 return '['.$d.']';}
 
 static function delconn($da){if(!$da)return;

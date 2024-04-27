@@ -1,0 +1,16 @@
+<?php 
+return ['_'=>['button','type','process','param','option','condition','root','icon','hide','private'],
+2=>['Desktop1','ajax','page','deskload','','menu','desktop','desktop','',''],
+3=>['Root','ajax','desktop','desk___desk','','menu','desktop','folder2','',''],
+4=>['Root Folder','ajax','popup','desktop___desk','','menu','desktop','folder2','1','1'],
+5=>['Site','ajax','popup','site___desktop_ok__autosize','','menu','desktop','window','','1'],
+6=>['Home','ajax','page','deskoff___module_Home','','menu','desktop','home','',''],
+11=>['Fichiers','mod','desktop_files','local|virtual','//dev|img','menu','','folder2','1',''],
+13=>['Finder','finder','','','shared/local//flap///mini_1 ','menu','utils','network','',''],
+21=>['Favs','plug','favs','','','menu','','like','1',''],
+22=>['notepad','plug','notepad','','','menu','edit','editor','',''],
+24=>['system','admin','console','system','','menu','sys','builders','1','1'],
+25=>['Msql','plug','iframe','/msql/index.php_740','','menu','sys','msql','1','1'],
+26=>['Pictos','admin','pictos','','','menu','sys','icons','1','1'],
+27=>['updates-table','ajax','popup','msql___system_program_updates*1409','','menu','sys','server','','7'],
+36=>['codeview','plug','codeview','','','menu','dev','view','','']]; ?>

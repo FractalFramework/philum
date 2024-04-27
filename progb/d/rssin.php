@@ -157,7 +157,7 @@ foreach($r as $k=>$v){$btc=''; [$va,$lnk,$dat,$id,$txt]=$v; $i++;
 	//if(auth(4))$btc.=select(['id'=>$kn.$k],$ru,'vv','','socket_sav,addfromlist_'.$kn.$k.'_7_'.$lnj.'_');
 	if(auth(4) && !$id)$btc.=togbub('rssin,select',$kn.$k.'_'.$lnj,picto('category'));
 	$btc.=lkt('',$lnk,picto('url')); $btc.=btn('txtsmall',$dat);
-	if(auth(4) && !$id){$mem=vacses($lnk,'b')?'ok':picto('add');
+	if(auth(4) && !$id){$mem=vacses($lnk,'b')?picto('ok'):picto('add');
 		$btc.=ljp(atd('ars'.$i),'ars'.$i.'_sav,batch___'.$lnj.'_p',$mem);}
 	if(!$id)$btc.=lj('','popup_search,home__3_'.ajx($va).'_',picto('search'));
 	if($va)$ret.=divc('',$btc.' '.$va);}//$id?'hide':
@@ -169,7 +169,7 @@ static function xss(){return self::menu(3).xss::home('','');}
 static function twss(){return self::menu(3).twss::home('','');}
 
 static function menu($p,$n=3){
-$bt=msqbt('',nod($p)).' '; $n=3;//
+$bt=msqbt('',nod($p)).' ';
 for($i=1;$i<=$n;$i++)$bt.=lj('txtsmall','rssj_rssin,home___'.$p.'_'.$i,$i).' ';
 $bt.=lj('txtsmall','rssj_rssin,xss___'.$p.'','xss').' ';
 $bt.=lj('txtsmall','rssj_rssin,twss___'.$p.'','twss').' ';

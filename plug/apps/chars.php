@@ -25,6 +25,9 @@ foreach(self::$defs as $k=>$v)
 $rb[$k]=self::build($p,$v);
 return tabler($rb,0);}
 
+static function com($p,$o='sans'){
+return self::build($p,self::$defs[$o]);}
+
 static function menu($p,$o,$rid){
 $j=$rid.'_chars,call_inp_2_'.$p.'_'.$o;
 $rj=['class'=>'console','onkeyup'=>sj($j),'onclick'=>sj($j)];

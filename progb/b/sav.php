@@ -50,7 +50,7 @@ if($nid){vacses($u,'b','x');
 	$rc=[$dt,$frm,$suj,$img,$qb,$thm,$lu,$name,$sz,$u,$ib,$re,$lg];
 	ma::cacherow($nid,$rc);
 	msql::modif('',nod('last'),[$nid,$dt],'one','',1);}
-$_SESSION['daya']=ses('dayx');
+ses('daya',ses('dayx'));
 return $nid;}
 
 static function backart($id){
@@ -79,7 +79,7 @@ elseif($d=='off')sql::upd($bs,['re'=>'0'],$id);}
 
 #savart
 static function addurlsav($f,$va,$pub,$ib){if(!$f)return;//SaveIec
-ses::$urlsrc=$f; self::$r['name']=ses('usr'); $_SESSION['frm']=$va;//self::$r['frm']
+ses::$urlsrc=$f; self::$r['name']=ses('usr'); ses('frm',$va);//self::$r['frm']
 if(substr($f,0,4)!='http' && $f)$f='http://'.$f;
 self::$r['ib']=$ib; self::$r['pub']=$pub; $nid=self::save_art(); $ret=$nid;
 if(!$nid)$ret=popup(edit::call($f,'',self::$er),'Article'); else geta('read',$nid);
@@ -91,7 +91,7 @@ if($prm[0])return self::addurlsav($p,$prm[0],1,'');}
 static function createart($id,$o,$prm){
 [$d,$suj,$frm,$urlsrc,$date,$name,$mail,$ib,$pub]=arr($prm,9);//,$sub
 if(strpos($d,'</'))$d=conv::call($d);
-self::$r['msg']=$d; self::$r['suj']=$suj; $_SESSION['frm']=$frm; 
+self::$r['msg']=$d; self::$r['suj']=$suj; ses('frm',$frm); 
 ses::$urlsrc=$urlsrc; self::$r['pdat']=$date; self::$r['mail']=$mail; 
 self::$r['name']=$name; self::$r['ib']=$ib; self::$r['pub']=$pub; //self::$r['sub']=$sub;
 return self::save_art();}
@@ -163,7 +163,7 @@ return implode('/',$rt);}
 
 static function reimportim($id,$o=''){
 $u=sql('mail','qda','v',$id); ses::$urlsrc=$u;
-[$t,$d]=conv::vacuum($u,''); vacses($u,'t','x'); //eco($d);
+[$t,$d]=conv::vacuum($u,''); vacses($u,'t','x'); vacses($fb,'d',$d);
 $d=conb::parse($d,'importim',$id);
 if($o)return art::playd($id,$o,'');
 return $d;}
@@ -211,7 +211,7 @@ $ims=sql('img','qda','v',$id); $r=explode('/',$ims);
 $ra=sql('im,id','qdg','kv',['ib'=>$id]);
 if($r)foreach($r as $k=>$v)if(is_img($v)){$bt=''; $f='img/'.$v; $fc='imgc/'.$v; $im=img::thumb($v);
 	if($im)$bt=ljb('','insert','['.$v.']',image($im,'72','',att(fwidth($f,1)))); else $bt=picto('img2',24);
-	$bt.=btn('txtx',$k.'. '.strfrom($v,'_'));
+	$bt.=btn('txtx',$k.'. '.between($v,'_','.'));
 	if(is_file($f))[$w,$h]=getimagesize($f); else [$w,$h]=['',''];
 	if($w)$bt.=ljb('popbt','SaveBf',ajx($v).'_'.$w.'_'.$h.'_'.$id,picto('popup'));
 	else $bt.=btn('popbt grey',picto('popup'));
@@ -221,7 +221,7 @@ if($r)foreach($r as $k=>$v)if(is_img($v)){$bt=''; $f='img/'.$v; $fc='imgc/'.$v; 
 		$bt.=lj('popdel','pim'.$id.',img'.$id.'_sav,placeimdel__json_'.$id.'_'.ajx($v),picto('del'));
 		if(is_file($fc))[$w,$h]=getimagesize($fc); $tt='rebuild_mini: '.$w.'/'.$h;
 		$bt.=blj('popbt','btrb'.$id.'-'.$k,'sav,remini__okbt_'.ajx($v),picto('file-img'),att($tt));}
-	$ret.=div($bt,'');}
+	$ret.=div($bt,'');}//icones
 return scroll($r,$ret,12,'',240);}
 
 static function placeimtrk($f,$id){$ret=''; $fb=img::thumbname($f,72,72);
@@ -246,8 +246,8 @@ $d=self::modif_art($id,$d);
 return ma::read_msg($id,$prw);}
 
 #vacuum
-static function find_vaccum($n){$i=0; foreach($_SESSION['vac'] as $k=>$v){$i++; if($i==$n)return $k;}}
-static function newartcatset($n,$d){$u=self::find_vaccum($n); $_SESSION['vac'][$u]['c']=$d;}
+static function find_vaccum($n){$i=0; foreach(ses('vac') as $k=>$v){$i++; if($i==$n)return $k;}}
+static function newartcatset($n,$d){$u=self::find_vaccum($n); sesrr('vac',$u,['c'=>$d]);}
 static function newartparent(){$r=ma::readcachecol(10); $rb=[]; $rt=[];
 if($r)foreach($r as $k=>$v)if($v && $v!='/')$rb[$v]=radd($rb,$v); if($rb)arsort($rb);
 if($rb)foreach($rb as $k=>$v)$rt[$k]='('.$v.') '.ma::suj_of_id($k);
@@ -272,17 +272,17 @@ if($rb)return implode(',',array_reverse($rb));}//ind arts
 
 static function batchadd($p,$o,$prm){$d=$prm[0]??$p;
 $r=explode("\n",$d); foreach($r as $k=>$v){$f=utmsrc($v);
-	[$t,$d]=conv::vacuum($f); vacses($f,'b',$d); vacses($f,'t',$t);}
+	[$t,$d]=conv::vacuum($f); vacses($f,'d',$d); vacses($f,'t',$t);}
 return self::batch('','');}
 
 static function batch($f,$d){
 $f=utmsrc($f); $fb=vacurl($f);
 $idt='adc'; if($d=='c')$idt.='p';//bub
 if(substr($f??'',0,4)!='http' && $f && $f!='x' && $f!='1')$f=http($f);
-if($f=='x')$_SESSION['vac']=[]; $ret='';
-if(trim($f??'') && $f!='1' && $d!='1' && $f!='x' && $d!='x' && !isset($_SESSION['vac'][$fb]['b']))
-	if(joinable($f)){[$t,$tx]=conv::vacuum($f); vacses($f,'t',$t);}
-if($d=='x')unset($_SESSION['vac'][$fb]);
+if($f=='x')sesz('vac'); $ret='';
+if(trim($f??'') && $f!='1' && $d!='1' && $f!='x' && $d!='x' && !vacses($f,'b'))
+	if(joinable($f)){[$t,$tx]=conv::vacuum($f); vacses($f,'t',$t); vacses($f,'d',$tx);}
+if($d=='x')vacses($f,'u','x');
 if($d=='n')return textarea('bad',$f,44,12).' '.lj('',$idt.'_sav,batchadd_bad_3',picto('ok')).' ';
 if($d=='p')return 'ok';
 if($d=='c')$ret=btj(picto('popup'),sj('popup_sav,batch____c').' closebub(this);').' ';
@@ -319,10 +319,10 @@ if(auth(3))$r['_system']=1; if(!isset($r[$frm]))$r[$frm]=1; $r['public']=1;
 return usg::dropmenu_jb($r,$hid,$btid,'adcat',$n);}
 
 static function batchprep($v){$http=strto($v,'/'); 
-$rss=rssin::load(http($v)); $vac=$_SESSION['vac'];
+$rss=rssin::load(http($v)); $vac=ses('vac');
 foreach($rss as $k=>$v){[$suj,$f,$dat,$id]=$v; $f=(string)$f;
 if($id)break; elseif($f && !vacses($f,'u')){$fb=vacurl($f);
-$_SESSION['vac'][$fb]=['t'=>$suj,'d'=>$dat,'u'=>$f];}}}
+sesrr('vac',$fb,['t'=>$suj,'dt'=>$dat,'u'=>$f]);}}}
 
 static function batchfbi(){$ret=hlpbt('rssurl_1').br();
 $r=msql::read('',nod('rssurl'),1); $r=msql::tri($r,3,1);
@@ -330,13 +330,13 @@ if($r)foreach($r as $k=>$v)self::batchprep($v[0]);
 return self::batch('','in');}
 
 static function artpreview($f){$fb=http($f); ses::$urlsrc=$fb;
-[$t,$d]=conv::vacuum($fb); vacses($fb,'t',$t);
+[$t,$d]=conv::vacuum($fb); vacses($fb,'t',$t); vacses($fb,'d',$d);
 $d=conn::read($d,'','test');
 return tagb('section',tagb('h1',$t).tagc('article','justy',$d));}
 
 static function batchpreview($f,$sug='',$prm=[]){$f=$prm[0]??$f; $d=''; $t='';
 $f=trim($f); $fb=http($f); ses::$urlsrc=$fb; $ret='';
-if($f){[$t,$d]=conv::vacuum($fb); vacses($fb,'t',$t);} if(!$d)$d='nothing';
+if($f){[$t,$d]=conv::vacuum($fb); vacses($fb,'t',$t); vacses($fb,'d',$d);} if(!$d)$d='nothing';
 if($sug){$r=msql::row('',nod('suggest'),$sug); [$day,$ok,$url,$mail,$t,$d,$iq]=$r;}
 $d=str::embed_links($d); $d=str::add_nbsp($d);//?why is needed?
 $d=conn::read($d,'','test');$ti=tagb('h2',$t);
@@ -352,7 +352,8 @@ $ret.=tagb('section',tagb('header',$ti).tag('article',$rp,$d));
 return $ret;}
 
 //upload
-static function uploadsav($id,$type,$opt){$rid='upfile'.$id; //echo ini_get("upload_max_filesize");
+static function uploadsav($id,$type,$opt){$rid='upfile'.$id;
+ini_set('upload_max_filesize','200M'); ini_set('post_max_size','220M');
 $f=$_FILES[$rid]['name']??''; $ft=$_FILES[$rid]['tmp_name']??''; $fn=$_FILES[$rid]['full_path']??'';
 if(!$f)return 'no file uploaded '; $er=''; $rep=''; $w='';
 $f=str::normalize($f,2); $xt=xt($f); $qb=ses('qb'); if(!auth(4))return;

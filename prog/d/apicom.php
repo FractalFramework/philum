@@ -5,8 +5,7 @@ static function form($p,$id,$a){
 $ra=explode_k($p,',',':'); $rt=[]; $ret='';
 $rh=msql::kv('lang','edition_apicom');
 $r=msql::read('system','edition_apicom',1);
-$tgs='tag '.prmb(18);//.' utag'
-$ut=explode(' ',$tgs);
+$ut=sesmk('tags');//.' utag'
 if($a==1)foreach($ut as $v)if($v)$rt[$v]='word1|word2';
 foreach($r as $k=>$v)if($v[1]==$a)$rt[$k]=$v[0];
 foreach($rt as $k=>$v){$val=$ra[$k]??'';
@@ -16,7 +15,7 @@ foreach($rt as $k=>$v){$val=$ra[$k]??'';
 	if($k=='cat')$bt=togbub('hidj','inp'.$k.'_cat_'.ajx($val),'category');
 	elseif($k=='overcat')$bt=togbub('hidj','inp'.$k.'_ovcat_'.ajx($val),'overcat');
 	elseif($k=='lang')$bt=togbub('hidj','inp'.$k.'_lang_'.ajx($val),'lang');
-	elseif(strpos($tgs,$k)!==false)$bt=togbub('hidj','inp'.$k.'_tag_'.ajx($val).'_'.ajx($k),$k);
+	elseif(in_array($k,$ut))$bt=togbub('hidj','inp'.$k.'_tag_'.ajx($val).'_'.ajx($k),$k);
 	//select_j('inp'.$k,'tag',$k,$k,'','2');
 	elseif($k=='folder')$bt=togbub('hidj','inp'.$k.'_vfld_'.ajx($val).'_'.ajx($k),$k);
 	//select_j('inp'.$k,'vfld',$k,$k,'','2');
@@ -33,7 +32,7 @@ return div($ret,'','apcf');}
 
 static function search($p,$id){
 $ra=['search','title','cat','nocat','tag','folder','lang','date','priority'];
-$ut=explode(' ',prmb(18).' utag');
+$ut=sesmk('tags'); $ut[]='utag';
 foreach($ut as $v)if($v)$r[$v]='word1|word2';
 $r=msql::read('system','edition_apicom');
 $rb=valk($r,$ra);
@@ -59,6 +58,7 @@ return $ret;}
 
 static function home($p,$o){$rid='plg'.randid();
 //head::add('jscode',self::js($p,$o));
+//$p=ajx($p,1);
 if($o)$bt=self::menu($p,$o,$rid).br();
 //else $bt=toggle('',$rid.'2_apicom,menu___'.ajx($p).'_'.$rid,picto('menu'));
 else $bt=lj('','popup_apicom,menu___'.ajx($p).'_'.$rid,picto('menu'));

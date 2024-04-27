@@ -314,6 +314,7 @@ case('birthday'):$load=md::birthday($p); break;
 case('newsletter'):if($o)$ret=lj('txtcadr','popup_mailist,home__3_'.$p,'mailist');
 	else $ret=mailist::home($p,''); break;
 case('bridge'):$ret=md::bridge($p,$t); break;
+case('book'):$ret=md::book($p,$t); break;
 case('fav_mod'):$ret=self::fav_mod($p,$t); break;
 //users
 case('login'):$ret=md::login_btn($p,$o); break;
@@ -488,11 +489,10 @@ static function login_btn_p($p,$o){$t=$p?$p:"login";
 $jx='popup_login,form___'.ses('usr').'_'.ses('iq').'_'.ajx(nms(54)).'_1';
 return lj('txtcadr',$jx,$t);}//if(!ses('usr'))
 
-static function icotag(){
-$t='related_arts related_by see_also-source source rub_taxo taxo_arts same_title tags '.prmb(18); $r=explode(' ',$t); $n=count($r);
-$t='up down home home topo-open topo articles tag '.prmb(19); $ico=explode(' ',$t);
-for($i=0;$i<$n;$i++)$ret[$r[$i]]=picto($ico[$i]);
-return $ret;}
+static function icotag(){$rt=[];
+$r=['related_arts'=>'up','related_by'=>'down','see_also-source'=>'home','source'=>'home','rub_taxo'=>'topo-open','taxo_arts'=>'topo','same_title'=>'articles']+sesmk('tagsic');
+foreach($r as $k=>$v)$rt[$k]=picto($v);
+return $rt;}
 
 static function artmod($id,$a){
 if($a)$ico=sesmk2('mod','icotag');

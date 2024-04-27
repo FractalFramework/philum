@@ -236,9 +236,9 @@ static function csslang(){return msql::col('lang','helps_css',0,1);}
 
 #css_builder
 static function adm_css(){//echo head::jslink('js/live.js');
-$ndd=$_SESSION['desgn']?$_SESSION['desgn']:$_SESSION['prmd'];
-if(!$_SESSION['desgn'])$ret=divc('tab',helps('public_design')).br();
-$r=msql::read('design',nod('design_'.$ndd),1);
+$ndd=ses('cssn',ses('prmd'));
+if(!$ndd)$ret=divc('tab',helps('public_design')).br();
+$r=msql::read('design',nod('css_'.$ndd),1);
 return $ret.divd('admcss',sty::design_edit($r,'','',0));}
 
 static function newsletter(){

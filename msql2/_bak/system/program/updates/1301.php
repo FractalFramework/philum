@@ -1,0 +1,17 @@
+<?php 
+return ['_'=>['day','text'],
+1=>['0101','- amélioration de la présentation des versions d\'une table dans l\'admin msql ;n- réparation du filtre \'rename_img\' (importation renomée d\'image) ;'],
+2=>['0102','- la fonction \'coller html\' reçoit le contenu courant (éditeur wyswyg d\'articles, version préliminaire) ;n- le connecteur :video peut recevoir une url complète, pour qu\'il suffise d\'ajouter \':video\' à l\'url (même sans crochets) pour générer un player ;n- admin/apps : possibilité d\'obtenir les menus par défaut ;'],
+3=>['0103','- correctifs sur le rendu de la description de l\'article (clean_internal_tags) ;n- le connecteur \'color\' n\'était pas signalé dans la liste, désormais ordonnée ;n- nouveau processus de suppression de connecteurs, plus efficace ;n- ajout des boutons \'text\'  et \'html\' dans la fenêtre public de distribution du code de l\'article (textbrut) ;'],
+4=>['0104','- découverte qu\'on peut faire ceci (non documenté mais ça marche) : $var(); appelle la fonction nommée $var ;n- fix erreur détection d\'images (stristr valide aussi les portions, ici le point) ;n- correctif pour que la suppression de connecteurs laisse passer les crochets volontaires ;'],
+5=>['0105','- correctif erreur critique lors du partage d\'un fichier ;n- les icônes de Finder sont gérés par le process pictographique ;n- correctif disparition impromptue du signe % dans les textes contenant des entités html ;'],
+6=>['0106','- rénovation de l\'appli sText, francisation, fonctionnement (tables pas forcément bien ordonnées) ;n- ajout de béquille au process \'pop\' (relance une popup au même emplacement) : conservation des propriétés de déplacement ;'],
+7=>['0107','- ajout du connecteur \'apps\', qui permet de créer un icône d\'application, ou d\'en joindre une existante par son ID.nnexemples : n[stext;plug;stext:apps]n[iframe;link;;http://w41k.info/429:apps]n[msql;ajax;popup;msql___system_program_updates_1301:apps]n[6:apps]'],
+8=>['0108','- ajout d\'un \'permalink\' qui permet de joindre un chemin d\'accès vers le finder, incluant les options d\'affichage ;'],
+9=>['0109','- les pictos non disponibles dans la session affichent leur intitulé (au lieu de rien) ;'],
+10=>['0110','- finder : apparition du mode \'flap\' ;'],
+11=>['0111','- nouveau système d\'appel des ressources ;n- fix compatibilité des sources de la newsletter ;'],
+12=>['0112','- amélioration excitante du mode flap du finder ; l\'idée de séparer les répertoires et les fichiers, qui nécessitent une présentation différente, incite à faire de ce mode l\'environnement du Finder ;'],
+13=>['0113','- flap finder : répertoire ne s\'ouvre pas s\'il est vide ;'],
+14=>['0114','- amélioration densité des fonctions des popups (composants partagés) ;n- ne dépassent plus de l\'écran ;n- peuvent recevoir des boutons optionnels ;'],
+15=>['0115','- amélioration visionnage des images : usage de popup, mode zoom sur place ;n- la consultation d\'une image d\'un article propose de voir les autres ;']]; ?>

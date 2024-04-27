@@ -16,10 +16,6 @@ $r=['/',',',';',':','|','§','%','&','$','#','_','!','+','=','?','\n','\\','~','
 if($o!=2){$r[]='.';}//images
 return str_replace($r,'',$d);}
 
-static function urlencode($d){
-$ra=['%','&nbsp;'];$rb=['%25',' '];
-return str_replace($ra,$rb,$d);}
-
 static function normalize_alpha($d,$o=''){if(!$d)return; $d=self::eradic_punct($d,$o);
 if($o)$d=str_replace([' ','&nbsp;','-',"'",'"'],'',$d);//
 return $d;}
@@ -84,6 +80,14 @@ $a=["à","â","é","è","ê","ë","î","ï","ô","ö","û","ü","ù","’","'"];
 $b=["%C3%A0","%C3%A2","%C3%A9","%C3%A8","%C3%AA","%C3%AB","%C3%AE","%C3%AF","%C3%B4","%C3%B6","%C3%BB","%C3%BC","%C3%B9","%E2%80%99",'%E2%80%99'];
 if($o)[$b,$a]=[$a,$b];
 return str_replace($a,$b,$d);}
+
+static function urlencode($d){
+$ra=['%','&nbsp;'];$rb=['%25',' '];
+return str_replace($ra,$rb,$d);}
+
+static function urldec($d){$r=explode('%',$d);
+foreach($r as $k=>$v)if($v)$rb[]=chr(base_convert($v,16,10));
+return join($rb);}
 
 static function htmlentities_a($d){if($d)return htmlentities($d,ENT_QUOTES,ses::$s['enc']);}
 static function htmlentities_b($d){if($d)return str_replace(['&','<','>'],['&amp;',"&lt;","&gt;"],$d);}
@@ -171,7 +175,8 @@ return $d;}
 //titles
 static function clean_title($d){
 if(!$d)return; $nb=sep();//&#8201;
-//$d=htmlentities($d);//provoque erreur qui bloque save, sous utf8
+$d=strip_tags($d);
+//$d=htmlentities($d);//provoque erreur qui bloque save
 $d=hed($d);//add spaces
 $d=self::html_entity_decode_b($d);
 $d=delnbsp($d);
@@ -298,10 +303,10 @@ $d=delnl($d);
 $d=self::clean_whitespaces($d);
 $d=str_replace("\n ","\n",$d);
 $d=str_replace(" \n","\n",$d);
-if(rstr(9)){//floatimg
+/*if(rstr(9)){//floatimg
 	$d=str_replace(".jpg]\n",".jpg]",$d);
 	$d=str_replace(".gif]\n",".gif]",$d);
-	$d=str_replace(".png]\n",".png]",$d);}
+	$d=str_replace(".png]\n",".png]",$d);}*/
 $d=str_replace("[--]\n","\n[--]",$d);
 return $d;}
 
@@ -314,7 +319,7 @@ static function clean_br_lite($d){if(!$d)return;
 $d=str_replace("\n",'µ',$d);
 $d=str_replace("\r",'µ',$d);
 $d=preg_replace("/(µ){2,}/",'µµ',$d);
-if(substr($d,0,1)=='µ')$d=substr($d,1);
+$d=preg_replace('/(\n){2,}/',"\n\n",$d);
 if(substr($d,0,1)=='µ')$d=substr($d,1);
 if(substr($d,-1)=='µ')$d=substr($d,0,-1);
 $d=str_replace('µ',"\n",$d);
@@ -335,7 +340,7 @@ if($o)$d=self::clean_lines($d);
 return $d;}
 
 static function br_rules($d){
-$d=str_replace(["\r","\n"],' ',$d);
+$d=str_replace(["\r","\n"],' ',$d??'');
 $d=str_replace(['<br />','<br/>','</br>','<br>','<BR>'],"\n",$d);
 return $d;}
 
@@ -369,14 +374,14 @@ foreach($r as $k=>$v){
 	$d=str_replace('[.'.$v.']','.',$d);
 	$d=str_replace($v.']]',']'.$v.']',$d);
 	$d=str_replace("\n".$v.']',$v.']'."\n",$d);}
-if(rstr(9))$d=str_replace(".jpg]\n",'.jpg] ',$d);
+//if(rstr(9))$d=str_replace(".jpg]\n",'.jpg] ',$d);
 return $d;}
 
 #transductor
 static function repair_badn($d){//2 fois
 $d=str_replace('µ','(micro)',$d);
 $d=str_replace("\n",'µ',$d);
-if(rstr(9))$d=str_replace('.jpg]µ','.jpg]',$d);
+//if(rstr(9))$d=str_replace('.jpg]µ','.jpg]',$d);
 $ra=[' µ',' µ','µ ','µ ','[µ','[µ',':]','] .',' ]','[ ','[ ',' )','( '];//,'µ.'
 $rb=['µ','µ','µ','µ','µ[','[',']:',']. ','] ',' [','[',')','('];//,'µ'
 $d=str_replace($ra,$rb,$d);

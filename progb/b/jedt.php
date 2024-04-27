@@ -32,7 +32,7 @@ static function create(){
 $r=['com','bt','ico','auth'];
 $ra=array_combine($r,['var','var','var','int']);
 //$rb=array_combine($r,['com','bt','ico','0']);
-$keys=implode(',',walk($r,'unid'));
+$keys=implode(',',walk('unid',$r));
 $ret=bj('btsav','navedt|nav,save||'.$keys,picto('save'));
 $ret.=mkform($ra);
 return $ret.div('','','navedt');}
@@ -93,7 +93,7 @@ foreach($r as $k=>$v){
 	if($kc)$ra[$ka][$kb][$kc]=$vb;
 	elseif($kb)$ra[$ka][$kb]=$vb;}
 $rb=self::itermenu('/',$ra);
-foreach($rb as $k=>$v)$rt[]=div($k.' '.join('',walk($v,'jedt::bt')));
+foreach($rb as $k=>$v)$rt[]=div($k.' '.join('',walk('jedt::bt',$v)));
 return join('',$rt);}
 
 static function home($p){

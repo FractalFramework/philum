@@ -1,40 +1,28 @@
 <?php 
 class stats{
 //sq
-static function sql($d,$n,$b=''){$ret='';
+static function sql($d,$n,$b=''){
 $dt='date_format(time,"%m%d") as day'; $tm='to_days(now())-to_days(time)<='.$n.'';
-switch($d){
-case('nbv'):$gr=''; //if($b)$gr=', group_concat(id) as ids';
-$ret='select '.$dt.',count(id) as nbv'.$gr.'
-from '.db('qdv').' where qb="'.ses('qbd').'" and '.$tm.' group by day'; break;
-case('nbu'): $ret='select '.$dt.',count(distinct(iq)) as nbu
-from '.db('qdv').' where qb="'.ses('qbd').'" and '.$tm.' group by day'; break;
-case('nbutot'): $ret='select count(distinct(iq)) as nbu from '.db('qdv').' where qb="'.ses('qbd').'" and '.$tm.''; break;
-case('nbutot2'): $ret='select count(distinct(iq)) as nbu from '.db('qdv2').' where qb="'.ses('qbd').'" and '.$tm.''; break;
-case('nbuv'): $ret='select qb,date_format(time,"%y%m%d") as day,count(distinct(iq)) as nbu,count(id) as nbv from '.db('qdv').' where qb>0 and date_format(time,"%y%m%d")>"'.$n.'" and date_format(time,"%y%m%d")<"'.date('ymd').'" group by day,qb'; break;
-case('nbp'):if($n)$wh='and page like "%read='.$n.'%"';
-$ret='select '.$dt.', count(id) as nbv 
-from '.db('qdv').' where qb='.ses('qbd').' '.$wh.' group by day'; break;
-case('nbp2'):if($n)$wh='and page like "%read='.$n.'%"';
-$ret='select '.$dt.', count(id) as nbv
-from '.db('qdv2').' where qb='.ses('qbd').' '.$wh.' group by day'; break;
-case('nbp3'):$ret='select count(id) as nbv,substring(page,5) as idart
-from '.db('qdv2').' where idart>0 group by idart'; break;//nbvues
-case('nbpu'):if($n)$wh='and page like "%read='.$n.'%"';
-$ret='select '.$dt.', count(distinct(iq)) as nbu 
-from '.db('qdv').' where qb='.ses('qbd').' '.$wh.' group by day'; break;//88674
-case('nbpu2'):if($n)$wh='and page like "%read='.$n.'%"';
-$ret='select '.$dt.', count(distinct(iq)) as nbu 
-from '.db('qdv2').' where qb='.ses('qbd').' '.$wh.' group by day'; break;
-case('nbf'):$ret='select '.$dt.', count(id) as nbv
-from '.db('qdv').' where iq='.$n.' group by day'; break;}//187925
+return match($d){//if($b)$gr=', group_concat(id) as ids';
+'nbv'=>'select '.$dt.',count(id) as nbv from '.db('qdv').' where qb="'.ses('qbd').'" and '.$tm.' group by day',
+'nbu'=>'select '.$dt.',count(distinct(iq)) as nbu from '.db('qdv').' where qb="'.ses('qbd').'" and '.$tm.' group by day',
+'nbutot'=>'select count(distinct(iq)) as nbu from '.db('qdv').' where qb="'.ses('qbd').'" and '.$tm.'',
+'nbutot2'=>'select count(distinct(iq)) as nbu from '.db('qdv2').' where qb="'.ses('qbd').'" and '.$tm.'',
+'nbuv'=>'select qb,date_format(time,"%y%m%d") as day,count(distinct(iq)) as nbu,count(id) as nbv from '.db('qdv').' where qb>0 and date_format(time,"%y%m%d")>"'.$n.'" and date_format(time,"%y%m%d")<"'.date('ymd').'" group by day,qb',
+'nbp'=>'select '.$dt.', count(id) as nbv from '.db('qdv').' where qb='.ses('qbd').' '.($n?'and page like "%read='.$n.'%"':'').' group by day',
+'nbp2'=>'select '.$dt.', count(id) as nbv from '.db('qdv2').' where qb='.ses('qbd').' '.($n?'and page like "%read='.$n.'%"':'').' group by day',
+'nbp3'=>'select count(id) as nbv,substring(page,5) as idart from '.db('qdv2').' where idart>0 group by idart',//nbvues
+'nbpu'=>'select '.$dt.', count(distinct(iq)) as nbu from '.db('qdv').' where qb='.ses('qbd').' '.($n?'and page like "%read='.$n.'%"':'').' group by day',//88674
+'nbpu2'=>'select '.$dt.', count(distinct(iq)) as nbu from '.db('qdv2').' where qb='.ses('qbd').' '.($n?'and page like "%read='.$n.'%"':'').' group by day',
+'nbf'=>'select '.$dt.', count(id) as nbv from '.db('qdv').' where iq='.$n.' group by day',
+default=>''};//187925
 return $ret;}
 
 static function datas($c,$n){
 $sql=self::sql($c,$n); //if(auth(6))echo $sql;
-if($c=='nbutot')$ret=sql::call($sql,'v'); else $ret=sql::call($sql,'kv');
 if($c=='nbp'){$rb=sql::call(self::sql('nbp2',$n),'kv'); if($rb)$ret=array_merge($ret,$rb);}
-if($c=='nbpu'){$rb=sql::call(self::sql('nbpu2',$n),'kv'); if($rb)$ret=array_merge($ret,$rb);}
+elseif($c=='nbpu'){$rb=sql::call(self::sql('nbpu2',$n),'kv'); if($rb)$ret=array_merge($ret,$rb);}
+elseif($c=='nbutot')$ret=sql::call($sql,'v'); else $ret=sql::call($sql,'kv');
 if($c=='nbutot'){$ret+=sql::call(self::sql('nbutot2',$n),'v');}
 return $ret;}
 
@@ -67,7 +55,6 @@ foreach($r as $k=>$v){$x2=$x1+$ecart; $ah=round($v/$xr*($h-12));
 		$ret.='ctx.fillStyle="yellow"; ctx.font="11px Arial"; ';
 		$ret.='ctx.fillText("'.$v.'",'.($x1+2).','.($h-$ah).'); ';}
 	$x1+=$ecart;}
-//eco($ret,1);
 return $ret;}
 
 static function canvas_j($c,$n,$prm){
@@ -147,16 +134,6 @@ qr('delete from '.db('qdv').' where id<"'.$lastid.'"'); sql::reflush('qdv');}
 return db('qdv').' was cleaned from id '.$lastid;}
 
 //com
-static function board($c,$n,$prm){//p($rs);
-$ret=lj(active($c,'nbv'),'stat_stats,home__3_nbv_'.$n,'nbv').' ';
-$ret.=lj(active($c,'nbu'),'stat_stats,home__3_nbu_'.$n,'nbu').' ';
-$nbr=[7,30,90,180,365,730,1460,2920,4840];
-foreach($nbr as $v)$ret.=lj(active($v,$n),'stat_stats,home__3_'.$c.'_'.$v,$v).' ';
-if(auth(6))$ret.=lj('','popup_stats,statlist__3_'.$c.'_'.$n,picto('filelist'));
-if(auth(6))$ret.=lj('','popup_stats,lightlive__3_','cleaner');
-if(auth(6))$ret.=lj('','popup_stats,statsee__js_','live');
-return div($ret,'nbp','stt');}
-
 static function daytime($d){
 return mktime(0,0,0,substr($d,2,2),substr($d,4,2),substr($d,0,2));}
 
@@ -164,25 +141,32 @@ static function call($p,$o){if(!$p)$p=0; $o=100; $ret=[]; $qdl='live';
 //$r=sql('iq,qb,page,time','qdv','','id>'.$p.' order by id desc');
 $r=sql::inner('ip,qb,page,DATE_FORMAT('.$qdl.'.time,\'%H:%i:%s\')','qdp','qdv','iq','',$qdl.'.id>'.($p).' order by '.$qdl.'.id desc limit '.$o);
 if($r)foreach($r as $k=>$v)$ret[]=[$k,$v[3],$v[0],$v[2]];
-return tabler($ret,'txtx','txtx');}
+return tabler($ret,['n','hour','ip','page']);}
 
-static function js($p,$o){$o=$o?$o:100;
-$p=sqb('id','qdv','v','order by id desc limit 1');
-$j=sj('sts_statsee,call___'.$p.'_'.$o);
-$js=head::temporize('sttimer',$j,3000);
-head::add('jscode',$js);
-return head::jscode($js);}
+static function js($p='',$o=''){$o=$o?$o:100;
+if(!$p)$p=sqb('id','qdv','v','order by id desc limit 1');
+$j=sj('sts_stats,call__2_'.$p.'_'.$o);
+return head::temporize('sttimer',$j,1000);}
 
-static function statsee($p,$o){
-$rid='sts'; $o=$o?$o:100;
-$p=sqb('id','qdv','v','order by id desc limit 1');
-$j=sj($rid.'_statsee,call___'.$p.'_'.$o);
-$js=head::temporize('sttimer',$j,3000);
-echo head::jscode($js);
+static function statsee($p,$o){$rid='sts';
+//$js=self::js($p='',$o='');
+//$ret=head::jscode($js);
 //head::add('jscode',$js);
-return divd($rid,self::call($p,$o));}
+$bt=lj('','sts_stats,call__js_'.$p.'_'.$o,picto('start'));
+$bt.=ljb('','cleartimeout','',picto('stop'));
+return $bt.divd($rid,self::call($p,$o));}
 
-//plug
+//menu
+static function menu($c,$n,$prm){//p($rs);
+$ret=lj(active($c,'nbv'),'stat_stats,home__3_nbv_'.$n,'nbv').' ';
+$ret.=lj(active($c,'nbu'),'stat_stats,home__3_nbu_'.$n,'nbu').' ';
+$nbr=[7,30,90,180,365,730,1460,2920,4840];
+foreach($nbr as $v)$ret.=lj(active($v,$n),'stat_stats,home__3_'.$c.'_'.$v,$v).' ';
+if(auth(6))$ret.=lj('','popup_stats,statlist__3_'.$c.'_'.$n,pictxt('elements','follow'));
+if(auth(6))$ret.=lj('','popup_stats,lightlive__3_',pictxt('cleanup','cleaner'));
+if(auth(6))$ret.=lj('','popup_stats,statsee__js_',pictxt('fire','live'));
+return div($ret,'nbp','stt');}
+
 static function home($c,$n,$prm=[]){
 static $i; $i++; if($i==2)return;
 $c=$c?$c:'nbv'; $n=$n?$n:7; ses('png',1);
@@ -192,8 +176,9 @@ if($day_max_known<date('ymd',timeago(1)))$ret=self::solid($day_max_known);
 //if(ses('png'))$ret.=self::graph($c,$n,$prm).br().br();
 //else $ret.=divd('graph',self::canvas($c,$n,$prm)).br().br();
 $ret=self::read($c,$n).br();
-$ret.=self::board($c,$n,$prm);
+$ret.=self::menu($c,$n,$prm);
 //stat_upd();
-return divd('stat',$ret);}
+return divd('stat',$ret);
+}
 }
 ?>

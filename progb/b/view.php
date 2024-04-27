@@ -23,7 +23,7 @@ static function cat(){return [
 ['div',['class'=>'grid-art'],[
 	['div',['class'=>'row1 col1'],[
 		['div',[],'{thumb}'],
-		['div',['class'=>'panel txtsmall hide-simple'],'{tag}']]],
+		['div',['class'=>'panel txtsmall hide-simple scrollb'],'{tag}']]],
 	['div',['class'=>'row1 col2'],[
 		['header','',[
 			['div',['id'=>'meta{id}'],[
@@ -195,8 +195,8 @@ static function book(){return [
 	['div',[],[
 		['','','{back}'],
 		['h2','','{title}'],
-		['','','{opt}{date}{tag}{length}{player}']]],
-	['div',['class'=>'panel justy'],[
+		['','','{opt} {date} {tag} {length} {player}']]],
+	['div',['class'=>'panel'],[
 		['','','{msg}']]]]]];}
 
 static function file(){return [
@@ -216,8 +216,8 @@ static function product(){return [
 	['div',['class'=>'imgr txtsmall'],[
 		['','','{add2cart}']]]]]];}
 
-static function vars(){
-$d='artedit pid id jurl hurl url edit title suj cat msg img1 video btim back avatar author date day nbarts tag priority words search parent rss social open tracks source length player lang artlang opt css sty addclr thumb trkbk float js ovc btrk btxt togprw '.str::eradic_acc(prmb(18)); $r=explode(' ',$d); $rt=[];// purl
+static function vars(){$rt=[];
+$r=['artedit','pid','id','jurl','hurl','url','edit','title','suj','cat','msg','img1','video','btim','back','avatar','author','date','day','nbarts','tag','priority','words','search','parent','rss','social','open','tracks','source','length','player','lang','artlang','opt','css','sty','addclr','thumb','trkbk','float','js','ovc','btrk','btxt','togprw']; $rb=sesmk('tags'); foreach($rb as $v)$rb[]=str::eradic_acc($v); $r=array_merge($r,$rb);
 foreach($r as $v)$rt[$v]='';
 return $rt;}
 

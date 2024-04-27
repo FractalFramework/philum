@@ -1,3 +1,4 @@
+
 <?php 
 class meteo{
 static $a=__CLASS__;
@@ -61,10 +62,12 @@ if(!$rb['moon_age'])$rb['moon_age']=1;
 $nfo.=$moon.' '.$rb['moon_phase'];
 $ret.=lk(auth(6)?$f:'',$weather,att($nfo)).' ';//render
 $ret.=togbub('meteo,umenu','',$rb['town'],'txtx').' ';//$r['station']
-if($tmp<0)$ic='degree0'; else $ic='degree'.(substr($tmp,0,1)+1); $ret.=picto($ic).$tmp.'&#8451; ';//°C
-$ret.=picto('barometer').round((int)$baro).btn('small','hPa').' ';
-$ret.=picto('humidity').$ra['outside_humidity'].btn('small','%').' ';//'&#128167; '.
-$ret.='&uarr;'.$rb['sunrise'].' '.'&darr;'.$rb['sunset'];//10548//10549//.' ('.$diffday.' min)'//
+if($tmp<0)$ic='degree0'; else $ic='degree'.(substr($tmp,0,1)+1);
+$ret.=picto($ic).span($tmp.' &#8451;','small').' ';//°C
+$ret.=picto('barometer').span(round((int)$baro/10,2).' &#13226;','small').' ';//㎪
+$ret.=picto('humidity').span($ra['outside_humidity'].'&#65285;','small').' ';//&#128167;
+$ret.=picto('sunrise').' '.span($rb['sunrise'],'small').' ';
+$ret.=picto('sunset').' '.span($rb['sunset'],'small');//10548//10549//.' ('.$diffday.' min)'//
 //$ma=($rb['moon_age'])/6; $mx=60; $mi=$mx/8;//&#127761;->&#127768;
 //for($i=0;$i<8;$i++)if($ma<$i)$mn=$i; $mo=127761+$mn; //$ret.='&#'.$mo.';';
 //$phases=[1=>127761,127762,127763,127764,127765,127766,127767,127768,127761];
