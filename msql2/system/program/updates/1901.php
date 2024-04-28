@@ -1,4 +1,0 @@
-<?php 
-return [1=>['0101','publication'],
-2=>['0102','- ajout du bouton d\'article \'virtual folders\', permet de joindre les articles qui appartiennent au même répertoire virtuelrn- ajout du bouton d\'article \'recognized words\', permet de reconnaître les mots présents dans les recherches enregistréesrn- ajout des modules \'searched_words\' et \'searched_arts\', pour trouver les articles liés par les mots reconnus dans un premierrn- ajout de la rstr114 : activation du bouton d\'article \'searched\''],
-3=>['0114','- amélioration des recherches enregistréesrn- rénovation du détecteur de médias, permettant d\'inaugurer des modules capables d\'extraire des articles des vidéos, audios, pdf et les twits.']]; ?>

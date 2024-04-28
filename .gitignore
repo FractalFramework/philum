@@ -67,6 +67,8 @@ msql/users/*
 msql/clients/*
 msql/_bak/*
 msql/_bak/*
+msql2
+msql3
 pub/favicons/favicon_nn*
 pub/favicons/favicon_oo*
 users

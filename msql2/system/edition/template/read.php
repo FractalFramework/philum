@@ -1,3 +1,0 @@
-<?php 
-return ['_'=>['code'],
-1=>['[[{avatar}[{search}|[txtbox:class]:span]{cat}{back}[{date}|[txtsmall2:class]:span][{nbarts}|[txtnoir:class]:span][{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|[txtsmall:class]:span]|[meta{id}:id]:div][{parent}|:h4][{edit}|[right:class]:span][{title}|:h1][{artlang} {social} {words} {open}|[grey right:class]:span][|:clear]{float}[{tag}|[panel txtsmall:class]:div]|:header]{artedit}[{msg}[|:clear]|[art{id}:id][justy:class]:article]']]; ?>

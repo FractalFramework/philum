@@ -37,100 +37,7 @@ $rb[$k]=$d;
 }
 eco($rb);}
 
-//hubs
-static function hubarts($p,$o,$prm=[]){
-if(!auth(6))return;
-$rc=sql('hub,id','qdh','kv','');
-$r=sql('id,nod','qda','kv',''); $rt=[];
-foreach($r as $k=>$v)if($rc[$v]??'' && !is_numeric($v))
-	$rt[]=sqlup('qda',['nod'=>$rc[$v]],['id'=>$k]);
-return 'ok'.implode(',',$rt);}
-
-static function hubs($p,$o,$prm=[]){
-if(!auth(6))return;
-$r=sql('distinct(nod)','qda','rv','');
-$rx=sql('hub,id','qdh','kv',''); $rt=[];
-foreach($r as $k=>$v)if(!($rx[$v]??'') && !is_numeric($v))
-	$rt[]=sqlsav('qdh',['hub'=>$v,'no'=>'0']);
-return 'ok:'.implode(',',$rt);}
-
-//cats
-static function catarts($p,$o,$prm=[]){
-//if(!auth(6))
-return;
-$rc=sql('cat,id','qdc','kv','');
-$r=sql('id,frm','qda','kv',''); $rt=[];
-foreach($r as $k=>$v)if($rc[$v]??'' && !is_numeric($v))
-	$rt[]=sqlup('qda',['frm'=>$rc[$v]],['id'=>$k]);
-return 'ok'.implode(',',$rt);}
-
-static function catartsrev($p,$o,$prm=[]){
-//if(!auth(6))
-return;
-$rc=sql('id,cat','qdc','kv',''); //pr($rc);
-$r=sql('id,frm','qda','kv',''); $rt=[];
-foreach($r as $k=>$v)if($rc[$v]??'')//$rt[]=$rc[$v];
-	$rt[]=sqlup('qda',['frm'=>$rc[$v]],['id'=>$k]);
-return 'ok'.implode(',',$rt);}
-
-static function catsup(){
-$b='cat';
-$r=sqldb::def($b);
-sqlop::install($b,$r,$up=1);}
-
-//240426
-static function cats($p,$o,$prm=[]){
-//self::catsup();
-if(!auth(6))return; $rt=[]; $rb=[];
-//$r=sql('distinct(frm)','qda','rv','');
-$r=sql('nod,frm,day','qda','kkv',['_group'=>'frm']);
-foreach($r as $k=>$v)foreach($v as $ka=>$va){$rb[]=[$k,$ka,$va];}
-$rx=sql('hub,cat','qdc','kk',''); $rt=[];
-foreach($rb as [$nod,$cat,$day]){$no=0;
-	if(substr($cat,0,1)=='_')$no=1;
-	$re=sql('distinct(re)','qda','rv',['nod'=>$nod,'frm'=>$cat]);
-	if(count($re)==1 && $re[0]=='0')$no=1;
-	if(!($rx[$hub][$cat]??'')){
-		$rc[]=['cat'=>$cat,'hub'=>$hub,'pic'=>sesr('catpic',$cat,''),'last'=>$day,'no'=>$no];
-		//$rt[]=sqlsav('qdc',$rc);
-		}}
-pr($rc);
-return 'ok:'.implode(',',$rt);}
-
-static function reboot($p,$o,$prm=[]){
-$_SESSION['dev']=1;
-//echo dev2prod::call('','');
-//boot::reboot(); ses('dev',1);
-//$r=msql::read('system','default_mods'); pr($r);
-require(boot::cnc());
-//boot::reset_ses(); $_SESSION['dayx']=time();//boot::cats();
-boot::init(); pr(ses('prms')); pr(ses('mn')); pr(ses('mnd')); pr(ses('qb')); //pr(ses('rstr'));
-boot::define_use(); pr(ses('mn'));
-boot::define_iq(); pr(ses('ip'));
-echo sql('name','qdu','v',['name'=>prms('default_hub')]);
-//boot::define_auth(); pr(ses('auth'));
-//boot::seslng(1); boot::time_system('ok'); boot::cache_arts(); boot::define_condition(); boot::define_clr();}
-return 'ok';}
-
-//2404
-static function tags(){
-if(!auth(6))return; $r=[];
-$rl=explode(' ',prmb(26)); //pr($rl);
-$rg=msql::kv('',nod('tags')); //pr($rg);
-msql::copy('',nod('tags'),'server',nod('tags'));
-foreach($rg as $k=>$v)foreach($rl as $ka=>$va){
-//msql::sav('lang/'.$va,nod('tags'),$rg); will be translated
-$rt[]=nod('tags_'.$k.$va).'=>'.'lang/'.$va.'/'.nod('tags_'.$k);
-msql::copy('',nod('tags_'.$k.$va),'lang/'.$va,nod('tags_'.$k));}
-return tabler($rt);}
-
-#call2
-static function call2($p,$o,$prm=[]){$r=[];
-[$p1,$o]=prmp($prm,$p,$o);
-if(!auth(6))return;
-return self::$p($p1,$o,$prm);}
-
-#msql//2304
+#msql
 //msql/lang/fr/node_table_num_sav.php
 static function nod($dr,$k,$v,$o=''){
 [$d,$nod]=msqa::mknode($v);
@@ -161,7 +68,6 @@ if(!auth(6))return;
 msqa::tools($dr,$nod,'patch_ret','');
 return $nod;}
 
-//240320
 static function backup($dr,$nod){$r=msql::read($dr,$nod);
 if($r)msql::save($dr,str_replace('_sav','',$nod),$r,[],1);}
 static function renove_bak($dr,$k,$v){
@@ -189,28 +95,125 @@ else $ra=['_bak'];//'design','clients','lang/fr','lang/en','lang/es','server','s
 foreach($ra as $v)$r[$v]=scanwalk('msql/'.$v,'patches::renove_'.$p);
 return tree($r);}
 
+//hubs
+static function hubarts($p,$o,$prm=[]){
+if(!auth(6))return;
+$rc=sql('hub,id','qdh','kv','');
+$r=sql('id,nod','qda','kv',''); $rt=[];
+foreach($r as $k=>$v)if($rc[$v]??'' && !is_numeric($v))
+	$rt[]=sqlup('qda',['nod'=>$rc[$v]],['id'=>$k]);
+return 'ok'.implode(',',$rt);}
+
+static function hubs($p,$o,$prm=[]){
+if(!auth(6))return;
+$r=sql('distinct(nod)','qda','rv','');
+$rx=sql('hub,id','qdh','kv',''); $rt=[];
+foreach($r as $k=>$v)if(!($rx[$v]??'') && !is_numeric($v))
+	$rt[]=sqlsav('qdh',['hub'=>$v,'no'=>'0']);
+return 'ok:'.implode(',',$rt);}
+
+static function reboot($p,$o,$prm=[]){
+$_SESSION['dev']=1;
+//echo dev2prod::call('','');
+//boot::reboot(); ses('dev',1);
+//$r=msql::read('system','default_mods'); pr($r);
+require(boot::cnc());
+//boot::reset_ses(); $_SESSION['dayx']=time();//boot::cats();
+boot::init(); pr(ses('prms')); pr(ses('mn')); pr(ses('mnd')); pr(ses('qb')); //pr(ses('rstr'));
+boot::define_use(); pr(ses('mn'));
+boot::define_iq(); pr(ses('ip'));
+echo sql('name','qdu','v',['name'=>prms('default_hub')]);
+//boot::define_auth(); pr(ses('auth'));
+//boot::seslng(1); boot::time_system('ok'); boot::cache_arts(); boot::define_condition(); boot::define_clr();}
+return 'ok';}
+
+//cats
+static function catarts($p,$o,$prm=[]){
+//if(!auth(6))
+return;
+$rc=sql('cat,id','qdc','kv','');
+$r=sql('id,frm','qda','kv',''); $rt=[];
+foreach($r as $k=>$v)if($rc[$v]??'' && !is_numeric($v))
+	$rt[]=sqlup('qda',['frm'=>$rc[$v]],['id'=>$k]);
+return 'ok'.implode(',',$rt);}
+
+static function catartsrev($p,$o,$prm=[]){
+//if(!auth(6))
+return;
+$rc=sql('id,cat','qdc','kv',''); //pr($rc);
+$r=sql('id,frm','qda','kv',''); $rt=[];
+foreach($r as $k=>$v)if($rc[$v]??'')//$rt[]=$rc[$v];
+	$rt[]=sqlup('qda',['frm'=>$rc[$v]],['id'=>$k]);
+return 'ok'.implode(',',$rt);}
+
+static function catsup(){
+$b='cat';
+$r=sqldb::def($b);
+sqlop::install($b,$r,$up=1);}
+
+static function cats($p,$o,$prm=[]){
+//self::catsup();
+if(!auth(6))return; $rt=[]; $rb=[];
+//$r=sql('distinct(frm)','qda','rv','');
+$r=sql('nod,frm,day','qda','kkv',['_group'=>'frm']);
+foreach($r as $k=>$v)foreach($v as $ka=>$va){$rb[]=[$k,$ka,$va];}
+$rx=sql('hub,cat','qdc','kk',''); $rt=[];
+foreach($rb as [$nod,$cat,$day]){$no=0;
+	if(substr($cat,0,1)=='_')$no=1;
+	$re=sql('distinct(re)','qda','rv',['nod'=>$nod,'frm'=>$cat]);
+	if(count($re)==1 && $re[0]=='0')$no=1;
+	if(!($rx[$hub][$cat]??'')){
+		$rc[]=['cat'=>$cat,'hub'=>$hub,'pic'=>sesr('catpic',$cat,''),'last'=>$day,'no'=>$no];
+		//$rt[]=sqlsav('qdc',$rc);
+		}}
+pr($rc);
+return 'ok:'.implode(',',$rt);}
+
+static function tags(){
+if(!auth(6))return; $r=[];
+$rl=explode(' ',prmb(26)); //pr($rl);
+$rg=msql::kv('',nod('tags')); //pr($rg);
+msql::copy('',nod('tags'),'server',nod('tags'));
+foreach($rg as $k=>$v)foreach($rl as $ka=>$va){
+//msql::sav('lang/'.$va,nod('tags'),$rg); will be translated
+$rt[]=nod('tags_'.$k.$va).'=>'.'lang/'.$va.'/'.nod('tags_'.$k);
+msql::copy('',nod('tags_'.$k.$va),'lang/'.$va,nod('tags_'.$k));}
+return tabler($rt);}
+
+static function psw($p,$o,$prm=[]){
+$psw=password_hash($prm[0]??$p,PASSWORD_DEFAULT);;
+sql::upd('qdu',['pass'=>$psw],['name'=>$o]);}
+
+#call2
+static function call2($p,$o,$prm=[]){$r=[];
+[$p1,$o]=prmp($prm,$p,$o);
+if(!auth(6))return;
+return self::$p($p1,$o,$prm);}
+
 static function menu($p){
 $ret=inputb('fto',$p,18,'directory');
 $rok=[16,7];//0,1,3,4,6,//2,3,12,13,
 $rt[0]='msql: ';
-$rt[1]=lj('popbt','fut_patches,call_fto_3_utf','msqutf');
+$rt[1]=lj('popbt','fut_patches,call_fto_3_utf','msqutf');//2304
 $rt[2]=lj('popbt','fut_patches,call_fto_3_headers','headers');
 $rt[3]=lj('popbt','fut_patches,call_fto_3_splitters','splitters_msql');
 $rt[4]=' | mysql: ';
 $rt[5]=lj('popbt','fut_patches,call2_fto_3_dbutf','mysqlutf');
 $rt[6]=lj('popbt','fut_patches,call2_fto_3_dbsplitters','splitters_mysql');
-$rt[7]=lj('popbt','fut_patches,call2_fto_3_cats','create_cats');
 $rt[8]=lj('popbt','fut_patches,call2_fto_3_catarts','art_cats');
 $rt[82]=lj('popbt','fut_patches,call2_fto_3_catartsrev','art_cats_reverse');
 $rt[9]=lj('popbt','fut_patches,call2_fto_3_hubs','hubs');
 $rt[10]=lj('popbt','fut_patches,call2_fto_3_hubarts','art_hubs');
 $rt[11]=lj('popbt','fut_patches,call2__3_noqd','noqd');
 $rt[12]=lj('popbt','fut_patches,call_fto_3_return','msqlreturns');
-$rt[13]=lj('popbt','fut_patches,call_fto_3_bak','msqlbak');
+$rt[13]=lj('popbt','fut_patches,call_fto_3_bak','msqlbak');//240320
 $rt[14]=lj('popbt','fut_patches,call_fto_3_dir','msqldir');
 $rt[15]=lj('popbt','fut_patches,call2_fto_3_reboot','reboot');
-$rt[16]=lj('popbt','fut_patches,call2_fto_3_tags','tags');
+$rt[16]=lj('popbt','fut_patches,call2_fto_3_tags','tags');//2404
+$rt[7]=lj('popbt','fut_patches,call2_fto_3_cats','create_cats');//240426
+$rt[16]=lj('popbt','fut_patches,call2_fto_3_psw','psw');//240427
 foreach($rok as $v)$ret.=$rt[$v];
+//patches::psw('newsnet','');
 return $ret;}
 
 static function home($p){
