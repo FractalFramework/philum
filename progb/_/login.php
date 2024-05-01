@@ -15,6 +15,11 @@ return divd('lgn',$ret);}}
 static function user_exists($usr){
 return sql('id','qdu','v',['name'=>$usr]);}
 
+static function autolog($usr){
+$id=self::user_exists($usr);
+$ip=sql('ip','qdu','v',['id'=>$id]);
+return $ip==ip()?$id:0;}
+
 static function verif_user($usr,$psw){
 $vrf=sql('pass','qdu','v',['name'=>$usr]);
 return password_verify($psw,$vrf);}

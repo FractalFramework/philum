@@ -1,27 +1,8 @@
 <?php 
-class sqlop{static private $b; static private $t; static public $ret;
+class sqlop{static private $b; static private $t; static public $ret; static $er=[];
 function __construct($b){self::$b=$b; self::$t=ses($b);}
 static function table($b){self::$b=$b; self::$t=ses($b);}
 static function read($d,$p,$q,$bug=''){self::$ret=sql($d,self::$b,$p,$q,$bug);}
-static function reflush(){sql::reflush(self::$b);}
-static function insert($r){self::$ret=sql::sav(self::$b,$r);}
-static function update($col,$val,$wh,$row){sql::upd(self::$b,[$col=>$val],[$wh=>$row]);}
-static function sqldel($id){sql::del(self::$b,$id);} 
-static function show(){self::$ret=sql::call('show columns from '.self::$t,'kv');}
-static function trunc(){if(auth(6))qr('truncate '.self::$t);}
-//static function drop(){if(auth(6))qr('drop table '.self::$t);}
-static function save($r){sql::sav(self::$b,$r);}
-
-static function modif($r,$act,$n,$ra,$nb=''){switch($act){
-case('arr'):$r=$ra; break;
-case('add'):$r[]=$ra; break;
-case('mdf'):$r[$n]=$ra; break;
-case('del'):unset($r[$n]); break;
-case('mdv'):$r[$n][$nb]=$ra; break;
-case('push'):array_unshift($r,$ra); break;
-//case('mdf'):foreach($ra as $k=>$v)$r[$k]=$v; break;
-case('append'):foreach($ra as $k=>$v)$r[]=$v; break;}
-return $r;}
 
 static function import($defs,$b){$ra=[];//from msql
 if($defs[msql::$m]){$index=$defs[msql::$m]; unset($defs[msql::$m]);
@@ -38,68 +19,73 @@ $ret=self::create_table($b,$rb,0);
 foreach($defs as $k=>$v)$nid=sql::qrid('insert into '.$b.' (id,'.implode(',',$index).') values ('.$k.','.implode(',',sql::atmr($v)).')');//' on duplicate key update '.$index[0].'='.sql::atm($v[0])
 return $nid?'created':'error';}
 
-static function read_cols($b,$z=''){$rb=[];
-$rq=qr('select COLUMN_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH
-from INFORMATION_SCHEMA.COLUMNS where table_name="'.sql::$db.'.'.$b.'"',$z);
-//$qb=in_array_b($b,sqldb::$rt); $rq=sql::cols($qb);
-while($r=sql::qra($rq)){
-	$type=$r['DATA_TYPE']; $sz=$r['CHARACTER_MAXIMUM_LENGTH']; $nm=$r['COLUMN_NAME'];
-	if($nm=='id')$type=$sz>7?'aib':'ai';
-	elseif($type=='int'){if($sz==2)$type='2int'; elseif($sz==7)$type='sint'; else $type='int';}
-	elseif($type=='varchar'){
-		if($sz==2)$type='2var'; elseif($sz<25)$type='svar'; elseif($sz>1000)$type='bvar'; else $type='var';}
-	elseif($type=='longtext')$type='long';
-	elseif($type=='mediumtext')$type='text';
-	elseif($type=='tinytext')$type='text';
-	elseif($type=='timestamp')$type='time';
-	elseif($type=='bigint')$type='bint';
-	//elseif($type=='decimal')$type='dec';
-	elseif($type=='double')$type='double';
-	elseif($type=='float')$type='float';
-	elseif($type=='json')$type='json';
-	$rb[$r['COLUMN_NAME']]=$type;}
+static function detect_types($ty,$nm,$sz){
+if($nm=='id')return $sz>7?'aib':'ai';
+if($ty=='varchar')return match($sz){
+	2=>'var2',
+	3=>'var3',
+	25=>'svar',
+	55=>'mvar',
+	500=>'lvar',
+	1000=>'bvar',
+	default=>'var'};
+else return match($ty){
+	'int'=>'int',
+	'smallint'=>'sint',
+	'mediumint'=>'mint',
+	'bigint'=>'bint',
+	'longtext'=>'long',
+	'mediumtext'=>'text',
+	'tinytext'=>'stext',
+	'timestamp'=>'time',
+	'decimal'=>'dec',
+	'double'=>'double',
+	'float'=>'float',
+	'json'=>'json',
+	default=>'var'};}
+
+static function assign_types($v){
+return match($v){
+	'ai'=>'int(7) NOT NULL auto_increment',
+	'aib'=>'int(11) NOT NULL auto_increment',
+	'int'=>'int NOT NULL',
+	'sint'=>'smallint NOT NULL',
+	'mint'=>'mediumint NOT NULL',
+	'bint'=>'bigint NOT NULL',
+	'var'=>'varchar(255) NOT NULL',
+	'svar'=>'varchar(25) NOT NULL',
+	'mvar'=>'varchar(55 )NOT NULL',
+	'lvar'=>'varchar(500) NOT NULL',
+	'bvar'=>'varchar(1000) NOT NULL',
+	'var11'=>'varchar(11) NOT NULL',
+	'var3'=>'varchar(3) NOT NULL',
+	'var2'=>'varchar(2) NOT NULL',
+	'text'=>'mediumtext NOT NULL',
+	'long'=>'longtext NOT NULL',
+	'json'=>'json NOT NULL',
+	'time'=>'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+	'date'=>'datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+	'float'=>'float NOT NULL',
+	'double'=>'double NOT NULL',
+	'bool'=>'bool NOT NULL',
+	'enum(01)'=>'enum("0","1") NOT NULL',
+	default=>''};
+}
+
+static function read_cols($b){$rb=[];
+$r=sqb::cols($b,4);
+foreach($r as $k=>$v){
+	//['DATA_TYPE'=>$type,'CHARACTER_MAXIMUM_LENGTH'=>$sz,'COLUMN_NAME'=>$nm]=$r;
+	[$type,$sz,$nm]=vals($v,['DATA_TYPE','CHARACTER_MAXIMUM_LENGTH','COLUMN_NAME']);//local
+	if(!$nm)[$type,$sz,$nm]=vals($v,['data_type','character_maximum_length','column_name']);
+	$rb[$nm]=self::detect_types($type,$nm,$sz);}
 return $rb;}
 
-static function trigger($db,$ra){$qb=sqldb::qb($db);
-$rb=self::read_cols($db); $rnew=[]; $rold=[];
-if(isset($rb['id']))unset($rb['id']); if(isset($rb['up']))unset($rb['up']);	
-if($rb){$rnew=array_diff_assoc($ra,$rb); $rold=array_diff_assoc($rb,$ra);}//old
-if($rnew or $rold){$bb=sql::drop($qb);
-	$rtwo=array_intersect_assoc($ra,$rb);//common
-	$rak=array_keys($ra); $rav=array_values($ra);
-	$rnk=array_keys($rnew); $rnv=array_values($rnew); $nn=count($rnk);
-	$rok=array_keys($rold); $rov=array_values($rold); $no=count($rok);
-	$na=count($rnew); $nb=count($rold); $ca=array_keys($rtwo); $cb=array_keys($rtwo);
-	if($na==$nb)for($i=0;$i<$nn;$i++)if($rnv[$i]==$rov[$i] or $rnv[$i]!='int'){
-		$ca[]=$rnk[$i]; $cb[]=$rok[$i];}
-	return 'insert into '.$db.'('.implode(',',$ca).') select '.implode(',',$cb).' from '.$bb;}}
-
 static function create_cols($r){$ret='';
-foreach($r as $k=>$v)
-	if($v=='ai')$ret.='`id` int(7) NOT NULL auto_increment,';
-	elseif($v=='aib')$ret.='`id` int(11) NOT NULL auto_increment,';
-	elseif($v=='int')$ret.='`'.$k.'` int(11) NOT NULL,'."\n";
-	elseif($v=='int10')$ret.='`'.$k.'` int(10) NOT NULL,'."\n";
-	elseif($v=='int7')$ret.='`'.$k.'` int(7) NOT NULL,'."\n";
-	elseif($v=='int3')$ret.='`'.$k.'` int(3) NOT NULL,'."\n";
-	elseif($v=='int2')$ret.='`'.$k.'` int(2) NOT NULL,'."\n";
-	elseif($v=='int1')$ret.='`'.$k.'` int(1) NOT NULL,'."\n";
-	elseif($v=='bint')$ret.='`'.$k.'` bigint(36) NOT NULL,'."\n";
-	elseif($v=='double')$ret.='`'.$k.'` double NOT NULL,'."\n";
-	elseif($v=='psw')$ret.='`'.$k.'` varchar(255) NOT NULL,'."\n";
-	elseif($v=='var')$ret.='`'.$k.'` varchar(255) NOT NULL,'."\n";
-	elseif($v=='svar')$ret.='`'.$k.'` varchar(25) NOT NULL,'."\n";
-	elseif($v=='mvar')$ret.='`'.$k.'` varchar(55 )NOT NULL,'."\n";
-	elseif($v=='lvar')$ret.='`'.$k.'` varchar(500) NOT NULL,'."\n";
-	elseif($v=='bvar')$ret.='`'.$k.'` varchar(1000) NOT NULL,'."\n";
-	elseif($v=='var2')$ret.='`'.$k.'` varchar(2) NOT NULL,'."\n";
-	elseif($v=='var3')$ret.='`'.$k.'` varchar(3) NOT NULL,'."\n";
-	elseif($v=='var11')$ret.='`'.$k.'` varchar(11) NOT NULL,'."\n";
-	elseif($v=='text')$ret.='`'.$k.'` mediumtext NOT NULL,'."\n";
-	elseif($v=='long')$ret.='`'.$k.'` longtext NOT NULL,'."\n";
-	elseif($v=='time')$ret.='`'.$k.'` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,';
-	elseif($v=='date')$ret.='`'.$k.'` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,';
-	elseif(strpos($v,'/'))$ret.='`'.$k.'` enum(\''.implode("','",explode('/',$v)).'\'),';
+foreach($r as $k=>$v){
+	//if(strpos($v,'/'))$va='enum(\''.implode("','",explode('/',$v)).'\')';
+	$va=self::assign_types($v);
+	if($va)$ret.='`'.$k.'` '.$va.', ';}
 return $ret;}
 
 static function create_table($b,$r,$o=''){
@@ -109,14 +95,40 @@ $sql='create table if not exists `'.$b.'`(
   '.self::create_cols($r).'
   PRIMARY KEY (`id`)'.(isset($r['key'])?', '.$r['key']:'').'
 ) ENGINE=InnoDB collate utf8mb4_unicode_ci;';
-$req=qr($sql,0);
-if($req)return $b.':ok'; else return 'er';}
+sql::qr($sql,0);
+if(sql::$er['qr']??'')self::$er['not_created']=$b;
+else self::$er['table_created']=$b;}
 
-static function install($b,$r,$up=''){$ret='';//real dbname
-$ra=self::read_cols($b,0);
-if($up && $ra && $ra!=$r){$sql=self::trigger($b,$r); if($sql)qr($sql,1);}
-elseif(!$ra)$ret=self::create_table($b,$r,0);// && $up
-return $ret;}
+static function array_diff_order($ra,$b){$n=count($ra);
+$rak=array_keys($ra); $rbk=sqb::cols($b,1);//rb in the good order
+for($i=0;$i<$n;$i++)if($rak[$i]!=$rbk[$i]??'')return true;}
+
+static function reorder($b,$ra,$rb){
+if(isset($ra['key']))unset($ra['key']); $ca=array_keys($ra); if(!$ca)return; $bb='z_'.$b;
+$bb=sql::drop(sqldb::qb($b)); self::create_table($b,$ra,0);
+$sql='insert into '.$b.'('.implode(',',$ca).') select '.implode(',',$ca).' from '.$bb;
+sql::qr($sql,1); if(sql::$er['qr']??'')sql::rollback(sqldb::qb($b));
+self::$er+=['reorder_table:'=>$b]+sql::$er??[];}//,'ra'=>$ra,'rb'=>$rb
+
+static function alter($b,$ra,$rb){//$ra=cnf,$rb=db
+$rnew=[]; $rold=[]; $ca=[]; $rbb=[];
+if(isset($ra['key']))unset($ra['key']); $na=count($ra); $nb=count($rb);
+if($rb){$rnew=array_diff_assoc($ra,$rb); $rold=array_diff_assoc($rb,$ra);}
+if($rnew or $rold){sql::backup(sqldb::qb($b),'alter');
+	$rnk=array_keys($rnew); $rok=array_keys($rold);
+	if($na==$nb)foreach($rnk as $k=>$v)$ca[]='change `'.$rok[$k].'` `'.$rnk[$k].'` '.$rnew[$v].'';
+	elseif($na>$nb)foreach($rnew as $k=>$v)$ca[]='add `'.$k.'` '.$v.'';
+	elseif($na<$nb)foreach($rold as $k=>$v)$ca[]='drop `'.$k.'`';
+	if($ca)sql::qr('alter table `'.$b.'` '.implode(', ',$ca).';',0);
+	self::$er+=['alter_table:'=>$b,'rnew'=>$rnew,'rold'=>$rold,'rnk'=>$rnk,'ca'=>$ca]+sql::$er??[];}//'ra'=>$ra,'rb'=>$rb,
+$rb=self::read_cols($b);
+if($ra==$rb && self::array_diff_order($ra,$b))self::reorder($b,$ra,$rb);}
+
+static function install($b,$ra,$up=''){//real dbname
+$rb=self::read_cols($b);
+if(!$rb)self::create_table($b,$ra,0);
+if($up==1)self::alter($b,$ra,$rb);
+if($up==2)sql::rollback($b);}
 
 static function home($p,$o){
 if($p)self::table($p);

@@ -579,9 +579,9 @@ self::renametagmsq($idtag,$cat,$res);
 return divd($rid,$ret);}
 
 static function renametagmsq($idtag,$cat,$d){$lg=prmb(25);
-$rn=array_flip(sesmk('tags')); $n=$rn[$cat];
-$rb=msql::modif('lang/'.$lg,nod('tags_'.$n),'','shot',0,$idtag);
-return $nd.':modified => '.msqbt('lang/'.$lg,nod('tags_'.$n));}
+$rn=array_flip(sesmk('tags')); $n=$rn[$cat]; $nd=nod('tags_'.$n);
+$rb=msql::modif('lang/'.$lg,$nd,'','shot',0,$idtag);
+return $nd.':modified => '.msqbt('lang/'.$lg,$nd);}
 
 //recat
 static function recatag($idtag,$newcat=''){

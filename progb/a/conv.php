@@ -451,7 +451,8 @@ case 'iframe':
 		$u=between($bin,'src="','"'); $b='['.self::piege_sott($u).':twitter]';}
 	elseif(strpos($bin,'app.videas.fr')){//fs
 		$u=between($bin,'src="','"'); $u=goodsrc($u); $b='['.$u.':iframe]'; break;}//[194:nms]
-	else{$u=between($bin,'src="','"'); $b='['.$u.':iframe]'; break;}}
+	else{$u=between($bin,'src="','"');
+		if(substr($u,-4)=='.mp4')$b='['.$u.']'; else $b='['.$u.':iframe]'; break;}}
 return [$taga,$b,$tagb];}
 
 static function bal_conv_style($b,$bin){$bse=strtolower($bin);

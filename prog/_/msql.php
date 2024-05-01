@@ -3,9 +3,18 @@ class msql{
 static $dr,$nod,$f,$r;
 static $m='_';
 
-static function url($dr,$nod,$o=''){//if(!$nod)return;
-$dr=$dr=='lang'?$dr.'/'.(ses('lng')?ses('lng'):prmb(25)):($dr?$dr:'users');
-$f='msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod??'').'.php'; return $f;}
+//echo fsys(['usr','lng','srv','bak'],'config/tags');
+static function fsys($rd,$nod,$lg='',$qb=''){$rt=['msql'];//future
+$r=['usr','bak','cnf','lng','cli','srv','sys'];
+foreach($r as $k=>$v)if(in_array($v,$rd)){$rt[]=$v;
+if($v=='usr')$rt[]=$qb?$qb:ses('qb');
+if($v=='lng')$rt[]=$lg?$lg:ses('lng');}
+$rt[]=$nod;
+return implode('/',$rt).'.php';}
+
+static function url($dr,$nod,$o=''){
+$dr=$dr=='lang'?$dr.'/'.ses('lng'):($dr?$dr:'users');
+return 'msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod??'').'.php';}
 //json::add('',nod('msqldir'.mkday('ymnHis')),[$nod]);
 
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}

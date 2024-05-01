@@ -9,9 +9,9 @@ foreach($r as $v)unset($_SESSION[$v]);}
 
 #master_cnfg//qd
 static function master_params(){
-$aqb=ses::$s['qb']; //$subd=ses('subd');//obs
-$f=self::cnf(); $d=is_file($f)?read_file($f):''; 
-$prms=expl('#',$d,16);
+$aqb=ses('aqb'); $subd=ses('subd'); $f=self::cnf();
+$d=is_file($f)?read_file($f):''; 
+$prms=expl('#',$d,16); //pr($prms);
 //$prms=msql::kx('system','default_config',1); pr($prms);
 $_SESSION['db']=sqldb::$rt;
 //$_SESSION['db']['qd']=$qd;
@@ -30,6 +30,31 @@ $prms['aupdate']=$prms[13];
 $prms['srvmirror']=$prms[14];
 $prms['srvimg']=http($prms[15]);
 $_SESSION['prms']=$prms;}
+
+/*
+static function master_params(){
+//$aqb=ses('aqb'); //$subd=ses('subd');//obs
+$f=self::cnf(); $d=is_file($f)?read_file($f):''; 
+$prms=expl('#',$d,16);
+//$prms=msql::kx('system','default_config',1); pr($prms);
+$_SESSION['db']=sqldb::$rt;
+//$_SESSION['db']['qd']=$qd;
+$prms['htacc']=$prms[1]=='yes'?1:'';//obs
+$prms['create_hub']=$prms[2]=='yes'?'on':'off';//obs
+$prms['default_hub']=ses::s('qb');//3
+//$prms['sbdm']=$prms[4]=ses::s('sbdm');
+$prms['srvup']=ses::s('updsrv','philum.fr');//updates//5
+$prms['nogdf']=$prms[6]=='no'?1:'';//obs
+$prms['goog']=ses::s('goog');//7
+$prms['timez']=ses::s('tz','Europe/Paris');//8
+$prms['error']='NULL';//9
+//$prms['enc']=ses::$s['enc']);//defined by cnfg
+$prms['uplimit']=ses::s('uplimit','2500');//12
+$prms['aupdate']=ses::s('updsoft');//13
+$prms['srvmirror']=ses::s('mirsrv');//14
+$prms['srvimg']=http(ses::s('imgsrv'));//15
+$_SESSION['prms']=$prms;}
+*/
 
 static function restore_mprm($f){
 $d=sql('struct','qdu','v',['name'=>ses('usr')]);
@@ -57,7 +82,6 @@ if(!ses('qbd') && ses('qb'))$_SESSION['qbd']=sql('id','qdu','v',['name'=>ses('qb
 
 static function prmb_defaults($pm){
 //if(!$pm[0])$pm[0]=ses('qb');//hub
-if($pm[0])ses::$s['qb'];//hub
 if(!$pm[1] or !is_numeric($pm[1]))$pm[1]='1';//mods
 if(!$pm[3])$pm[3]=400;//kmax
 if(!$pm[6])$pm[6]=20;//nb_arts_by_page
@@ -82,6 +106,7 @@ $_SESSION['rstr']=arr($rst,180);
 $pm=opt($qbn['config']??'','#',28); //pr($pm);
 //$pm=msql::kv('server',nod('config'),1); pr($pm);
 $_SESSION['prmb']=self::prmb_defaults($pm); //pr(ses('prmb'));
+self::seslng();//need prmb25 before nms
 //$_SESSION['cats']=msql::kv('server',nod('cats'),1); pr(ses('cats'));
 //$_SESSION['cats']=sql('id,cat','qdc','kv',['no'=>'0']);
 $qbin['adminmail']=$qbn['mail']??'';
@@ -100,7 +125,7 @@ ses('mobile',mobile()); ses('switch',''); $_SESSION['prma']=[];}
 
 static function define_use(){
 if(rstr(59) && !ses('nuse')){
-	if($cuse=cookie('use')){$uid=login::verif_user($cuse,'');//id of usr
+	if($cuse=cookie('use')){$uid=login::user_exists($cuse);//id of usr
 		setcookie('uid',$uid,$_SESSION['dayx']+(86400*30));
 		if(cookie('uid')==$uid && $uid){$_SESSION['usr']=$cuse; $_SESSION['uid']=$uid;}}}
 self::define_closed_hub();}
@@ -355,6 +380,10 @@ static function deskpage(){$ret=self::state();
 head::add('jscode',desk::desktop_js('boot'));
 if($ret)head::add('jscode',sj('popup_'.$ret));
 return '';}
+
+static function favicon(){$c='blue';
+if(ses('dev'))$c='violet'; if(ses::$s['local'])$c='pink';
+return 'pub/favicons/favicon_'.ses::$s['logo'].'_'.$c.'.png';}
 
 #cache
 static function cache_arts($x=''){

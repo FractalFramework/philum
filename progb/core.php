@@ -183,7 +183,7 @@ return mkbub($ret,'','1','popz+=1; this.style.zIndex=popz;');}
 
 //$ret=select_jb('inp','backup|progb|plug',$p,1,'');
 function select_jb($id,$pr,$v='',$o='',$oj=''){$rid=randid();//pr='a|b|c'
-$j=ajx(addslashes($pr)).'_'.$id.'_'.$rid.'_'.($oj); $t=picto('kdown');
+$j=ajx(addslashes($pr)).'_'.$id.'_'.$rid.'_'.$oj; $t=picto('kdown');
 if($o==1)$h=input($id,$v,7); else $h=hidden($id,$v);
 return bubslct($j,$t).$h.$t;}
 

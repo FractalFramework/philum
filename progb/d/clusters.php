@@ -76,7 +76,7 @@ day>"'.timeago($nbj).'" group by tag order by c desc limit '.$limit;
 return sql::call($sql,'krr','');}
 
 static function viewone($cat,$p){$ret='';
-//$r=sql::inner(sqldb::tn('qdtc').'.id,word','qdt','qdtc','idtag','kv',['idtag'=>$p],0);
+//$r=sql::inner(sqldb::db('qdtc').'.id,word','qdt','qdtc','idtag','kv',['idtag'=>$p],0);
 $r=sql::read('id,word','qdtc','kv',['idtag'=>$p],0); //pr($r);
 foreach($r as $k=>$v){
 	$ret.=lj('small','edt'.$p.'_clusters,del2___'.ajx($cat).'_'.$k.'_'.$p,$v.' (x)').' ';}

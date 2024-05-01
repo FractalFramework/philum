@@ -73,8 +73,8 @@ static function mkq($r){[$r,$q]=self::where($r);//oldschool
 foreach($r as $k=>$v)if(substr($v,0,9)!='password(')$q=str_replace(':'.$k,'"'.$v.'"',$q); return $q;}
 
 static function fetch($stmt,$p){$rt=[];
-if($p=='a' or $p=='ar')$rt=$stmt->fetchAll(PDO::FETCH_ASSOC);
-elseif($p=='r' or $p=='rr')$rt=$stmt->fetchAll(PDO::FETCH_BOTH);
+if($p=='a' or $p=='ar' or $p=='r' or $p=='rr')$rt=$stmt->fetchAll(PDO::FETCH_ASSOC);
+//elseif()$rt=$stmt->fetchAll(PDO::FETCH_BOTH);
 else $rt=$stmt->fetchAll(PDO::FETCH_NUM);
 return $rt;}
 
@@ -142,15 +142,17 @@ static function call2($sql,$p,$z=''){return self::fetch(self::qr($sql,$z),$p);}
 static function com2($sql){return self::rq()->query($sql);}
 static function com($sql,$z=''){return self::qr($sql,$z);}
 
-static function sqcols($b){return 'select column_name from information_schema.columns where table_name="'.$b.'" and table_schema="'.self::$db.'"';}
-static function sqcols2($b){return 'select column_name,data_type,character_maximum_length from information_schema.columns where table_name="'.$b.'" and table_schema="'.self::$db.'"';}
-static function cols($b,$n=1){$fc='cols'.$n; $r=self::$fc($b); return $r;}
-static function cols1($b){return self::call(self::sqcols($b),'rv',1);}
-static function cols2($b){return self::call(self::sqcols2($b),'rv');}
 static function sqdrop($b){return 'drop table '.$b;}
 static function sqtrunc($b){return 'truncate table '.$b;}
 static function sqalter($b,$n){return 'alter table '.$b.' auto_increment='.$n;}
 static function sqshow($b){return 'show tables like "'.$b.'"';}
+static function sqdesc($b){return 'describe '.$b;}
+static function sqcols($b){return 'select column_name,data_type,character_maximum_length from information_schema.columns where table_name="'.$b.'" and table_schema="'.sql::$db.'"';}
+static function cols($b,$n=1){$fc='cols'.$n; return self::$fc($b);}
+static function cols1($b){return self::call(self::sqdesc($b),'rv');}
+static function cols2($b){return self::call(self::sqdesc($b),'kv');}
+static function cols3($b){return self::call(self::sqdesc($b),'ar');}
+static function cols4($b){return self::call(self::sqcols($b),'ar',1);}
 
 }
 ?>

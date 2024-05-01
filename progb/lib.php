@@ -483,6 +483,7 @@ function getz($k){ses::$r['get'][$k]='';}
 function post($k,$v=''){return $_POST[$k]??$_POST[$k]=$v;}
 function cookie($d,$v=''){if($v)setcookie($d,$v,ses('daya')+(86400*30)); return $_COOKIE[$d]??'';}
 function cookz($d){setcookie($d,'',0);}
+function env($d,$v=null){if(isset($v))$_ENV[$d]=$v; return $_ENV[$d]??'';}//assign
 function ses($d,$v=null){if(isset($v))$_SESSION[$d]=$v; return $_SESSION[$d]??'';}//assign
 function sesb($d,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=$v; return $_SESSION[$d];}
 function sesz($d){if(isset($_SESSION[$d]))unset($_SESSION[$d]);}

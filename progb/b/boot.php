@@ -82,7 +82,6 @@ if(!ses('qbd') && ses('qb'))$_SESSION['qbd']=sql('id','qdu','v',['name'=>ses('qb
 
 static function prmb_defaults($pm){
 //if(!$pm[0])$pm[0]=ses('qb');//hub
-if($pm[0])ses::$s['qb'];//hub
 if(!$pm[1] or !is_numeric($pm[1]))$pm[1]='1';//mods
 if(!$pm[3])$pm[3]=400;//kmax
 if(!$pm[6])$pm[6]=20;//nb_arts_by_page
@@ -107,6 +106,7 @@ $_SESSION['rstr']=arr($rst,180);
 $pm=opt($qbn['config']??'','#',28); //pr($pm);
 //$pm=msql::kv('server',nod('config'),1); pr($pm);
 $_SESSION['prmb']=self::prmb_defaults($pm); //pr(ses('prmb'));
+self::seslng();//need prmb25 before nms
 //$_SESSION['cats']=msql::kv('server',nod('cats'),1); pr(ses('cats'));
 //$_SESSION['cats']=sql('id,cat','qdc','kv',['no'=>'0']);
 $qbin['adminmail']=$qbn['mail']??'';
@@ -125,7 +125,7 @@ ses('mobile',mobile()); ses('switch',''); $_SESSION['prma']=[];}
 
 static function define_use(){
 if(rstr(59) && !ses('nuse')){
-	if($cuse=cookie('use')){$uid=login::verif_user($cuse,'');//id of usr
+	if($cuse=cookie('use')){$uid=login::user_exists($cuse);//id of usr
 		setcookie('uid',$uid,$_SESSION['dayx']+(86400*30));
 		if(cookie('uid')==$uid && $uid){$_SESSION['usr']=$cuse; $_SESSION['uid']=$uid;}}}
 self::define_closed_hub();}
@@ -380,6 +380,10 @@ static function deskpage(){$ret=self::state();
 head::add('jscode',desk::desktop_js('boot'));
 if($ret)head::add('jscode',sj('popup_'.$ret));
 return '';}
+
+static function favicon(){$c='blue';
+if(ses('dev'))$c='violet'; if(ses::$s['local'])$c='pink';
+return 'pub/favicons/favicon_'.ses::$s['logo'].'_'.$c.'.png';}
 
 #cache
 static function cache_arts($x=''){

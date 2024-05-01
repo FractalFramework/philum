@@ -52,20 +52,52 @@ if(is_file($f))require($f);
 //if(!$ret)$ret='nothing';
 return isset($ret)?$ret:'';}
 
-static function home($p){$rid='plg'.randid();
-if(!auth(6))return btn('txtalert','need auth>6');
-//head::add('jscode',self::js());
-$j=$rid.'_exec,run_codarea_2';
-$f='_datas/exec/'.date('ymd').'.php'; mkdir_r($f);
-if(!$p && is_file($f)){$p=read_file($f); if($p)$p=substr($p,6);}
+static function del($p,$rid){
+if(isset($_SESSION['excbt'][$p]))unset($_SESSION['excbt'][$p]);
+return self::add('',$rid);}
+
+static function add($p,$rid,$prm=[]){[$d]=$prm;
+if($d)$_SESSION['excbt'][]=$d; $r=ses('excbt'); $ret='';
+foreach($r as $k=>$v){
+$ret.=lj('popbt',$rid.'_exec,run_'.$rid.$k.'_2__'.$rid,$k);
+$ret.=hidden($rid.$k,$v);}
+return $ret;}
+
+static function open($p){
+$f='_datas/exec/'.$p.'.php';
+return read_file($f);}
+
+static function files(){
+$r=explore('_datas/exec'); rsort($r);
+return array_map(fn($v)=>substr($v,0,-4),$r);}
+
+static function menu($p,$rid){
 $bt=lj('','popup_exec,lib','lib').' ';
 $bt.=lj('','popup_exec,fast','fast').' ';
-//$bt.=select($r,'');
+$bt.=select(['id'=>$rid.'slc'],self::files(),'vv','','codarea_exec,open___');
+//$bt.=select_j('codarea','pclass','','exec/files','','2');
 $bt.=msqbt('system','program_core').' ';
-$bt.=lj('popsav',$j,'exec');
-$ret=head::jscode(self::js());
+$bt.=lj('popsav',$rid.'_exec,run_codarea_2','exec');
+$bt.=lj('popbt',$rid.'bt_exec,add_codarea_2__'.$rid,'+');
+$bt.=span('','',$rid.'bt');
+return $bt;}
+
+static function call($p,$rid){
+if(!auth(6))return btn('txtalert','need auth>6');
+//head::add('jscode',self::js());
+$f='_datas/exec/'.date('ymd').'.php'; mkdir_r($f);
+if(!$p && is_file($f)){$p=read_file($f); if($p)$p=substr($p,6);}
+$j=$rid.'_exec,run_codarea_2';
 $sj=atjr('SaveJtim',[$j,1000]); //$onk=atjr('autocomp','codarea');
-$ret.=textarea('codarea',$p?$p:'$ret=(\'hello\');',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);
-return $bt.div(divc('col1',$ret).div('','col2 scroll',$rid),'grid-pad','','min-width:640px');}
+$ret=textarea('codarea',$p?$p:'$ret=(\'hello\');',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);
+return $ret;}
+
+static function home($p){$rid='plg'.randid();
+$_SESSION['excbt']=[];
+$bt=self::menu($p,$rid);
+$ret=head::jscode(self::js());
+$ret.=self::call($p,$rid);
+return $bt.div(tabler([[$ret,div('','col2 scroll',$rid,'word-break: break-all;')]]),'','','max-width:940px;');}
+
 }
 ?>

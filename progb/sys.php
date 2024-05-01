@@ -4,6 +4,7 @@ $_SESSION['stime']=$stime; $_SESSION['dayx']=substr($stime,0,10); geta('nl',0);
 if(!ses('qb') or get('hub') or get('refresh') or get('log')){$cache='ok'; boot::reset_ses();}
 if(get('dev')){$_SESSION['dev']='b'; head::relod('/reload');}
 if(get('module')=='Home')geta('module','');//old htaccess
+//patches::psw('poiu','');
 if($cache)boot::init();
 //if(ses('dev'))error_report();
 if($log=get('log'))boot::log_mods($log);
@@ -17,7 +18,6 @@ if(!rstr(22))boot::block_crawls();
 boot::define_auth();
 define_ses();
 $cache=boot::time_system($cache);
-boot::seslng();
 if($cache)boot::cache_arts();
 //if($cache)boot::cats();
 #Home
@@ -42,7 +42,7 @@ if(rstr(155) && !prma('desktop') && !$adm)head::add('jscode',sj('desktop_favs,do
 if(prma('background') && !$adm)head::add('csscode',desk::deskbkg(1));
 #meta
 $host=host();
-$meta['favicon']='favicon.ico';
+$meta['favicon']=boot::favicon();
 $meta['descript']='';
 if($adm)$meta['title']=$adm;
 elseif($msq)$meta['title']=$msq;
