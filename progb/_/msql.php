@@ -4,17 +4,24 @@ static $dr,$nod,$f,$r;
 static $m='_';
 
 //echo fsys(['usr','lng','srv','bak'],'config/tags');
-static function fsys($rd,$nod,$lg='',$qb=''){$rt=['msql'];//future
-$r=['usr','bak','cnf','lng','cli','srv','sys'];
+//echo fsys('usr/lng/srv/bak','config/tags');
+static function fsys($dr,$nod,$qb='',$lg=''){$rt=['msql'];//future
+$rd=explode('/',$dr); $rn=explode('/',$nod);
+$r=['pub','usr','bak','cnf','lng','cli','srv','sys'];
 foreach($r as $k=>$v)if(in_array($v,$rd)){$rt[]=$v;
-if($v=='usr')$rt[]=$qb?$qb:ses('qb');
+//if($v=='usr')$rt[]=$qb?$qb:ses('qb');
 if($v=='lng')$rt[]=$lg?$lg:ses('lng');}
 $rt[]=$nod;
 return implode('/',$rt).'.php';}
 
+static function save2($dr,$nod,$r,$rh=[],$bak=''){if(!$r)$r=[];
+if($rh && !isset($r['_']))$r=array_merge(['_'=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
+$f=self::fsys($dr,$nod,$bak); if($nod)mkdir_r($f);
+$d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); return $r;}
+
 static function url($dr,$nod,$o=''){
 $dr=$dr=='lang'?$dr.'/'.ses('lng'):($dr?$dr:'users');
-return 'msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod??'').'.php';}
+return 'msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod).'.php';}
 //json::add('',nod('msqldir'.mkday('ymnHis')),[$nod]);
 
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}

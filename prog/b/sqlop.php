@@ -44,15 +44,6 @@ else return match($ty){
 	'json'=>'json',
 	default=>'var'};}
 
-static function read_cols($b){$rb=[];
-$r=sqb::cols($b,4);
-foreach($r as $k=>$v){
-	//['DATA_TYPE'=>$type,'CHARACTER_MAXIMUM_LENGTH'=>$sz,'COLUMN_NAME'=>$nm]=$r;
-	[$type,$sz,$nm]=vals($v,['DATA_TYPE','CHARACTER_MAXIMUM_LENGTH','COLUMN_NAME']);//local
-	if(!$nm)[$type,$sz,$nm]=vals($v,['data_type','character_maximum_length','column_name']);
-	$rb[$nm]=self::detect_types($type,$nm,$sz);}
-return $rb;}
-
 static function assign_types($v){
 return match($v){
 	'ai'=>'int(7) NOT NULL auto_increment',
@@ -80,6 +71,15 @@ return match($v){
 	'enum(01)'=>'enum("0","1") NOT NULL',
 	default=>''};
 }
+
+static function read_cols($b){$rb=[];
+$r=sqb::cols($b,4);
+foreach($r as $k=>$v){
+	//['DATA_TYPE'=>$type,'CHARACTER_MAXIMUM_LENGTH'=>$sz,'COLUMN_NAME'=>$nm]=$r;
+	[$type,$sz,$nm]=vals($v,['DATA_TYPE','CHARACTER_MAXIMUM_LENGTH','COLUMN_NAME']);//local
+	if(!$nm)[$type,$sz,$nm]=vals($v,['data_type','character_maximum_length','column_name']);
+	$rb[$nm]=self::detect_types($type,$nm,$sz);}
+return $rb;}
 
 static function create_cols($r){$ret='';
 foreach($r as $k=>$v){

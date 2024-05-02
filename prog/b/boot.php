@@ -13,6 +13,7 @@ $aqb=ses('aqb'); $subd=ses('subd'); $f=self::cnf();
 $d=is_file($f)?read_file($f):''; 
 $prms=expl('#',$d,16); //pr($prms);
 //$prms=msql::kx('system','default_config',1); pr($prms);
+//$prms=msql::kx('server',nod('config'),1); pr($prms);
 $_SESSION['db']=sqldb::$rt;
 //$_SESSION['db']['qd']=$qd;
 $prms['htacc']=$prms[1]=='yes'?1:'';

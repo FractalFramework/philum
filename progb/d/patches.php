@@ -44,25 +44,25 @@ static function nod($dr,$k,$v,$o=''){
 $f=msql::url($d,$nod);
 if(is_file($f))return [$d,$nod,$f]; else return [$v,'',''];}
 
-static function renove_utf($dr,$k,$v){
+static function utf($dr,$k,$v){
 if(!auth(6))return;
 [$dr,$nod]=self::nod($dr,$k,$v);
 msqa::tools($dr,$nod,'repair_enc','');
 return $nod;}
 
-static function renove_headers($dr,$k,$v){
+static function headers($dr,$k,$v){
 if(!auth(6))return;
 [$dr,$nod]=self::nod($dr,$k,$v);
 msqa::tools($dr,$nod,'patch_m','');
 return $nod;}
 
-static function renove_splitters($dr,$k,$v){
+static function splitters($dr,$k,$v){
 if(!auth(6))return;
 [$dr,$nod]=self::nod($dr,$k,$v);
 msqa::tools($dr,$nod,'patch_s','');
 return $nod;}
 
-static function renove_return($dr,$k,$v){
+static function return($dr,$k,$v){
 if(!auth(6))return;
 [$dr,$nod]=self::nod($dr,$k,$v);
 msqa::tools($dr,$nod,'patch_ret','');
@@ -70,7 +70,7 @@ return $nod;}
 
 static function backup($dr,$nod){$r=msql::read($dr,$nod);
 if($r)msql::save($dr,str_replace('_sav','',$nod),$r,[],1);}
-static function renove_bak($dr,$k,$v){//240320
+static function bak($dr,$k,$v){//240320
 if(!auth(6))return; mkdir_r('msql/_bak/');
 [$dr,$nod]=self::nod($dr,$k,$v); //echo $dr.'/'.$nod.' ';
 if($nod && substr($nod,-4)=='_sav'){mkdir_r('msql/_bak/'.$dr);
@@ -79,7 +79,7 @@ if($nod && substr($nod,-4)=='_sav'){mkdir_r('msql/_bak/'.$dr);
 	if($f)unlink($f);
 	return $nod;}}
 
-static function renove_dir($dr,$k,$v){
+static function dir($dr,$k,$v){
 if(!auth(6))return; $r=[];
 [$dr,$nod,$f]=self::nod($dr,$k,$v,1);
 if(is_file($f))$r=require($f); //else echo $dr.' ';
@@ -88,11 +88,11 @@ if(is_file($f))$r=require($f); //else echo $dr.' ';
 return $nod;}
 
 #call
-static function call($p,$o,$prm=[]){$r=[];
+static function callm($p,$o,$prm=[]){$r=[];
 [$p1,$o]=prmp($prm,$p,$o); if(!auth(6))return;
 if($p1)$ra=[$p1];
 else $ra=['_bak'];//'design','clients','lang/fr','lang/en','lang/es','server','system','users',
-foreach($ra as $v)$r[$v]=scanwalk('msql/'.$v,'patches::renove_'.$p);
+foreach($ra as $v)$r[$v]=scanwalk('msql/'.$v,'patches::'.$p);
 return tree($r);}
 
 //hubs
@@ -175,26 +175,44 @@ foreach($rb as $k=>[$nod,$cat,$day]){$no=0;
 	else sql::upd('qdc',$rc[$k],['id'=>$rx[$nod][$cat]]);}
 return tabler($rc);}
 
-//login
 static function psw($p,$o){//240427
 self::updtable('user');
 echo $psw=password_hash($p,PASSWORD_DEFAULT);
 sql::upd('qdu',['pass'=>$psw],['name'=>ses('qb')]);}
 
+static function msql2($p,$o){//240501
+$r=scanfiles('msql'); //pr($r);
+//$r=['msql/users/newsnet/tags/8es.php'];
+$rqb=['newsnet','ummo','philum','public'];
+$rlg=['fr','en','es','it','pt','ru','de'];
+$rc=['clients'=>'cli','lang'=>'lng','system'=>'sys','server'=>'srv','users'=>'usr','_bak'=>'bak','public'=>'pub'];//
+foreach($r as $v){$rd=[]; $rn=[]; $lg='';$qb=''; $v=substr($v,0,-4); //$v=str_replace('users/public','public',$v);
+$ra=explode('/',$v);
+foreach($ra as $va){
+	if($rc[$va]??'')$rd[]=$rc[$va];
+	elseif(in_array($va,$rlg))$lg=$va;
+	elseif(in_array($va,$rqb))$qb0=$va;
+	elseif($va!='msql')$rn[]=$va;}
+$dr=join('/',$rd); $nod=join('/',$rn);
+$rt[]=msql::fsys($dr,$nod,$qb,$lg);}
+pr($rt);}
+
+static function 
+
 #call2
-static function call2($p,$o,$prm=[]){$r=[];
+static function call($p,$o,$prm=[]){$r=[];
 [$p1,$o]=prmp($prm,$p,$o);
 if(!auth(6))return;
 return self::$p($p1,$o,$prm);}
 
 static function menu($p){$rt=[];
 $ret=inputb('fto',$p,18,'directory');
-$rok=['tags','cats','psw']; 
+$rok=['tags','cats','msql2']; 
 //$rok=['usr_resav','usr_update','usr_rollback'];
 $ra=['utf','headers','splitters'];
+foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,callm_fto_3_'.$v,$v);
+$ra=['dbutf','dbsplitters','catarts','catartsrev','hubs','hubarts','noqd','return','bak','dir','reboot','tags','cats','psw','msql2'];
 foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,call_fto_3_'.$v,$v);
-$ra=['dbutf','dbsplitters','catarts','catartsrev','hubs','hubarts','noqd','return','bak','dir','reboot','tags','cats','psw'];
-foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,call2_fto_3_'.$v,$v);
 foreach($rok as $v)$ret.=$rt[$v];
 return $ret;}
 
