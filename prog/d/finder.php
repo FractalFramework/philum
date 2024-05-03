@@ -252,7 +252,7 @@ return $ret;}
 
 //upurl
 static function upurlsav($dr,$o,$prm=[]){$u=$prm[0]??'';
-if(!is_img($u))return'no'; $ret=get_file($u); $nm=strrchr($u,'/');
+if(!is_img($u))return'no'; $ret=getfile($u); $nm=strrchr($u,'/');
 $f='users/'.$dr.'/'.$nm; write_file($f,$ret);
 return 'ok';}
 static function upurl($p,$id){

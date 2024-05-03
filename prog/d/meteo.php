@@ -79,7 +79,7 @@ $rh=['day','insee','res']; $d=''; $r=[];
 $r=msql::mul('',nod('meteo_1'),$insee,'',$rh);
 if(!empty($r[0]) && $r[0]==$day)$d=$r[1]??'';
 $f='http://logic.ovh/api/meteo/uid:13,insee:'.($p?$p:$insee);
-if(!$d){$d=get_file($f); if($d)$r=json_decode($d,true); if(!is_array($r)){$d=''; $r=[];}
+if(!$d){$d=getfile($f); if($d)$r=json_decode($d,true); if(!is_array($r)){$d=''; $r=[];}
 	if($d && $d!='null'){json::add('','meteo',[$insee,$day,$d]);
 	msql::modif('',nod('meteo_1'),[$day,$d],'row','',$insee);}}
 else $r=json_decode($d,true);

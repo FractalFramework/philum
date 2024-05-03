@@ -220,7 +220,7 @@ function walkr($r,$o=''){$fc=fn($k,$v)=>$o?$o:"$k=>$v";
 return array_map($fc,array_keys($r),array_values($r));}
 
 #files
-function get_file($f){return curl_get_contents($f);}
+function getfile($f){return curl_get_contents($f);}
 function read_file($f){$fp=false; if($f)$fp=fopen($f,'r') or die('er'); $ret='';//fgets
 if($fp){while(!feof($fp))$ret.=fread($fp,8192); fclose($fp);} return $ret;}
 function write_file($f,$d){$h=fopen($f,'w') or die('er'); $w=false;
@@ -282,7 +282,7 @@ return $dom;}
 
 function fdom($f,$o=''){$ret='';
 if($o==2){$dom=dom(''); $dom->loadHTML($f); return $dom;}
-elseif($o){$d=get_file($f); $d=toutf8($d); if($d)return dom($d);}
+elseif($o){$d=getfile($f); $d=toutf8($d); if($d)return dom($d);}
 else{$dom=dom(''); @$dom->loadHTMLFile($f,LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD); return $dom;}}
 
 function domattr($v,$p){if($v->hasAttribute($p))return $v->getAttribute($p);}

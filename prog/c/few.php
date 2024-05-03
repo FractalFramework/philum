@@ -54,7 +54,7 @@ $bt=lj('','popup_few,seesrc2__3_'.ajx($f),pictit('file-html','code')).' ';
 [$title,$ret,$d]=conv::vacuum($f); $d=self::progcode($d);
 return $bt.tagc('code','console',$d);}
 
-static function seesrc2($f){$d=get_file($f);
+static function seesrc2($f){$d=getfile($f);
 $d=self::progcode($d);
 return tagc('code','console',$d);}
 

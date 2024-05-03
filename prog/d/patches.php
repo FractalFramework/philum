@@ -180,23 +180,40 @@ self::updtable('user');
 echo $psw=password_hash($p,PASSWORD_DEFAULT);
 sql::upd('qdu',['pass'=>$psw],['name'=>ses('qb')]);}
 
+static function msqlcopy2($fa,$fb){
+//$r=msql::read($v,''); msql::save2($dr,$nod,$r,$lg);
+$fb=str_replace('/.php','/index.php',$fb);
+$d=read_file($fa); mkdir_r($fb); putfile($fb,$d);}//.'.php'
+
+static function msql2b($fa,$fb){$rb=[];
+$r=['pub','usr','bak','lng','cnf','cli','srv','sys']; $n=count($r); //$r=array_reverse($r);
+foreach($r as $k=>$v)$rb[]=implode('/',array_slice($r,$k,$n));
+return tabler($rb);}
+
 static function msql2($p,$o){//240501
 $r=scanfiles('msql'); //pr($r);
+if(is_dir('msql2'))rmdir_r('msql2');
 //$r=['msql/users/newsnet/tags/8es.php'];
-$rqb=['newsnet','ummo','philum','public'];
-$rlg=['fr','en','es','it','pt','ru','de'];
-$rc=['clients'=>'cli','lang'=>'lng','system'=>'sys','server'=>'srv','users'=>'usr','_bak'=>'bak','public'=>'pub'];//
-foreach($r as $v){$rd=[]; $rn=[]; $lg='';$qb=''; $v=substr($v,0,-4); //$v=str_replace('users/public','public',$v);
-$ra=explode('/',$v);
-foreach($ra as $va){
-	if($rc[$va]??'')$rd[]=$rc[$va];
-	elseif(in_array($va,$rlg))$lg=$va;
-	elseif(in_array($va,$rqb))$qb0=$va;
-	elseif($va!='msql')$rn[]=$va;}
-$dr=join('/',$rd); $nod=join('/',$rn);
-$rt[]=msql::fsys($dr,$nod,$qb,$lg);}
-pr($rt);
-}
+$rqb=['newsnet','ummo','philum','public'];//
+$rlg=['fr','en','es','it','pt','ru','de','ja','nb','zh'];
+$rc=['clients'=>'cli','lang'=>'lng','system'=>'sys','server'=>'srv','config'=>'cnf','users'=>'usr','_bak'=>'bak'];//,'public'=>'pub'
+foreach($r as $v){$rd=[]; $rn=[]; $lg='';$qb=''; //$v=substr($v,0,-4); //$v=str_replace('users/public','public',$v);
+	$ra=explode('/',$v);
+	foreach($ra as $va){
+		if($rc[$va]??'')$rd[]=$rc[$va];
+		elseif(in_array($va,$rlg))$lg=$va;//$rd[]=$va;
+		elseif(in_array($va,$rqb))$qb=$va;//$rd[]=$va;
+		elseif($va!='msql')$rn[]=$va;}
+	$dr=join('/',$rd); $nod=join('/',$rn);
+	$f=msql::fsys($dr,$nod,$qb,$lg); $f=substr($f,0,-4); //$f=str_replace('usr/public','pub',$f);
+	self::msqlcopy2($v,$f,$qb,$lg);
+	$rt[]=[$v,$f];}
+return tabler($rt);}
+
+static function unifynod(){$rt=[];
+$r=sql('name,nod,id','qda','kkr',[]);
+foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[]=[$k,$ka,implode(' ',$va)];
+return tabler($rt);}
 
 #call2
 static function call($p,$o,$prm=[]){$r=[];
@@ -206,11 +223,11 @@ return self::$p($p1,$o,$prm);}
 
 static function menu($p){$rt=[];
 $ret=inputb('fto',$p,18,'directory');
-$rok=['tags','cats','msql2']; 
+$rok=['tags','cats','msql2','msql2b','unifynod']; 
 //$rok=['usr_resav','usr_update','usr_rollback'];
 $ra=['utf','headers','splitters'];
 foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,callm_fto_3_'.$v,$v);
-$ra=['dbutf','dbsplitters','catarts','catartsrev','hubs','hubarts','noqd','return','bak','dir','reboot','tags','cats','psw','msql2'];
+$ra=['dbutf','dbsplitters','catarts','catartsrev','hubs','hubarts','noqd','return','bak','dir','reboot','tags','cats','psw','msql2','msql2b','unifynod'];
 foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,call_fto_3_'.$v,$v);
 foreach($rok as $v)$ret.=$rt[$v];
 return $ret;}
