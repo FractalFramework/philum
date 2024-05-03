@@ -14,7 +14,7 @@ if($r)foreach($r as $k=>$v){$attr=domattr($v,$b);//$v->getAttribute($b)//$v->nod
 return $ret;}
 
 static function build($p,$o=''){$u=domain(trim($p)); //echo $u;
-$d=get_file($p); $r=dom($d); $ret=''; //$ret=eco($d,1); //pr($r);
+$d=getfile($p); $r=dom($d); $ret=''; //$ret=eco($d,1); //pr($r);
 //if($u=='t.co'){$r=get_meta_tags($p); $ret=$r['twitter:url']; pr($r);}
 if($u=='t.co')$ret=self::dom_extract($r,'refresh:http-equiv:meta:content');
 if(strpos($ret,'0;URL=')!==false)$ret=substr($ret,6);

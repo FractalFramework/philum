@@ -5,18 +5,21 @@ static $m='_';
 
 //echo fsys(['usr','lng','srv','bak'],'config/tags');
 //echo fsys('usr/lng/srv/bak','config/tags');
-static function fsys($dr,$nod,$qb='',$lg=''){$rt=['msql'];//future
+static function fsys($dr,$nod,$qb='',$lg=''){$rt=['msql2'];//future
 $rd=explode('/',$dr); $rn=explode('/',$nod);
-$r=['pub','usr','bak','cnf','lng','cli','srv','sys'];
-foreach($r as $k=>$v)if(in_array($v,$rd)){$rt[]=$v;
-//if($v=='usr')$rt[]=$qb?$qb:ses('qb');
+$r=['pub','usr','bak','lng','cnf','cli','srv','sys'];
+$rlg=['fr','en','es','it','pt','ru','de'];
+foreach($r as $k=>$v)if(in_array($v,$rd)){$rt[]=$k.$v;
+if($v=='usr')$rt[]=$qb?$qb:ses('qb');
 if($v=='lng')$rt[]=$lg?$lg:ses('lng');}
+//elseif(in_array($v,$rlg))$rt[]=$v;
+//foreach($rd as $v)if($k=in_array_b($v,$r)){$rt[]=$k.$v;}else $rt[]=$v;
 $rt[]=$nod;
 return implode('/',$rt).'.php';}
 
-static function save2($dr,$nod,$r,$rh=[],$bak=''){if(!$r)$r=[];
+static function save2($dr,$nod,$r,$qb='',$lg='',$rh=[]){if(!$r)$r=[];
 if($rh && !isset($r['_']))$r=array_merge(['_'=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
-$f=self::fsys($dr,$nod,$bak); if($nod)mkdir_r($f);
+$f=self::fsys($dr,$nod,$qb,$lg); if($nod)mkdir_r($f);
 $d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); return $r;}
 
 static function url($dr,$nod,$o=''){

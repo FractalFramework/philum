@@ -6,7 +6,7 @@ static function capture($p){}
 static function build($p,$o){
 $key=nohttp(domain($p));
 $r=msql::col('',nod('captdatas'),$key,0,1);
-$d=get_file($p); if(!$r)return 'no';
+$d=getfile($p); if(!$r)return 'no';
 if(empty($r['end']))$rec=conv::html_detect($d,$r['start']);
 else $rec=between($d,$r['start'],$r['end']);
 $reb=conv::call($rec); //echo $reb;

@@ -5,7 +5,7 @@ static $a=__CLASS__;
 static $default='http://logic.ovh/2221';
 
 static function build($p,$o){$bt='';
-$d=get_file($p); $dom=dom($d);
+$d=getfile($p); $dom=dom($d);
 $r=$dom->getElementsByTagName('table'); $n=count($r);
 for($i=0;$i<$n;$i++)$bt.=lj(active($i,$o),'dtct_detectable,call___'.ajx($p).'_'.$i,picto('p'.$i));
 $rt=self::detect_table($r[$o]);

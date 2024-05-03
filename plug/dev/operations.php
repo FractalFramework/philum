@@ -144,7 +144,7 @@ return $ret;}
 
 static function test_xml($f){
 $f='http://www.tlaxcala-int.org/rss_lg.asp?lg_rss=fr';
-$d=get_file($f);
+$d=getfile($f);
 //$enc=between(strtolower($d),'encoding="','"');
 $r=simplexml_load_string($d);
 $xml=explode("\n",$f);

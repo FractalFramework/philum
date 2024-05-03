@@ -87,7 +87,7 @@ return $rb;}
 
 static function home($f){
 //$f='http://w41k.com/';
-if($f)$d=get_file($f);
+if($f)$d=getfile($f);
 if($d)$r=self::interpret_xml($d);
 //$r=self::xml_rss($r);
 //$r=xml_html($r);

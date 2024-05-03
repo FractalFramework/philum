@@ -413,7 +413,7 @@ if(isset($r[0])){$rh['_']=$r[0]; unset($r[0]); $r=$rh+$r;}
 return $r;}
 
 static function import_json_lk($f){
-if(substr($f,0,4)=='http')$d=get_file($f);
+if(substr($f,0,4)=='http')$d=getfile($f);
 if($f)return self::import_json($d);}
 
 //csv

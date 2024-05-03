@@ -14,7 +14,7 @@ for($i=1;$i<sizeof($tmp)-1;$i+=1){
 	if(isset($tmp2[1]))$ret[$i][]=html_entity_decode($tmp2[1]);}}}}
 return $ret;}
 
-static function read_old($f,$t,$r){$d=get_file($f);
+static function read_old($f,$t,$r){$d=getfile($f);
 $d=str_replace([' isPermaLink="false"',' rel="stylesheet"',' type="text/css"'],'',$d??''); 
 return self::datas_old($d,$t,$r);}
 
@@ -43,7 +43,7 @@ $ret[]=[$va,$lnk,$dat,$txt];}//utfenc
 return $ret;}
 
 static function feedproxy($f){
-if(substr($f,0,2)=='//')$f='http:'.$f; $d=get_file($f);
+if(substr($f,0,2)=='//')$f='http:'.$f; $d=getfile($f);
 $enc=between(strtolower($d),'charset=','"','');
 $s='<meta property="og:url" content="'; if(strpos($d,$s))return between($d,$s,'"');
 $s="<link rel='canonical' href='"; if(strpos($d,$s))return between($d,$s,"'");}

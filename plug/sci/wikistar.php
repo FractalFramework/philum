@@ -12,7 +12,7 @@ if(strpos($p,'=')===false && strpos($p,'&')===false)$pg='sim-id?Ident='; else $p
 return 'https://fr.wikipedia.org/wiki/'.$pg.''.($p);}
 
 static function build($u){//hip32578
-$d=get_file($u); $dom=dom($d); 
+$d=getfile($u); $dom=dom($d); 
 $r=$dom->getElementsByTagName('table');
 $rt=self::detect_table($r[3]);
 $rt=self::cleanup($rt);

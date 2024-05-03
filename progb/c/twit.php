@@ -86,9 +86,9 @@ static function getimg($f,$o=''){//$o='';
 $xt=xt(trim($f)); if(!$xt)$xt='.jpg'; if(!$f)return;
 $fb=ses('qb').'_tw_'.substr(md5($f),0,6).$xt; $x=substr($xt,1);
 if(file_exists('/img/'.$fb))return host().'/img/'.$fb;// && $o==2
-elseif($o && auth(4)){$d=get_file($f); if($d)write_file('img/'.$fb,$d);//$ok=copy($f,'img/'.$fb)
+elseif($o && auth(4)){$d=getfile($f); if($d)write_file('img/'.$fb,$d);//$ok=copy($f,'img/'.$fb)
 	if(file_exists('img/'.$fb))return $fb;}//host().'/img/'.
-return 'data:image/'.$x.';base64,'.base64_encode(get_file($f));}
+return 'data:image/'.$x.';base64,'.base64_encode(getfile($f));}
 
 static function img($f,$o=''){
 if(is_file('img/'.$f))$im='img/'.$f;
@@ -128,7 +128,7 @@ if($d)return strtotime($d);}
 
 static function oembed($u){
 $t=twapi::init(); $q=$t->embed($u);
-//$d=get_file('https://publish.twitter.com/oembed?url='.$u); $q=json_decode($d,true);
+//$d=getfile('https://publish.twitter.com/oembed?url='.$u); $q=json_decode($d,true);
 $txt=$q['html']??''; $nm=$q['author_name']??''; $sn=strend($q['author_url']??'','/');
 $date=self::findate($txt); $lang=between($txt,'<p lang="','"'); //$txt=self::text($u);
 if(!$nm)$nm=$sn=self::recupnm($u);

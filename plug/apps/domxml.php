@@ -121,7 +121,7 @@ return $ret;}
 static function build($f,$o){$ret='';
 //self::test();
 //echo $f='https://fr.dompedia.org/wiki/'.$p;
-//$d=get_file($f);
+//$d=getfile($f);
 //$o=0;
 $dom=fdom($f); //pr($dom);
 if($dom)foreach($dom->getElementsByTagName('div') as $k=>$div)

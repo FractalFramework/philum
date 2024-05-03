@@ -486,7 +486,7 @@ elseif($v){$_SESSION['vac'][$u][$k]=$v; $_SESSION['vac'][$u]['u']=$f;}
 return $_SESSION['vac'][$u][$k]??'';}
 function vaccum_ses($f){$d=vacses($f,'b');
 if(strpos($d,'This page appears when Google'))return;
-if(!$d){$d=get_file($f); vacses($f,'b',$d);}
+if(!$d){$d=getfile($f); vacses($f,'b',$d);}
 return $d;}
 
 #app

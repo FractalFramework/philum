@@ -71,7 +71,7 @@ if($r)foreach($r as $k=>$v){$rt[$k]=[];
 return $rt;}
 
 static function build($u){//hip32578
-$d=get_file($u); $dom=dom($d); 
+$d=getfile($u); $dom=dom($d); 
 $r=$dom->getElementsByTagName('table'); $n=count($r);
 $rt=self::detect_table($r[3]);
 $rt=self::cleanup($rt);

@@ -37,9 +37,9 @@ else{//local
 	$srv=prms('srvmirror'); $fa.='.gz';
 	if(!$srv)return 'srvmirror is not set';
 	if(is_file($fa))unlink($fa);
-	$f=$srv.'/call/transport/'.$p.'/call&fc=msql'; $ret=get_file($f);
+	$f=$srv.'/call/transport/'.$p.'/call&fc=msql'; $ret=getfile($f);
 	[$usr,$db,$ps,$dr]=self::srv(1);
-	$e='wget -P '.$dr.'/_backup '.$srv.'/'.$fa; exc($e); //$ret=get_file($srv.'/'.$fa);
+	$e='wget -P '.$dr.'/_backup '.$srv.'/'.$fa; exc($e); //$ret=getfile($srv.'/'.$fa);
 	$e='tar -zxvf '.$dr.'/'.$fa;
 	//echo $e='tar --extract --listed-incremental=/dev/null --file '.$dr.'/'.$fa;
 	if(is_file($fa))exc($e); //extract($fa);
@@ -68,8 +68,8 @@ else{//local
 	$srv=prms('srvimg');
 	if(!$srv)return 'srvimg is not set';
 //	if(is_file($fa))unlink($fa);
-	$f=$srv.'/call/transport/'.$p.'/call&fc=img'; $fa=get_file($f); //echo $ret;
-	$e='wget -P '.$dr.'/_backup '.$srv.'/'.$fa; exc($e); //$ret=get_file($srv.'/'.$fa);
+	$f=$srv.'/call/transport/'.$p.'/call&fc=img'; $fa=getfile($f); //echo $ret;
+	$e='wget -P '.$dr.'/_backup '.$srv.'/'.$fa; exc($e); //$ret=getfile($srv.'/'.$fa);
 	$e='tar -zxvf '.$dr.'/'.$fa.' '.$dr.'/img/';
 	//echo $e='tar --extract --listed-incremental=/dev/null --file '.$dr.'/'.$fa;
 	//if(is_file($fa))exc($e); //extract($fa);
@@ -97,7 +97,7 @@ else{//local
 	$srv=prms('srvmirror');
 	if(!$srv)return 'srvmirror is not set';
 //	if(is_file($fa))unlink($fa);
-	$f=$srv.'/call/transport/'.$p.'/call&fc=usr'; $fa=get_file($f); //echo $ret;
+	$f=$srv.'/call/transport/'.$p.'/call&fc=usr'; $fa=getfile($f); //echo $ret;
 	$e='wget -P '.$dr.'/_backup '.$srv.'/'.$fa; if(!is_file($fa))exc($e);//
 	$e='tar -zxvf '.$dr.'/'.$fa.' '.$dr.'/img/';
 	if(is_file($fa))tar::extract($fa);
@@ -111,7 +111,7 @@ $p=$prm[0]??$p; if(!auth(7))return;
 [$usr,$db,$ps,$dr]=self::srv(1); $res=''; $root=__DIR__; $ok=1;
 $srv=prms('srvimg'); if(!$srv)return 'srvimg is not set';
 if($o=='all'){$dt=date('ymd');
-	$u=$srv.'/call/transport/1/d'; $fa=get_file($u);//build
+	$u=$srv.'/call/transport/1/d'; $fa=getfile($u);//build
 	//if(is_file($fa))unlink($fa);//
 	if(!is_file($fa)){$e='wget -P '.$dr.'/_backup '.$srv.'/'.$fa; exc($e);}
 	if(is_file($fa)){
@@ -122,7 +122,7 @@ if($o=='all'){$dt=date('ymd');
 		//$e="SET names 'utf8'"; exc($e);
 		//$e='SOURCE '.$dr.'/'.$fb; exc($e);
 		return 'restored';}}
-$f=$srv.'/call/transport/'.$p.'/last'; $dist_maxid=get_file($f);
+$f=$srv.'/call/transport/'.$p.'/last'; $dist_maxid=getfile($f);
 $maxid=self::last($p); if($maxid=='' or $o=='d')$maxid=0;
 if($o=='z' && auth(7)){sql::drop(self::ts_db($p));//$b=self::pub($p); qr('drop table '.$b);//reinit
 	sqldb::install($p);//$r=install::db(); $d=$r[$p]; if($d)qr($d); 
@@ -131,15 +131,15 @@ elseif($o=='zz' && auth(7)){$r=self::tables();//reinstal tables
 	foreach($r as $k=>$v)sql::drop(self::ts_db($v));//qr('drop table '.self::pub($v));
 	return sqldb::batchinstall();}//install::home(db('qd'))
 elseif($o=='json'){//dj
-	$u=$srv.'/call/transport/'.$p.'/dj'; $d=get_file($u); //echo $u.';;';//build?? //.($o?$o:$maxid)
+	$u=$srv.'/call/transport/'.$p.'/dj'; $d=getfile($u); //echo $u.';;';//build?? //.($o?$o:$maxid)
 	$f='_backup/'.$p.'.json'; $u=$srv.'/'.$f;
 	//if(is_file($f))unlink($f); 
 	if(!is_file($f)){$e='wget -P '.$dr.'/_backup '.$u; exc($e);}
-	if($d=get_file($u))$r=json_decode($d,true); $er=json_error(); //$r=utf_r($r,1);
+	if($d=getfile($u))$r=json_decode($d,true); $er=json_error(); //$r=utf_r($r,1);
 	if($d && !$er){$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b); sql::sav2($b,$r,1,0); $res=$b.':renoved';}}
 else{//partial and complete dumps, not gziped
 	//$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b);
-	$u=$srv.'/call/transport/'.$p.'/'.($o=='up'?$o:$maxid); $d=get_file($u);//build
+	$u=$srv.'/call/transport/'.$p.'/'.($o=='up'?$o:$maxid); $d=getfile($u);//build
 	$f='_backup/'.$p.'.dump'; $u=$srv.'/'.$f;
 	if(is_file($f))unlink($f); if(!is_file($f)){$e='wget -P '.$dr.'/_backup '.$u; exc($e);}
 	if(!is_file($f)){$d=curl_get_contents($u); 

@@ -23,7 +23,7 @@ return $f;}
 
 static function import($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
-$d=get_file($p);
+$d=getfile($p);
 $r=self::xml_to_array($d);
 //sqlsav('qda',$r);
 return tabler($r);}

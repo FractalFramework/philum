@@ -42,7 +42,7 @@ static function act($p,$o,$prm){
 switch($p){
 case('src'):ses::$urlsrc=$d; if($d)[$t,$ret]=conv::vacuum($d,'',1); break;
 //case('brut'):[$t,$b,$ret]=conv::vacuum($d,''); break;
-case('brut'):$ret=get_file($d); break;
+case('brut'):$ret=getfile($d); break;
 case('conn2html'):$d=self::mkquotes($d); $ret=conn::read($d,0,''); break;
 case('html2conn'):$ret=conv::call($d); break;
 case('code'):$ret=($d); break;
