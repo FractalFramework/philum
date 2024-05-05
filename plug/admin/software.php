@@ -64,7 +64,7 @@ static function build($p=''){$rb=[];
 $r=self::files(); foreach($r as $k=>$v)$rb[$v]=ftime($v);
 $r=self::dirs(); foreach($r as $k=>$v)$rb+=self::recense($v);
 if($p==2)$ra=json::read('srv','software');
-json::write('srv','software',$rb);
+json::sav('srv','software',$rb);
 if($p==1){header('Content-Type: text/json');
 	return json::brut('srv','software');}
 if($p==2){
@@ -94,7 +94,7 @@ $d=file_get_contents($f);
 if($d)$rb=json_decode($d,true);//dist files
 if($rb)$rc=self::compare($ra,$rb);
 if($rc)foreach($rc[2] as $k=>$v)unlink($v);//old files
-json::write('srv','upd',$rc);//needed files
+json::sav('srv','upd',$rc);//needed files
 $f=upsrv().'/call/software,archive/'.nohttp(host());//distant will build archive
 if(ses::$s['local'])$fa=curl_get_contents($f,json_encode($rc),1);
 else $fa=file_get_contents($f);

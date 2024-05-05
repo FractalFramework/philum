@@ -1,4 +1,4 @@
-<?php //spiclr
+<?php 
 class spiclr{
 
 static function infos($d){
@@ -44,10 +44,11 @@ foreach($r as $k=>$v){$c=$v<=$d?'active':'';
 return $ret;}
 
 static function menu($d){$d=$d?$d:118;
-$ret=inputb('spiclrx',$d,'',1).' ';
-$ret.=lj('txtbox','spiclr_spiclr,call_spiclrx','ok').' ';
+$j='spiclr_spiclr,call_spiclrx';
+$ret=inpnb('spiclrx',$d,$j,['placeholder'=>'number']).' ';
+$ret.=lj('popbt',$j,'ok').' ';
 if($d>1)$ret.=lj('txtbox','spiclr_spiclr,call___'.($d-1),picto('before')).' ';
-$ret.=lj('txtbox','spiclr_spiclr,call___'.($d+1),picto('after')).' ';
+$ret.=lj('popbt','spiclr_spiclr,call___'.($d+1),picto('after')).' ';
 $ret.=hlpbt('spitable');
 $ret.=msqbt('','public_atomic','').br();
 $ret.=self::levels($d);

@@ -67,7 +67,7 @@ function btim($d,$w='',$h=''){$j=str_replace('_','*',$d).'_'.$w.'_'.$h;
 return lj('','popup_usg,overim___'.$j,img('/'.$d,$w));}
 
 //ff
-function bj($c,$j,$v,$p=[]){if(ses('dev'))$p+=['title'=>$j];
+function bj($j,$v,$c='',$p=[]){if(ses('dev'))$p+=['title'=>$j];
 return tag('a',['onclick'=>'bj(this)','data-bj'=>$j,'class'=>$c]+$p,$v);}
 function atr($r){$ret=''; if($r)foreach($r as $k=>$v)if($v)$ret.=' '.$k.'="'.$v.'"'; return $ret;}
 function tag($b,$p,$d){return '<'.$b.atr($p).'>'.$d.'</'.$b.'>';}
@@ -220,12 +220,12 @@ function walkr($r,$o=''){$fc=fn($k,$v)=>$o?$o:"$k=>$v";
 return array_map($fc,array_keys($r),array_values($r));}
 
 #files
-function getfile($f){return curl_get_contents($f);}
 function read_file($f){$fp=false; if($f)$fp=fopen($f,'r') or die('er'); $ret='';//fgets
 if($fp){while(!feof($fp))$ret.=fread($fp,8192); fclose($fp);} return $ret;}
 function write_file($f,$d){$h=fopen($f,'w') or die('er'); $w=false;
 if($h){$e=fwrite($h,$d); fclose($h); opcache($f);}
 if($e!==false)return 1;}
+function getfile($f){return curl_get_contents($f);}
 function putfile($f,$d){$e=file_put_contents($f,$d,LOCK_EX); opcache($f);
 if($e!==false)return 1;}
 
@@ -483,7 +483,6 @@ function getz($k){ses::$r['get'][$k]='';}
 function post($k,$v=''){return $_POST[$k]??$_POST[$k]=$v;}
 function cookie($d,$v=''){if($v)setcookie($d,$v,ses('daya')+(86400*30)); return $_COOKIE[$d]??'';}
 function cookz($d){setcookie($d,'',0);}
-function env($d,$v=null){if(isset($v))$_ENV[$d]=$v; return $_ENV[$d]??'';}//assign
 function ses($d,$v=null){if(isset($v))$_SESSION[$d]=$v; return $_SESSION[$d]??'';}//assign
 function sesb($d,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=$v; return $_SESSION[$d];}
 function sesz($d){if(isset($_SESSION[$d]))unset($_SESSION[$d]);}

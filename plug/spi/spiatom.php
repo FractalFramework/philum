@@ -140,7 +140,7 @@ $ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 
 static function nav($p,$o,$rid){
-$ret=self::menu($p,$o,$rid);
+$ret=self::menu($p,$o,$rid); if(!$p)$p=1;
 if($p>0)$ret.=lj('',$rid.'_spiatom,call___'.($p-1).'_'.$o,picto('previous')).' ';
 if($p<118)$ret.=lj('',$rid.'_spiatom,call___'.($p+1).'_'.$o,picto('next')).' ';
 $ret.=hlpbt('spitable');

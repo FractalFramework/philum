@@ -1,4 +1,4 @@
-<?php //spielec
+<?php 
 class spielec{
 static function css(){$ret='';
 for($i=1;$i<118;$i++)$ret.='#id'.$i.':hover{background:rgba(255,255,255,0.4);}'."\n";
@@ -88,7 +88,7 @@ $ret=self::build($p,$o);
 return $ret;}
 
 static function nav($p,$o,$rid){
-$ret=self::menu($p,$o,$rid);
+$ret=self::menu($p,$o,$rid); if(!$p)$p=1;
 if($p>0)$ret.=lj('',$rid.'_spielec,call___'.($p-1).'_'.$o,picto('previous')).' ';
 if($p<118)$ret.=lj('',$rid.'_spielec,call___'.($p+1).'_'.$o,picto('next')).' ';
 return $ret;}

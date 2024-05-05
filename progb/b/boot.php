@@ -13,7 +13,6 @@ $aqb=ses('aqb'); $subd=ses('subd'); $f=self::cnf();
 $d=is_file($f)?read_file($f):''; 
 $prms=expl('#',$d,16); //pr($prms);
 //$prms=msql::kx('system','default_config',1); pr($prms);
-//$prms=msql::kx('server',nod('config'),1); pr($prms);
 $_SESSION['db']=sqldb::$rt;
 //$_SESSION['db']['qd']=$qd;
 $prms['htacc']=$prms[1]=='yes'?1:'';
@@ -126,8 +125,8 @@ ses('mobile',mobile()); ses('switch',''); $_SESSION['prma']=[];}
 
 static function define_use(){
 if(rstr(59) && !ses('nuse')){
-	if($cuse=cookie('use')){$uid=login::user_exists($cuse);//id of usr
-		setcookie('uid',$uid,$_SESSION['dayx']+(86400*30));
+	if($cuse=cookie('use')){$uid=login::autolog($cuse);//id of usr
+		if($uid)setcookie('uid',$uid,$_SESSION['dayx']+(86400*30));
 		if(cookie('uid')==$uid && $uid){$_SESSION['usr']=$cuse; $_SESSION['uid']=$uid;}}}
 self::define_closed_hub();}
 
@@ -379,10 +378,9 @@ return $ret;}
 
 static function deskpage(){$ret=self::state();
 head::add('jscode',desk::desktop_js('boot'));
-if($ret)head::add('jscode',sj('popup_'.$ret));
-return '';}
+if($ret)head::add('jscode',sj('popup_'.$ret));}
 
-static function favicon(){$c='blue';
+static function favicon(){$c='blue'; return 'favicon.ico';
 if(ses('dev'))$c='violet'; if(ses::$s['local'])$c='pink';
 return 'pub/favicons/favicon_'.ses::$s['logo'].'_'.$c.'.png';}
 

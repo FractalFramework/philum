@@ -91,7 +91,7 @@ static function redit($id,$sz='',$cl=''){
 $ret=lj('popsav','trk'.$id.'_tracks,reditsav_edtrk'.$id.'__'.$id.'',picto('save'));//nms(27)
 if($cl)$ret.=lj('','track'.$ib.'_tracks,reditsav_edtrk'.$id.'_xk_'.$id.'_1',picto('sclose'));
 else $ret.=lj('popbt','trkdsk_tracks,redit__x_'.$id.'_54_1',picto('output'),att(nms(198)));
-//$ret.=bj('popsav','trk'.$id.'|tracks,redit_sav|'.$id.'|edtrk'.$id,nms(28));
+//$ret.=bj('trk'.$id.'|tracks,redit_sav|'.$id.'|edtrk'.$id,nms(28),'popsav');
 $ret.=editarea('edtrk'.$id,$msg,$sz?$sz:80);
 return $ret;}
 

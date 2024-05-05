@@ -1,4 +1,4 @@
-<?php //spigrow
+<?php 
 class spigrow{
 
 static function infos($d){

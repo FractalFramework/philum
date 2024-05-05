@@ -15,8 +15,7 @@ $r['txb']=['id'=>'ai','ib'=>'int','msg'=>'text','date'=>'time'];
 $r['cat']=['id'=>'ai','hub'=>'var','cat'=>'var','pic'=>'svar','last'=>'int','no'=>'sint'];
 $r['hub']=['id'=>'ai','hub'=>'var','no'=>'sint'];
 $r['trk']=['id'=>'ai','ib'=>'int','name'=>'var','mail'=>'var','day'=>'bint','nod'=>'var','frm'=>'svar','suj'=>'var','msg'=>'text','re'=>'int','host'=>'var','lg'=>'var2','key'=>'KEY `nod` (`nod`), KEY `suj_nod` (`suj`,`nod`), KEY `day_nod` (`day`,`nod`)'];
-$r['user']=['id'=>'ai','name'=>'var','pass'=>'var','mail'=>'var','day'=>'bint','clr'=>'var','ip'=>'var','rstr'=>'var','mbrs'=>'bvar','hub'=>'var','nbarts'=>'int','config'=>'bvar','struct'=>'var','dscrp'=>'var','menus'=>'var','active'=>'int','key'=>'UNIQUE KEY `one` (`name`)'];//,'new'=>'int'
-
+$r['user']=['id'=>'ai','name'=>'var','pass'=>'var','mail'=>'var','day'=>'bint','clr'=>'var','ip'=>'var','rstr'=>'var','mbrs'=>'bvar','hub'=>'var','nbarts'=>'int','config'=>'bvar','struct'=>'var','dscrp'=>'var','menus'=>'var','active'=>'int','key'=>'UNIQUE KEY `one` (`name`)'];
 $r['user0']=['id'=>'ai','name'=>'var','pass'=>'var','mail'=>'var','day'=>'bint','ip'=>'var','active'=>'int','key'=>'UNIQUE KEY `one` (`name`)'];
 $r['data']=['id'=>'ai','ib'=>'var','val'=>'mvar','msg'=>'var','key'=>'KEY `ib_val` (`ib`,`val`)'];
 $r['ips']=['id'=>'aib','ip'=>'var','nav'=>'var','ref'=>'var','nb'=>'int','time'=>'time','key'=>'KEY `ip` (`ip`)'];

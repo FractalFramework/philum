@@ -2,8 +2,8 @@
 class twit{
 static $er=0;
 
-static function lk($u,$id=''){
-$ret='https://twitter.com/'.$u;
+static function lk($nm,$id=''){
+$ret='https://twitter.com/'.$nm;
 if($id)$ret.='/status/'.$id;
 return $ret;}
 
@@ -215,13 +215,14 @@ static function play($id,$r,$q='',$o='',$aid=0){
 $url=self::lk($sn);
 $own=msql::val('',nod('twit_'.ses('apk')),5);
 //$ret=lkt('popbt',$url,pictxt('tw',$sn));
-$ret=twapi::banner($r,0).' '; $j='popup_twit,call__3_';
+$ret=twapi::banner($r,0).' '; $j='popup_twapi,call__3_';
 //if(isset($q['retweeted_status']['id']))$ret.=btn('small','(retweet)').' ';
 if($rtwd)$ret.=lj('','popup_twit,call___'.$rtwd,'(retweet)').'';
 //lkt('small',$url.'/status/'.$rtwd,'(retweet)').'';
-if($date)$ret.=lkt('small',$url.'/status/'.$id,pictxt('chain',date('d/m/Y H:i:s',$date))).'';
+if($date)$ret.=lkt('small',$url.'/status/'.$id,pictxt('chain',date('d/m/Y',$date))).'';
 //else $ret.=lkt('',$url,picto('chain'));
-if($rplid)$ret.=lj('',$j.$id.'_thread',picto('topo'),att('parents')).'';
+//if($rplid)$ret.=lj('',$j.$id.'_thread',picto('topo'),att('parents')).'';
+if($rplid)$ret.=lj('',$j.$rplid.'_parent',picto('topo'),att('parents')).'';
 if($mnt)$ret.=lj('',$j.$id.'_mnt',picto('oversight'),att(str_replace(' ',n(),$mnt))).'';
 //if($mnt)$ret.=togbub('twit,call',$id.'_mnt',picto('oversight'),att(str_replace(' ',n(),$mnt))).'';
 //$ret.=lj('',$j.$id.'_rpl',picto('dialog'),att('answers')).'';
@@ -392,10 +393,13 @@ foreach($r as $k=>$v)$ret.=self::cache($v[0],0,2);
 //self::erasor($v[0],$v[1],$v[2]);
 return $ret;}
 
+static function call($p,$o,$prm=[]){[$p,$o]=prmp($prm,$p,$o);
+if($o=='parent'){$nm=sql('screen_name','qdtw','v',['twid'=>$p]); echo $p=self::lk($nm,$p);}
+return self::twalter($p,'');}
+
 static function r(){return ['ib'=>'int','twid'=>'bint','name'=>'var','screen_name'=>'var','user_id'=>'bint','date'=>'int','text'=>'var','media'=>'var','mentions'=>'var','reply_id'=>'bint','reply_name'=>'var','favs'=>'int','retweets'=>'int','followers'=>'int','friends'=>'int','quote_id'=>'bint','quote_name'=>'var','retweeted'=>'bint','lang'=>'var'];}//geo,coordinates
 
-static function call($p,$o){return self::twalter($p,$o);}
-
-static function home($p,$o){$rid='tw'.randid();}
+static function home($p,$o){$rid='tw'.randid(); $j='twcb_twit,call_twc';
+return inputj('twc','',$j,'').lj('',$j,picto('ok')).div('','','twcb');}
 }
 ?>

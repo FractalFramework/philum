@@ -470,6 +470,7 @@ elseif(strpos($bse,'color')!==false && self::notin($b,':color]')){
 	if($clr && substr($clr,0,1)=='#' && strlen($clr)==7 && $clr!='#000000'){
 		if($clr=='#d22' or $clr=='#FF0000')$b='['.$b.':red]';
 		else $b='['.$b.'|'.$clr.':color]';}}
+elseif(strpos($bse,'background-image')!==false)$b='['.between($bse,"url('","')").']';
 elseif(strpos($bse,'line-through;')!==false)$b='['.$b.':k]';
 elseif(strpos($bse,'spip_doc_descriptif')!==false)$b='['.$b.':q]';
 elseif(strpos($bse,'ndtref')!==false)$b='['.$b.':parma]';

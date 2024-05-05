@@ -11,7 +11,8 @@ if(!is_dir($dr))mkdir_r($dr); if(!is_file($f))file_put_contents($f,'');}
 
 static function read($dr,$nod){$f=self::url($dr,$nod);
 return is_file($f)?json_decode(file_get_contents($f),true):[];}
-static function write($dr,$nod,$r){$f=self::url($dr,$nod); self::init($f);
+static function write($dr,$nod,$r){return self::sav($dr,$nod,$r);}
+static function sav($dr,$nod,$r){$f=self::url($dr,$nod); self::init($f);
 file_put_contents($f,mkjson($r)); return $f;}
 static function brut($dr,$nod){$f=self::url($dr,$nod); self::init($f);
 return file_get_contents($f);}

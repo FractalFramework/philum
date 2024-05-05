@@ -1,7 +1,7 @@
 <?php 
 class plugin{
 static function r(){
-$r=['backup','backupim','codev','coreflush','funcs','exec','test','patches','pictocss','updateimg','genpswd','know','star','xhtml','test','operations','ops','sun','connectors','frequency','indent','msqadd','spt','atomic','microform','superpoll','chat','chatxml','crypt','phi','svg','tar','vacuum']; sort($r);
+$r=['backup','backupim','codev','coreflush','funcs','exec','test','patches','pictocss','updateimg','genpswd','know','star','xhtml','test','operations','ops','sun','connectors','frequency','indent','msqadd','spt','atomic','microform','superpoll','chat','chatxml','crypt','phi','svg','tar','vacuum','dbedt','anagram']; sort($r);
 return array_combine($r,$r);}
 
 static function call($p,$o,$prm=[]){
@@ -11,7 +11,7 @@ if(method_exists($d,'home'))return $d::home($p,$o);}
 static function menu($plg,$p='',$o=''){
 $ret=select_j('plugn','pclass','','plugin/r','','2');
 $j='plg_plugin,call_plugn,plugp,plugo_3_';
-$ret.=inputj('plugn',$plg,$j,'plugin').' ';
+$ret.=inputj('plugn',$plg,$j,'app').' ';
 $ret.=lj('',$j,picto('ok'));
 $ret.=inputb('plugp',$p?$p:'param','',1).' ';
 $ret.=inputb('plugo',$o?$o:'option','',1).' ';
@@ -55,7 +55,7 @@ return tabs($rb);}
 
 static function apps(){$rt=[];
 $r=msql::read('system','program_apps',1);
-foreach($r as $k=>$v)$rt[]=[lj('','plg_'.$v[0].',home__3',$v[0],att($v[1])),$v[1]];
+foreach($r as $k=>$v)$rt[$v[0]]=[lj('','plg_'.$v[0].',home__3',$v[0],att($v[1])),$v[1]]; asort($rt);
 return tabler($rt);}
 
 static function home($p,$o){

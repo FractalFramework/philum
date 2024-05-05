@@ -223,11 +223,11 @@ return self::$p($p1,$o,$prm);}
 
 static function menu($p){$rt=[];
 $ret=inputb('fto',$p,18,'directory');
-$rok=['tags','cats','msql2','msql2b','unifynod']; 
+$rok=['tags','cats','msql2','unifynod']; 
 //$rok=['usr_resav','usr_update','usr_rollback'];
 $ra=['utf','headers','splitters'];
 foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,callm_fto_3_'.$v,$v);
-$ra=['dbutf','dbsplitters','catarts','catartsrev','hubs','hubarts','noqd','return','bak','dir','reboot','tags','cats','psw','msql2','msql2b','unifynod'];
+$ra=['dbutf','dbsplitters','catarts','catartsrev','hubs','hubarts','noqd','return','bak','dir','reboot','tags','cats','psw','msql2','unifynod'];
 foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,call_fto_3_'.$v,$v);
 foreach($rok as $v)$ret.=$rt[$v];
 return $ret;}

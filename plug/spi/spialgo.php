@@ -1,5 +1,4 @@
-<?php //spialgo
-
+<?php 
 class spialgo{
 static $max=118;
 static $sz='1000/260';

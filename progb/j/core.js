@@ -455,7 +455,7 @@ ajaxcall(id,'login,usdhub',[va],[],4);}
 //editable
 function editcell(el){
 var j=getbyid('edtcom').value;
-bjcall(el.id+'|'+j+'|'+el.id);}
+bjcall(el.id+'|'+j+',rid='+el.id+'|'+el.id);}
 
 //storage
 function locals(id,va){if(localStorage){//,com

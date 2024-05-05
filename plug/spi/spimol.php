@@ -1,4 +1,4 @@
-<?php //spimol
+<?php 
 class spimol{
 static function build($r,$rc){$ret=''; pr($rc);
 $rb=array_keys_r($r,1);

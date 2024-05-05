@@ -702,7 +702,7 @@ return $ret;}
 
 static function fastmenus($o,$m){$rt=[];
 $r=self::authmenus(1); $tg=$o?'popup':'admcnt';//'modules','templates'
-if(!$m)$rm=['console','desktop','config','rstr','css','msql','articles','tags','api','images','pictos','finder','templates','stats','software','twit','apps','txt','pad','exec','jsonadm','test','messages','members'];
+if(!$m)$rm=['console','desktop','config','rstr','css','msql','articles','tags','api','images','pictos','finder','templates','stats','software','twit','apps','txt','pad','exec','jadm','test','messages','members'];
 else $rm=['nodes','newsletter','tweetfeed','banner','favicon','dev','backup','htaccess','links','rssurl','mail','password','description','icons','pictography','authes','avatar','funcs','ssh','vhost','connectors','keygen','jedt','chmod','git']; sort($rm);
 foreach($rm as $v){$j='admin___'.ajx($v);//'sty,home__head__'//
 	if($v=='css' && !$o)$j='admin__url_css_1';

@@ -61,19 +61,16 @@ if(!auth($a))return 'no';}
 $ret=afc($a,$b);
 
 #load
-if($b && !$ret){
+if($_a=get('_a'))[$a,$b]=explode(',',$_a);
+if($a && $b && !$ret){
 if($a=='sql' or $a=='msql')return 'no';
-if($prm)$ret=$a::$b($g1,$g2,$prm);
+if(!method_exists($a,$b))$ret='nothing';
+if($_a)$ret=$a::$b($prm);//ff
+elseif($prm)$ret=$a::$b($g1,$g2,$prm);
 else $ret=$a::$b($g1,$g2,$g3,$g4);
 $t=tit($a,$b,$g1,$g2);
 if(is_array($ret))$ret=mkjson($ret);}
-//ff
-elseif(!$ret && $_a=get('_a')){[$a,$b]=explode(',',$_a);
-if($a=='sql' or $a=='msql')return 'no';
-if(!method_exists($a,$b))$ret='nothing';
-else $ret=$a::$b($prm);//json::add('','fc',$r);
-$t=tit($a,$b,$g1,$g2);
-if(is_array($ret))$ret=mkjson($ret);}
+//json::add('','fc',$r);
 
 if(!$ret)$ret=match($app){
 #private

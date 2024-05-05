@@ -1,4 +1,4 @@
-<?php //spt
+<?php 
 class spt{
 
 static function css(){$ret='';

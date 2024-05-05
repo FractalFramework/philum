@@ -263,8 +263,7 @@ return self::build($p,$o);}
 static function menu($p,$o,$rid){$mx=self::$max;
 //$ret=bar('barsvg',$p,$step=1,$min=1,$mx,$js='spiatom','236px').br();
 $j=$rid.'_spisvg,call_inpsvg,inpmod_2__'.$o;
-//$ret=inputj('inpsvg',$p,$j,'',4,[],'number');
-$ret=inputb('inpsvg',$p,4,'number','',['onchange'=>sj($j)]);
+$ret=inpnb('inpsvg',$p,$j,['placeholder'=>'number']);
 $ret.=lj('',$j,picto('ok')).' ';
 $ret.=lj('popbt','spt_spisvg,call_inpsvg_2_118_radial','radial');
 $ret.=lj('popbt','spt_spisvg,call_inpsvg_2_118_linear','linear'); $ret.='|';
@@ -277,7 +276,7 @@ $ret.=msqbt('','public_atomic_1');
 $ret.=lk('/app/spt',picto('organigram'));
 return $ret;}
 
-static function nav($p,$o,$rid){$ret='';
+static function nav($p,$o,$rid){$ret=''; if(!$p)$p=1;
 //$ret.=bar('barsvg',$p,$step=1,$min=1,self::$max,$js='spiatom','236px');
 $js1=atmp(atjr('jumpvalue',['inpsvg',$p-1]));
 $js2=atmp(atjr('jumpvalue',['inpsvg',$p+1]));

@@ -24,7 +24,7 @@ $d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); return $r;}
 
 static function url($dr,$nod,$o=''){
 $dr=$dr=='lang'?$dr.'/'.ses('lng'):($dr?$dr:'users');
-return 'msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod).'.php';}
+return 'msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod??'').'.php';}
 //json::add('',nod('msqldir'.mkday('ymnHis')),[$nod]);
 
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
@@ -94,7 +94,7 @@ elseif(substr($act,0,1)=='@'){$n=substr($act,1); $nx=self::nextentry($r);
 elseif($act)$r[$act]=$ra;
 if(isset($r[0]))$r=self::reorder($r); if(isset($rb))$rb+=$r; else $rb=$r;
 self::save($dr,$nod,$rb); //pr($rb);
-//json::write($dr,$nod,$r);
+//json::sav($dr,$nod,$r);
 return $rb;}
 
 static function inc($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak); $r=[];

@@ -4,7 +4,11 @@ $_SESSION['stime']=$stime; $_SESSION['dayx']=substr($stime,0,10); geta('nl',0);
 if(!ses('qb') or get('hub') or get('refresh') or get('log')){$cache='ok'; boot::reset_ses();}
 if(get('dev')){$_SESSION['dev']='b'; head::relod('/reload');}
 if(get('module')=='Home')geta('module','');//old htaccess
-//patches::psw('poiu','');
+/*$_SESSION['usr']='ummo';
+$uid=login::autolog('ummo');
+setcookie('uid',$uid,$_SESSION['dayx']+(86400*30));
+boot::define_use();*/
+//patches::psw('waam');
 if($cache)boot::init();
 //if(ses('dev'))error_report();
 if($log=get('log'))boot::log_mods($log);

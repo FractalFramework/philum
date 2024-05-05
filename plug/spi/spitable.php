@@ -1,4 +1,4 @@
-<?php //spitable
+<?php 
 class spitable{
 static $max=118;
 
@@ -79,23 +79,6 @@ foreach($r as $k=>$v){$c=$v<=$p?'active':'';
 	$ret.=lj($c,'spit_spitable,call___'.$v,btn('',$v)).' ';}
 return $ret;}
 
-static function menu($p){
-$j='spit_spitable,call_inpst_2_';
-$ret=inpnb('inpst',$p,$j,['placeholder'=>'number']);
-$ret.=lj('popbt',$j,picto('ok')).' ';
-$ret.=lk('/app/spt',picto('organigram'));
-return $ret;}
-
-static function nav($p){$ret=self::menu($p);
-$js1=atmp(atjr('jumpvalue',['inpst',$p-1]));
-$js2=atmp(atjr('jumpvalue',['inpst',$p+1]));
-if($p>1)$ret.=lj('txtx','spit_spitable,call__2_'.($p-1),picto('before'),$js1).' ';
-else $ret.=btn('grey',picto('before'));
-if($p<self::$max)$ret.=lj('txtx','spit_spitable,call__2_'.($p+1),picto('after'),$js2);
-else $ret.=btn('grey',picto('after'));
-$ret.=self::levels($p);
-return divc('nbp',$ret).br();}
-
 static function build($p){$p=$p?$p:118;
 $r=msql::read('','public_atomic');
 [$ra,$n]=self::subring($r,[],[],1,1,0,$p); //pr($ra);
@@ -112,6 +95,24 @@ for($i=1;$i<=$n;$i++){$td='';
 	for($o=1;$o<=$nb;$o++)$td.=tagb('td',valr($r,$i,$o));
 	$tr.=tagb('tr',$td);}}
 return tagb('table',$tr);}
+
+static function menu($p){
+$j='spit_spitable,call_inpst_2_';
+$ret=inpnb('inpst',$p,$j,['placeholder'=>'number']);
+$ret.=lj('popbt',$j,picto('ok')).' ';
+$ret.=lk('/app/spt',picto('organigram'));
+return $ret;}
+
+static function nav($p){
+$ret=self::menu($p); if(!$p)$p=1;
+$js1=atmp(atjr('jumpvalue',['inpst',$p-1]));
+$js2=atmp(atjr('jumpvalue',['inpst',$p+1]));
+if($p>1)$ret.=lj('txtx','spit_spitable,call__2_'.($p-1),picto('before'),$js1).' ';
+else $ret.=btn('grey',picto('before'));
+if($p<self::$max)$ret.=lj('txtx','spit_spitable,call__2_'.($p+1),picto('after'),$js2);
+else $ret.=btn('grey',picto('after'));
+$ret.=self::levels($p);
+return divc('nbp',$ret).br();}
 
 static function home($p){$p=$p?$p:118;
 head::add('csscode','td{margin:0; padding:1px;}');

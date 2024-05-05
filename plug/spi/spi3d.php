@@ -1,4 +1,4 @@
-<?php //spi3d
+<?php 
 class spi3d{
 static function build($p,$o){
 $f='http://logic.ovh/frame/scene/'.$p;//17,18

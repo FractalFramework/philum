@@ -11,7 +11,7 @@ static function css(){$ret='';
 for($i=1;$i<self::$max;$i++)$ret.='#id'.$i.':hover{background:rgba(255,255,255,0.4);}'."\n";
 return $ret;}
 
-static function js($j,$n=1,$o){return 'var n='.$n.';
+static function js($j,$n=1,$o=''){return 'var n='.$n.';
 addEvent(document,"DOMMouseScroll",function(){wheelcount(event,"'.$j.'","'.$o.'")});';}
 
 static $clr0=[''=>'ccc','Nonmetals'=>'92FF10','Nobles Gasses'=>'05FFFF','Alkali Metals'=>'FF9801','Alkali Earth Metals'=>'BF6700','Metalloids'=>'91C9D6','Halogens'=>'FFFF00','Metals'=>'ABABB0','Transactinides'=>'C9C97A','Lanthanides'=>'B3D7AB','Actinides'=>'75ADAB','undefined'=>'ffffff'];
@@ -149,7 +149,7 @@ $j=$rid.'_spiline,call_inpln_2__'.$o;
 $ret=inpnb('inpln',$p,$j).lj('',$j,picto('ok')).' ';
 return $ret;}
 
-static function nav($p,$o,$rid){$ret=''; $bt='';
+static function nav($p,$o,$rid){$ret=''; $bt=''; if(!$p)$p=1;
 $js1=atmp(atjr('jumpvalue',['inpln',$p-1]));
 $js2=atmp(atjr('jumpvalue',['inpln',$p+1]));
 if($p>0)$ret.=lj('',$rid.'_spiline,call__2_'.($p-1).'_'.$o,picto('before'),$js1).' ';

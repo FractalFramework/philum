@@ -36,7 +36,7 @@ $r=msql::read('','ummo_pray_1');
 if($r)foreach($r as $k=>$v)if($v[0]==$p && $v[1]==$o)$id=$k;
 if($id)unset($r[$id]); else $r[]=[$p,$o,1];
 msql::modif('users','ummo_pray_1',$r,'arr',[],'');
-json::write('ummo','pray/'.$p,$r);
+json::sav('ummo','pray/'.$p,$r);
 //if(!$id)msql::modif('','ummo_pray_1',[$p,$o,1],'push');
 //else msql::modif('','ummo_pray_1',[$id=>[$p,$o,0]],'mdf');
 $ret=self::build($p,$o,$r);

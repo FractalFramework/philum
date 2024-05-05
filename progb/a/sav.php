@@ -200,8 +200,8 @@ if(is_file('img/'.$x))rm('img/'.$x); if(is_file('imgc/'.$x))rm('imgc/'.$x);
 if($k=in_array_b($x,$r))unset($r[$k]); 
 $ims=implode('/',$r); if(is_numeric($ims))$ims='';
 sql::upd('qda',['img'=>$ims],$id); conn::replaceinmsg($id,'['.$x.']','');
-self::orderim($id);
-$rb[0]=self::placeim($id); $rb[1]=$ims; return $rb;}
+$imp=self::placeim($id); $ims=self::orderim($id); $art=art::playd($id,3);
+return [$imp,$ims,$art];}
 
 static function remini($f){[$w,$h]=explode('/',prmb(27));
 return img::build('img/'.$f,'imgc/'.$f,$w,$h,0);}
@@ -218,7 +218,7 @@ if($r)foreach($r as $k=>$v)if(is_img($v)){$bt=''; $f='img/'.$v; $fc='imgc/'.$v; 
 	if(auth(5)){
 		if(!isset($ra[$v]))$bt.=btn('popsav grey',pictit('pull','unknown source'));
 		else $bt.=lj('popsav','pim'.$id.'_sav,rollbackim___'.$id.'_'.ajx($v).'_1',pictit('pull','restore'));
-		$bt.=lj('popdel','pim'.$id.',img'.$id.'_sav,placeimdel__json_'.$id.'_'.ajx($v),picto('del'));
+		$bt.=lj('popdel','pim'.$id.',img'.$id.',art'.$id.'_sav,placeimdel__json_'.$id.'_'.ajx($v),picto('del'));
 		if(is_file($fc))[$w,$h]=getimagesize($fc); $tt='rebuild_mini: '.$w.'/'.$h;
 		$bt.=blj('popbt','btrb'.$id.'-'.$k,'sav,remini__okbt_'.ajx($v),picto('file-img'),att($tt));}
 	$ret.=div($bt,'');}//icones
@@ -284,7 +284,7 @@ if(trim($f??'') && $f!='1' && $d!='1' && $f!='x' && $d!='x' && !vacses($f,'b'))
 	if(joinable($f)){[$t,$tx]=conv::vacuum($f); vacses($f,'t',$t); vacses($f,'d',$tx);}
 if($d=='x')vacses($f,'u','x');
 if($d=='n')return textarea('bad',$f,44,12).' '.lj('',$idt.'_sav,batchadd_bad_3',picto('ok')).' ';
-if($d=='p')return 'ok';
+if($d=='p')return picto('ok');//addbt
 if($d=='c')$ret=btj(picto('popup'),sj('popup_sav,batch____c').' closebub(this);').' ';
 $ret.=lj('',$idt.'_sav,batch____in_'.$d,picto('reload')).' ';
 $ret.=lj('','popup_sav,batch____n',picto('add')).' ';
