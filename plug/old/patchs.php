@@ -75,7 +75,7 @@ return $ret.br();}
 
 //181225
 function patch_lastup(){
-$r=explore('_datas'); //pr($r);
+$r=explore('_datas');
 foreach($r as $k=>$v){
 $rb=explode('_',$v);
 if($rb[2]=='lastupdate.txt'){echo $id=$rb[1].' ';

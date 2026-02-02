@@ -171,7 +171,7 @@ if($dr!='params')[$rep,$res]=self::functions_list($dr,$f);
 if(auth(5)){
 	$ret.=btn('nbp',self::cv_btn('progb',$dr).self::cv_btn('plug',$dr).self::cv_btn('save',$dr)).' ';//self::cv_btn('all',$dr).
 	$nbfunc=count($_SESSION['rec']);
-	if(!$nbfunc)$nbfunc=sqb('count(id)','_sys','v','');
+	if(!$nbfunc)$nbfunc=sql('count(id)','_sys','v','');
 	$ret.=tagb('small',$nbfunc.' static functions').' ';
 	$jp=ajx(strto($f,'.'));
 	//list

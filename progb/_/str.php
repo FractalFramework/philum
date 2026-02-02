@@ -1,4 +1,5 @@
 <?php 
+
 class str{
 
 static function acc(){
@@ -36,12 +37,12 @@ foreach($r as $c){$o=ord($c);
 return $ret;}
 
 #filters
-static function hardurl($d){
-$d=self::eradic_acc($d); $d=mb_strtolower($d); $d=str_replace("&nbsp;",' ',$d); $d=hed($d); if(!$d)return;
+static function hardurl($d){//dont change
+$d=self::eradic_acc($d); $d=mb_strtolower($d); $d=delnbsp($d); $d=hed($d); if(!$d)return;
 $r=['/','«','»',',','.',';',':','!','?','|','§','%','&','$','#','_','+','=','\n','\\','~','(',')','[',']','{','}'];
 $d=str_replace($r,'',$d);
-$d=str_replace([' ',"'",'"'],'-',trim($d));
-$d=delsp($d);
+$d=str_replace([' ',"'"],'-',trim($d));
+$d=preg_replace('/(-){2,}/','-',$d??'');
 return $d;}
 
 static function protect_url($d,$o=''){
@@ -57,14 +58,14 @@ $ra=['&nbsp;','&ndash;','&mdash;',"%27",'&#8216;','&#8217;','&#174;','&#175;','&
 '&#39;','&#8239;','&#8206;','&#8201;','&hellip;','&bdquo;','&ldquo;','&lsquo;','&rsquo;','&#8203;',
 '&#039;','&thinsp;','&ensp;','&emsp;','&#160;','&#8194;','&#8195;','&#8201;','&#8208;','&#750;',
 '&acute;','&rdquo;','&#xFFFD;','&#8200;','&#137;','&#128;','&#153;','&#156;','&#159;','&#135;',
-'&#152;','&pound;','&#2013265929;','&#13;','&#x2019;','&sect;','&#149;','&#x201C;','&#x201D;','\xc2\xab'];
+'&#152;','&pound;','&#2013265929;','&#13;','&#x2019;','&sect;','&#149;','&#x201C;','&#x201D;','\xc2\xab','„','“'];
 $rb=[' ','-','-',"'","'","'",'«','»','«','»',
 '-','"','"','"','','-','é','à','g','i',
 'I','','"','"','è','à','é','ê','°',"'",
 "'",' ',' ',' ','...','"','"',"'","'",'',
 "'",' ',' ',' ',' ',' ',' ',' ','-','"',
 "'",'"',"'",' ','%','€','™','œ','Ÿ','‡',
-'~','£','é','',"'",'§','•','"','"','"'];
+'~','£','é','',"'",'§','•','"','"','"','"','"'];
 return str_replace($ra,$rb,$v);}
 
 static function decode_nonutf8($d){//latin encoded in utf8
@@ -106,21 +107,19 @@ return $rb;}
 //links
 static function embed_links($msg=''){if(!$msg)return;//oldest_static function!//19
 $msg=str_replace("\n",' µµ ',$msg); $ra=explode(' ',$msg); $r=[];
-foreach($ra as $k=>$v){$a=''; $b='';
-	if(substr($v,0,1)=='('){$a='('; $v=substr($v,1);}
-	if(substr($v,0,1)=='-'){$a='-'; $v=substr($v,1);}
-	if(substr($v,-1)=='.'){$b='.'; $v=substr($v,0,-1);}
-	if(substr($v,-1)==','){$b=','; $v=substr($v,0,-1);}
-	if(substr($v,-1)==')'){$b=')'.$b; $v=substr($v,0,-1);}
-	if(substr($v,0,2)=='//' && strpos($v,'.'))$r[]='[http:'.$v.']';
-	elseif(substr($v,0,4)=='http'){
-		if(strpos($v,'[')===false && strpos($v,']')===false){
-			if(is_img($v) && strlen($v)>4)$r[]='['.$v.']'; else $r[]='['.$v.']';}
-		elseif(strpos($v,'[')===false){$n=strrpos($v,':');
-			if($n!==false)$r[]='['.substr($v,0,$n).']'.substr($v,$n);}}
-	/*elseif(substr($v,1,4)=='http'){$n=strpos($v,'[');
-		$r[]=substr($v,0,$n).'['.substr($v,$n).']';}*/
-	else $r[]=$a.$v.$b;}
+foreach($ra as $k=>$v){$a=''; $b=''; $deb=substr($v,0,1); $end=substr($v,-1);
+	$ra=['(',')','-','.',',',':','|'];
+	foreach($ra as $ka=>$va){
+		if($deb==$va){$a=$va; $v=substr($v,1); $end=substr($v,-1);}//avoid double on ":"
+		if($end==$va){$b=$va; $v=substr($v,0,-1);}}
+	if(substr($v,0,2)=='//' && strpos($v,'.'))$v='[https:'.$v.']';
+	elseif(substr($v,0,4)=='http' or substr($v,-4)=='.jpg'){
+		$oa=strrpos($v,'['); $ob=strrpos($v,']'); $oc=strrpos($v,':'); $od=strrpos($v,'|');
+		if($oa===false && $ob===false && $od===false)$v='['.$v.']';
+		elseif($od!==false && $oc!==false && $oc>$od)$v='['.substr($v,0,$od).']'.substr($v,$od);
+		elseif($oc!==false && $oc>5)$v='['.substr($v,0,$oc).']'.substr($v,$oc);
+		else $v='['.$v.']';}
+	$r[]=$a.$v.$b;}
 $d=implode(' ',$r);
 $d=str_replace([' µµ ','µµ'],"\n",$d);
 $d=str_replace(',]','],',$d); //$d=str_replace('.]','].',$d);
@@ -152,6 +151,16 @@ return mb_substr($d,0,$kmx);}
 static function stripconn($d){
 return conb::parse($d,'delconn');}
 
+static function kill_doublons($d){
+$r=['b','i','u','em','strong','blockquote']; //$n=count($r);
+for($i=0;$i<6;$i++){
+	$d=str_replace('<'.$r[$i].'> </'.$r[$i].'>',' ',$d);
+	$d=str_replace('</'.$r[$i].'><'.$r[$i].'>','',$d);
+	$d=str_replace('</'.$r[$i].'> <'.$r[$i].'>',' ',$d);
+	$d=str_replace('</'.$r[$i].'>'."\n".'<'.$r[$i].'>',"\n",$d);
+	$d=str_replace('</'.$r[$i].'>'."\n\n".'<'.$r[$i].'>',"\n\n",$d);}
+return $d;}
+
 static function clean_html($d,$o=''){
 //$d=hed($d);//create infinite loop
 //$d=htmlspecialchars_decode($d);//create infinite loop
@@ -160,52 +169,29 @@ $d=self::clean_spaces($d);
 $d=self::clean_acc($d);
 $d=self::stupid_acc($d);
 if(!$d)return;
-$r=['b','i','em','strong','p'];
-for($i=0;$i<4;$i++){
-	$d=str_replace('<'.$r[$i].'> </'.$r[$i].'>',' ',$d);
-	$d=str_replace('</'.$r[$i].'><'.$r[$i].'>','',$d);
-	$d=str_replace('</'.$r[$i].'> <'.$r[$i].'>',' ',$d);
-	$d=str_replace('</'.$r[$i].'>'."\n".'<'.$r[$i].'>',"\n",$d);
-	$d=str_replace('</'.$r[$i].'>'."\n\n".'<'.$r[$i].'>',"\n\n",$d);}
+$d=self::kill_doublons($d);
 if(!$o && substr_count($d,']')!=substr_count($d,'['))
 	$d=str_replace(['[',']'],['(',')'],$d);
 //$d=htmlspecialchars($d);
 return $d;}
 
-//titles
-static function clean_title($d){
-if(!$d)return; $nb=sep();//&#8201;
-$d=strip_tags($d);
-//$d=htmlentities($d);//provoque erreur qui bloque save
-$d=hed($d);//add spaces
-$d=self::html_entity_decode_b($d);
-$d=delnbsp($d);
-$d=deln($d);
-$d=self::clean_acc($d);
-$d=self::clean_whitespaces($d);
-$d=delsp($d);
-$d=self::clean_punctuation($d);
-if(rstr(104))$d=self::lowercase($d);
-$d=self::add_nbsp($d);
-$d=self::trim($d);
-$d=self::clean_inclusive($d);
-$d=self::nicequotes($d);
-$d=delsp($d);
-return trim($d);}
+static function clean_and($d,$lg){
+$r=['fr'=>'et','en'=>'and','es'=>'y','it'=>'e','pt'=>'e'];
+return str_replace(' & ',' '.$r[$lg].' ',$d);}
 
 static function cleanmail($d){
 $d=self::clean_prespace($d);
-$d=str_replace("M.\n",'M. ',$d);
-$d=str_replace(".\n",'.µµ',$d);
-$d=str_replace("\n",'µ',$d);
-$d=str_replace('µµ',"\n\n",$d);
-$d=str_replace('µ',' ',$d);
+$d=str_replace(".\n",'.(-n-)',$d);
+$d=str_replace("\n\n",'(-2n-)',$d);
+$d=str_replace('(-n-)',' ',$d);
+$d=str_replace('(-2n-)',"\n\n",$d);
+$d=str_replace('. ',".\n",$d);
 return $d;}
 
 #postreat
 static function clean_acc($d){if(!$d)return;
-$a=['»»',"’","‘",'“','”',"…","–","\t"];//,'«','»'//no detructive because of odd number
-$b=['⇒',"'","'",'"','"',"...","-",''];//,'"','"'
+$a=['»»',"’","‘",'“','”','“','„',"…","–","\t"];//,'«','»'//no detructive because of odd number
+$b=['⇒',"'","'",'"','"','"','"',"...","-",''];//,'"','"'
 if(substr_count($d,'«')==substr_count($d,'»')){$a+=['«','»']; $b+=['"','"'];}
 foreach($a as $k=>$v)$d=str_replace([htmlentities($v),$v],$b[$k],$d);
 return $d;}
@@ -221,7 +207,7 @@ for($i=0;$i<$n;$i++){
 		if($ia==2 && !$no && ($r[$i-1]??'')==' ')unset($r[$i-1]);}
 	if(($r[$i]??'')=='(' && ($r[$i+1]??'')==' ')unset($r[$i+1]);
 	if(($r[$i]??'')==')' && ($r[$i-1]??'')==' ')unset($r[$i-1]);
-	if(($r[$i]??'')=="," && ($r[$i-1]??'')==' ')unset($r[$i-1]);}
+	if(($r[$i]??'')==',' && ($r[$i-1]??'')==' ')unset($r[$i-1]);}//tmp
 	//if(($r[$i]??'')=="'" && ($r[$i+1]??'')==' ')unset($r[$i+1]);//kill usage as quote
 	//if(($r[$i]??'')=="." && ($r[$i-1]??'')==' ')unset($r[$i-1]);//bad for links
 	//if(($r[$i]??'')==";" && ($r[$i-1]??'')!=' ')$r[$i]=' ;';//bad for entities
@@ -240,9 +226,10 @@ if($r)$d=implode('',$r); if($o)$d=self::add_nbsp($d);
 return $d;}
 
 static function add_nbsp($d){if(!$d)return;
-$a=['( ',' )',' ,',' .',' ;',' :',' !',' ?','« ',' »','&laquo; ',' &raquo;','0 0','<<','>>'];
-$b=['(',')',',','.',"&nbsp;;","&nbsp;:","&nbsp;!","&nbsp;?","«&nbsp;","&nbsp;»","«&nbsp;","&nbsp;»",'0&nbsp;0','"','"'];
-return str_replace($a,$b,$d);}
+$a=['( ',' )',' ,',' .',' ;',' :','! ','? ','« ',' »','&laquo; ',' &raquo;','0 0','<<','>>'];
+$b=['(',')',',','.',"&nbsp;;","&nbsp;:","&nbsp;! ","&nbsp;? ","«&nbsp;","&nbsp;»","«&nbsp;","&nbsp;»",'0&nbsp;0','"','"'];
+$d=str_replace($a,$b,$d);
+return str_replace([" &nbsp;","&nbsp; "],"&nbsp;",$d);}
 
 static function stupid_acc($d){if(!$d)return;//,'<!-->':kill utf8
 $d=str_replace(['<!--[if IE]>','<!--[if IE 9]>','<!--[if !IE]>','<!--<![endif]-->','<![endif]-->'],'',$d);
@@ -316,18 +303,20 @@ $d=delnl($d);
 return $d;}
 
 static function clean_br_lite($d){if(!$d)return;
+$d=str_replace('µ','(micro)',$d);
 $d=str_replace("\n",'µ',$d);
 $d=str_replace("\r",'µ',$d);
 $d=preg_replace("/(µ){2,}/",'µµ',$d);
-$d=preg_replace('/(\n){2,}/',"\n\n",$d);
+if(substr($d,0,1)=='µ')$d=substr($d,1);
 if(substr($d,0,1)=='µ')$d=substr($d,1);
 if(substr($d,-1)=='µ')$d=substr($d,0,-1);
 $d=str_replace('µ',"\n",$d);
+$d=str_replace('(micro)','µ',$d);
 $d=delnl($d);
 return trim($d);}
 
 static function clean_br($d,$o=''){if(!$d)return;
-$d=preg_replace("/(\r\n)|(\n\r)|(\r)/","\n",$d);
+$d=preg_replace("/(\r\n)|(\r)/","\n",$d);
 $d=delnl($d);
 if($o)$d=self::clean_prespace($d);
 if($o)$d=self::repair_badn($d);
@@ -373,7 +362,9 @@ foreach($r as $k=>$v){
 	$d=str_replace('['.$v.']','',$d);
 	$d=str_replace('[.'.$v.']','.',$d);
 	$d=str_replace($v.']]',']'.$v.']',$d);
-	$d=str_replace("\n".$v.']',$v.']'."\n",$d);}
+	$d=str_replace("\n".$v.']',$v.']'."\n",$d);
+	//$d=preg_replace('/(\w+)/i'.$v.']['.'/(\w+)/i'.$v,'${1}${2}'.$v.']',$d);
+	}
 //if(rstr(9))$d=str_replace(".jpg]\n",'.jpg] ',$d);
 return $d;}
 
@@ -381,7 +372,7 @@ return $d;}
 static function repair_badn($d){//2 fois
 $d=str_replace('µ','(micro)',$d);
 $d=str_replace("\n",'µ',$d);
-//if(rstr(9))$d=str_replace('.jpg]µ','.jpg]',$d);
+if(rstr(9))$d=str_replace('.jpg]µ','.jpg]',$d);
 $ra=[' µ',' µ','µ ','µ ','[µ','[µ',':]','] .',' ]','[ ','[ ',' )','( '];//,'µ.'
 $rb=['µ','µ','µ','µ','µ[','[',']:',']. ','] ',' [','[',')','('];//,'µ'
 $d=str_replace($ra,$rb,$d);
@@ -393,10 +384,37 @@ $d=preg_replace('/(\n){2,}/',"\n\n",$d);
 $d=str_replace('(micro)','µ',$d);
 return trim($d);}
 
+static function internal_img($d){
+return str_replace(host().'/img/','',$d);}
+
+//titles
+static function clean_title($d){
+if(!$d)return; $nb=sep();//&#8201;
+$d=strip_tags($d);
+//$d=htmlentities($d);//provoque erreur qui bloque save
+$d=hed($d);//add spaces
+$d=self::html_entity_decode_b($d);
+$d=delnbsp($d);
+$d=deln($d);
+$d=str_replace('|','',$d);
+$d=self::clean_acc($d);
+$d=self::clean_whitespaces($d);
+if(rstr(104))$d=self::lowercase($d);
+$d=self::clean_punctuation($d);
+$d=self::nicequotes($d);
+$d=self::add_nbsp($d);
+$d=delsp($d);
+$d=self::trim($d);
+//$d=self::clean_inclusive($d);
+$d=delsp($d);
+return trim($d);}
+
 static function post_treat_repair($d){
 //$d=self::decode_nonutf8($d);
 $d=self::clean_prespace($d);
 $d=self::repair_badn($d);
+$d=self::internal_img($d);
+$d=self::embed_links($d);
 $d=self::repair_tags($d);
 $d=self::clean_tables($d);
 //$d=self::clean_spaces($d);
@@ -406,7 +424,6 @@ $d=self::clean_punctuation($d);
 $d=self::add_nbsp($d);
 $d=self::clean_br($d);
 $d=self::clean_lines($d);
-$d=self::embed_links($d);
 $d=delnl($d);
 $d=delsp($d);
 return $d;}

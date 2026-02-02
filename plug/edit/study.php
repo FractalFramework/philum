@@ -23,7 +23,7 @@ return tabler($rb,'txtbox');}
 
 static function call($p,$rid){
 //$bt=self::menu($p,$rid);
-$bt=pop::pubart($p);
+$bt=ma::pubart($p);
 $r=msql::read('',nod('study_'.$p));
 return $bt.self::read($r,$p);}
 

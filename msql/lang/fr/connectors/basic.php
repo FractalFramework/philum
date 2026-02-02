@@ -15,10 +15,19 @@ return ['_'=>['description'],
 'list'=>['liste avec puces (pour chaque saut de ligne)'],
 'nh'=>['note de bas de page'],
 'web'=>['Affiche la description d\'une page web'],
-'twitter'=>['Api Twitter :rn- [123456789:twitter] renvoie un twitrn- [text|search:twitter] résultat d\'une recherchern- [123456789|thread:twitter] fil d\'une discussion (en remontant)'],
-'art'=>['Lien vers un article : rn- [1234:art] renvoie un bouton vers l\'article avec son titrern- [1234|titre:art] assoie le bouton à un titre'],
-'msql'=>['Renvoie les données d\'une table : rn[hub_table_(version)-(key)|(row)|option:microsql] ;rnOptions : pop, read, conn, last, count, graph, form, tmp'],
-'table'=>['- colonnes : | ou virgulesrn- lignes : ¬ ou saut de lignern- headers : |1'],
+'twitter'=>['Api Twitter-𝕏 :
+- [123456789:twitter] renvoie un twit
+- [text|search:twitter] résultat d\'une recherche
+- [123456789|thread:twitter] fil d\'une discussion (en remontant)'],
+'art'=>['Lien vers un article : 
+- [1234:art] renvoie un bouton vers l\'article avec son titre
+- [1234|titre:art] assoie le bouton à un titre'],
+'msql'=>['Renvoie les données d\'une table : 
+[hub_table_(version)-(key)|(row)|option:microsql] ;
+Options : pop, read, conn, last, count, graph, form, tmp'],
+'table'=>['- colonnes : | ou virgules
+- lignes : ¬ ou saut de ligne
+- headers : |1'],
 'center'=>['aligné au centre'],
 'right'=>['aligné à droite'],
 '--'=>['ligne horizontale'],

@@ -1,11 +1,11 @@
 <?php 
 class umespdf{
-static $db='ummo_es_7';
+static $db='ummo_es';
 
 static function dlscans(){
 $u='https://www.ummo-sciences.org/es/scan/';
 //$r=scanfiles($u); pr($r);
-$dr='_users/ummo/origin/';
+$dr='users/ummo/origin/';
 /*$ftp_user_name='ummo'; $ftp_user_pass=''; $r=[];
 $ftp=ftp_connect('ummo-sciences.org');
 $res=ftp_login($ftp,$ftp_user_name,$ftp_user_pass);
@@ -20,28 +20,26 @@ $dr='users/ummo/origin/';
 foreach($rc as $k=>$f){
 echo $fb=strend($f,'scan-');
 //copy($f,$dr.$fb);
-$rt[]=$fb;
-}
+$rt[]=$fb;}
 pr($rt);
 //msql::save('','ummo_es_5',$rt);
-
 }
 
 static function call($p,$o){
 //if($o=='dlscans')return self::dlscans();
 $id=$p?$p:ses('read');
-$d=sql('suj','qda','v','id='.$id);
+$d=sql('suj','qda','v',$id);
 $vrf=between($d,'[',']'); $ret='';
 $r=msql::read('',self::$db);
 $r=msql::tri($r,0,$vrf); if($r)$r=current($r);
 if(!isset($r[0]))return;
 if(!empty($r[1])){
 	if(strpos($r[1],"\n")){$rb=explode("\n",$r[1]);
-		foreach($rb as $k=>$v)if($v)$ret.=lj('','popup_iframe___'.ajx($v),pictxt('pdf','original')).' ';}
-	else $ret.=lj('','popup_usg,iframe___'.ajx($r[1]),pictxt('pdf','original')).' ';}
-if(!empty($r[2]))$ret.=lkt('',$r[2],flag('es').'['.$vrf.']');
+		foreach($rb as $k=>$v)if($v)$ret.=lj('','popup_iframe___'.ajx($v),pictxt('pdf','Pdf')).' ';}
+	else $ret.=lj('','popup_usg,iframe___'.ajx($r[1]),pictxt('pdf','Pdf')).' ';}
+if(!empty($r[2]))$ret.=lkt('',$r[2],'['.$vrf.']'.flag('es'));
 //if($r[1])$ret.=lkt('',$r[1],pictxt('pdf','original'));
-if($ret)return btn('txtcadr','Original').br().btn('txtx',$ret);}
+if($ret)return btn('txtcadr','Source').br().btn('txtx',$ret);}
 
 static function home($p,$o){return self::call($p,$o);}
 }

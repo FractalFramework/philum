@@ -12,7 +12,7 @@ static function list_tags(){//and cat="tag"
 return ma::artags('idart,tag','','kk');}
 
 static function msg($msg){
-$msg=conb::parse($msg,'sconn'); $msg=embed_p($msg); $msg=nl2br($msg);
+$msg=conb::parse($msg,'sconn'); $msg=conn::embed_p($msg); $msg=nl2br($msg);
 return $msg;}
 
 static function build($p,$o){
@@ -26,13 +26,13 @@ if($r)foreach($r as $k=>$v){[$id,$day,$suj,$msg,$cat,$tag,$lk]=$v;
 	if(is_array($rtag))$rtag=array_keys($rtag);
 	if(is_array($rtag))$tags=implode(' ',$rtag);
 	$lnk=lka(urlread($id)); $pop=lj('','popup_usg,trkplay___'.$id,picto('forum',16));
-	$rb[$day]=['suj'=>$suj,'day'=>mkday($day,'Y/m/d'),'msg'=>$msg,'url'=>$lk,'open'=>ma::popart($id).' '.$pop,'rtg'=>$tags];}
+	$rb[$day]=['suj'=>$suj,'day'=>mkday($day,'Y/m/d'),'msg'=>$msg,'url'=>$lk,'url2'=>'/'.$id,'open'=>ma::popart($id).' '.$pop,'rtg'=>$tags];}
 krsort($rb); //pr($rb);
 if($rb)foreach($rb as $k=>$v){$res=view::call($tmp,$v);
 	$rd[nms(100)]=vadd($rd,nms(100),$res); $rc=$v['rtg']; //pr($rc);
 	//if($rc)foreach($rc as $kb=>$vb)$rd[$kb]=vadd($rd,$kb,$res);
 	}
-return tabs($rd);}
+return build::tabs($rd);}
 
 static function call($p,$o,$prm=[]){
 $p=$prm[0]??'';

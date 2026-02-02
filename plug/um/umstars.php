@@ -8,11 +8,11 @@ foreach($r as $k=>$v){$clr=dechex(round($v*16000000)); $rb=hexrgb_r($clr);
 return $ret;}
 
 static function legend($r,$im,$ha,$font){$h=$ha-16; $mid=$h/2; $sz=16;
-[$white,$black,$red,$green,$blue,$yellow,$cyan,$silver,$gray]=img::clrpack($im);//spe
+[$white,$black,$red,$green,$blue,$yellow,$cyan,$silver,$gray]=graph::clrpack($im);//spe
 $r=['amical','neutre','inamical','hostile'];
 foreach($r as $k=>$v){
 	if($v=='amical')$clr=$green;
-	elseif($v=='inamical')$clr=img::imgclr($im,'ff9900');
+	elseif($v=='inamical')$clr=graph::imgclr($im,'ff9900');
 	elseif($v=='hostile')$clr=$red;
 	elseif($v=='neutre')$clr=$yellow;
 	else $clr=$white;
@@ -30,7 +30,7 @@ foreach($r as $k=>$v){
 
 static function dots($r,$im,$ha,$font){
 $h=$ha-16; $mid=$h/2; $mx=$mid; $my=$mid; $sz=10;
-[$white,$black,$red,$green,$blue,$yellow,$cyan,$silver,$gray]=img::clrpack($im);//spe
+[$white,$black,$red,$green,$blue,$yellow,$cyan,$silver,$gray]=graph::clrpack($im);//spe
 //[$good,$bad,$neutral,$bigstar,$hostile]=self::clr($im); //pr($r);
 if($r)foreach($r as $k=>$v){
 	$ad=$v['ad']; $ad-=90; 
@@ -41,7 +41,7 @@ if($r)foreach($r as $k=>$v){
 	//verbose([$ray,$a,$x,$y]);
 	$stt=$v['status'];
 	if($stt=='amical')$clr=$green;
-	elseif($stt=='inamical')$clr=img::imgclr($im,'ff9900');
+	elseif($stt=='inamical')$clr=graph::imgclr($im,'ff9900');
 	elseif($stt=='hostile')$clr=$red;
 	elseif($stt=='neutre')$clr=$yellow;
 	elseif($stt=='galaxy')$clr=$blue;
@@ -57,7 +57,7 @@ if($r)foreach($r as $k=>$v){
 
 static function map($r,$im,$ha,$font,$hemi=1){
 $h=$ha-16; $mid=$h/2; $mx=$hemi==2?$h+$mid:$mid; $my=$mid;
-[$white,$black,$red,$green,$blue,$yellow,$cyan,$silver,$gray]=img::clrpack($im);//spe
+[$white,$black,$red,$green,$blue,$yellow,$cyan,$silver,$gray]=graph::clrpack($im);//spe
 for($i=1;$i<=6;$i++){$hb=round($h/6*$i,2);
 	imageellipse($im,$mx,$my,$hb,$hb,$gray);
 	$t=$i*15; $mb=$mid/6; $y=($mb*$i);
@@ -71,7 +71,7 @@ for($i=0;$i<24;$i++){$a=$i*15; $a=deg2rad($a); //15=360/24:
 	imagestring($im,$font,$x,$y,$t,$gray);}}
 
 static function draw($out,$r,$h){$w=$h*2; $im=imagecreate($w,$h); //p($r);
-[$white,$black,$red,$green,$blue,$yellow,$cyan]=img::clrpack($im);//spe
+[$white,$black,$red,$green,$blue,$yellow,$cyan]=graph::clrpack($im);//spe
 $font=imageloadfont('fonts/gdf/Fixedsys.gdf');
 ImageFilledRectangle($im,0,0,$w,$h,$black);
 self::map($r,$im,$h,$font);
@@ -110,7 +110,7 @@ return $rb;}
 static function build($p,$o){
 $r=msql::read('',nod('exo_4'),1);
 $rb=self::datas($r);
-$f='_datas/umstars.png';
+$f='_datas/png/umstars.png'; mkdir_r($f);
 $ret=self::draw($f,$rb,900);
 return $ret;}
 

@@ -27,7 +27,7 @@ return divd('trknm'.$id,$ret);}
 
 static function trkstatus($id,$st){$ret='';
 if($st){sql::upd('qdi',['re'=>$st],$id); return art::trkone($id);}
-$re=sql('re','qdi','v','id="'.$id.'"');
+$re=sql('re','qdi','v',$id);
 //$r=[1=>nms(21),nms(171),nms(91),nms(182)];//commentaire/question/réponse/solution
 $r=explode('/','/'.prmb(10));
 for($i=1;$i<=4;$i++){$c=active($i,$re);
@@ -91,8 +91,8 @@ static function redit($id,$sz='',$cl=''){
 $ret=lj('popsav','trk'.$id.'_tracks,reditsav_edtrk'.$id.'__'.$id.'',picto('save'));//nms(27)
 if($cl)$ret.=lj('','track'.$ib.'_tracks,reditsav_edtrk'.$id.'_xk_'.$id.'_1',picto('sclose'));
 else $ret.=lj('popbt','trkdsk_tracks,redit__x_'.$id.'_54_1',picto('output'),att(nms(198)));
-//$ret.=bj('popsav','trk'.$id.'|tracks,redit_sav|'.$id.'|edtrk'.$id,nms(28));
-$ret.=editarea('edtrk'.$id,$msg,$sz?$sz:80);
+//$ret.=bj('trk'.$id.'|tracks,redit_sav|'.$id.'|edtrk'.$id,nms(28),'popsav');
+$ret.=edit::area('edtrk'.$id,$msg,$sz?$sz:80);
 return $ret;}
 
 static function captcha($d){return substr($d,2,2).substr($d,0,2);}//lol
@@ -126,10 +126,10 @@ elseif($nfo=='quote')ses::$r['popt']=nms(190);
 elseif($nfo=='private')ses::$r['popt']=nms(84);
 //bt
 $rx=['trkname','trkmail','trkib']; $ids=implode(',',$rx); $rid='edtrk'.$id; 
-if($user)$ret.=lj('popdel','popup_tracks,save_'.$rid.','.$ids.'_x_'.$user,nms(28)).' ';
+if($user)$ret.=lj('popdel','popup_tracks,save_'.$rid.','.$ids.'_x_'.$user,nms(29)).' ';
 else{$j='track'.$id.'_tracks,save_'.$rid.','.$ids; $ind=get('tg')=='popup'?'14x':'14xt';
-	$ret.=lj('popsav','track'.$id.'_tracks,save_'.$rid.','.$ids.'_'.$ind.'_'.$id,pictxt('save',nms(28))).' ';//14x
-	$ret.=lj('','trkdsk_tracks,save_'.$rid.','.$ids.'_xt_'.$id.'_1',picto('output'),att(nms(198))).' ';}
+	$ret.=lj('popsav','track'.$id.'_tracks,save_'.$rid.','.$ids.'_'.$ind.'_'.$id,pictxt('save',nms(29))).' ';//14x
+	$ret.=lj('','trkdsk_tracks,save_'.$rid.','.$ids.'_x_'.$id.'_1',picto('output'),att(nms(198))).' ';}
 //form
 if(rstr(2) && !auth(4))$ret.=btn('small',helps('tracks_moderation'));
 if(ses('usr'))$ret.=hidden($rx[0],$use).hidden($rx[1],'').hidden('trkscr','').hidden('trkscrvrf','');
@@ -142,7 +142,7 @@ else{$pr['onkeyup']=atj('log_goodname','trkname');
 $ret.=hidden($rx[2],$ib);//'ib',//!
 $ret.=btd('bts'.$id,'');//.' '.hlpbt('trackhelp').' ';//.hlpbt('track_orth').' ';
 //$ret.=lj('','popup_tracks,preview_'.$rid,picto('view'),att(nms(65))).' ';
-$ret.=editarea($rid,$msg);//divarea
+$ret.=edit::area($rid,$msg);//divarea
 ses::$r['popw']='620';
 return $ret;}
 

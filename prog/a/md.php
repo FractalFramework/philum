@@ -6,6 +6,12 @@ static function title($load,$t,$n='',$bt=''){$nb='';
 $na=$load?count_r($load):''; if($na)$nb=btn('small',nbof($na,$n?$n:1)).' ';
 return divd('titles',btn('txtcadr',$t).' '.$nb.$bt);}//pictxt('eye',)
 
+static function arts_mod($v,$id){
+[$p,$t,$d,$o,$ch,$hd,$tp]=explode('/',$v);
+$load=api::mod_arts_row($p); unset($load[$id]);
+$ret=mod::mod_load($load,$t,$d,$o,1,3,$tp,$id,'','','');
+return $ret;}
+
 static function art_viewer($r){$rid=randid('artv');
 $id=key($r); $ret=art::playb($id,2); $i=0; $m='';
 if(count($r)>1)foreach($r as $k=>$v){$i++; $m.=lj('',$rid.'_art,playb___'.$k.'_2',$i);}
@@ -16,17 +22,17 @@ $o=is_numeric($o)?$o:10;
 $wh['nod']=ses('qb');//slowlog
 if($d=='auto')$wh['frm']=get('frm');
 elseif($d!='all' && $d!=1 && $d)$wh['frm']=$d;
-return sql('id','qda','k',$wh+['>=re('=>'1','_order'=>prmb(9),'_limit'=>$o]);}
+return sql('id','qda','k',$wh+['}re('=>'1','_order'=>prmb(9),'_limit'=>$o]);}
 
 static function pub_art_b($id,$t,$o){
-[$dy,$frm,$suj,$amg]=ma::rqtart($id);
-if(rstr(32))$img=pop::minimg($amg,'hb'); $lnk=urlread($id);
+[$dy,$frm,$suj,$img]=ma::rqtart($id);
+if(rstr(32))$img=artim::art_thumb($img,'hb'); $lnk=urlread($id);
 return tagb('h2',lkc('',$lnk,$suj)).divc('panel',ma::read_msg($id,$o?$o:2));}
 
 static function pub_img($id){
-[$dy,$frm,$suj,$amg]=ma::readcacherow($id);
-if(!$dy){$amg=sql('img','qda','v',$id);}
-return lkc('',urlread($id),pop::minimg($amg,'ban'));}
+[$dy,$frm,$suj,$img]=ma::readcacherow($id);
+if(!$dy)$img=artim::imgart($id);
+return lkc('',urlread($id),artim::art_thumb($img,'ban'));}
 
 static function read_art($n,$t,$o){$in=ma::read_msg($n,'');
 if(strlen($in)>1000)$nbc=['1','1']; $ret='';
@@ -81,7 +87,7 @@ if(is_array($v)){$ret.=divs($sty,self::menus_r($v));}}
 return $ret;}//'&#9500;&#9472;'.
 
 static function submn_t($va){[$k,$v]=cprm($va);
-$rc=sesmk2('boot','cats');
+$rc=array_flip(ses('cats'));
 if(!is_numeric($k)){
 	if(substr($k,0,1)=='?')return [$k,$v];
 	//elseif(substr($k,0,1)=='/')return [$k,$v];
@@ -121,6 +127,9 @@ if(!is_numeric($p))$taxcat=$superline[$p];
 elseif(is_numeric($p)){$hie=self::supertriad_c(ses('dayb')); $taxcat=$hie[$p];}
 return $taxcat;}
 
+static function topoart($id){
+}
+
 static function birthday($p){if(!$p)$p=date('d-m-Y'); $time=strtotime($p); $d=date('d-m',$time);
 [$day,$month]=explode('-',$d); $day=(int)$day; $month=frdate((int)$month);
 return search::call($day.' '.$month);}
@@ -150,8 +159,8 @@ return $rb;}
 //sources
 static function recup_src(){$r=ma::readcache(); $ret=[];
 if($r)foreach($r as $k=>$v)if($v[9] && $v[9]!='mail'){$purl=domain($v[9]);
-	$purl=str_replace(['.wordpress','.blogspot','.pagesperso-orange'],'',$purl);
-	if($purl)$ret[$purl]=radd($ret,$purl,1);} return $ret;}
+$purl=str_replace(['.wordpress','.blogspot','.pagesperso-orange'],'',$purl);
+if($purl)$ret[$purl]=radd($ret,$purl,1);} return $ret;}
 
 static function art_sources($o){$r=self::recup_src(); if($r){arsort($r);
 foreach($r as $k=>$v){$ad=$o?' ('.$v.')':'';
@@ -187,12 +196,15 @@ $ret.=lj('popbt','popup_api__3_'.$p.':'.$k,$k."&nbsp".'('.$fa.')',ats('font-size
 return $ret;}
 
 static function last_tags($p,$o){$p=$p?$p:10;
-$ord='order by '.db('qdt').'.id desc limit '.$p;
-if($o!='nb')$r=sqb('tag,cat','qdt','',$ord);
-else $r=sql::inner('tag,cat,count(idart)','qdt','qdta','idtag','','group by idtag '.$ord);
+$sq=['_order'=>db('qdt').'.id desc','_limit'=>$p];
+if($o!='nb')$r=sql('tag,cat','qdt','',$sq);
+else $r=sql::inner('tag,cat,count(idart)','qdt','qdta','idtag','',['_group'=>'idtag']+$sq);
 if($r)foreach($r as $k=>$v){if($o=='nb')$n=' ('.$v[2].')';
 	$lin[]=[get(str::eradic_acc($v[1])),$v[1],$v[0],$v[0]];}
 return $lin;}
+
+static function lastup_arts($p,$l=20){if(!$p)$p=1; if(!$l)$l=20; $n=ceil(($p-1)*$l);
+return sql('ib','qdd','kv',['val'=>'lastup','_order'=>'msg desc','_limit'=>$n.','.$l]);}
 
 //todo:unify
 static function cat_mod($p,$o,$d){
@@ -207,14 +219,14 @@ $w='nod="'.ses('qb').'"'; $nbj=ses('nbj'); $bt=''; $sp=sti();
 if($nbj==7 or $nbj=='auto')$w.=' and day>'.calctime(30);
 $r=sql('distinct(frm)','qda','rv',$w); $d=$d?$d:'lines';
 if($r)foreach($r as $k=>$v)//active($v,$p)
-	$bt.=lh('cat/'.$v,catico($v).$sp.$v);
+	$bt.=lh('','cat/'.$v,catico($v).$sp.$v);
 $prw=$prw?$prw:(rstr(41)?3:2);
 $p=get('frm')?get('frm'):$p;
 $ret=api::arts($p,$prw,'');
 return divc('menus',$bt).divd($rid,$ret);}
 
 static function last_search($p,$o){$ret='';
-$r=sqb('id,word','qdsr','kv','order by id desc');
+$r=sql('id,word','qdsr','kv',['_order'=>'id desc']);
 if($r)foreach($r as $k=>$v)$ret.=lj('','popup_search,home__3_'.$v,$v);
 return divc('menus',$ret);}
 
@@ -248,7 +260,7 @@ static function quality_stats($id,$t,$o){//dev
 return $id.'-'.$t.'-'.$o.br();}
 
 static function short_arts($p=4000){$dayb=$p?timeago($p):ses('dayb');
-return sql('id','qda','k',['nod'=>ses('qb'),'>=re'=>'1','>day'=>$dayb,'<host'=>$p,'_order'=>prmb(9)]);}
+return sql('id','qda','k',['nod'=>ses('qb'),'}re'=>'1','>day'=>$dayb,'<host'=>$p,'_order'=>prmb(9)]);}
 
 static function home_plan($load){
 if(!$load)return; ksort($load); $i=0; $ret=[];
@@ -271,13 +283,14 @@ foreach($r as $ka=>$va)foreach($va as $k=>$v)if($v){$rb=explode('/',$v);
 if($load)$ret=self::home_plan($load);
 if($rb)return self::title($load,'Gallery',61).$ret;}
 
-static function trkarts($p,$t,$d,$o,$rch=''){//see also api cmd:tracks
+static function trkarts($p,$t,$d,$o,$rch='',$typ=''){//see also api cmd:tracks
 $qda=db('qda'); $qdi=db('qdi'); $pg=$o?$o:1; $tri=$d==1?$qdi:$qda;
 $p=get('dig',$p); $p=is_numeric($p)?$p:ses('nbj'); if(!$p)$p=30; $np=time_prev($p);
 if($rch)$w=' and msg like "%'.$rch.'%"';
 else{$w=' and '.$tri.'.day>'.timeago($p); if($p!=7 && $p!=1)$w.=' and '.$tri.'.day<'.timeago($np);}
+if($typ)$w.=' and re="'.$typ.'"';
 if(!auth(6))$w.=' and '.$qda.'.re>"0" and '.$qdi.'.re="1"';
-$r=sql::inner($qdi.'.id,'.$qdi.'.ib','qda','qdi','ib','kv',$qda.'.nod="'.ses('qb').'"'.$w.' and substring('.$qda.'.frm,1,1)!="_" order by '.$qdi.'.day desc');
+$r=sql::inner($qdi.'.id,'.$qdi.'.ib','qda','qdi','ib','kv',$qda.'.nod="'.ses('qb').'"'.$w.' and substring('.$qda.'.frm,1,1)!="_" order by '.$qdi.'.day desc',0);
 if(!$d)$r=array_flip($r);//permut k and v in output_arts_trk
 $j='modtrk_mod,callmod___m:tracks,p:'.$p.',t:'.ajx($t).',d:'.yesno($d).',o:'.$o;
 $bt=lj('txtbox',$j,nmx([185,$d?22:2]));
@@ -290,6 +303,7 @@ if($r)$ret.=self::output_arts_trk($r,$d,$pg,$j,1,($d?'desc limit 1':'asc'));//
 return divd('modtrk',$ret);}
 
 static function trkrch($g1,$g2,$prm=[]){return self::trkarts('',$g1,'','',$prm[0]??'');}
+static function trktyp($g1,$g2,$prm=[]){return self::trkarts('',$g1,'1','',$prm[0]??'','3');}
 static function trkmod($g1,$g2,$g3,$g4){return mod::build(['tracks',$g1,$g2,'',$g3,$g4]);}
 
 static function output_arts_trk($r,$mode,$page,$j,$re,$ord){
@@ -303,11 +317,14 @@ $nbpg=pop::btpages($npg,$page,$i,$j);
 return $nbpg.$ret;}
 
 static function related_art($id){if(!$id)$id=ses('read');
-$d=sql('msg','qdd','v',['val'=>'related','ib'=>$id]);
-if($d)return array_flip(explode(' ',$d));}
+return sql('msg','qdd','ks',['val'=>'related','ib'=>$id]);}
 
-static function related_by($id){if(!$id)$id=ses('read');//msg like "%'.ses('read').'%"');
-return sql('ib','qdd','k','val="related" and (msg="'.$id.'" or msg like "'.$id.' %" or msg like "% '.$id.'")');}
+static function related_by($id){if(!$id)$id=ses('read'); if($id)return [];
+return sql('ib','qdd','k',['val'=>'related','%msg'=>$id]);}
+
+static function related($id){if(!$id)$id=ses('read');
+$ra=self::related_art($id); $rb=self::related_by($id);
+$rt=array_merge_b($ra,$rb); return $rt;}
 
 static function parent_art($id){if(!$id)$id=ses('read');
 return sql('ib','qda','k',['id'=>$id,'!ib'=>'0']);}
@@ -330,8 +347,8 @@ return ma::rqtcol(['frm'=>$frm]);}
 
 static function see_also($r,$p,$d='',$o='',$tp=''){
 foreach($r as $kb=>$pb){$t=lk(htac(str::eradic_acc($p)).$kb,$kb);
-	if($pb)$rc[$kb]=mod::mod_load($pb,$t,$d,$o,0,'',$tp,'','');}
-if(count($rc)>1)$ret=tabs($rc,randid('mod')); else $ret=$rc[$kb];
+	if($pb)$rc[$kb]=mod::mod_load($pb,$t,$d,$o,0,'',$tp,'','','','');}
+if(count($rc)>1)$ret=build::tabs($rc,randid('mod')); else $ret=$rc[$kb];
 return $ret;}
 
 static function see_also_tags($cat,$nbdays='30'){$id=ses('read');
@@ -389,7 +406,7 @@ if(is_numeric($p)){$u='/'.$p; $ic='article';}
 elseif(sesr('line',$p)){$u='/cat/'.$p; $ic=sesr('catpic',$p);}
 elseif($p=='home'){$u='/home'; $ic='home';}
 if($o)$t=pictxt($ic,$t);
-if($u)return lh('/'.$u,$t);}
+if($u)return lh('','/'.$u,$t);}
 
 //m_suj
 static function m_suj_r($r,$cs1,$cs2){
@@ -397,22 +414,27 @@ $id=get('read'); $ret='';
 foreach($r as $k=>$v){
 $csb=$id==$k?$cs1:$cs2;
 //$ret.=llk($csb,urlread($k),'- '.ma::suj_of_id($k));
-$ret.=lh($k,ma::suj_of_id($k));
+$ret.=lh('',$k,ma::suj_of_id($k));
 if(is_array($v)){
 	if($id==$k or self::verif_array_exists_s($id,$v)){
 		foreach($v as $ka=>$va){$csc=$id==$ka?$cs1:$cs2;
 		//$ret.=llk($csc,urlread($ka),'-- '.ma::suj_of_id($ka));
-		$ret.=lh($ka,'-- '.ma::suj_of_id($ka));}}}}
+		$ret.=lh('',$ka,'-- '.ma::suj_of_id($ka));}}}}
 return $ret;}
 
 static function suj_hierarchic($cs1,$cs2){
 $rb=self::collect_hierarchie(''); $frm=get('frm'); $ret='';
 if($rb)foreach($rb as $k=>$v){
 $csb=$frm==$k?$cs1:$cs2;
-//$ret.=llk($csb,'cat/'.$k,$k);
-$ret.=lh('cat/'.$k,$k);
+$ret.=lh('','cat/'.$k,$k);
 if($frm==$k && is_array($v))$ret.=self::m_suj_r($v,$cs1,$cs2);}
 return $ret;}
+
+static function temporalnav(){
+$t=ses('timetravel'); $day=sqldate2time($t);
+$d=date('Y:m:d',$day); $ret=digits($d,2,'pictos-red');
+//$ret.=input('timetrav',$day,'1',['type'=>'date']);//,'min'=>$min,'max'=>$max
+return picto('fluxcapacitor').' '.$ret;}
 
 static function nodes($mn,$o){//arsort($mn);
 if($o)$nb=sql('name,nbarts','qdu','kr','active="1"'); $ret='';
@@ -444,7 +466,7 @@ $r=ma::readcache(); if(is_array($r))foreach($r as $k=>$v)
 return $rt;}
 
 static function collect_hierarchie($rev){//by_cat
-$rb=sesmk2('boot','cats'); $r=self::supertriad();
+$rb=array_flip(ses('cats')); $r=self::supertriad();
 if(is_array($r))foreach($r as $k=>$v)$rb[$k]=self::hierarchic_line($v,$v,$rev);
 if($rev && $rb)ksort($rb);
 return $rb;}

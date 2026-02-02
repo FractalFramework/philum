@@ -12,8 +12,9 @@ return divc('list',$ret).div('','alert','svtg');}
 static function markers($n){$days=$n?$n:ses('nbj');
 if(!rstr(3))return [0,ma::lastartid()];
 $daymin=timeago($days); $prev=time_prev($days); $daymax=$prev?timeago($prev):ses('daya');
-$minid=sql('id','qda','v','day>"'.$daymin.'" limit 1');
-$maxid=sql('id','qda','v','day<='.$daymax.' order by id desc limit 1');
+//echo $n.'-'.$days.'-'.date('ymd:Hi',$daymin).'-'.$prev.'-'.date('ymd:Hi',$daymax).'--';
+$minid=sql('id','qda','v',['>day'=>$daymin,'_limit'=>'1']);
+$maxid=sql('id','qda','v',['{day'=>$daymax,'_order'=>'day desc','_limit'=>'1']);//need use day
 return [$minid,$maxid];}
 
 static function results($p,$minid,$maxid,$n=''){
@@ -28,7 +29,7 @@ if($r)return sql::qrid('insert into '.db('qdsra').' values '.sql::atmrb($r,1));}
 
 //search and add results
 static function add($p,$n){//if(!rstr(3))self::save($p);
-[$minid,$maxid]=self::markers($n); //echo $minid.'-'.$maxid;
+[$minid,$maxid]=self::markers($n); //echo 'id:'.$minid.'-'.$maxid;
 $ret=self::results($p,$minid,$maxid); //p($ret);
 $not=$ret?implode(',',array_keys($ret)):'';
 $rb=self::build('',$p,$minid,$maxid,'',$not); //p($rb);
@@ -72,7 +73,7 @@ $ok=div('start:'.$minid.'-end:'.$maxid.' - loops:');
 for($i=0;$i<$n;$i++){
 	$min=$minid+$nb*$i; $max=$min+$nb;
 	$ok.='from '.$min.' to '.$max.' : ';
-	$ex=sql('art','qdsra','k',['ib'=>$id,'>art'=>$min,'<=art'=>$max],0);
+	$ex=sql('art','qdsra','k',['ib'=>$id,'>art'=>$min,'{art'=>$max],0);
 	$not=$ex?implode(',',array_keys($ex)):'';
 	$rt=self::build($id,$p,$min,$max,$lmt,$not);
 	$na=count($rt); $nt+=$na;
@@ -94,7 +95,7 @@ if($r)foreach($r as $k=>$v)if($v){$re='';
 	$re.=lj('','popup_mod,callmod__3_p:'.$va.',t:'.$va.',d:icons,m:searched*arts',picto('icons')).' ';
 	$re.=lj('','popup_search,home__3_'.$va,$v).' ('.$n.') ';
 	if(auth(4))$re.=lj('','popup_searched,call__3_'.$va,picto('search')).' ';
-	if(auth(4))$re.=lj('','socket_searched,del___'.$k,picto('del')).' ';
+	if(auth(4))$re.=lj('','socket_searched,remove___'.$k,picto('del')).' ';
 	if(auth(6))$re.=lj('','popup_searched,save__3_'.$va,picto('save2'));
 	$rd[$k]=div($re);}}}
 if($rd){arsort($rc); foreach($rc as $k=>$v)$ret.=$rd[$k];}
@@ -108,19 +109,23 @@ p($r);}
 static function arts($d){
 return sql::inner('art','qdsr','qdsra','ib','k','word="'.$d.'" order by art desc');}
 
-static function del($p,$o){//connect();
+static function del($p){
 $n=sql('count(id)','qdsra','v',['ib'=>$p]);
 sql::del2('qdsra',['ib'=>$p]);
 sql::del('qdsr',$p);
-$ret=btn('txtyl',nms(43).' '.plurial($n,19));
-return $ret.self::read($p,$o);}
+return $n;}
 
-static function read($p,$o){$ret='';//connect();
-$r=sqb('id,word','qdsr','kv','order by id desc'); //sort($r);
+static function remove($k,$o=''){$n=self::del($k);
+$ret=btn('txtyl',nms(43).' '.plurial($n,19));
+$ret.=self::read($k,$o);
+return $ret;}
+
+static function read($p,$o=''){$ret='';//connect();
+$r=sql('id,word','qdsr','kv',['_order'=>'id desc']);//sort($r);
 if($r)foreach($r as $k=>$v){
 	//$bt=lj('','srchd_searched,call__3_'.$v,$v).' ';//search__3_
 	$bt=lj('','popup_searched,home__x_'.$v,$v).' ';//search__3_
-	if(auth(6))$bt.=lj('','srchd_searched,del___'.$k,picto('del')).' ';
+	if(auth(6))$bt.=lj('','srchd_searched,remove___'.$k,picto('del')).' ';
 	$ret.=$bt.'- ';}
 return divc('dlist',$ret);}
 

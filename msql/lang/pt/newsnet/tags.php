@@ -1,10 +1,10 @@
 <?php 
 return ['1'=>['tags'],
-'2'=>['auteurs'],
-'3'=>['thèmes'],
-'4'=>['pays'],
-'5'=>['type'],
-'6'=>['personnalité'],
+'2'=>['autores'],
+'3'=>['temas'],
+'4'=>['países'],
+'5'=>['tipo'],
+'6'=>['personalidade'],
 '7'=>['org'],
-'8'=>['corp'],
+'8'=>['corpo'],
 '9'=>['edito']]; ?>

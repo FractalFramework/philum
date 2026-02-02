@@ -1,7 +1,7 @@
 <?php 
 class vhost{
 static $cb='vhst';
-static $f='_datas/vhost.txt';
+static $f='_datas/txt/vhost.txt';
 static $fa='/etc/apache2/sites-available';
 
 static function root(){
@@ -16,7 +16,7 @@ $d=$prm[0]??$p; $f=self::$f; write_file($f,$d); $fa=self::$fa;
 return self::call($p,$o);}
 
 static function call($p,$o){
-$f=self::$f; $fa=self::$fa;
+$f=self::$f; $fa=self::$fa; mkdir_r($f);
 exc('cp '.$fa.'/'.hst().'.conf /home/'.sql::$db.'/'.$f);
 $d=read_file($f);
 return $d;}

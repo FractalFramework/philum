@@ -22,7 +22,7 @@ static function infos($p){
 $r=msql::row('','public_atomic',$p,1);
 if(!$r)return btn('txtx','Element '.$p);
 $r['origin']=self::origin($p);
-return on2cols($r,470,3);}
+return build::on2cols($r,470,3);}
 
 static function ring_b($rg){
 if($rg==1)return [1=>44,2=>45];
@@ -34,7 +34,7 @@ elseif($rg==5)return [1=>38,2=>27,3=>16,4=>'05',5=>'04',6=>13,7=>22,8=>31,9=>40,
 static $clr=[''=>'ccc','Nonmetals'=>'5FA92E','Nobles Gasses'=>'00D0F9','Alkali Metals'=>'FF0008','Alkali Earth Metals'=>'FF00FF','Metalloids'=>'1672B1','Halogens'=>'F6E617','Metals'=>'999999','Transactinides'=>'FF9900','Lanthanides'=>'666698','Actinides'=>'9D6568','undefined'=>'ffffff'];
 
 static function atom($r,$n,$max){
-if(!$r)$r=[1=>'-',11=>$n]; $clr=self::$clr;//color:#'.invert_color($clr[$r[2]],1).';
+if(!$r)$r=[1=>'-',11=>$n]; $clr=self::$clr;//color:#'.clrneg($clr[$r[2]],1).';
 $sty='padding:2px; background-color:#'.$clr[$r[2]].'; border:1px solid black;';
 if($r[11]>$max)$sty.=' opacity:0.4;';
 //$nb=divs('text-align:right',lj('','spit_spitable,build___'.$r[11],$r[11]));
@@ -70,7 +70,7 @@ return [$ra,$n];}
 
 static function fams(){
 $r=self::$clr; $ret='';
-foreach($r as $k=>$v){$s='padding:2px 4px; background-color:#'.$v.'; border:1px solid #000; display:inline-block; color:'.invert_color($v,1); if($k)$ret.=bts($s,$k).' ';}
+foreach($r as $k=>$v){$s='padding:2px 4px; background-color:#'.$v.'; border:1px solid #000; display:inline-block; color:'.clrneg($v,1); if($k)$ret.=bts($s,$k).' ';}
 return $ret;}
 
 static function levels($p){$ret=' ';

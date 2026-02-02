@@ -8,8 +8,8 @@ if($d)unlink('msql/users/'.$nd.'_txt_'.$d.'.php');
 return btn('txtyl','deleted');}
 
 static function paste($d){$ret=hidden('cka','m'.$d);
-$ret.=ljb('','mem_storage','txtarea_m1___cka0',picto('save2'),atd('cka1').att(nms(27))).' ';
-$ret.=ljb('','mem_storage','txtarea_m1_1__ckb0',picto('refresh'),atd('ckb1').att(nms(95))).' ';
+$ret.=ljb('','mem_storage',['txtarea','m1','','','cka0'],picto('save2'),atd('cka1').att(nms(27))).' ';
+$ret.=ljb('','mem_storage',['txtarea','m1','1','','ckb0'],picto('refresh'),atd('ckb1').att(nms(95))).' ';
 //$ret.=hlpbt('memstorage');
 return btn('nbp',$ret).' ';}
 
@@ -43,7 +43,7 @@ switch($p){
 case('src'):ses::$urlsrc=$d; if($d)[$t,$ret]=conv::vacuum($d,'',1); break;
 //case('brut'):[$t,$b,$ret]=conv::vacuum($d,''); break;
 case('brut'):$ret=getfile($d); break;
-case('conn2html'):$d=self::mkquotes($d); $ret=conn::read($d,0,''); break;
+case('conn2html'):$d=self::mkquotes($d); $ret=conn::read($d,3,''); break;
 case('html2conn'):$ret=conv::call($d); break;
 case('code'):$ret=($d); break;
 case('cleanmail'):$ret=str::cleanmail($d); break;
@@ -115,7 +115,7 @@ if($d)$ret.=input('tit',stripslashes(valr($ra,1,0))).' ';
 $ret.=self::btn($d,$nd,$tx).br();
 $ret.=div(edit::bt(''));//ats('width:630px;')
 $ret.=div(self::btact('',''));
-$edt=divc('col1',textarea('txtarea',$msg,44,4,['class'=>'txar']));
+$edt=div(textarea('txtarea',$msg,44,4,['class'=>'txar']),'col1','txarea');
 $edt.=divc('col2',self::area('',''));
 $ret.=divc('grid-pad',$edt);
 $ret.=divd('bck','');

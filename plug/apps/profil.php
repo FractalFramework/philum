@@ -51,7 +51,7 @@ $ret.=divc('',input('gps',$r['gps']).btj('GPS','geo()','popw'));
 $ret.=divc('',lj('popsav','bts_profil,sav_user,name,com,cp,gps_xd',nms(27)));
 $ret.=divc('','').br();
 if(!get('app'))$ret.=div('','','googleMap','height:200px;border:1px solid gray');
-return divc('form',$ret);}//on2cols($rb,700,5)
+return divc('form',$ret);}//build::on2cols($rb,700,5)
 
 #mysql
 static function db(){

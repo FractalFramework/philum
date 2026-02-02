@@ -203,7 +203,7 @@ return $ret;}
 
 //read
 static function sizes($f){$w=''; $h='';
-if(is_file($f))[$w,$h]=getimagesize($f); 
+if(is_file($f))[$w,$h]=imsize($f); 
 else $w=self::info_dist($f,'fwidth');
 return [$w,$h];}
 /*static function show_img($f,$s){$img=img::make_thumb_c($f,$s,1); [$w,$h]=self::sizes($f);
@@ -247,7 +247,7 @@ if($s)$ret.=blj('',$id.'fidld','finder,deldir___'.ajx($d).'_'.$id,self::pic('del
 $ret.=self::plnk($d,$o).' ';
 $ret.=lj('','ffils_finder,sharedir___'.ajx($d),picto('share')).' ';
 $ret.=blj('',$id.'upurl','finder,home_upurl__'.ajx($d).'_'.$id,picto('photo')).' ';
-$ret.=upload_j('upl'.str_replace('/','',$d),'disk',$d).' ';
+$ret.=build::upload_j('upl'.str_replace('/','',$d),'disk',$d).' ';
 return $ret;}
 
 //upurl
@@ -277,7 +277,7 @@ else{if($rb[0]=='shared'){$url=$v; $f=strpos($v,'/')!==false?strend($v,'/'):$v;}
 	$rc['xt']=$xt; $rc['r']=0; $rc['j']=ajx($url).'_'; $rc['f']=$f;
 	if($rb[0]=='shared')$rc['prop']=btn('txtsmall',strprm($v)).' ';
 	if(is_file($fb) && $xt)if(strpos('.jpg.png.gif',$xt)!==false && $rb[6]!='pictos' && substr(self::droot(),0,4)!='http')//set as mini
-		$rc['img']=img::make_thumb_c($fb,'48/48',''); //self::show_img($fb,'48/48')
+		$rc['img']=img::make_thumb_c($fb,'48/48',0); //self::show_img($fb,'48/48')
 		else $rc['typ']=$xt;
 	if($rb[3]=='icon'){if($xt){[$fd,$fl]=split_one('/',$url,1);
 		if($xt=='.svg'){$fsvg=substr($url,0,-4);
@@ -435,7 +435,6 @@ return [$r,$rb];}
 //4=normal/recursive/conn
 //5=update/alone
 //6=pictos/mini
-
 static function home($p,$o){
 [$p,$o,$ra,$rb]=self::define($p,$o);
 [$r,$rb]=self::slct($p,$rb); $fi=[]; $ret='';

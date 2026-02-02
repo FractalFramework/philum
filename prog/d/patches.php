@@ -1,6 +1,17 @@
 <?php 
 class patches{
 
+static function ispatched($p){
+$r=msql::read('server','program_patches');
+return $r[$p][0]??0;}
+static function updpatch($p,$o=1){
+msql::mdf('server','program_patches',[$o],$p);
+return 'ok';}
+static function patchbt($p){
+if(!self::ispatched($p))
+return lj('popdel','popup_patches,updpatch___'.$p.'_1','mark as patched');
+return lj('popdel','popup_patches,updpatch___'.$p.'_0','mark as not patched');}
+
 /*static function conv($dr,$k,$v){$f=$dr.'/'.$v;
 $d=file_get_contents($f);
 $d=str_replace('_menus_','_',$d);
@@ -24,8 +35,8 @@ static function dbutf($p){return;//2304
 if(!auth(6))return;
 //$r=sqldb::$rt;
 //foreach($r as $k=>$v)$qb=$v;
-$ra=sql::read2('id,suj','qda','kv','limit 0,100)');
-//$ra=sql::read2('id,msg','qdm','kv','where msg LIKE "%&#%" order by id limit 1');
+$ra=sql::read('id,suj','qda','kv','limit 0,100)');
+//$ra=sql::read('id,msg','qdm','kv','where msg LIKE "%&#%" order by id limit 1');
 $rb=[];
 foreach($ra as $k=>$v){$d=$v;
 $d=html_entity_decode($d,ENT_QUOTES,'UTF-8');
@@ -83,7 +94,7 @@ static function dir($dr,$k,$v){
 if(!auth(6))return; $r=[];
 [$dr,$nod,$f]=self::nod($dr,$k,$v,1);
 if(is_file($f))$r=require($f); //else echo $dr.' ';
-//if($r)$r=msql::save($dr,$nod,$r);
+//if($r)$r=msql::savee($dr,$nod,$r);
 //if($f && $r)unlink($f);
 return $nod;}
 
@@ -118,7 +129,7 @@ $_SESSION['dev']=1;
 //boot::reboot(); ses('dev',1);
 //$r=msql::read('system','default_mods'); pr($r);
 require(boot::cnc());
-//boot::reset_ses(); $_SESSION['dayx']=time();//boot::cats();
+//boot::reset_ses(); ses::$dayx=time();//boot::cats();
 boot::init(); pr(ses('prms')); pr(ses('mn')); pr(ses('mnd')); pr(ses('qb')); //pr(ses('rstr'));
 boot::define_use(); pr(ses('mn'));
 boot::define_iq(); pr(ses('ip'));
@@ -133,12 +144,13 @@ $rl=explode(' ',prmb(26)); //pr($rl);
 $rg=msql::kv('',nod('tags')); //pr($rg);
 msql::copy('',nod('tags'),'server',nod('tags'));
 foreach($rg as $k=>$v)foreach($rl as $ka=>$va){
-//msql::sav('lang/'.$va,nod('tags'),$rg); will be translated
+//msql::save('lang/'.$va,nod('tags'),$rg); will be translated
 $rt[]=nod('tags_'.$k.$va).'=>'.'lang/'.$va.'/'.nod('tags_'.$k);
 msql::copy('',nod('tags_'.$k.$va),'lang/'.$va,nod('tags_'.$k));}
+msql::copy('',nod('tags'),'server','config_pictotag');
 return tabler($rt);}
 
-//cats
+//cats//todo
 static function catarts($p,$o){
 //if(!auth(6))
 return;
@@ -158,7 +170,7 @@ foreach($r as $k=>$v)if($rc[$v]??'')//$rt[]=$rc[$v];
 return 'ok'.implode(',',$rt);}
 
 static function updtable($b){
-sqlop::update($b);}
+sqldb::update($b);}
 
 static function cats($p,$o){//240426
 self::updtable('cat');
@@ -181,7 +193,7 @@ echo $psw=password_hash($p,PASSWORD_DEFAULT);
 sql::upd('qdu',['pass'=>$psw],['name'=>ses('qb')]);}
 
 static function msqlcopy2($fa,$fb){
-//$r=msql::read($v,''); msql::save2($dr,$nod,$r,$lg);
+//$r=msql::read($v,''); msql::savee2($dr,$nod,$r,$lg);
 $fb=str_replace('/.php','/index.php',$fb);
 $d=read_file($fa); mkdir_r($fb); putfile($fb,$d);}//.'.php'
 
@@ -192,7 +204,7 @@ return tabler($rb);}
 
 static function msql2($p,$o){//240501
 $r=scanfiles('msql'); //pr($r);
-if(is_dir('msql2'))rmdir_r('msql2');
+if(is_dir('msql2'))rmdir_r('msql2'); return;
 //$r=['msql/users/newsnet/tags/8es.php'];
 $rqb=['newsnet','ummo','philum','public'];//
 $rlg=['fr','en','es','it','pt','ru','de','ja','nb','zh'];
@@ -215,22 +227,108 @@ $r=sql('name,nod,id','qda','kkr',[]);
 foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[]=[$k,$ka,implode(' ',$va)];
 return tabler($rt);}
 
+static function views(){//2404
+$ra=['art','cat','read','tracks','simple','little','fast','titles','pubart','pubartb','pubartc','panart','cover','weblink','bublh','bublj','bublk','book','file','product'];//json_encode($r);
+foreach($ra as $v){$r=datas::$v(); if(auth(4))echo $v.' '; json::sav('sys','views/'.$v,$r);}}
+
+static function config(){//2406
+//cats
+msql::copy('',nod('pictocat'),'server',nod('pictocat'));
+msql::copy('',nod('overcat'),'server',nod('overcat'));
+$ra=msql::read('',nod('pictocat')); $rc=[];
+foreach($ra as $k=>$v)$rc[]=[$v[0]];
+msql::save('server',nod('cats'),$rc);
+//params
+$ra=msql::read('system','default_params');
+//$rb=msql::kx('',nod('params'),1); $rc=[];
+$rb=msql::kx('',nod('config'),0); $rc=[];
+foreach($ra as $k=>$v)$rc[$k]=[$v[1],$rb[$k]??''];
+msql::save('server',nod('params'),$rc);
+//priority
+$r7=explode(';',$rb[7]); $rc=[];
+foreach($r7 as $v)$rc[]=[$v];
+msql::save('server',nod('priority'),$rc);
+//tracks
+$r10=explode('/',$rb[10]); $rc=[];
+foreach($r10 as $v)$rc[]=[$v];
+msql::save('server',nod('tracks'),$rc);
+//tags
+//$rc=msql::kv('',nod('tags')); //pr($rc);
+$r18=explode(' ',$rb[18]); $rc=[['tag']];
+foreach($r18 as $v)$rc[]=[$v];
+msql::save('server',nod('tags'),$rc);
+//pictotags
+//$rc=msql::read('',nod('tags'));
+$r19=explode(' ',$rb[19]); $rc=[['tag']];
+//foreach($r19 as $v)$rc[]=[$v];
+//msql::save('server',nod('pictotag'),$rc);
+$rc=[['tag','tag']];
+foreach($r18 as $k=>$v)$rc[]=[$v,$r19[$k]];
+msql::save('server',nod('pictotag'),$rc,['tag','picto']);
+//ext
+$r23=explode(' ',$rb[23]); $rc=[];
+foreach($r23 as $v)$rc[]=[$v];
+msql::save('server',nod('ext'),$rc);
+//langs
+$r26=explode(' ',$rb[26]); $rc=[];
+foreach($r26 as $v)$rc[]=[$v];
+msql::save('server',nod('langs'),$rc);
+//config
+$ra=msql::read('system','default_config',1); $rc=[];
+$d=read_file(boot::cnf()); $rb=expl('#',$d,16);//cnf() obs
+//$rb=msql::read('',nod('config'),1);
+foreach($ra as $k=>$v)$rc[]=[$v[1],!empty($rb[$k])?$rb[$k]:$v[0]];
+msql::save('server',nod('config'),$rc);
+//rstr
+$ra=msql::read('lang','admin_restrictions',1);
+$rb=msql::kv('',nod('rstr'),1); $rc=[];
+//foreach($ra as $k=>$v)$rc[]=[$v[0],$rb[$k]];
+msql::save('server',nod('rstr'),$rb);
+}
+
+static function setconfig(){//2409
+//config
+$r=msql::kx('server',nod('config'),1);
+json::sav('srv',drn('config'),$r);
+//sql::sav('qdu','config',$rb,['name'=>ses('qb')]);
+//params
+$r=msql::kx('server',nod('params'),1); $rb=$r;
+$ra=[7=>'priority',10=>'tracks',18=>'tags',23=>'ext',26=>'langs'];
+foreach($ra as $k=>$v)$rb[$k]=msql::read('server',nod($v));
+json::sav('srv',drn('params'),$rb);
+//rstr
+$r=msql::kx('server',nod('rstr'),1); $rb=[0=>0];
+foreach($r as $k=>$v)$rb[]=$v==1?1:0;
+json::sav('srv',drn('rstr'),$rb);}
+
+static function catim(){//2503
+$ra=sql::read('img','imgart','rv',[]);
+$rb=sql::read('im','qdg','rv',[]);
+$rc=array_diff($rb,$ra);
+pr($rc);}
+
+//backupim::killcatim//2504
+//backupim::fixcatim//2504
+
 #call2
 static function call($p,$o,$prm=[]){$r=[];
 [$p1,$o]=prmp($prm,$p,$o);
 if(!auth(6))return;
-return self::$p($p1,$o,$prm);}
+$bt=self::patchbt($p);
+//if(!self::ispatched($p))
+return $bt.self::$p($p1,$o,$prm);}
 
-static function menu($p){$rt=[];
+static function menu($p){$rb=[];$rt=[];
 $ret=inputb('fto',$p,18,'directory');
-$rok=['tags','cats','msql2','msql2b','unifynod']; 
+$rok=['cats'];//'tags','msql2','msql2b','views','config','setconfig','unifynod','catim'
 //$rok=['usr_resav','usr_update','usr_rollback'];
 $ra=['utf','headers','splitters'];
-foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,callm_fto_3_'.$v,$v);
-$ra=['dbutf','dbsplitters','catarts','catartsrev','hubs','hubarts','noqd','return','bak','dir','reboot','tags','cats','psw','msql2','msql2b','unifynod'];
-foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,call_fto_3_'.$v,$v);
-foreach($rok as $v)$ret.=$rt[$v];
-return $ret;}
+//foreach($ra as $v)$rb[$v]=lj('popbt','fut_patches,callm_fto_3_'.$v,$v);
+$ra=['dbutf','dbsplitters','catarts','catartsrev','hubs','hubarts','noqd','return','bak','dir','reboot','tags','cats','psw','msql2','msql2b','unifynod','views','config','setconfig'];
+//foreach($ra as $v)$rb[$v]=lj('popbt','fut_patches,call_fto_3_'.$v,$v);
+$rb=msql::kv('server','program_patches');
+foreach($rok as $v)$rt[$v]=lj('popbt '.active($rb[$v]??'',1),'fut_patches,call_fto_3_'.$v,$v);
+return join('',$rt);}
 
 static function home($p){
 $bt=self::menu($p); $ret='';

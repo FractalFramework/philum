@@ -202,7 +202,7 @@ foreach($rb as $k=>$v){
 $rb[$k][1]=lkt('',twit::lk($v[1]),pictxt('link-out',$v[1],14));
 $rb[$k][2]=lj('','popup_twit,call__3_'.ajx($v[1]).'_ban',pictxt('popup',$v[2],14));
 $im=twit::getimg($v[5],1);
-$rb[$k][5]=img(host().'/img/'.$im,'max-width: inherit;');}
+$rb[$k][5]=image(host().'/img/'.$im,ats('max-width: inherit;'));}
 return $rb;}
 
 static function play_usrs($d){$rid=rid($d);//from list of usrs
@@ -321,7 +321,7 @@ elseif($prm)[$p,$o]=prmp($prm,$p,$o);
 if(rstr(158))return twit::twalter($p,$o);
 if(substr($p,0,4)=='http')$p=strend($p,'/');
 /**/if($p=='plug' or substr($o,0,9)=='twit/app'){
-//json::add('','twit'.mkday(),[$p.':stopped',$o,$id,$minid,$prm[0],0,mkday('','His'),ip()]);
+//json::add('','twit',[$p.':stopped',$o,$id,$minid,$prm[0],0,ip()]);
 return;}
 $p=$p?$p:$usr;//msql::val('',nod('twit_'.ses('apk')),5)
 $o=$o?$o:'search'; ses('twusr',$p); $n=sesb('nbp',40);
@@ -370,7 +370,7 @@ if($q)$ret=self::batch($q,$o);
 if($qu)$ret=self::usrs($qu,$p,$o);
 if(!is_numeric($p))$ret.=hidden('home',$o);
 //if($o)$bt=lkt('txtx','/plug/twit/'.$p.'/'.$o,$o.': '.$p);
-//if(is_array($q))json::add('','twit'.mkday(),[$p,$o,$id,$minid,$prm[0],count($q),mkday('','His'),ip()]);
+//if(is_array($q))json::add('','twit,[$p,$o,$id,$minid,$prm[0],count($q),ip()]);
 return $bt.$ret;}
 
 static function menu($p,$o,$rid){

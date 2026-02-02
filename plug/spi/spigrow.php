@@ -5,12 +5,12 @@ static function infos($d){
 $r=msql::row('','public_atomic',$d,1);
 if(!$r)return btn('txtx','Element '.$d);
 //$r['origin']=self::origin($d);
-return on2cols($r,470,3);}
+return build::on2cols($r,470,3);}
 
 static function clr(){return [''=>'ccc','Nonmetals'=>"92FF10",'Nobles Gasses'=>"05FFFF",'Alkali Metals'=>"FF9801",'Alkali Earth Metals'=>"BF6700",'Metalloids'=>"91C9D6",'Halogens'=>"FFFF00",'Metals'=>"ABABB0",'Transactinides'=>"C9C97A",'Lanthanides'=>"B3D7AB",'Actinides'=>"75ADAB",'undefined'=>"ffffff"];}
 
 static function fams(){$r=self::clr(); $ret='';
-foreach($r as $k=>$v)if($k)$ret.=bts('font-size:12px; padding:2px 4px; background-color:#'.$v.'; border:1px solid #000; display:inline-block; color:'.invert_color($v,1),$k).' ';
+foreach($r as $k=>$v)if($k)$ret.=bts('font-size:12px; padding:2px 4px; background-color:#'.$v.'; border:1px solid #000; display:inline-block; color:'.clrneg($v,1),$k).' ';
 return $ret;}
 
 static function levels($d){$ret='';

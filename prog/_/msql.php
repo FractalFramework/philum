@@ -3,8 +3,8 @@ class msql{
 static $dr,$nod,$f,$r;
 static $m='_';
 
-//echo fsys(['usr','lng','srv','bak'],'config/tags');
-//echo fsys('usr/lng/srv/bak','config/tags');
+//fsys(['usr','lng','srv','bak'],'config/tags');
+//fsys('usr/lng/srv/bak','config/tags');
 static function fsys($dr,$nod,$qb='',$lg=''){$rt=['msql2'];//future
 $rd=explode('/',$dr); $rn=explode('/',$nod);
 $r=['pub','usr','bak','lng','cnf','cli','srv','sys'];
@@ -17,15 +17,10 @@ if($v=='lng')$rt[]=$lg?$lg:ses('lng');}
 $rt[]=$nod;
 return implode('/',$rt).'.php';}
 
-static function save2($dr,$nod,$r,$qb='',$lg='',$rh=[]){if(!$r)$r=[];
-if($rh && !isset($r['_']))$r=array_merge(['_'=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
-$f=self::fsys($dr,$nod,$qb,$lg); if($nod)mkdir_r($f);
-$d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); return $r;}
-
 static function url($dr,$nod,$o=''){
 $dr=$dr=='lang'?$dr.'/'.ses('lng'):($dr?$dr:'users');
-return 'msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod).'.php';}
-//json::add('',nod('msqldir'.mkday('ymnHis')),[$nod]);
+return 'msql/'.($o?'_bak/':'').$dr.'/'.str_replace('_','/',$nod??'').'.php';}
+//json::add('','msqldir',[$nod]);
 
 static function conformity($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
 static function patch_m($dr,$nod){$r=msql::read($dr,$nod); $r=msqa::patch_m($r); self::save($dr,$nod,$r);}
@@ -58,14 +53,19 @@ static function delemptydirs(){$r=scandir_r('msql');
 $fc=fn($v)=>scanfiles($v)?1:(rmdir($v)?$v:'');
 $rb=array_map($fc,$r); pr($rb);}
 
-static function valid($r){
-if(is_array($r)){$r1=current($r);
-	if(is_array($r1)){$r2=current($r1);
-		if(is_string($r2))return 1;}}}
+static $depht=[];
+static function valid($r){static $i; $i++; self::$depht[]=$i;
+foreach($r as $k=>$v)if(is_array($v))self::valid($v); $i--;
+$n=max(self::$depht); return $n==2||$n==1?1:0;}
 
 static function save($dr,$nod,$r,$rh=[],$bak=''){if(!$r)$r=[];
 if($rh && !isset($r['_']))$r=array_merge(['_'=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
 $f=self::url($dr,$nod,$bak); if($nod)mkdir_r($f);
+$d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); else echo 'no:'.$f; return $r;}
+
+static function save2($dr,$nod,$r,$qb='',$lg='',$rh=[]){if(!$r)$r=[];//future
+if($rh && !isset($r['_']))$r=array_merge(['_'=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
+$f=self::fsys($dr,$nod,$qb,$lg); if($nod)mkdir_r($f);
 $d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); return $r;}
 
 static function init($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak);
@@ -82,24 +82,25 @@ elseif($act=='val')$r[$n][$rh]=$ra;
 elseif($act=='shot')$r[$n][$rh?$rh:0]=$ra;
 elseif($act=='after')$r=self::array_push_after($r,$ra,$n);//??
 elseif($act=='next'){$nx=self::nextentry($r); $r[$nx]=$ra;}
-elseif($act=='add'){foreach($ra as $k=>$v)$r[]=$v;}
-elseif($act=='mdf'){foreach($ra as $k=>$v)$r[$k]=$v;}
+elseif($act=='radd')$r=array_merge($r,$ra);
+elseif($act=='add')foreach($ra as $k=>$v)$r[]=$v;
+elseif($act=='mdf')foreach($ra as $k=>$v)$r[$k]=$v;
 elseif($act=='mdfv'){foreach($ra as $k=>$v)if($v)$r[$k]=[$v];}
 elseif($act=='delk'){foreach($ra as $k=>$v)unset($r[$k]);}
 elseif($act=='mdfk'){foreach($r as $k=>$v)if($k==$ra)$rb[$rh]=$v; else $rb[$k]=$v; $r=$rb;}
-elseif(substr($act,0,1)=='@'){$n=substr($act,1); $nx=self::nextentry($r);
-	if($r)foreach($r as $k=>$v){$rb[$k]=$v; if($k==$n)$rb[$nx]=$ra;} $r=$rb;}
+elseif(substr($act,0,1)=='@'){$n=substr($act,1); $nx=self::nextentry($r); $i=0;
+	if($r)foreach($r as $k=>$v){$i++; $rb[$k]=$v; if($k==$n){$rb[$nx]=$ra; msqa::$defk=$i;}} $r=$rb;}
 //elseif(is_numeric($n))foreach($r as $k=>$v){if($v[$n]==$ra[$n] && $v[$n]){
 //	if($act=='mdf')$r[$k]=$ra; elseif($act=='del')unset($r[$k]);}}
 elseif($act)$r[$act]=$ra;
 if(isset($r[0]))$r=self::reorder($r); if(isset($rb))$rb+=$r; else $rb=$r;
 self::save($dr,$nod,$rb); //pr($rb);
-//json::write($dr,$nod,$r);
+//json::add($dr,$nod,$r);
 return $rb;}
 
 static function inc($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak); $r=[];
 if(is_file($f)){try{$ra=require($f);}catch(Exception $e){echo 'bruu: '.$nod;}}
-elseif($rh)self::save($dr,$nod,[],$bak);
+elseif($rh)self::save($dr,$nod,[],$rh,$bak);
 if(isset($ra) && is_array($ra) && !$r)$r=$ra;
 //if(!isset($r)){$r=$$nd; echo $nd.' ';}//patch_old
 if(is_array($r))$r=self::sl($r);
@@ -138,6 +139,9 @@ if(!is_file($f))return self::save($dr,$nod,$r,$rb);}
 static function delrow($dr,$nod,$k){
 return msql::modif($dr,$nod,$k,'del');}
 
+static function mdf($dr,$nod,$r,$k){
+return self::modif($dr,$nod,$r,'row',[],$k);}
+
 static function findlast($dr,$pr,$nod){//next table
 $r=msqa::choose($dr,$pr,$nod); return self::nextnod($r);}
 static function nextnod($r){if($r){$mx=max($r); asort($r); $i=0;
@@ -165,8 +169,7 @@ if($row)$r=$r[$row]??$r; if(isset($col))$r=$r[$col]??$r; return $r;}
 
 static function where($dr,$nod,$rq,$rh=[]){$r=self::read($dr,$nod,1,$rh); $rb=[]; $rc=[];
 if($r)foreach($r as $k=>$v)foreach($rq as $ka=>$va)if(($v[$ka]??'')===$va)$rb[$k][$ka]=1; $n=count($rq);
-if($rb)foreach($rb as $k=>$v)if(count($v)==$n)$rc[]=$r[$k];
-return $rc;}
+if($rb)foreach($rb as $k=>$v)if(count($v)==$n)$rc[$k]=$r[$k]; return $rc;}
 
 static function where_assoc($dr,$nod,$q,$rh=[]){
 $r=self::read($dr,$nod,'',$rh); $rb=[];
@@ -183,6 +186,8 @@ static function prep($b,$d){$r=self::read($b,$d,1); $rb=[];
 if($r)foreach($r as $k=>[$ka,$va])$rb[$ka][$k]=$va; return $rb;}
 static function two($b,$d,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];
 if($r)foreach($r as $k=>[$ka,$va])$rb[$ka]=$va; return $rb;}
+static function three($b,$d,$rh=[]){$r=self::read($b,$d,1,$rh); $rb=[];
+if($r)foreach($r as $k=>[$ka,$va,$vb])$rb[$ka]=[$va,$vb]; return $rb;}
 
 static function rk($b,$d){$r=self::read($b,$d,'',1); return $r?array_keys($r):[];}
 static function rv($b,$d){$r=self::col($b,$d,0,0); return array_values($r);}
@@ -233,7 +238,8 @@ static function reverse($r){$rh=val($r,'_'); if($rh)unset($r['_']);
 if($r){$r=array_reverse($r); array_unshift($r,$rh);} return $r;}
 static function merge($r,$dr,$nd){$rt=self::read($dr,$nd,1); return array_merge_b($r,$rt);}
 static function date($dr,$nod){$f=self::url($dr,$nod); if(is_file($f))return filemtime($f);}
-static function ses($v,$dr,$nod,$u){return $_SESSION[$v]=$_SESSION[$v]??self::col($dr,$nod,0);}
+static function ses($dr,$nod,$u,$fn){$d=$fn.$dr.$nod.$u;
+	if(!isset($_SESSION['mfn'][$d]))$_SESSION['mfn'][$d]=self::$fn($dr,$nod,$u); return $_SESSION['mfn'][$d];}
 static function json($dr,$nod,$in='',$u=''){$r=self::read($dr,$nod,$in,$u); return mkjson($r);}
 static function bt($b,$p,$d=''){$u=($b?$b:'users').'_'.ajx($p).($d?'-'.ajx($d):'');
 return lj('grey','popup_msql__3_'.$u,pictit('msql2',$p));}

@@ -15,10 +15,19 @@ return ['_'=>['description'],
 'list'=>['lista con viñetas (para cada salto de línea)'],
 'nh'=>['nota a pie de página'],
 'web'=>['Muestra la descripción de una página web'],
-'twitter'=>['Twitter API:rn-[123456789:twitter] devuelve un twitrn-[text|search:twitter] resultado de búsquedarn-[123456789|thread:twitter] hilo de una discusión (yendo hacia atrás)'],
-'art'=>['Apunta a un artículo: rn-[1234:art] devuelve un botón al artículo con su títulorn-[1234|title:art] fija el botón a un título'],
-'msql'=>['Enviar datos de una tabla: rn[hub_table_(version)-(clave)|(fila)|opcion:microsql];rnOpciones: pop, read, conn, last, count, graph, form, tmp'],
-'table'=>['- columnas: | o comasrn- filas: Â¬ o salto de línearn- cabeceras: |1'],
+'twitter'=>['Twitter-𝕏 API:
+-[123456789:twitter] devuelve un twit
+-[text|search:twitter] resultado de búsqueda
+-[123456789|thread:twitter] hilo de una discusión (yendo hacia atrás)'],
+'art'=>['Apunta a un artículo: 
+-[1234:art] devuelve un botón al artículo con su título
+-[1234|title:art] fija el botón a un título'],
+'msql'=>['Enviar datos de una tabla: 
+[hub_table_(version)-(clave)|(fila)|opcion:microsql];
+Opciones: pop, read, conn, last, count, graph, form, tmp'],
+'table'=>['- columnas: | o comas
+- filas: Â¬ o salto de línea
+- cabeceras: |1'],
 'center'=>['alineado centro'],
 'right'=>['alineado a la derecha'],
 '--'=>['línea horizontal'],

@@ -19,7 +19,7 @@ static function firstdate(){return ma::oldestart();}//sql('day','qda','v',['_lim
 //todo:vars in js
 static function build($p,$o){
 $lid=self::lastid(); if(is_numeric($p))$lid-=$p;
-if($lid)$r=sql::inner('tag','qdt','qdta','idtag','k',['>=idart'=>$lid,'<=idart'=>($lid+self::$w)]);//,d2.id
+if($lid)$r=sql::inner('tag','qdt','qdta','idtag','k',['}idart'=>$lid,'{idart'=>($lid+self::$w)]);//,d2.id
 $ret=frequency::graph($r,100);
 return $ret;}
 

@@ -1,4 +1,4 @@
-<?php //bdvoc
+<?php 
 class bdvoc{
 
 static function sav($v,$o){//echo $p.'-'.$o;
@@ -20,7 +20,7 @@ if($r)foreach($r as $k=>$v){
 	//$lk=ma::popart($idart,$ref);
 	$lk=lj('','popup_art,look___'.$idart.'_'.ajx($voc).'_1',pictxt('article',$ref));
 	$bt=lj('txtx','popup_bdvoc,see___'.ajx($voc).'_',$voc);
-	if(auth(6))$edt=lj('','popup_sqledt___bdvoc_'.$id,picto('editxt'));
+	if(auth(6))$edt=bj('popup|dbedt,read|a=bdvoc,id='.$id,picto('editxt'));
 	$rb[]=[$bt,$txt,$lg,$lk,$lv,$edt];}
 if($o){foreach($rb as $k=>$v)$rc[$v[4]][]=$k; ksort($rc); //p($rc);
 	foreach($rc as $k=>$v)foreach($v as $kb=>$vb)$rd[]=$rb[$vb]; $rb=$rd;}
@@ -43,8 +43,8 @@ $ret.=tabler($rb,1);
 return divd($rid,$ret);}
 
 static function build($p,$o){
-$ratio=50; $min=($o-1)*$ratio; $wh=$o?'limit '.$limit=$min.', '.($min+$ratio):'';
-$r=sqb('id,voc,lang,sound','bdvoc','rr','group by voc order by voc '.$wh);
+$ratio=50; $min=($o-1)*$ratio; $sq=$o?['_limit'=>$min.', '.($min+$ratio)]:[];
+$r=sql('id,voc,lang,sound','bdvoc','rr',['_group'=>'voc','_order'=>'voc']+$sq);
 if($r)foreach($r as $k=>$v){
 	[$id,$voc,$lg,$sd]=$v;
 	//$lk=ma::popart($idart,$ref);
@@ -54,7 +54,7 @@ if($r)foreach($r as $k=>$v){
 return $rb;}
 
 static function pg($p,$o){
-$n=sqb('count(distinct(voc))','bdvoc','v','');
+$n=sql('count(distinct(voc))','bdvoc','v','');
 $ret=pop::btpages(50,$o?$o:1,$n,'bdv_bdvoc,call___'.ajx($p).'_');
 return $ret;}
 
@@ -70,7 +70,7 @@ $j=$rid.'_bdvoc,see_inpbdv_1';
 $ret=inputj('inpbdv',$p,$j).' ';
 $ret.=lj('',$j,picto('ok')).' ';
 $ret.=lj('popbt',$rid.'_bdvoc,see_inpbdv_1',pictxt('sound',nms(179))).' ';
-//$n=sqb('count(distinct(voc))','bdvoc','v','');
+//$n=sql('count(distinct(voc))','bdvoc','v','');
 //$ret.=btn('txtxt',$n.' vocables').' ';
 return $ret;}
 

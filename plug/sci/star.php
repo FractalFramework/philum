@@ -2,6 +2,7 @@
 class star{
 static $conn=1;
 static $default='81693,99461,88601';
+static $exomap='ummo_exo_6';
 
 static function req($sq){$ret='';
 if($sq['hip']??'')$ret.='hip'.implode(',hip',$sq['hip']).',';
@@ -13,7 +14,7 @@ if($sq['ds'][1]??'')$ret.='dist'.$sq['ds'][1].',';
 return btn('txtx','Query: '.input('',$ret,'48'));}
 
 static function simbad($sq){$ret='';
-if($sq['hip']??''){$hip=$sq['hip'][0]; $ret='hip'.$hip; }
+if($sq['hip']??''){$hip=$sq['hip'][0]; $ret='hip'.$hip;}
 if($sq['hd']??''){$hd=$sq['hd'][0]; $ret='hd'.$hd;}
 if($ret && count($sq)==1)return lj('txtx','popup_simbad,call___'.$ret,pictxt('stars','Simbad'));
 if(isset($sq['ra']) && count($sq['ra'])==2)$ret.='ra>'.(substr($sq['ra'][0],1)).'&ra<'.(substr($sq['ra'][1],1));
@@ -35,17 +36,31 @@ static function esa($sq){
 //http://aladin.unistra.fr/AladinLite/?target=16 45 4.185-43 58 32.44&fov=10.99&survey=P/DSS2/color
 }
 
+static function relations_nomenclature(){
+return ['rel'=>'Mutual exchange','wat'=>'Watch peacefully','obs'=>'Observed by','atd'=>'Attempt to dominate','und'=>'Under attack from','dom'=>'Dominate','sub'=>'Dominated by','pro'=>'Protected by'];}
+
+static function relations_rapport($d){$r=explode(' ',$d); $ra=self::relations_nomenclature(); $rt=[];
+if($r)foreach($r as $v){[$k,$va]=expl('-',$v); $ka=$ra[$k]??''; $rt[]=$ka.': '.$va;}
+return join(br(),$rt);}
+
 static function info($p,$o){$pb=$p;
 if($o=='hd')$n=1; else $n=8;//hip
 if($p=='Oomo'){$p='Yooma'; $n=0;}
 if($p=='Galactic center'){$p='Agitarius A'; $n=0;}
 $ret=self::call($p,2);
-$r=msql::find('','ummo_exo_5',$p,$n,1); if($r)$ret.=tabler($r);
-$r=msql::find('','ummo_aliens_5',$r['HD']??'',0,1);
-if($r)$ret.=tag('blockquote','',nl2br($r['infos']??''));
-$ret.=lj('txtx','popup_starvue,call___'.$pb,pictxt('target','vue')).' ';
-$ret.=lj('txtx','popup_simbad,call___'.$pb,pictxt('stars','Simbad'));
-//$ret.=self::simbad('hd'.$pb);
+$r=msql::find('',self::$exomap,$p,$n,1); if($r)$ret.=tabler($r); $hd=$r['HD']??''; $hip=$r['HIP']??'';
+$rb=msql::find('','ummo_aliens_5',$hd,0,1);
+if($rb['infos']??'')$ret.=tag('blockquote','',nl2br($rb['infos']));
+if($r['relations']??'')$ret.=tag('blockquote',['class'=>'txtx'],self::relations_rapport($r['relations']));
+$ret.=lj('txtx','popup_starvue,call___'.$hip,pictxt('target','vue')).' ';
+$ret.=lj('txtx','popup_simbad,call___'.$hip,pictxt('galaxy2','Simbad'));
+//$ret.=self::simbad('HD'.$hd);
+$ret.=lkt('txtx','http://simbad.u-strasbg.fr/simbad/sim-id?Ident=hd'.$hd,pictxt('url','simbad'));
+//$ret.=lkt('txtx','https://www.stellarcatalog.com/stars/hd-'.$hd,pictxt('url','stellarcatalog'));
+$ret.=lkt('txtx','https://science.nasa.gov/exoplanet-catalog/hd-'.$hd,pictxt('space','Nasa'));
+$ret.=lkt('txtx','https://en.wikipedia.org/wiki/HD_'.$hd,pictxt('wiki','Wiki'));
+//$u=ajx('https://www.stellarcatalog.com/frg_star3D.php?starID='.$hd);
+//$ret.=lj('txtx','popup_usg,iframe___'.$u,pictxt('iframe','stellarcatalog'));//need starId
 return $ret;}
 
 static function infosrq($sq){

@@ -25,7 +25,8 @@ if($r)foreach($r as $k=>$v){
 	$suj=substr($suj,1,-1);
 	$rt[]=[$suj,'@'.$nam.' '.$dt.br().$msg,$msb];}
 $ret=tabler($rt);
-$f='_datas/umlikes.htm'; write_file($f,$ret); $bt=lk($f);
+$f='_datas/html/umlikes.htm'; mkdir_r($f);
+write_file($f,$ret); $bt=lk($f);
 return $bt.$ret;}
 
 static function r(){//option/value

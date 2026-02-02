@@ -15,7 +15,7 @@ if($rb)foreach($rb as $k=>$v){
 	$frm=sql('frm','qda','v',$k);
 	if(in_array($frm,$cats))
 		//$ret.=umcom::home($k,'');
-		$ret.=divd('umrec'.$k,umrec::call($k,''));}
+		$ret.=tag('section',['id'=>'umrec'.$k],umrec::call($k,''));}
 return $ret?$ret:'nothing';}
 
 static function menu($p,$o,$rid){

@@ -19,12 +19,12 @@ default=>''};//187925
 return $ret;}
 
 static function datas($c,$n){
-$sql=self::sql($c,$n); //if(auth(6))echo $sql;
-if($c=='nbp'){$rb=sql::call(self::sql('nbp2',$n),'kv'); if($rb)$ret=array_merge($ret,$rb);}
-elseif($c=='nbpu'){$rb=sql::call(self::sql('nbpu2',$n),'kv'); if($rb)$ret=array_merge($ret,$rb);}
-elseif($c=='nbutot')$ret=sql::call($sql,'v'); else $ret=sql::call($sql,'kv');
-if($c=='nbutot'){$ret+=sql::call(self::sql('nbutot2',$n),'v');}
-return $ret;}
+$sql=self::sql($c,$n); $rt=[];//if(auth(6))echo $sql;
+if($c=='nbp'){$rb=sql::call(self::sql('nbp2',$n),'kv'); if($rb)$rt=array_merge($rt,$rb);}
+elseif($c=='nbpu'){$rb=sql::call(self::sql('nbpu2',$n),'kv'); if($rb)$rt=array_merge($rt,$rb);}
+elseif($c=='nbutot')$rt=sql::call($sql,'v'); else $rt=sql::call($sql,'kv');
+if($c=='nbutot'){$rt+=sql::call(self::sql('nbutot2',$n),'v');}
+return $rt;}
 
 static function boot($c,$n,$prm){[$nb]=$prm;
 $r=self::datas($c,$n?$n:$nb);
@@ -69,7 +69,7 @@ return self::draw_canvas($ret,$w,$h);}
 //graph
 static function graph_mk($r,$w,$h){
 $dr='_datas/stats/'; $f=$dr.'/'.date('ymd').'.png'; mkdir_r($f); if(!is_dir($dr))mkdir($dr);
-if($r)img::graphics($f,$w,$h,$r,'000000','yes');//getclrs('',7);
+if($r)graph::draw($f,$w,$h,$r,'','yes');//getclrs('',7);
 return image('/'.$f.'?'.randid(),'','');}
 
 static function graph($c,$n,$prm){
@@ -92,7 +92,8 @@ if($c=='nbf')$ret='user: '.$n.br();
 elseif($c=='nbp')$ret='article: '.$n.br();
 $sql=self::list_sql($c,$n); $r=sql::call($sql,'',0); //p($r);
 if($c=='nbv' or $c=='nbu' or $c=='nbf'){if($r)foreach($r as $k=>$v){
-	$id=strin($v[0],'=','&'); $id=strto($id=strfrom($id,'_'),'_');//del popart_12___
+	if(is_numeric($v[0]))$id=$v[0];
+	else $id=strin($v[0],'read=','&'); //$id=strto($id=strfrom($id,'_'),'_');//del popart_12___
 	if(is_numeric($id)){$suj=ma::suj_of_id($id); //else $suj=$id;
 	$flw=lj('','popup_popart___'.$id,picto('articles'));
 	$ret.=$v[1].' '.lj('txtx',$j.'nbp_'.$id,$suj).' '.$flw.br();}}}
@@ -108,12 +109,43 @@ $mnd=array_flip($_SESSION['mnd']);
 if($r)foreach($r as $k=>$v){$qbd=val($mnd,$v[0],ses('qb'));
 	$ex=sql('id','qds','v',['qb'=>$qbd,'day'=>$v['1']]);
 	if(!$ex){$rb[]=[$qbd,$v['1'],$v['2'],$v['3']]; $n+=1;}}
-sql::sav2('qds',$rb,1);
+sql::savr('qds',$rb,1);
 return $n;}
+
+//purge
+/*ssh
+mysqldump -u root -p -h localhost nfo live2_17 > /home/nfo/_backup/live2_17.dump
+gzip /home/nfo/_backup/live2_17.dump
+mysql -hlocalhost -uroot -p
+use nfo
+drop table live2_17;
+select count(id) from live2_17
+//source _backup/umm.sql
+exit*/
+
+static function purge(){$unit=10000000;
+$first=sql::read('id','qdv2','v',['_order'=>'id asc','_limit'=>'1']);
+//$last=sql::read('id','qdv2','v',['_order'=>'id desc','_limit'=>'1']);
+$last=sesmk2('stats','lastid'); $rt[]=$last;
+$n=floor($first/$unit); $nb=$n+1;
+$tbn='live2_'.$nb; //$cols=join(',',array_keys($rh));
+if($last-$first<$unit)return 'no need update: '.$tbn;// echo $last.'-'.$first.'-'.($last-$first);
+$rh=sqldb::def('live2'); if(isset($rh['key']))unset($rh['key']);
+/**/
+sqlop::create_table($tbn,$rh,0);
+$rt[]='table '.$tbn.': created';
+$sql='insert into '.$tbn.' select * from live2 where id<'.($nb*$unit).';';
+sqb::call($sql,1);
+$last=sqb::read('id',$tbn,'v',['_order'=>'id desc','_limit'=>'1']);
+$rt[]='last id from '.$tbn.': '.$last;
+if($last=($nb*$unit)-1)sql::del2('qdv2',['<id'=>$nb*$unit],1,1);//verif if ok for del
+$first=sqb::read('id','live2','v',['_order'=>'id asc','_limit'=>'1']);
+$rt[]='new first id from live2: '.$first;
+return join(br(),$rt);}
 
 //read_stats
 static function read($c,$n){
-$r=sql('day,'.$c,'qds','kv','qb="'.ses('qb').'" and day>"'.date('ymd',timeago($n)).'"');
+$r=sql('day,'.$c,'qds','kv','qb="'.ses('qb').'" and day>="'.date('ymd',timeago($n)).'"');
 //$rv=sql('iq','qdv2','k','qb="'.ses('qb').'" and time>"'.timeago($n).'"');
 $w=ses('stw')?ses('stw'):550; $h=ses('sth')?ses('sth'):100;
 if($r){
@@ -121,16 +153,19 @@ if($r){
 	$score=divc('panel','Total of '.($c=='nbv'?'views pages':'unique visitors').': '.$nb);
 	return self::graph_mk($r,$w,$h).br().$score;}}
 
+static function lastid(){
+$tim=timeago(30); $day=date('Y-m-d H:i:s',$tim);
+return sql('id','qdv','v','time>"'.$day.'" order by id limit 1');}
+
 //freespace
 static function lightlive(){
 //$db=install::db(db('qd'));
 //if(!$db['live'])return 'er';
 //if(!$db['live2']){$sql=str_replace('_live','_live2',$db['live']); qr($sql);}
-$tim=timeago(30); $day=date('Y-m-d H:i:s',$tim);
-$lastid=sql('id','qdv','v','time>"'.$day.'" order by id limit 1');
+$lastid=stats::lastid();
 if(is_numeric($lastid)){
 sql::qrid('insert into '.db('qdv2').' select * from '.db('qdv').' where id<'.$lastid);
-qr('delete from '.db('qdv').' where id<"'.$lastid.'"'); sql::reflush('qdv');}
+qr('delete from '.db('qdv').' where id<"'.$lastid.'"'); }//sql::reflush('qdv');
 return db('qdv').' was cleaned from id '.$lastid;}
 
 //com
@@ -144,7 +179,7 @@ if($r)foreach($r as $k=>$v)$ret[]=[$k,$v[3],$v[0],$v[2]];
 return tabler($ret,['n','hour','ip','page']);}
 
 static function js($p='',$o=''){$o=$o?$o:100;
-if(!$p)$p=sqb('id','qdv','v','order by id desc limit 1');
+if(!$p)$p=sql('id','qdv','v',['_order'=>'id desc','_limit'=>'1']);
 $j=sj('sts_stats,call__2_'.$p.'_'.$o);
 return head::temporize('sttimer',$j,1000);}
 
@@ -159,12 +194,13 @@ return $bt.divd($rid,self::call($p,$o));}
 //menu
 static function menu($c,$n,$prm){//p($rs);
 $ret=lj(active($c,'nbv'),'stat_stats,home__3_nbv_'.$n,'nbv').' ';
-$ret.=lj(active($c,'nbu'),'stat_stats,home__3_nbu_'.$n,'nbu').' ';
+if(auth(6))$ret.=lj(active($c,'nbu'),'stat_stats,home__3_nbu_'.$n,'nbu').' ';
 $nbr=[7,30,90,180,365,730,1460,2920,4840];
 foreach($nbr as $v)$ret.=lj(active($v,$n),'stat_stats,home__3_'.$c.'_'.$v,$v).' ';
 if(auth(6))$ret.=lj('','popup_stats,statlist__3_'.$c.'_'.$n,pictxt('elements','follow'));
-if(auth(6))$ret.=lj('','popup_stats,lightlive__3_',pictxt('cleanup','cleaner'));
-if(auth(6))$ret.=lj('','popup_stats,statsee__js_',pictxt('fire','live'));
+if(auth(6))$ret.=lj('','sttcb_stats,lightlive__3_',pictxt('cleanup','cleaner'));
+if(auth(6))$ret.=lj('','sttcb_stats,statsee__js_',pictxt('fire','live'));
+if(auth(6))$ret.=lj('','sttcb_stats,purge___',pictit('erase','flush'));
 return div($ret,'nbp','stt');}
 
 static function home($c,$n,$prm=[]){
@@ -177,6 +213,7 @@ if($day_max_known<date('ymd',timeago(1)))$ret=self::solid($day_max_known);
 //else $ret.=divd('graph',self::canvas($c,$n,$prm)).br().br();
 $ret=self::read($c,$n).br();
 $ret.=self::menu($c,$n,$prm);
+$ret.=divd('sttcb','');
 //stat_upd();
 return divd('stat',$ret);
 }

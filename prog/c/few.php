@@ -22,7 +22,7 @@ $ret=lkc('popw','/'.$nid,'saved in '.$node.'/'.$frm.'/'.$nid);}
 return divd('exp'.$id,$ret);}
 
 //import
-static function hubimport($node,$id,$use,$frm,$qb,$suj){$tim=ses('dayx');
+static function hubimport($node,$id,$use,$frm,$qb,$suj){$tim=ses::$dayx;
 $r=sql('name,auth','qdb','kv',['hub'=>$node]);
 if($r)foreach($r as $k=>$v)$ath=$k==$use?$v:'';
 $rw=sql('*','qda','a',$id); $re=$ath>4?1:0; unset($rw['id']);
@@ -62,17 +62,15 @@ static function insrc($f){
 $bt=lj('popsav','popup_edit,com_insrc_x_'.ajx($f),pictxt('save','take it'));
 return div($bt).textarea('insrc','',64,8);}
 
-static function progcode($d){$d=delbr($d,"\n");
-ini_set('highlight.comment','orange');
+static function progcode($d){$d=trim($d);
+ini_set('highlight.comment','gray');
 ini_set('highlight.default','silver');
 ini_set('highlight.html','red');
-ini_set('highlight.keyword','cyan');
-ini_set('highlight.string','silver; font-weight:bold');
-$d=highlight_string('<?php '.$d,true);
-$s='overflow:auto; wrap:true; background:#222244; padding:0 8px; font-size:14px;';
-$d=str_replace('<span style="color: silver">&lt;?php&nbsp;</span>','',$d);
-$d=str_replace("\n",'',$d);
-return divs($s,$d);}
+ini_set('highlight.keyword','orange');
+ini_set('highlight.string','green');
+$d=highlight_string('<?php'."\n".$d,true);
+$d=str_replace(['&lt;?php'."\n",'?>','<br />','<pre>','</pre>','<code style="color: red">','</code>'],'',$d);
+return div(trim($d),'code','','');}
 
 #calendar
 static function is_arts($frm,$daya,$dayb){
@@ -115,16 +113,19 @@ $current_year=$cyear?$cyear:$ts_year;
 	$css=date('y',$mk)==$current_year?'active':'';
 	$ret.=tagc('li',$css,lj('','archives_few,archives___'.$year,$y_name.' ('.$nbay.')'));
 	if($year==$current_year){
-	$goto='/?module=All&nbj=30';
+	$goto='/All/30';
 		for($ia=12;$ia>0;$ia--){
 		$month=mktime(0,0,1,$ia,1,$year);
 		$nbdayinmonth=date('t',$month);
 		$m_name=date('M',$month); $m_nb=date('m',$month);
 		$nbam=self::nb_arts($month+$nbsec_in_month,$month);//$monthbefore
 		$css=date('Ym',ses('daya'))==$y_name.$m_nb?'active':'';
-		if($nbam)$ret.=llk($css,$goto.'&timetravel='.$nbdayinmonth.'-'.$ia.'-'.$year,'- '.$m_name.' ('.$nbam.')');}}}
+		if($nbam)$ret.=llk($css,'/timetravel/'.$nbdayinmonth.'-'.$ia.'-'.$year,'- '.$m_name.' ('.$nbam.')');}}}
 return $ret;}
 
+static function timeline(){
+
+}
 
 #fonts
 static function inject_fonts(){$dr='fonts/'; $ret='';

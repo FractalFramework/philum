@@ -1,31 +1,32 @@
 <?php 
 header('Content-Type: text/html; charset='.ses::$s['enc']);
 $ret='<!DOCTYPE HTML>'."\n";
-$ret.='<html lang="'.prmb(25).'"><head>'."\n";
-$ret.='<meta charset="'.ses::$s['enc'].'">'."\n";
-$ret.='<title>'.$meta['title'].'</title>'."\n";
-$ret.='<link rel="shortcut icon" href="'.$meta['favicon'].'">'."\n";
-$ret.='<base href="'.$host.'/">'."\n";
-//<link rel="image_src" href="'.$host.$meta["img"].'">
+$ret.='<html lang="'.ses::$m['lang'].'">'."\n";
+$ret.='<head><meta charset="utf-8">'."\n";
+//$ret.='<title>'.ses::$m['title'].'</title>'."\n";
+//$ret.='<link rel="shortcut icon" href="'.ses::$m['favicon'].'">'."\n";
+//$ret.='<base href="'.$host.'/">'."\n";
+//<link rel="image_src" href="'.$host.ses::$m["img"].'">
 
-//$rh[]=['tagb'=>['title',$meta['title']]];
-//$rh[]=['link'=>['shortcut icon',$meta['favicon']]];
-//$rh[]=['taga'=>['base'=>['href'=>$host]]];
-///$rh[]=['link'=>['image_src',$host.$meta['img']]];
+$rh[]=['tagb'=>['title',ses::$m['title']]];
+$rh[]=['link'=>['shortcut icon',ses::$m['favicon']]];
+$rh[]=['taga'=>['base'=>['href'=>host()]]];
+///$rh[]=['link'=>['image_src',$host.ses::$m['img']]];
 $rh[]=['meta'=>['name','robots',rstr(22)?'index, follow':'nofollow']];
 $rh[]=['meta'=>['name','revisit-after','1 hour']];
 $rh[]=['meta'=>['name','distribution','Global']];
+$rh[]=['meta'=>['Content-Security-Policy','distribution','upgrade-insecure-requests']];
 $rh[]=['name'=>['distribution','Global']];
 if(rstr(74)){
-	$rh[]=['meta'=>['property','og:title',$meta['title']]];
+	$rh[]=['meta'=>['property','og:title',ses::$m['title']]];
 	$rh[]=['meta'=>['property','og:type',$read?'article':'website']];
-	$rh[]=['meta'=>['property','og:image',$meta['img']??'']];
-	$rh[]=['meta'=>['property','og:description',$meta['descript']??'']];}
+	$rh[]=['meta'=>['property','og:image',ses::$m['img']??'']];
+	$rh[]=['meta'=>['property','og:description',ses::$m['descr']??'']];}
 else{
-	$rh[]=['meta'=>['name','title',$meta['title']]];
-	$rh[]=['meta'=>['name','image',$meta['img']??'']];
-	$rh[]=['meta'=>['name','description',$meta['descript']]];}
-//$rh[]=['meta'=>['name','author',$meta['author']]];
+	$rh[]=['meta'=>['name','title',ses::$m['title']]];
+	$rh[]=['meta'=>['name','image',ses::$m['img']??'']];
+	$rh[]=['meta'=>['name','description',ses::$m['descr']]];}
+//$rh[]=['meta'=>['name','author',ses::$m['author']]];
 $rh[]=['meta'=>['name','category',get('frm')]];
 $rh[]=['meta'=>['name','generator','philum_'.ses('philum')]];//needed
 $rh[]=['meta'=>['name','hub',ses('qb')]];
@@ -38,9 +39,9 @@ $rh[]=['css'=>'_global'];
 $rh[]=['css'=>'_pictos'];
 //$rh[]=['css'=>'_glyphs'];
 if(ses::$s['oom'])$rh[]=['css'=>'_oomo'];
-$rh[]=['css'=>$meta['css']];
+$rh[]=['css'=>ses::$m['css']];
 $rh[]=['jscode'=>'read="'.$read.'"; flow="'.$flow.'";
-fixpop="'.ses('mobile').'"; fulpop="1"; var design="'.$meta['css'].'";
+fixpop="'.ses('mobile').'"; fulpop="1"; var design="'.ses::$m['css'].'";
 state='.json_encode(ses::$st).';'];
 $rh[]=['js'=>'lib'];
 $rh[]=['js'=>'ajx'];
@@ -51,13 +52,15 @@ $rh[]=['meta'=>['http-equiv','expires','0']];
 $rh[]=['meta'=>['http-equiv','pragma','no-cache']];*/
 if(ses('cssn'))$rh[]=['jslink'=>'/js/live.js#css'];
 $rh[]=['jscode'=>mod::jsmap('rha')];
+//$rh[]=['jslink'=>'https://platform.twitter.com/widgets.js'];
+//<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 $ret.=head::call($rh);
 $ret.='</head>'."\n";
 $ret.='<body onclick="clpop(event)" onmousemove="popslide(event)">'."\n";
 $ret.=divd('clbub','')."\n";
 $ret.=$madmin;
 $ret.=divd('trkdsk','')."\n";
-$ret.=divd('desktop','')."\n";
+$ret.=div('','','desktop')."\n";
 $ret.=divd('popup','')."\n";
 $ret.='<div id="page">'."\n";
 if($out)$ret.=implode('',$out);

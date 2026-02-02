@@ -19,9 +19,23 @@ return ['_'=>['description'],
 'block'=>['met le contenu dans un block : [|3:block] (%), [|300:block] (taille en px)'],
 'center'=>['aligne au centre'],
 'add_lines'=>['ajoute des lignes à la fin de chaque phrase'],
-'ajax'=>['bouton qui renvoie sur place (ou dans un div cible) le résultat d\'un module ou d\'un connecteur.rnrnsyntaxe : rn [param/title/command/option:module->target|button[,]:ajax] rnoù : rn- param/title/command/option:module ; rn- target = div cible ; rn- button = à afficher ;rnrnLa séquence peut être répétée en utilisant la virgule comme séparateur, de façon à produire un menu.rnrnessayer : [id:read|screen:ajax] qui renvoie un contenu d\'article.'],
+'ajax'=>['bouton qui renvoie sur place (ou dans un div cible) le résultat d\'un module ou d\'un connecteur.
+
+syntaxe : 
+ [param/title/command/option:module->target|button[,]:ajax] 
+où : 
+- param/title/command/option:module ; 
+- target = div cible ; 
+- button = à afficher ;
+
+La séquence peut être répétée en utilisant la virgule comme séparateur, de façon à produire un menu.
+
+essayer : [id:read|screen:ajax] qui renvoie un contenu d\'article.'],
 'ajxget'=>['outil de préservation des caractères \':\', \'/\' et \'|\' pour le connecteur \'module\''],
-'dskbt'=>['appelle un bouton de type Desk rn- depuis un id existant : [6:dskbt][6|hello:dskbt]rn- ou écrit à la volée : [button;app;stext:apps]rnsyntaxe(bouton;type;process;param;option)'],
+'dskbt'=>['appelle un bouton de type Desk 
+- depuis un id existant : [6:dskbt][6|hello:dskbt]
+- ou écrit à la volée : [button;app;stext:apps]
+syntaxe(bouton;type;process;param;option)'],
 'articles'=>['liste d\'articles d\'après un tri, avec nombreux modes de présentation'],
 'basic'=>['exécute le code d\'instructions codeline basic'],
 'bkg'=>['image en background : [value|img:bkg] (la première du catalogue par défaut)'],
@@ -63,11 +77,19 @@ return ['_'=>['description'],
 'last-update'=>['date de la dernière modification d\'un document'],
 'last_saved'=>['revient à la dernière action d\'enregistrement'],
 'lines'=>['efface les sauts de ligne du texte sélectionné'],
-'link'=>['liens prédéfinis :rn- lien-clef : Home, ID, catégorie, modulern- mettre un titre : Home|Accueilrn- utiliser un picto : Home|home:pictorn- lien interne : /?plug=myplug|name_of_plug'],
+'link'=>['liens prédéfinis :
+- lien-clef : Home, ID, catégorie, module
+- mettre un titre : Home|Accueil
+- utiliser un picto : Home|home:picto
+- lien inte
+e : /?plug=myplug|name_of_plug'],
 'w'=>['affiche le lien en entier'],
 'lowcase'=>['réduit la casse (minuscules) du texte sélectionné'],
-'msql'=>['Renvoie les données d\'une table : rn[hub_table_(version)-(key)|(row)|option:microsql] ;rnOptions : pop, read, conn, last, count, graph, form, tmp'],
-'mini'=>['fabrique une miniature d\'une image avec des dimensions personnalisées : [img.jpg|140/100:mini]rn+ lien vers l\'original dans une popup en ajax'],
+'msql'=>['Renvoie les données d\'une table : 
+[hub_table_(version)-(key)|(row)|option:microsql] ;
+Options : pop, read, conn, last, count, graph, form, tmp'],
+'mini'=>['fabrique une miniature d\'une image avec des dimensions personnalisées : [img.jpg|140/100:mini]
++ lien vers l\'original dans une popup en ajax'],
 'module'=>['affiche un ou des modules, directement ou via un |bouton, d\'après la syntaxe [m:module,p:param,t:title|bouton:module]'],
 'on'=>['affiche le connecteur [hello:b:on]'],
 'no'=>['n\'affiche pas le contenu'],
@@ -84,6 +106,7 @@ return ['_'=>['description'],
 'photos'=>['planche contact de photos. Source de données : id, liste séparée par une virgule, ou répertoire utilisateur'],
 'gallery'=>['série d\'image à la chaîne ; source de données : id, liste séparée par une virgule, ou répertoire utilisateur'],
 'slider'=>['Défilement d\'images ; source de données : id, liste séparée par une virgule, ou répertoire utilisateur'],
+'slide'=>[''],
 'plug'=>['plugin: [param|option:plugin:plug]'],
 'app'=>['appin : [param|option:myapp:app]'],
 'appbt'=>['bouton vers une app [p|o:app|bt:appbt]'],
@@ -97,8 +120,10 @@ return ['_'=>['description'],
 'popfile'=>['affiche le contenu d\'un fichier texte dans une popup'],
 'popurl'=>['ouvre une page web dans une popup'],
 'prod'=>['article sous forme de produit de boutique en ligne'],
-'pub'=>['[1234:pub] affiche un lienrn[1234|1:pub] |2 |3 |4 ouvre article (preview mode)'],
-'art'=>['[1234:art] affiche un lienrn[1234|titre:art] remplace le titre'],
+'pub'=>['[1234:pub] affiche un lien
+[1234|1:pub] |2 |3 |4 ouvre article (preview mode)'],
+'art'=>['[1234:art] affiche un lien
+[1234|titre:art] remplace le titre'],
 'clean_punct'=>['corrige les erreurs typographiques'],
 'radio'=>['pile de fichiers audio depuis l\'espace disque [dev/music:radio] (1 par article, le module fabrique une playlist)'],
 'read'=>['place le contenu d\'un article'],
@@ -108,9 +133,11 @@ return ['_'=>['description'],
 'rss_art'=>['contenu d\'un article diffusé en rss'],
 'rss_input'=>['flux rss'],
 'rss_read'=>['contenu d\'un article d\'un autre site philum'],
-'scan'=>['retourne le contenu d\'un document placé dans le répertoire utilisateur, |1 interprète les connecteurs du contenu'],
+'scan'=>['retou
+e le contenu d\'un document placé dans le répertoire utilisateur, |1 interprète les connecteurs du contenu'],
 'search'=>['résultats d\'une recherche (dépendant de time_system)'],
-'shop'=>['articles liés par hiérarchie sous forme de tableau de produits d\'une boutique en ligne rn(indiquer les tables personnalisées \'prix\' et \'référence\''],
+'shop'=>['articles liés par hiérarchie sous forme de tableau de produits d\'une boutique en ligne 
+(indiquer les tables personnalisées \'prix\' et \'référence\''],
 'size'=>['taille du texte [text|24:size] '],
 't'=>['css \'txtit\' (titres)'],
 'del_tables'=>['supprime les tables'],
@@ -165,7 +192,8 @@ return ['_'=>['description'],
 'webview'=>['affiche au survol une previsualisation du lien (qui propose un lien vers un import)'],
 'wiki'=>['renvoie l\'entête de la page wikipedia s\'il y a un texte lié, sinon renvoie son contenu entier.'],
 'dico'=>['permet de joindre une définition de wictionary.org'],
-'plan'=>['table des matières, d\'après les balises h1, h2...rn[titre|option:plan] opt=1 : numérotation topologique'],
+'plan'=>['table des matières, d\'après les balises h1, h2...
+[titre|option:plan] opt=1 : numérotation topologique'],
 'frame'=>['[txt|red:frame] ajoute un cadre rouge autour du texte'],
 'underline'=>['[txt|red:underline] ajoute un soulignement rouge autour du texte'],
 'look'=>['ouvre un article en surlignant un terme [id|word:look]'],

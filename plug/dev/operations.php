@@ -216,7 +216,7 @@ $b=sqldb::db($db);
 sql::dbq(['localhost','root','dev','nfo2',1]);
 //sqldb::batchinstall();
 //sqldb::install($b);
-sql::sav2($b,$r,$ai=0,1);
+sql::savr($b,$r,$ai=0,1);
 //new::sql(['localhost','root','dev','nfo',0]);
 return $ret;}
 
@@ -240,7 +240,7 @@ $r=sqldb::def($b);
 sqlop::install($b.'2',$r,1);
 echo 'install,';
 $r=sql('*',$db,'ar',[]);
-sql::sav2($db2,$r,0);
+sql::savr($db2,$r,0);
 //sql::qr('insert into '.$b2.' select * from '.$b);
 echo 'save2,';
 qr(' RENAME TABLE '.ses($db).' TO '.$b.'1'.'; ');

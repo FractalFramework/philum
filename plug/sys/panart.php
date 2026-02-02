@@ -4,7 +4,7 @@ class panart{
 static function bigim($id){
 $ims=sql('img','qda','v','id='.$id); $r=explode('/',$ims); 
 if($r)foreach($r as $v)if(is_file('img/'.$v)){
-	[$w,$h]=getimagesize('img/'.$v); $rb[$w]=$v;}
+	[$w,$h]=imsize('img/'.$v); $rb[$w]=$v;}
 if($rb){krsort($rb); return current($rb);}}
 
 static function pa_pane($id){

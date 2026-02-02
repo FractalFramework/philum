@@ -8,7 +8,6 @@ curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
 curl_setopt($ch,CURLOPT_USERAGENT,'');
 curl_setopt($ch,CURLOPT_COOKIE,'foo=bar');
 $ret=curl_exec($ch);
-curl_close($ch);
 return $ret;}
 
 static function xml2array($n){$ret=array();

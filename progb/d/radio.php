@@ -57,7 +57,7 @@ if(isset($r[$md])){foreach($r[$md] as $k=>$v){$ky.=$md.'.'.$k.'|';
 $ret.=divc('edit',$edit);
 if($r)foreach($r as $k=>$v){foreach($v as $ka=>$va){$datas[$k][]=$va;}
 	if($k!=msql::$m && $k!=$md){$datas[$k][]=lj('popbt','popup_radio,edit___'.$nodb.'__'.$k,'edit');}}
-$ret.=divtable($datas);
+$ret.=build::divtable($datas);
 ses::$r['popt']='build_playlist';
 return $ret;}
 

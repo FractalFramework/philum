@@ -7,7 +7,7 @@ foreach($r as $k=>$v){
 	$r[$k][3]=ascii2iso($v[3]);
 	$r[$k][4]=ascii2iso($v[4]);}
 sesr('db','qdw2','web_b');
-//sqlsav2('qdw2',$r);
+//sqlsavr('qdw2',$r);
 return $r[40][3];
 }
 

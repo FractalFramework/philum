@@ -8,7 +8,7 @@ static function pivot_array($r){$rb=[];
 foreach($r as $k=>$v){foreach($v as $ka=>$va)$rb[$ka][$k]=$va;}
 return $rb;}
 
-static function build($ra,$cat){$limit='limit 10000';
+static function build($ra,$cat){$lm=10000; $limit='limit '.$lm;
 $qda=db('qda'); $add=db('qdd'); $qdf=db('qdf'); $qdt=db('qdt'); $qdta=db('qdta');
 foreach($ra as $k=>$v){switch($k){
 //case('cat'):$r[$k]=sql('id','qdk','kv','frm="'.$v.'"'); break;
@@ -16,23 +16,29 @@ case('jdapoll'):$r[$k]=sql('ib,msg','qdd','kv','val="jdapoll" order by cast(msg 
 case('jdatrk'):$r[$k]=sql('ib,msg','qdd','kv','val="jdatrk" order by cast(msg as unsigned integer) desc '.$limit); break;
 case('approve'):$r[$k]=sql('ib,msg','qdd','kv','val="approve" order by cast(msg as unsigned integer) desc '.$limit); break;
 case('disapprove'):$r[$k]=sql('ib,msg','qdd','kv','val="disapprove" order by cast(msg as unsigned integer) desc'); break;//no limit
-case('nbtags'):$r[$k]=sqb('idart,count(idtag) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="tag" group by idart order by nb desc '.$limit); break;
+/*case('nbtags'):$r[$k]=sql::read2('idart,count(idtag) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="tag" group by idart order by nb desc '.$limit); break;*/
+case('nbtags'):$r[$k]=sql::inner('idart,count(idtag) as nb','qdta','qdt','idtag','kv',['cat'=>'tag','_group'=>'idart','_order'=>'nb desc','_limit'=>$lm]); break;//!nv
 case('tagweight'):$rd=[]; $re=[];
 	//nb art by tag
-	$rb=sqb('idtag,count(idart) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="tag" group by idtag order by nb desc'); //pr($rb);
+	//$rb=sql::read2('idtag,count(idart) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="tag" group by idtag order by nb desc'); //pr($rb);
+	$rb=sql::inner('idart,count(idtag) as nb','qdta','qdt','idtag','kv',['cat'=>'tag','_group'=>'idtag','_order'=>'nb desc']);//!nv
 	//tags pour chaque art
-	$rc=sqb('idart,idtag','qdta','kr','inner join meta on meta.id=meta_art.idtag where cat="tag"'); //pr($rc);
+	//$rc=sql::read2('idart,idtag','qdta','kr','inner join meta on meta.id=meta_art.idtag where cat="tag"'); 
+	$rc=sql::inner('idart,idtag','qdta','qdt','idtag','kv',['cat'=>'tag']);//!nv//pr($rc);
 	//nombre d'occurrence de chaque tag
 	foreach($rc as $kb=>$v)foreach($v as $ka=>$va)$rd[$kb][$va]=$rb[$va]; //pr($rd);
 	//c�l�brit� moyenne de chaque tag
 	foreach($rd as $kb=>$v)$re[$kb]=array_sum($v)/count($v); //pr($re);
 	$r[$k]=$re; break;
-case('nbwords'):$r[$k]=sqb('idart,count(idtag) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="mot" group by idart order by nb desc '.$limit); break;
+///case('nbwords'):$r[$k]=sql::read2('idart,count(idtag) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="mot" group by idart order by nb desc '.$limit); break;
+case('nbwords'):$r[$k]=sql::inner('idart,count(idtag) as nb','qdta','qdt','idtag','kv',['cat'=>'mot','_group'=>'idart','_order'=>'nb desc','_limit'=>$lm]); break;//!nv
 case('wordweight'):$rd=[]; $re=[];
 	//nb art by tag
-	$rb=sqb('idtag,count(idart) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="mot" group by idtag order by nb desc'); //pr($rb);
+	//$rb=sql::read2('idtag,count(idart) as nb','qdta','kv','inner join meta on meta.id=meta_art.idtag where cat="mot" group by idtag order by nb desc'); //pr($rb);
+	$rb=sql::inner('idart,count(idtag) as nb','qdta','qdt','idtag','kv',['cat'=>'mot','_group'=>'idtag','_order'=>'nb desc'])
 	//tags pour chaque art
-	$rc=sqb('idart,idtag','qdta','kr','inner join meta on meta.id=meta_art.idtag where cat="mot"'); //pr($rc);
+	//$rc=sql::read2('idart,idtag','qdta','kr','inner join meta on meta.id=meta_art.idtag where cat="mot"');
+	$rc=sql::inner('idart,count(idtag) as nb','qdta','qdt','idtag','kv',['cat'=>'mot']); //pr($rc);
 	//nombre d'occurrence de chaque tag
 	foreach($rc as $kb=>$v)foreach($v as $ka=>$va)$rd[$kb][$va]=$rb[$va]; //pr($rd);
 	foreach($rd as $kb=>$v)$re[$kb]=array_sum($v)/count($v); //pr($re);
@@ -40,9 +46,9 @@ case('wordweight'):$rd=[]; $re=[];
 case('likes'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="like" group by ib order by nb desc '.$limit); break;
 case('poll'): $r[$k]=sql('ib,avg(poll)','qdf','kv','type="poll" '.$limit); break;
 case('agree'): $r[$k]=sql('ib,avg(poll) as nb','kv','kv','type="agree" group by ib order by nb desc '.$limit); break;
-case('faisability'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Faisabilit�" group by ib order by nb desc '.$limit); break;
-case('efficiency'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Efficacit�" group by ib order by nb desc '.$limit); break;
-case('relevance'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Efficacit�" group by ib order by nb desc '.$limit); break;}}
+case('faisability'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Faisabilité" group by ib order by nb desc '.$limit); break;
+case('efficiency'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Efficacité" group by ib order by nb desc '.$limit); break;
+case('relevance'):$r[$k]=sql('ib,sum(poll) as nb','qdf','kv','type="Efficacité" group by ib order by nb desc '.$limit); break;}}
 //pr($r);
 //pr($r['approve']);
 

@@ -1,4 +1,4 @@
-<?php //plugin_svg
+<?php 
 //http://www.w3schools.com/svg/svg_feoffset.asp
 
 class svg{static $ret=[],$w=600,$h=440;

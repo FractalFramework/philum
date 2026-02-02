@@ -12,7 +12,7 @@ $rc[$k]=$v;}
 msql::modif('','ummo_umvoc_1',$rc,'arr','','');}
 
 static function imz($f,$n='2'){
-[$w,$h]=fwidth($f);
+[$w,$h]=imsize($f);
 $w=round($w/$n); $h=round($h/$n);
 return divs('width:'.$w.'px;',image('/'.$f,$w,$h));}
 

@@ -5,7 +5,7 @@ static function infos($d){
 $r=msql::row('','public_atomic',$d,1);
 if(!$r)return btn('txtx','Element '.$d);
 $r['origin']=spitable::origin($d);
-return on2cols($r,470,3);}
+return build::on2cols($r,470,3);}
 
 static function mkclr($val){
 $d=dechex(255-round($val));
@@ -34,7 +34,7 @@ foreach($ra as $k=>$v)if(strpos($v,'@')===false && strpos($v,'�')===false){
 return $rb;}
 
 /*static function fams(){$r=self::colors();
-foreach($r as $k=>$v)if($k)$ret.=bts('font-size:12px; padding:2px 4px; background-color:#'.$v.'; border:1px solid #000; display:inline-block; color:'.invert_color($v,1),$k).' ';
+foreach($r as $k=>$v)if($k)$ret.=bts('font-size:12px; padding:2px 4px; background-color:#'.$v.'; border:1px solid #000; display:inline-block; color:'.clrneg($v,1),$k).' ';
 return $ret;}*/
 
 static function levels($d){$ret='';

@@ -1,22 +1,19 @@
 <?php //mk for conns
 class mk{
-
 static function pub_css($d){[$d,$o]=cprm($d); return btn($o,$d);}
 static function pub_div($d){[$d,$o]=cprm($d); return divc($o,$d);}
 static function pub_font($d){[$d,$o]=cprm($d); return bts('font-family:'.$o,$d);}
 static function pub_float($d){[$d,$o]=cprm($d); return divs('float:'.($o?'right':'left'),$d);}
-static function pub_clr($d,$o=''){if(!$o)[$d,$o]=cprm($d); return bts('color:'.$o,$d);}
 static function pub_size($d){[$d,$o]=cprm($d); $s='font-size:'.$o.'px; line-height:'.round($o*1.2).'px;';
 return tag('font',['style'=>$s],$d);}
 static function pub_style($d){[$d,$s]=cprm($d); return tag('font',['style'=>$s],$d);}
-static function pub_overline($d){return tag('font',['style'=>'text-decoration:overline'],$d);}
 static function pub_html($d){[$p,$o]=split_right('|',$d); $r=explode_k($o,' ','=');
 $ra=['css'=>'class','font'=>'font-family','size'=>'font-size']; $rb=colors(); $atb='';
 foreach($r as $k=>$v){if($k=='color')$v=$rb[$v]?$rb[$v]:'#'.$v; $atb.=(isset($ra[$k])?$ra[$k]:$k).':'.$v.'; ';}
 return bts($atb,$p);}
+static function pub_title($d){[$p,$o]=cprm($d); return tag('span',['title'=>$o],$p);}
 static function pub_url($d,$id){[$p,$o]=prepdlink($d);
-if(is_img($o))return self::popim($o,$p,$id);
-return lk($p,$o);}
+if(is_img($o))return self::popim($o,$p,$id); return lk($p,$o);}
 static function stabilo($d){[$d,$o]=cprm($d);
 if($o=='orange')$o='#ffc478'; elseif($o=='blue')$o='#78fffa';
 elseif($o=='green')$o='#a1ff78'; elseif(!$o)$o='rgba(255,230,0,0.8)';
@@ -24,24 +21,81 @@ return bts('color:black; background-color:'.$o,$d);}
 static function caviar($d){$n=strlen($d); $ret='';
 for($i=0;$i<$n;$i++)$ret.=substr($d,$i,1)==' '?' ':"&blk34;";//&block;
 return $ret;}
+static function count($v){$n=count(explode(' ',$v));
+return divc('frame-white',nbw($n,26).' / '.nbw(strlen($v),224)).n().n().$v;}
 static function imgtxt($v){[$p,$o]=cprm($v);
 return imgtxt::home($p,$o,'');}
-static function webview($d,$id){[$u,$v]=cprm($d); $lk=lka($u,$v);
-return togbub('web,call',ajx($u).'_0_'.$id,picto('acquire')).sep().$lk;}
 
-static function bkgclr($d){[$d,$o]=cprm($d); $s='background-color:'.$o.'; ';
-$s.=substr($o,0,1)=='#'?'color:#'.invert_color(substr($o,1),1).';':''; return bts($s,$d);}
+static function webview($d,$id){[$u,$v]=cprm($d); $lk=lka($u,$v); $do=subtochar(nohttp($d),'.');
+$p=match($do){'x'=>'X','youtu'=>'youtube','facebook'=>'fb','linkedin'=>'linkedin','tiktok'=>'tiktok','amazon'=>'amazon','kdp'=>'amazon','wikipedia'=>'wiki2','newsnet'=>'nn2','logic'=>'fractal2','philum'=>'phi1','drive'=>'googledrive','vimeo'=>'vimeo','apple'=>'apple','android'=>'android',default=>'acquire'};
+return togbub('web,call',ajx($u).'_0_'.$id,picto($p)).sep().$lk;}
 
 static function bkgimg($v,$id){[$d,$p]=cprm($v); if(!$p){$p=$d; $d='';}
-if($p)$mg=$p; else{$imgs=sql('img','qda','v',$id); $mg=pop::art_img($imgs,$id);}
-$f=goodroot($mg,1);
-if(file_exists($f))[$w,$h]=getimagesize($f);
-return divs('background-image: url(/img/'.$mg.'); background-repeat:no-repeat;  background-position:center center; background-size:cover; background-attachment:fixed; height:90%;',$d);}//'.$h.'px
+if($p)$mg=$p; else $mg=artim::imgart($id); $mg=artim::ishero($mg,$id);///
+$f=goodroot($mg,1); if(file_exists($f))[$w,$h]=imsize($f);
+return divs('background-image:url(/img/'.$mg.'); background-repeat:no-repeat; background-position:center center; background-size:cover; background-attachment:fixed; height:90%;',$d);}//'.$h.'px
 
-static function underline($d,$m){$sty='2px solid';
-[$d,$c]=cprm($d); if(!$c)$c='red'; //if($m<3)return $d;
-if($c=='double'){$sty='3px double'; $c='black';}
-return bts('border-bottom:'.$sty.' '.$c,$d);}
+static function bkgclr($d,$c=''){if(!$c)[$d,$c]=cprm($d); 
+$c=goodclr($c); $s='padding:0 2px; background-color:'.$c.';';
+$s.=substr($c,0,1)=='#'?' color:#'.clrneg(substr($c,1),1).';':'';
+if($c=='currentColor')$s.=' background-clip:text;';
+return bts($s,$d);}
+
+static function txtclr($d,$c=''){if(!$c)[$d,$c]=cprm($d);
+return bts('color:'.goodclr($c),$d);}
+
+static function cardsym($d,$s=''){[$k,$c]=cprm($d);
+$r=['&hearts;','&diams;','&clubs;','&spades;','&#127183']; $c=$d==0||$d==1?'red':'';
+return bts('font-size:'.$s.'px; color:'.goodclr($c),$r[$k]);}
+
+static function hr($p=''){[$c,$s,$w]=expl(',',$p,3);
+if(!$c)$c='currentColor'; if(!$s)$s='solid'; if(!$w)$w='1';
+return taga('hr',['style'=>'border:'.$w.'px '.$s.' '.goodclr($c).';']);}
+
+static function txtdeco($d,$c='',$sz=0,$ty='',$ln=''){
+[$d,$o]=cprm($d); [$c2,$sz2,$ty2,$ln2]=expl(',',$o,4); $bot=0;
+if(!$c)$c=$c2?$c2:'currentColor';
+if(!$sz)$sz=$sz2?$sz2:($ty=='wavy'?1:2); if(is_numeric($sz))$sz.='px';
+if(!$ty)$ty=$ty2?$ty2:'solid';//,double,dashed,doted,wavy
+if(!$ln)$ln=$ln2?$ln2:'underline';//,line-through,overline,none,bottom
+if($ln=='bottom'){$ln='underline'; $bot=1;}
+if($ty=='underline' && $ln=='overline')$bot=1;
+$sty='text-decoration:'.goodclr($c).' '.$ty.' '.$ln.' '.$sz.'; ';
+if($bot)$sty.='text-underline-position:under;';//from-font
+//$sty.='text-decoration-thickness:'.$sz.'; ';
+return tag('u',['style'=>$sty],$d);}
+
+static function borderline($d,$c='',$sz='',$ty=''){
+[$d,$o]=cprm($d); [$c2,$s2,$t2]=expl(',',$o,3);
+if(!$c)$c=$c2?$c2:'currentColor'; $c=goodclr($c);
+if(!$sz)$sz=$s2?$s2:2; if(is_numeric($sz))$sz.='px';
+if(!$ty)$ty=$t2?$t2:'solid';
+return bts('padding-bottom:2px; border-bottom:'.$sz.' '.$ty.' '.goodclr($c).';',$d);}
+
+static function border($d,$c='',$sz='',$ty=''){
+[$d,$o]=cprm($d); [$c2,$s2,$t2]=expl(',',$o,3);
+if(!$c)$c=$c2?$c2:'currentColor'; $c=goodclr($c);
+if(!$sz)$sz=$s2?$s2:2; if(is_numeric($sz))$sz.='px';
+if(!$ty)$ty=$t2?$t2:'solid';
+return tag('span',['style'=>'display:inline-block; padding:2px; border:'.$sz.' '.$ty.' '.$c.';'],$d);}
+
+static function block($d,$m){if($m<3)return $d;
+[$p,$o]=cprm($d); [$c,$s,$w]=expl(',',$o,3);
+if(!$c)$c='currentColor'; $c=goodclr($c);
+if(!$s)$s=4; if(is_numeric($s))$s.='px';
+if(!$w)$w='auto'; elseif($w<1)$w=ceil($w*100).'%'; else $w=$w.'px';
+return divs('width:'.$w.'px; margin:0 40px 0 0; border-left:'.$s.' solid '.$c.'; padding-left:16px;',$p);}
+
+static function note($d,$id,$nl){
+static $i; $i++; if(!$id)$id='h';
+[$d,$t]=cprm($d); $t=$t?$t:'['.nms(214).' '.$i.']';//pictxt('lys',$t);
+if($nl)ses::$r['notes'][$id][$i]=$d; if($nl)return $t;//real footnotes
+return togbubjs($t,$d,'txtx');}
+
+static function notes($d,$id,$nl){$rt=[]; if(!$id)$id='h';
+$r=ses::$r['notes'][$id]??[]; if($r)foreach($r as $k=>$v)$rt[]='('.$k.') '.$v;
+ses::$r['notes'][$id]=[];
+if($rt)return tagb('aside',join(n(),$rt)); else return ' ';}
 
 static function wiki($d,$o){[$u,$v]=cprm($d);
 if($o)return wiki::call($u,1);
@@ -74,12 +128,6 @@ foreach($r as $v){if(substr($v,0,1)=='-')$v=substr($v,1); $v=trim($v);
 	if(strpos($v,'<li')!==false)$ret.=$v; elseif($v)$ret.=li($v);}
 if($ret)return tagb($ul,$ret);}
 
-static function footlist($d,$id){$i=1; $ret='';
-if(strpos($d,'|'))$r=explode('|',$d); else $r=explode("\n",$d);
-foreach($r as $k=>$v)if(trim($v)){$v=trim($v); if(substr($v,0,1)=='-')$v=substr($v,1);
-	$ret.='['.lka(urlread($id).'#nh'.$i.'" name="nb'.$i,$i).'] '.$v.br(); $i++;}
-if($ret)return tagb('footer',$ret);}
-
 static function anchor($d){
 [$n,$v]=split_one('|',$d,2); return lkn($n,$v);}
 
@@ -110,42 +158,55 @@ $r=art::metart($id); $d=$r['lastup']??'';
 if(!$d && $id){$d=time(); meta::utag_sav($id,'lastup',$d);}
 if($d)return btn('txtsmall2',nms(118).' : '.mkday($d,1));}
 
-static function table($d){
-[$d,$o]=cprm($d); $s='¬';
+#table
+static function table2array($d){
+$s=strpos($d,'¬')?'¬':"\n";
+return explode_r($d,$s,'|');}
+
+static function table($da){
+[$d,$o]=cprm($da);
 if($o=='div')return self::dtable($d);
-if(strpos($d,'¬')===false && $o=='no')$s='¬';
-elseif(strpos($d,'¬')===false or $o=='esc')$s="\n";
-$r=explode($s,$d); foreach($r as $k=>$v)$ret[]=explode('|',$v);
-return tabler($ret,$o==1?1:'','');}
+if($o!='1')[$d,$o]=[$da,''];
+$r=self::table2array($d);
+return tabler($r,$o==1?1:'','');}
 
-static function dtable($d){$r=explode("\n",$d); $rc=[];
-foreach($r as $k=>$v){$rb=explode('|',$v); $rt=[];
-foreach($rb as $ka=>$va)$rt[]=$va; $rc[]=$rt;}
-return divtable($rc);}
+static function dtable($d){
+$r=self::table2array($d);
+return build::divtable($r);}
 
-static function pdfdoc($da,$nl='',$pw=640){
-[$p,$o]=prepdlink($da); $p=goodroot($p);
-if(is_img($o))$im=conn::mkimg($o,$nl,$pw,'',''); else $im='';
-if($nl)return lkt('',$p,$im?$im:$o);
-$lk=lkt('',$p,$o?$o:picto('pdf'));
-return lj('','popup_mk,pdfreader__xr_'.ajx($p).'_3__autowidth',$im?$im:picto('pdf')).' '.$lk;}
+//diagram
+static function diagram($da){
+[$d,$o]=cprm($da); $rt=[];
+if($o!='1')[$d,$o]=[$da,''];
+$r=self::table2array($d);
+foreach($r as $k=>[$va,$vb])$rt[]=[$va,progress($vb)];
+return tabler($rt,$o==1?1:'','');}
+
+//graph
+static function graph($da,$m){
+[$d,$p]=cprm($da);
+$r=mk::table2array($d); $r=prepk($r);
+if($p=='div' or $p=='bar')$w=400; else{$w=40; $o=$p; $p='ascii';}
+return graph::render($r,$p,$w,$o??'|');}
 
 static function pdfplayer($d,$s=''){if(!$s)$s=get('sz');
-return obj($d,'application/pdf',$s?'width:920px; height:640px;':'');}
+return obj($d,'application/pdf',$s?'width:820px; height:640px;':'');}
 
-static function pdfreader($d,$prw){[$d,$t]=cprm($d);
-if(substr($d,-3)!='pdf')$d.='.pdf';
-if(substr($d,0,4)!='http')$d=host().'/users/'.$d; //$hlp=hlpbt('pdf');.$hlp
-if($prw==3 && !$t)return self::pdfplayer($d).lk($d,pictxt('pdf',domain($d)));
-if(!$t or $t==1)$t=domain($d);
-return lk($d,picto('pdf')). ' '.lj('','popup_mk,pdfplayer__15_'.ajx($d).'_'.ajx($t).'__autowidth',$t);}
+static function pdfreader($d,$prw){[$u,$t]=cprm($d);
+if(substr($u,-3)!='pdf')$u.='.pdf';
+if(substr($u,0,4)!='http')$u=host().'/users/'.$u; //$hlp=hlpbt('pdf');.$hlp
+if($prw==3 && !$t)return self::pdfplayer($u).lk($u,pictxt('pdf',domain($u)));
+if(!$t or $t==1)$t=domain($u);
+return lj('','popup_mk,pdfplayer__15_'.ajx($u).'_'.ajx($t).'__autowidth',picto('pdf')).' '.lk($u,$t);}
+
+static function pdfdoc($da,$nl='',$pw=640){
+[$p,$o]=cprm($da); $pb=goodroot($p); //if(!$o)$o=strend($p,'/');
+if(is_img($o))$im=artim::mkimg($o,$nl,$pw,'',''); else $im='';
+$lk=lkt('',$p,$o?$o:strend($p,'/')); if($nl)return $lk;
+return lj('','popup_mk,pdfreader__xr_'.ajx($p).'_3__autowidth',$im?$im:picto('pdf')).' '.$lk;}
 
 static function cols($d,$m){[$p,$o]=cprm($d);
 if($m>2)return pop::columns($p,$o); else return $p;}
-
-static function block($d,$m){[$p,$o]=cprm($d); if(!$o)$o=3;
-if($m<3)return $p; if($o<10)$sz=ceil(100/$o).'%'; else $sz=$o.'px';
-return divs('display:inline-block; width:'.$sz.'px; margin:0 10px;',$p);}
 
 static function artwork($d,$m=''){
 if(!$d)return; $nbo=0; $n=','; $r=explode(',',$d.$n); $ret='';// or $m<3
@@ -162,12 +223,12 @@ $r=['white','blue','green','cyan','yellow','purple','orange','black'];
 if(in_array($c,$r))return divc('frame-'.$c,$d);
 return divs('padding:6px; border:1px solid '.$c,$d);}
 
-static function nh($d,$id,$nl){static $i; $i++;//.'-'.$i
-if(!$nl)return togbub('usg,nbp',$d.'-'.$i.'_'.$id,$d,'',atn('nh'.$d),0);//over
+static function nh($d,$id,$m){static $i; $i++;//.'-'.$i
+if($m==3)return togbub('usg,nbp',$d.'-'.$i.'_'.$id,$d,'',atn('nh'.$d),0);//over
 else return '<a href="#nb'.$d.'" id="nh'.$d.'">'.$d.'</a>';}
 
-static function nb($d,$id,$nl){
-if(!$nl)return lk(urlread($id).'#nh'.$d,$d,atn('nb'.$d).atc('note'));
+static function nb($d,$id,$m){
+if($m==3)return lk(urlread($id).'#nh'.$d,$d,atn('nb'.$d).atc('note'));
 else return '<a href="#nh'.$d.'" id="nb'.$d.'">'.$d.'</a>';}
 
 static function nbdwnl($f){$f=str::normalize($f);
@@ -177,10 +238,12 @@ $f='_datas/dl/'.nod($f).'.txt'; mkdir_r($f);
 if(is_file($f)){$nb=read_file($f); return btn("txtsmall",':: '.$nb.' downloads');}}
 
 #mecanics
-static function plan($id,$m,$d,$lk=''){echo $id;
+static function plan($id,$m,$d,$lk=''){//echo $id;
 [$t,$o]=cprm($d); if($t==1)$t=''; if($t)$t=btn('txtcadr',$t);
 if(!is_numeric($id) or $m<3)return;
-$d=sql('msg','qdm','v','id="'.$id.'"');
+$d=sql('msg','qdm','v',['id'=>$id]);
+if(strpos($d,':h1]')===false)return 'bruuu'; echo strpos($d,':h1]');
+$d=str_replace(':h]',':h2]',$d);
 $r=explode("\n",$d); $ret=[]; $rb=[]; $rt=[]; $n1=0; $n2=0; $n3=0; $n4=0;
 foreach($r as $k=>$v)switch(substr($v,-3)){
 	case('h1]'):$rb[0][$k]=1; $rt[$k]=str::stripconn($v); $n1=$k; break;
@@ -193,6 +256,8 @@ if(!isset($rb))return; $ret=self::taxonomy($rb);
 if($lk && $rt)foreach($rt as $k=>$v)$rt[$k]=lk('/'.$id.'#h'.$k,$v);
 if($o)return $t.divc('ulnone',self::make_ulb($ret[0],$rt,'ul'));
 if($ret[0]??'' and is_array($ret[0]))return $t.divc('topology',self::make_ul($ret[0],$rt,'ol'));}
+
+//conb::parse($d,'sconn2',$op)
 
 //mk_plan
 static function make_ul($r,$rt,$ul='',$o=''){$ret='';
@@ -327,7 +392,7 @@ $r=msql::goodtable($da); $menu=$r[msql::$m]; unset($r[msql::$m]);
 if($r && $rep)foreach($r as $k=>$v){$i++; $bit[$k]=$v[$rep];}
 elseif($r && $op){foreach($r as $k=>$v){$i++; $bit[$k]=$v;}}
 $output='/imgc/'.db('qd').'_'.ses('read').'_graph_'.$n.'.png';
-img::graphics($output,$pw,140,$bit,getclrs('',7),'yes');///
+graph::draw($output,$pw,140,$bit,getclrs('',7),'yes');///
 if(get('read'))return image($output,'','',ats('border:0'))."\n";}
 
 static function microread($d){[$nod,$tmp]=cprm($d);
@@ -352,33 +417,6 @@ if(auth(6))$bt=msqbt($b,$nd); $csv=csvfile($b.$nd,$r);
 $rb=twapi::render_usrs($r); $ret=tabler($rb);
 return divc('scroll',$ret).msqbt('',$nd).$csv;}
 
-//:thumb
-static function thumb_d($im,$sz,$id){//web,vue,conb
-[$w,$h]=opt($sz,'/'); if(!$w)$w=prma('content');
-if(substr($im,0,4)=='http')$imn=ses('qb').'_'.$id.'_'.substr(md5($sz),0,6).xt($im);
-elseif(strpos($im,'/')!==false)$imn=str_replace('/','',$im); else $imn=$im;
-$imb=img::thumbname($imn,$w,$h); $im=goodroot($im);
-if(is_file($im) or substr($im,0,4)=='http'){$lmt='';//$_SESSION['rstr'][16];
-	if(!file_exists($imb) or ses('rebuild_img'))img::build($im,$imb,$w,$h,$lmt);
-	return image($imb,$w,$h);}
-else return picto('img',48);}
-
-static function mini_d($da,$id,$nl){//im|w/h//conn_thumb//conb
-[$v,$p]=split_one('|',$da,1); $img=self::thumb_d($v,$p,$id);
-if($nl)return image(goodroot($v),prma('content'),'');
-else return self::popim($v,$img,$id);}
-
-//:mini
-static function mini_b($d,$id){//mode w/h max//adlin
-[$im,$sz]=split_one('|',$d,1); if(!$sz)$sz='320/320';//prmb(27);
-if(!is_file('img/'.$im)){ses::$er[]=$im; return;}
-if(file_get_contents('img/'.$im)=='404'){ses::$er[]=$im; return;}
-[$w,$h]=explode('/',$sz); [$wo,$ho,$ty]=getimagesize('img/'.$im);
-if(!$wo or !$ho)return;
-[$w,$h]=img::sz($wo,$ho,$w,$h); $imb=img::thumbname($im,$w,$h);
-if(!file_exists($imb) or ses('rebuild_img'))img::build('img/'.$im,$imb,$w,$h,'');
-return self::popim($im,img('/'.$imb),$id);}
-
 //citation
 static function citations($d,$c){$d=str_replace("&nbsp;",' ',htmlentities($d));
 if($c=='i'){$d=str_replace('&laquo; ','| [',$d); $d=str_replace(' &raquo;',':i] |',$d);}
@@ -389,11 +427,14 @@ return html_entity_decode($d);}
 //:photos
 static function thumb_b($f,$id){$xt=xt($f); $w=200; $h=140;
 $imb=img::thumbname(str_replace('/','',$f),$w,$h);
-if(!file_exists($imb) or ses('rebuild_img'))img::build($f,$imb,$w,$h,$_SESSION['rstr'][16]);
-return ljb('','SaveBf',ajx($f).'___'.$id,img($imb));}
+if(!file_exists('imgc/'.$imb) or ses('rebuild_img'))img::build($f,$imb,$w,$h,$_SESSION['rstr'][16]);
+return ljb('','SaveBf',ajx($f).'___'.$id,image($imb));}
 
-static function popim($im,$v,$id=''){$w=''; $h=''; $img=goodroot($im);
-return ljb('','SaveBf',ajx($im).'___'.$id,$v);}
+static function popim($im,$d,$id=''){
+return ljb('','SaveBf',ajx($im).'___'.$id,$d);}
+
+static function bubim($im,$d,$id=''){
+return togbub('usg,photo',ajx($im).'___'.$id,$d);}
 
 static function photos($da,$id){
 [$r,$src]=self::good_src($da,$id); $ret='';
@@ -412,7 +453,7 @@ static function good_src($d,$id){//goodroot()
 if(!$d)$d=$id; $src='img/'; $r=[]; if(strpos($d,"\n")!==false)$d=str_replace("\n",'',$d);
 if(strpos($d,',')!==false)$r=explode(',',$d);
 elseif(strpos($d,'/')!==false){if(substr($d,-1)!='/')$d.='/'; $src='users/'.$d; $r=explore($src,'files',1);}
-elseif(is_numeric($d)){$ims=sql('img','qda','v','id="'.$d.'"'); $r=explode('/',substr($ims,1));}
+elseif(is_numeric($d))$r=artim::imgs($id);
 else $r=[$d];
 return [$r,$src];}
 
@@ -431,7 +472,7 @@ if($_SESSION[$mp]<0)$_SESSION[$mp]=$nb-1;
 if(!$src)$dir=jcim($r[$_SESSION[$mp]]); else $dir=$src;
 if(!isset($r[$_SESSION[$mp]]))return 1;
 $im=$dir.$r[$_SESSION[$mp]]; $img=image($im,$pw);
-if(is_file($im))[$w,$h]=getimagesize($im);
+if(is_file($im))[$w,$h]=imsize($im);
 if($w>$pw)$ret=ljb('','SaveBf',ajx($im).'_'.($w).'_'.($h),$img);
 else $ret=$img;
 return $ret;}
@@ -443,6 +484,22 @@ $ret=divc('',lj('popbt',$j.'_prev',picto('kleft')).lj('popbt',$j.'_next',picto('
 $img=self::sliderslct($da,$id.'-'.$i,0); if($img==1)return;
 $ret.=divd($rid,$img);
 return $ret;}
+
+//slide
+static function slideread($id,$i=0,$p=[]){
+$rid='sld'.$id; $j=$rid.'_mk,slideread_'.$rid.'n,'; [$n,$d]=$p;
+if($i>0)$bt=lj('popbt',$j.$rid.($i-1).'__'.$id.'_'.($i-1),picto('kleft'));
+else $bt=span(picto('kleft'),'popbt grey'); $bt.=span($i.'/'.$n,'popbt');
+if($i<$n)$bt.=lj('popbt',$j.$rid.($i+1).'__'.$id.'_'.($i+1),picto('kright'));
+else $bt.=span(picto('kright'),'popbt grey');
+return div($bt).div(base64_decode($d),'panel twit');}
+
+static function slide($d,$id,$i=0){$rid='sld'.$id; $hid='';
+//$d=sql('msg','qdm','v',$id); $d=conb::parse($d,'extract',':slide');
+$r=explode('--',$d); $n=count($r)-1; $hid=hidden($rid.'n',$n); //eco(pr($r));
+$ret=self::slideread($id,0,[$n,base64_encode($r[$i])]);
+foreach($r as $k=>$v)$hid.=tag('aside',['id'=>$rid.$k,'style'=>'display:none'],base64_encode(trim($v)));
+return divd($rid,$ret).$hid;}
 
 //:juke
 static function jukebox($f,$m,$id){[$f,$t]=cprm($f);
@@ -478,74 +535,6 @@ if($type!='button' && $type!='date' && $type!='hidden' && $type!='uniqid')
 	$ret.=' '.label($vb,$val,'txtsmall2').br();}
 $ret.=lj('popsav',$tg.'_'.implode(',',$hn).'__'.$p,$btn?$btn:picto('ok'));
 return divd($tg,$ret);}
-
-#quotes
-//called by art_read_c
-static function find_quotes($d,$id,$s,$pad,$l2){static $dc=0;//decal because of previous results
-$d=htmlentities($d);
-$d=str_replace("&laquo;",'|',$d); $d=str_replace("&raquo;",'|',$d); $d=str_replace("&nbsp;",' ',$d);
-$d=html_entity_decode($d); //$pad=str::add_nbsp($pad);
-$l=mb_strlen($pad); $s2=0; if($dc)$s+=$dc*$l2;//lenght to add
-$s2=mb_strpos($d,$pad,$s); if(!$s2)$s2=mb_strpos($d,$pad,$s); if(!$s2)$s2=mb_strpos($d,$pad);
-if($s2){$d1=mb_substr($d,0,$s2); $d2=mb_substr($d,$s2,$l); $d3=mb_substr($d,$s2+$l);}
-else{$d1=$d; $d2=''; $d3='';} $dc++;
-return [$d1,$d2,$d3];}
-
-static function apply_quote2($d,$id,$s,$pad,$idtrk){
-$nh=ljb('','scrolltoob','qnb'.$s,picto('arrow-down'),atd('qnh'.$s));
-[$d1,$d2,$d3]=self::find_quotes($d,$id,$s,$pad,10+strlen($idtrk)+strlen($nh));
-if($d2){$d2=preg_replace('/(\n){2,}/',br().br(),$d2);
-	return $d1.'['.$d2.'|'.$idtrk.':quote2]'.$nh.$d3;}
-else return $d;}
-
-//highlight begin
-static function allquotes($id){
-$msg=sql('msg','qdm','v','id="'.$id.'"');
-$r=sql('id,name,msg','qdi','','ib="'.$id.'"');
-if($r)foreach($r as $k=>$v){$rb=explode(':callquote]',$v[2]); $n=count($rb);
-	if($n>1){foreach($rb as $ka=>$va){$s1=mb_strrpos($va,'['); $va=mb_substr($va,$s1+1); [$p,$s]=cprm($va);
-		if($s)$msg=self::apply_quote2($msg,$id,$s,$p,$v[0]);}}}
-return tag('div',['ondblclick'=>atjr('useslct',['this',$id])],conn::read($msg,3,$id,''));}
-
-//ephemeral conn
-static function quote2($d,$id){[$p,$o]=cprm($d);
-//return togbub('mk,quotrk',$id.'_'.$o.'_'.ajx($p),$p,'stabilo',att('notes'));
-return self::stabilo($p);}//from art, built by find_quotes
-
-//called by quote2
-static function quotrk($id,$s,$pad){//todo
-$r=sql('id,name,msg','qdi','','ib="'.$id.'"');
-if($r)foreach($r as $k=>$v){$rb=explode(':callquote]',$v[2]); $n=count($rb);
-	if($n>1){foreach($rb as $ka=>$va){$s1=mb_strrpos($va,'['); $va=mb_substr($va,$s1+1); [$p,$s2]=cprm($va);
-		if($s==$s2)return $p;}}}}
-
-//quotes in trk
-static function callquote($d,$idtrk,$id){
-if(!$id)$id=sql('ib','qdi','v',$idtrk);
-if(!$idtrk)$idtrk=sql('id','qda','v',$id);
-[$p,$o]=cprm($d);//from track, go to art_read_c
-$nb=ljb('','callquote',[$id,$o,ajx($p),$idtrk],picto('arrow-top'),atd('qnb'.$o));
-return tagb('blockquote',$p.' '.$nb);}//find_quotes
-
-//xltags
-static function xltags($id,$conn,$msg=''){if(!$msg)$msg=sql('msg','qdm','v','id="'.$id.'"');
-return tag('div',['ondblclick'=>atjr('xltags',['this',$id,$conn])],conn::read($msg,3,$id,''));}
-
-static function xltagslct($id){$r=['fact','quote','stabilo'];
-$j2='art'.$id.'_art,playq___'.$id.'_3_1'; $bt='';//'all',
-foreach($r as $k=>$v)$bt.=ljtog('','art'.$id.'_mk,xltags___'.$id.'_'.$v,$j2,$v).' ';
-return divc('list',$bt);}
-
-static function slctconn($id,$pad,$s,$conn){if($conn)return self::applyconn($id,$pad,$s,$conn);
-$r=['q','fact','quote','stabilo','red','blue','parma','green'];
-$ret=divc('trkmsg',$pad); $bt=''; $p=ajx($pad);
-foreach($r as $k=>$v)$bt.=lj('','art'.$id.'_mk,applyconn__x_'.$id.'_'.$p.'_'.$s.'_'.$v,$v);
-return $ret.divc('nbp',$bt);}
-
-static function applyconn($id,$pad,$s,$conn){$msg=sql('msg','qdm','v',$id);
-[$d1,$d2,$d3]=self::find_quotes($msg,$id,$s,$pad,3+mb_strlen($conn));
-if($d2){$msg=$d1.'['.$d2.':'.$conn.']'.$d3; sqlup('qdm',['msg'=>$msg],$id);}
-return self::xltags($id,$conn,$msg);}
 
 }
 ?>

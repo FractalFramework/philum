@@ -1,4 +1,4 @@
-<?php //bubs
+<?php 
 class bubs{
 //['button','type','process','param','option','condition','root','icon','hide','private']
 //popbub($d=indicatif,$cat=$dir=root,$t=button,$c='call',1='over')
@@ -18,11 +18,11 @@ $ret=inputj('ucom','',$j,'command');
 return divc('search',$ret);}
 //lang
 static function langs(){$r=explode(' ',prmb(26));
-$ico=$_SESSION['lang']=='all'?'valid':'link';//setlang
-$ret[]=[nms(100),'ajax','socket','lang__self_all','admsq','','lang',$ico];
-$rb=msql::kv('lang','helps_langs'); $lg=ses('lang');
-foreach($r as $v){$ico=$v==$lg?'valid':'link';
-	$ret[]=[$rb[$v]??'','ajax','socket','lang__self_'.$v,'admsq','','lang',$ico];}
+$ico=$_SESSION['lang']=='all'?'circle-full':'circle-empty';//setlang
+$ret[]=[nms(100),'ajax','socket','lang___all','admsq','','lang',$ico];
+$rb=msql::kv('system','helps_langs'); $lg=ses('lang');
+foreach($r as $v){$ico=$v==$lg?'circle-full':'circle-empty';
+	$ret[]=[$rb[$v]??'','ajax','socket','lang___'.$v,'admsq','','lang',$ico];}
 return $ret;}
 //plug
 //0:usage/1:dir/2:loadable/3:callable/4:interface/5:state/6:private
@@ -38,14 +38,15 @@ foreach($r as $k=>$v){//if($v[2])//loadable //if($v[3])//callable //if($v[4])//i
 return $ret;}
 
 //dev
+//['button','type','process','param','option','condition','root','icon','hide','private']
 static function dev(){$ret=[];
 if(auth(4) or ses('dev')){
-	$ret[]=['dev','ajax','socket','dev__self_b','','','dev','circle-full'];
-	if(rstr(153))$ret[]=['dev2','ajax','socket','dev__self_c','','','dev','circle-half'];
-	$ret[]=['prod','ajax','socket','dev__self_','','','dev','circle-empty'];}
+	$ret[]=['dev','ajax','socket','dev___b','','','dev',ses('dev')?'circle-full':'circle-empty'];//self
+	if(rstr(153))$ret[]=['dev2','ajax','socket','dev___c','','','dev',ses('dev')=='c'?'circle-half':'circle_empty'];
+	$ret[]=['prod','ajax','socket','dev___','','','dev',ses('dev')?'circle-empty':'circle-full'];}
 if(auth(6)){
-	if(rstr(99))$ret[]=['twitletter','ajax','popup','tweetfeed,batch__3','','','dev','tw2'];
-	if(prms('srvmirror'))$ret[]=['transport','app','transport','','','','dev','exchange'];
+	if(rstr(99))$ret[]=['twitletter','ajax','popup','tweetfeed,batch__','','','dev','tw2'];//opage
+	if(prms('srvmir'))$ret[]=['transport','app','transport','','','','dev','exchange'];
 	$ret[]=['push','ajax','popup','dev2prod,call__3xx','','','dev','upload'];
 	$ret[]=['publish','ajax','popup','pubdate,call','','','dev','export'];
 	if(!prms('aupdate'))$ret[]=['update','ajax','popup','software,home','','','dev','update'];
@@ -53,6 +54,7 @@ if(auth(6)){
 	if(ses('rebuild_img')){$bt='-off'; $n=0;} else{$bt=''; $n=1;}
 	$ret[]=['mini'.$bt,'ajax','socket','sesmake___rebuild*img_'.$n,'','','dev','img'];
 	$ret[]=['updateip','ajax','socket','boot,updateip','','','dev','recycle'];
+	$ret[]=['openbrut','bub','app','usg,openbrut','','','dev','editxt'];
 	$ret[]=['refresh','ajax','socket','reset__self','','','dev','refresh'];}
 $ret[]=['cache','ajax','popup','rebuild__3','','','dev','reload'];
 if(auth(2))$ret[]=['push','ajax','popup','dev2prod,call__3xx','','','dev','down'];
@@ -119,9 +121,9 @@ static function slct($j){
 [$d,$id,$rid,$o]=explode('.',$j); 
 if(strpos($d,'|'))$r=explode('|',$d); else $r=usg::slct_r($d,$o);
 //$ret[]=['-','js','','','','','bub',''];//close
-$ret[]=['nothing','js','jumpval',$id.'_','','','bub',''];//del
+$ret[]=['nothing','js','jumpval',[$id,''],'','','bub',''];//del
 if($r)foreach($r as $k=>$v)
-	$ret[]=[$v,'js','jumpval',$id.'_'.addslashes($v),'','','bub',''];
+	$ret[]=[$v,'js','jumpval',[$id,addslashes($v)],'','','bub',''];
 return $ret;}
 
 //msql
@@ -214,8 +216,7 @@ return join('',$rt);}
 static function fastmenu2(){
 return divc('',adm::fastmenu(1));}
 
-
-//login
+//innerbub
 static function app($d){
 if($d=='login'){login::call('','',''); return divd('nob',login::form('','1',''));}
 if($d=='cache')return li(boot::rebuild());
@@ -307,7 +308,7 @@ $r=msql::prep('system','admin_restrictions');
 $h=msql::read('lang','admin_restrictions');
 $ret[]=[$t,'ajax','popup','admin__3_restrictions','','',$dir,'true'];
 foreach($r as $k=>$v){
-$ret[]=[$k,'ajax','popup','admx,rstrsav__3_','','',$dir,'divide'];
+$ret[]=[$k,'ajax','popup','admx,rstrsav2__3_','','',$dir,'divide'];
 	foreach($v as $ka=>$va){$ico=rstr($ka)?'true':'false';
 	$ret[]=[$va,'ajax','popup','rstr__xx_'.$ka,'','',$dir.'/'.$k,$ico];}}
 if(auth(6))$ret[]=['msql','ajax','popup','msql__3_system_admin_restrictions','','',$dir,'msql'];
@@ -344,6 +345,7 @@ $r=self::adminauthes2(1); $rm=msql::kv('lang','admin_authes');
 $ret[]=['Microsql','link','blank','/admin/msql','','','Microsql','link'];
 $ret[]=['users','ajax','popup','msql___users_'.ses('qb'),'','','Microsql','window'];
 if(auth(6))$ret[]=['system','ajax','popup','msql___system','','','Microsql','window'];
+if(auth(6))$ret[]=['server','ajax','popup','msql___server','','','Microsql','window'];
 if(auth(6))$ret[]=['lang','ajax','popup','msql___lang','','','Microsql','window'];
 if($u=ses('murl'))$r[]=[$u,'ajax','bubble','bubs,call','','','Microsql','window'];
 foreach($r as $k=>$v){if($k==$dir)foreach($v as $ka=>$va){$t=$rm[$ka]??$ka;
@@ -377,7 +379,7 @@ if($rc[$cond?$cond:'menu']??'' or !$v[5]){$t=$v[0];
 		elseif($v[1]=='js')$rb[$t]=ljbub($ico.$t,'',atj($v[2],$v[3]));
 		elseif($v[1]=='bub')$rb[$t]=popbub($v[2],$v[3],$ico.$t,'c',1);//d
 		elseif($v[1]=='arts')$rb[$t]=popbub('','arts',$ico.$t,'d',0);
-		elseif($v[1]=='art')$rb[$t]=lh($v[3],$ico.$t);
+		elseif($v[1]=='art')$rb[$t]=lh('',$v[3],$ico.$t);
 		//elseif($v[1]=='app')$rb[$t]=self::app($v[3]);//used when app is inside a menu
 		elseif($v[1]=='appin')$rb[$t]=self::app($v[3]);//innercontent
 		elseif($v[1]=='mod')$rb[$t]=mod::callmod($v[3]);
@@ -385,7 +387,7 @@ if($rc[$cond?$cond:'menu']??'' or !$v[5]){$t=$v[0];
 		elseif($v[1]=='btmnu')$rb[$t]=mod::btmnu([$v[4],$v[3],$t],$v[2],1,0);
 		else{$j=desk::read($v); $rb[$t]=ljbub($ico.$t,'',sj($j));}}}}
 if($rb)$ret=implode('',$rb);
-//if($d=='arts')//$ret=desk::pane_icons($rb,'icones');
+//if($d=='arts')//$ret=desk::pane_icons($rb);
 //$ret=scroll($rb,$ret,19);
 return $ret;}
 
@@ -404,10 +406,11 @@ $ret=match($dir){//pre-rendered, intercepte navigation
 'batch'=>sav::batch('','c'),
 'fastmenu'=>self::fastmenu(),
 'fastmenu2'=>self::fastmenu2(),
-'search'=>search_btn(),
+'search'=>build::search_btn(),
 'addart'=>self::addart_btn(),
 'ucom'=>self::ucom_btn(),
 'arts'=>self::adm_arts_fast(),
+'favs'=>favs::home('',''),
 'user'=>self::adm_user_fast(),
 'app'=>self::app($dir),
 'exec'=>self::app($d),

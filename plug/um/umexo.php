@@ -30,7 +30,7 @@ $a=bcpow(M_PI,$n-1); $b=bcmul(13.36,$a); $c=self::sqrt_b($b,3); return $c;}
 
 static function manu_draw($out,$r,$b){
 $w=800; $h=300; $mx=$my=40; $im=imagecreate($w+$mx,$h+$my);
-[$white,$black,$red,$green,$blue,$yellow,$purple,$silver,$gray]=img::clrpack($im);
+[$white,$black,$red,$green,$blue,$yellow,$purple,$silver,$gray]=graph::clrpack($im);
 $font=imageloadfont('fonts/gdf/Fixedsys.gdf');
 ImageFilledRectangle($im,0,0,$w,$h,$white);
 //foreach($r as $k=>$v)
@@ -40,7 +40,7 @@ $n=count($r['imoo']); $ratioy=$h/$n;
 //verbose([$max,$n,$w,$ratio]);
 $n=count($r['imoo']); $xab='';
 for($i=0;$i<$n;$i++){$nb=$i*$b;
-	//mise à l'échelle
+	//mise ï¿½ l'ï¿½chelle
 	//echo $r['imoo'][$i].'-';
 	$xa=round($r['imoo'][$i]*$ratiox)+$mx;
 	$xb=round($r['woam'][$i]*$ratiox)+$mx;
@@ -99,9 +99,9 @@ for($i=0;$i<$n;$i++){$ray=rand($a,$b)/2; $ang=deg2rad(rand(0,360));
 	imagefilledellipse($im,$x,$y,10,10,$clr);
 	imageellipse($im,$x,$y,10,10,$black);}}
 
-//self::draw('_datas/umexo.png',$r,'600');
+//self::draw('_datas/png/umexo.png',$r,'600');
 static function draw($out,$r,$rk,$w){$h=$w; $im=imagecreate($w,$h);
-[$white,$black,$red,$green,$blue,$yellow,$purple,$silver,$gray]=img::clrpack($im);
+[$white,$black,$red,$green,$blue,$yellow,$purple,$silver,$gray]=graph::clrpack($im);
 $whit5=imagecolorallocatealpha($im,0,0,0,30); imagecolortransparent($im,$white); 
 $font=imageloadfont('fonts/gdf/Fixedsys.gdf');
 ImageFilledRectangle($im,0,0,$w,$h,$white);
@@ -110,9 +110,9 @@ $rb=self::clr($r); $rb=array_reverse($rb); $ta=''; $vald=0;
 //verbose([$max,$n,$w,$ratio]);
 //for($i=0;$i<$w;$i++)imageellipse($im,$ctr,$ctr,$val,$val,$black);
 foreach($r as $k=>$v){
-	$val=ceil($v*$ratio)-1; $vlb=round($val/2);//mise à l'échelle
+	$val=ceil($v*$ratio)-1; $vlb=round($val/2);//mise ï¿½ l'ï¿½chelle
 	$bis=$rk[$k]==$ta?1:0; $ta=$rk[$k]; $t=$ta.' '.$v;//titres
-	if(!$bis)self::dots($im,$vald,$val,$ta,$ctr,$silver,$black);//planètes
+	if(!$bis)self::dots($im,$vald,$val,$ta,$ctr,$silver,$black);//planï¿½tes
 	if($bis)$alpha=10; else $alpha=0;
 	$clr=imagecolorallocatealpha($im,$rb[$k][0],$rb[$k][1],$rb[$k][2],$alpha);
 	//verbose([$v,$max,$val,$ctr,$x,$y]);
@@ -136,7 +136,7 @@ $unit_volume=self::volume($al);
 $dist=self::ray_of_volume_b($unit_volume);//test
 //verbose([$unit_volume,$volume_espace,$ratio,$n]);
 $rt[]=['unit','nb','volume','al','sub'];
-/**///sphère bleue
+/**///sphï¿½re bleue
 $blue=round($unit_volume)/3;
 //$rt[]=[0,0,round($blue),round(self::ray_of_volume_b($blue),2),''];
 $a=1; $rt[]=[$a,$b,round($unit_volume),round($dist,2),''];
@@ -166,9 +166,9 @@ $ret=btn('txtcadr','WAAM IMOO').' '.tabler($ra,$rh);
 $ret.=btn('txtcadr','WAAM WOAM').' '.tabler($rb,$rh);
 //if(auth(6))return $ret;
 //$ret=divc('right',$ret);
-$f='_datas/umexo'.$p.$o.'.png';
+$f='_datas/png/umexo'.$p.$o.'.png'; mkdir_r($f);
 $ret.=self::draw($f,$r,$rk,600).br().br();
-$f='_datas/umexo_graph'.$p.$o.'.png';
+$f='_datas/png/umexo_graph'.$p.$o.'.png';
 $ret.=self::algo_manu($p,$o,$f);
 return $ret;}
 

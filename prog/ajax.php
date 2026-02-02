@@ -1,37 +1,31 @@
-<?php //ajax_hangar
-//error_report();
+<?php 
 $grm=gets();
 $prm=posts();
 define_ses();
-//header('Content-Type: text/html; charset='.ses::$s['enc']);
 if(rstr(22))boot::block_crawls();
 if(!isset($_SESSION['qb']))boot::reboot();
 [$app,$sz,$tg]=vals($grm,['app','sz','tg']);
 $ret=''; $t=$app; [$a,$b]=expl(',',$app,2);
-//if($_a=get('_a'))[$a,$b]=explode(',',$_a);
 [$g1,$g2,$g3,$g4]=vals($grm,['g0','g1','g2','g3']);
-//[$g1,$g2,$g3,$g4]=vals($prm,['g0','g1','g2','g3']);
 [$p1,$p2]=vals($prm,[0,1]);
 
 function popup($d,$t){$s='';
 $t=ses::$r['popt']??$t;
 $id=ses::$r['id']??'';
 $w=ses::$r['popw']??prma('content'); if($w)$s='max-width:'.($w+36).'px;';
-//if($w=ses::$r['popwm']??'')$s.=' min-width:'.$w.'px;';
-//$w=ses::$r['pophm']??''; if($w)$s.=' min-height:'.$w.'px;';
 $bt=ljb('','Close','popup',picto('close'));
 $bt.=btj(picto('ktop'),'poprepos()');
-$bt.=btj(picto('less'),'reduce()');
-//$bt.=btj(picto('fix'),'fixelem()');
 $bt.=ses::r('popm').' ';
-$bt.=tagb('small',$t);//.atmd('noslct(0);')
-return div(div($bt,'popa','popa').div($d,'popu','popu'),'popup','',$s);}
+$bt.=tagb('small',$t); //$bt.=div(divr(ses::$er),'small');
+$ret=tag('div',['id'=>'popa','class'=>'popa','ondblclick'=>atjr('reduce',[])],$bt);
+$ret.=div($d,'popu','popu');
+return div($ret,'popup','',$s);}
 
 function pagup($d,$t){$t=ses::$r['popt']??$t; $w=ses::$r['popw']??prma('content'); $m=ses::r('popm');
 return div(div(ljb('','Close','popup',picto('close')).$m.tagb('small',$t),'popa','popa').div($d,'','popu'),'','','margin:auto; max-width:'.$w.'px;');}
 
 function tit($a,$b,$g1,$g2){$k=$a.'::'.$b;
-$r=['edit::call'=>107,'art::trkone'=>65,'tracks::form'=>21,'meta::catslct'=>9,'usg::artmod'=>39,'mod::callmod'=>187,'mod::playmod'=>$g1=='read'?2:187,'conn::read2'=>65,'usg::trkplay'=>22,'tracks::redit'=>107,'sav::batchpreview'=>65,'deploy::home'=>28,'art::social'=>47,'mails::sendart'=>28,'desk::deskroot'=>196,'finder::home'=>197,'search::home'=>24,'microarts::home'=>$g1,'umrec::home'=>206,'api'=>$g1,'app'=>$g1,'msql'=>$g2,'chkj'=>$g2,'jump'=>$g2,'lj'=>$g2];
+$r=['admin::'=>$g1,'edit::call'=>107,'art::trkone'=>65,'tracks::form'=>21,'meta::catslct'=>9,'usg::artmod'=>39,'mod::callmod'=>187,'mod::playmod'=>$g1=='read'?2:187,'conn::read2'=>65,'usg::trkplay'=>22,'tracks::redit'=>107,'sav::batchpreview'=>65,'deploy::home'=>28,'art::social'=>47,'mails::sendart'=>28,'desk::deskroot'=>196,'finder::home'=>197,'search::home'=>24,'microarts::home'=>$g1,'umrec::home'=>206,'api'=>$g1,'app'=>$g1,'msql'=>$g2,'chkj'=>$g2,'jump'=>$g2,'lj'=>$g2];
 if(isset($r[$k]))return nms($r[$k]);
 if($k=='art::look')return'{'.$g2.'} '.ma::suj_of_id($g1);
 if($b=='home')return $a;
@@ -49,38 +43,36 @@ function afc($a,$m){$r=[
 'proposal'=>['del'=>6],
 'stats'=>['statsee'=>6],
 'trans'=>['redit'=>6,'redo'=>6],
+'tracks'=>['publish'=>6,'trash'=>6,'reditsav'=>6],
 'backupim'=>['home'=>6,'redo'=>6],
 'dev'=>['func_sav'=>6],
 'exec'=>['run'=>6],
 'maintenance'=>['build'=>6,'call'=>6],
-'patches'=>['dbsplitters'=>6,'call'=>6]];
+'patches'=>['dbsplitters'=>6,'call'=>6],
+'umvoc'=>['update'=>6,'sav'=>6,'del'=>6]];
 if(!$m)$a='ajax';
 $r=$r[$a]??[]; $a=$r[$m]??ses('auth');
 if(!auth($a))return 'no';}
-
 $ret=afc($a,$b);
 
 #load
-if($b && !$ret){
-if($a=='sql' or $a=='msql')return 'no';
-if($prm)$ret=$a::$b($g1,$g2,$prm);
-else $ret=$a::$b($g1,$g2,$g3,$g4);
+if($_a=get('_a'))[$a,$b]=explode(',',$_a);
+if($a && $b && !$ret){
+	if($a=='sql' or $a=='msql')return 'no';
+	if(!method_exists($a,$b))$ret='nothing';
+	if($_a)$ret=$a::$b($prm);//ff
+	elseif($prm)$ret=$a::$b($g1,$g2,$prm);
+	else $ret=$a::$b($g1,$g2,$g3,$g4);
+	if(is_array($ret))$ret=mkjson($ret);}
+//json::add('','fc',$r);
 $t=tit($a,$b,$g1,$g2);
-if(is_array($ret))$ret=mkjson($ret);}
-//ff
-elseif(!$ret && $_a=get('_a')){[$a,$b]=explode(',',$_a);
-if($a=='sql' or $a=='msql')return 'no';
-if(!method_exists($a,$b))$ret='nothing';
-else $ret=$a::$b($prm);//json::add('','fc',$r);
-$t=tit($a,$b,$g1,$g2);
-if(is_array($ret))$ret=mkjson($ret);}
 
 if(!$ret)$ret=match($app){
 #private
 'admin'=>adm::call($g1,$g2,$g3),
 'modsav'=>admx::modsav($g1,$g2,$g3,$prm),
 'submds'=>admx::submds($g1,$g2,$g3,$g4,$prm),
-//msql
+#msql
 'msql'=>msqa::mopen($g1,$g2,$g3,$g4),
 'msqledit'=>msqa::mdfcol($g1,$g2,$g3,$prm),
 'msqlops'=>msqa::msqlops($g1,$g2,$g3,$g4,$prm),
@@ -88,25 +80,21 @@ if(!$ret)$ret=match($app){
 'mktable'=>mc::mktc($g1,$g2,$g3,$prm),
 #public
 'art'=>art::playc($g1,$g2,$g3),
-'popart'=>popart($g1),
+'popart'=>build::popart2($g1),
 'api'=>api::call($g1,$g2,$prm),
-//'bubs'=>bubs::call($g1,$g2,$g3),
-//'site'=>usg::site($g1,$g2),//apps252
-//'app'=>$g1::$g2($g3,$g4,$res),//old
-//sys
+#sys
 'lang'=>usg::setlng($g1),
 'hidj'=>usg::hidslct($g1,$g2,$g3,$g4,$prm),
 'chkj'=>usg::chkslct($g1,$g2,$g3,$g4,$prm),
 'alert'=>divc('',picto('alert').' '.$g1),
 'rebuild'=>boot::rebuild(),
 'reset'=>boot::reboot(),
-//actions
+#actions
 'sesmake'=>usg::putses($g1,$p1?$p1:$g2),
 'session'=>$_SESSION[$g1],
 'offon'=>offon($g1),
 'tog'=>yesnoses($g1),
 'togses'=>offon(yesnoses($g1)),
-//'slctmod'=>boot::select_mods(yesnoses('slctm')?$g1:''),
 'dev'=>usg::putses('dev',$g1??''),
 'jump'=>divc('console',$g1),
 'lj'=>$lj($g3,$g1,$g2),

@@ -5,6 +5,7 @@ static $w=1400;
 
 static $clr=['#ffffff','#000000','#ff0000','#00ff00','#0000ff','#ffff00','#00ffff','#ff9900','#cccccc','#666666'];
 //static $clr2=['O'=>'#93B6FF','B'=>'#A7C3FF','A'=>'#D5E0FF','F'=>'#F9F5FF','G'=>'#FFECDF','K'=>'#FFD6AC','M'=>'#FFAA58','L'=>'FF7300','T'=>'FF3500','Y'=>'999999'];
+static $clr6=['Hostiles'=>'#d20071','Greys'=>'#5aba1a','Orion'=>'#ff6001','peace'=>'#309fde','protected'=>'#83b2cc','interference'=>'#cc9183','unknown'=>'#444444','none'=>'#222222'];
 static $clr2=['O'=>'#4277e4','B'=>'#6894f1','A'=>'#859fea','F'=>'#c09df3','G'=>'#ffc9a4','K'=>'#ffb366','M'=>'#ff9b3b','L'=>'#FF7300','T'=>'#FF3500','Y'=>'#999999'];
 static $clr3=['#2a635c','#a62a00','#530002','#4a5305'];
 static $rz=['O'=>12,'B'=>10,'A'=>9,'F'=>8,'G'=>7,'K'=>6,'M'=>5,'L'=>4,'T'=>3,'Y'=>'2',''=>5];
@@ -22,6 +23,9 @@ elseif($stt=='proba')$clr=$silver;
 elseif($stt=='galaxy')$clr=$blue;
 else $clr=$o?$o:$gray;
 return $clr;}
+
+static function sttclr6($c,$o=''){
+return self::$clr6[$c]??'#444444';}
 
 static function minmax($r){$rb=[]; $min=false; $max=false;
 foreach($r as $k=>$v)if(is_numeric($v)){if($min===false or $v<$min)$min=$v; if($max===false or $v>$max)$max=$v;}

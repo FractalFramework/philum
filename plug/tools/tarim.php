@@ -18,8 +18,8 @@ return $ret;}
 //from catalog
 static function call($p,$o,$prm=[]){$length=ses('tilen');
 $min=$p*$length; $max=$min+$length;
-$rq=sql::com('img','qda',['>id'=>$min,'<id'=>$max]);
-while($r=sql::qrw($rq)){$rb=explode('/',$r[0]); //echo $r[0];
+$r=sql::read('img','qda','rv',['}id'=>$min,'<id'=>$max]);
+foreach($r as $k=>$v){$rb=explode('/',$v);
 	if($rb)foreach($rb as $kb=>$vb)if($vb)if(is_file('img/'.$vb))$rc[]='img/'.$vb;}
 $ret=$min.'-'.$max.' ('.count($rc).') ';
 $f='_backup/img_'.$min.'-'.$max.'.tar';
@@ -50,17 +50,9 @@ rmdir_r('imgd'); mkdir_r($dr);
 foreach($rc as $v)copy($v,$dr.substr($v,4));}
 
 static function call3($p,$o,$prm=[]){$length=ses('tilen');
-$min=$p*$length; $max=$min+$length;
-$rq=sql::com('msg','qdm',['>id'=>$min,'<id'=>$max]);
-while($r=sql::qrw($rq)){
-	$rb=self::findim($r[0],'.jpg');
-	if($rb)foreach($rb as $vb)if($vb)if(is_file($vb))$rc[]=$vb;
-	$rb=self::findim($r[0],'.gif');
-	if($rb)foreach($rb as $vb)if($vb)if(is_file($vb))$rc[]=$vb;
-	$rb=self::findim($r[0],'.png');
-	if($rb)foreach($rb as $vb)if($vb)if(is_file($vb))$rc[]=$vb;
-	}
-//p($rc);
+$min=$p*$length; $max=$min+$length; $rc=[];
+$r=sql::read('msg','qdm','',['>id'=>$min,'<id'=>$max]);
+foreach($r as $k=>$v)array_push($rc,conb::imgs($v)); //p($rc);
 $ret=$min.'-'.$max.' ('.count($rc).') ';
 $f='_backup/img_'.$min.'-'.$max.'.tar';
 //rmdir_r('_backup/');

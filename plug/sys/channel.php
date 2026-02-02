@@ -11,7 +11,7 @@ $min=($page-1)*$npg; $max=$page*$npg; $ret=''; $i=0; $rb=[];
 		if(rstr(27))$ret.=btn('txtsmall',mkday($nb[0],1)).' '.art::pub_link($nb[9]).' ';
 		if(rstr(25))$ret.=btn('txtsmall',art::length($nb[8]));
 		$ret.=br().br();}}}}
-$n_pages=usg::nb_pages_j($i,$npg,$page);
+$n_pages=build::nb_pages_j($i,$npg,$page);
 return $n_pages.$ret.$n_pages;}
 
 static function tri($r,$d,$n){
@@ -42,7 +42,7 @@ if($load){
 return $t.$ret;}
 
 static function home($p,$t,$d='articles'){
-$p='philum.fr:site newworld:hub'; $o=1; $ret='';
+$p='philum.ovh:site newworld:hub'; $o=1; $ret='';
 if($o){$n=$o*1000; $j='SaveJ("chan_channel___'.$p.'_'.$t.'_'.$d.'");';
 	$ret=head::jscode(head::temporize('channeltimer',$j,$n));}
 	$ret.=divd('chan',self::call($p,$t,$d));

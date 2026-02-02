@@ -3,7 +3,7 @@ class connectors{
 
 static function build($p,$o){
 if($o)$p='['.$p.']';
-$ret=conn::read($p,'','test');
+$ret=conn::read($p,'3','test');
 return $ret;}
 
 static function call($p,$o,$prm=[]){
@@ -14,7 +14,7 @@ return $ret;}
 static function menu($p,$o,$rid){
 $j=$rid.'_connectors,call_inp'.$rid;
 $js=['onkeyup'=>sj($j),'onclick'=>sj($j)];
-$ret=editarea('inp'.$rid,$p,54,8,$js,1);
+$ret=edit::area('inp'.$rid,$p,54,8,$js,1);
 //$ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 

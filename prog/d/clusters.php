@@ -56,7 +56,7 @@ $ret.=inputj($inpid,'',$j).' '.lj('txtsav',$j,picto('ok'));
 return divc('nbp',$ret);}
 
 static function classtags($j){$ret='';
-$r=sqb('distinct(cat)','qdt','rv','');
+$r=sql('distinct(cat)','qdt','rv','');
 foreach($r as $k=>$v)$ret.=lj('',$j.ajx($v),$v).' ';
 return divc('nbp',$ret);}
 
@@ -107,7 +107,7 @@ foreach($r as $k=>$v)foreach($v as $ka=>$va){
 	$bt=self::viewone($id,$va[2]);
 	$rt[$k][]=divc('row',divc('cell',$va[1]).div($bt,'cell','edt'.$va[2]));}
 //return divc('table',self::implode_b('',$rt));
-return tabs($rt);}
+return build::tabs($rt);}
 
 static function implode_b($r,$a=''){$rb=[]; foreach($r as $k=>$v)
 	if(is_array($v))$rb=array_merge($rb,self::implode_b($v)); else $rb[]=$v;
@@ -116,7 +116,7 @@ return implode($a,$rb);}
 /*static function edit($p,$cat){$ret='';
 $d=sql('tag','qdt','v',['id'=>$p],0); $inpid='addclst'.$p;
 $ra=sql::inner('tag,idtag','qdt','qdtc','idtag','kv',['word'=>$d],0);
-$r=sqb('distinct(word)','qdtc','rv','order by word'); //p($r);
+$r=sql('distinct(word)','qdtc','rv','order by word'); //p($r);
 $j='clst_clusters,sav2_'.$inpid.'_2_'.ajx($cat).'_'.ajx($p);
 $ret=datalist($inpid,$r,'',16,'',$j);
 $ret.=lj('txtsav',$j,picto('ok'));
@@ -138,13 +138,13 @@ return self::build($p,$o);}
 static function build($p,$cat){$ret=divc('txtcadr',$p);
 $ret.=self::classtags('clst_clusters,build__3_'.ajx($p).'_');
 $ra=sql::inner('tag,idtag','qdt','qdtc','idtag','kv',['word'=>$p]);
-$rb=sqb('idtag,word,id','qdtc','kvv','');
+$rb=sql('idtag,word,id','qdtc','kvv','');
 $w=[]; if($cat)$w=['cat'=>$cat]; $w['_order']='tag';
 $r=sql('id,tag','qdt','kv',$w);
 $jp=ajx($p).'_'.ajx($cat);
 if($p)foreach($r as $k=>$v){
-	if(isset($ra[$v]))$ret.=lj('popdel','clst_clusters,del__2_'.($rb[$k][1]??'').'_'.$jp,$v.' ('.($rb[$k][0]??'').')');
-	else $ret.=lj('popsav','clst_clusters,sav__2_'.$k.'_'.$jp,$v);
+if(isset($ra[$v]))$ret.=lj('popdel','clst_clusters,del__2_'.($rb[$k][1]??'').'_'.$jp,$v.' ('.($rb[$k][0]??'').')');
+else $ret.=lj('popsav','clst_clusters,sav__2_'.$k.'_'.$jp,$v);
 $ret.=togbub('clusters,dropmenu',$k.'_'.ajx($cat),'+');}
 return divc('panel',$ret);}
 

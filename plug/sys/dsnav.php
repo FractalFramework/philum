@@ -4,12 +4,12 @@ class dsnav{
 static function embedli($d,$v,$isr){$_SESSION["nbsd"]++; $ds=$_SESSION["ds"];
 $qb=ses('qb'); $xt=substr($v,-4); if($v)$f=$d.'/'.$v; else $f=$d;
 if($xt==".jpg" or $xt==".png" or $xt==".gif"){$img=img::make_thumb_c($f);
-	if(is_file($f))[$w,$h]=getimagesize($f); $ww='_'.$w.'_'.$h;}
+	if(is_file($f))[$w,$h]=imsize($f); $ww='_'.$w.'_'.$h;}
 $f=str_replace(array('users/','imgb/icons/'),'',$f); $fb=ajx($f,0); 
 if(is_numeric($ds)){//bkg
 	if($isr)$ret=lj("popbt",'bkg'.$ds.'_dsnav,home___'.$fb.'_bkg',$v);
 	//if($isr)$ret=toggle('popbt',$v.$ds.'_dsnav,home___'.$fb.'_bkg',$v).' '.btd($v.$ds,"");
-	else{[$w,$h]=getimagesize($f); $tx=$v.' ('.$w.' * '.$h.')'; //if(is_file($f))
+	else{[$w,$h]=imsize($f); $tx=$v.' ('.$w.' * '.$h.')'; //if(is_file($f))
 	$ret=lj('','css'.$ds.'_stylsav___'.$fb.'_'.$ds.'_2',$img.$tx).hr();}}
 if($ds=="gl"){if($isr)$ret=lj("popbt",'popup_gallery__3x_'.$fb,$v);}//photo
 if($ds=="dl"){$dlm=ses('qb').'/'.$_SESSION['dlmod'];//dwnl

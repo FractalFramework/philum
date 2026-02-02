@@ -7,9 +7,9 @@ return sql::call('select id from '.($b).' order by id desc limit 1','v');}
 static function dumpall(){
 $r=self::tables(); foreach($r as $k=>$v)backup::dump($v);}
 
-static function tables(){return ['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','stat','cat','hub','mbr','img','_sys','_prog','_progr'];}//,'umvoc','umvoc_arts','umtwits','bdvoc','dicoen','dicofr','dicoum','hipparcos','gaia','live','live2'
+static function tables(){return ['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','stat','cat','hub','mbr','img','imgart','dico','_sys','_prog','_progr'];}//,'umvoc','umvoc_arts','umtwits','bdvoc''dicoum','hipparcos','gaia','live','live2','imgreal','imglet','dicoen','dicofr','dicoes','dicopt','dicoit'
 
-static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','live','live2','stat','cat','hub','mbr','img'];//,'umvoc','umvoc_arts','umtwits'
+static function pub($b){$r=['art','txt','trk','data','meta','meta_art','meta_clust','search','search_art','favs','twit','user','web','trans','ips','live','live2','stat','cat','hub','mbr','img','imgart','imgreal','imglet'];//,'umvoc','umvoc_arts','umtwits'
 if(in_array($b,$r))return $b;}// else return $b;
 
 static function db_r(){$r=sqldb::$rt;
@@ -34,10 +34,10 @@ if($o){//distant
 		$rb[]='msql/users/'.$p.'_'.$k.($va?'_'.$va:'').'.php'; //pr($rb);
 	if($rb){tar::folder($fa,$rb); $fa=tar::gz($fa);}}
 else{//local
-	$srv=prms('srvmirror'); $fa.='.gz';
-	if(!$srv)return 'srvmirror is not set';
+	$srv=srvmir(); $fa.='.gz';
+	if(!$srv)return 'srvmir is not set';
 	if(is_file($fa))unlink($fa);
-	$f=$srv.'/call/transport/'.$p.'/call&fc=msql'; $ret=getfile($f);
+	$f=$srv.'/call/transport,msql/'.$p.'/call'; $ret=getfile($f);
 	[$usr,$db,$ps,$dr]=self::srv(1);
 	$e='wget -P '.$dr.'/_backup '.$srv.'/'.$fa; exc($e); //$ret=getfile($srv.'/'.$fa);
 	$e='tar -zxvf '.$dr.'/'.$fa;
@@ -65,10 +65,10 @@ elseif($o=='untar'){$min=$p*$l; $max=$min+$l;
 	tar::extract($fa);
 	$ret=self::img($p,'menu');}
 else{//local
-	$srv=prms('srvimg');
-	if(!$srv)return 'srvimg is not set';
+	$srv=srvmir();
+	if(!$srv)return 'srvmir is not set';
 //	if(is_file($fa))unlink($fa);
-	$f=$srv.'/call/transport/'.$p.'/call&fc=img'; $fa=getfile($f); //echo $ret;
+	$f=$srv.'/call/transport,img/'.$p.'/call'; $fa=getfile($f); //echo $ret;
 	$e='wget -P '.$dr.'/_backup '.$srv.'/'.$fa; exc($e); //$ret=getfile($srv.'/'.$fa);
 	$e='tar -zxvf '.$dr.'/'.$fa.' '.$dr.'/img/';
 	//echo $e='tar --extract --listed-incremental=/dev/null --file '.$dr.'/'.$fa;
@@ -80,6 +80,7 @@ return $ret;}
 
 static function usr($p,$o){
 $ret=''; $rb=[]; $l=5000;
+$fa='_backup/users_'.$p.'.tar.gz';
 [$usr,$db,$ps,$dr]=self::srv(1);
 if($o=='call'){//distant
 	$f='_backup/users_'.$p.'.tar'; $r=scanfiles('users/'.$p); //pr($r);
@@ -89,15 +90,41 @@ elseif($o=='menu'){$qb=ses('qb'); //$qb='shroud';
 	$ret.=lj('txtx',$p.'_transport,usr__3_'.$qb,$qb).'-';
 	$ret.=lj('txtx',$p.'_transport,usr__3_'.$qb.'_untar','un').' ';}
 elseif($o=='untar'){
-	$fa='_backup/users_'.$p.'.tar.gz';
 	//$e='tar -zxvf '.$dr.'/'.$fa.' '.$dr.'/img/'; if(is_file($fa))exc($e);
 	tar::extract($fa);
 	$ret=self::usr($p,'menu');}
 else{//local
-	$srv=prms('srvmirror');
-	if(!$srv)return 'srvmirror is not set';
-//	if(is_file($fa))unlink($fa);
-	$f=$srv.'/call/transport/'.$p.'/call&fc=usr'; $fa=getfile($f); //echo $ret;
+	$srv=srvmir();
+	if(!$srv)return 'srvmir is not set';
+	if(is_file($fa))unlink($fa);
+	$f=$srv.'/call/transport,usr/'.$p.'/call'; $fa=getfile($f); //echo $f;
+	$e='wget -P '.$dr.'/_backup '.$srv.'/'.$fa; if(!is_file($fa))exc($e);//
+	$e='tar -zxvf '.$dr.'/'.$fa.' '.$dr.'/img/';
+	if(is_file($fa))tar::extract($fa);
+	if(!is_file($fa))$ret=btn('txtyl','not arrived');
+	else $ret=self::img($p,'menu');}
+return $ret;}
+
+static function site($p,$o){
+$ret=''; $rb=[]; $l=5000;
+$fa='_backup/site.tar.gz';
+[$usr,$db,$ps,$dr]=self::srv(1);
+if($o=='call'){//distant
+	$f='_backup/site.tar'; $r=scanfiles('users/'.$p); //pr($r);
+	if(is_file($f))unset($f);
+	$ret=tar::files($f,$r,0);}
+elseif($o=='menu'){$qb=ses('qb'); //$qb='shroud';
+	$ret.=lj('txtx',$p.'_transport,site__3_'.$qb,$qb).'-';
+	$ret.=lj('txtx',$p.'_transport,site__3_'.$qb.'_untar','un').' ';}
+elseif($o=='untar'){
+	//$e='tar -zxvf '.$dr.'/'.$fa.' '.$dr.'/img/'; if(is_file($fa))exc($e);
+	tar::extract($fa);
+	$ret=self::usr($p,'menu');}
+else{//local
+	$srv=srvmir();
+	if(!$srv)return 'srvmir is not set';
+	if(is_file($fa))unlink($fa);
+	$f=$srv.'/call/transport,site/'.$p.'/call'; $fa=getfile($f); //echo $f;
 	$e='wget -P '.$dr.'/_backup '.$srv.'/'.$fa; if(!is_file($fa))exc($e);//
 	$e='tar -zxvf '.$dr.'/'.$fa.' '.$dr.'/img/';
 	if(is_file($fa))tar::extract($fa);
@@ -109,7 +136,7 @@ return $ret;}
 static function build($p,$o,$prm=[]){
 $p=$prm[0]??$p; if(!auth(7))return;
 [$usr,$db,$ps,$dr]=self::srv(1); $res=''; $root=__DIR__; $ok=1;
-$srv=prms('srvimg'); if(!$srv)return 'srvimg is not set';
+$srv=srvmir(); if(!$srv)return 'srvmir is not set';
 if($o=='all'){$dt=date('ymd');
 	$u=$srv.'/call/transport/1/d'; $fa=getfile($u);//build
 	//if(is_file($fa))unlink($fa);//
@@ -136,7 +163,7 @@ elseif($o=='json'){//dj
 	//if(is_file($f))unlink($f); 
 	if(!is_file($f)){$e='wget -P '.$dr.'/_backup '.$u; exc($e);}
 	if($d=getfile($u))$r=json_decode($d,true); $er=json_error(); //$r=utf_r($r,1);
-	if($d && !$er){$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b); sql::sav2($b,$r,1,0); $res=$b.':renoved';}}
+	if($d && !$er){$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b); sql::savr($b,$r,1,0); $res=$b.':renoved';}}
 else{//partial and complete dumps, not gziped
 	//$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b);
 	$u=$srv.'/call/transport/'.$p.'/'.($o=='up'?$o:$maxid); $d=getfile($u);//build
@@ -148,20 +175,13 @@ else{//partial and complete dumps, not gziped
 	//if(!is_file($f))copy($u,$f);
 	if(is_file($f)){$o=='d'?'ssh':'rq';// -t '.$p.'
 		if($o=='ssh'){$e='mysql -u '.$usr.' -p'.$ps.' '.$db.' < '.$dr.'/'.$f; exc($e);}
-		else{$d=file_get_contents($u); if($d)qr($d,0);}//$d=utf8enc($d); eco($d);
+		else{$d=file_get_contents($u); if($d)qr($d,0);}
 		$res=$maxid==$dist_maxid?'ok':$maxid.'->'.$dist_maxid;}
 	else{$res='not uploaded'.$res; $ok=0;}
 	//exc('rm '.$dr.'/'.$f);
 	//todo: del local and distant
 }
 return div($p.'-'.$o.':'.$res,$ok?'frame-blue':'frame-red');}
-
-static function utf8(){$r=self::tables();
-foreach($r as $k=>$v)
-	qr('ALTER TABLE '.self::pub($v).' CONVERT TO CHARACTER SET `utf8`;');
-	//qr('ALTER TABLE '.self::pub($v).' DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;');
-	//qr('update table SHOW FULL COLUMNS FROM '.self::pub($v));
-return 'ok';}
 
 static function ssh($usr,$ps,$db,$dr,$f){//safety import to utf8
 $e='mysql -u '.$usr.' -p'.$ps.' --default-character-set=utf8 '.$db.''; exc($e);
@@ -200,11 +220,11 @@ $r[$a][]=lj('popdel',$j.'batch__3_ssh','batch/ssh');
 $r[$a][]=lj('popdel',$j.'batch__3_json','batch/json');
 $r[$b][]=lj('txtyl',$j.'call_db_3__zz','reinit all');
 $r[$b][]=lj('txtyl',$j.'call__3_1_all','dump all db');
-$r[$b][]=lj('popsav',$j.'utf8__3','utf8ise').br();
 $r[$c][]=lj('txtred',$j.'msql__3_'.ses('qb'),'msql');
 $r[$c][]=lj('txtred',$j.'img__3_'.$rid.'_menu','img');
 $r[$c][]=lj('txtred',$j.'usr__3_'.$rid.'_menu','users');
-return tabs($r,'trs');}
+$r[$c][]=lj('txtred',$j.'site__3_'.$rid.'_menu','site');
+return build::tabs($r,'trs');}
 
 static function home($p,$o,$rid){$rid='trsp';
 $bt=transport::menu($p,$o,$rid);

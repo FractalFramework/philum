@@ -1,4 +1,4 @@
-<?php //umrenum
+<?php 
 class umrenum{
 static function twit_time($u){
 $p=strend($u,'/'); //echo $u.' - ' .$p.br();
@@ -25,11 +25,12 @@ elseif($p=='Oolga Waam'){$d='OW'; $nm='olga_waam';}
 elseif($p=='Oomo Toa'){$d='OT'; $nm='oomo_toa';}
 elseif($p=='Oyagaa Ayoo Yissaa'){$d='OAY'; $nm='oyagaaayuyisaa';}
 elseif($p=='312oay'){$d='312'; $nm='312oay';}
+elseif($p=='NOAY'){$d='NOAY'; $nm='NOAY';}
 elseif($p=='EF'){$d='EF'; $nm='EF';}
 $rk=['title','temp title','new title','diff date','msg','diff link'];
-$nb0=0; $nb1a=0; $nb1b=0; $nb2=0; $nb3=0; $time='';
-$nf1=1; $nf2=1; $nf3=1; $nf4=1;
-$date2b1=0; $date2b2=0; $date2b3=0; $date2b4=0;
+$nb0=0; $nb1a=0; $nb1b=0; $nb1c=0; $nb2=0; $nb3=0; $nb4=0; $nb5=0; $time='';
+$nf1=1; $nf1b=1; $nf1b=1; $nf2=1; $nf3=1; $nf4=1; $nf5=1;
+$date2b1=0; $date2b2=0; $date2b3=0; $date2b4=0; $date2b5=0;
 if($r)foreach($r as $k=>$v){
 	[$id,$day,$suj,$lk,$name]=arr($v,5);
 	//$msg=sql('msg','qdm','v','id='.$id);
@@ -37,15 +38,18 @@ if($r)foreach($r as $k=>$v){
 	if($d=='EF')$newtit=$name;
 	$date2a=date('ymd',$day);
 	$rb=ma::art_tags($id);
-	if($d=='OT' or $d=='OAY' or $d=='O6' or $d=='OW' or $d=='312' or $d=='EF'){
+	if($d=='OT' or $d=='OAY' or $d=='O6' or $d=='OW' or $d=='312' or $d=='EF' or $d=='NOAY'){
 		if(valr($rb,'info','favoris')){$nb1a++;
 			if($date2a==$date2b1){$nf1++; $date2=$date2a.'-'.$nf1;} else{$nf1=1; $date2=$date2a;}
 			$newtit='['.$d.'-Like '.$nb1a.'] '.$date2;
 			if($d=='EF')$newtit='['.$d.'-Like '.$nb1a.'] '.$name.' '.$date2;
 			$newtit2=$newtit; $date2b1=$date2a;}
-		elseif(valr($rb,'info','retweet') && ($d=='OW' or $d=='OAY')){$nb1b++;//
-			if($date2a==$date2b1){$nf1++; $date2=$date2a.'-'.$nf1;} else{$nf1=1; $date2=$date2a;}
+		elseif(valr($rb,'info','retweet') && ($d=='OW' or $d=='OAY')){$nb1b++;// or $d=='312'
+			if($date2a==$date2b1){$nf1b++; $date2=$date2a.'-'.$nf1b;} else{$nf1b=1; $date2=$date2a;}
 			$newtit='['.$d.'-Retweet '.$nb1b.']'; $newtit2=$newtit;}
+		elseif(valr($rb,'info','repost') && ($d=='OAY' or $d=='312')){$nb1c++;//
+			if($date2a==$date2b1){$nf1c++; $date2=$date2a.'-'.$nf1c;} else{$nf1c=1; $date2=$date2a;}
+			$newtit='['.$d.'-Repost '.$nb1c.']'; $newtit2=$newtit;}
 		elseif(valr($rb,'info','status')){$nb2++;
 			if($date2a==$date2b2){$nf2++; $date2=$date2a.'-'.$nf2;} else{$nf2=1; $date2=$date2a;}
 			$newtit='['.$d.'-Status '.$nb2.'] '.$date2;
@@ -54,6 +58,10 @@ if($r)foreach($r as $k=>$v){
 			if($date2a==$date2b4){$nf4++; $date2=$date2a.'-'.$nf4;} else{$nf4=1; $date2=$date2a;}
 			$newtit='['.$d.'-Pinned '.$nb3.'] '.$date2;
 			$newtit2=$newtit; $date2b4=$date2a;}
+		elseif(valr($rb,'info','question')){$nb5++;
+			if($date2a==$date2b5){$nf5++; $date2=$date2a.'-'.$nf5;} else{$nf5=1; $date2=$date2a;}
+			$newtit='['.$d.'-Question '.$nb5.'] '.$date2;
+			$newtit2=$newtit; $date2b5=$date2a;}
 		else{$nb0++;
 			if($date2a==$date2b3){$nf3++; $date2=$date2a.'-'.$nf3;} else{$nf3=1; $date2=$date2a;}
 			$newtit='['.$d.'-'.$nb0.'] '.$date2;

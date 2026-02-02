@@ -12,7 +12,7 @@ return divc('list',$ret);}
 
 /*{"town":"Paris 1er Arrondissement","update":"2021-03-04T08:42:37+0100","rr10":0.1,"rr1":0.1,"weather":40,"temp2m":12,"wind10m":10,"gust10m":26,"dirwind10m":312,"probarain":40,"probafog":30,"probafrost":0,"probawind70":0,"probawind100":0,"gustx":26,"iso0":"","station":"Paris (75)","temperature":["10.0","\u00b0C"],"barometer":["1022.5","hPa"],"rainfall":["0.0","mm"],"solar_radiation":["70","W/m2"],"wind_speed":["7.2","km/h"],"windchill":["8.5","\u00b0C"],"windgust_speed":["21.6","km/h"],"outside_humidity":["78","%"],"sunrise":"07:24","sunset":"18:40","diffday":4,"moon_age":20.3}*/
 
-static function goodmoon($n=1){
+static function goodmoon($n=1){if(!$n)$n=1;
 $cy=29.53; $it=$cy/8; $e=round($n/$it);
 $ra=[127761,127762,127763,127764,127765,127766,127767,127768,127761];
 return '&#'.$ra[$e].';';}
@@ -35,15 +35,18 @@ $ri=[9889=>'orage',10052=>'neige',128166=>'bruine',9748=>'pluie',9925=>'nuage',1
 //foreach($ri as $k=>$v)if(stripos($nm,$v)!==false)$ic='&#'.$k.';';
 return $ic;}
 
+static function digits($d){
+return digits($d,3,'pictos-small');}
+
 static function render($r,$f){$ret=''; if(!$r)return;
 $ra=['temperature','wind_speed','windgust_speed','rainfall','solar_radiation','barometer','outside_humidity','windchill'];
-foreach($ra as $k=>$v)$ra[$v]=$r[$v][0]??'';
-$rb=['moon_age','probarain','probafog','probafrost','barometer','moon_phase','town','sunrise','sunset'];
-$rb=valk($r,$rb);
-$tmp=$ra['temperature']; if(!$tmp)$tmp=$r['temp2m']??'';
+foreach($ra as $k=>$v)$rb[$v]=$r[$v][0]??'';
+$ra=['moon_age','probarain','probafog','probafrost','moon_phase','town','sunrise','sunset'];
+foreach($ra as $k=>$v)$rb[$v]=$r[$v]??'';
+$tmp=$rb['temperature']; if(!$tmp)$tmp=$r['temp2m']??'';
 $n=$r['weather']??''; //$rw=[0,0,0,0];
 $rw=msql::find('','public_weather_4',$n?$n:1); [$n,$nm,$pc,$as]=arr($rw,4);
-$weather=$as?$as:picto($pc);
+$weather=picto($pc);//$as?$as:
 //$weather=self::weather($r);
 //$weather=self::weather2($weather,$nm);
 $moon=self::goodmoon($rb['moon_age']);
@@ -51,26 +54,27 @@ $nfo=$nm.' | ';
 if(($v=$rb['probarain'])>30)$nfo.='Probabilité de pluie : '.$v.'% | ';
 if(($v=$rb['probafog'])>30)$nfo.='Probabilité de brouillard : '.$v.'% | ';
 if(($v=$rb['probafrost'])>30)$nfo.='Probabilité de gel : '.$v.'% | ';
-if(($v=$ra['wind_speed'])>30)$nfo.='Vitesse du vent : '.$v.'&nbsp;Km/h | ';
-if(($v=$ra['windgust_speed'])>50)$nfo.='Rafales de vent : '.$v.'&nbsp;Km/h | ';
-if(($v=$ra['rainfall'])>50)$nfo.='Cumul de pluie : '.$v.'&nbsp;mm | ';
-if(($v=$ra['solar_radiation'])>200)$nfo.='Radiation solaire : '.$v.'&nbsp;W/m² | ';
-$baro=$ra['barometer']??0;
+if(($v=$rb['wind_speed'])>30)$nfo.='Vitesse du vent : '.$v.'&nbsp;Km/h | ';
+if(($v=$rb['windgust_speed'])>50)$nfo.='Rafales de vent : '.$v.'&nbsp;Km/h | ';
+if(($v=$rb['rainfall'])>50)$nfo.='Cumul de pluie : '.$v.'&nbsp;mm | ';
+if(($v=$rb['solar_radiation'])>200)$nfo.='Radiation solaire : '.$v.'&nbsp;W/m² | ';
+$baro=(int)$rb['barometer']??0; $humidity=(int)$rb['outside_humidity']??0;
 $diffday=$r['diffday']??0; $sign=$diffday>0?'+':'';
 $nfo.=$sign.$diffday.' min de soleil | ';
 if(!$rb['moon_age'])$rb['moon_age']=1;
 $nfo.=$moon.' '.$rb['moon_phase'];
 $ret.=lk(auth(6)?$f:'',$weather,att($nfo)).' ';//render
 $ret.=togbub('meteo,umenu','',$rb['town'],'txtx').' ';//$r['station']
-if($tmp<0)$ic='degree0'; else $ic='degree'.(substr($tmp,0,1)+1);
-$ret.=picto($ic).span($tmp.' &#8451;','small').' ';//°C
-$ret.=picto('barometer').span(round((int)$baro/10,2).' &#13226;','small').' ';//㎪
-$ret.=picto('humidity').span($ra['outside_humidity'].'&#65285;','small').' ';//&#128167;
-$ret.=picto('sunrise').' '.span($rb['sunrise'],'small').' ';
-$ret.=picto('sunset').' '.span($rb['sunset'],'small');//10548//10549//.' ('.$diffday.' min)'//
+if($tmp<0)$ic='degree0'; elseif($tmp<10)$ic='degree1'; elseif($tmp<20)$ic='degree2'; elseif($tmp<30)$ic='degree3'; else $ic='degree4';
+$ret.=picto($ic).self::digits($tmp).' ';//°C//.span(' &#8451;','small')
+$ret.=picto('barometer').self::digits(round($baro/10,2)).' ';//㎪//.span(' &#13226;','small')
+$ret.=picto('humidity').self::digits($humidity).' ';//&#128167;//.span(' &#65285;','small')
+$ret.=picto('sunrise').' '.self::digits(struntil($rb['sunrise'],':'),'').' ';
+$ret.=picto('sunset').' '.self::digits(struntil($rb['sunset'],':')).' ';//10548//10549//.' ('.$diffday.' min)'//
 //$ma=($rb['moon_age'])/6; $mx=60; $mi=$mx/8;//&#127761;->&#127768;
 //for($i=0;$i<8;$i++)if($ma<$i)$mn=$i; $mo=127761+$mn; //$ret.='&#'.$mo.';';
 //$phases=[1=>127761,127762,127763,127764,127765,127766,127767,127768,127761];
+$ret.=calendav::callbt();
 return $ret;}
 
 static function build($p,$o){$ret='-'; $day=date('ymdH');
@@ -78,9 +82,9 @@ $insee=$p?$p:cookie('insee'); if(!$insee)$insee=75101;//92012
 $rh=['day','insee','res']; $d=''; $r=[];
 $r=msql::mul('',nod('meteo_1'),$insee,'',$rh);
 if(!empty($r[0]) && $r[0]==$day)$d=$r[1]??'';
-$f='http://logic.ovh/api/meteo/uid:13,insee:'.($p?$p:$insee);
+$f='http://ffw.ovh/api/meteo/uid:13,insee:'.($p?$p:$insee);
 if(!$d){$d=getfile($f); if($d)$r=json_decode($d,true); if(!is_array($r)){$d=''; $r=[];}
-	if($d && $d!='null'){json::add('','meteo',[$insee,$day,$d]);
+	if($d && $d!='null'){json::add('','meteo',[$insee,$d]);
 	msql::modif('',nod('meteo_1'),[$day,$d],'row','',$insee);}}
 else $r=json_decode($d,true);
 if($r)$ret=self::render($r,$f);

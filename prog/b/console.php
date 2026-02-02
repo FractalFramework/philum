@@ -1,4 +1,4 @@
-<?php //console
+<?php 
 class console{
 
 static function admactbt($p,$t,$tg='',$o='',$tt='',$c=''){
@@ -24,22 +24,21 @@ if($p1=ses('prmb1'))$ret.=self::admactbt('make_copy',$rt['copy'],'','',nms(132),
 $ret.=self::admactbt('default_mods',$rt['default'],'','',nms(96),'txtx');
 $ret.=self::admactbt('mk_default',$rt['mkdef'],'','',nms(113),'txtx');
 $ret.=hlpbt('console').' ';
-$ret.=msqbt('',ses('qb').'_mods_'.prmb(1));
+$ret.=msqbt('',ses('qb').'_mods_'.prmb(1));//server
 $ret.=msqbt('system','admin_modules');
 return $ret;}
 
-static function backup_config_bt(){
-$f='cnfg/'.ses('qb').'_saveconfig.txt';
-$ret=self::admactbt('bckp_cnfg','backup');
-$ret.=self::admactbt('restore_cnfg','restore','admcnt');
-if(is_file($f))$ret.=self::admactbt('rollback_cnfg','rollback (from txt)','admcnt');
-$ret.=self::admactbt('reset_cnfg','reset','admcnt');
-$ret.=self::admactbt('cnfgxt','txt');
+static function backup_config_bt($o){
+$ret=self::admactbt($o?'bckp_cnfg':'bckp_prmb','backup');
+$ret.=self::admactbt($o?'restore_cnfg':'restore_prmb','restore','admcnt');
+$ret.=self::admactbt($o?'mkdef_cnfg':'mkdef_prmb','make_defaults','admcnt');
+$ret.=self::admactbt($o?'reset_cnfg':'reset_prmb','reset','admcnt');
+$ret.=self::admactbt($o?'machine_cnfg':'machine_prmb','machine','admcnt');
 return btn('nbp',$ret);}
 
 //conditions
 static function see_conds($vl){$sp='';
-$r=sesr('mods',$vl); $cnd=$_SESSION['cond']; $rc=sesmk2('boot','cats'); $ra=[]; $ret='';
+$r=sesr('mods',$vl); $cnd=$_SESSION['cond']; $rc=array_flip(ses('cats')); $ra=[]; $ret='';
 if($r){foreach($r as $k=>$v)if(isset($v[3]))$ra[$v[3]]=radd($ra,$v[3]);//cat list
 	foreach($ra as $k=>$v){[$ka,$kb]=split_r($k,3);
 	if($kb && (isset($rc[$kb]) or is_numeric($kb)))$kc=$kb; else $kc=$k;
@@ -103,26 +102,38 @@ $ret.=self::see_conds_b();//conditions
 $ret.=div(self::console_nav()).divc('clear','');
 return $ret;}
 
+static function prms_machine(){$r=[5=>'updsrv',8=>'tz',14=>'mirsrv',15=>'imgsrv',16=>'frct'];
+foreach($r as $k=>$v){$_SESSION['prms'][$k]=ses::$s[$v]; msql::modif('server',nod('config'),$v,'val',1,$k);}}
+
+static function prmb_machine(){$r=[1=>'qb',3=>'qb',8=>'logo'];
+foreach($r as $k=>$v){$_SESSION['prmb'][$k]=ses::$s[$v]; msql::modif('server',nod('params'),$v,'val',1,$k);}}
+
 #actions
 static function actions($p,$o){
 $f='cnfg/'.ses('qb').'_saveconfig.txt'; $ret=$p.':ok';
 $nod=ses('modsnod'); $fb=msql::url('',$nod,'sav'); $rl='';
 switch($p){
-//config
-case('bckp_cnfg'):write_file($f,'#'.implode('#',$_SESSION['prmb'])); $ret='saved'; break;
-case('restore_cnfg'):$r=msql::kv('',nod('config')); $_SESSION['prmb']=$r; $cnfg=implode('#',$r); $rl=1;
-	sql::upd('qdu',['config'=>$cnfg],['name'=>ses('qb')]); $ret='msql config restored'; break;
-case('rollback_cnfg'):$cnfg=read_file($f); $_SESSION['prmb']=explode('#',$cnfg); $rl=1;
-	sql::upd('qdu',['config'=>$cnfg],['name'=>ses('qb')]); $ret='old config restored'; break;
-case('reset_cnfg'):$prmdef=login::ndprms_defaults(); $config=ses('qb').$prmdef[1];
-	$_SESSION['prmb']=explode('#',$config); $rl=1;
-	sql::upd('qdu',['config'=>$config],['name'=>ses('qb')]); break;
-case('cnfgxt'):$ret=read_file($f); break;
+//config//backup_config_bt
+case('bckp_cnfg'):msql::copy('server',nod('config'),'users',nod('config')); $ret='backuped'; break;
+case('restore_cnfg'):$r=msql::copy('users',nod('config'),'server',nod('config')); $_SESSION['prms']=$r;
+	$ret='restored'; break;
+case('mkdef_cnfg'):msql::copy('server',nod('config'),'system','default_config'); $ret='mk_default'; break;
+case('reset_cnfg'):$r=msql::copy('system','default_config','server',nod('config')); $_SESSION['prms']=$r;
+	$ret='restored from defaults'; break;
+case('machine_cnfg'):self::prms_machine(); break;
+//params
+case('bckp_prmb'):msql::copy('server',nod('params'),'users',nod('params')); $ret='backuped'; break;
+case('restore_prmb'):$r=msql::copy('users',nod('params'),'server',nod('params')); $_SESSION['prmb']=$r;
+	$ret='restored'; break;
+case('mkdef_prmb'):msql::copy('server',nod('params'),'system','default_params'); $ret='mk_default'; break;
+case('reset_prmb'):$r=msql::copy('system','default_params','server',nod('params')); $_SESSION['prmb']=$r;
+	$ret='restored from defaults'; break;
+case('machine_prmb'):self::prmb_machine(); break;
 //rstr
 case('bckp_rstr'):admx::backup_rstr('backup'); break;
 case('restore_rstr'):admx::backup_rstr('restore'); break;
+case('mkdef_rstr'):admx::backup_rstr('mkdefault'); break;
 case('reset_rstr'):admx::backup_rstr('defaults'); break;
-case('mkdefaults_rstr'):admx::backup_rstr('mkdflts'); break;
 //console
 case('slct_mods'):boot::select_mods($o); $rl=1; break;
 case('newfrom_mods'):adm::newmodfrom($o); boot::select_mods($o); $rl=1; break;
@@ -137,8 +148,7 @@ case('make_copy'):msql::copy('users',ses('qb').'_mods_'.ses('prmb1'),'users',$no
 	boot::define_mods(); boot::define_condition(); break;
 case('default_mods'):msql::copy('system','default_mods','users',$nod);
 	boot::define_mods(); boot::define_condition(); break;
-case('set_cond'):boot::setcond($o,1); boot::define_modc(); boot::define_prma();
-	return self::home();}
+case('set_cond'):boot::setcond($o,1); boot::define_modc(); boot::define_prma(); $rl=1;}
 return $rl?self::home():$ret;}
 }
 ?>

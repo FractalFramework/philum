@@ -27,8 +27,7 @@ $r=['fonts/philum.woff2','fonts/philum.woff','fonts/philum.ttf','fonts/philum.sv
 tar::files($f,$r,0);
 return lkc('txtx',$f,'pictos');}
 
-static function mkoomo(){
-$f='_backup/Oomo.tar.gz';
+static function mkoomo(){$f='_backup/Oomo.tar.gz';
 $r=['fonts/Oomo.woff2','fonts/Oomo.woff','fonts/Oomo.ttf','fonts/Oomo.svg','css/_oomo.css'];
 tar::files($f,$r,0);
 return lkc('txtx',$f,pictxt('download','Glyphe Oomo'));}

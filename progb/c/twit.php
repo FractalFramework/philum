@@ -3,7 +3,7 @@ class twit{
 static $er=0;
 
 static function lk($nm,$id=''){
-$ret='https://twitter.com/'.$nm;
+$ret='https://x.com/'.$nm;
 if($id)$ret.='/status/'.$id;
 return $ret;}
 
@@ -42,9 +42,15 @@ $suj=$nm.' '.$day;
 return [$suj,$txt,$dt,$lg,$nm];}
 
 //edit
+static function clean_med($d){$r=explode(' ',$d);
+foreach($r as $k=>$v){$v=utmsrc($v); $v=struntil($v,'&name'); $r[$k]=$v;}
+return join(' ',$r);}
+
 static function edtsav($p,$o,$ra){
 $rz=self::r(); $cls=implode(',',array_keys($rz));
 $rb=sql($cls,'qdtw','a',['twid'=>$p]); $rk=array_keys($rb); $r=array_combine($rk,$ra);
+$r['media']=self::clean_med($r['media']);
+if(!$rb['lang'] && $r['text'])$r['lang']=meta::detectlangbydicoperso($r['text']);
 foreach($rz as $k=>$v)if(substr($v,-3)=='int' && !$r[$k])$r[$k]=0;
 if($ra)sqlup('qdtw',$r,['twid'=>$p]);
 return self::cache($p,$o,2);}
@@ -52,8 +58,9 @@ return self::cache($p,$o,2);}
 static function edit($p,$o){$rid=randid('tw');
 $cls=implode(',',array_keys(self::r())); $ret=''; $kr=[];
 $r=sql($cls,'qdtw','a',['twid'=>$p]);
+if(!$r){self::twalter($p,$o,''); $r=sql($cls,'qdtw','a',['twid'=>$p]);}
 if(!$r)$r=self::savempty($p);
-if($r)foreach($r as $k=>$v){$kb=$k.$rid; $up=''; if($k=='media')$up=upload_j('up'.$kb,'twt',$kb);
+if($r)foreach($r as $k=>$v){$kb=$k.$rid; $up=''; if($k=='media')$up=build::upload_j('up'.$kb,'twt',$kb);
 	$ret.=div(goodarea($kb,$v,60).$up.label($kb,$k,'small')); $kr[]=ajx($kb);}
 $bt=lj('popsav',$p.'_twit,edtsav_'.implode(',',$kr).'__'.$p.'_'.$o,picto('save2'));
 return divd('edt'.$p,$bt.$ret);}
@@ -82,19 +89,21 @@ msql::save('users',nod($nm),$r,$rh);
 return msqbt('',nod($nm)).br();}
 
 //img
-static function getimg($f,$o=''){//$o='';
+static function getimg($f,$o=''){
 $xt=xt(trim($f)); if(!$xt)$xt='.jpg'; if(!$f)return;
 $fb=ses('qb').'_tw_'.substr(md5($f),0,6).$xt; $x=substr($xt,1);
-if(file_exists('/img/'.$fb))return host().'/img/'.$fb;// && $o==2
+if(file_exists('img/'.$fb))return $fb;// && $o==2
 elseif($o && auth(4)){$d=getfile($f); if($d)write_file('img/'.$fb,$d);//$ok=copy($f,'img/'.$fb)
 	if(file_exists('img/'.$fb))return $fb;}//host().'/img/'.
-return 'data:image/'.$x.';base64,'.base64_encode(getfile($f));}
+//return 'data:image/'.$x.';base64,'.base64_encode(getfile($f));
+return $f;}
 
-static function img($f,$o=''){
-if(is_file('img/'.$f))$im='img/'.$f;
+static function twimg($f,$o=''){
+if(is_file('img/'.$f))$im=$f;
+elseif(is_file($f))$im=substr($f,4);
 else $im=self::getimg($f,$o);
-//return img($im);
-return mk::mini_b($im,'');}
+if(!is_file('img/'.$im))return picto('img');
+return artim::minimg($im,'');}
 
 //fulltext
 static function tco($f){
@@ -126,11 +135,12 @@ static function findate($txt,$z=''){if($z)eco($txt);
 $d=between($txt,'?ref_src=twsrc%5Etfw">','</a>',1);
 if($d)return strtotime($d);}
 
-static function oembed($u){
+static function oembed($u,$o=''){
 $t=twapi::init(); $q=$t->embed($u);
-//$d=getfile('https://publish.twitter.com/oembed?url='.$u); $q=json_decode($d,true);
+//$d=getfile('https://publish.x.com/oembed?url='.$u); $q=json_decode($d,true);
 $txt=$q['html']??''; $nm=$q['author_name']??''; $sn=strend($q['author_url']??'','/');
 $date=self::findate($txt); $lang=between($txt,'<p lang="','"'); //$txt=self::text($u);
+if(!$lang && $o)$lang=meta::detectlangbydicoperso($txt);
 if(!$nm)$nm=$sn=self::recupnm($u);
 $ret=delbr($txt,"\n");
 $ret=strip_tags($ret);
@@ -141,14 +151,14 @@ $xt='.m3u8'; $fa=strprm($f,4);
 //$fb='video/'.$fa.'_2.mp4';//already saved
 //if(is_file($fb))return video('/'.$fb);
 $fb='video/'.$fa.'_0'.$xt;
-if(!is_file($fb))@copy($f,$fb);//first file
+if(!is_file($fb))wget($f,$fb);//@copy($f,$fb);//first file
 if(is_file($fb))$tmp=read_file($fb); else return; //eco($tmp);
 $s=strrpos($tmp,'ext_tw_video');
 if(!$s)$s=strrpos($tmp,'amplify_video');
 $ref=trim(substr($tmp,$s));
 $fb='video/'.$fa.'_1'.$xt;
 $f='https://video.twimg.com/'.$ref;
-if(!is_file($fb) && auth(4))@copy($f,$fb);//second file
+if(!is_file($fb) && auth(4))wget($f,$fb);//@copy($f,$fb);//second file
 if(is_file($fb))$tmp=read_file($fb); else return; //eco($tmp);
 $s=strrpos($tmp,'ext_tw_video');
 $ref=substr($tmp,$s);
@@ -162,20 +172,20 @@ if(is_file($fb))return video('/'.$fb);
 return lj('','popup_usg,iframe___'.ajx($fb),domain($f));*/
 
 static function upvideo_mp4($f,$id){
-$fa='https://twitter.com/i/videos/tweet/'.$id;
+$fa='https://x.com/i/videos/tweet/'.$id;
 if(strpos($f,'video.twimg.com'))$fb='video/'.strprm($f,4).'.mp4';//tw
 elseif(substr($f,0,7)=='/users/')return video($f);//local
 elseif(strpos($f,'video/')!==false)$fb='video/'.strend($f,'/');//abs
 else $fb='video/'.strend($f,'/');//abs
 //else $fb='video/'.$id.'.mp4';//new
-if(!is_file($fb) && auth(4))@copy($f,$fb);
-if(!is_file($fb) && auth(4))copy($fa,$fb);//not works because it's in js
+if(!is_file($fb) && auth(4))wget($f,$fb);//@copy($f,$fb);
+if(!is_file($fb) && auth(4))wget($fa,$fb);//copy($fa,$fb);//not works because it's in js
 if(is_file($fb))return video('/'.$fb);
 return lj('','popup_usg,iframe___'.ajx($fb),domain($f));}
 
 static function upvideo_ts($f,$id){
 $xt='.ts'; $fb='video/'.strprm($f,4).$xt;
-if(!is_file($fb) && auth(4))@copy($f,$fb);
+if(!is_file($fb) && auth(4))wget($f,$fb);//@copy($f,$fb);
 //if(is_file($fb))$tmp=read_file($fb); else return; eco($tmp);
 return lkt('',$fb,pictxt('movie',nms(187)));
 //if(is_file($fb))return video('/'.$fb);
@@ -185,16 +195,23 @@ return lkt('',$fb,pictxt('movie',nms(187)));
 static function playtxt($id){
 return sql('text','qdtw','v','twid="'.$id.'"',0);}
 
+static function nocomma($u){
+if(strpos($u,','))$u=strto($u,',');
+return $u;}
+
 static function playmed($med,$id='',$quoid='',$aid=''){
 $rb=explode(' ',$med); $txt='';
 $vid=strpos($med,'.mp4') || strpos($med,'.m3u8')?1:0;//noim if video
 if($rb)foreach($rb as $v)if($v){$v=trim($v);
 	if(is_numeric($v) && $v!=$id)$txt.=self::cache($v,$id,0);
-	elseif(is_img($v) && !$vid)$txt.=self::img($v,1);
-	elseif(strpos($v,'format=jpg') && !$vid)$txt.=self::img($v,1);
-	elseif(strpos($v,'format=png') && !$vid)$txt.=self::img($v,1);
+	elseif(is_img($v) && !$vid)$txt.=self::twimg($v,1);
+	elseif(strpos($v,'format=jpg') && !$vid)$txt.=self::twimg($v,1);
+	elseif(strpos($v,'format=png') && !$vid)$txt.=self::twimg($v,1);
 	elseif(strpos($v,'twitter.com/i/videos/tweet'))$txt.=self::upvideo_mp4($v,$id);
+	elseif(strpos($v,'x.com/i/videos/tweet'))$txt.=self::upvideo_mp4($v,$id);
 	elseif(strpos($v,'twitter.com')){
+		if(strend($v,'/')!=$id)$txt.=$quoid?'':self::cache(strend($v,'/'),ses('read'));}
+	elseif(strpos($v,'x.com')){
 		if(strend($v,'/')!=$id)$txt.=$quoid?'':self::cache(strend($v,'/'),ses('read'));}
 	//elseif(strpos($v,'.mp4'))$txt.=video($v);
 	//elseif(strpos($v,'.mp4'))$txt.=iframe($v);
@@ -205,7 +222,7 @@ if($rb)foreach($rb as $v)if($v){$v=trim($v);
 	elseif(strpos($v,'.mp3'))$txt.=audio($v);
 	elseif(strpos($v,'.pdf'))$txt.=mk::pdfdoc($v,0,640);
 	elseif(strpos($v,'t.co/'))$txt.='';//lka($v);
-	elseif(substr($v,0,4)=='http')$txt.=web::call($v,'');
+	elseif(substr($v,0,4)=='http')$txt.=web::call(self::nocomma($v),'');
 	else $txt.=br().video::play($v,$aid,1);}
 return $txt;}
 
@@ -232,7 +249,7 @@ if($mnt)$ret.=lj('',$j.$id.'_mnt',picto('oversight'),att(str_replace(' ',n(),$mn
 //if($friends)$ret.=pictxt('users',$flw.'/'.$friends).'';
 if(auth(6)){
 	$ret.=lj('',$id.'_twit,recache___'.$id.'_'.$aid,picto('reload'));
-	$ret.=lj('',$id.'_twit,resetname___'.$id.'_'.$aid,picto('recycle'));
+	//$ret.=lj('',$id.'_twit,resetname___'.$id.'_'.$aid,picto('recycle'));
 	//if($sn==$own)$ret.=lj('',$id.'_twit,call___'.$id.'_del',picto('del'));
 	//$ret.=lj('','popup_twit,call___'.$id.'_eco',picto('code'));
 	$ret.=lj('','popup_twit,edit___'.$id.'_eco',picto('editxt'));
@@ -265,6 +282,8 @@ return $ret;}
 static function urls($r,$rtw,$id){$rb=[];
 if($r)foreach($r as $k=>$v){$u=$v['expanded_url'];
 	if(substr($u,0,20)=='https://twitter.com/'){$id_rtw=strend($u,'/');
+		if(is_numeric($id_rtw) && $id_rtw!=$rtw && $id_rtw!=$id)$rb[]=$id_rtw;}
+	elseif(substr($u,0,20)=='https://x.com/'){$id_rtw=strend($u,'/');
 		if(is_numeric($id_rtw) && $id_rtw!=$rtw && $id_rtw!=$id)$rb[]=$id_rtw;}
 	//elseif(substr($u,0,16)=='https://youtu.be')$rb[]=strend($u,'/');
 	//elseif(substr($u,0,23)=='https://www.youtube.com')$rb[]=between($u,'v=','&');
@@ -314,36 +333,52 @@ return $ret;}
 
 #twdie
 static function twalter($u,$id,$o=''){$sn='';
-if(strpos($u,'/')){$ra=explode('/',$u); $sn=$ra[3]??''; $twid=$ra[5]??'';} else $twid=$u;//forbidden situation
+if(strpos($u,'/')){$ra=explode('/',$u); $sn=$ra[3]??''; $twid=$ra[5]??'';}
+else{$twid=$u; if(is_numeric($id))$sn=self::recupnmfrommsg($u,$id);}
 if(!is_numeric($twid))return;
 $ra=['name','screen_name','user_id','date','text','media','mentions','reply_id','reply_name','favs','retweets','followers','friends','quote_id','quote_name','retweeted','lang'];//ib,twid,
-$r=sql(implode(',',$ra),'qdtw','a',['twid'=>$twid],0); //if(array_sum($r)=='0')$r=[];//not if twit not exists
+$r=sql(implode(',',$ra),'qdtw','a',['twid'=>$twid],0);
 if($r && !$o)return self::play($twid,$r,[],0,$id);
 $rb=self::r(); foreach($rb as $k=>$v)$rb[$k]=$v=='int'||$v=='bint'?0:'';
-if(!$sn)$sn=self::recupnm($u);
+//if(!$sn)$sn=self::recupnm($u);
+//if($twid>9223372036854775807)echo 'toobig';
+//if($twid>1831680831825350711)echo 'toobig';
 $rb['twid']=$twid; if(is_numeric($id))$rb['ib']=$id;
 $lk=self::lk($sn?$sn:'unknown',$twid);
 $ret=lkt('txtx',$lk,pictxt('url',$sn));
-[$res,$nm,$sn,$dt,$lg]=self::oembed($lk);
+[$res,$nm,$sn,$dt,$lg]=self::oembed($lk,0);//opt=detectlang//create unknown error sauf si display error
 [$txt,$med]=self::clean($res); $med=utmsrc($med);
-$rb['text']=$txt; $rb['name']=$nm; $rb['screen_name']=$sn; $rb['media']=$med; $rb['lang']=$lg;
-$rb['screen_name']=$sn; $rb['date']=$dt?$dt:time();
+$rb['text']=$txt; $rb['name']=$nm?$nm:$r['name']; $rb['screen_name']=$sn?$sn:$r['screen_name'];
+$rb['media']=$med; $rb['lang']=$lg; $rb['date']=$dt?$dt:time(); //pr($rb);
 if($o && $r)sqlup('qdtw',$rb,['twid'=>$twid],0);
-elseif(auth(6) && $id!='test')sqlsav('qdtw',$rb,0,0);//$txt && 
+elseif(auth(6) && $id!='test')sqlsav('qdtw',$rb,0,1);//$txt && 
+//echo $u.'-'.$id; pr(ses::$er['sqldb']??[]);
 //else self::savempty($twid,$id);
 return self::play($twid,$rb,[],$o,$id);}
 
 static function savempty($twid,$id=''){
-$r=self::r(); $rb['twid']=$twid; $rb['ib']=$id;
-return sqlsav('qdtw',$rb,0,0);}
+$r=self::r(); $r['twid']=$twid; $r['ib']=$id?$id:0;
+return sqlsav('qdtw',$r,0,1);}
 
 static function recupnm($u){
-return between($u,'twitter.com/','/status');}
+$ret=between($u,'twitter.com/','/status');
+if(!$ret)$ret=between($u,'x.com/','/status');
+return $ret;}
+
+static function recupnminmsg($d,$k){
+$p=strpos($d,$k); if($p===false)return;
+$d=substr($d,0,$p); $ret='';
+$ret=between($d,'twitter.com/','/status',1,1);
+if(!$ret)$ret=between($d,'x.com/','/status',1,1);
+return $ret;}
+
+static function recupnmfrommsg($k,$id){if($id=='test')return;
+$d=sql::read('msg','qdm','v',$id);
+return self::recupnminmsg($d,$k);}
 
 static function resetname($k,$id){
-$d=sql::read('msg','qdm','v',$id);
-$nm=self::recupnm($d);
-sql::upd('qdtw',['screen_name'=>$nm],['twid'=>$k]);
+$nm=self::recupnmfrommsg($k,$id);
+if($nm)sql::upd('qdtw',['screen_name'=>$nm],['twid'=>$k]);
 return self::cache($k,$id,2);}
 
 #read
@@ -371,8 +406,6 @@ static function recache($k,$id){
 if(rstr(158))return self::twalter($k,$id,1);
 return self::cache($k,$id,1);}
 
-//economizer
-
 //erase
 static function erasor($id,$med,$quoid){
 sql::del('qdtw',['twid'=>$id],0,1); $rb=explode(' ',$med); $txt='';
@@ -394,8 +427,12 @@ foreach($r as $k=>$v)$ret.=self::cache($v[0],0,2);
 return $ret;}
 
 static function call($p,$o,$prm=[]){[$p,$o]=prmp($prm,$p,$o);
-if($o=='parent'){$nm=sql('screen_name','qdtw','v',['twid'=>$p]); echo $p=self::lk($nm,$p);}
+if($o=='parent'){$nm=sql('screen_name','qdtw','v',['twid'=>$p]); $p=self::lk($nm,$p);}
+if($o=='sql'){[$q,$minid]=twapi::search($p,'',''); return twapi::batch($q,'');}//
 return self::twalter($p,'');}
+
+static function callbub($p,$o,$prm=[]){
+return div(self::call(https($p),$o,$prm),'','','min-width:440px;');}
 
 static function r(){return ['ib'=>'int','twid'=>'bint','name'=>'var','screen_name'=>'var','user_id'=>'bint','date'=>'int','text'=>'var','media'=>'var','mentions'=>'var','reply_id'=>'bint','reply_name'=>'var','favs'=>'int','retweets'=>'int','followers'=>'int','friends'=>'int','quote_id'=>'bint','quote_name'=>'var','retweeted'=>'bint','lang'=>'var'];}//geo,coordinates
 

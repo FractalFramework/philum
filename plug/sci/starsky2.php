@@ -26,7 +26,7 @@ foreach($r as $k=>$v){$i++; $y=$sz+$i*$sz;
 static function sttclr($stt){
 [$white,$black,$red,$green,$blue,$yellow,$cyan,$orange,$silver,$gray]=self::$clr;
 if($stt=='amical')$clr=$green;
-elseif($stt=='inamical')$clr=$orange;//img::imgclr($im,'ff9900')
+elseif($stt=='inamical')$clr=$orange;//graph::imgclr($im,'ff9900')
 elseif($stt=='danger')$clr=$red;
 elseif($stt=='neutre')$clr=$yellow;
 elseif($stt=='galaxy')$clr=$blue;

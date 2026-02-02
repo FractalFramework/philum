@@ -15,7 +15,7 @@ if(!$ret)$ret='nothing';
 return $ret;}
 
 static function r(){$rt=[];
-$r=sqb('distinct(screen_name) as name','umt','rv','order by name');
+$r=sql('distinct(screen_name) as name','umt','rv',['_order'=>'name']);
 foreach($r as $v)$rt[$v]=$v;
 return $rt;}
 

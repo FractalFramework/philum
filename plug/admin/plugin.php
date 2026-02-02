@@ -1,23 +1,10 @@
 <?php 
 class plugin{
-static function r(){
-$r=['backup','backupim','codev','coreflush','funcs','exec','test','patches','pictocss','updateimg','genpswd','know','star','xhtml','test','operations','ops','sun','connectors','frequency','indent','msqadd','spt','atomic','microform','superpoll','chat','chatxml','crypt','phi','svg','tar','vacuum','dbedt','anagram']; sort($r);
-return array_combine($r,$r);}
 
-static function call($p,$o,$prm=[]){
-[$d,$p,$o]=prmp($prm,$p,$o);
-if(method_exists($d,'home'))return $d::home($p,$o);}
-
-static function menu($plg,$p='',$o=''){
-$ret=select_j('plugn','pclass','','plugin/r','','2');
-$j='plg_plugin,call_plugn,plugp,plugo_3_';
-$ret.=inputj('plugn',$plg,$j,'app').' ';
-$ret.=lj('',$j,picto('ok'));
-$ret.=inputb('plugp',$p?$p:'param','',1).' ';
-$ret.=inputb('plugo',$o?$o:'option','',1).' ';
-$ret.=msqbt('system','program_plugs');
-$ret.=msqbt('system','program_apps');
-return $ret;}
+static function apps(){$rt=[];
+$r=msql::read('system','program_apps',0);
+foreach($r as $k=>$v)$rt[$v[0]]=[lj('','plg_'.$v[0].',home__jump___plugn_'.$v[0],$v[0]),$v[1]]; asort($rt);
+return tabler($rt);}
 
 static function plugs(){
 $ico=picto('editxt'); $dir='plug';
@@ -51,12 +38,30 @@ foreach($ra as $k=>$v){$rd=array_merge(array($rt),$v);
 	if($k=='all')$rb[$k][]=msqbt('system','program_plugs');
 	elseif($mtk=val($mt,$k))$rb[$k][]=divc('',current($mtk)).br();
 	$rb[$k][]=tabler($rd,'txtcadr','');}
-return tabs($rb);}
+return build::tabs($rb);}
 
-static function apps(){$rt=[];
-$r=msql::read('system','program_apps',1);
-foreach($r as $k=>$v)$rt[$v[0]]=[lj('','plg_'.$v[0].',home__3',$v[0],att($v[1])),$v[1]]; asort($rt);
-return tabler($rt);}
+static function ra(){
+$r=msql::kv('system','program_plugs',0); $r=array_keys($r); asort($r);
+return $r;}
+
+static function r(){$r=self::ra();
+return array_combine($r,$r);}
+
+static function call($p,$o,$prm=[]){
+[$d,$p,$o]=prmp($prm,$p,$o);
+if(method_exists($d,'home'))return $d::home($p,$o);}
+
+static function menu($plg,$p='',$o=''){
+$j='plg_plugin,call_plugn,plugp,plugo_3_';
+//$ret=select_j('plugn','pclass','','plugin/r','','2');
+//$ret.=inputj('plugn',$plg,$j,'app').' ';
+$ret=datalist('plugn',self::ra(),$p,16,'',$j);
+$ret.=lj('',$j,picto('ok'));
+$ret.=inputb('plugp',$p?$p:'param','',1).' ';
+$ret.=inputb('plugo',$o?$o:'option','',1).' ';
+$ret.=msqbt('system','program_plugs');
+$ret.=msqbt('system','program_apps');
+return $ret;}
 
 static function home($p,$o){
 $bt=self::menu($p,$o);

@@ -14,7 +14,7 @@ return $ret;}
 static function menu($p,$o,$rid){
 $j=$rid.'_sconn,call_inp'.$rid;
 $js=['onkeyup'=>sj($j),'onclick'=>sj($j)];
-$ret=editarea('inp'.$rid,$p,54,8,$js);
+$ret=edit::area('inp'.$rid,$p,54,8,$js);
 //$ret.=lj('',$j,picto('ok')).' ';
 return $ret;}
 

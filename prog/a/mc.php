@@ -3,7 +3,7 @@ class mc{
 
 #assistants
 static function assistant($id,$j,$jv,$va,$chk){
-$idb=is_array($jv)?$jv[0]:$jv; $bi='';
+$idb=is_array($jv)?$jv[0]:$jv; $bi=''; $help='';
 if($jv)$help=msql::val('lang','connectors_all',$idb);
 if($help && !is_array($help))$bi=strpos($help,'|');//prop_detect
 $ret=goodarea($id,!is_numeric($va)?$va:'',36,0);
@@ -12,18 +12,19 @@ else $ret.=hidden('cnp','');
 $ret.=ljb('popsav',$j,$jv,'ok');
 return divs('width:320px;',$ret);}
 
-static function conns($p,$va,$rid='',$idart=''){
-$defo=function(){return self::assistant('cnv','insert_conn','',get('read'),'');};
-$ret=match($p){
-'url'=>self::url($va,$idart),
-'art'=>self::art($va,$idart),
-'img'=>self::upload($idart),
+static function conns($p,$va,$aid='',$tgid=''){//aid=idart
+$defo=function($p,$aid){return self::assistant('cnv','insert_conn',$p,$aid,'');};
+return match($p){
+'url'=>self::url($va,$tgid),
+'art'=>self::art($va,$tgid),
+'img'=>self::upload($aid),
+'imgcapt'=>self::imgcaption($va,$tgid),
 'table'=>self::mktable($va),
 'nh'=>self::footnotes($va,1),
 'css'=>self::assistant('cnn','embedcss',$p,'',''),
 'color'=>self::color($p),
 'bkgclr'=>self::color($p),
-'conn'=>$defo,
+'conn'=>$defo($p,$aid),
 'video'=>self::video($va),
 'popvideo'=>self::video($va),
 'replace'=>self::replace($va),
@@ -39,22 +40,19 @@ $ret=match($p){
 'radio'=>radio::select(),
 'module'=>admx::modeditpop(1),
 'ajax'=>admx::modeditpop(0),//not public
-'articles'=>mod::artmod($idart,$p),
+'articles'=>mod::artmod($tgid,$p),
 'svg'=>svg::com($p),
-'search'=>$defo,
-'rss_art'=>$defo,
-'api_read'=>$defo,
-'iframe'=>$defo,
-'scan'=>$defo,
+'search'=>$defo($p,$aid),
+'rss_art'=>$defo($p,$aid),
+'api_read'=>$defo($p,$aid),
+'iframe'=>$defo($p,$aid),
+'scan'=>$defo($p,$aid),
 'preview'=>conn::read(str::embed_links($va),'',''),
 'display'=>divc('panel',$va),
-default=>$defo};
-//if($p)if(strpos('forumchatpetitionlast-update',$p)!==false)$va=ses('read');
-//if(!$ret)$ret=self::assistant('cnv','insert_conn',$p,$va,'');
-return $ret;}
+default=>$defo($p,$aid)};}
 
 //links//jr:future connedit will need refer id
-static function url($d,$id){return self::assistant('url','embedurl',['url',$id],'http://','');}
+static function url($d,$id){return self::assistant('url','embedurl',['url',$id],$d?$d:'http://','');}
 static function art($d,$id){return self::assistant('art','embedart',['art',$id],'ID article','');}
 static function vacuum(){$id=ses('read'); $va=sql('mail','qda','v',$id);
 	return self::assistant('urlsrc','SaveIb',$id,$va,'');}
@@ -83,15 +81,36 @@ static function upload($id){
 if(!$id)$id=ses('read');
 $id=$id?$id:ma::lastartid()+1;
 $ret=inputb('upim','Url','32','1').' ';
-$ret.=lj('popsav','popb_sav,uplim_upim_5__'.$id,nms(132)).br();
+$ret.=lj('popsav','popb_sav,uplim_upim__5_'.$id,nms(132)).br();
+$ret.=build::upload_j($id,'art');
+$ret.=lj('popsav','socket_artim,b64imup_imgarea_6_'.$id.'','paste_img');
+$ret.=divarea('imgarea','','frame-white scroll','',atjr('saveb64',['this',$id]),0).br();
 $ret.=toggle('txtx',$id.'up_sav,placeim___'.$id,'portfolio').' ';
-$ret.=upload_j($id,'art');
+//$ret.=lj('txtx','popup_sav,placeim___'.$id,picto('popup'));
 return divs('width:320px;',$ret);}
+
+static function imgcaption($va,$tgid){
+$ret=inputb('imcapt',nms(226),'32','1').' ';
+$ret.=btj(picto('ok'),atjr('embedinp',['imcapt',':figure',$tgid,'addopt']));
+return $ret;}
+
+static function imgboard($id){
+$rid=randid(); $rt=[];
+$r=artim::imgs($id);
+if($r)foreach($r as $k=>$v){
+$im=img::build_mini($v,'72/48',0,0); $f='img/'.$v;
+if(is_file($f))[$w,$h]=imsize($f); else [$w,$h]=['',''];
+if($h && $h<200)$vb=$v.':sim'; else $vb=$v;
+if($im)$rt[]=ljb('','insert','['.$vb.']',image($im.'?'.$rid,'72','',att($v.':'.$w.'-'.$h)));}
+return join('',$rt);}
+
+static function searchbt($d){[$p,$o]=cprm($d);
+return lj('','popup_search,home__3_'.ajx($p).'_',picto('search').($o?$o:$p));}
 
 static function footnotes($n,$a){
 $txt=helps('anchor_select').' "'.$n.'":'; $c='txtx';
 if(!$a)$ret=ljb('popbt','insertmbd',['[',$n,':nb]'],$txt).br().btn('txtsmall',helps('anchor_dbclic')).br().br();
-else{$ret=lj('txtx','txarea_mc,filters_txtarea__addanchors','auto_anchors').' ';
+else{$ret=lj('txtx','txtarea_mc,filters_txtarea__addanchors','auto_anchors').' ';
 $ret.=ljb('','embedslct',['',''],'()').br();
 $ret.=btn('txtsmall',helps('anchor_auto')).br();
 $ret.=ljb($c,'embedslct',['[',':nh]'],':nh').' ';
@@ -120,10 +139,14 @@ $sty='padding:0 5px; background-color:#'; foreach($klr as $k=>$v){
 	$ret.=ljb($k,'jumpvalue',['cnp',$k],bts($sty.$v,'.')).' ';}
 return $ret.br().br().self::assistant('cnv','insert_conn',$cnn,'','');}
 
-static function replace($d){
-$ret='search: '.textarea('resr',$d,25,1).br().' replace: '.textarea('repl','',25,1);
-$ret.=lj('popsav','txarea_mc,filters_txtarea,resr,repl__replace','ok');
-return $d?$ret:'select text to replace';}
+static function repl($a,$b,$prm=[]){
+[$d,$rep,$by]=arr($prm,3);
+return str_replace($rep,$by,$d);}
+
+static function replace($d,$rid=''){if(!$rid)$rid='txtarea';
+$ret=textarea('resr',$d,25,1).textarea('repl','',25,1);
+$ret.=lj('popsav',$rid.'_mc,repl_'.$rid.',resr,repl__replace',nms(211));
+return $ret;}
 
 static function delconn($d){
 $ret='del conn: '.input('dlc','');
@@ -184,8 +207,8 @@ if($o)return btj(picto('save',''),atj('saveart',$id),'active');
 else return btj(picto('editor'),atj('editart',$id));}
 
 static function artsconn($id){
-$d=sql('msg','qdm','v',$id); $d=conb::parse($d,'sconn');
-$d=embed_p($d); return nl2br($d);}
+$d=sql('msg','qdm','v',$id);
+return conb::read($d);}
 
 static function wygopn($id){
 $bt=self::wygbt($id,1);
@@ -205,9 +228,9 @@ $bt=self::wygbt($id,0); $edt=''; $d=$prm[0]??''; $d=self::savwyg($id,'',[$d]);
 return mkjson([$d,$edt,$bt,$bt]);}
 
 static function wygedt($id,$g2,$prm=[]){$p1=$prm[0]??'';
-$d=conb::parse($p1,'sconn');
-$ret=lj('','txtarea_mc,wygok_edt'.$id.'_23_'.$id,picto('save2')).' '; $rid=$g2?$g2:'edt'.$id;
-if(rstr(13))$d=embed_p($d); if(!$d)$d="\n";
+$d=conb::parse($p1,'sconn'); $rid=$g2?$g2:'edt'.$id;
+$ret=lj('','txtarea_mc,wygok_edt'.$id.'_23_'.$id,picto('save2')).' ';
+if(rstr(13))$d=conn::embed_p($d); if(!$d)$d="\n";
 return divedit($rid,'editarea justy','max-width:720px','',nl2br($d));}
 
 static function wygoff($id,$o,$prm=[]){$p1=$prm[0]??''; $ret=edit::bt($id);
@@ -234,38 +257,42 @@ return conb::parse($d,'correct','striputm');}
 #connedit
 static function filters($va,$opt,$prm){
 $rt=''; [$d,$rep,$by]=arr($prm,3); //$d=delr($d);
-if($va=='cleanbr')$rt=str::clean_br($d);
-elseif($va=='cleanmail')$rt=str::cleanmail($d);
-elseif($va=='cleanpunct')$rt=str::clean_punctuation($d,2);//nicequotes
-elseif($va=='nicequotes')$rt=str::nicequotes($d,2);
-elseif($va=='cleanpdf')$rt=self::clean_pdf($d);
-elseif($va=='striplink')$rt=conb::parse($d,'correct','striplink');
-elseif($va=='converthtml'){$rt=conv::call(nl2br($d)); $rt=str::post_treat_repair($rt);}
-//elseif($va=='easytables')$rt=str_replace("\n","¬\n",$d);
-elseif($va=='addlines')$rt=self::add_lines($d);
-elseif($va=='addanchors')$rt=self::add_anchors($d);
-elseif($va=='deltables')$rt=self::del_tables($d);
-elseif($va=='delqmark')$rt=self::del_qmark($d);//old
-elseif($va=='imglabel')$rt=self::add_comments($d);
-elseif($va=='oldconn'){$rt=sav::conn_retape($d,$va);}
-elseif($va=='replace')$rt=str_replace($rep,$by,$d);
-elseif($va=='revert')$rt=sql('msg','qdm','v',ses('read'));
-elseif($va=='postreat')$rt=conv::post_treat($d,$va,$opt);
-elseif($va=='delh')$rt=str_replace([':h1',':h2',':h3',':h4',':h5'],':h',$d);
-elseif($va=='inclusive')$rt=str::clean_inclusive($d);
-elseif($va=='repairhttp')$rt=self::repairhttp($d);
-elseif($va=='stripvk')$rt=self::stripvk($d);
-elseif($va=='striputm')$rt=self::striputm($d);
-elseif($va=='citai')$rt=mk::citations($d,'i');
-elseif($va=='citaq')$rt=mk::citations($d,'q');
-return edit::txarea($rt);}
+return match($va){
+'cleanbr'=>str::clean_br($d),
+'cleanmail'=>str::cleanmail($d),
+'cleanpunct'=>str::clean_punctuation($d,2),//nicequotes
+'nicequotes'=>str::nicequotes($d,2),
+'cleanpdf'=>self::clean_pdf($d),
+'striplink'=>conb::parse($d,'correct','striplink'),
+'converthtml'=>str::post_treat_repair(conv::call(nl2br($d))),
+//'easytables'=>str_replace("\n","¬\n",$d),
+'addlines'=>self::add_lines($d),
+'addanchors'=>self::add_anchors($d),
+'deltables'=>self::del_tables($d),
+'delqmark'=>self::del_qmark($d),
+'imglabel'=>self::add_comments($d),
+'oldconn'=>sav::conn_retape($d,$va),
+'replace'=>str_replace($rep,$by,$d),
+'revert'=>sql('msg','qdm','v',ses('read')),
+'postreat'=>conv::post_treat($d,$va,$opt),
+'delh'=>str_replace([':h1',':h2',':h3',':h4',':h5'],':h',$d),
+'inclusive'=>str::clean_inclusive($d),
+'repairhttp'=>self::repairhttp($d),
+'stripvk'=>self::stripvk($d),
+'striputm'=>self::striputm($d),
+'citai'=>mk::citations($d,'i'),
+'citaq'=>mk::citations($d,'q'),
+default=>''};}
 
 //str
 static function add_lines($d){
-$d=str_replace(['. ',".\n"],".\n\n",$d);
-$d=str_replace("\n-","\n\n-",$d);
+//$d=str_replace(['. ',".\n"],".\n\n",$d);
+//$d=str_replace("\n-","\n\n-",$d);
+$d=str_replace("\n","\n\n",$d);
 return str::clean_br($d);}
-static function clean_pdf($d){$d=str::cleanmail($d); $d=str::clean_br($d); $d=self::add_lines($d); return $d;}
+
+static function clean_pdf($d){
+$d=str::cleanmail($d); $d=str::clean_br($d); $d=self::add_lines($d); return $d;}
 
 static function add_comments($d){$r=explode("\n",$d); $ret='';
 foreach($r as $k=>$v){$pos=strpos($v,'.jpg]');
@@ -331,7 +358,7 @@ $ret.=ljb('','conn','_delconn','all',att('del all'));
 return div($ret,'nbp','cnndl');}
 
 //ascii
-static function ascii($p,$id){
+static function ascii($p,$id){if(is_numeric($id))$id='txtarea';
 $ret=lj('txtx','nvascii_mc,navs___ascii__'.$id,picto('back'));
 $r=msql::read('system','edition_ascii_11',1);
 foreach($r as $k=>$v)if($v[1]==$p){
@@ -356,13 +383,20 @@ if(auth(6))$ret.=msqbt('system','edition_ascii_10');
 $ret.=divd('asc4','');
 return $ret;}
 
+static function oomopictos($p,$id){$ret='';
+$r=msql::read('system','edition_pictos_2',1);
+if($r)foreach($r as $k=>$v){
+	$ret.=ljb('','insert_b',['['.$v[3].'|32:oomo]',$id],oomo($v[3],32),att($v[0].' ('.$v[1].')')).' ';}
+return divs('line-height:2em;',$ret);}
+
 static function navs($op,$id){$ret='';
-if($op=='ascii'){$r=msql::read('system','edition_ascii_11',1); $r=msql::cat($r,1);
-	$ret.=lj('txtx','popup_mc,navs___ascii_'.$id,pictit('popup','detach'));
-	$ret.=lj('txtx','popup_ascii,home',pictit('search','search'));
-	$ret.=lj('','nv'.$op.'_mc,unicode___'.$id,pictit('globe','families')).' ';
+if($op=='img')$ret=self::imgboard($id);
+elseif($op=='ascii'){$r=msql::read('system','edition_ascii_11',1); $r=msql::cat($r,1);
+	$ret.=lj('txtx','popup_mc,navs___ascii_'.$id,pictit('popup','detach',16));
+	$ret.=lj('txtx','popup_ascii,home___'.$id,pictit('search','search',16));
+	$ret.=lj('','nv'.$op.'_mc,unicode___'.$id,pictit('globe','families',16)).' ';
 	if(auth(6))$ret.=msqbt('system','edition_ascii_11');
-	foreach($r as $k=>$v)$ret.=lj('','asc4_mc,ascii___'.$k.'_'.$id,$k).' ';
+	foreach($r as $k=>$v)$ret.=lj('','asc4_mc,ascii___'.$k.'_'.$id,$k).' ';//.$id
 	$ret.=divd('asc4','');}
 elseif($op=='pictos'){$r=msql::read('system','edition_pictos',1);
 	foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$k.'|16:picto]',$id],picto($k),att($k)).' ';
@@ -370,8 +404,29 @@ elseif($op=='pictos'){$r=msql::read('system','edition_pictos',1);
 	if(auth(6))$ret.=msqbt('system','edition_pictos');}
 elseif($op=='glyphs'){$r=msql::kv('system','edition_glyphes_1');
 	if($r)foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$v.'|32:glyph]',$id],glyph($k)).' ';}
-elseif($op=='oomo'){$r=msql::kv('system','edition_pictos_2');
-	if($r)foreach($r as $k=>$v)$ret.=ljb('','insert_b',['['.$k.'|32:oomo]',$id],oomo($k,32),att($k.' ('.$v[1].')')).' ';}
+elseif($op=='oomo')$ret=self::oomopictos($op,$id);
+elseif($op=='clr'){$r=sesmk('connclr','',''); $rt=[];
+	//$bt=lj('','popup_mc,navs___clr_'.$id,picto('popup',16));
+	if($r)foreach($r as $k=>$v){$kb=$k=='auto'?'':$k;
+		$rt['under'][]=ljb('','embedopt',['under',$kb,$id],mk::txtdeco($k,$kb,'','',''));
+		$rt['double'][]=ljb('','embedopt',['double',$kb,$id],mk::txtdeco($k,$kb,'','double',''));
+		$rt['dotted'][]=ljb('','embedopt',['dotted',$kb,$id],mk::txtdeco($k,$kb,'','dotted',''));
+		$rt['dashed'][]=ljb('','embedopt',['dashed',$kb,$id],mk::txtdeco($k,$kb,'','dashed',''));
+		$rt['wavy'][]=ljb('','embedopt',['wavy',$kb,$id],mk::txtdeco($k,$kb,'','wavy',''));
+		$rt['strike'][]=ljb('','embedopt',['strike',$kb,$id],mk::txtdeco($k,$kb,'','','line-through'));
+		$rt['over'][]=ljb('','embedopt',['over',$kb,$id],mk::txtdeco($k,$kb,'','','overline'));
+		$rt['underover'][]=ljb('','embedopt',['underover',$kb,$id],mk::txtdeco($k,$kb,'','underline','overline'));
+		$rt['deco'][]=ljb('','embedopt',['deco',$kb.',,solid,bottom',$id],mk::txtdeco($k,$kb,'','','bottom'));
+		$rt['bkg'][]=ljb('','embedopt',['bkg',$kb,'',$id],mk::bkgclr($k,$kb));
+		$rt['bdr'][]=ljb('','embedopt',['border',$kb.',2,solid',$id],mk::border($k,$kb,'2',''));
+		$rt['bdl'][]=ljb('','embedopt',['borderline',$kb.',2,solid','',$id],mk::borderline($k,$kb));
+		$rt['clr'][]=ljb('','embed',[$k,'',$id],mk::txtclr($k,$kb));
+		$rt['u'][]=ljb('','embed',['u'.$kb,'',$id],mk::txtdeco($k,$k,'2','',''));
+		//$rt['bkg'][]=ljb('','embed',['bg'.$k,'',$id],mk::bkgclr($k,$kb));
+		//$rt['bdr'][]=ljb('','embed',['bd'.$k,'',$id],mk::border($k,$kb));
+		}
+		$rt['?'][]=helps('deco');
+	$ret=build::tabs($rt,'clr');}
 elseif($op=='uc'){$r=msql::read('',nod('connectors_1'),1);
 	if($r)foreach($r as $k=>$v)$ret.=ljb('','insertmbd',['[','',':'.$k.']'],$k).' ';}
 elseif($op=='sc'){$r=msql::read('','public_connectors',1);
@@ -389,21 +444,21 @@ elseif($op=='backup'){
 		if($r)foreach($r as $k=>$v){$bt='';
 			$bt.=btn('txtsmall',date('ymd.Hi',$v));
 			$bt.=lj('popbt','bckp_mc,backup_txtarea_3_'.$id.'_'.$k,'save');
-			$bt.=lj('popbt','txarea_mc,restore___'.$k,'restore');
+			$bt.=lj('popbt','txtarea_mc,restore___'.$k,'restore');
 			if(auth(6))$bt.=lj('popbt','bckp_mc,backdel___'.$k.'_'.$id,'delete');
 			$ret.=div($bt);}
 		$ret.=lj('popsav','bckp_mc,backup_txtarea__'.$id,'+ new').' ';
-		$ret.=lj('popbt','txarea_mc,filters_txtarea__revert','revert').' ';
+		$ret.=lj('popbt','txtarea_mc,filters_txtarea__revert','revert').' ';
 		$ret.=btj('last saved','revert()','popbt').' ';}
 	if($ret)$ret=div($ret,'','bckp'); else 'available only while editing';}
 elseif($op=='del')$ret=self::conn_del('html',$id);
 elseif($op=='del2')$ret=self::conn_del('media',$id);
-elseif($op=='disk')$ret=finder::home(ses('qb'),'disk///disk/conn//mini');
+elseif($op=='disk')$ret=finder::home(ses('qb'),'disk///list/conn//mini');
 elseif($op=='icons')$ret=finder::home('','disk///icon/conn//mini');
 elseif($op=='filters')$ret=self::conn_props_b($op,'tools');
 elseif($op=='tools')$ret=self::conn_props_b($op,'tools');
 else $ret=self::conn_props_b($op,'all');
-return div($ret,'nbp','nv'.$op);}//,'min-width:300px; max-width:680px;'
+return div($ret,'menu scroll','nv'.$op);}//,'min-width:300px; max-width:680px;'
 
 //backup_arts
 static function backup($g1,$g2,$prm=[]){$d=$prm[0]??''; if($d){
@@ -412,6 +467,21 @@ return self::navs('backup',$g1);}
 static function restore($g1,$g2){$v=sql('msg','qdmb','v',['id'=>$g1]); return edit::txarea($v,$g1);}
 static function backdel($g1,$id){if($g1 && auth(6))sql::del('qdmb',$g1); meta::utag_sav($id,'review','');
 return self::navs('backup',$id);}
-
+static function addrev($id,$nid){meta::utag_sav($id,'review',$nid); return 'ok';}
+static function mkbackup($id,$o=''){$d=sql('msg','qdm','v',['id'=>$id]);
+$nid=sqlsav('qdmb',[$id,$d,sqldate()]); if($o)self::addrev($id,$nid); return 'ok';}
+static function replacext($id,$a,$prm){self::mkbackup($id,1);
+$d=sql('msg','qdm','v',['id'=>$id]); if(is_array($prm))[$a,$b]=arr($prm,2); else $b=$prm;
+$d=str_replace($a,$b,$d); if(auth(6))sqlup('qdm',['msg'=>$d],$id); return 'ok';}
+static function replacextfrom($id){$prm=[':ured','|red:under']; return self::replacext($id,1,$prm);}
+static function replaceoldconn($id){$r=msql::where('system','connectors_old',[1=>'']); $rt=[];
+foreach($r as $k=>$v)$rt[]=lj('','rpxt'.$id.'_mc,replacext___'.$id.'_'.ajx($k).'_'.ajx($v[0]),$k.' to '.$v[0]);
+return divd('rpxt'.$id,joindiv($rt));}
+static function batchreplace($g1,$g2,$prm=[]){
+$r=sql('id','qdm','rv',['%msg'=>$g1]);
+//foreach($r as $k=>$v)self::replacext($id,0,$prm):
+return 'ok';}
+static function replacecall($id,$o){
+return self::replaceoldconn($id);}
 }
 ?>

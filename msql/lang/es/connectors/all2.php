@@ -19,9 +19,23 @@ return ['_'=>['description'],
 'block'=>['pone el contenido en un bloque: [|3:block] (%), [|300:block] (tamaño en px)'],
 'center'=>['alinear al centro'],
 'add_lines'=>['añade líneas al final de cada frase'],
-'ajax'=>['botón que devuelve el resultado de un módulo o conector en el lugar (o a un div de destino). rnrnsintaxis: rn [param/title/command/option:module->target|button[,]:ajax] rndonde: rn- param/title/command/option:module; rn- target = div de destino; rn- button = a mostrar;rnrnLa secuencia puede repetirse usando la coma como separador, para producir un menú. rnrntry: [id:read|screen:ajax] que devuelve el contenido de un artículo.'],
+'ajax'=>['botón que devuelve el resultado de un módulo o conector en el lugar (o a un div de destino). 
+
+sintaxis: 
+ [param/title/command/option:module->target|button[,]:ajax] 
+donde: 
+- param/title/command/option:module; 
+- target = div de destino; 
+- button = a mostrar;
+
+La secuencia puede repetirse usando la coma como separador, para producir un menú. 
+
+try: [id:read|screen:ajax] que devuelve el contenido de un artículo.'],
 'ajxget'=>['herramienta para conservar los caracteres \':\', \'/\' y \'|\' para el conector \'module'],
-'dskbt'=>['llama a un botón de tipo Desk rn- a partir de un id existente: [6:dskbt][6|hello:dskbt]rn- o escrito sobre la marcha: [button;app;stext:apps]rnsyntax(button;type;process;param;option)'],
+'dskbt'=>['llama a un botón de tipo Desk 
+- a partir de un id existente: [6:dskbt][6|hello:dskbt]
+- o escrito sobre la marcha: [button;app;stext:apps]
+syntax(button;type;process;param;option)'],
 'articles'=>['lista de artículos ordenada, con múltiples modos de presentación'],
 'basic'=>['ejecuta código de instrucciones básicas codeline'],
 'bkg'=>['imagen en segundo plano: [valor|img:bkg] (la primera del catálogo por defecto)'],
@@ -39,7 +53,8 @@ return ['_'=>['description'],
 'convert_html'=>['convierte html a conectores'],
 'css'=>['aplica css al texto seleccionado'],
 'download'=>['apunta a un archivo y lo envía al usuario'],
-'draw'=>['plegado externo'],
+'draw'=>['plegado exte
+o'],
 'font'=>['tipifica el texto [pHilUM|microsys:font].'],
 'footnotes'=>['añade anclas si (1) o [1] se detecta dos veces'],
 'formail'=>['formulario de envío de mensajes'],
@@ -63,11 +78,19 @@ return ['_'=>['description'],
 'last-update'=>['fecha de la última modificación de un documento'],
 'last_saved'=>['vuelve a la última acción de guardar'],
 'lines'=>['elimina los saltos de línea del texto seleccionado'],
-'link'=>['enlaces predefinidos:rn- key link: Home, ID, category, modulern- use title: Home|Homepagern- use picto: Home|home:pictorn- internal link: /?plug=myplug|name_of_plug'],
+'link'=>['enlaces predefinidos:
+- key link: Home, ID, category, module
+- use title: Home|Homepage
+- use picto: Home|home:picto
+- inte
+al link: /?plug=myplug|name_of_plug'],
 'w'=>['muestra el enlace completo'],
 'lowcase'=>['pone en minúsculas el texto seleccionado'],
-'msql'=>['devuelve datos de una tabla: rn[hub_table_(version)-(key)|(row)|option:microsql];rnOpciones: pop, read, conn, last, count, graph, form, tmp'],
-'mini'=>['crea una miniatura de una imagen con dimensiones personalizadas: [img.jpg|140/100:mini]rn+ enlace al original en una ventana emergente ajax'],
+'msql'=>['devuelve datos de una tabla: 
+[hub_table_(version)-(key)|(row)|option:microsql];
+Opciones: pop, read, conn, last, count, graph, form, tmp'],
+'mini'=>['crea una miniatura de una imagen con dimensiones personalizadas: [img.jpg|140/100:mini]
++ enlace al original en una ventana emergente ajax'],
 'module'=>['visualiza un módulo o módulos, directamente o a través de un |botón, según la sintaxis [m:module,p:param,t:title|button:module].'],
 'on'=>['muestra el conector [hello:b:on]'],
 'no'=>['no muestra el contenido'],
@@ -97,8 +120,10 @@ return ['_'=>['description'],
 'popfile'=>['muestra el contenido de un archivo de texto en una ventana emergente'],
 'popurl'=>['abre una página web en una ventana emergente'],
 'prod'=>['artículo en forma de producto de una tienda en línea'],
-'pub'=>['[1234:pub] muestra un enlacern[1234|1:pub] |2 |3 |4 abre un artículo (modo vista previa)'],
-'art'=>['[1234:art] muestra un enlacern[1234|title:art] con titulo'],
+'pub'=>['[1234:pub] muestra un enlace
+[1234|1:pub] |2 |3 |4 abre un artículo (modo vista previa)'],
+'art'=>['[1234:art] muestra un enlace
+[1234|title:art] con titulo'],
 'clean_punct'=>['corrige les erreurs typographiques'],
 'radio'=>['apila archivos de audio del espacio en disco [dev/music:radio] (1 por artículo, el módulo hace una lista de reproducción)'],
 'read'=>['coloca el contenido de un artículo'],
@@ -110,7 +135,8 @@ return ['_'=>['description'],
 'rss_read'=>['contenido de un artículo de otro sitio philum'],
 'scan'=>['devuelve el contenido de un documento colocado en el directorio del usuario, |1interpreta los conectores del contenido'],
 'search'=>['resultados de la búsqueda (depende de time_system)'],
-'shop'=>['artículos vinculados por jerarquía como una matriz de productos de una tienda en línea rn(especificar tablas personalizadas \'precio\' y \'número de pieza\')'],
+'shop'=>['artículos vinculados por jerarquía como una matriz de productos de una tienda en línea 
+(especificar tablas personalizadas \'precio\' y \'número de pieza\')'],
 'size'=>['tamaño del texto [text|24:size]'],
 't'=>['css \'txtit\' (títulos)'],
 'del_tables'=>['borrar tablas'],
@@ -165,7 +191,8 @@ return ['_'=>['description'],
 'webview'=>['oculta una vista previa del enlace (que enlaza con una importación)'],
 'wiki'=>['devuelve la cabecera de la página wikipedia si hay un texto enlazado, en caso contrario devuelve todo su contenido.'],
 'dico'=>['permite adjuntar una definición de wictionary.org'],
-'plan'=>['tabla de contenidos, basada en las etiquetas h1, h2...rn[title|option:plan] opt=1: numeración topológica'],
+'plan'=>['tabla de contenidos, basada en las etiquetas h1, h2...
+[title|option:plan] opt=1: numeración topológica'],
 'frame'=>['[txt|red:frame] añade un marco rojo alrededor del texto'],
 'underline'=>['[txt|red:underline] añade un subrayado rojo alrededor del texto'],
 'look'=>['abre un artículo resaltando un término [id|palabra:look]'],

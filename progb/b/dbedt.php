@@ -11,15 +11,14 @@ else sql::upd($a,[$col=>$va],['id'=>$id]);
 return $va;}
 
 static function upd($p){
-$a=array_shift($p); $id=array_shift($p); $ka=key($p);
-[$row,$col]=explode('-',$ka); $va=current($p);
+[$a,$id,$rid]=vals($p,['a','id','rid']);
+[$row,$col]=expl('-',$rid,2); $va=$p[$rid]??'';
+$ra=sqb::cols($a); //pr($ra);
 if($col='v')$col=$row;//2d array
-$ra=json::read('',$a)['_']??[];
-if(in_array('uid',$ra)){$ko=in_array_k('uid',$ra); unset($ra[$ko]); $ra=array_values($ra);}//not edit uid
 $col=$ra[$col-1];
-$rt=[$col=>$va];
+if(!auth(6))return $va;
 if(in_array($col,self::$no))alert('forbidden');
-else sql::upd($a,$rt,['id'=>$id]);
+elseif($va)sqb::upd($a,[$col=>$va],['id'=>$id]);
 return $va;}
 
 static function play($p){
@@ -28,7 +27,7 @@ $r=sqb::read('*',$a,'ra',['_limit'=>$n.', 20'],1); $rb=$r;
 foreach($r as $k=>$v)
 	$rb[$k]['id']=bj('btn','dbdt|dbedt,read|a='.$a.',id='.$v['id'],$v['id']);
 $h=json::read('',$a)['_']??[]; $hb=$h; array_unshift($h,'id'); array_unshift($h,'_');
-if(count($r)<20)$ret=editable($rb,'dbedt,upd2|a='.$a,$h,0,self::$no);
+if(count($r)<20)$ret=build::editable($rb,'dbedt,upd2|a='.$a,$h,0,self::$no);
 else$ret=tabler($r,$hb);
 return div($ret,'','plyt');}
 
@@ -45,7 +44,7 @@ if($a && $id)$r=sqb::read('*',$a,'a',['id'=>$id]);
 elseif($a)return self::entries($a);
 $own=($r['uid']??'')==ses('uid')?1:0;
 if($r['uid']??'')unset($r['uid']);//not edit uid
-if($id)$ret=editable($r,'dbedt,upd|a='.$a.',id='.$id);
+if($id)$ret=build::editable($r,'dbedt,upd|a='.$a.',id='.$id);
 elseif(auth(6) or $own)$ret=self::play($p+['n'=>'0']);
 if($id)$bt=bj('dbdt|dbedt,read|a='.$a.',id='.$id,picto('edit').$a.':'.$id,'popbt');
 return $bt.$ret;}

@@ -1,7 +1,8 @@
-<?php //starmap (svg)
+<?php //equatorial projection (two cirles)
 
 class starmap{
 static $default='knownstars';//81693,99461,88601
+static $exomap='ummo_exo_6';
 static $clr=['#ffffff','#000000','#ff0000','#00ff00','#0000ff','#ffff00','#00ffff','#ff9900','#cccccc','#666666'];
 
 static function legend($r,$ha,$font){$h=$ha-40; $mid=$h/2; $sz=16;
@@ -85,7 +86,7 @@ return $rb;}
 static function build($p,$o){
 $rn=[]; $rc=[]; if(!$p)$p='knownstars';
 if($p=='knownstars'){
-$ra=msql::read('','ummo_exo_5',1); if($ra)$p=implode(',',array_keys_r($ra,8));
+$ra=msql::read('',self::$exomap,1); if($ra)$p=implode(',',array_keys_r($ra,8));
 if($ra)foreach($ra as $k=>$v)if($v[8])$rn[$v[8]]=$v[6]?$v[6]:$v[0];
 if($ra)foreach($ra as $k=>$v)if($v[8])$rc[$v[8]]=$v[5];}
 $sq=star::sq($p);

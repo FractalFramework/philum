@@ -8,26 +8,30 @@ static function powr($n){return pow($n,2);}
 static function sqrt_b($v,$n){return pow((float)$v,bcdiv(1,$n,99));}
 static function hypothenuse($ca,$co){return sqrt(self::powr($ca)+self::powr($co));}
 static function pytha_cote($hy,$c){return sqrt(self::powr($hy)-self::powr($c));}
-static function cercle_longueur($rayon){return M_PI*($rayon*2);}
-static function cercle_surface($diametre){return (M_PI/4)*self::powr($diametre);}
-static function sphere_surface($diametre){return M_PI*self::powr($diametre);}
-static function sphere_volume($diametre){return (pi()/6)*pow($diametre,3);}
-static function volume_rayon($n){return bcdiv(4,3,99)*M_PI*bcpow($n,3,99);}
-static function volum2ray($n){$a=bcdiv($n,M_PI); $b=bcdiv(3,4); $c=bcmul($a,$b); return bcpow($c,1/3);}
+static function circumference($ray){return M_PI*($ray*2);}
+static function circleareafromdiameter($a){return (M_PI/4)*self::powr($a);}
+static function sphereareafromdiameter($a){return M_PI*self::powr($a);}
+static function spherevolumefromdiameter($a){return (M_PI/6)*pow($a,3);}
+static function rayofvolume($n){return bcdiv(4,3,99)*M_PI*bcpow($n,3,99);}
+static function volume2ray($n){$a=bcdiv($n,M_PI); $b=bcdiv(3,4); $c=bcmul($a,$b); return bcpow($c,1/3);}
 static function area2ray($n){$a=bcmul(4,M_PI); return self::sqrt_b($n,$a);}
 
 static function radian($a){return deg2rad($a);}
-static function sinus($a){return sin(self::radian($a));}
-static function cosinus($a){return cos(self::radian($a));}
-static function tangente($a){return tan(self::radian($a));}
+static function sinus($a){return sin(deg2rad($a));}
+static function cosinus($a){return cos(deg2rad($a));}
+static function tangente($a){return tan(deg2rad($a));}
 static function degres($radian){return rad2deg($radian);}
 static function arcsin($a){return self::degres(asin($a));}
 static function arccos($a){return self::degres(acos($a));}
 static function arctan($a){return self::degres(atan($a));}
-static function sin_rect($co,$hy){return $co/$hy;}//sinus = côté opposé / hypoténuse
-static function cos_rect($ca,$hy){return $ca/$hy;}//cosinus = côté adjacent / hypoténuse
-static function tan_rect($co,$ca){return $co/$ca;}//tangente = côté opposé / côté adjacent
-static function cotan_rect($co,$ca){return $ca/$co;}//cotangente = inverse de tangente
+static function sin_rect($o,$h){return $o/$h;}//sin=opposé/hypoténuse
+static function cos_rect($a,$h){return $a/$h;}//cos=adjacent/hypoténuse
+static function tan_rect($o,$a){return $o/$a;}//tan=opposé/côté adjacent
+static function cotan_rect($o,$a){return $a/$o;}//cotan=inverse de tangente
+static function ofromsina($a,$h){return sin(deg2rad($a))*$h;}
+static function afromsina($a,$h){return cos(deg2rad($a))*$h;}
+static function sin2deg($a){return rad2deg(asin($a));}
+static function cos2deg($a){return rad2deg(acos($a));}
 static function ratan2($x,$y){return rad2deg(atan2($x,$y))+(($x<0)?180:0);}//compass
 
 //astro
@@ -83,6 +87,15 @@ static function ra2rad($d){return deg2rad(self::ra2deg($d));}
 static function dec2rad($d){return deg2rad(self::dec2deg($d));}
 static function rad2ra($d){return self::ra2deg(rad2deg($d));}
 static function rad2dec($d){return self::dec2deg(rad2deg($d));}
+static function g2oz($d){return bcdiv($d,28.34952);}
+static function oz2g($d){return bcdiv(28.34952,$d);}
+
+//planisphere
+static function planisphere($ray){
+$calc_h=fn($ray,$a)=>sin(deg2rad($a))*$ray;
+$a2circ=fn($ray,$a)=>M_PI*($calc_h($ray,$a)*2);
+for($i=0;$i<=90;$i+=10)$r[$i]=$a2circ($ray,$i); pr($r);
+return $r;}
 
 //bases
 static function dec2base($dec,$b,$d=false){
@@ -106,6 +119,13 @@ if($b>64)for($loop=0;$loop<256;$loop++)$d.=chr($loop);
 else $d='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
 return (string)substr($d,0,$b);}
 
+//ascii
+static function fraction(){return ['1/2'=>'½','1/3'=>'⅓','1/4'=>'¼','1/5'=>'⅕','1/6'=>'⅙','1/7'=>'⅐','1/8'=>'⅛','1/9'=>'⅑','1/10'=>'⅒','2/3'=>'⅔','2/5'=>'⅖','3/4'=>'¾','3/5'=>'⅗','3/8'=>'⅜','4/5'=>'⅘','5/6'=>'⅚','5/8'=>'⅝','7/8'=>'⅞'];}
+
+static function fract2ascii(string $n){$r=self::fraction(); $rb=[];
+foreach($r as $k=>$v){[$a,$b]=expl('/',$k); $c=$a/$b; if($n==(string) $c)return $v;}
+return $n;}
+
 //constants
 static function pi2(){return bcdiv(4,bcsqrt(phi()));}
 static function phi($n=10){$d=1; for($i=0;$i<10*$n;$i++)$d=bcadd(1,bcdiv(1,$d)); return $d;}//1e-40
@@ -116,7 +136,7 @@ return $ret;}
 
 //longueur d'une hélice //long,nb_spires,diam,haut
 static function helice($l,$n,$d,$h){return sqrt(self::powr($l)+self::powr($n)+self::powr($d)+self::powr($h));}
-static function centrifuge($d,$t){return 4*pow(pi(),2)*$d/pow($t,2);}
+static function centrifuge($d,$t){return 4*pow(M_PI,2)*$d/pow($t,2);}
 
 //renvoie angle en degrés
 static function missing_angle($r){//adj/opp/hyp 
@@ -133,10 +153,10 @@ if(!$r[2])$r[2]=$r[0]/self::cosinus($a);
 return $r;}
 
 //renvoie la longueur manquante dans un triangle rectangle
-static function pythagore($r){//adj/opp/hyp 
-if(!$r[0])$r[0]=self::pytha_cote($r[2],$r[1]);
-if(!$r[1])$r[1]=self::pytha_cote($r[2],$r[0]);
-if(!$r[2])$r[2]=self::hypothenuse($r[0],$r[1]);
+static function pythagore($a,$o,$h){//adj/opp/hyp 
+if(!$a)$a=self::pytha_cote($h,$o);
+if(!$o)$o=self::pytha_cote($h,$a);
+if(!$h)$h=self::hypothenuse($a,$o);
 return $r;}
 
 static function bcfact($fact){if($fact==1)return 1;
@@ -220,7 +240,7 @@ $rx2=self::star_xyz($r2); //pr($rx2);
 return self::distance3d($rx1,$rx2);}
 
 static function test(){
-//$ret=self::pythagore(['',1,2]);//p($rb);
+//$ret=self::pythagore('',1,2);//p($rb);
 //$ret=self::phi_calcul($n);
 //$ret=self::fibo();
 //$ret=bccomp($phi,$fibo);

@@ -44,21 +44,22 @@ $ret=$dom->saveHTML();
 return $ret;}
 
 //dom
-static function importnode($rec,$v,$tg){
+static function importnode($rec,$v,$tg,$cn=0){$n=0;
 if($tg=='img' or $tg=='meta')$tag='div'; else $tag=$tg;
 $dest=$rec->appendChild($rec->createElement($tag));
 if($tg=='img')$dest->nodeValue=urlroot($v->getAttribute('src'));
 elseif($tg=='meta')$dest->nodeValue=$v->getAttribute('content');
-elseif($v->childNodes)foreach($v->childNodes as $k=>$el)$dest->appendChild($rec->importNode($el,true));
+elseif($v->childNodes)foreach($v->childNodes as $k=>$el)if($el){//$n++;if($n==$cn or !$cn)
+	$dest->appendChild($rec->importNode($el,true));}
 return $rec;}
 
 static function capture($dom,$va,$rec){//todo:iterate it
 [$c,$at,$tg,$cn]=opt($va,':',4); if(!$at)$at='class'; if(!$tg)$tg='div'; //id,a,...
 //if(!$g){if($tg=='img')$g='src'; elseif($tg=='meta')$g='content';}//props
 $r=$dom->getElementsByTagName($tg); $n=0; $c=str_replace('(ddot)',':',$c);
-foreach($r as $k=>$v){$attr=$v->getAttribute($at);//domattr($v,$at) //echo $v->nodeName.'-';
+foreach($r as $k=>$v){$attr=$v->getAttribute($at);//domattr($v,$at) //$v->nodeName.'-';
 if(($c && strpos($attr,$c)!==false) or !$c){$n++;//nb of similar captures
-	if($n==$cn or !$cn)self::importnode($rec,$v,$tg);}}
+	if($n==$cn or !$cn)self::importnode($rec,$v,$tg,$cn);}}
 return $rec;}
 
 static function detect($d,$o,$enc=''){$ret='';
@@ -143,7 +144,6 @@ $ch=curl_init($url);
 curl_setopt($ch,CURLOPT_HEADER,0);
 curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
 $ret=curl_exec($ch);
-curl_close($ch);
 return $ret;}
 
 static function vacuum($f){

@@ -33,7 +33,7 @@ foreach($r as $k=>$v){[$p,$c]=expl(':',$v);
 	elseif($c=='svg')$ico=svg($p); else $ico='';
 	$edit=lj('popbt','popup_pictography,edit___'.$k,$k).' ';
 	$rb[]=div(picto($k,24).' '.$edit.btd('ico'.$k,$ico));}
-$ret.=onxcols($rb,4,680);
+$ret.=build::onxcols($rb,4,680);
 return divd($rid,$ret);}
 }
 ?>

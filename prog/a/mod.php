@@ -54,7 +54,7 @@ return $rt;}
 
 static function menutabs($va){
 $r=self::menutree($va);
-return tabs($r);}
+return build::tabs($r);}
 
 static function mkdrop($r){$ret='';
 if(is_array($r))foreach($r as $k=>$v){
@@ -160,14 +160,14 @@ return implode('',$rt);}
 
 //[block],mod,param,title,condition,command,option,cache,hide,template,bt,div,prv,popup//mod format
 static function build($r){$cs='panel'; $csb='small';
-$lin=[]; $load=[]; $api=[]; $ret=''; $prw=''; $id=''; $obj='';
+$lin=[]; $load=[]; $api=[]; $ret=''; $prw=''; $id=''; $obj=''; $pg='';
 [$m,$p,$t,$c,$d,$o,$ch,$hd,$tp,$bt,$dv,$pv,$pp]=arr($r,13);
 if($bt)return self::btmod('',$r);
 if(auth(6))$pv=0;
 if(!$hd && !$pv)
 switch($m){
 //main
-case('LOAD'):
+case('LOAD'):echo get('module');
 	if($id=get('read'))$ret=art::read($id,$tp);
 	elseif($gmd=get('module'))$ret=self::callmod($gmd);
 	elseif($cmd=get('api'))$ret=api::call($cmd);
@@ -199,12 +199,14 @@ case('playconn'):$api=api::arts_rq('',''); $api['media']=$p; $api['nbyp']=10; $a
 case('gallery'):$ret=md::gallery($p,$o); break;//old
 case('tracks'):$ret=md::trkarts($p,$t,$d,$o); break;//api::tracks($t)
 case('trkrch'):$ret=md::trkrch($p,''); break;
+case('trktyp'):$ret=md::trktyp($p,''); break;
 case('last'):$ret=art::playb('last',3); break;
 case('cover'):$ret=md::cover($p,$o,$tp); break;
 case('friend_art'):$ret=md::friend_art($o); break;
 case('friend_rub'):$ret=md::friend_rub($o); break;
 case('related_arts'):$load=md::related_art($p); break;
 case('related_by'):$load=md::related_by($p); break;
+case('related'):$load=md::related($p); if(!$load)$ret=$t?$t:'nothing'; break;
 case('parent_art'):$load=md::parent_art($p); break;
 case('child_arts'):$load=md::child_arts($p); break;
 case('prev_next'):$ret=md::prevnext_art($d,$o,''); break;
@@ -215,8 +217,9 @@ case('popart'):$ret=pop::btart($p); break;
 case('pub_art'):$ret=md::pub_art_b($p,$t,$o); break;
 case('pub_arts'):$load=array_flip(explode(' ',$p)); break;
 case('pub_img'):$ret=md::pub_img($p); break;
-case('taxo_arts'):$load=md::taxo_arts($p); if($t>1)$t=ma::suj_of_id($t); break;
 case('taxo_nav'):$ret=taxonav::call($p,$o); break;
+case('taxo_arts'):$load=md::taxo_arts($p); if($t>1)$t=ma::suj_of_id($t); break;
+case('topoarts'):$ret=md::topoart($p); if($t>1)$t=ma::suj_of_id($t); break;
 case('read_art'):$ret=md::read_art($p,$t,$o); $t=''; break;
 case('short_arts'):$load=md::short_arts($p); if($o<=3)$prw=$o; break;
 case('most_polled'):$load=md::most_polled($p,$o); break;
@@ -225,14 +228,13 @@ case('same_title'):$load=md::same_title($p); break;
 case('deja_vu'):$load=ses('mem'); break;
 //com
 case('context'):$ret=md::call_context($p); break;
-case('rss_input'):if($p)$ret=rss::build(ajx($p),1); break;
 case('disk'):$_SESSION['dlmod']=$p; if($p && $p!='/')$pb='/'.$p;
 	$ret=divd('dsnavds',finder::home('dl','users/'.ses('qb').$pb)); break;//!
 case('finder'):$ra=['|','-']; $p=str_replace($ra,'/',$p); $o=str_replace($ra,'/',$o);
 	$ret=finder::home($p,$o); break;
 case('channel'):$ret=channel::home($p,$t,$d); $t=''; break;//old
 case('hour'):timelang();
-	if($p)$dat=date($p?$p:'ymd:Hm',ses('dayx')); else $dat=mkday('',1);
+	if($p)$dat=date($p?$p:'ymd:Hm',ses::$dayx); else $dat=mkday('',1);
 	if(!$d)$ret=btn($o,$dat); else $ret=divc($o,$dat); break;
 case('cart'):$ret=lkc('txtcadr','/app/cart',$p!=1?$p:'Cart');
 	$ret=divd('cart',self::m_pubart(ses('cart'),'scroll',7)); break; 
@@ -244,9 +246,8 @@ case('quality_stats'):$ret=md::quality_stats($p,$t,$o); break;
 //txt
 case('text'):$ret=stripslashes(urldecode($p)); if($o)$ret=divc($o,$ret); break;
 case('clear'):$ret=divc('clear',''); break;
-case('connector'):if($t)$ret=self::title('',$t);
-	if($o=='article')$ret.=tagc('article','justy',conn::read2($p,'',1));
-	else $ret.=conn::read2($p,'',1); break;
+case('connector'):if($t)$ret=self::title('',$t); $d=conn::read2($p,'',1);
+	if($o=='article')$ret.=tagc('article','justy',$d); else $ret.=div($d); break;
 case('conb'):if($p)$ret=conb::parse($p,'template'); break;
 case('conn'):$ret=conn::connectors($p,$o,'',''); break;
 case('basic'):$ret=cbasic::mod_basic($p,$o); break;
@@ -270,11 +271,12 @@ case('taxonomy'):$ret=md::mod_taxonomy($p,$o); break;
 case('folders'):$load=md::supertriad_ask($p,$o); $prw=$o; $obj=63; break;//rstr(5)?2:1
 case('desk'):$ret=desk::deskmod($p); break;
 case('desktop_apps'):$r=desk::build_from_datas($o?$o:'desk','','','');
-	$ret=desk::pane_icons($r,'icones'); break;
+	$ret=tag('section',['class'=>''],desk::pane_icons($r)); break;
 case('desktop_arts'):$ret=self::mdtitle($t).desk::deskarts($p,$o,'arts'); break;
 case('desktop_varts'):$ret=self::mdtitle($t).desk::deskarts($p,$o,'varts'); break;
 case('desktop_files'):$ret=self::mdtitle($t).desk::deskarts($p,$o,'files'); break;
 case('hierarchics'):$in=md::suj_hierarchic('active',''); $ret=ul($in,$cs); break;
+case('temporalnav'):$in=md::temporalnav(); $ret=ul($in,$cs); break;
 //cacheable
 case('hubs'):$mn=$_SESSION['mn']; if(count($mn)>=2){$t=$p!=1?$p:$t;
 	if($t)$t=lkc('','module/hubs',$t);
@@ -292,6 +294,7 @@ case('see_also-rub'):$t=$p!=1?$p:get('frm');
 case('see_also-source'):[$load,$t]=md::see_also_source($o); break;
 case('siteclics'):$ret=md::siteclics($p); break;
 case('rub_tags'):$ret=md::rub_tags($p); break;
+case('rss_input'):$ret=rss::call($p,2); break;
 case('rss'):$ret.=rss::home($p?$p:'rssurl',''); break;
 case('rssin'):$ret.=self::rssj_m($p); break;
 case('chat'):if($t)$t=lj('','cht'.$p.'_chat___'.$p,$t);
@@ -316,11 +319,13 @@ case('newsletter'):if($o)$ret=lj('txtcadr','popup_mailist,home__3_'.$p,'mailist'
 case('bridge'):$ret=md::bridge($p,$t); break;
 case('book'):$ret=md::book($p,$t); break;
 case('fav_mod'):$ret=self::fav_mod($p,$t); break;
+case('lastup')://$pg=$p; $pp=$m.'_mod,callmod___m:'.ajx($m).',d:'.$d.',t:'.ajx($t).',p:';
+	$load=md::lastup_arts((int)$p,(int)$o); break;
 //users
 case('login'):$ret=md::login_btn($p,$o); break;
 case('login_popup'):$ret=self::login_btn_p($p,$o); break;
 case('log-out'):if(ses('usr'))$ret.=lkc($csb,'/logout',picto('logout')); break;
-case('search'):$ret=search_btn($o); break;
+case('search'):$ret=build::search_btn($o); break;
 //banner
 case('Banner'):$ret=self::make_ban($p,$o,$t); break;
 case('ban_art'):if($p!=1)$ret.=lk(subdomain(ses('qb')),ma::read_msg($p,'')); break;
@@ -343,13 +348,13 @@ case('webs'):if($t)$ret=self::title('',$t,''); $ret.=web::stream($p,$o); break;
 case('module'):$ret=self::callmod($p); break;
 case('command'):$ret=self::com_mod($p); break;
 case('vacuum'):$ret=self::com_vacuum($p,$o); break;
-case('app'):[$pa,$pb,$oa,$ob]=expl('_',$p,4); 
+case('app'):[$pa,$pb,$oa,$ob]=expl('_',$p,4);
 	//if($pp){$rid=randid($pa); $ret=divd($rid,''); head::add('jscode',sj($rid.'_'.$pa.','.$pb.'___'.$oa.'_'.$ob));}
 	if($t)$ret=self::title('',$t,''); $ret.=appin($pa,$pb?$pb:'home',$oa,$ob); break;
 case('close'):$ret='';
 default:if(method_exists($m,'home'))$ret=$m::home($p,$o); break;}
 if($lin)$ret=self::mod_lin($lin,$t,$d,$o);//menus
-elseif($load)$ret=self::mod_load($load,$t,$d,$o,$obj,$prw,$tp,$id,$pp);//arts
+elseif($load)$ret=self::mod_load($load,$m,$t,$d,$o,$obj,$prw,$tp,$id,$pp,$pg);//arts
 elseif($api)$ret=api::load($api);//api
 if(!$ret && !$lin && !$load && $p && $m){//user_mods
 	$func=msql::val('',nod('modules'),$m);
@@ -364,7 +369,7 @@ return bubs::apps($r,$m,'','');}
 static function mod_lin_build($re,$t,$d,$o){$limit=is_numeric($o)?50*$o:50;
 if($d=='inline')$ret=implode('',$re);
 elseif($d=='cols')$ret=divc('menus',pop::columns($re,$o,'','menus'));
-elseif($d=='icons')$ret=desk::pane_icons($re,'icones').divc('clear','');
+elseif($d=='icons')$ret=desk::pane_icons($re).divc('clear','');
 elseif($d=='scroll')$ret=$t.scroll($re,implode('',$re),(is_numeric($o)?$o:17));
 else $ret=$t.divc('menus',implode('',$re));
 return $ret;}
@@ -386,18 +391,18 @@ if($lin)foreach($lin as $k=>$v){
 		elseif($v[2])$lk='/module/'.$v[2];
 		else $lk='';
 		//$re[]=lk($lk,$v[3],atc($css).att($v[2]));
-		$re[]=lh($lk,$v[3],atc($css).att($v[2]));}}
+		$re[]=lh($css,$lk,$v[3],att($v[2]));}}
 if($re)return self::mod_lin_build($re,$t,$d,$o);}
 
-static function mod_load($load,$t,$d,$o,$obj,$prw,$tp,$id,$pp){$ret='';
-if(!$prw)$prw='prw'; if($t)$t=self::title($load,$t,$obj); $mx=prmb(6);
+static function mod_load($load,$m,$t,$d,$o,$obj,$prw,$tp,$id,$pp,$pg){$ret='';
+if(!$prw)$prw='prw'; if($t)$t=self::title($load,$t,$obj,$pp,$pg); $mx=prmb(6);
 if($d=='read')foreach($load as $id=>$prw)$ret.=divc('justy',ma::read_msg($id,3)).br();
 elseif($d=='articles')$ret=ma::output_arts($load,$prw,$tp);
 elseif($d=='viewer')$ret=md::art_viewer($load);
 elseif($d=='multi'){geta('flow',1); $nl=get('nl'); $i=0; foreach($load as $id=>$md){$i++;
 	if($i<$mx)$ret.=art::playb($id,$md,$tp,$nl,''); else $ret.=div('',$md,$id);}}
 elseif($d=='api')$ret=api::mod_call($load);
-elseif($d=='icons')$ret=desk::pane_icons($load,'icones').divc('clear','');
+elseif($d=='icons')$ret=desk::pane_icons($load).divc('clear','');
 elseif($d=='panel' && is_array($load))foreach($load as $k=>$v)$ret.=self::pane_art($k,$o,$tp,$pp);
 elseif($d=='lines')$ret=self::m_publist($load,$tp);
 elseif($load)$ret=self::m_pubart($load,$d,$o,$tp,$pp);
@@ -406,14 +411,15 @@ elseif($o=='cols')$ret=pop::columns($ret,240,'','');
 elseif($o=='inline')$ret=divc('inline',$ret);
 elseif($o=='blocks')$ret=divc('blocks',$ret);
 elseif($o=='list')$ret=self::m_publist($load,$tp);
-if($ret)return $t.$ret;}
+if($ret)return divd($m,$t.$ret);}
 
 #titles
 static function mdtitle($d){if($d)return divd('titles',tagb('h3',$d));}
 
-static function title($load,$t,$n='',$bt=''){$nb='';
+static function title($load,$t,$n='',$bt='',$pg=''){$nb='';
 $na=$load?count_r($load):''; if($na)$nb=btn('small',nbof($na,$n?$n:1)).' ';
-return divd('titles',tagb('h3',$t).' '.$nb.$bt);}//pictxt('eye',)
+if($pg)$bt=divc('nbp',build::nb_pages_j($load,$bt,$pg));
+return divd('titles',tagb('h3',$t).' '.$nb.$bt);}
 
 #paneart
 static function pane_art($id,$o,$tp='',$pp='',$ra=[]){
@@ -422,28 +428,29 @@ if($ra['tag']??'')$p[$o]=$ra['tag'];
 else $p[$o]=sql::inner('tag','qdt','qdta','idtag','v',['cat'=>$o,'idart'=>$id]);
 if($ra)$ra=vals($ra,['id','frm','suj','img']);//api
 else $ra=ma::rqtart($id); if(!$ra)return;
-[$day,$frm,$suj,$amg]=$ra;
+[$day,$frm,$suj,$im]=$ra;
 $p['url']=urlread($id); $p['suj']=$suj;
 $tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';
 $p['jurl']=$tg.'_popart__3_'.$id.'_3';
 $p['cat']=catpict($frm,22); //$p+=art::tags($id,1);
-$im=pop::art_img($amg,$id); if($im)$p['img1']='/imgc/'.art::make_thumb_css($im);
-$p['sty']=$im?'background-image:url('.$p['img1'].')':'';
+$im=artim::ishero($im,$id);
+if($im)$im=artim::make_thumb($im);
+$p['sty']='background-image:'.($im?'url('.$im.')':'linear-gradient(33deg,rgba(93, 171, 255, 0.31),rgba(176,44,68,0.14)),linear-gradient(45deg,rgba(105, 28, 219, 0.27),rgba(249, 211, 3, 0.12))');
 return art::template($p,$tp);}
 
 #pubart
 static function pub_art($id,$tpl='',$pp=''){
 $rst=$_SESSION['rstr']; if(!$tpl)$tpl='pubart';
 $ra=ma::rqtart($id); if(!$ra)return;
-[$day,$frm,$suj,$amg,$nod,$thm,$lu,$name,$nbc,$src,$ib,$re,$lg]=arr($ra,13);
+[$day,$frm,$suj,$img,$nod,$thm,$lu,$name,$nbc,$src,$ib,$re,$lg]=arr($ra,13);
 $rt['url']=urlread($id); $rt['suj']=$suj;
 $tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';
  if($tg=='content')$tpl='pubartb';//hurl
 $rt['jurl']=$tg.'_popart__3_'.$id.'_3';
-if($rst[32]!=1 && $amg)$rt['img1']=pop::art_img($amg,$id);
+if($rst[32]!=1 && $img)$rt['img1']=artim::ishero($img,$id);//;
 if($rst[36]!=1){$rt['back']=art::back($id,$ib); $rt['cat']=$frm;}
 if($rst[7]!=1)$rt['date']=mkday($day);
-if($rst[4]!=1){$r=art::tags($id,1); if($r)$rt+=$r;}
+if($rst[4]!=1){$r=art::tags($id,1); if($r)$rt+=$r;}//??
 $rt['auteurs']=$rt['auteurs']??'';
 if($re)return divc('pubart',art::template($rt,$tpl));}
 
@@ -471,7 +478,7 @@ return self::mdtitle('Rss').rssin::home('rssurl'.($p?'_'.$p:''));}
 static function find_navigation($id){$ib=ma::ib_of_id($id);
 if(is_numeric($ib) && $ib!=$id && $ib){
 $t=pictxt('sup',ma::suj_of_id($ib));
-if(rstr(149))$lk=lh('/'.$ib,$t); else $lk=lk(urlread($ib),$t);
+if(rstr(149))$lk=lh('','/'.$ib,$t); else $lk=lk(urlread($ib),$t);
 $nav=tagb('h4',ma::popart($ib).' '.$lk);
 if($ib!=ses('read'))return self::find_navigation($ib).$nav;}}
 
@@ -480,7 +487,7 @@ $frm=get('frm'); $read=ses('read'); $mod=get('module');
 if($mod=='All'){$p['suj']=nms(100); $p['url']='module/All';}
 elseif($frm){$p['suj']=$frm; $p['url']='cat/'.$frm; $p['float']=catpict($frm,72);}
 elseif(!$frm)$p['suj']=nms(69);
-if(rstr(149))$p['title']=lh($p['url'],$p['suj']); else $p['title']=lk($p['url'],$p['suj']);
+if(rstr(149))$p['title']=lh('',$p['url'],$p['suj']); else $p['title']=lk($p['url'],$p['suj']);
 if($read && $o)$p['parent']=self::find_navigation($read);//rstr(78)
 return divd('titles',art::template($p,'titles'));}
 
@@ -490,7 +497,7 @@ $jx='popup_login,form___'.ses('usr').'_'.ses('iq').'_'.ajx(nms(54)).'_1';
 return lj('txtcadr',$jx,$t);}//if(!ses('usr'))
 
 static function icotag(){$rt=[];
-$r=['related_arts'=>'up','related_by'=>'down','see_also-source'=>'home','source'=>'home','rub_taxo'=>'topo-open','taxo_arts'=>'topo','same_title'=>'articles']+sesmk('tagsic');
+$r=['related_arts'=>'up','related_by'=>'down','see_also-source'=>'home','source'=>'home','taxo_arts'=>'topo','same_title'=>'articles']+sesmk('tagsic');//,'rub_taxo'=>'topo-open'
 foreach($r as $k=>$v)$rt[$k]=picto($v);
 return $rt;}
 
@@ -499,14 +506,17 @@ if($a)$ico=sesmk2('mod','icotag');
 $ra=sesr('modc','system'); $rm=[];
 $r=sesr('modc',prma('ARTMOD')); $rt=[];
 foreach($ra as $k=>$v)if($v[0]=='ARTMOD')$rm=$v; $d=$v[4]; $o=$v[5];
-foreach($r as $k=>$v){$v[1]=$id; $k=$ico[$v[1]]??$v[2];
-	$md=self::build($v); if($md)$rt[$k]=$md?scroll(0,$md,''):nmx([11,1]);}//
-if($d=='tabs')return tabs($rt,randid('tmd'));
+foreach($r as $k=>$v){
+	if($v[0]=='app'){$pr=expl('_',$v[1],4); $pr[2]=$id; $v[1]=join('_',$pr);} else $v[1]=$id;
+	$k=$ico[$v[1]]??$v[2];
+	$md=self::build($v);
+	if($md)$rt[$k]=$md?scroll(0,$md,''):nmx([11,1]);}//
+if($d=='tabs')return build::tabs($rt,randid('tmd'));
 return $rt?join('',$rt):nmx([11,16]);}
 
 static function fav_mod($p,$t){$ret='';
 $r=msql::read('',nod('coms'),1); $r=array_reverse($r);
-foreach($r as $k=>$v)if($v[3]){//if($p){if($v[1]==$p)$api=$v[2];}else 
+foreach($r as $k=>$v)if($v[3]??''){//if($p){if($v[1]==$p)$api=$v[2];}else 
 	$ret.=lj('','popup_api___'.ajx($v[2].',t:'.$v[1]),divc('txtcadr',pictxt('articles',$v[1])));}
 //if($api)return api::call($api);
 return $ret;}

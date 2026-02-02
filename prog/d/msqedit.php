@@ -1,8 +1,9 @@
 <?php 
 class msqedit{//used by configmod
+static $b='';
 
 static function save($p,$o,$prm=[]){
-msql::modif('',nod($p),$prm,'push','','');
+msql::modif(self::$b,nod($p),$prm,'push','','');
 return self::build($p,$o);}
 
 static function add($p,$o){
@@ -14,7 +15,7 @@ return $ret;}
 
 static function build($p,$o){
 $rh=explode(',',$o);
-$r=msql::read('',nod($p),'',$rh);
+$r=msql::read(self::$b,nod($p),'',$rh);
 $murl=msqa::murl('users','',ses('qb'),$p,'');
 $url=msqa::sesm('murl',$murl);
 if($r)return msqa::draw_table($r,$url,'');}
@@ -25,14 +26,14 @@ if($r)foreach($r as $k=>$v){
 	[$over,$cat]=split_right('/',$v,1);
 	//root,action,type,button,icon,auth
 	$ra[]=['Sections/'.$over,'/cat/'.$cat,'',$cat,'url',''];}
-msql::modif('',nod($p),$ra,'add','','');
+msql::modif(self::$b,nod($p),$ra,'add','','');
 return self::build($p,$o);}
 
-static function call($p,$o){
+static function call($p,$o,$b=''){
 $bt=lj('','popup_msqedit,add___'.ajx($p).'_'.$o,pictxt('add')).' ';
 $bt.=lj('','admsql_msqedit,build__15_'.ajx($p).'_'.$o,pictxt('refresh')).' ';
 //$bt.=lj('txtx','admsql_msqedit,call___herit_'.ajx($p),'herit overmenus');
-$bt.=msqbt('',nod($p)); ses::$r['popm']=$bt;
+$bt.=msqbt($b,nod($p)); ses::$r['popm']=$bt;
 return $bt.divd('admsql',self::build($p,$o));}
 
 static function home($p,$o){return self::call($p,$o);}

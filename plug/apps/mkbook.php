@@ -46,9 +46,9 @@ foreach($r as $k=>$v){$i=$k+1; $ib=str_pad($i,4,0,STR_PAD_LEFT);
 $d.='</ol></nav></body></html>';
 write_file($dr.'/toc.xhtml',$d);}
 
-static function build($r,$ti=''){//rmdir_r('_datas/200802OEBPS');
+static function build($r,$ti=''){
 $ret=''; $dy=date('ymd'); $ti=$ti?str::hardurl($ti):$dy;
-$dr='_datas/epub'; rmdir_r($dr); //$gz=$dr.'zip'; //gz_write2();
+$dr='_datas/epub'; if(is_dir($dr))rmdir_r($dr); //$gz=$dr.'zip'; //gz_write2();
 mkdir_r($dr); mkdir_r($dr.'/OEBPS'); mkdir_r($dr.'/META-INF');
 $d='<?xml version="1.0" encoding="'.self::$enc.'"?>
 <container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles></container>';
@@ -66,7 +66,7 @@ if($r)foreach($r as $k=>$v){$i=$k+1;
 	$txt=conb::parse($txt,'sconn2','epub');
 	$txt=str_replace('�','&oelig;',$txt);
 	$txt=self::enc($txt);
-	//$txt=embed_p($txt);
+	//$txt=conn::embed_p($txt);
 	//$txt=str_replace('</blockquote></p>','</p></blockquote>',$txt);
 	$rt.=$txt;
 	//$rt.=conn::read($v[3],3,'','1').br();

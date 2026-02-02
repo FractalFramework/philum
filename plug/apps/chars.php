@@ -11,12 +11,12 @@ if($n==127462 or $n==127280 or $n==127248)$sp=' ';
 $r=str_split($p); $ret='';
 $no=[1=>' ',"'",'"',',','.',':','?','!',';','/','_','-','é','è','à','ç','û','(',')'];
 foreach($r as $k=>$v){
-$maj=strtolower($v)==$v?0:1;
-$nb=$maj?65:71;
-$kb=in_array_b($v,$no);
-if($kb)$ret.=$no[$kb];
-elseif($v=="\n")$ret.=br();
-else $ret.=chr_b($n-$nb+ord($v)).$sp;}
+	$maj=strtolower($v)==$v?0:1;
+	$nb=$maj?65:71;
+	$kb=in_array_b($v,$no);
+	if($kb)$ret.=$no[$kb];
+	elseif($v=="\n")$ret.=br();
+	else $ret.=chr_b($n-$nb+ord($v)).$sp;}
 return $ret;}
 
 static function call($p,$o,$prm=[]){

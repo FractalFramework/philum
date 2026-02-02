@@ -6,9 +6,9 @@ $d=msql::val('',nod('tlex'),$id,1);
 self::$oAuth=$d;}
 
 static function post($p,$o){
-$oAuth=self::$oAuth;
+$oAuth=self::$oAuth; $u=prms(16);//ffw.ovh
 //$f='http://logic.ovh/api.php?app=tlxcall&mth=post&msg='.rawurlencode($p).'&prm=oAuth:'.$oAuth;
-$f='http://logic.ovh/api.php?oAuth='.$oAuth.'&msg='.($p);
+$f='http://ffw.ovh/api.php?oAuth='.$oAuth.'&msg='.($p);
 return file_get_contents($f);}
 
 static function read($p,$o){

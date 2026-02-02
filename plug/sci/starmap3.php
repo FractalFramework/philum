@@ -24,7 +24,7 @@ if($r)foreach($r as $k=>$v){
 	$x=$v['x']; $y=$v['y']; $st=$v['star']??''; $pl=$v['planet']??''; $stt=$v['status']??'';
 	$nm=$st?$st:('HD'.$v['hd']); //$pl?$pl: //$nm='HD'.$v['hd'];
 	if($stt=='amical')$clr=$green;
-	elseif($stt=='inamical')$clr=$orange;//img::imgclr($im,'ff9900')
+	elseif($stt=='inamical')$clr=$orange;//graph::imgclr($im,'ff9900')
 	elseif($stt=='danger')$clr=$red;
 	elseif($stt=='neutre')$clr=$yellow;
 	elseif($stt=='galaxy')$clr=$blue;
@@ -55,7 +55,7 @@ for($i=0;$i<12;$i++){$x=round($mw*$i); $y=round($mh*$i);
 
 static function draw($out,$r){
 $w=self::$w; $h=$w/2; $im=imagecreate($w,$h);
-$klr=img::clrpack($im);//spe
+$klr=graph::clrpack($im);//spe
 [$white,$black,$red,$green,$blue,$yellow,$cyan]=$klr;
 $font=imageloadfont('fonts/gdf/Fixedsys.gdf');
 ImageFilledRectangle($im,0,0,$w,$h,$black);
@@ -75,7 +75,7 @@ $sq=star::sq($pb);
 $r=star::build($sq,1); //pr($r);
 $rb=starlib::prep($r,$ra,$p); //pr($rb);
 $rb=starlib::positions($rb);
-$f='_datas/starmap3.png';
+$f='_datas/png/starmap3.png'; mkdir_r($f);
 self::draw($f,$rb);
 //$ret=image('/'.$f.'?'.randid());
 $ret=btim(''.$f.'?'.randid(),self::$w);

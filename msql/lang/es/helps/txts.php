@@ -2,12 +2,76 @@
 return ['_'=>['description'],
 'philum_pub_txt'=>['[http://philum.fr/2|[phi1|32::picto]:popart] [v[:ver]|txtsmall2:css] [http://philum.fr|[philum:picto]]'],
 'update_ok_alert'=>['mettre à jour le htaccess /ajax.php et le server param 5 (141201)'],
-'conn_help_txt'=>['General PrinciplernrnConnectors are written between brackets containing a \":\".rnThey are located on the right and not on the left for optimization reasons.rn[param|option:conn]rnrnShaping connectors :rn- [http://url.com] : \'word\' attached to a url.rn- [mot:b] : \'word\' to \'bold\'.rn- [[http://lien.com|example]:b] or [http://lien.com|[example:b]]: the connectors are have associated connectors: .jpg, .mp3, .mp4, .pdf, .webm etc.rnrnSome connectors accept multiple options (width/height) :rn[img.jpg|140/140:thumb]rnrnTo display a second instance connector of a button, simply do :rn[param|option:conn|button]rnrnTo open a connector on the spot, there is a special connector for this in an openable menu :rn- [ID:read|open:jconn]rnrnThe connector to call a module (paging objects) :rnThe first 4 parameters of a module are: \"param/title/mode/option\".rnRecent\" module for a \"public\" category, a \"hello\" title, a \"panel\" display mode and a limit of 10 entries :rn- [public/hello/panel/10:recents:module]rnrnConnectors to call a plugin :rnPlugins receive only one parameter and one option:rn- [microarts:plug]rn- [hello|1:connectors:plug] //there the option adds square bracketsrnTo create a button :rn- [hello|1:connectors:plug|bt] //but it doesn\'t work if \"hello\" is replaced by \"hello:b\" because it will be interpreted in the first instance, and will return its html code.rnrnYou can call a plugin through a module : rn- [microarts:plug:module]rnrnApi connector :rn[minday:14,order:id DESC,lang:all:api]rnrnThe principle of the connectors is declined in four other devices :rn- The Templates, which receive pre-named variables (for heavy operations that require a high speed of execution);rn- The Vue micro-template, which can receive a connector [varable_name:var] and return recurrent results (a list of objects);rn- The Codeline: allows to design simple connectors, using _VAR and _OPT which come from the custom connector command ;rn- The Basic, a concatenated (and brackless) connector language, which can also be used to build connectors and modules, using the resources of the Framework library.rnrnTranslated with www.DeepL.com/Translator (free version)'],
-'shop_class'=>['this section is obsoletern- activate the module \'cart\'rn- create one article by productrn- all articles affiliated to a product are available by the connecteur \':shop\'.rn- in an article we can call another article as product with connector \':prod\'. (accept multiple IDs with separator: \',\' ; Ex: [123,124,125:prod]rn- the connector [:form] make a form, used to validate the shopping.'],
-'console'=>['The set of modules (Mods) is saved in an msql table.rnIt generate the Html Divs of the page.rnIn the set, the block of modules correspond to a Div.rnEach module return the result of an application.rnrn- backup / restore : save and restore de sets of modulesrn- refresh : refresh the modules, used after a modification in Msql.rn- lab : to make tests or obtain the script of a module'],
+'conn_help_txt'=>['General Principle
+
+Connectors are written between brackets containing a ":".
+They are located on the right and not on the left for optimization reasons.
+[param|option:conn]
+
+Shaping connectors :
+- [http://url.com] : \'word\' attached to a url.
+- [mot:b] : \'word\' to \'bold\'.
+- [[http://lien.com|example]:b] or [http://lien.com|[example:b]]: the connectors are have associated connectors: .jpg, .mp3, .mp4, .pdf, .webm etc.
+
+Some connectors accept multiple options (width/height) :
+[img.jpg|140/140:thumb]
+
+To display a second instance connector of a button, simply do :
+[param|option:conn|button]
+
+To open a connector on the spot, there is a special connector for this in an openable menu :
+- [ID:read|open:jconn]
+
+The connector to call a module (paging objects) :
+The first 4 parameters of a module are: "param/title/mode/option".
+Recent" module for a "public" category, a "hello" title, a "panel" display mode and a limit of 10 entries :
+- [public/hello/panel/10:recents:module]
+
+Connectors to call a plugin :
+Plugins receive only one parameter and one option:
+- [microarts:plug]
+- [hello|1:connectors:plug] //there the option adds square brackets
+To create a button :
+- [hello|1:connectors:plug|bt] //but it doesn\'t work if "hello" is replaced by "hello:b" because it will be interpreted in the first instance, and will retu
+ its html code.
+
+You can call a plugin through a module : 
+- [microarts:plug:module]
+
+Api connector :
+[minday:14,order:id DESC,lang:all:api]
+
+The principle of the connectors is declined in four other devices :
+- The Templates, which receive pre-named variables (for heavy operations that require a high speed of execution);
+- The Vue micro-template, which can receive a connector [varable_name:var] and retu
+ recurrent results (a list of objects);
+- The Codeline: allows to design simple connectors, using _VAR and _OPT which come from the custom connector command ;
+- The Basic, a concatenated (and brackless) connector language, which can also be used to build connectors and modules, using the resources of the Framework library.
+
+Translated with www.DeepL.com/Translator (free version)'],
+'shop_class'=>['this section is obsolete
+- activate the module \'cart\'
+- create one article by product
+- all articles affiliated to a product are available by the connecteur \':shop\'.
+- in an article we can call another article as product with connector \':prod\'. (accept multiple IDs with separator: \',\' ; Ex: [123,124,125:prod]
+- the connector [:form] make a form, used to validate the shopping.'],
+'console'=>['The set of modules (Mods) is saved in an msql table.
+It generate the Html Divs of the page.
+In the set, the block of modules correspond to a Div.
+Each module retu
+ the result of an application.
+
+- backup / restore : save and restore de sets of modules
+- refresh : refresh the modules, used after a modification in Msql.
+- lab : to make tests or obtain the script of a module'],
 'trackbacks'=>['Waiting for moderation'],
 'microxml'=>['send/receive microsql table by xml'],
-'newhub_mail'=>['WecomernrnPlease remember your nickname and password : rnLogin: _USER rnpassword: _PASSrn(after 3 attempts you receive a mail to recall them)'],
+'newhub_mail'=>['Wecome
+
+Please remember your nickname and password : 
+Login: _USER 
+password: _PASS
+(after 3 attempts you receive a mail to recall them)'],
 'anchor_select'=>['Select position of the second part of the Anchor'],
 'anchor_dbclic'=>['use double-clic if it already exists'],
 'anchor_manual'=>['add anchors manually (top and bottom)'],
@@ -15,43 +79,147 @@ return ['_'=>['description'],
 'published_art'=>['Your article have been published'],
 'trackmail'=>['a comment had just been released'],
 'restrictions'=>['Access|Content|Articles|Art_infos|User_menu'],
-'design'=>['- [exit:b] :: shut down sessionsrn- [save:b] :: save table of definitions and create css, but not affect modsrn- [backup:b] :: make a backup of the tablern- [apply:b] :: make visible design for public ;rn- [select: design:15/clrset:15:b] :: select a table of definitionsrn- [herit:b] :: save datas from another tablern- [new_from:b] :: create new table from the current onern- [make_public:b] :: copy the design on the public hubrn- [inform_public:b] :: update public table with same namern- [rebuild:b] :: build css from the definitions of the tablern- [restore: design, clrset:b] :: revert the saved backuprn- [reset: design, clrset:b] :: use defaults definitionsrn- [update:b] :: add new definitions from default to current tablern- [refresh: saved_css, dev_css, clrset:b] :: see the built css'],
-'designwidths'=>['Choosing widths will affect all the needed classes in the cssrnrnA width of 0 mean delete this bloc, as visible in the bloc \'system\' named \'blocks\'rnrnBe carefull if you permut two column right and left, to be sure modules are affected to that columnrnrnInformations about widths in console are used to determinate widths of images and video and can be adjusted'],
-'designcond'=>['The start of a css editing session uses a specific style sheet.rnThe registration will affect the css seen by the visitors.rnrnThe Exit button disactivates the automatic update of the results on the site page.rnrnIt is possible to assign a design to a reading context (cat, home, etc.) by adding a dedicated system module, and after having duplicated the design and noted its id.'],
+'design'=>['- [exit:b] :: shut down sessions
+- [save:b] :: save table of definitions and create css, but not affect mods
+- [backup:b] :: make a backup of the table
+- [apply:b] :: make visible design for public ;
+- [select: design:15/clrset:15:b] :: select a table of definitions
+- [herit:b] :: save datas from another table
+- [new_from:b] :: create new table from the current one
+- [make_public:b] :: copy the design on the public hub
+- [inform_public:b] :: update public table with same name
+- [rebuild:b] :: build css from the definitions of the table
+- [restore: design, clrset:b] :: revert the saved backup
+- [reset: design, clrset:b] :: use defaults definitions
+- [update:b] :: add new definitions from default to current table
+- [refresh: saved_css, dev_css, clrset:b] :: see the built css'],
+'designwidths'=>['Choosing widths will affect all the needed classes in the css
+
+A width of 0 mean delete this bloc, as visible in the bloc \'system\' named \'blocks\'
+
+Be carefull if you permut two column right and left, to be sure modules are affected to that column
+
+Informations about widths in console are used to determinate widths of images and video and can be adjusted'],
+'designcond'=>['The start of a css editing session uses a specific style sheet.
+The registration will affect the css seen by the visitors.
+
+The Exit button disactivates the automatic update of the results on the site page.
+
+It is possible to assign a design to a reading context (cat, home, etc.) by adding a dedicated system module, and after having duplicated the design and noted its id.'],
 'formail'=>['Thank you for your message'],
 'userforms'=>['your datas has been saved with success'],
-'fontserver'=>['inject new definitions to the table \'server/edition_typos\',rnbecause this table is not affected by the updates.rnrnThe news definitions can come from :rn- from update of table \'system/edition_fonts\' ;rn- from a .tar archive located in \'/fonts\' of user space disk ;rn- from the plugin \'addfonts\', who save typos from web starting from the css classe @face-fonts.'],
-'clbasic'=>['To write connecteors or module we use the language named \'codeline basic\', abble to call functions from core, or others modules or connectors.rnrn/apply functions to paramrn_PARAM|txtit:cssrn/orrntxtit:cssrnrn/iterationrntxtit:css|u:html|18:sizernrn/tablesrn+system/edition_typosbrowsers/|msql_read:core rnmake_table:corern_1 _2:textrnrn/call a connectorrn_PARAM|txtit:css|h:conn'],
-'templates'=>['templates for articles need to be assigned in console (global) or in article himself (local) to be activated ;rnrnuse restriction 55 \'user template\' to activate the procedure of searching user template, then public template, then the one bydefault. (not needed for the template of articles)'],
-'template'=>['layout structurernsuffix \'j\': if rstr(8) enabled (ajax mode)'],
+'fontserver'=>['inject new definitions to the table \'server/edition_typos\',
+because this table is not affected by the updates.
+
+The news definitions can come from :
+- from update of table \'system/edition_fonts\' ;
+- from a .tar archive located in \'/fonts\' of user space disk ;
+- from the plugin \'addfonts\', who save typos from web starting from the css classe @face-fonts.'],
+'clbasic'=>['To write connecteors or module we use the language named \'codeline basic\', abble to call functions from core, or others modules or connectors.
+
+/apply functions to param
+_PARAM|txtit:css
+/or
+txtit:css
+
+/iteration
+txtit:css|u:html|18:size
+
+/tables
++system/edition_typosbrowsers/|msql_read:core 
+make_table:core
+_1 _2:text
+
+/call a connector
+_PARAM|txtit:css|h:conn'],
+'templates'=>['templates for articles need to be assigned in console (global) or in article himself (local) to be activated ;
+
+use restriction 55 \'user template\' to activate the procedure of searching user template, then public template, then the one bydefault. (not needed for the template of articles)'],
+'template'=>['layout structure
+suffix \'j\': if rstr(8) enabled (ajax mode)'],
 'track_follow'=>['e-mail (recommended)'],
 'track_captcha'=>['copy code here'],
 'update_ok'=>['The software is up-to-date'],
 'update_help'=>['If an error occurs, renove all from install.php'],
-'upload_folder'=>['select a directory xhere send documents ;rnto send a folder of images, just contain them into a .tar archive'],
-'bool'=>['Bolean method : return common articles to all researches on each word'],
-'dev'=>['A copy of the program is in the folder /progb. rnYou must be in Dev (/?dev=dev) for the modifications take effect.rn\'2prod\' means copy progb in prog.'],
-'blocsystem'=>['The bloc \'system\' is not used to build a Div ;rnIt define the parameters of the blocks of modules.'],
+'upload_folder'=>['select a directory xhere send documents ;
+to send a folder of images, just contain them into a .tar archive'],
+'bool'=>['Bolean method : retu
+ common articles to all researches on each word'],
+'dev'=>['A copy of the program is in the folder /progb. 
+You must be in Dev (/?dev=dev) for the modifications take effect.
+\'2prod\' means copy progb in prog.'],
+'blocsystem'=>['The bloc \'system\' is not used to build a Div ;
+It define the parameters of the blocks of modules.'],
 'block'=>['Module block (div) to which the module belongs'],
 'import_art'=>['URL of article to import'],
 'public_design'=>['this will affect public design'],
-'modules'=>['- content : built for the main div ;rn- multi : can be displayed anywhere anytime ;rn- once : can be displayed one time (used modules don\'t appear) ; rn- connectors : shortcuts to connectors ;rn- articles : attached to the current article ;rn- user  : user modules'],
+'modules'=>['- content : built for the main div ;
+- multi : can be displayed anywhere anytime ;
+- once : can be displayed one time (used modules don\'t appear) ; 
+- connectors : shortcuts to connectors ;
+- articles : attached to the current article ;
+- user  : user modules'],
 'rssurl_1'=>['Import articles of the feeds where column \'bot\' is checked in the table \'_rssurl\''],
 'words'=>['Known words sorted by relevance'],
-'book'=>['multiple params [,] : rn- script to call articles ; rn- list of ID [ ] ;rn4 options [/] :rn- title ;rn- 1=growing ID, 2=inverse;rn- template (\'book\' by default) ;rn- template for cover (\'book_cover\') :rnrnex: [cat=public~nbdays=30,412 413 414|hello/2/book:book]rnrnIt\'s possible to create an ID list using the plugin \'favs\'.'],
-'call_arts'=>['Parameters for script to articles :rn- cat : category rn- nocat : category to excludern- tag : (specify)rn- notag : tag to excludern- nbdays : \'30-60\' from 30 to 60 joursrn- lasts : \'0-10\' the 10 last articlesrn- preview : \'true/false/full\' display modern- priority : level of priority (1 à 4)rn- nopriority : level of priority to exclude (1 à 4)rn- lenght : \'<4000\' less than 4000 characters'],
-'htaccess'=>['The file named \'.htaccess\' must have enough permissions.rnrnThe htaccess is designed to use the url as a console of commands for actions.rnrnVerify the specific defs for each server.'],
-'favs'=>['The symbol Like add articles in your favorites.rnLater you can build a book of your favs.'],
-'icons'=>['They are the existing icons from the typo \'pictos\', and the sockets for used icons by the system.rnAffect a connector to the sockets, who say the type of icon : typo, image or svg. rnThe existing icons are in the editor.'],
-'finder'=>['Finder is for navigate in directories, virtual directories, and to share files.rnrn- disk : user directoriesrn- shared : shared filesrn- list : display listrn- panel : display pagesrn- local/global/distant : virtual directoriesrn- virtual/real : shared files modern- picto/mini : pictos or thumbnails'],
-'comline'=>['Module control linern- connecteur [SCRIPT|bouton:module:ok]rn- or [SCRIPT|bouton:MODULENAME:module:ok]rn- or [:MODULENAME:module:ok].rn- url : /module/SCRIPT'],
-'mod_cond'=>['Default contexts are (nothing), home, cat, art.rn[0-9] : context of a article (id)rn[a-z] : context of a targeted categoryrn[a-z] : context given by url /context/name'],
+'book'=>['multiple params [,] : 
+- script to call articles ; 
+- list of ID [ ] ;
+4 options [/] :
+- title ;
+- 1=growing ID, 2=inverse;
+- template (\'book\' by default) ;
+- template for cover (\'book_cover\') :
+
+ex: [cat=public~nbdays=30,412 413 414|hello/2/book:book]
+
+It\'s possible to create an ID list using the plugin \'favs\'.'],
+'call_arts'=>['Parameters for script to articles :
+- cat : category 
+- nocat : category to exclude
+- tag : (specify)
+- notag : tag to exclude
+- nbdays : \'30-60\' from 30 to 60 jours
+- lasts : \'0-10\' the 10 last articles
+- preview : \'true/false/full\' display mode
+- priority : level of priority (1 à 4)
+- nopriority : level of priority to exclude (1 à 4)
+- lenght : \'<4000\' less than 4000 characters'],
+'htaccess'=>['The file named \'.htaccess\' must have enough permissions.
+
+The htaccess is designed to use the url as a console of commands for actions.
+
+Verify the specific defs for each server.'],
+'favs'=>['The symbol Like add articles in your favorites.
+Later you can build a book of your favs.'],
+'icons'=>['They are the existing icons from the typo \'pictos\', and the sockets for used icons by the system.
+Affect a connector to the sockets, who say the type of icon : typo, image or svg. 
+The existing icons are in the editor.'],
+'finder'=>['Finder is for navigate in directories, virtual directories, and to share files.
+
+- disk : user directories
+- shared : shared files
+- list : display list
+- panel : display pages
+- local/global/distant : virtual directories
+- virtual/real : shared files mode
+- picto/mini : pictos or thumbnails'],
+'comline'=>['Module control line
+- connecteur [SCRIPT|bouton:module:ok]
+- or [SCRIPT|bouton:MODULENAME:module:ok]
+- or [:MODULENAME:module:ok].
+- url : /module/SCRIPT'],
+'mod_cond'=>['Default contexts are (nothing), home, cat, art.
+[0-9] : context of a article (id)
+[a-z] : context of a targeted category
+[a-z] : context given by url /context/name'],
 'updfonts'=>['after download a typo, go to admin/fonts and do \'inject\' ; that will unzip file, copy it, and add an entry in the server table, who is not aware of the update, unlike the table \'system\'.'],
 'updpictos'=>['The system need pictograms, download the font \'philum\' in the tab \'pictos\''],
-'breadcrumb'=>['The Breadcrumb display the name of the category and other infos.rnLe restriction Access/user_templates (55) let use the template named \'titles\' in place of the default one.'],
+'breadcrumb'=>['The Breadcrumb display the name of the category and other infos.
+Le restriction Access/user_templates (55) let use the template named \'titles\' in place of the default one.'],
 'login'=>['log-in or new user'],
 'mail_article'=>['A friend send you this article:'],
-'log_no'=>['username required'],
+'log_no'=>['use
+ame required'],
 'log_nopass'=>['bad password'],
 'log_nohub'=>['no new users'],
 'log_newser'=>['Register as New User of level:'],
@@ -61,25 +229,78 @@ return ['_'=>['description'],
 'newsletter_ko'=>['no result'],
 'newsletter_uns'=>['unsubscribe'],
 'conn_pub'=>['The connectors are used in place of html and let write commands for applications'],
-'search'=>['Buttons:rn- score: ranking by quantity of resultsrn- segment: whole wordrn- boolean: several words (separated by a space)rn- lang, cat, tag: include or exclude linked words (meta)rn- limit: minimum number of occurrences (case sensitive)rnrnTips :rn- empty search: only concerns parametersrn- id : the id of an article allows to open it immediatelyrn- date: articles of the targeted period (Y-m or Y-m-d)rn- del button: clears the cachern- \'1\' returns the last published articlern- fast forward\' button: continuous search on other time fields until an answer is found (if this option is active)rn- API script, (use a:\':\' and a\',\') ex: \"search:word1|mot2,avoid:word3,cat:Justice,tag:justice|injustice\"rn- precise date (API): \"date:1967,\" or \"date:-08-15\" (every 15 August)'],
-'defcons'=>['Site import definitions are anchor points where the copy of the relevant parts of the page begins and ends.rnrnThese are the title and body text, and optionally a cap.rnIf the exit point is not specified then the normal end of the tag will be chosen (this may not work).rnrnBy specifying the Dom\'s targeting connectors you can dispense with the entry and exit tags. Their wording consists of : \"prop:attr:tag:n\"rnwhere tag is the tag, attribute (default class), property. \"n\" specifies one iteration among all matching iterations (1 by default).rne.g. \"content:::2\" var search (the second encountered) div class=\"content\".rnrnThe \"utf=1\" option forces utf-8 decoding if it is not detected, and \"utf=2\" disallows it, which can be useful if the Dom returns nothing.rnrnThe \"post-treat\" option acts as a trim output, and allows you to delete the first line, the title, a link or a line or link containing a keyword, destroy tags, or delimit a since->to.'],
+'search'=>['Buttons:
+- score: ranking by quantity of results
+- segment: whole word
+- boolean: several words (separated by a space)
+- lang, cat, tag: include or exclude linked words (meta)
+- limit: minimum number of occurrences (case sensitive)
+
+Tips :
+- empty search: only conce
+s parameters
+- id : the id of an article allows to open it immediately
+- date: articles of the targeted period (Y-m or Y-m-d)
+- del button: clears the cache
+- \'1\' retu
+s the last published article
+- fast forward\' button: continuous search on other time fields until an answer is found (if this option is active)
+- API script, (use a:\':\' and a\',\') ex: "search:word1|mot2,avoid:word3,cat:Justice,tag:justice|injustice"
+- precise date (API): "date:1967," or "date:-08-15" (every 15 August)'],
+'defcons'=>['Site import definitions are anchor points where the copy of the relevant parts of the page begins and ends.
+
+These are the title and body text, and optionally a cap.
+If the exit point is not specified then the normal end of the tag will be chosen (this may not work).
+
+By specifying the Dom\'s targeting connectors you can dispense with the entry and exit tags. Their wording consists of : "prop:attr:tag:n"
+where tag is the tag, attribute (default class), property. "n" specifies one iteration among all matching iterations (1 by default).
+e.g. "content:::2" var search (the second encountered) div class="content".
+
+The "utf=1" option forces utf-8 decoding if it is not detected, and "utf=2" disallows it, which can be useful if the Dom retu
+s nothing.
+
+The "post-treat" option acts as a trim output, and allows you to delete the first line, the title, a link or a line or link containing a keyword, destroy tags, or delimit a since->to.'],
 'apps'=>['the restriction 61 is activated : the default Apps are loaded, and the yours are added after (system/default_apps)'],
-'apps_add'=>['Apps presets. when rstr 61 is active, the user apps replace the system apps.rnThe button \"upload\" will replace all your apps ! make bakups'],
-'trackhelp'=>['- links, images and vidéos (youtube etc...) are automatically convertedrn- link to an article from the site : \'1234|link\' or \'1234:pub\' (display title) rn- #public : call the room \'public\' of the Chat'],
-'suggest'=>['You can import web content from the article url, a preview will try to display. Don\'t worry if the page doesn\'t display correctly.rnrnThe mail field allows you to add a mention \"Suggested by [mail prefix]\". You will be notified when the page is published.rnrnThank you for your contribution!'],
+'apps_add'=>['Apps presets. when rstr 61 is active, the user apps replace the system apps.
+The button "upload" will replace all your apps ! make bakups'],
+'trackhelp'=>['- links, images and vidéos (youtube etc...) are automatically converted
+- link to an article from the site : \'1234|link\' or \'1234:pub\' (display title) 
+- #public : call the room \'public\' of the Chat'],
+'suggest'=>['You can import web content from the article url, a preview will try to display. Don\'t worry if the page doesn\'t display correctly.
+
+The mail field allows you to add a mention "Suggested by [mail prefix]". You will be notified when the page is published.
+
+Thank you for your contribution!'],
 'suggest_ok'=>['Your article have been published'],
-'console_cond'=>['The modules (the page elements) belong to a[context: b]. By default, they are:\"home\",\"cat\" (for a category of articles) and \"art\" (read an article). We can create personalized contexts, declined of cat and art.rnrnSo when you call the page /context/name all modules belonging to context \"name\" are displayed.rnrnThe context of a module is defined in the output of each module. If a module is to appear in more than one context, create as many identical modules as necessary using the \"new\"button.'],
-'console_mods'=>['Here are the number of versions of the table of mods.rnThis menu does not affect the configuration. rnTo set the current mods as visible for the visitors, do \'apply\' or set it in [config/params/table_mods:l] (change the number, that will create a new table from current if it not exists)'],
+'console_cond'=>['The modules (the page elements) belong to a[context: b]. By default, they are:"home","cat" (for a category of articles) and "art" (read an article). We can create personalized contexts, declined of cat and art.
+
+So when you call the page /context/name all modules belonging to context "name" are displayed.
+
+The context of a module is defined in the output of each module. If a module is to appear in more than one context, create as many identical modules as necessary using the "new"button.'],
+'console_mods'=>['Here are the number of versions of the table of mods.
+This menu does not affect the configuration. 
+To set the current mods as visible for the visitors, do \'apply\' or set it in [config/params/table_mods:l] (change the number, that will create a new table from current if it not exists)'],
 'scripts'=>['p:param,t:titre,d:commande,o:option,ch:cache,hd:hide,tp:template,bt:button,dv:div,pv:private,pp:popup|bbutton:module[/n]'],
 'video'=>['Youtube, Dailymotion, Vimeo, Rutube, vk.com, Livestream'],
-'popvideo'=>['- option |1 : load video playerrn- option |440/320 : width/height'],
+'popvideo'=>['- option |1 : load video player
+- option |440/320 : width/height'],
 'pdf'=>['The PDF player need to be loged on Google '],
 'art_render'=>['The default mode of render of articles are given by the restrictions 5 and 41 (config arts) but can be overloaded here with : false, preview, full, read, auto'],
-'desklr'=>['attributs of Desktop :rntop,#_4,#_2rnto bottom,#002594,#06999e,#878787,#bf1755,#4f004frnphilum/photo/space/crabhubble.jpgrnphilum/photo/space (random img of folder)'],
+'desklr'=>['attributs of Desktop :
+top,#_4,#_2
+to bottom,#002594,#06999e,#878787,#bf1755,#4f004f
+philum/photo/space/crabhubble.jpg
+philum/photo/space (random img of folder)'],
 'submod_types'=>['sub-modules types: mod plug art msql link finder ajax admin'],
 'chatxml'=>['ChatXml works between Philum servers  (see \'admin/params\')'],
 'chatcall'=>['_NAME is inviting you to chat NOW!'],
-'miniconn'=>['Syntax of Miniconns :rn- links, images, videos are embededrn- canal:room call a canal of the chatrn- name:twitter = open a rss fromTwitterrn- 1234:pub = link to an article (ID)rn- bold:b, italic:i, underscore:u, thethree:b:i:urn- connectors : [param|option:connector]'],
+'miniconn'=>['Syntax of Miniconns :
+- links, images, videos are embeded
+- canal:room call a canal of the chat
+- name:twitter = open a rss fromTwitter
+- 1234:pub = link to an article (ID)
+- bold:b, italic:i, underscore:u, thethree:b:i:u
+- connectors : [param|option:connector]'],
 'artstats'=>['The stats for an article are visibles only after have been flushed (one time by day)'],
 'track_orth'=>['Please think to be understood, and breath three times before to write !'],
 'tracks_error1'=>['bad Captcha'],
@@ -99,12 +320,22 @@ return ['_'=>['description'],
 'twitter_oAuth'=>['parameters of twitter API (https://apps.twitter.com/)'],
 'tag_rename'=>['Rename a tag could delete and associate articles to an existing tag'],
 'usertags'=>['Add tags to this article and retrieve themes in your favorites. The user tags are publics.'],
-'api'=>['The API give datas from a query.Using json:1 give the json streamrnUrl : /api/{command}'],
+'api'=>['The API give datas from a query.Using json:1 give the json stream
+Url : /api/{command}'],
 'like'=>['The Likes are public'],
 'overcats'=>['a category can existing with an empty value, in this cas the categorie is listed at root'],
 'overcats_menu'=>['Overcats can be used as a module, as an admin menu or as a desktop menu, using an app with type=desktop and process=overcats'],
-'menubub'=>['types of menububs : rn- (no type) : (a-z) = category, (0-9) = article, /module/... = link rn- module : open content of a module (ex: ///lines/4///1:categories ) rn- app : (open an app) rn- ajax : (ex: popup_track___admin)'],
-'spitable'=>['Atoms are represented by means of their electronic configuration. The electrons are distributed in orbits, and each orbit has potentially as many sub-orbit than the number of the orbit (the 5th can have 5 sub-orbits). Each sub-orbit has an identical configuration, made of a number of locations of electrons increasing of 4 to each sub-orbital level. The number of electrons in each orbit is the sum of sub-orbital (eg 32 is composed of 2+6+10+14).rnrnThe advantage of this representation is to highlight the fact that the sub-orbits are talking chemical families to which those atoms are represented.rnrnPeriodicity (spiral) of the elements is thus defined by a very simple algorithm (which does not include some variations on large atoms).rnWe can see that the overall structure (small - large - small) is maintained at all levels, and that this table can be extended indefinitely.'],
+'menubub'=>['types of menububs : 
+- (no type) : (a-z) = category, (0-9) = article, /module/... = link 
+- module : open content of a module (ex: ///lines/4///1:categories ) 
+- app : (open an app) 
+- ajax : (ex: popup_track___admin)'],
+'spitable'=>['Atoms are represented by means of their electronic configuration. The electrons are distributed in orbits, and each orbit has potentially as many sub-orbit than the number of the orbit (the 5th can have 5 sub-orbits). Each sub-orbit has an identical configuration, made of a number of locations of electrons increasing of 4 to each sub-orbital level. The number of electrons in each orbit is the sum of sub-orbital (eg 32 is composed of 2+6+10+14).
+
+The advantage of this representation is to highlight the fact that the sub-orbits are talking chemical families to which those atoms are represented.
+
+Periodicity (spiral) of the elements is thus defined by a very simple algorithm (which does not include some variations on large atoms).
+We can see that the overall structure (small - large - small) is maintained at all levels, and that this table can be extended indefinitely.'],
 'fav_fav'=>['Articles favorites'],
 'fav_tags'=>['Articles referenced by added Tags'],
 'fav_com'=>['Api\'s parameters for list of articles'],
@@ -113,24 +344,56 @@ return ['_'=>['description'],
 'fav_shar'=>['Shared Articles'],
 'fav_edit'=>['Script of the Api'],
 'fav_like'=>['Liked Articles'],
+'fav_dock'=>['Clavado'],
+'fav_log'=>['Token'],
 'levenshtein'=>['Algorithm of Levenshtein'],
 'study'=>['Allows you to create a text study, sentence by sentence.'],
-'tlex'=>['Publish on Tlex : add the oAuth of the Api in the table users/(hub)_tlex.rnIt can have many accounts.'],
-'twit'=>['General conditions of use: the information obtained must not be used for commercial purposes or as a physical or moral nuisance. rnPrivacy policy: The information obtained can not be relayed without the authorization of the persons concerned.'],
+'tlex'=>['Publish on Tlex : add the oAuth of the Api in the table users/(hub)_tlex.
+It can have many accounts.'],
+'twit'=>['General conditions of use: the information obtained must not be used for commercial purposes or as a physical or moral nuisance. 
+Privacy policy: The information obtained can not be relayed without the authorization of the persons conce
+ed.'],
 'meta_abilities'=>['open / close abilities'],
 'umrenum'=>['Renumber items by date and categorize favorites, retweets, and status'],
-'search_cases'=>['Click several times in the menu to:rn- include onlyrn- excludern- ignore (by default)rnthe terms of the request'],
-'star'=>['- ra (right ascension in hours), dc (declination in degrees), and dist (distance in AL)rnex: ra>15,ra<21,dc>-1,dc<5,dist>13,dist<19rnrn- radius parameter (default degrees, h, m, rad, mas)rnex: ra=18,dc=2,dist=16,radius=3rnrn- around a starrnex: 88601,dist<30,radius=1hrnrn- a list of named stars (HIP by default) :rnHD 150680, hd150680, hip99461, 88601, 2021'],
-'gaia'=>['example 1, with dc (declination), ra (right ascent) and dist (degrees and AL): rndc > -23.432, dc < -21.82, ra > 255.25, ra < 270.83, dist < 100rnrna list of stars named by their id Gaia (number of 19 digits) separated by a space.'],
-'umrec'=>['To call a specific message: rnhttp://oumo.fr/context/compile/O6-144rnTo integrate it in a web page via an iframe (use id) :rnhttp://oumo.fr/plug/umrec/1464rnFrom the editor (article or comments):rn[1464:umcom:on] display the blockrn[1464|1:umcom:on] display the link'],
+'search_cases'=>['Click several times in the menu to:
+- include only
+- exclude
+- ignore (by default)
+the terms of the request'],
+'star'=>['- ra (right ascension in hours), dc (declination in degrees), and dist (distance in AL)
+ex: ra>15,ra<21,dc>-1,dc<5,dist>13,dist<19
+
+- radius parameter (default degrees, h, m, rad, mas)
+ex: ra=18,dc=2,dist=16,radius=3
+
+- around a star
+ex: 88601,dist<30,radius=1h
+
+- a list of named stars (HIP by default) :
+HD 150680, hd150680, hip99461, 88601, 2021'],
+'gaia'=>['example 1, with dc (declination), ra (right ascent) and dist (degrees and AL): 
+dc > -23.432, dc < -21.82, ra > 255.25, ra < 270.83, dist < 100
+
+a list of stars named by their id Gaia (number of 19 digits) separated by a space.'],
+'umrec'=>['To call a specific message: 
+http://oumo.fr/context/compile/O6-144
+To integrate it in a web page via an iframe (use id) :
+http://oumo.fr/plug/umrec/1464
+From the editor (article or comments):
+[1464:umcom:on] display the block
+[1464|1:umcom:on] display the link'],
 'mercury'=>['Universal web player'],
 'mercurykey'=>['Admin: add the api_key (mercury.com) in the mercury table, row 1 column 0'],
 'not_published'=>['Article not published'],
-'tables'=>['Separators : rn- columns:\"|\" or [coma]rn- lines: \"¬\"or [line break]'],
+'tables'=>['Separators : 
+- columns:"|" or [coma]
+- lines: "¬"or [line break]'],
 'twits'=>['calls a series of twits designated by their numerical id and separated by a space'],
 'tweetfeed_help'=>['use only one or more \'api_arts\' module'],
 'purpose'=>['Add and vote on proposals; you can only delete your entry on the current day.'],
-'nodes'=>['This will create a new layer of Hubs (a Node).rnLaunch a node: /?qd=nodenamernModify the mysql connection to associate another database, otherwise a new set of tables with the new prefix will be created.'],
+'nodes'=>['This will create a new layer of Hubs (a Node).
+Launch a node: /?qd=nodename
+Modify the mysql connection to associate another database, otherwise a new set of tables with the new prefix will be created.'],
 'updatenotes'=>['release notes'],
 'lastupdate'=>['Last synchronization'],
 'softwareupdated'=>['The software has been updated'],
@@ -138,16 +401,46 @@ return ['_'=>['description'],
 'softwaredist'=>['Distant version'],
 'updatedetails'=>['details of the last update'],
 'updateno'=>['This server is not set to receive updates'],
-'cookie'=>['The cookie named \"iq\" contains the id of your IP, which makes it possible to consider only one visitor even if your IP changes. See [privacy:help|data privacy policy].'],
-'privacy'=>['The site does not use or resell any data related to visitors, except for site traffic statistics.rnAll activities on the site are cancelled on average every year.'],
-'urmrsrch'=>['Search for :rn- an id (1873)rn- a title (Oay-126)rn- a date ymd (150706)rn- a term in any languagern- a list of ids or titles (ot-100,1873,312-14) (also in spreadsheet mode)'],
-'starmap'=>['HD or HIP stars (HIP by default)rne.g. HD 150680, hd150680, hip99461, 88601, 2021rnpre-set commands: knownstars, allstarsrnAccepts Star requests (ra, dc, dist, radius)'],
+'cookie'=>['The cookie named "iq" contains the id of your IP, which makes it possible to consider only one visitor even if your IP changes. See [privacy:help|data privacy policy].'],
+'privacy'=>['The site does not use or resell any data related to visitors, except for site traffic statistics.
+All activities on the site are cancelled on average every year.'],
+'urmrsrch'=>['Search for :
+- an id (1873)
+- a title (Oay-126)
+- a date ymd (150706)
+- a term in any language
+- a list of ids or titles (ot-100,1873,312-14) (also in spreadsheet mode)'],
+'starmap'=>['HD or HIP stars (HIP by default)
+e.g. HD 150680, hd150680, hip99461, 88601, 2021
+pre-set commands: knownstars, allstars
+Accepts Star requests (ra, dc, dist, radius)'],
 'tag_pictos'=>['backup config in an msql table'],
-'pictos'=>['Lista de pictogramas en el sistema, debido al tipo de letra \'philum\'.rnrnLas asignaciones reciben un conector, que especifica la naturaleza del icono, un tipo de letra, una imagen o un objeto vectorial svg. rn(los iconos existentes son visibles en el editor)'],
-'menubub_edit'=>['menubub tipos: rn- (sin tipo): intérprete (a-z) = categoría, (0-9) = artículo, /módulo/... = enlacern- módulo : abre el contenido de un módulo (ej: ///líneas/4///1:categorías )rn- app : (abre una aplicación)rn- ajax : (ej: popup_track___admin)'],
+'pictos'=>['Lista de pictogramas en el sistema, debido al tipo de letra \'philum\'.
+
+Las asignaciones reciben un conector, que especifica la naturaleza del icono, un tipo de letra, una imagen o un objeto vectorial svg. 
+(los iconos existentes son visibles en el editor)'],
+'menubub_edit'=>['menubub tipos: 
+- (sin tipo): intérprete (a-z) = categoría, (0-9) = artículo, /módulo/... = enlace
+- módulo : abre el contenido de un módulo (ej: ///líneas/4///1:categorías )
+- app : (abre una aplicación)
+- ajax : (ej: popup_track___admin)'],
 'umrennum'=>['Renumerar artículos por fecha y ordenar favoritos, retweets y estado'],
 'searchlang'=>['búsqueda multilingüe'],
 'umsearchlang'=>['búsqueda multilingüe'],
 'tweetfeed'=>['Transmisión de Twitter'],
-'umrsrch'=>['Búsqueda:rn- un id (1873)rn- un título (Oay-126)rn- una fecha ymd (150706)rn- un término en cualquier idiomarn- una lista de ids o títulos (ot-100,1873,312-14) (también en modo hoja de cálculo)'],
-'clusters'=>['Tag clusters: categorías genéricas obtenidas por emergencia']]; ?>
+'umrsrch'=>['Búsqueda:
+- un id (1873)
+- un título (Oay-126)
+- una fecha ymd (150706)
+- un término en cualquier idioma
+- una lista de ids o títulos (ot-100,1873,312-14) (también en modo hoja de cálculo)'],
+'clusters'=>['Tag clusters: categorías genéricas obtenidas por emergencia'],
+'deco'=>['Las decoraciones pueden llamarse mediante conectores simplificados o explícitos, y atajos.
+- :under, :double, :dotted, :dashed, :wavy, :strike, :over, :underover: son expresiones de :deco.
+- :u{clr} es un atajo de :under
+- :bdr{clr} es una expresión de :border
+- :bkg{clr} = background
+- :bdl = :borderline es una expresión de border con atributo bottom'],
+'utime'=>['- valor numérico (tiempo estricto): elija la unidad (xee, año, etc.)
+- formato de duración ISO 8601: "P "+n(YMDHIS). ej: "P1Y2D" significa "1 año 2 días" (véase https://en.wikipedia.org/wiki/ISO_8601#Duraciones)
+- lenguaje natural: "2 años 6 meses 3 días"']]; ?>

@@ -14,8 +14,8 @@ RewriteRule ^app/([^/]+)$ /app.php?a=$1 [L]*/
 
 function load_app($a,$p,$o){$ret='';
 if(method_exists($a,'home')){$ret=$a::home($p,$o);
-	if(method_exists($a,'css'))head::add('csslink',$a::css());
-	if(method_exists($a,'js'))head::add('jslink',$a::js());}
+	if(method_exists($a,'css'))head::add('csscode',$a::css());
+	if(method_exists($a,'js'))head::add('jscode',$a::js($p,$o));}
 return $ret;}
 
 #--render
@@ -53,7 +53,7 @@ $ret=head::generate();
 $ret.='<body onmousemove="popslide(event)" onclick="clpop(event);" onload="'.ses('onload').'">'."\n";//spellcheck="false" 
 $ret.=divd('clbub','');
 //$ret.=li(lj('','popup_plugin___codeview_plug'.ajx($a),picto('code')));
-$ret.=divd('content',$content);
+$ret.=divd('page',divd('content',$content));
 $ret.=hidden('','socket','');
 $ret.=divd('popup','');
 $ret.=divd('popw','');

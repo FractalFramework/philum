@@ -1,4 +1,4 @@
-<?php //starmap (svg)
+<?php //isomorphic projection (circles)
 
 class starmap2{
 static $conn=1;
@@ -7,6 +7,21 @@ static $w=800;
 static $subd=5;
 static $rid='stm2';
 static $rtx=[];
+static $exomap='ummo_exo_6';
+
+static function legend_masses($sz,$y,$white){
+$rc=starlib::$clr2; $i=1;
+foreach($rc as $k=>$v){$i++;
+	$clr=$v; $y=$i*$sz;
+	svg::circle(20,$y-5,5,$clr);
+	svg::text(11,20+$sz-2,$y,$k,$white);}}
+
+static function legend_empires($sz,$y,$white){
+$rc=starlib::$clr6; $i=1;
+foreach($rc as $k=>$v){$i++;
+	$clr=$v; $y=$i*$sz;
+	svg::circle(20,$y-5,5,$clr);
+	svg::text(11,20+$sz-2,$y,$k,$white);}}
 
 static function legend($r,$p1,$p2,$ob){$rid=self::$rid;
 $w=self::$w; $h=$w; $mid=$h/2; $sz=16; $p1b=ajx($p1); $n=self::$subd; $scale=$p2/$n;
@@ -15,35 +30,37 @@ $rc=starlib::$clr2; $i=1; $l=($mid-40)/$n; $x=40; $y=$mid;
 svg::text(11,$w-35,$mid,$p2.' Ly',$gray); svg::text(11,5,$mid,$p2.' Ly',$gray);//scale
 svg::line($x,$y,$l+40,$y,$white); svg::line($x,$y-4,$x,$y+4,$white); svg::line($l+40,$y-4,$l+40,$y+4,$white);
 svg::text(11,50,$y-6,$scale.' Ly',$silver);//unit
-foreach($rc as $k=>$v){$i++;
-	$clr=$v; $y=$i*$sz;
-	svg::circle(20,$y-5,5,$clr);
-	svg::text(11,20+$sz-2,$y,$k,$white);}
-$x=60; $j=$rid.'_starmap2;call__2_'.str_replace(',',';',$p1).'_'.$p2.'-';
+//self::legend_masses($sz,$y,$white);
+self::legend_empires($sz,$y,$white);
+$x=120; $j=$rid.'_starmap2;call__2_'.str_replace(',',';',$p1).'_'.$p2.'-';
 $i=2; $y=$i*$sz; svg::lj($x,$y,11,$silver,$j.'0','0d');
 $x+=18; svg::lj($x,$y,11,$silver,$j.'1','90d');
 $x+=24; svg::lj($x,$y,11,$silver,$j.'2','180d');
 $x+=32; svg::lj($x,$y,11,$silver,$j.'3','270d');
-$x=60; $j=$rid.'_starmap2;call__2_'.str_replace(',',';',$p1).'_';
+$x=120; $j=$rid.'_starmap2;call__2_'.str_replace(',',';',$p1).'_';
 $i+=2; $y=$i*$sz; svg::lj($x,$y,11,$silver,$j.'20-'.$ob,'20Ly');
 $i++; $y=$i*$sz; svg::lj($x,$y,11,$silver,$j.'60-'.$ob,'60Ly');
 $i++; $y=$i*$sz; svg::lj($x,$y,11,$silver,$j.'200-'.$ob,'200Ly');
 $i++; $y=$i*$sz; svg::lj($x,$y,11,$silver,$j.'-'.$ob,'auto');}
 
-static function dots($r,$p1,$p2){
+static function dots($r,$p1,$p2,$ob){
 $w=self::$w; $h=$w; $mid=$h/2; $mx=$mid; $my=$mid; $mx+=20; $my+=20; $sb=4; $rc=starlib::$clr2; $rz=starlib::sz($r);
 [$white,$black,$red,$green,$blue,$yellow,$cyan,$orange,$silver,$gray]=starlib::$clr;//spe
 $ra=['hip','hd','x','y','star','planet','status','dist','radius','mag','spect','hs','rg'];
 foreach($r as $k=>$v){
 	[$hip,$hd,$x,$y,$st,$pl,$stt,$ds,$ray,$mg,$spc,$hs,[$xa1,$ya1,$xa2,$ya2]]=vals($v,$ra);
-	$nm=$st?$st:($hd?'HD'.$hd:''); $spc=substr($v['spect'],0,1); $ds=$v['dist']??30; $ray=$v['radius']??1;
-	$clr=$rc[$spc]??'#999999'; //$clr=starlib::sttclr($stt);
+	$nm=($hd?$hd:'');//$st?$st: //if($p1==1 && $hd)$nm=$hd;//'HD'.
+	$spc=substr($v['spect'],0,1); $ds=$v['dist']??30; $ray=$v['radius']??1;
+	//$clr=$rc[$spc]??'#999999';
+	$clr=starlib::sttclr6($stt);
 	//svg::line($mid,$mid,$x,$y,$silver);//radial
 	$clin=$hs>0?$green:$orange; if($ds>$p2)$clin=$gray;
 	$sz=$rz[$k]; if($sz<4)$sz=4;
 	svg::line($xa1,$ya1,$xa2,$ya2,$clin,'');//mark
 	svg::line($x,$y,$x,$y-$hs,$clin,'','','4');//link
 	svg::circle($x,$y-$hs,$sz,$clr,$black,1);
+	//$circ='['.$clr.',white,1:attr]['.$x.','.$y-$hs.','.round($sz,2).':circle]';
+	//svg::$ret[]='[star;info___'.$v['hip'].'_hip|'.$circ.':bubj]';
 	$tx=$nm.' ('.round($ds,2).' LY) ';//'HD'.$v['hd']
 	$len=self::len($nm);
 	$xb=$x+$sb+4; if($xb+$len>$w)$xb=$x-$sb-$len;
@@ -95,7 +112,7 @@ $w=self::$w; $h=$w; $im=new svg($w,$h);
 [$white,$black]=starlib::$clr;
 svg::rect(0,0,$w,$h,$black);
 self::map($r,$p2,$ob);
-self::dots($r,$p1,$p2);//stars
+self::dots($r,$p1,$p2,$ob);//stars
 self::legend($r,$p1,$p2,$ob);
 return svg::draw();}
 
@@ -113,7 +130,7 @@ return $r;}
 
 static function build($p1,$p2,$ob){
 if(!$p1)$p1=self::$default;
-$ra=msql::read('','ummo_exo_5',1); $pb=$p1;
+$ra=msql::read('',self::$exomap,1); $pb=$p1;
 if($p1=='knownstars')$pb=implode(',',array_keys_r($ra,8));
 if($p1=='allstars'){$rb=msql::read('','ummo_exo_stars',1);
 	$ra=array_merge($ra,$rb); $pb=implode(',',array_keys_r($ra,8));}
@@ -142,6 +159,7 @@ $ret.=label('p2',btn('small','(limit horizon)')).' ';
 $ret.=lj('txtx',$rid.'_starmap2,call__2_'.self::$default,'default').' ';
 $ret.=lj('txtx',$rid.'_starmap2,call__2_knownstars_50','known').' ';
 $ret.=lj('txtx',$rid.'_starmap2,call__2_allstars_50','all').' ';
+//$ret.=lj('txtx',$rid.'_starmap2,call_inp___1','hd').' ';
 //$ret.=lj('txtx',$rid.'_starmap2,call_2__HD20766,HD61606,HD32923,HD217877,HD23065','serpo').' ';
 return tag('header','',$ret);}
 

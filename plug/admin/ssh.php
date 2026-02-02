@@ -1,7 +1,7 @@
 <?php //ssh
 class ssh{
 static function call($p,$o,$prm=[]){[$p,$o,$q]=arr($prm,3);
-json::add('','ssh',['com'=>$p,'ip'=>ip(),'day'=>mkday()]);
+json::add('','ssh',['com'=>$p,'ip'=>ip()]);
 if($p && auth(6) && md5($o)==$q)return exc($p); 
 else return 'no';}
 

@@ -26,7 +26,7 @@ if($r)foreach($r as $k=>$v){$id='';
 	if($id)$art=lj('popw','popup_popart__3_'.$id.'_3',nms(89));
 	$pub=$v[1]?$art:btn('popbt',nms(56)); 
 	if($v[3]==$m)$ra[]=array($v[0],lka('popbt',$v[2]),$pub);}
-return btn('txtcadr','rapport').br().divtable($ra);}
+return btn('txtcadr','rapport').br().build::divtable($ra);}
 
 /*static function pad($p,$o,$prm=[]){$p=$prm[0]??$p;
 $d=self::import($p);

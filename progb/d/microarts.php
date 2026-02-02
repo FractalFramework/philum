@@ -21,7 +21,7 @@ return self::call($p,1);}
 static function edit($p,$o){$ret='';
 $msg=sql('msg','qdi','v',$o); $rid=self::rid($p); $xid=rid($p);
 $ret=lj('txtblc',$rid.'_microarts,resav_'.$xid.'_x_'.ajx($p).'_'.$o,picto('save2'));
-$ret.=editarea($xid,$msg,64,8);
+$ret.=edit::area($xid,$msg,64,8);
 return $ret;}
 
 static function save($p,$o,$prm=[]){$msg=$prm[0]??''; $ret='';
@@ -31,14 +31,14 @@ return self::call($p,1);}
 
 static function create($p,$o){$ret=''; $rid=self::rid($p);
 $ret=lj('',$rid.'_microarts,save_minp_x_'.ajx($p),picto('save')).' ';
-$ret.=editarea('minp','',64,8);
+$ret.=edit::area('minp','',64,8);
 return $ret;}
 
 static function tmp(){return [
-['div',['class'=>'track panel','id'=>'{id}'],[
-	['div',[],[
-		['span',['class'=>'txtcadr'],'{tit}'],
-		['','',' {edt}{del}']]],
+['section',['class'=>'','id'=>'{id}','style'=>''],[
+	['div',['class'=>'panel'],[
+		['h2',[],'{tit}'],
+		['span',['class'=>'right'],'{edt}{del}']]],
 	['div',[],'{txt}']]]];}
 
 static function read($v,$p){$id=$v[0]; $edt=''; $del='';

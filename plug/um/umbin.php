@@ -3,7 +3,7 @@ class umbin{
 static function inv($n){return $n==1?0:1;}
 
 static function op($r,$o=''){$d=$r[1].$r[2];  //pr($r);
-	switch($d){//philum.fr/403 //tests
+	switch($d){//philum.ovh/403 //tests
 		case('11'):$ret=$r[0]; break;//true
 		case('00'):$ret=self::inv($r[0]); break;//false
 		case('10'):$ret='0'; break;//0=>1,0=>0
@@ -105,7 +105,7 @@ foreach($r as $k=>$v)foreach($rb as $ka=>$va)$ret[$k][]=$v[$va];
 return $ret;}
 
 static function sty($d){return 'padding:10px; 
-background-color:#'.$d.'; color:#'.invert_color($d,1).'';}
+background-color:#'.$d.'; color:#'.clrneg($d,1).'';}
 
 static function tabler_clr($r,$rb){$tr='';
 if(is_array($r))foreach($r as $k=>$v){$td='';

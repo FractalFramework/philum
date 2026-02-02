@@ -43,7 +43,7 @@ $ret=tabler($rt,1);
 return $ret;}
 
 static function pg($p,$o){
-$n=sqb('count(distinct(voc))','bdvoc','v','');
+$n=sql('count(distinct(voc))','bdvoc','v','');
 $ret=pop::btpages(50,$o?$o:1,$n,'dcm_dicoum,call___'.ajx($p).'_');
 return $ret;}
 
@@ -71,10 +71,10 @@ $r=sql('voc','bdvoc','v',$p); //p($r);
 return $r;}
 
 static function updedt(){
-$r=sqb('voc','bdvoc','','group by voc order by voc');
+$r=sql('voc','bdvoc','',['_group'=>'voc','_order'=>'voc']);
 foreach($r as $k=>$v){
 	//$del=lj('','popup_umvoc,del___'.$va,picto('del')); $r[$k][]=$del;
-	//if(auth(6))$edt=lj('','popup_sqledt___bdvoc_'.$va,picto('editxt')); $r[$k][]=$edt;
+	//if(auth(6))$edt=bj('popup|dbedt,read|a=bdvoc,id='.$va,picto('editxt')); $r[$k][]=$edt;
 	$edt=lj('','popup_umvoc,cmdf___'.$v[0],picto('editxt')); $r[$k][]=$edt;}
 //pr($rc);
 return tabler($r,0);}

@@ -1,7 +1,8 @@
-<?php //starmap5
+<?php 
 
 class starmap5{
 static $default='knownstars';
+static $exomap='ummo_exo_6';
 static $w=1400;
 static $clr=['#ffffff','#000000','#ff0000','#00ff00','#0000ff','#ffff00','#00ffff','#ff9900','#cccccc','#666666'];
 //static $clr2=['O'=>'#93B6FF','B'=>'#A7C3FF','A'=>'#D5E0FF','F'=>'#F9F5FF','G'=>'#FFECDF','K'=>'#FFD6AC','M'=>'#FFAA58','L'=>'FF7300','T'=>'FF3500','Y'=>'999999'];
@@ -215,7 +216,7 @@ if($rb[$k]['hip']=='0'){$rb[$k]['status']='galaxy'; $rb[$k]['star']='Galactic Ce
 return $rb;}*/
 
 static function build($p,$o){$ra=[];
-$ra=msql::read('','ummo_exo_5',1); $pb=$p;
+$ra=msql::read('',self::$exomap,1); $pb=$p;
 if($p=='knownstars')$pb=implode(',',array_keys_r($ra,8));
 if($p=='allstars'){$rb=msql::read('','ummo_exo_stars',1);
 	$ra=array_merge($ra,$rb); $pb=implode(',',array_keys_r($ra,8));}
@@ -249,7 +250,7 @@ $rid=('strmp5');
 $bt=self::menu($p,$o,$rid);
 if(!$p)$p=self::$default;
 $ret=self::build($p,$o);
-$bt.=msqbt('',nod('exo_5'));
+$bt.=msqbt('',self::$exomap);
 return $bt.divd($rid,$ret);}
 
 }

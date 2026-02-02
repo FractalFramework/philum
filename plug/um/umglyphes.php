@@ -7,7 +7,7 @@ if($r)foreach($r as $v){$rb[$v[0]]=$v[1].($v[3]?' ['.stripslashes($v[3]).']':'')
 return $rb;}
 
 static function imz($f,$n='2'){
-[$w,$h]=fwidth($f);
+[$w,$h]=imsize($f);
 $w=round($w/$n); $h=round($h/$n);
 return image('/'.$f,$w,$h);}
 

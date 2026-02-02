@@ -21,13 +21,13 @@ static function ex($v){
 return sql('id','qdvoc','v','voc="'.$v.'"');}
 
 static function pg($p,$o){
-$n=sqb('count(id)','qdvoc','v','');
+$n=sql('count(id)','qdvoc','v','');
 $ret=pop::btpages(50,$p?$p:1,$n,'thd_thesaurus,build___');
 return $ret;}
 
 static function build($p,$o){if(!$p)$p=1;
 $bt=self::pg($p,$o); $ret='';
-$r=sqb('id,voc','qdvoc','kv','order by voc limit '.(($p-1)*50).',50');
+$r=sql('id,voc','qdvoc','kv',['_order'=>'voc','_limit'=>(($p-1)*50).',50']);
 if($r)foreach($r as $k=>$v)$ret.=lj('','popup_umvoc,segments___'.$v,$v);
 return $bt.divc('list',$ret);}
 
@@ -58,7 +58,7 @@ return divc('list',$ret);}
 static function menu($p,$o,$rid){$ratio=50;
 $j=$rid.'_thesaurus,glossary_inpths__';
 $ret=inputj('inpths',$p,$j).' '.lj('',$j,picto('ok')).' ';
-//$n=sqb('count(id)','qdvoc','v',''); $n=ceil($n/$ratio);
+//$n=sql('count(id)','qdvoc','v',''); $n=ceil($n/$ratio);
 //for($i=1;$i<=$n;$i++)$ret.=lj('',$rid.'_thesaurus,build___'.$i,$i).' ';
 return $ret;}
 

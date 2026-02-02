@@ -86,7 +86,8 @@ foreach($r as $k=>$v)$rt[]=$v.' '.$k;
 return join(' ',$rt);}
 
 static function earth_scales(){
-$min=60; $hour=$min*60; $day=$hour*24; $year=self::$type=='duration'?self::$yearsec:self::$yearsec2; $month=$year/12;
+$min=60; $hour=$min*60; $day=$hour*24; 
+$year=self::$type=='duration'?self::$yearsec:self::$yearsec2; $month=$year/12;
 return ['year'=>$year,'month'=>$month,'day'=>$day,'hour'=>$hour,'min'=>$min,'second'=>1];}
 
 static function oomo_scales(){
@@ -94,7 +95,7 @@ $uiw=self::$uiwsec; $xsi=self::$type=='duration'?self::$xsisec:self::$xsisec2; $
 return ['aeon'=>$aeon,'xee'=>$xee,'xsi'=>$xsi,'uiw'=>$uiw];}
 
 static function compute_time($sec){$rt=[];
-$r=$r=self::earth_scales(); if($sec<0){$sec=-$sec; $rt[]='-';}
+$r=self::earth_scales(); if($sec<0){$sec=-$sec; $rt[]='-';}
 foreach($r as $k=>$v)if($sec>$v){$n=floor($sec/$v); $sec-=$v*$n; $rt[$k]=$n;}
 return $rt;}
 
@@ -104,7 +105,8 @@ return self::rk_date_plurial($r);}
 
 static function compute_utime($sec){$rt=[];
 $r=self::oomo_scales(); if($sec<0){$sec=-$sec; $rt[]='-';}
-foreach($r as $k=>$v)if($sec>$v){$n=floor($sec/$v); $sec-=$v*$n; $rt[$k]=$n; if($k=='uiw')$rt[$k]+=round($sec/$v,2);}
+foreach($r as $k=>$v)if($sec>$v){$n=floor($sec/$v); $sec-=$v*$n;
+	$rt[$k]=$n; if($k=='uiw')$rt[$k]+=round($sec/$v,2);}
 return $rt;}
 
 static function format_utime($sec,$duration=0){

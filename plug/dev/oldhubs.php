@@ -3,7 +3,7 @@ class oldhubs{
 
 static function build($p,$o){
 //$r=msql::row('',nod('umnum'),$p);
-//$r=sqb('name,count(name)','qda','kv','group by name');
+//$r=sql('name,count(name)','qda','kv',['_group'=>'name']);
 
 //$r=sql('id','qda','rv','frm="ES" or frm="_system"'); //pr($r);
 //$r=sql('id,tag','qdt','kv',''); pr($r);

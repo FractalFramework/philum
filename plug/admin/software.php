@@ -1,4 +1,4 @@
-<?php //software
+<?php 
 
 class software{
 static function version($n){
@@ -43,7 +43,7 @@ $r[]=self::patch();
 foreach($r as $k=>$v)$ret.=divc('',$v);
 return $ret;}
 
-static function dirs(){return ['progb','prog','plug','msql/system','msql/server','msql/lang','msql/users','js','css','fonts','json/system','imgb/icons','imgb/avatar','imgb/usr','pub'];}
+static function dirs(){return ['progb','prog','plug','msql/system','msql/server','msql/lang','msql/users/public','js','css','fonts','json/sys','imgb/icons','imgb/avatar','imgb/usr','pub'];}
 static function files(){
 return ['ajax.php','app.php','call.php','index.php','install.php'];}
 
@@ -52,13 +52,15 @@ if($dr=='msql/users'){if(strpos($f,$dr.'/public')===false)$no=1;}
 elseif($dr=='msql/server'){if(strpos($f,$dr.'/edition')===false && strpos($f,$dr.'/program')===false && strpos($f,$dr.'/shared')===false)$no=1;}
 elseif($dr=='msql/lang'){if(strpos($f,'/edition')===false && strpos($f,'/program')===false && strpos($f,'/admin')===false && strpos($f,'/helps')===false && strpos($f,'/connectors')===false && strpos($f,'/tags')===false)$no=1;}
 elseif($dr=='css'){if(strpos($f,$dr.'/_')===false && strpos($f,$dr.'/public')===false)$no=1;}
+elseif($dr=='json'){if(strpos($f,$dr.'/sys')===false && strpos($f,$dr.'/srv')===false)$no=1;}
 return $no;}
 
 static function datas($dr,$k,$f){$no=self::exceptions($dr,$f);
 if(!$no)return [$f,ftime($f)];}//,fsize($f)
 
 static function recense($dr){$r=scanfiles($dr); $rb=[];
-foreach($r as $k=>$v)if(!self::exceptions($dr,$v))$rb[$v]=ftime($v); return $rb;}
+foreach($r as $k=>$v)if(!self::exceptions($dr,$v))$rb[$v]=ftime($v);
+return $rb;}
 
 static function build($p=''){$rb=[];
 $r=self::files(); foreach($r as $k=>$v)$rb[$v]=ftime($v);
@@ -67,8 +69,9 @@ if($p==2)$ra=json::read('srv','software');
 json::sav('srv','software',$rb);
 if($p==1){header('Content-Type: text/json');
 	return json::brut('srv','software');}
-if($p==2){
-	tar::files('_backup/philum.tar.gz',array_keys($rb));//phar
+if($p==2){$f='_backup/philum.tar.gz';
+	//build::tar($f,join(' ',array_keys($rb)));
+	tar::files($f,array_keys($rb));//phar
 	return array_diff($ra,$rb);}
 return $rb;}
 
@@ -93,7 +96,7 @@ $f=upsrv().'/call/software,build/1';
 $d=file_get_contents($f);
 if($d)$rb=json_decode($d,true);//dist files
 if($rb)$rc=self::compare($ra,$rb);
-if($rc)foreach($rc[2] as $k=>$v)unlink($v);//old files
+if($rc)foreach($rc[2] as $k=>$v)if(is_file($v))unlink($v);//old files
 json::sav('srv','upd',$rc);//needed files
 $f=upsrv().'/call/software,archive/'.nohttp(host());//distant will build archive
 if(ses::$s['local'])$fa=curl_get_contents($f,json_encode($rc),1);

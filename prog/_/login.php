@@ -22,7 +22,8 @@ return $ip==ip()?$id:0;}
 
 static function verif_user($usr,$psw){
 $vrf=sql('pass','qdu','v',['name'=>$usr]);
-return password_verify($psw,$vrf);}
+$ok=password_verify($psw,$vrf);
+return $ok?self::user_exists($usr):false;}
 
 static function usedhubname($usr){//$usr=str::normalize($usr);
 if(boot::ismbr($usr))return true;
@@ -37,7 +38,7 @@ return $g1;}
 
 static function log_result($usr,$uid,$qb,$rl,$ck){
 $_SESSION['usr']=$usr; $_SESSION['uid']=$uid; $_SESSION['qb']=$qb;
-if($ck){$dayz=$_SESSION['dayx']+(86400*30); $_SESSION['nuse']='';
+if($ck){$dayz=ses::$dayx+(86400*30); $_SESSION['nuse']='';
 	setcookie('use',$usr,$dayz); setcookie('uid',$uid,$dayz);}
 if($rl)head::relod('?hub='.$qb.'&refresh==&log=on');
 else return 'logon: '.$qb;}
@@ -45,12 +46,12 @@ else return 'logon: '.$qb;}
 //call
 static function call($p,$o,$prm=[]){
 [$usr,$psw,$cook,$mail,$newhub]=arr($prm,5);
-$usr=str::normalize($usr); $psw=str::normalize($psw);
+$usr=str::normalize($usr); $psw=str::normalize($psw); $uid=0;
 $qdu=db('qdu'); $qb=ses('qb'); $host=ip();
 //if(md5($usr.$psw)=='e36f9846e997e4491c58aa65d9c9f4e6')$_SESSION['usr']=ses('master');
 //$ath=array_flip(adm::authes_levels());
 //log
-$uid=self::verif_user($usr,$psw);
+if($psw)$uid=self::verif_user($usr,$psw);
 if($uid){[$ip,$usrhub]=sql('ip,hub','qdu','r',['name'=>$usr]);
 	if($ip!=$host)sql::upd('qdu',['ip'=>$host],['name'=>$usr]);
 	if($usrhub)$qb=$usr;
@@ -121,7 +122,7 @@ mail($qmail,$subj,$txt,$tet);
 return lj('small','lgn_login,form',"password sent to user $usr $qmail");}
 
 #newuser
-static function adduser($qb,$usr,$psw,$mail,$newhub){$dayx=ses('dayx');
+static function adduser($qb,$usr,$psw,$mail,$newhub){$dayx=ses::$dayx;
 $qdu=db('qdu'); $mbrs='7::admin,'; $open=''; $ip=ip();
 if(prmb(11)>=6 or $newhub){
 	$open=1; $menus=$dayx; $hub=$usr;
@@ -130,14 +131,13 @@ if(prmb(11)>=6 or $newhub){
 	else sqlsav('qdb',[$usr,$qb,6]);}
 elseif(prmb(11)>=1)sqlsav('qdb',[$usr,$qb,prmb(11)]);
 $ex=sql('id','qdu','v','1');
-//if(!$ex)echo install::home('pub');
+//if(!$ex)install::home('pub');
 $psw=password_hash($psw,PASSWORD_DEFAULT);
 $rp=[$usr,$psw,$mail,$dayx,'',$ip,$rstr,$mbrs,$hub,0,$config,'','',$menus,$open];
 return sql::sav('qdu',$rp);}
 
 static function ndprms_defaults(){
 $rstr=admx::defaults_rstr(0); $config='';
-//$r=msql::read('system','default_params',1); $rb=[]; foreach($r as $k=>$v)$rb[$k]=$v[0];
 $rb=msql::col('system','default_params',0,1); $n=count($rb);
 for($i=0;$i<=$n;$i++)$config.=($rb[$i]??'').'#';
 $ln=explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
@@ -163,13 +163,17 @@ $clr=msql::kv('system','default_clr_1');
 $css='css/'.$qb.'_design_1.css'; sty::build_css($css,sty::css_default(1),$clr);
 $clr=msql::kv('system','default_clr_2');
 $css='css/'.$qb.'_design_2.css'; sty::build_css($css,sty::css_default(),$clr);
-sql::upd('qdu',['menus'=>ses('dayx')],['name'=>$qb]);
+sql::upd('qdu',['menus'=>ses::$dayx],['name'=>$qb]);
 if(!is_dir('users/'.$qb))mkdir_r('users/'.$qb);
 $first=sql('id','qda','v','1');
 if(!$first){
 	$rw=['0',$qb,'',time(),$qb,'public',nms(186).' &#127804;',1,0,'','','',ses('lng')];
 	$nid=sqlsav('qda',$rw); sql::savi('qdm',[$nid,'[philum?48:picto]']);}
 return $qb;}
+
+static function home($p,$o){
+$ret=self::call('','',[]);
+return divd('lgn',$ret);}
 
 }
 ?>

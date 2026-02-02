@@ -4,13 +4,20 @@ for($i=0;$i<5;$i++)if(is_file($f=$dr.$r[$i].'/'.$a.'.php')){require($f); return;
 $r=sesmk('scandir_b','plug',0);
 if($r)foreach($r as $v)if(is_file($f='plug/'.$v.'/'.$a.'.php')){require($f); return;}});
 
+#blup
+/*function mb_strlen($d){return strlen($d);}
+function mb_strtolower($d){return strtolower($d);}
+function mb_strrpos($d,$n){return strrpos($d,$n);}
+function mb_strpos($d,$n){return strpos($d,$n);}
+function mb_substr($d,$a,$b=null){return substr($d,$a,$b);}*/
+
 #html
 function p($r){print_r($r);}
 function n(){return "\n";}
 function br(){return "<br />";}
 function hr(){return "<hr />";}
 function sep(){return "&nbsp;";}
-function sti(){return "&#8239";}
+function sti(){return "&#8239;";}
 function thin(){return "&thinsp;";}
 function atb($d,$v){return $v?' '.$d.'="'.$v.'"':'';}
 function atc($d){return $d?' class="'.$d.'"':'';}
@@ -30,6 +37,8 @@ function atmd($d){return $d?' onmousedown="'.$d.'"':'';}
 function atmo($d){return $d?' onmouseover="'.$d.'"':'';}
 function atj($d,$j){return $d.'(\''.$j.'\');';}
 function atjr($d,$j){return $d.'('.implode_j($j).');';}
+function css($d,$v){return $v?' '.$d.':'.$v.'; ':'';}
+function cssr($d,$r){return $d.'{'.strmapk('css',$r).'}'.n();}
 function sj($d){return $d?'SaveJ(\''.$d.'\');':'';}
 function ul($v,$c=''){return '<ul'.atc($c).'>'.$v.'</ul>';}
 function li($v,$c=''){return '<li'.atc($c).'>'.$v.'</li>';}
@@ -40,7 +49,6 @@ function btp($p,$v){return '<span'.$p.'>'.$v.'</span>';}
 function divc($c,$v){return '<div'.atc($c).'>'.$v.'</div>';}
 function divd($d,$v){return '<div'.atd($d).'>'.$v.'</div>';}
 function divs($s,$v){return '<div'.ats($s).'>'.$v.'</div>';}
-function divp($p,$v){return '<div'.$p.'>'.$v.'</div>';}
 function blockquote($v){return '<blockquote>'.$v.'</blockquote>';}
 function lk($u,$v='',$p=''){return '<a href="'.$u.'"'.$p.'>'.($v?$v:$u).'</a>';}
 function lka($u,$v='',$p=''){return '<a href="'.$u.'"'.$p.'>'.($v?$v:domain($u)).'</a>';}
@@ -49,33 +57,41 @@ function lkt($c,$u,$v,$p=''){return '<a href="'.$u.'"'.atc($c).$p.' target="_bla
 function lkn($u,$v=''){return '<a name="'.$u.'">'.$v.'</a>';}
 //function lkh($oc,$ov,$v,$c=''){return '<a'.atc($c).atk($oc).atmo($ov).'>'.$v.'</a>';}
 function llk($c,$u,$v){return li(lk($u,$v),$c);}
-function lj($c,$j,$v,$p=''){return '<a onclick="sj(this)" data-j="'.$j.'"'.atc($c).$p.'>'.$v.'</a>';}
-function lh($h,$v,$p=''){return '<a href="'.$h.'" onclick="return hj(this)"'.$p.'>'.$v.'</a>';}
+function lj($c,$j,$v,$p=''){if(ses('dev'))$p.=att($j);
+	return '<a onclick="sj(this)" data-j="'.$j.'"'.atc($c).$p.'>'.$v.'</a>';}//att
+function ljr($r,$v,$c='',$t=''){return '<a onclick="'.atjr('sjr',$r).'" '.atc($c).att($t).'>'.$v.'</a>';}
+function lh($c,$h,$v,$p=''){return '<a href="'.$h.'" onclick="return hj(this)"'.atc($c).$p.'>'.$v.'</a>';}
 function ljb($c,$j,$p,$v,$o=''){$j=atjr($j,$p); return '<a'.atk($j).atc($c).$o.'>'.$v.'</a>';}
 function ljh($c,$j,$p,$v,$o=''){$j=atjr($j,$p); return '<a'.atmo($j).atmu($j).atc($c).$o.'>'.$v.'</a>';}
-function ljp($p,$j,$v){return '<a'.atk(sj($j)).' '.$p.'>'.$v.'</a>';}
-function blj($c,$id,$j,$v,$o=''){return span(lj('',$id.'_'.$j,$v,$o),$c,$id);}
+//function ljp($p,$j,$v){return '<a'.atk(sj($j)).' '.$p.'>'.$v.'</a>';}//obs
+function blj($c,$id,$j,$v,$o=''){return span(lj('',$id.'_'.$j,$v,$o),$c,$id);}//kill
+function ljbt($c,$j,$v,$o=''){return span(lj('',$j,$v,$o),$c,strto($j,'_'));}
 function llj($c,$j,$v,$id='',$a=''){return '<li'.atd($id).'>'.lj($c,$j,$v,'').'</li>';}
-function image($d,$w='',$h='',$p=''){if(substr($d,0,4)=='img/')$d='/'.$d;
-return '<img src="'.$d.'"'.atb('width',$w).atb('height',$h).' '.$p.'/>';}
-function img($d,$s=''){return '<img src="'.$d.'"'.ats($s).' />';}
+function image($d,$w='',$h='',$p=''){//if(substr($d,0,4)=='img/')$d='/'.$d;
+//if(!is_file($d))return picto('img');
+return '<img src="'.$d.'"'.atb('width',$w).atb('height',$h).' '.$p.'>';}
+function img($d,$s=''){return '<img src="'.$d.'"'.ats($s).'>';}
 function rolloverimg($a,$b){
 return taga('img',['src'=>$a,'onmouseover'=>'this.src=\''.$b.'\'','onmouseout'=>'this.src=\''.$a.'\'']);}
-function etc($d,$n=400){if($d)return mb_substr(hed($d),0,$n).(mb_substr($d,$n)?'...':'');}
 function gridpos($d){$r=explode('-',$d); return 'grid-row:'.$r[0].'; grid-column:'.$r[1].';';}
 function btim($d,$w='',$h=''){$j=str_replace('_','*',$d).'_'.$w.'_'.$h;
-return lj('','popup_usg,overim___'.$j,img('/'.$d,$w));}
+return lj('','popup_usg,overim___'.$j,image('/'.$d,$w));}
 
-//ff
-function bj($c,$j,$v,$p=[]){if(ses('dev'))$p+=['title'=>$j];
-return tag('a',['onclick'=>'bj(this)','data-bj'=>$j,'class'=>$c]+$p,$v);}
+//ff//else $ret.=' '.$k;
 function atr($r){$ret=''; if($r)foreach($r as $k=>$v)if($v)$ret.=' '.$k.'="'.$v.'"'; return $ret;}
+function atp($r){$ret=''; $ra=['class','id','style','title','onclick'];
+if($r)foreach($r as $k=>$v)if($v)$rt[$ra[$k]]=$v; return $rt??[];}
 function tag($b,$p,$d){return '<'.$b.atr($p).'>'.$d.'</'.$b.'>';}
-function taga($b,$p){return '<'.$b.atr($p).' />';}
 function tagb($b,$d){return '<'.$b.'>'.$d.'</'.$b.'>';}
+function taga($b,$p){return '<'.$b.atr($p).'>';}
 function tagc($b,$c,$d){return '<'.$b.atc($c).'>'.$d.'</'.$b.'>';}
+//function href($d,$p,$c){return '<a'.atr(['href'=>$p,'class'=>$c]).'>'.$d.'</a>';}
 function div($v,$c='',$id='',$s=''){return tag('div',['class'=>$c,'id'=>$id,'style'=>$s],$v);}
+function divp($v,$p){return tag('div',atp($p),$v);}
 function span($v,$c='',$id='',$s=''){return tag('span',['class'=>$c,'id'=>$id,'style'=>$s],$v);}
+function spanp($v,$p=[]){return tag('span',atp($p),$v);}
+function bj($j,$v,$c='',$p=[]){if(ses('dev'))$p+=['title'=>$j];
+return tag('a',['onclick'=>'bj(this)','data-bj'=>$j,'class'=>$c]+$p,$v);}
 function btj($t,$j,$c='',$id='',$p=[]){return tag('a',['onclick'=>$j,'class'=>$c,'id'=>$id]+$p,$t);}
 
 #forms
@@ -88,8 +104,8 @@ return '<input'.atr($pr).'/>';}
 function inputj($d,$v,$j,$h='',$s='',$p=[]){$js='checkj(this)'; $ju='';//'sj(this)';
 return taga('input',$p+['id'=>$d,'type'=>'text','value'=>$v,'placeholder'=>$h,'size'=>$s,'data-j'=>$j,'onkeyup'=>$js,'onblur'=>$ju]);}
 function inpsw($d,$v,$s='',$p=[]){return inputb($d,$v,$s,'password','100',['type'=>'password']);}
-function inpdate($id,$v,$min='',$max='',$o=''){$ty=$o?'datetime-local':'date';//time
-return input($id,$v,'',['type'=>$ty,'min'=>$min,'max'=>$max]);}//step=1
+function inpdate($id,$v,$min='',$max='',$o='',$j=''){$ty=$o?'datetime-local':'date';//time
+return input($id,$v,'',['type'=>$ty,'min'=>$min,'max'=>$max,'onchange'=>sj($j)]);}//step=1
 function inpnb($id,$v,$j='',$p=[]){if($j)$p['onchange']=sj($j);
 return input($id,$v,'',$p+['type'=>'number','name'=>$id,'min'=>1,'step'=>1,'size'=>'8']);}
 function inpclr($id,$v=''){return '<input'.atr(['type'=>'color','id'=>$id,'name'=>$id,'value'=>$v]).'>';}
@@ -98,10 +114,11 @@ function inptel($id,$v,$pl='06-01-02-03'){$pr=atr(['type'=>'tel','id'=>$id,'name
 return '<input'.$pr.' required>';}
 function inprange($id,$v,$st=1,$min='',$max=''){
 return input($id,$v,'',['type'=>'range','name'=>$id,'min'=>$min,'max'=>$max,'step'=>$st]);}
-function bar($id,$v=50,$st=10,$min=0,$max=100,$js='jumphtml',$s='240px'){$js.='(\''.$id.'\',this.value)';
-$pr=['type'=>'range','name'=>$id,'min'=>$min,'max'=>$max,'step'=>$st,'onchange'=>$js,'style'=>'width:'.$s.'; height:5px;','title'=>'use mousewheel'];
+function bar($id,$v=50,$st=10,$min=0,$max=100,$js='',$s='240px',$j=''){
+$js.=atjr('jumpvalue',[$id,'this.value']); $js.=atjr('jumphtml',['lbl'.$id,'this.value']); if($j)$js.=' sj(this);';
+$pr=['type'=>'range','name'=>$id,'min'=>$min,'max'=>$max,'step'=>$st,'onchange'=>$js,'style'=>'width:'.$s.'; height:5px;','title'=>'use mousewheel','data-j'=>$j];
 return input($id,$v,'',$pr).label($id,$v,'txtx','lbl'.$id);}
-function progress($v='',$max=100,$w=240,$t=''){
+function progress($v='',$max=100,$w=400,$t=''){
 return tag('progress',['value'=>$v,'max'=>$max,'style'=>'width:'.$w.'px'],$t);}
 function button($j,$v,$p=''){return tag('button',atk($j).atr($p),$v);}
 function submit($n,$v,$c=''){return '<input type="submit"'.atn($n).atv($v).atc($c).' />';}
@@ -125,12 +142,21 @@ function radiobtj($r,$vrf,$id,$o=''){$rid=randid('rdio'); if($o)$r=array_keys($r
 if(is_array($r))foreach($r as $k=>$v){$c=active($v,$vrf);
 $ret.=ljb($c,'radiobtj',[$rid,$id,ajx($v),$k],$v);}
 return span($ret,'nbp',$rid).hidden($id,$vrf);}
-function datalist($id,$r,$v,$s=16,$t='',$j=''){$ret=''; $opt=''; if($t)$ret=label($id,$t);
-$p=['list'=>'dt'.$id]; if($j){$p['data-j']=$j; $p['onkeyup']='checkj(this)';}
-$ret.=input($id,$v,$s,$p);
-foreach($r as $k=>$v)$opt.=tag('option',['value'=>$v],'');
-$ret.=tag('datalist',['id'=>'dt'.$id],$opt);
-return $ret;}
+function datalist($id,$r,$d,$s=16,$t='',$j=''){$ret=''; $opt=''; $r[]='';
+$p=['list'=>'dt'.$id,'placeholder'=>$t]; if($j){$p['data-j']=$j; $p['onkeyup']='checkj(this)';}
+foreach($r as $k=>$v)$opt.=taga('option',['value'=>$v]);
+return input($id,$d,$s,$p).tag('datalist',['id'=>'dt'.$id],$opt);}
+
+function select($ra,$r,$kv='',$h='',$j='',$o=''){$ret=''; $pr=[];
+if(is_string($ra))$ra=['id'=>$ra];
+if($j)$ra['onchange']=sj($j.'\'+this.value+\'');
+if($o)$ret=tag('option',$pr+['value'=>''],'Select...');
+if($r)foreach($r as $k=>$v){
+	if($kv=='vv')$k=$v; elseif($kv=='kk')$v=$k;
+	if($k==$h)$pr['selected']='selected'; else $pr=[];
+	if(strlen($v)>20)$v=substr($v,0,20).'...';
+	$ret.=tag('option',$pr+['value'=>$k],$v);}
+return tag('select',$ra,$ret);}
 
 //edit
 function textarea($id,$v,$cl='40',$rw='4',$p=[]){
@@ -146,32 +172,16 @@ foreach($r as $k=>$v)$ret.=btj(picto($v,16),atj('execom',$k));
 //$ret.=bubble('','mc,navs','ascii','&#128578;').' ';
 //if(is_numeric($id))$ret.=lj('','art'.$id.'_mc,savwyg_art'.$id.'__'.$id.'_1',picto('save2',16));
 if(is_numeric($id))$ret.=btj(picto('save2',16),atj('saveart',$id));
-return btn('nbp',$ret);}
+return btn('menu',$ret);}
 function divarea($id,$d,$c='',$s='',$j='',$o=''){$ja='';
 $rp=['contenteditable'=>'true','id'=>$id,'class'=>$c,'style'=>$s];
-if($j)$rp[$o?'onblur':'onclick']=$j;//$rp['onkeydown']=$j;
+if($j){$attr=match($o){1=>'onblur',2=>'onkeydown',3=>'onpaste',default=>'onclick'}; $rp[$attr]=$j;}
 return tag('div',$rp,$d?$d:' ');}
 function divedit($id,$c,$s,$j,$d){return diveditbt($id).divarea($id,$d,$c,$s,$j);}
-function form($go,$d){return '<form method="post" action="'.$go.'">'.$d.'</form>';}
-function goodarea($id,$v,$n=44,$o=''){$nb=ceil(mb_strlen($v)/$n); $h=$nb>10?10:$nb;
+function form($go,$d){return tag('form',['method'=>'post','action'=>$go],$d);}
+function goodarea($id,$v,$n=44){$nb=ceil(mb_strlen($v)/$n); $h=$nb>10?10:$nb;
 $hb=substr_count($v,"\n"); if($hb>$h)$h=$hb>10?10:$h; if($h==0)$h=1; $hx='height:'.(22*$h).'px;';
 return textarea($id,$v,$n,$h,['wrap'=>'false','onkeyup'=>atjr('areasize',['this']),'style'=>$hx]);}
-
-//upload
-function upload_j($id,$typ,$o=''){$o=hidden('opt'.$id,$o);//send this val to sav::uploadsav(id,typ,val)
-return '<form id="upl'.$id.'" style="display:inline-block" method="POST" onchange="upload(\''.$id.'\')" accept-charset="utf-8"><label class="uplabel btn"><input type="file" id="upfile'.$id.'" name="upfile'.$id.'" multiple />'.hidden('typ'.$id,$typ).$o.picto('upload').'</label></form>'.btd($id.'up','').btd($id.'prg','');}
-
-//select
-function select($ra,$r,$kv='',$h='',$j='',$o=''){$ret=''; $pr=[];
-if(is_string($ra))$ra=['id'=>$ra];
-if($j)$ra['onchange']=sj($j.'\'+this.value+\'');
-if($o)$ret=tag('option',$pr+['value'=>''],'Select...');
-if($r)foreach($r as $k=>$v){
-	if($kv=='vv')$k=$v; elseif($kv=='kk')$v=$k;
-	if($k==$h)$pr['selected']='selected'; else $pr=[];
-	if(strlen($v)>20)$v=substr($v,0,20).'...';
-	$ret.=tag('option',$pr+['value'=>$k],$v);}
-return tag('select',$ra,$ret);}
 
 #dirs
 function mkdir_r($u){$nu=explode('/',$u); if(count($nu)>10)return;
@@ -211,21 +221,24 @@ return $rt;}
 function func($d,$k,$f,$n){//dir,key,file,topology
 if($f)return $d.'/'.$f; else return $d;}
 //actions
+function map($fc,$r){return array_map($fc,array_keys($r),array_values($r));}
+function strmapk($fc,$r){return join('',map($fc,$r));}
+function strmap($fc,$r,$o=''){return join('',array_map($fc,$r));}
 function walk_dir($dr,$fc){
 $r=explore($dr); return explode_dir($r,$dr,$fc?$fc:'func');}
 function scanwalk($dr,$fc){$r=scanfiles($dr); $rb=[];
 foreach($r as $k=>$v){$a=$fc($dr,$k,$v); if($a)$rb[]=$a;} return $rb;}
 function walk($fc,$r,$p=''){$rt=[]; foreach($r as $k=>$v)$rt[]=$fc($k,$v,$p); return $rt;}
-function walkr($r,$o=''){$fc=fn($k,$v)=>$o?$o:"$k=>$v";
-return array_map($fc,array_keys($r),array_values($r));}
+function walkr($r,$o=''){return map(fn($k,$v)=>$o?$o:"$k=>$v",$r);}
+function loop($fc,$n,$a='',$b=''){$r=[]; for($i=0;$i<$n;$i++)$r[]=$fc($i,$a,$b,$r); return $r;}
 
 #files
-function getfile($f){return curl_get_contents($f);}
 function read_file($f){$fp=false; if($f)$fp=fopen($f,'r') or die('er'); $ret='';//fgets
 if($fp){while(!feof($fp))$ret.=fread($fp,8192); fclose($fp);} return $ret;}
 function write_file($f,$d){$h=fopen($f,'w') or die('er'); $w=false;
 if($h){$e=fwrite($h,$d); fclose($h); opcache($f);}
 if($e!==false)return 1;}
+function getfile($f){return curl_get_contents($f);}
 function putfile($f,$d){$e=file_put_contents($f,$d,LOCK_EX); opcache($f);
 if($e!==false)return 1;}
 
@@ -233,12 +246,12 @@ function read_file2($f){if(fex1($f))return read_file($f);}
 //function fex0($f){$fp=finfo_open(FILEINFO_MIME_TYPE); $d=finfo_file($fp,$f); finfo_close($fp); return $d;}
 function fex1($f){return @fopen($f,'r');}
 function fex2($f){$fp=curl_init($f); curl_setopt($fp,CURLOPT_NOBODY,true); curl_exec($fp);
-$d=curl_getinfo($fp,CURLINFO_HTTP_CODE); curl_close($fp); return $d==200?1:0;}
+$d=curl_getinfo($fp,CURLINFO_HTTP_CODE); return $d==200?1:0;}
 
 function writecsv($f,$r){
 file_put_contents($f,'');
 if(($h=fopen($f,'r+'))!==false){
-foreach($r as $k=>$v)if(is_array($v))fputcsv($h,$v); fclose($h);}}
+foreach($r as $k=>$v)if(is_array($v))fputcsv($h,$v,"\t",'"','\\'); fclose($h);}}
 
 function readcsv($f){$rb=[];
 if(($h=fopen($f,'r'))!==false){$k=0;
@@ -258,18 +271,57 @@ function is_url($d){return filter_var($d,FILTER_VALIDATE_URL);}
 function is_hex($d){$opts=['flags'=>FILTER_FLAG_ALLOW_HEX];
 return filter_var('0x'.$d,FILTER_VALIDATE_INT,$opts);}
 
-function curl_get_contents($f,$post='',$json=0){
+function curl_get_cookies($f){$c=curl_init($f);
+curl_setopt($c,CURLOPT_FRESH_CONNECT,true);
+curl_setopt($c,CURLOPT_TIMEOUT,10);
+curl_setopt($c,CURLOPT_CONNECTTIMEOUT,10);
+curl_setopt($c,CURLOPT_SSL_VERIFYPEER,false);
+curl_setopt($c,CURLOPT_SSL_VERIFYHOST,0);
+curl_setopt($c,CURLOPT_FOLLOWLOCATION,true);
+curl_setopt($c,CURLOPT_RETURNTRANSFER,true);
+curl_setopt($c,CURLOPT_COOKIESESSION,true);
+//curl_setopt($c,CURLOPT_POST,true);
+//curl_setopt($c,CURLOPT_POSTFIELDS,['name'=>'','password'=>'','login-submit'=>'Connexion']);
+curl_setopt($c,CURLOPT_COOKIEJAR,'_datas/cookies/'.domain($f).'.txt');
+curl_exec($c);}
+
+function curl_set_cookies($f){$c=curl_init($f);
+curl_setopt($c,CURLOPT_FRESH_CONNECT,true);
+curl_setopt($c,CURLOPT_TIMEOUT,10);
+curl_setopt($c,CURLOPT_CONNECTTIMEOUT,10);
+curl_setopt($c,CURLOPT_SSL_VERIFYPEER,false);
+curl_setopt($c,CURLOPT_SSL_VERIFYHOST,0);
+curl_setopt($c,CURLOPT_FOLLOWLOCATION,true);
+curl_setopt($c,CURLOPT_RETURNTRANSFER,true);
+curl_setopt($c,CURLOPT_COOKIESESSION,true);
+curl_setopt($c,CURLOPT_COOKIEFILE,'_datas/cookies/'.domain($f).'.txt');
+$ret=curl_exec($c); //$http=curl_getinfo($c,CURLINFO_HTTP_CODE); //eco($http);
+return $ret;}
+
+function curl_get_contents($f,$post='',$json=0,$cook=''){
+//curl_get_cookies($f);
+//return curl_set_cookies($f);
 $c=curl_init(); curl_setopt($c,CURLOPT_URL,$f); $er='';
 curl_setopt($c,CURLOPT_HTTPHEADER,$json?['accept: application/json','content-type: application/json']:[]);
-if(is_array($post))$post=http_build_query($post);
-if($post){curl_setopt($c,CURLOPT_POST,TRUE); curl_setopt($c,CURLOPT_POSTFIELDS,$post);}
+if($post){if(is_array($post))$post=http_build_query($post);
+curl_setopt($c,CURLOPT_POST,TRUE); curl_setopt($c,CURLOPT_POSTFIELDS,$post);}
 curl_setopt($c,CURLOPT_USERAGENT,$_SERVER['HTTP_USER_AGENT']);
-curl_setopt($c,CURLOPT_RETURNTRANSFER,1); curl_setopt($c,CURLOPT_FOLLOWLOCATION,1);
-curl_setopt($c,CURLOPT_SSL_VERIFYPEER,0); curl_setopt($c,CURLOPT_SSL_VERIFYHOST,0);
-curl_setopt($c,CURLOPT_REFERER,host()); curl_setopt($c,CURLOPT_CONNECTTIMEOUT,2);
-curl_setopt($c,CURLOPT_ENCODING,'UTF-8'); $enc=curl_getinfo($c,CURLINFO_CONTENT_TYPE);
-$ret=curl_exec($c); if($ret===false)$er=curl_errno($c);
-curl_close($c); if($er)er($er); else return $ret;}
+//curl_setopt($c,CURLOPT_FRESH_CONNECT,true);
+curl_setopt($c,CURLOPT_FOLLOWLOCATION,true);
+curl_setopt($c,CURLOPT_SSL_VERIFYPEER,0);
+curl_setopt($c,CURLOPT_SSL_VERIFYHOST,0);
+curl_setopt($c,CURLOPT_RETURNTRANSFER,true);
+//curl_setopt($c,CURLOPT_COOKIESESSION,true);
+curl_setopt($c,CURLOPT_REFERER,host());
+curl_setopt($c,CURLOPT_CONNECTTIMEOUT,2);
+curl_setopt($c,CURLOPT_ENCODING,'UTF-8'); //$enc=curl_getinfo($c,CURLINFO_CONTENT_TYPE);
+//curl_setopt($c,CURLOPT_COOKIEJAR,'_datas/cookies/'.domain($f).'.txt');
+//curl_setopt($c,CURLOPT_COOKIEFILE,'_datas/cookies/'.domain($f).'.txt');
+//if($cook)curl_setopt($c,CURLOPT_COOKIE,$cook);
+$ret=curl_exec($c); $http=curl_getinfo($c,CURLINFO_HTTP_CODE);
+//$ret=curl_easy_perform($c);
+if($http!=200)$er=curl_errno($c);
+if($er)er($er); else return $ret;}
 
 #dom
 function dom($d){
@@ -289,14 +341,15 @@ function domattr($v,$p){if($v->hasAttribute($p))return $v->getAttribute($p);}
 
 //gz
 function gz_file($f){$d=read_file($f); gz_write($f.'.gz',$d);}
+function gz_read($f,$o=0){$d=gzopen($f,'rb',$o); $ret='';
+if($d){while(!gzeof($d))$ret.=gzread($d,1024); gzclose($d);} return $ret;}
 function gz_write($f,$d){$gz=gzopen($f,'w9'); gzwrite($gz,$d,strlen($d)); gzclose($gz);}
 function gz_write2($f,$d){file_put_contents($f.'.gz',gzencode($d,9));}
-function gz_read($f,$o=0){$d=gzopen($f,'rb',$o); $ret='';
-if($d)while(!gzeof($d))$ret.=gzread($d,1024); gzclose($d); return $ret;}
+function ungz_file($f){file_put_contents(substr($f,0,-3),gz_read($f));}
 function ungz_read($d){return implode('',gzfile($d));}
 function ungz_read2($d){return gzinflate(substr($d,10,-8));}
 function ungz_write($d,$f){$t=ungz_read($d); write_file($f,$t);}
-function gz2im($f){$d=gz_read($f); $d=str_replace('x-gzip','x-image',$d); file_put_contents($f,$d);}//
+function gz2im($f){$d=gz_read($f); $d=str_replace('x-gzip','x-image',$d); file_put_contents($f,$d);}
 function is_zip($f){if(strpos(mime_content_type($f),'application/x-gzip')!==false)return 1;}
 function unpack_gz($f,$d){$p='plug/tar/pcl'; include_once($p.'tar.lib.php');
 include_once($p.'error.lib.php'); include_once($p.'trace.lib.php'); PclTarExtract($f,$d,'','');}
@@ -313,7 +366,6 @@ JSON_ERROR_UTF8=>5,//'Caractères UTF-8 malformés, erreur encodage'
 default=>6};}//'Erreur inconnue'
 
 function mkjson($r,$o=''){
-//$rb=utf_r($r);
 $rt=json_encode($r,JSON_HEX_TAG);
 $e=json_error(); if($e)$rt=json_encode(array_combine(array_keys($r),array_fill(0,count($r),$e)));
 return $rt;}
@@ -346,6 +398,9 @@ function hed($d){if($d)return html_entity_decode($d);}
 function stripslashes_b($d){return str_replace(["\'",'\"'],["'",'"'],$d);}
 function subtopos($d,$a,$b){return substr($d,$a,$b-$a);}
 function subtostr($d,$a,$v){return substr($d,$a,strpos($d,$v,$a)-$a);}
+function subtostrend($d,$a,$v){return substr($d,$a,strrpos($d,$v,$a)-$a);}
+function subtochar($d,$c,$n=1){if($d)return substr($d,0,strpos($d,$c,$n));}
+function etc($d,$n=400){if($d)return mb_substr($d,0,$n).(mb_substr($d,$n)?'...':'');}
 function split_r($d,$n){return [substr($d,0,$n),substr($d,$n)];}
 function array_combine_b($ra,$rb){$na=count($ra); $nb=count($rb); $rt=[];
 if($na==$nb)$rt=array_combine($ra,$rb); else er('ra:'.$na.',rb:'.$nb); return $rt;}
@@ -360,6 +415,7 @@ function strfirst($d,$r){$q=[];
 foreach($r as $v){$n=mb_strpos($d,$v); if($n!==false)$q[]=$n;} if($q)return min($q);}
 function nearest($d,$s){$r=str_split($s); $n=strfirst($d,$r); return $n?$n:mb_strlen($d);}
 function strnext($d,$s){return mb_substr($d,0,nearest($d,$s));}
+function strsplit($v,$s){return [mb_substr($v,0,$s),mb_substr($v,$s)];}
 function split_one($s,$v,$n=''){if($n)$p=mb_strrpos($v,$s); else $p=mb_strpos($v,$s);
 if($p!==false)return [mb_substr($v,0,$p),mb_substr($v,$p+1)]; else return [$v,''];}
 function split_right($s,$v,$n=''){if($n)$p=mb_strrpos($v,$s); else $p=mb_strpos($v,$s);
@@ -368,6 +424,7 @@ function between($d,$a,$b,$na='',$nb='',$o=''){$pa=$na?mb_strrpos($d,$a):mb_strp
 if($pa!==false){$pa+=mb_strlen($a); $pb=$nb?mb_strrpos($d,$b,$pa):mb_strpos($d,$b,$pa);
 	if($pb!==false)return mb_substr($d,$pa,$pb-$pa); elseif($o)return mb_substr($d,$pa); else return '';}}
 function strin($d,$a,$b){return between($d,$a,$b,0,0,1);}
+function strprop($d,$v){return between($d,$v.'="','"',0,0,1);}
 function isnum($d){return preg_replace("/[^0-9]/",'',$d);}
 function str_slice($d,$n=1){$r=[]; $nb=mb_strlen($d); $na=ceil($nb/$n);
 for($i=0;$i<$na;$i++)$r[]=mb_substr($d,$i*$n,$n); return $r;}
@@ -378,8 +435,8 @@ function array_combine_a($a,$b){$n=count($a); $r=[];//php4
 for($i=0;$i<$n;$i++)if(isset($b[$i]))$r[$a[$i]]=stripslashes($b[$i]); return $r;}
 function array_combine_sub($a,$b){$rb=[];//bar_org
 foreach($a as $k=>$v)if(!isset($b[$k]))$rb[$k]=$v; return $rb;}
-function array_merge_b($ra,$rb){$a=is_array($ra)?1:0; $b=is_array($rb)?1:0;
-if($a && $b)return array_merge($ra,$rb); elseif($b)return $rb; else return $ra;}
+function array_merge_b($ra,$rb){
+if($ra && $rb)return array_merge($ra,$rb); elseif($rb)return $rb; elseif($ra)return $ra; else return [];}
 function array_diff_r($ra,$rb){$rt=[]; foreach($ra as $k=>$v){$ma=implode('',$v);
 	if(isset($rb[$k])){$mb=implode('',$rb[$k]); if($ma!=$mb)$rt[$k]=$v;} else $rt[$k]=$v;}
 return $rt;}
@@ -393,8 +450,10 @@ if($s)$r=array_slice($r,0,$s,true); return $r;}
 function array_keys_b($r){foreach($r as $k=>$v)$rb[]=$k; return $rb;}//if($k)
 function array_keys_r($r,$n,$o=''){$rb=[]; foreach($r as $k=>$v)if($v[$n]??'')$rb[$k]=$v[$n];
 return $o?array_flip($rb):$rb;}
+//function array_keys_n($r,$n=0){foreach($r as $v)$rb[$v][]=1; foreach($rb as $v)$rb[$v]=count($v); return $rb;}
 //function array_col($r,$n=0){foreach($r as $k=>$v)if($v[$n]??'')$rb[]=$v[$n]; return $rb;}
-function array_column_k($r,$n){return array_combine(array_keys($r),array_column($r,$n));}
+function array_column_k($r,$k){return array_combine(array_keys($r),array_column($r,$k));}//array_filter()
+function in_array_a($d,$r){return $r[$d]??null;}
 function in_array_b($d,$r){if($r)foreach($r as $k=>$v)if($v==$d)return $k;}
 function in_array_k($d,$r){foreach($r as $k=>$v)if(isset($v[$d]))return true;}
 function in_array_p($d,$r){if($r)foreach($r as $k=>$v)if(strpos($d,$v)!==false)return 1;}
@@ -404,12 +463,15 @@ function array_add_r($ra,$rb){foreach($rb as $k=>$v)
 if(is_array($v))$ra[$k]=array_add_r($ra[$k],$v); else $ra[]=$v; return $ra;}
 function array_part($d,$s,$n){$r=explode($s,$d); return $r[$n];}
 function array_sum_r($r){$rb=[]; foreach($r as $k=>$v)$rb+=count($v); return $rb;}
+function sortbyarray($a,$b){foreach($b as $k=>$v)$rt[$k]=$a[$k]??''; return $rt;}
+function sortbycol($r,$k,$o=0){$ra=array_column_k($r,$k); $o?arsort($ra):asort($ra); return sortbyarray($r,$ra);}
+//function sortbycol_0($r,$k){uasort($r,fn($a,$b)=>$a[$k]<=>$b[$k]);}//notworks
 function unsetk($r,$d,$n){if($r)foreach($r as $k=>$v)if($v[$n]==$d)unset($r[$k]); return $r;}
 function unsetif(&$r,$d){if(isset($r[$d]))unset($r[$d]);}
 function trimr($v){$r=explode(',',$v); $n=count($r);
 for($i=0;$i<$n;$i++)$rt[]=trim($r[$i]); return $rt;}
 
-function explode_r($d,$a,$b){$r=explode($a,$d);
+function explode_r($d,$a,$b){$r=explode($a,$d); $rb=[];
 foreach($r as $k=>$v)$rb[]=explode($b,$v); return $rb;}
 function explode_k($d,$a,$b){$r=explode($a,$d); $rb=[];
 foreach($r as $k=>$v){if($v){$ra=split_right($b,$v);
@@ -419,10 +481,13 @@ if($rb)return implode($a,$rb);}
 function implode_k($r,$a,$b){$rb=[]; foreach($r as $k=>$v)if($v)$rb[]=$k.$b.$v;
 if($rb)return implode($a,$rb);}
 function implode_j($d){$rb=[]; if(!is_array($d))$r[]=$d; else $r=$d;
-foreach($r as $k=>$v)if($v=='this' or $v=='event')$rb[]=$v; else $rb[]='\''.$v.'\'';
+foreach($r as $k=>$v)if($v=='this' or $v=='this.value' or $v=='event')$rb[]=$v; else $rb[]='\''.$v.'\'';
 if($rb)return implode(',',$rb);}
 function implode_keys($r,$a=''){$rb=array_keys($r); if($rb)return implode($a,$rb);}
 function joinif($a,$r){$rt=[]; foreach($r as $k=>$v)if($v)$rt[]=$v; if($rt)return join($a,$rt);}
+function joindiv($r){return join('',array_map('div',$r));}//div_r
+function prepv($r){foreach($r as $k=>$v)$rb[]=[$k,$v]; return $rb;}
+function prepk($r){foreach($r as $k=>[$a,$b])$rb[$a]=$b; return $rb;}
 
 #filters
 function delbr($d,$o=''){return str_replace(['<br />','<br/>','<br>'],$o,$d??'');}
@@ -437,6 +502,7 @@ function delr_r($r){foreach($r as $k=>$v)$r[$k]=delr($v); return $r;}
 function yesno($d){return $d?0:1;}
 function rid($p,$n=6){return substr(md5($p),0,$n);}
 function randid($p=''){return $p.substr(microtime(),2,7);}//uniqid()
+function randnm(){return bin2hex(random_bytes(8));}
 function nchar($o,$n){$ret=''; for($i=0;$i<$o;$i++){$ret.=$n;}return $ret;}
 function count_r($r){$n=0;
 if($r)foreach($r as $k=>$v){if(is_array($v))$n+=count_r($v); else $n++;} return $n;}
@@ -450,9 +516,12 @@ $b=mb_strpos($d,'|'); if($b)$d=mb_substr($d,0,$b);
 //$b=mb_strpos($d,' '); if($b)$d=mb_substr($d,0,$b);
 if(strlen($d)<7)return $d;}
 function xtb($d,$o=0){return substr(strtolower(strrchr($d??'','.')),$o);}
-function is_img($d){$d=xt($d); if(!$d)return; $r=['.jpg','.png','.gif','.jpeg','.webp'];
-for($i=0;$i<5;$i++)if(mb_strpos($d,$r[$i])!==false)return $r[$i];}
+function is_img($d){$d=xt($d); if(!$d)return; $r=['.jpg','.png','.gif','.jpeg','.webp','.heic','.avif'];
+foreach($r as $v)if(strpos($d,$v)!==false && strpos($v,' ')===false)return true;}
+function isim($d){return is_http($d)?false:is_img($d);}
+function isimhtml($d){return is_http($d)?is_img($d):false;}
 function is_http($d){if(substr($d,0,4)=='http' or substr($d,0,2)=='//')return true;}
+function is_tw($d){if(strpos($d,'twitter.com')!==false or strpos($d,'x.com')!==false)return true;}
 
 //vars
 function expk($s,$d){[$k,$v]=explode($s,$d); return [$k=>$v];}
@@ -483,17 +552,18 @@ function getz($k){ses::$r['get'][$k]='';}
 function post($k,$v=''){return $_POST[$k]??$_POST[$k]=$v;}
 function cookie($d,$v=''){if($v)setcookie($d,$v,ses('daya')+(86400*30)); return $_COOKIE[$d]??'';}
 function cookz($d){setcookie($d,'',0);}
-function env($d,$v=null){if(isset($v))$_ENV[$d]=$v; return $_ENV[$d]??'';}//assign
 function ses($d,$v=null){if(isset($v))$_SESSION[$d]=$v; return $_SESSION[$d]??'';}//assign
 function sesb($d,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=$v; return $_SESSION[$d];}
 function sesz($d){if(isset($_SESSION[$d]))unset($_SESSION[$d]);}
 function sesr($d,$k,$v=''){if(!isset($_SESSION[$d]))$_SESSION[$d]=[];
-if(!isset($_SESSION[$d][$k]))$_SESSION[$d][$k]='';
-if($v)$_SESSION[$d][$k]=$v; return $_SESSION[$d][$k];}
-function sesrr($d,$k,$v=[]){if(!isset($_SESSION[$d]) or is_string($_SESSION[$d]))$_SESSION[$d]=[];
-if(!isset($_SESSION[$d][$k]))$_SESSION[$d][$k]='';
-return $v?$_SESSION[$d][$k]=$v:($_SESSION[$d][$k]??[]);}
-function sesrz($d,$k){if(array_key_exists($k,$_SESSION[$d]))unset($_SESSION[$d][$k]);}
+if(!isset($_SESSION[$d][$k]))$_SESSION[$d][$k]=''; if($v)$_SESSION[$d][$k]=$v; return $_SESSION[$d][$k];}
+function sesrr($d,$k,$r=[]){if(!isset($_SESSION[$d]))$_SESSION[$d]=[];
+if(!isset($_SESSION[$d][$k]))$_SESSION[$d][$k]=[]; if($r)$_SESSION[$d][$k]=$r; return $_SESSION[$d][$k];}
+function sesrrv($d,$k,$kb,$v=''){//$r=sesrr($d,$k);
+if(!isset($_SESSION[$d]))$_SESSION[$d]=[]; if(!isset($_SESSION[$d][$k]))$_SESSION[$d][$k]=[];
+if(!isset($_SESSION[$d][$k][$kb]))$_SESSION[$d][$k][$kb]=''; if($v)$_SESSION[$d][$k][$kb]=$v;
+return $_SESSION[$d][$k][$kb];}
+function sesrz($d,$k){if(array_key_exists($k,$_SESSION[$d]??[]))unset($_SESSION[$d][$k]);}
 function sesg($v,$d){$s=ses($v); $g=get($v); return $g?$g:($s?$s:$d);}
 function sesk($d,$v){$_SESSION[$d][]=$v; return $_SESSION[$d];}
 function sesmk($v,$p='',$b=''){$k=$v.$p; if(!($_SESSION[$k]??[]) or $b)
@@ -511,11 +581,11 @@ foreach($r as $k=>$v){array_unshift($v,$k); fputcsv($f,$v,$s,$e,$es);} rewind($f
 return trim(stream_get_contents($f));}
 
 #access
-function https($f){return str_replace('http:','https:',$f);}
-function nohttps($f){return str_replace('https','http',$f);}
-function http($f){return $f&&substr($f,0,4)!='http'?'http://'.$f:$f;}
 function ishttp($f){return substr($f,0,4)=='http'?1:0;}
+function http($f){return $f&&substr($f,0,4)!='http'?'http://'.$f:$f;}
+function https($f){return $f&&substr($f,0,4)!='http'?'https://'.$f:$f;}
 function nohttp($f){if($f)return str_replace(['http://','https://','www.'],'',$f);}
+function nohttps($f){return str_replace('https','http',$f);}
 function domain($f){$f=nohttp($f); $p=strpos($f??'','/'); return $p?substr($f,0,$p):$f;}
 function httproot($f){$f=domain($f); $f=substr($f,0,strrpos($f,'.')); return $f;}
 function findroot($u){$r=explode('/',$u); $r=array_slice($r,0,3); if($r)return implode('/',$r);}
@@ -532,8 +602,10 @@ return stristr($s,'android') || stristr($s,'iPhone') || stristr($s,'iPad');}
 function recup_fileinfo($doc){if(is_file($doc))
 return date('ymd',filemtime($doc)).'-'.round(filesize($doc)/1024).'Ko';}
 function ftime($f,$d=''){if(is_file($f))return date($d?$d:'ymd.Hi',filemtime($f));}
-function fsize($f,$o=''){if(is_file($f))return round(filesize($f)/1024).($o?' ko':'');}
-function fwidth($f,$o=''){$r=is_file($f)?getimagesize($f):[0,0]; return $o?implode('/',arr($r,2)):$r;}
+function fsizeformat($sz=0){return $sz>1048576?round($sz/1048576,2).' Mo':round($sz/1024,2).' Ko';}
+function fsize($f,$o=''){$sz=is_file($f)?filesize($f):false; if(!$o)return $sz; return fsizeformat($sz);}
+//function imsize($f){return is_file($f)?@getimagesize($f):[0,0,0];}
+function imsize($f){$r=@getimagesize($f); return $r?$r:[0,0,0];}
 function frdate($d){$r=['','janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']; return $r[$d];}
 function localdate($d){$r=explode('/',date('d/m/Y',$d)); $r[1]=frdate(intval($r[1]));
 return implode(' ',$r);}
@@ -541,54 +613,51 @@ function ts2time($t){$nd=date('z',$t); $nh=date('H',$t)*60*60; $nm=date('i',$t)*
 return $nd*84600+$nh+$nm+$ns;}
 
 #dates
-function mkday($d='',$p=''){if($p==1)$p=prmb(17); return date($p?$p:'ymd',is_numeric($d)?$d:time());}
-function timeago($d){$dy=ses('daya'); $day=$dy?$dy:ses('dayx'); $m=is_numeric($d)?$d:0;
-return $day-(86400*$m);}
-function calctime($d){return ses('dayx')-86400*(is_numeric($d)?$d:1);}
-function daysfrom($d){return round((ses('dayx')-(is_numeric($d)?$d:1))/86400);}
-function sqldate(){return date('Y-m-d H:i:s');}//%A%d%B%G%T
+function mkday($d='',$p=''){if($p==1)$p=prmb(17); return datz($p?$p:'ymd',is_numeric($d)?$d:ses::$dayx);}
+function daysys($p=0){$d=match($p){1=>'ymd',2=>'His',default=>'ymd:His'}; return date($d,time());}
+function timeago($d,$dy=''){$day=$dy?$dy:(ses('daya')?ses('daya'):ses::$dayx); $m=is_numeric($d)?$d:0; return $day-(86400*$m);}
+function calctime($d){return ses::$dayx-86400*(is_numeric($d)?$d:1);}
+function addtime($d,$dy=0,$yr=0){return $d+(86400*$dy)+(86400*365*$yr);}
+function daysfrom($d){return round((ses::$dayx-(is_numeric($d)?$d:1))/86400);}
+function sqldate(){return datz('Y-m-d H:i:s');}//%A%d%B%G%T
 function timelang($lg=''){if(!$lg or $lg=='all')$lg=prmb(25); setlocale(LC_TIME,$lg.'_'.strtoupper($lg));}
 function time_prev($d){$ret='';
 $r=[0,7,30,90,365]; for($i=5;$i<25;$i++){$a=isset($r[$i-1])?$r[$i-1]:0; $r[]=$a+365;} $n=count($r);
-for($i=0;$i<=$n;$i++)if(!empty($r[$i]) && $r[$i]<$d)$ret=$r[$i];
-return $ret;}
+for($i=0;$i<=$n;$i++)if(!empty($r[$i]) && $r[$i]<$d)$ret=$r[$i]; return $ret;}
 function mkdts(){return $_SESSION['prmb'][17]??'ymd.Hi';}
 function rss_date($d){return date(mkdts(),strtotime($d));}
-function inpday($t){[$d,$m,$y]=explode('-',$t); return mktime(0,0,0,$m,$d,$y);}//23,59,59
+function sqldate2time($t){[$d,$m,$y]=explode('-',$t); return mktime(0,0,0,$m,$d,$y);}//23,59,59
 function day2time($t){[$y,$m,$d]=str_slice($t,2); return mktime(0,0,0,$m,$d,$y);}
-function time_ago($dt){$dy=time()-round($dt); if($dy<86400){$fuseau=3;
-$h=intval(date('H',$dy))-$fuseau; $i=intval(date('i',$dy)); $s=intval(date('s',$dy));
-$nbh=$h>1?$h.' h ':''; $nbi=$i>0?$i.' min ':''; return $nbh.$nbi;} 
-else return date(mkdts(),round($dt));}
+function time_ago($t){$s=time()-round($t); return $s>86400?datz(mkdts(),round($t)):compute_time($s);}
 function clean_nb($d,$o=0){return number_format($d,$o,',',' ');}
 
-function compute_time($s){$rt=[];
-$r=['year'=>31556925,'month'=>2629744,'week'=>604800,'day'=>86400,'hour'=>3600,'minute'=>60,'second'=>1];
-foreach($r as $k=>$v)if($s>$v){$n=floor($s/$v); $s-=$v*$n; $rt[]=$n.' '.$k.($n>1?'s':'');}
+function dt($d=''){$tz=new DateTimeZone('Europe/Paris'); return new DateTime($d,$tz);}//Immutable
+function dtt($d){$dt=dt(); return $dt->setTimestamp($d);}
+function datz($d,$t=''){$dt=$t?dtt($t):dt(); return $dt->format($d?$d:mkdts());}
+function dtdig($d,$o='P7D'){$d2=clone $d; $dig=new DateInterval($o); $d2->sub($dig); return $d2;}
+function dtc($d){$r=['y'=>'years','m'=>'months','d'=>'days','h'=>'hours','i'=>'minutes','s'=>'seconds'];
+$rb=str_split($d); foreach($rb as $k=>$v)$rt[]='%'.$v.' '.$r[$v]; return join(' ',$rt);}
+function dtdiff($dt,$d2,$o=''){$diff=$dt->diff($d2); return $diff->format($o?$o:dtc('ymdhis'));}
+function dtm($d){return $d->getTimestamp();}
+function isdate($d){return DateTime::createFromFormat('Y-m-d',$d)!==false;}
+
+function compute_timer($s){$rt=[];
+$r=[31556925,2629744,604800,86400,3600,60,1];
+foreach($r as $k=>$v)if($s>$v){$n=floor($s/$v); $s-=$v*$n; $rt[$k]=$n;}
+return $rt;}
+
+function compute_time($s){$rt=[]; $r=compute_timer($s);
+$ra=['year','month','week','day','h','min','s'];
+foreach($r as $k=>$v)
+//$rt[]=$v.' '.$ra[$k].($v>1?'s':'');
+if($s>86400){if($k<4)$rt[]=$v.' '.$ra[$k].($v>1?'s':'');}
+else if($k>=4)$rt[]=$v.$ra[$k];
 return join(' ',$rt);}
 
 #builders
 function scroll($r,$d,$max=10,$w='',$h='',$id=''){$h=is_numeric($h)?$h.'px':$h;
 $n=is_array($r)?count($r):$r; $s=$w?'width:'.$w.'px; ':''; $s.='max-height:'.($h?$h:'420px').';';
 if($n>$max or !$n)return div($d,'scroll','scrll'.$id,$s); else return $d;}
-
-function on2cols($r,$w,$p){$w1=round($w/$p); $w2=round($w-$w1); $ret='';
-$sc='display:table-cell; '; $sw1='width:'.$w1.'px;';
-$sr='display:table-row;'; $sw2='width:'.$w2.'px;';
-if($r)foreach($r as $k=>$v)
-	$ret.=divs($sr,div($k,'txtsmall grey','',$sc.$sw1).divs($sc.$sw2,$v?$v:'-'));
-return divs('display:table;',$ret);}
-
-function onxcols($re,$prm,$w,$h=''){//colonize
-$nb=count($re); $i=0; $io=1; $r[$io]=''; if(!is_numeric($prm))$prm=3; $ret='';
-$mid=ceil($nb/$prm); $mid=$mid==0?1:$mid; $mw=floor($w/$prm)-60;
-if($h)$h=' overflow-y:auto; overflow-x:visible; scrollbar-width:thin; height:'.$h.'px;';
-$css='float:left; min-width:'.$mw.'px; width:'.(floor(100/$prm)).'%;'.$h.';';
-if($re)foreach($re as $k=>$v){$i++; if($i<=$mid)$r[$io].=$v;
-	if($i>$io*$mid && $io<$prm){$io++; $r[$io]='';}
-	if($io>1 && $i>$mid*($io-1) && $i<=$mid*$io)$r[$io].=$v;}
-for($i=1;$i<=$prm;$i++)$ret.=divs($css,$r[$i]??'');
-return $ret.divc('clear','');}
 
 #medias
 function iframe($d,$w='',$h=''){
@@ -597,12 +666,12 @@ $w=$wb?$wb:$w; $h=$hb?$hb:($h?$h:'440px'); $w=$w?$w:'100%';
 if(strpos($dc,'http')===false)$f='/users/'.$dc;
 return tag('iframe',['src'=>$dc,'frameborder'=>'0','width'=>$w,'height'=>$h,'name'=>$p,'seamless'=>$o,'srcdoc'=>$o,'allowfullscreen'=>'true'],'');}
 function obj($d,$t,$s=''){return tag('object',['data'=>$d,'type'=>$t,'style'=>$s],'');}
-function audio($d,$id='',$t=''){[$f,$t]=cprm($d); $bt=btn('small',mk::download($d));
+function audio($d,$id='',$t=''){[$f,$t]=cprm($d); $bt=btn('small',mk::download($f));
 return '<audio controls><source src="'.$f.'" type="audio/mpeg"></audio>'.$bt;}
 function video($d,$w='',$h='',$o=''){[$d,$t]=cprm($d); $d=goodroot($d);
 if($t)return lj('','popup_usg,video___'.ajx($d),pictxt('movie',$t!=1?$t:strend($d,'/')));
 $pr=['type'=>'video/'.xtb($d,1),'src'=>$d,'controls'=>'true','autobuffer'=>'true']; if($o)$pr['poster']=$o;
-$pr['width']=($w?$w.'px':'100%'); $pr['height']=($h?$h:440).'px';
+$pr['width']=($w?$w.'px':'100%'); if($h)$pr['height']=$h.'px';
 return tag('video',$pr,'');}
 
 #img
@@ -615,19 +684,15 @@ if($r)foreach($rb as $v)$rt[$v]=$r[$v]??'';
 return $rt;}
 
 //clrs
-function hexrgb_r($d){
-for($i=0;$i<3;$i++)$r[]=hexdec(substr($d,$i*2,2)); return $r;}
-function hexrgb($d,$o=''){$r=hexrgb_r($d);
-return 'rgba('.$r[0].','.$r[1].','.$r[2].','.$o.')';}
-function invert_color($p,$o=''){$ret=''; if(!ctype_xdigit((string) $p))return;
-if($o)return hexdec($p)<8300000?'ffffff':'000000';//16777215
-for($i=0;$i<3;$i++){$d=dechex(255-hexdec(substr($p,$i*2,2)));
-	if(strlen($d)==1)$d='0'.$d; $ret.=$d=='0'||!$d?'00':$d;}
-return $ret;}
-function rgb2hex($r){$ret='';
-for($i=0;$i<3;$i++){$d=dechex($r[$i]);
-	if(strlen($d)==1)$d='0'.$d; $ret.=$d=='0'||!$d?'00':$d;}
-return $ret;}
+function hexrgb_r($d){return array_map('hexdec',str_split($d,2));}
+function hexrgb($d,$o=''){$r=hexrgb_r($d); return 'rgba('.join(',',$r).','.$o.')';}
+function rgb2hex($r){return join('',array_map(fn($v)=>str_pad(dechex($v),2,'0',STR_PAD_LEFT),$r));}
+function clrneg($c,$o=0){if(!ctype_xdigit((string)$c))return; $r=array_map('hexdec',str_split($c,2));
+if($o){$n=array_sum(array_map(fn($k,$v)=>match($k){0=>$v*0.3,1=>$v*0.5,default=>$v*0.1},array_keys($r),$r));
+return $n>120?'000000':'ffffff';}
+$r=array_map(fn($v)=>dechex(255-$v),$r);
+$r=array_map(fn($v)=>str_pad($v,2,'0',STR_PAD_LEFT),$r);
+return join('',$r);}
 function hsl2rgb($h,$s,$l){
 $h/=360; $s/=100; $l/=100; $r=$l;$g=$l;$b=$l;
 $v=($l<=0.5)?($l*(1.0+$s)):($l+$s-$l*$s);
@@ -646,23 +711,28 @@ return [round($r*=255),round($g*255),round($b*255)];}
 function hsl2hex($h,$s,$l){$r=hsl2rgb($h,$s,$l); return rgb2hex($r);}
 
 //ascii
-function chr_b($d){return '&#'.$d.';';}
-function asciinb($n){if(is_numeric($n))return chr_b(9311+$n);}
-function ascii($d,$s=''){$s=is_numeric($s)?'font-size:'.$s.'px;':''; return span(chr_b($d),'','',$s);}
+function chr_b($d){return is_numeric($d)?'&#'.$d.';':'&'.$d.';';}
+function asciinb($n,$o=''){return is_numeric($n)?chr_b(($o?9311:65296)+$n):0;}
+function ascii($d,$s=''){return $s=is_numeric($s)?span(chr_b($d),'','','font-size:'.$s.'px;'):chr_b($d);}
 function asciitypo($d,$s=''){$s=is_numeric($s)?'font-size:'.$s.'px;':''; return span('','as-'.$d,'',$s);}
 
 #maths
 function phi($n=32){$d=1; for($i=0;$i<$n;$i++)$d=1+(1/$d); return $d;}//dav algo :)
-function average($r){return round(array_sum($r)/count($r),3);}
+function fibo($n){$r=[0,1]; for($i=2;$i<$n;$i++)$r[]=$r[$i-2]+$r[$i-1]; return $r;}
+function average($r,$n=3){return round(array_sum($r)/count($r),$n);}
 function ratio($r,$min,$max,$k){$minr=min($r); $diff=max($r)-$minr; $rb=[];
-foreach($r as $k=>$v)$rb[$k]=(($v-$minr)/$diff)*($max-$min)+$min;
-return $rb;}
+foreach($r as $k=>$v)$rb[$k]=(($v-$minr)/$diff)*($max-$min)+$min; return $rb;}
+function divergentserie($n){for($i=1;$i<=$n;$i++)$r[]=$i; return array_sum($r);}
 
 #tools
 function exc($d){if(auth(6))return shell_exec(escapeshellcmd($d));}
 function sys($d){if(auth(6))system(escapeshellcmd($d),$d); return $d;}
-function excdir(){$dr=__DIR__; $r=explode('/',$dr); return '/'.$r[1].'/'.$r[2];}
-function excget($u,$f){$e='wget -P '.excdir().'/'.$u.' '.$f; exc($e);}
+function excdir(){$r=explode('/',__DIR__); return '/'.$r[1].'/'.$r[2];}
+function wget($u,$f){$e='wget -O '.excdir().'/'.$f.' '.$u; echo exc($e); return 1;}
+function copim($u,$f){$e='wget -O '.excdir().'/img/'.$f.' '.$u; exc($e); return 1;}
+function exchmod(){return exc('sh pub/sh/chmod.sh '.excdir());}
+function excf($d,$p='',$o=''){return exc('bash pub/sh/'.$d.'.sh '.$p.' '.$o);}
+function ram($o=0){$n=$o?memory_get_usage():memory_get_peak_usage(); return round($n/1048576,2);}
 
 //utils
 function pt($r){echo tree($r);}
@@ -670,18 +740,18 @@ function pr($r){echo '<pre>'.print_r($r,true).'</pre>';}
 function code($d){echo '<code><pre>'.$d.'</pre></code>';}
 function vd($r){is_object($r)?var_dump($r):pr($r);}
 function backtrace(){var_dump(debug_backtrace());}
+function e($d){echo div($d);}
 function eco($d,$o=''){if(is_array($d))$d='<pre>'.print_r($d,true).'</pre>';
-$ret=textarea('',htmlspecialchars($d),44,12); if($o)return $ret; elseif(auth(6))echo $ret.br();}
+$ret=textarea('',htmlspecialchars($d),44,12); if($o)return $ret; elseif(auth(6))echo $ret;}
 function dump($r,$o=''){$rb=[]; $i=0; if(is_array($r))foreach($r as $k=>$v){$ka='';
 if(is_array($v))$va=dump($v,$o); else $va='\''.addslashes(stripslashes($v)).'\'';
 if($k!=$i or $o)$ka=is_numeric($k)?$k:'\''.addslashes(stripslashes($k)).'\''; $rb[]=($ka?$ka.'=>':'').$va; $i++;}
 return '['.implode(',',$rb).']';}
 function chrono($d=''){static $s; $ret=microtime(true)-($s?$s:$_SERVER['REQUEST_TIME_FLOAT']); $s=microtime(true);
-if($d)return btn('small',$d.':'.round($ret,5));}
+if($d)return $d.':'.round($ret,5).' ';}
 function chrono_average($o=''){static $r=[]; static $t0; static $i; if($o){$r=[]; $i=0;}
 if(!$t0)$t0=$_SERVER['REQUEST_TIME_FLOAT']; $t1=microtime(true); $r[$i]=$t1-$t0;
 $ret=$i.'. '.round(array_sum($r)/count($r),5); $t0=$t1; $i++; return $ret;}
 function funcs(){pr(get_defined_functions());}
 function trace(){eco(debug_backtrace());}
-function er($d){return ses::$er[]=$d;}
 ?>

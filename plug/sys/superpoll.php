@@ -38,7 +38,7 @@ return $r[$k][1];}
 static function read($k){
 $r=msql::row('',$_SESSION['sppnod'],$k,1);
 unset($r['projet']); unset($r['poll']);
-return on2cols($r,500,5);}
+return build::on2cols($r,500,5);}
 
 static function call2($p,$o,$prm=[]){
 if($o=='del')$r[0]=self::del($p);

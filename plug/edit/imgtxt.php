@@ -52,7 +52,7 @@ $r=msql::row('system','edition_fontes',$fnt);
 if(!is_array($r[3]) && is_file($font)){
 	if(!file_exists($f) or $cod or get('rebuild_img'))
 	if($r)self::build($t,$r[0],$r[1],$r[2],$r[3],$font,$clr,$f);
-[$w,$h]=getimagesize($f);
+[$w,$h]=imsize($f);
 return image('/'.$f.'?'.randid(),$w,$h);}
 else return $t;}
 }

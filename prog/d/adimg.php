@@ -4,13 +4,13 @@ static $a=__CLASS__;
 static $cb='adi';
 static $rc=['rollback'=>[],'reimport'=>[]];
 
-static function batch(){
+/*static function batch(){//?
 $a=214668; $b=228066; $n=$b-$a;
 for($i=$a;$i<=$b;$i++){$id=$i;
 //sav::reimportim($id);
 $rt[]=$id;}
 $ra=sql('ib','qdg','rv',['(ib'=>$rt,'_group'=>'ib']);
-$r1=array_diff($rt,$ra);}//echo count($r1);
+$r1=array_diff($rt,$ra);}//echo count($r1);*/
 
 static function rollbackim($id,$im){
 $ok=sav::rollbackim($id,$im);
@@ -22,22 +22,22 @@ $ok=sav::reimportim($id);
 self::$rc['reimport'][]=1;
 return 'ok';}
 
-static function build($p,$o,$ob){$ret=''; $l=500; $n=($p?$p:0)*$l;
-$ra=sqb('id,img','qda','kx','order by id desc limit '.$n.','.$l);
-$rb=sql('ib,id,im','qdg','kkv',['(ib'=>array_keys($ra)]);
-$rt=[];
+static function enquiry($ra,$rb){
 foreach($ra as $k=>$v)foreach($v as $ka=>$va)if($va && !is_numeric($va)){
-	$rt[$k]['k'][$k]=1;
-	$rt[$k]['imct'][$va]=1;
+	$rt[$k]['k'][$k]=1; $rt[$k]['imct'][$va]=1;
 	if(isset($rb[$k])){
-		foreach($rb[$k] as $kb=>$vb){
-			if($vb==$va)$rt[$k]['imdb'][$va]=1;}
-		if(!isset($rt[$k]['imdb'][$va]))
-			$rt[$k]['notimdb'][$va]=1;}
+		foreach($rb[$k] as $kb=>$vb)if($vb==$va)$rt[$k]['imdb'][$va]=1;
+		if(!isset($rt[$k]['imdb'][$va]))$rt[$k]['notimdb'][$va]=1;}
 	else $rt[$k]['notimdb'][$va]=1;
-	if(is_file('img/'.$va)){$rt[$k]['exists'][$va]=1; $rt[$k]['size'][$va]=fwidth('img/'.$va,1);}
+	if(is_file('img/'.$va)){$rz=imsize('img/'.$va,1);
+		$rt[$k]['exists'][$va]=1; $rt[$k]['size'][$va]=implode('/',arr($rz,2));}
 	else{$rt[$k]['notex'][$va]=1; $rt[$k]['size'][$va]='';}}
-//pr($rt);
+return $rt;}
+
+static function build($p,$o,$ob){$ret=''; $l=500; $n=($p?$p:0)*$l;
+$ra=sql('id,img','qda','kx',['_order'=>'id desc','_limit'=>$n.','.$l]);
+$rb=sql('ib,id,im','qdg','kkv',['(ib'=>array_keys($ra)]);
+$rt=self::enquiry($ra,$rb);
 //$r1=array_column($rt,'notimdb');
 $rf['_']=['id','imct','imdb','exists','rollback'];
 foreach($ra as $k=>$v)foreach($v as $ka=>$va)if($va && !is_numeric($va)){

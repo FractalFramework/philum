@@ -48,10 +48,10 @@ return implode(' ',$rt);}
 
 static function menu($p,$o,$rid){
 $ret=input('inp',$p).' ';
+$ret.=lj('',$rid.'_keygen,call_inp,opt,psp,rlw',picto('ok')).' ';
 $ret.=checkbox_j('opt',$o,'complexity').' ';
 $ret.=checkbox_j('psp',$o,'passphrase').' ';
 $ret.=checkbox_j('rlw',$o,'realword').' ';
-$ret.=lj('',$rid.'_keygen,call_inp,opt,psp,rlw',picto('ok')).' ';
 return $ret;}
 
 static function home($p,$o){$rid='plg'.randid(); if(!$p)$p=16;

@@ -75,18 +75,18 @@ foreach($r as $k=>$v)$rt[$k]=self::iter($k);
 return tree($rt,1,1);}
 
 static function vue(){$rm=[]; $rw=[]; $rd=[]; $rn=[];
-//$r=sqb('distinct(dir)','qdya','rv',''); $rk=array_flip($r);
-//$r=sqb('dir,func','qdya','kk','');
+//$r=sql('distinct(dir)','qdya','rv',''); $rk=array_flip($r);
+//$r=sql('dir,func','qdya','kk','');
 //foreach($r as $k=>$v)foreach($v as $ka=>$va)$rm[$ka]=$rk[$k]; //moodularity_class
-$r=sqb('page,func as nb','qdya','k','order by nb desc');
+$r=sql('page,func as nb','qdya','k',['_order'=>'nb desc']);
 arsort($r); $rk=array_keys($r); $rk=array_flip($rk);//classes ordered by popularity
-$r=sqb('dir,page,func,uses','qdya','','');
+$r=sql('dir,page,func,uses','qdya','','');
 foreach($r as $k=>$v){$kb=($v[0]!='/'?$v[1].'::':'').$v[2];
 	$rm[$kb]=$rk[$v[1]];//moodularity_class2
 	$rw[$kb]=$v[3];}//weight
 //pr($rm);
 //pr($rw); 
-$r=sqb('parent,child','qdyar','kk','');
+$r=sql('parent,child','qdyar','kk','');
 $ra[]=['Id','Label','timeset','modularity_class']; $i=0; $rd=[];
 $rb[]=['Source','Target','Type','Id','Label','Timeset','Weight'];
 foreach($r as $k=>$v){$rd[$k]=$i++; foreach($v as $ka=>$va){$rd[$ka]=$i++; $rn[$ka][]=1;}} //id,weight
@@ -103,7 +103,7 @@ static function save2($r){$db='qdyar';
 sql::trunc($db); $rt=[];
 $rh=['parent','child'];
 foreach($r as $k=>$v)foreach($v as $ka=>$va)$rt[]=[$k,$va];
-if($rt)sql::sav2($db,$rt,1);}
+if($rt)sql::savr($db,$rt,1);}
 
 static function unused($r,$rb){$rt=[];
 foreach($r as $k=>$v){[$a,$b]=$v; $fa=$a?$a.'::'.$b:$b;//searched
@@ -127,7 +127,7 @@ foreach($r as $k=>$v){[$a,$b,$d]=$v;
 return $rt;}
 
 static function tree($p,$o){$rt=[]; $rb=[]; $rc=[]; $ry=[];
-$r=sqb('dir,page,func,code','qdya','','order by dir');
+$r=sql('dir,page,func,code','qdya','',['_order'=>'dir']);
 foreach($r as $k=>$v){$a=$v[0]=='/'?'':$v[1]; $b=$v[2];
 	$rb[]=[$a,$b,$v[3]];}
 $rt=self::arbo($rb);
@@ -160,7 +160,7 @@ self::$n+=1; $rt=[];
 if(strpos($p,'/'))[$dr,$p]=explode('/',$p); else [$dr,$p]=['/',$p];
 $rh=['dir','page','func','vars','code'];
 foreach($r as $k=>$v)$rt[]=[$dr,$p,$k,$v[0],$v[1],self::$rb[$k]];
-if($rt)sql::sav2($db,$rt,1);}
+if($rt)sql::savr($db,$rt,1);}
 
 static function find_func($d,$fc){
 $p=strpos($d,'function '.$fc.'(');

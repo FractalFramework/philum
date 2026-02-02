@@ -46,7 +46,7 @@ static function hexdec($d){
 for($i=0;$i<6;$i+=2){$r[]=hexdec(substr($d,$i,2));} return $r;}
 //static function hexdec_c($d){return array(($d>>16)&0xFF,($d>>8)&0xFF,$d&0xFF);}
 
-static function graphics_pick($in){[$w,$h,$ty]=getimagesize($in);
+static function graphics_pick($in){[$w,$h,$ty]=imsize($in);
 if($ty==2){$im=imagecreatefromjpeg($in);}
 elseif($ty==1){$im=imagecreatefromgif($in); img::imgalpha($im);}
 elseif($ty==3){$im=imagecreatefrompng($in); img::imgalpha($im);}
@@ -69,9 +69,7 @@ for($y=0;$y<$h;$y++){for($x=0;$x<$w;$x++){$ri=val($r,$i); $clri='clr'.$ri;
 	if($ri)imagesetpixel($im,($x),($y),$$clri);
 	else imagesetpixel($im,($x),($y),$alp); $i++;}}
 imagealphablending($im,true);
-imagepng($im,$out);
-imagedestroy($im);
-}
+imagepng($im,$out);}
 
 static function build($k){$nm='imgb/icons/system/philum/16/'.$k.'.png'; mkdir_r($nm);
 $d=msql::val('system','program_icons',$k); $r=str_split($d);
@@ -122,7 +120,7 @@ $r=msql::read('system','program_icons',1); ksort($r);
 if($r)foreach($r as $k=>$v){$im=self::pictosys($k).' ';
 	//self::graphics($v,16,16,'../imgb/icons/system/philum/16/'.$k.'.png');
 	$ret[]=lj('','popup_icons,edit__js_'.$k,$im.$k).br();}
-return onxcols($ret,'5','550');}
+return build::onxcols($ret,'5','550');}
 
 static function home($d){$ret='';
 head::add('csscode',self::css()); 

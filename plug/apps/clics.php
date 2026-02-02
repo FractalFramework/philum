@@ -9,7 +9,7 @@ if($r)foreach($r as $k=>$v){if(is_numeric($k))$id=$k;
 	else{$pos=strpos($k,'&'); if($pos!==false)$id=substr($k,0,$pos);}
 $ret[$id]=[$id,$v];}
 ksort($ret);
-//sql::sav2('qdcl',$ret);
+//sql::savr('qdcl',$ret);
 return $ret;}
 
 static function clic_stats($p){sesr('db','qdcl','clics');

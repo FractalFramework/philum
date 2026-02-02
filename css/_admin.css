@@ -124,6 +124,7 @@ input#srch:focus {width:120px;}
 #bub .philum {color:#cccccc; line-height:20px; min-width:16px;}
 .desk a {color:#cccccc; width:56px; padding:0 4px; margin:0 4px;}
 .desk a:hover {color:#ffffff; background-color:#000000;}
+.bubble {color:#ffffff; background-color:#161817;}
 .tab {margin:7px 0; padding:4px 0; margin:7px 0; padding:3px 5px;}
 .panel {color:#cccccc; font-family:Arial,Sans; padding:0 4px;}
 .panel a {color:#ff8300;}
@@ -272,7 +273,7 @@ a.popdel:hover, a.popdel:hover .philum {color:#ffffff; background-color:#000000;
 .apichan a {display:inline-block; margin:4px; padding:0 16px; background:linear-gradient(20deg,rgb(255, 255, 255,0.4),rgba(255,255,255,0)); line-height:3em; text-shadow:1px 1px 2px #ffffff; transition: background 0.2s ease;}
 .apichan a:hover {background:linear-gradient(200deg,rgb(255, 255, 255,0.4),rgba(255,255,255,0));}
 .apichan a .philum, .apichan a:hover .philum {color:#000000; font-size:x-large;}
-.sticky {line-height:normal; display:inline;}
+.sticky {background-color:#161817;}
 .nbp {color:#ffffff; font-size:13px; margin:4px 0;}
 .nbp a {color:#ffffff;}
 .nbp a {color:#ffffff; border:0; padding:1px 2px;}

@@ -14,6 +14,6 @@ return $r;}
 static function home($p,$o){$r=self::r();
 foreach($r as $k=>$v){$ret[$k]='';
 	foreach($v as $ka=>$va)$ret[$k].=ljb('','insert_b',[$va,'cssarea'.$p],$va).br();}
-return tabs($ret,'','nbp');}
+return build::tabs($ret,'','nbp');}
 }
 ?>

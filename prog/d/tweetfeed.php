@@ -16,20 +16,31 @@ if($r)foreach($r as $k=>$v){$rb=api::call2($v[1].$w);//p($rb);
 	if($v[0]=='api_arts' && $rb)foreach($rb as $ka=>$va)$rc[]=$ka;}
 return $rc;}
 
+static function opage(){$r=ses('twf');
+foreach($r as $k=>$v)$rt[$k]=base64_encode(urlencode($v));
+return $rt;}
+
+static function addjs(){$r=ses('twf');
+foreach($r as $k=>$v)$rt[]='parent.frames["'.$k.'"].location.href = "'.$v.'";';
+//$rt[]='window.open("'.$v.'","mozillaTab");';//-'.$id.'
+//$rt[]='window.location.href="'.$url.'"';
+return join(n(),$r);}
+
 static function twlink($id){//twit::content
-$suj=social::content($id); $url=social::twlink($id);
-return lkt('',$url,pictxt('tw',$suj));}
+$url=social::twlink($id); $suj=social::$suj; sesr('twf',$id,$url);
+return divc('panel',lkt('',$url,$id).' '.$suj);}
 
 static function batch($p,$o,$prm=[]){
-$rok=[]; $vx=0; $minid=$prm[0]??''; $f='/_datas/twfeed.txt';
-$r=msql::read('',nod('tweetfeed'),1,['lastid']); if(!$minid)$minid=$r[1][0]??'';//read_file($f)
-$r=self::build($minid); //p($r);
+$rok=[]; $vx=0; $minid=$prm[0]??''; sesmk('catemo'); sesz('twf');
+//$f='/_datas/twfeed.txt'; $minid=read_file($f);
+$r=msql::read('',nod('tweetfeed'),1,['lastid']);
+if(!$minid)$minid=$r[1][0]??'';
+$r=self::build($minid);
 //if($r)foreach($r as $k=>$v){$rok[]=div($v.': '.twapi::botshare($v)); sleep(1);}//apikey:4
-if($r)foreach($r as $k=>$v){$rok[]=self::twlink($v);}
-if($r)$vx=max($r); if($vx>$minid && !twapi::$er){
-	msql::modif('',nod('tweetfeed'),$vx,'val',0,1);}//write_file($f,$vx);
+if($r)foreach($r as $k=>$v)$rok[]=self::twlink($v);
+if($r)$vx=max($r); if($vx>$minid && !twapi::$er){msql::modif('',nod('tweetfeed'),$vx,'val',0,1);}
 $ret=divc('',count($r).' tweets have been sent');
-if($rok)$ret.=divc('list',implode('',$rok));
+if($rok)$ret.=implode('',$rok);
 $ret.=self::tlex($minid);
 return $ret;}
 
@@ -44,7 +55,7 @@ $r['batch'].=lj('txtbox',$rid.'_tweetfeed,read',nms(65)).' ';
 $r['batch'].=lj('txtx',$rid.'____','x').' ';
 $r['edit']=divd('modules'.$t,console::block($t)).hlpbt($t.'_help');
 $r['from']=self::menu($rid);
-return tabs($r,'nl').divd($rid,'');}
+return build::tabs($r,'nl').divd($rid,'');}
 
 }
 ?>

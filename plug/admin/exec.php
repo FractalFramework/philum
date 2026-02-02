@@ -1,5 +1,4 @@
-<?php //exec
-
+<?php 
 class exec{
 static function form_insert($r){
 if($r)foreach($r as $k=>$v){
@@ -16,7 +15,7 @@ return $ret;}
 static function readfunc($d){
 $r=msql::row('system','program_core',$d);
 $r=self::strip_r($r);
-$ret=on2cols($r,340,7);
+$ret=build::on2cols($r,340,7);
 $stl=strlen($r['function']);
 $vrs=substr($r['variables'],$stl+1,-1);
 $ret.=input('fprm',$vrs);
@@ -30,8 +29,8 @@ foreach($rb as $k=>$v)
 	$ret.=ljb('','insert_b',[$v[0].'('.$v[1].');','codarea'],$v[0].'('.$v[1].')');
 return divc('list',$ret);}
 
-static function fast(){$ref=['{}','[]','if()','pr($r);','$ret=\'\';',
-'function done(){}','foreach($r as $k=>$v)','strpos($d,\'x\')!==false',
+static function fast(){$ref=['α','β','ε','λ','π','φ','ψ','ω','{}','[]','if()','pr($r);','$ret=\'\';',
+'function done(){}','foreach($r as $k=>$v)','$fn=fn($v)=>$v;','array_map($fn,$r);','strpos($d,\'x\')!==false',
 '$r=msql::read(null,$d);','$rf=fn($d)=>$d;','eco($d);','.br()']; $ret='';
 foreach($ref as $k=>$v)$ret.=ljb('txtx','insert',[$v,'codarea'],$v);
 return divc('list',$ret);}
@@ -41,7 +40,8 @@ static function js(){return 'function jumpMenuIns(fc){
 	var lk=fc+\'(\'+vr+\')\';
 	insert_b(lk,\'codarea\');}';}
 
-static function run($a,$b,$prm=[]){[$d]=$prm;
+static function run($a,$b,$prm=[]){
+[$d,$p]=arr($prm,2);
 if(!auth(6))return;
 //if(ip()!='86.49.245.213.rev.sfr.net')return;
 $f='_datas/exec/'.date('ymd').'.php'; mkdir_r($f);
@@ -64,20 +64,22 @@ $ret.=hidden($rid.$k,$v);}
 return $ret;}
 
 static function open($p){
-$f='_datas/exec/'.$p.'.php';
-return read_file($f);}
+$f='_datas/exec/'.$p.'.php'; mkdir_r($f);
+$d=read_file($f);
+return str_replace('<?php ','',$d);}
 
 static function files(){
 $r=explore('_datas/exec'); rsort($r);
 return array_map(fn($v)=>substr($v,0,-4),$r);}
 
 static function menu($p,$rid){
-$bt=lj('','popup_exec,lib','lib').' ';
-$bt.=lj('','popup_exec,fast','fast').' ';
+$bt=lj('txtx','popup_exec,lib','lib').' ';
+$bt.=togbub('exec,fast','','fast','txtx').' ';
 $bt.=select(['id'=>$rid.'slc'],self::files(),'vv','','codarea_exec,open___');
 //$bt.=select_j('codarea','pclass','','exec/files','','2');
 $bt.=msqbt('system','program_core').' ';
-$bt.=lj('popsav',$rid.'_exec,run_codarea_2','exec');
+$bt.=inpnb('runb','1');
+$bt.=lj('popsav',$rid.'_exec,run_codarea,runb_2','exec');
 $bt.=lj('popbt',$rid.'bt_exec,add_codarea_2__'.$rid,'+');
 $bt.=span('','',$rid.'bt');
 return $bt;}
@@ -89,7 +91,7 @@ $f='_datas/exec/'.date('ymd').'.php'; mkdir_r($f);
 if(!$p && is_file($f)){$p=read_file($f); if($p)$p=substr($p,6);}
 $j=$rid.'_exec,run_codarea_2';
 $sj=atjr('SaveJtim',[$j,1000]); //$onk=atjr('autocomp','codarea');
-$ret=textarea('codarea',$p?$p:'$ret=(\'hello\');',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);
+$ret=textarea('codarea',$p?$p:'//αβελπφψω',44,32,['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj]);
 return $ret;}
 
 static function home($p){$rid='plg'.randid();

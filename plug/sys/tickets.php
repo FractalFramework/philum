@@ -16,7 +16,7 @@ return $ret;}
 
 static function read(){$rb=[];
 $page=get('page',1); $npg=10;$min=($page-1)*$npg; $max=$page*$npg; $i=0;
-$site='http://philum.fr';//$site=upsrv();//father_server
+$site='http://philum.ovh';//$site=upsrv();//father_server
 $r=microxml::call($site.'/msql/clients/philum_tickets'); unset($r[msql::$m]);
 if($r)foreach($r as $k=>$v){//array('host','hub','msg','day','ip')
 	if($v[0]==$_SERVER['HTTP_HOST'] && $v[1]==ses('qb')){
@@ -32,7 +32,7 @@ if($rb)rsort($rb);
 return self::bypages($rb,$page);}
 
 static function save($suj,$o,$prm=[]){
-[$msg,$answ]=arr($prm); $site='http://philum.fr';//$srv=upsrv()
+[$msg,$answ]=arr($prm); $site='http://philum.ovh';//$srv=upsrv()
 if(!is_numeric($answ))$answ='';
 $msg=str_replace(array(' ',"\n","&"),array(':space:',':line:','(and)'),$msg);
 $go='host='.$_SERVER['HTTP_HOST'].'&hub='.ses('qb').'&msg='.$msg.'&suj='.$suj.'&answ='.$answ.'&admail='.$_SESSION['qbin']['adminmail'];

@@ -1,0 +1,513 @@
+#Install Philum on a fresh sever (debian12)
+-------------------------------------------
+
+##Variables used in this file:
+
+{site.com}
+{mysql.basename}
+{mysql.password}
+{any-number}
+/home/{dir}/
+{e@mail.com}
+
+##BASICS:
+---------
+
+>update frequently the server
+sudo apt-get update
+sudo apt-get upgrade
+sudo service apache2 reload
+
+>server version
+uname -a
+>debian version
+hostnamectl
+lsb_release -a
+
+>reboot machine
+//sudo /etc/init.d/service restart
+sudo service apache2 reload
+
+>open dir
+cd /home
+
+>list of files
+ls
+>with infos
+ls -l
+
+>copy
+sudo cp /var/www/file.html /var/www/file2.html
+
+>displace
+sudo mv /var/www/file.html /var/www/file2.html
+
+>mkdir
+sudo mkdir {dir}
+>rm file
+sudo rm {file}
+>rmdir recursively
+sudo rm -rf {dir}
+
+>set permissions
+sudo chmod -R 775 /home/{dir}
+
+>free space disk
+df -h
+
+>size of a folder
+du -sh /var/log
+
+>edit file
+sudo nano /var/www/file.html
+
+>gz
+sudo gzip -r /home/file
+>ungz
+sudo gzip -d /home/file
+
+>tar
+tar -zcvf directory.tar.gz directory
+>untar
+tar -zxvf philum.tar.gz
+tar -xvf philum.tar
+
+>secure delete content of a running file
+echo "" > /var/log/auth.log
+echo "" > /var/log/apache2/error.log
+echo "" > /var/log/apache2/access.log
+echo "" > /var/log/apache2/other_vhosts_access.log
+
+>download file
+sudo wget http://philum.fr/_backup/philum.tar.gz
+
+>export database
+mysqldump -u root -p{mysql.password} -h localhost {mysql.basename} > /home/philum/_backup/database.sql
+>restore (on empty database)
+mysql -u root -pv {mysql.basename} < /home/philum/_sql/{mysql.basename}.sql.gz
+
+>import database using mysql
+cd /home/{dir}/_backup
+sudo mysql
+show databases;
+create database {mysql.basename};
+use {mysql.basename};
+source _backup/{mysql.basename}.sql;
+exit
+
+##NEED TO DO
+------------
+
+>rules of security
+>change port
+sudo nano /etc/ssh/sshd_config
+>set Port 22 to Port {any-number}
+ctrl+q+y+enter
+sudo systemctl restart sshd
+>relog in ssh with new port
+
+>change password root
+passwd root
+
+>create new user
+sudo adduser {dir}
+>disactivate root user (too dangerous!)
+sudo nano /etc/ssh/sshd_config
+>set to no:
+PermitRootLogin no
+/etc/init.d/ssh restart
+>relog in ssh with new user
+>from there, retrieve root user
+su root
+
+***********
+
+##INFRASTRUCTURE
+----------------
+
+>install apache
+sudo apt-get install apache2
+>verif
+sudo systemctl status apache2
+>quit
+q
+>restart
+sudo /etc/init.d/apache2 restart
+
+>php8.4 on debian 12
+sudo apt install -y apt-transport-https lsb-release ca-certificates wget 
+sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list 
+sudo apt update
+sudo apt install -y php8.4
+>install packages
+sudo apt-get install php8.4-common php8.4-mysql php8.4-curl php8.4-bcmath php8.4-mbstring php8.4-xmlrpc php8.4-mcrypt php8.4-gd php8.4-xml php8.4-cli php8.4-zip php8.4-pdo php8.4-bz2
+>switch
+//sudo a2enmod php8.4
+>delete old php
+//sudo apt purge php8.1* (don't do that!!!)
+>verif
+php -v
+>then
+sudo systemctl restart apache2
+sudo service apache2 restart
+
+>mariadb
+sudo apt-get install mariadb-server
+sudo mysql_secure_installation
+>first question passwd root:
+enter empty
+>other questions:
+n, n, y, y, y, y
+
+>set mysql password
+>enter in mysql
+sudo mysql
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('{mysql.password}');
+UPDATE mysql.user SET plugin = '' WHERE user = 'root' AND host = 'localhost';
+FLUSH PRIVILEGES;
+exit;
+
+>phpmyadmin (optionnal)
+sudo apt-get install phpmyadmin (apache2,no)
+>cocher la case « apache2 » durant l’installation avec la touche espace du clavier (si vous faites « entrer » ça ne cochera pas apache et passera à l’étape suivante).
+>sinon, pour refaire :
+dpkg-reconfigure phpmyadmin
+>repair mysqld_safe --user=mysql&
+>reinstall
+/usr/bin/mysql_secure_installation
+
+>ftp
+sudo apt-get install proftpd
+> créer compte ftp
+//sudo adduser {dir}
+> new passwd to inform ftp
+sudo passwd {dir}
+> mot de passe ftp
+sudo nano /etc/proftpd/proftpd.conf
+sudo service proftpd start
+sudo service proftpd status
+q
+
+>cron (automated backups)
+>install
+sudo apt-get -y install cron
+>-l=list -r=remove
+sudo crontab -uroot -e
+//choose: 1
+>minute hour dayofmonth month dayofweek
+>mean first day of week at 1 AM
+  0 1 * * 1 rm /home/nfo/_backup/{mysql.basename}.dump
+  1 1 * * 1 mysqldump -u root -p{mysql.password} -h localhost --opt {mysql.basename} > /home/{dir}/_backup/{database}.dump
+  10 1 * * 1 rm /home/{dir}/_backup/{mysql.basename}.dump.gz
+  11 1 * * 1 gzip /home/{dir}/_backup/{mysql.basename}.dump
+>save, close, restart:
+sudo /etc/init.d/cron restart
+>or
+sudo crontab restart
+
+##ATTACH URL TO DIRECTORY
+-------------------------
+
+>We create users (adduser) in /home
+>we let each domain to access to one specific /home/domain1, /home/domain2
+>we use for that virtual servers
+>we want to set here the htaccess, and not let our old & slow .htaccss in the root
+
+>first, need to activate:
+sudo a2enmod rewrite
+sudo systemctl reload apache2
+
+>virtualhosts
+cd /etc/apache2/sites-available
+sudo nano {site.com}.conf
+>it's better to put the rewrite rules directly here:
+
+<VirtualHost *:80>
+DocumentRoot /home/{dir}
+ServerName {site.com}
+<Directory /home/{dir}>
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+RewriteEngine on
+RewriteRule ^([0-9]+)$ /?read=$1 [L]
+RewriteRule ^art/([^/])$ /?art=$1 [L]
+RewriteRule ^read/([^/])$ /?read=$1 [L]
+RewriteRule ^module/([^/]+)/(.+)$ /?module=m:$1,p:$2 [L]
+RewriteRule ^module/([^/]+)$ /?module=$1 [L]
+RewriteRule ^context/([^/]+)/(.+)$ /?module=m:context,p:$1&o=$2 [L]
+RewriteRule ^context/([^/]+)$ /?module=m:context,p:$1 [L]
+RewriteRule ^admin/([^/]+)/(.+)$ /?admin=$1 [L]
+RewriteRule ^msql/(.+)$ /?msql=$1 [L]
+RewriteRule ^([0-9]+)/look/([^/]+)$ /?read=$1&look=$2 [L]
+RewriteRule ^([0-9]+)/find/([^/]+)$ /?read=$1&look=$2&seg=1 [L]
+RewriteRule ^call/([^/]+)/([^/]+)/([^/]+)$ /call.php?a=$1&p=$2&o=$3 [L]
+RewriteRule ^call/([^/]+)/([^/]+)$ /call.php?a=$1&p=$2 [L]
+RewriteRule ^call/([^.]+)$ /call.php?a=$1 [L]
+RewriteRule ^app/([^/]+)/([^/]+)/([^/]+)$ /app.php?a=$1&p=$2&o=$3 [L]
+RewriteRule ^app/([^/]+)/([^/]+)$ /app.php?a=$1&p=$2 [L]
+RewriteRule ^app/([^/]+)$ /app.php?a=$1 [L]
+RewriteRule ^plug/([^/]+)$ /app.php?a=$1 [L]
+RewriteRule ^search/(.+)/([0-9]+)$ /?search=$1&dig=$2 [L]
+RewriteRule ^search/(.+)$ /?search=$1 [L]
+RewriteRule ^source/(.+)/([0-9]+)$ /?source=$1&dig=$2 [L]
+RewriteRule ^source/(.+)$ /?source=$1 [L]
+RewriteRule ^apicom/(.+)$ /call.php?a=apicom&p=$1 [L]
+RewriteRule ^api/(.+)$ /?api=$1 [L]
+RewriteRule ^rss/([^.]+)$ /call.php?a=rss&m=output&p=$1 [L]
+RewriteRule ^rss$ /call.php?a=rss&m=output [L]
+RewriteRule ^hub/([^.^/]+)$ /?hub=$1 [L]
+RewriteRule ^([^.^/]+)/([^.^/]+)/([0-9]+)/page/([0-9]+)$ /?$1=$2&dig=$3&page=$4 [L]
+RewriteRule ^([^.^/]+)/([^.^/]+)/page/([0-9]+)$ /?$1=$2&page=$3 [L]
+RewriteRule ^([^.^/]+)/([^.^/]+)/([0-9]+)$ /?$1=$2&dig=$3 [L]
+RewriteRule ^([^.^/]+)/([^.^/]+)$ /?$1=$2 [L]
+RewriteRule ^reload /?refresh== [L]
+RewriteRule ^home /?module=Home [L]
+RewriteRule ^all /?module=All [L]
+RewriteRule ^admin /?admin=console [L]
+RewriteRule ^update /?admin=update&update=program [L]
+RewriteRule ^login /?module=login [L]
+RewriteRule ^logon /?log=on [L]
+RewriteRule ^logout /?log=out [L]
+RewriteRule ^logoff /?log=off [L]
+RewriteRule ^reboot /?log=reboot [L]
+RewriteRule ^shutdown /?log=down [L]
+RewriteRule ^dev /?dev=b [L]
+RewriteRule ^#([^/]+)$ /?hash=$1 [L,R,NE]
+RewriteRule ^([^.]+)$ /?id=$1 [L]
+</Directory>
+ServerAlias www.{site.com}
+HostNameLookups on
+Options +FollowSymLinks
+</VirtualHost>
+
+>et hop
+>if already exists
+//sudo a2dissite {site.com}
+>enable it
+sudo a2ensite {site.com}
+>test before reboot
+//sudo apachectl configtest
+>reload
+sudo systemctl reload apache2
+sudo service apache2 reload
+
+***********
+
+##Now there is nothing, congratulations !!
+
+>cursor in dir:
+cd /home/{dir}
+>if permission denied:
+sudo su
+>you could:
+//sudo nano index.html
+>but remove it:
+//sudo rm index.html
+
+>needed dirs
+sudo mkdir img imgc cnfg _backup
+
+>install Philum
+cd /home/{dir}
+sudo wget http://philum.fr/install.php
+>call install.php in url and follow instructions
+>or
+>best is to take all and unzip it:
+cd /home/{dir}
+>force the rights to enter in userdir if needed
+sudo chmod -R 777 /home/{dir}
+>download app
+sudo wget http://philum.fr/_backup/philum.tar.gz
+>untargz
+sudo tar -zxvf philum.tar.gz
+sudo rm philum.tar.gz
+
+>create database
+sudo mysql
+create database {mysql.basename};
+exit
+
+###let the installator create tables, or use a backup as we will see later
+
+>create connexion to mysql (this is done by the installator)
+sudo mkdir cnfg
+sudo nano cnfg/{site.com}.php
+>and fill with: (and remove comments)
+<?php
+ses::$s=[
+'qb'=>'{public}', //name of first user = name of hub
+'logo'=>'phi', //icto used as logo
+'enc'=>'utf-8', //don't touch that
+'tw'=>'', //api "twitter" (obsolete)
+'local'=>0, //we are no in local
+'updsoft'=>'yes', //update software
+'updsrv'=>'philum.fr', //server of updates
+'mirsrv'=>'', //this site can be the mirror of another
+'imgsrv'=>'', //secondary server for videos (a less expansive server)
+'frct'=>'', //publish also on a FractalFramework site
+'tz'=>'Europe/Paris', //timezone
+'goog'=>'', //reference for google analytics
+'uplimit'=>'2500', //max upload of images (2.5M)
+'trans'=>'deepl' //Api Deepl (params in msql)
+];
+new sql(['localhost','root','{password}','{dir}']);
+
+--
+
+>if restore backups
+//created from app/backup in the old server
+//or from
+sudo mysqldump -u root -p -h localhost {dir} > /home/nfo/_backup/{dir}.dump
+//then zip it
+sudo gzip /home/nfo/_backup/{dir}.dump
+
+>dir _backup
+sudo mkdir _backup
+cd _backup
+sudo wget http://{oldserver.com}/_backup/{dir}.dump.gz
+>unzip
+sudo gzip -d {dir}.dump.gz
+
+>in mysql
+sudo mysql
+use nfo
+source {dir}.dump;
+exit;
+
+>we need to do that manually
+mkdir img imgc
+
+***********
+
+##SECURITY
+----------
+
+>prevent ddos attack
+apt-get install fail2ban
+cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.conf.backup
+>modif your settings
+nano /etc/fail2ban/jail.conf
+/etc/init.d/fail2ban restart
+
+>firewall
+iptables -L
+
+>see https://help.ovhcloud.com/csm/fr-vps-security-tips?id=kb_article_view&sysparm_article=KB0047708
+
+*
+
+>ssl certificate //don't do that
+sudo apt install python3-certbot-apache -y
+>register
+sudo certbot --apache --agree-tos --redirect --hsts --staple-ocsp --email {e@mail.com} -d www.{site.com}
+>enter email, say Yes or No, 
+>auto renewal
+sudo certbot renew --dry-run
+
+>httaccess for https
+>modif virtualhost
+
+<VirtualHost *:80>
+ServerName www.{site.com}
+Redirect permanent / https://www.{site.com}/
+</VirtualHost>
+<VirtualHost _default_:443>
+ServerName www.domaine.com
+DocumentRoot /usr/local/apache2/htdocs
+SSLEngine On
+...
+</VirtualHost>
+
+>installation of ssl have itself added lines like this :
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://domain.xyz/$1 [R=301,L]
+> or without www
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www. [NC]
+RewriteRule (.*) https://{site.com}/$1 [R=301,L]
+>or
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+>or
+Redirect permanent / https://www.domaine.com/
+
+*
+
+>monitoring apache mod_status
+sudo a2enmod status
+sudo nano /etc/apache2/mods-enabled/status.conf
+>enter
+<Location /server-status>
+    SetHandler server-status
+    Require local
+</Location>
+>check
+http://your_server_IP/server-status
+
+***********
+
+##PROBLEMS
+----------
+
+>cd /home/{dir} says: permission denied
+sudo su
+//or try sudo chmod u+xr,go-rwx ~/.ssh
+
+>problem of writing files (0 kb), frequently have to do:
+sudo chmod -R 777 /home/{dir}
+
+>phpmyadmin not found? : 
+nano /etc/apache2/apache2.conf
+>add at end of file:
+include /etc/phpmyadmin/apache.conf
+service apache2 reload
+
+>#1366 - Incorrect integer value
+Msyql works in strict mode. Change that.
+/etc/mysql/my.cnf
+>set or add
+sql_mode = ""
+service mysql restart
+
+>Temporary failure in name resolution:
+nano /etc/resolv.conf
+>remplace by:
+nameserver 8.8.8.8
+
+>rights in mysql (read olny)
+/etc/init.d/mysql stop
+chmod 755 /var/lib/mysql
+chmod 755 /var/lib/mysql/mysql
+chmod 660 /var/lib/mysql/*/*
+chown -h mysql:mysql /var/lib/mysql
+/etc/init.d/mysql start
+
+>marked as crashed and last (automatic?) repair failed
+service mysql stop
+myisamchk -r pub_live
+myisamchk -r -v -f pub_live
+service mysql start
+
+>Can't connect to local MySQL server through socket
+>find / -name '*.sock'
+sudo nano /var/run/mysqld/mysqld.sock
+sudo ln -s <the file location> /var/run/mysqld/mysqld.sock
+sudo rm /var/log/mysql/error.log
+sudo ps ax | grep mysql
+sudo chown mysql:mysql mysqld
+sudo mysqld_safe
+sudo service mysql start
+
+>pb apache
+sudo service apache2 status
+//to quit
+q
+>check if the parameter is correct
+lsof -i :80
+>find an error
+sudo apachectl stop
+//if it say pid:12345
+>kill apache pid
+sudo kill 12345

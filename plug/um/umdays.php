@@ -10,8 +10,8 @@ foreach($r as $k=>$v){
 		$rb[]=[$k,$date,$diff,$dsec,$dhour,$ddays];
 		$bit[$date]=$dhour;}
 		$vb=$v;}}
-$f='_datas/umd.png';
-img::graphics($f,'800','200',$bit,'','');
+$f='_datas/png/umd.png'; mkdir_r($f);
+graph::draw($f,'800','200',$bit,'','');
 $ret=image('/'.$f);
 $ret.=tabler($rb,'popw','');
 return $ret;}

@@ -56,7 +56,7 @@ for($i=0;$i<count($ra);$i++){$cm[]='mde'.$i; $vb=$ra[$i];
 		$rb[$vb]=input($d,ajx($va,1),'',['name'=>$d]).$hlp;}
 	else $ret.=hidden($d.$i,'');}
 $rb[' ']=ljb('popsav','popup',[implode('|',$cm),$id],'add :'.$v);
-$ret.=on2cols($rb,680,5);
+$ret.=build::on2cols($rb,680,5);
 return $ret;}
 
 static function mod_edit($p,$o,$id=''){
@@ -81,37 +81,34 @@ static function mps($ka,$vl,$va){if($ka==$va)return;
 	return console::block($vl);}
 
 #submods (desk)
-static function deft(){
-	msql::copy('users',ses('qb').'_apps','users',ses('qb').'_apps_sav');
-	msql::copy('system','default_apps_users','users',ses('qb').'_apps');}
+static function deft(){msql::backup('users',nod('apps'));
+	msql::copy('system','default_apps_users','users',nod('apps'));}
 static function locapps($p='',$n=''){//return msql::mul('',nod('apps'),$p,$n);
 	if($n)return msql::val('',nod('apps'),$p,$n);
 	elseif($p)return msql::row('',nod('apps'),$p,1);
 	else return msql::read('',nod('apps'),'');}
-static function modsmenu($id,$v){$r=msql::read('system','admin_modules',1); 
-	$rb=self::user_mods(); if($rb)$r+=$rb; ksort($r); $rt=implode(' ',array_keys($r)); 
-	return dropmenu($rt,$id,$v,'1');}
+static function modsmenu($id,$v){return dropmenu('mods',$id,$v,'1');}
 static function sbmpos($ka,$id){$r=self::locapps('',1); $ret='';
 	foreach($r as $k=>$v){if($k==$ka)$ret.=lj('active','',$v[0]).' ';
 	else $ret.=lj('','sbm_submds__x_'.$ka.'_'.$id.'_sbmpsb_'.$k,$v[0]).' ';}
 	ses::$r['popw']=240; ses::$r['popt']='position'; return divc('nbp',$ret);}
 static function sbmpsb($ka,$va){$ra=msql::move(self::locapps(),$ka,$va);
-	return msql::modif('',ses('qb').'_apps',$ra,'mdf','','');}
+	return msql::modif('',nod('apps'),$ra,'mdf','','');}
 static function sbmsav($p,$id,$r){for($i=0;$i<=10;$i++)$ra[]=$r[$i]??'';
-	return msql::modif('',ses('qb').'_apps',$ra,'one','',$p);}
+	return msql::modif('',nod('apps'),$ra,'one','',$p);}
 static function sbmdel($d,$id){
-	return msql::modif('',ses('qb').'_apps','','del','',$d);}
+	return msql::modif('',nod('apps'),'','del','',$d);}
 static function sbmads($d,$v){$r=msql::row('system','default_apps'.($v?'_'.$v:''),$d);
 	if($r)return msql::modif('',nod('apps'),$r,'push');}
 static function sbmadc($d,$id,$prm){$r=['new',$d,'','','','desk','','','',''];
-	$ra=msql::modif('',ses('qb').'_apps',$r,'push');
+	$ra=msql::modif('',nod('apps'),$r,'push');
 	foreach($ra as $k=>$v)$key=$k; return self::sbmedt($k,$id,'');}
 static function sbmfrom($d){$r=self::locapps($d);
-	if($r)return msql::modif('',ses('qb').'_apps',$r,'push');}
+	if($r)return msql::modif('',nod('apps'),$r,'push');}
 static function sbmrev($m){echo btn('frame-blue','empty table '.$m.': default copied');
-	return msql::copy('system','default_apps'.$m,'users',ses('qb').'_apps');}
+	return msql::copy('system','default_apps'.$m,'users',nod('apps'));}
 static function sbmove($d){$r=self::locapps(); $ra=$r[$d-1]; $r[$d-1]=$r[$d]; $r[$d]=$ra;
-	return msql::modif('',ses('qb').'_apps',$r,'mdf','','');}
+	return msql::modif('',nod('apps'),$r,'mdf','','');}
 static function sbmpct($d){$r=msql::read('system','edition_pictos',1); $ret='';
 	foreach($r as $k=>$v)$ret.=lj('','___jx_'.$d.'_'.$k,picto($k,24)).' ';
 	ses::$r['popw']=320; ses::$r['popt']='pictos'; return $ret;}
@@ -131,7 +128,7 @@ return self::desktop($id,$ob,'',$r);}
 
 /**/static function sbmadd($id,$d){$ver=''; $rb=[];
 	$top=hlpbt('apps_add').' '; if($d)$ver='_'.$d;
-	$top.=ljp(att(nms(104)),'sbm_submds____'.$id.'_deft',picto('update')).' ';
+	$top.=lj('','sbm_submds____'.$id.'_deft',picto('update'),att(nms(104))).' ';
 	$top.=msqbt('system','default_apps').' '; 
 	$top.=lj(active($d,''),'popup_admx,sbmadd__x__'.$id,'defaults').' ';
 	$top.=lj(active($d,'desk'),'popup_submds__x_home_'.$id.'_sbmadd','home').' ';
@@ -143,7 +140,7 @@ return self::desktop($id,$ob,'',$r);}
 		foreach($r as $k=>$v){$bt=picto($v[7],32).$v[0];
 			if($v[1]==$va)$rb[$va][]=lj('sicon','sbm_submds__x_'.$k.'_'.$id.'_sbmads_'.$d,$bt).' ';}}
 ses::$r['popw']=320; ses::$r['popt']=nms(92).' Apps';
-return $top.tabs($rb).divc('clear','');}
+return $top.build::tabs($rb).divc('clear','');}
 
 static function sbmedt($p,$id,$cnd){$rid=randid(); $r=self::locapps($p);
 $type=$r['type']??''; $process=$r['process']??'';
@@ -156,10 +153,10 @@ if($hk!='0'){
 	elseif($type=='mod'){$no=''; $rh[$k]=$arb[$k]??'';
 		if($k=='option' && ($arb['option']??'')==='0')$no=1;
 		if(!$no)$rb[$k]=input($k.$rid,$v); else $rb[$k]=hidden($k.$rid,'');
-		if($k=='type')$rb[$k]=hlpbt('submod_types');
-		if($k=='process'){$rb[$k]=self::modsmenu($k.$rid,$v);
-			if($v)$rb[$k]=self::admhlp($v,'description');}
-		if($k=='param')$rb[$k]=self::admhlp($process,'help');}
+		if($k=='type')$rb[$k]=input($k.$rid,$v).hlpbt('submod_types');
+		if($k=='process'){$rb[$k]=input($k.$rid,$v).self::admhlp($v,'description');
+			if(!$v)$rb[$k].=self::modsmenu($k.$rid,$v);}
+		if($k=='param')$rb[$k]=input($k.$rid,$v).self::admhlp($process,'help');}
 	else $rb[$k]=input($k.$rid,$v);
 	if($k=='condition')$rb[$k].=' '.jump_btns($k.$rid,'menu|desk|boot|home|user',' ');//|favs
 	if($k=='context')$rb[$k].=' '.jump_btns($k.$rid,'home|art|cat',' ');//|cntx
@@ -172,7 +169,7 @@ $bt.=lj('popbt','sbm_submds_'.$ids.'__'.$p.'_'.$id.'_sbmsav_'.$cnd,nms(66)).' ';
 $bt.=lj('popsav','sbm_submds_'.$ids.'_x_'.$p.'_'.$id.'_sbmsav_'.$cnd,nms(27));
 $bt.=lj('popbt','popup_desk,play___'.$p,nms(65)).' ';
 $bt.=lj('popdel','sbm_submds__x_'.$p.'_'.$id.'_sbmdel_'.$cnd,pictit('del',nms(43)));
-$ret.=on2cols($rb,300,4); $ret.=divs('',$bt);
+$ret.=build::on2cols($rb,300,4); $ret.=divs('',$bt);
 ses::$r['popw']=320; ses::$r['popt']='Apps ('.$p.')';
 return $ret;}
 
@@ -185,8 +182,8 @@ $ra=explode('/',$id); foreach($ra as $k=>$v){$idb[]=$v;
 $top.=' '.self::admhlp($m,'help').' ';
 foreach(['menu','desk','boot','home','user'] as $v)//,'favs'
 	$top.=lj($cnd==$v?'txtaa':'txtab','sbm_submds____'.$id.'__'.$v,$v).' ';
-$top.=ljp(att(nms(103)),'popup_admx,sbmadd____'.$id,picto('plus')).' ';
-$top.=msqbt('',ses('qb').'_'.$m).' ';
+$top.=lj('','popup_admx,sbmadd____'.$id,picto('plus'),att(nms(103))).' ';
+$top.=msqbt('',nod($m)).' ';
 if(rstr(61) && $m=='apps')$top.=hlpbt('apps','alert');
 $top.=msqbt('system','default_apps').' ';
 $top.=lj('txtsmall2','popup_admin___apps_1','sys').' ';
@@ -236,7 +233,7 @@ $rh=msql::read('lang','admin_modules');//help
 foreach($rm as $k=>$v)foreach($v as $ka=>$va){
 	$j='mdls'.$vl.'_modsav_modbar,modcond_x_'.$vl.'_'.ajx($va).'_add';//,modpos
 	$rt[$k][]=divc('panel',lj('popbt',$j,$va).' '.btn('txtsmall',$rh[$va][0]??''));}
-$ret.=tabs($rt);
+$ret.=build::tabs($rt);
 return $ret;}
 
 #config_mod
@@ -246,7 +243,8 @@ $mod=$rm['module']; $bloc=$rm['block']; $p=$rm['param'];
 $sys=''; $tog=''; $hid=''; $rh=[]; $rc=[]; $rd=[];
 $arb=msql::row('system','admin_modules',$mod,1);//props
 $arc=msql::row('lang','admin_modules',$mod,1);
-if(!$arb)return lj('popdel','mdls'.$bloc.'_modsav__x_'.$bloc.'_'.$mid.'_del',nms(43));
+if(!$arb)$arb=msql::row('system','admin_modules','BLOCK',1);
+//if(!$arb)return lj('popdel','mdls'.$bloc.'_modsav__x_'.$bloc.'_'.$mid.'_del',nms(43));
 $type=$arb['category']; $prm=$arb['param']; $opt=$arb['option']; $com=$arb['command'];
 if($type=='system')$sys=1; //if($sys)$prm=3;
 //usage
@@ -263,7 +261,7 @@ case('Banner'):$edit=lkc('popbt','/admin/banner','edit_banner');break;
 case('template'):$ra=msql::row('',nod('template'),'',1); 
 	if($ra){$rb=array_keys_r($ra,1,'k'); $edit=jump_btns($rvs['mp'],$rb,'');}break;
 case('msql_links'):$edit=jump_btns($rvs['mp'],'links|rssurl|deploy','');break;
-case('connector'):$edit=connbt($rvs['mp']);break;
+case('connector'):$edit=edit::connbt($rvs['mp']);break;
 case('cssfonts'):$edit=jump_btns($rvs['mp'],'fontphilum|fontmicrosys|',' ');break;
 case('desktop'):$edit=self::deskcall('menubub_'.$p,'');break;
 case('MenuBub'):$da='root,action,type,button,icon,auth'; $p=$p?$p:1;
@@ -365,39 +363,64 @@ $bt.=lj('popbt','popup_mod,callmod__3_'.$mid,nms(65)).' ';}
 $bt.=msqbt('',ses('modsnod'),$mid);
 $bt.=msqbt('system','admin_modules',$mod);
 //render
-$ret=on2cols($rd,680,5).$hid;
+$ret=build::on2cols($rd,680,5).$hid;
 $ret.=div($bt);
 return $ret;}
 
 #retrictions
-static function defaults_rstr($u){
-if($u)$r=msql::row('users',nod('rstr'),'',1);
-else $r=msql::row('system','default_rstr','',1);
-return arr($r,140);}
+static function defaults_rstr($o){
+if($o)$r=msql::kx('',nod('rstr'),0);
+else $r=msql::kx('system','default_rstr',0);
+return arr($r,200);}
 
 static function edit_rstr(){
-$ret=msqbt('users',ses('qb').'_rstr');
+$ret=msqbt('server',nod('rstr'));
 $ret.=console::admactbt('bckp_rstr','backup');
 $ret.=console::admactbt('restore_rstr','restore');
 $ret.=msqbt('system','default_rstr');
+$ret.=console::admactbt('mkdef_rstr','make_default');
 $ret.=console::admactbt('reset_rstr','reset');
-$ret.=console::admactbt('mkdefaults_rstr','mkdefaults');
 if(auth(6))$ret.=msqbt('system','admin_restrictions');
 return $ret;}
 
-static function backup_rstr_msql($r){$rc=[]; $max=max(array_keys($r));
+static function save_msql_json($r){
+json::sav('srv',drn('rstr'),$r);}
+
+static function save_msql_qdu($r){
+if(is_array($r))array_unshift($r,'0');
+sql::upd('qdu',['rstr'=>implode('',$r)],['name'=>ses('qb')]);}
+
+static function save_rstr_msql($r,$b){$rc=[]; $max=max(array_keys($r));
 for($i=1;$i<=$max;$i++)$rc[$i]=!empty($r[$i])?[1]:[0];
-	if(get('backup')=='mkdflts'){$bs='system'; $nd='default';}
-	else{$bs='users'; $nd=ses('qb');}
+	if($b=='mkdefault'){$bs='system'; $nd='default';}
+	if($b=='backup'){$bs='users'; $nd=ses('qb');}
+	else{$bs='server'; $nd=ses('qb');}
 msql::save($bs,$nd.'_rstr',$rc,['rstr']);}
 
-static function modifparams($k,$n){
-$_SESSION['rstr'][$k]=$n; ses::$s['rstr'][$k]=$n;
+static function getrstr($b){
+if($b=='defaults')$r=self::defaults_rstr(0);
+elseif($b=='restore')$r=self::defaults_rstr(1);
+else $r=ses('rstr'); if(!$r)$r=self::defaults_rstr(1);
+return $r;}
+
+static function backup_rstr($b){$r=self::getrstr($b);
+self::save_rstr_msql($r,$b);
+self::save_msql_qdu($r);
+self::save_msql_json($r);
+if($b!='save')$_SESSION['rstr']=$r;}
+
+static function rstrsav2($d){
+if($d)$_SESSION['rstr'][$d]=rstr($d)?'1':'0';
+if(auth(6))self::backup_rstr('save');
+return 'rstr'.$d.': '.offon(rstr($d));}
+
+static function rstrsav($k,$n){
+$_SESSION['rstr'][$k]=$n; //ses::$s['rstr'][$k]=$n;
 if($_SESSION['rstr'][63]==1)$_SESSION['negcss']=0;
 self::backup_rstr('save');}
 
 static function mdfrstr($ik,$n){$rt=[];
-if($ik && auth(6))self::modifparams($ik,$n);
+if($ik && auth(6))self::rstrsav($ik,$n);
 $r=msql::read('system','admin_restrictions');
 $h=msql::read('lang','admin_restrictions');
 $t=$h[$ik][0]??$r[$ik][0];
@@ -409,25 +432,10 @@ $h=msql::read('lang','admin_restrictions');
 foreach($r as $k=>$v)foreach($v as $ka=>$va){
 	$hlp=togbub('usg,popmsqt','lang_admin*restrictions_'.$ka.'_description',$ka,'txtsmall');
 	$t=$h[$ka][0]??$v; $na=rstr($ka); $n=$na?1:0;
-	$rb[$k][$ka]=div(btd('rstr'.$ka,valid($n).' '.lj('','rstr'.$ka.'_admx,mdfrstr___'.$ka.'_'.$na,$t)).$hlp,'nbp');}
+	$bt=div(btd('rstr'.$ka,valid($n).' '.lj('','rstr'.$ka.'_admx,mdfrstr___'.$ka.'_'.$na,$t)).' '.$hlp,'');
+	$rb[$k][$ka]=$bt;}// $rb['all'][$ka]=$bt; ksort($rb['all']);
 foreach($rb as $k=>$v)$rt[$k]=div(implode($v),'cols');
-return tabs($rt,'rst');}
-
-static function getrstr($b){
-if($b=='defaults')$_SESSION['rstr']=self::defaults_rstr(0);
-elseif($b=='restore')$_SESSION['rstr']=self::defaults_rstr(1);
-$r=$_SESSION['rstr']; if(!$r)$r=self::defaults_rstr(0);
-return $r;}
-
-static function rstrsav($d){
-if($d)$_SESSION['rstr'][$d]=rstr($d)?'1':'0';
-if(auth(6))self::backup_rstr('save');
-return 'rstr'.$d.': '.offon(rstr($d));}
-
-static function backup_rstr($b){$r=self::getrstr($b);
-if($b!='restore' && $b!='defaults')self::backup_rstr_msql($r);
-if(is_array($r))array_unshift($r,'0');
-if($b!='=' && is_array($r))sql::upd('qdu',['rstr'=>implode('',$r)],['name'=>ses('qb')]);}
+return build::tabs($rt,'rst');}
 
 static function restrictions(){
 $edt=divc('nbp',self::edit_rstr());

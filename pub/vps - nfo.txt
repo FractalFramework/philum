@@ -1,0 +1,729 @@
+#Install Philum on a fresh new VPS (debian12)
+--------------------------------------------
+
+##Variables used in this file:
+{site.com}//apc.ovh
+{mysql.password}//t3vy20g1ls96dj25
+{mysql.basename}//nfo
+{any-number}//44
+{dir}//nfo
+{you@example.com}//newsnetfr@gmail.com
+
+##BASICS:
+---------
+
+>update frequently your server
+sudo apt-get update
+sudo apt-get upgrade
+sudo service apache2 restart
+sudo service apache2 reload
+sudo service mysql restart
+
+>server version
+uname -a
+>debian version
+hostnamectl
+lsb_release -a
+
+>reboot machine
+sudo /etc/init.d/service restart
+
+>open dir
+cd /var
+
+>list of files
+ls -l
+
+>copy
+sudo cp /var/www/file.html /var/www/file2.html
+
+>displace
+sudo mv /var/www/file.html /var/www/file2.html
+
+>edit file
+sudo nano /var/www/file.html
+
+>mkdir
+sudo mkdir {dir}
+>rm file
+sudo rm {file}
+>rmdir recursively
+sudo rm -rf {dir}
+
+>set permissions
+sudo chmod -R 775 /home/{dir}
+>droit pour exécuter
+sudo chmod u+x /home/{dir}/file
+
+>free space disk
+sudo df -h
+
+>size of a folder
+sudo du -sh /var/log
+
+>gz
+sudo gzip -r /home/file
+>ungz
+sudo gzip -d /home/file
+
+>tar
+tar -zcvf directory.tar.gz directory
+tar -cvf directory.tar directory
+>untar
+tar -zxvf file.tar.gz
+>to a dir
+tar -xvf file.tar -C /home/nfo/img
+
+>secure delete content of a running file
+sudo echo "" > /var/log/auth.log
+sudo echo "" > /var/log/apache2/error.log
+sudo echo "" > /var/log/apache2/access.log
+sudo echo "" > /var/log/apache2/other_vhosts_access.log
+
+>get file from the web
+wget -P /home/nfo/_backup http://philum.fr/_backup/philum.tar.gz
+wget http://philum.fr/_backup/philum.tar.gz
+tar -xvf philum.tar -C /home/nfo
+
+
+>dump (export)
+mysqldump -u root -p1H03qpv9V -h localhost nfo imgart > /home/nfo/_backup/imgart.dump
+mysqldump -u root -pt3vy20g1ls96dj25 -h localhost nfo art > /home/nfo/_backup/art.sql
+gzip imgart.dump
+>restore (on empty database)
+mysql -u root -pv database < /home/philum/_sql/database.sql.gz
+
+>import mysql
+cd /home/site/_backup
+sudo mysql -u root -pp1H03qpv9V -h localhost
+show databases;
+create database nfo;
+use nfo;
+source _backup/nfo.sql;
+exit
+
+*****
+
+>convert to lf
+sudo dos2unix move.sh
+dos2unix *
+dos2unix /path/to/folder/*
+find /path -type f -print0 | xargs -0 dos2unix --
+find . -type f -print0 | xargs -0 -n 50 -P $(nproc) dos2unix
+
+>create bash file
+sudo nano file.sh
+sudo chmod u+x file.sh
+>run
+sh file.sh
+
+>var
+var="hello"
+echo $var
+date=$(date)
+echo $date
+
+>value arg
+>in test.sh
+echo $1
+>run
+sh test.sh hello
+
+>tips .sh
+>find a file 
+find / -iname $1 2> /dev/null
+
+>count lines
+>count_lines.sh:
+nlines=$(wc -l < $1)
+echo "There are $nlines lines in $1
+>run
+count_lines.sh    /prog/index.php
+
+>$0: name of bash file
+>$#: number of arguments
+
+>addition
+echo $((v1+f2))
+
+>bc for decimales
+echo "5/2" | bc -l
+>2.50000000000000000000
+
+>power
+$(($1$2))
+>modulo
+$(($1%$2))
+
+>loop.sh
+for i in 1 2 3 4 5
+do
+echo "Bonjour $i"
+done
+
+for (( i=1; i<=10; i++ ))
+do  
+echo "Bonjour $i"
+done
+
+>directly in bash
+for i in {1..5} ; do echo "Bonjour $i" ; done
+for ((i=220;i<=10;i++)); do sh bck.sh $1 ; done
+
+>if
+for i in 1 2 3 4 5
+   do
+   if  [ $(whoami) = 'root' ]
+   then
+      break
+   fi
+   instruction
+done
+
+>array
+array=("élément1" "élément2" "élément3" "élément4")
+for élément in "${array[@]}" do ... done
+
+>rename .jpeg
+for file in *.jpeg
+do
+mv -- "$file" "${file%.jpeg}.jpg"
+done
+
+>replace space by underscore
+for fichier in *\ * do
+mv "$fichier" "${fichier// /_}"
+done;
+
+>move files in img
+#! /bin/bash
+for f in aula-??.?.mp4 ; do
+    num=${f:5:2}
+    mv "$f" Aula"$num"/
+done
+
+if [[ $NUM =~ ^[0-9]+$ ]]; then
+   echo "${NUM} is a number"
+else
+   echo "${NUM} is not a number"
+fi
+
+>select files where 1d<10000
+dr=~/Documents/srv/nfo/imgc/
+ls $dr | awk -F_ '$2<10000 {print $1 "_" $2 "_" $3}' |\
+sort | uniq |\
+while read dir; do
+    #mkdir -p "$dir"
+    #mv *."$dir".0000 "$dir"
+	echo $dir
+done
+
+>tips
+for f in *.{mp4,mkv}
+num=${f:5:2} //00 start to 5
+
+##NEED TO DO
+----------
+
+>rules of security
+>change port
+sudo nano /etc/ssh/sshd_config
+>set Port 22 to Port 44
+ctrl+q+y+enter
+sudo systemctl restart sshd
+>relog in ssh with new port
+
+>change password root
+passwd root
+
+>create new user
+sudo adduser nfo
+>disactivate root user (too dangerous!)
+nano /etc/ssh/sshd_config
+>set to no:
+PermitRootLogin no
+/etc/init.d/ssh restart
+>relog in ssh with new user
+>from there, retrieve root user
+su root
+
+*********************
+
+##AND NOW
+-------
+
+>install apache
+sudo apt-get install apache2
+>verif
+sudo systemctl status apache2
+>quit
+q
+>restart
+sudo /etc/init.d/apache2 restart
+
+>php8.4 on debian 12
+
+sudo apt install -y apt-transport-https lsb-release ca-certificates wget 
+sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list 
+sudo apt update
+sudo apt install -y php8.4
+>install packages
+sudo apt-get install php8.4-common php8.4-mysql php8.4-curl php8.4-bcmath php8.4-mbstring php8.4-xmlrpc php8.4-mcrypt php8.4-gd php8.4-xml php8.4-cli php8.4-zip php8.4-pdo php8.4-bz2
+sudo apt-get install php-mbstring.x86_64 (debian)
+>switch
+//sudo a2enmod php8.4
+>delete old php
+//sudo apt purge php8.1* (don't do that!!!)
+>verif
+php -v
+>then
+sudo systemctl restart apache2
+sudo service apache2 restart
+
+>php8.5 on debian 12
+sudo apt-get update
+sudo apt-get -y install lsb-release ca-certificates curl apt-transport-https
+sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+sudo apt-get update
+sudo apt install php8.5-cli
+sudo apt install php8.5-common php8.5-{bcmath,bz2,curl,gd,gmp,intl,mbstring,readline,xml,zip}
+sudo apt install php8.5-fpm
+/run/php/php8.5-fpm.sock
+apt purge php8.4*
+
+>php8.5 php-fpm (faster than apache-mod)
+sudo apt install php8.5-fpm libapache2-mod-fcgid
+sudo a2enmod proxy_fcgi setenvif
+sudo a2enconf php8.5-fpm
+sudo systemctl restart apache2
+>here, msqli is not installed
+sudo apt-get install php8.5-mysqli
+
+---
+
+>curl
+apt-get install php-curl
+
+--or--
+
+sudo apt-get update
+sudo apt-get -y install lsb-release ca-certificates curl apt-transport-https
+sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+sudo apt-get update
+
+>mariadb
+sudo apt-get install mariadb-server
+sudo mysql_secure_installation
+>first question passwd root:
+enter empty
+>other questions:
+n, n, y, y, y, y
+
+>set mysql password
+>enter in mysql
+sudo mysql
+//show databases
+//use mysql
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('');
+UPDATE mysql.user SET plugin = '' WHERE user = 'root' AND host = 'localhost';
+FLUSH PRIVILEGES;
+exit;
+
+>phpmyadmin (optionnal)
+sudo apt-get install phpmyadmin
+//say: apache2,no
+>cocher la case « apache2 » durant l’installation avec la touche espace du clavier (si vous faites « entrer » ça ne cochera pas apache et passera à l’étape suivante).
+>configure dbconfig-common? yes
+>sinon, pour refaire :
+sudo dpkg-reconfigure phpmyadmin
+>repair mysqld_safe --user=mysql&
+>reinstall
+/usr/bin/mysql_secure_installation
+
+-or-
+
+>webmin (affect domain to a dns)
+wget http://prdownloads.sourceforge.net/webadmin/webmin_1.620_all.deb//! more recent version
+dpkg --install webmin_1.620_all.deb
+>Webmin est maintenant accessible via :
+http://”vpsXXXXX.ovh.net”:10000
+
+>ftp
+sudo apt-get install proftpd
+> créer compte ftp
+sudo adduser 
+> retype new passwd to inform ftp
+//sudo passwd nfo
+> mot de passe ftp
+sudo nano /etc/proftpd/proftpd.conf
+> ajouter et sauver :
+> sauf si site dans /home
+DefaultRoot /var/www nfo
+> boot
+//sudo service proftpd restart
+sudo service proftpd start
+sudo service proftpd status
+q
+
+>cron (automated backups)
+>install
+sudo apt-get -y install cron
+>-l=list -r=remove
+sudo crontab -uroot -e
+//choose: 1
+>minute hour dayofmonth month dayofweek
+>mean first day of week at 1 AM
+  0 1 * * 1 bash /home/nfo/pub/sh/cron.sh nfo 6Yk084Ry9je56168
+>save, close, restart:
+sudo /etc/init.d/cron restart
+>or
+sudo crontab restart
+
+>set the cron job in a bash file
+>in /ome/nfo/pub/sh/cron.sh
+rm /home/"$1"/_backup/"$1".dump
+rm /home/"$1"/_backup/"$1".dump.gz
+mysqldump -u root -p"$2" -h localhost --opt "$1" > /home/"$1"/_backup/"$1".dump
+gzip /home/"$1"/_backup/"$1".dump
+
+
+
+***
+
+##THE MOST IMPORTANT
+------------------
+
+>We create users (adduser) in /home
+>we let each domain to access to one specific /home/domain1, /home/domain2
+>we use for that virtual servers
+>we want to set here the htaccess, and not let our old & slow .htaccss in the root
+
+>first, need to activate:
+sudo a2enmod rewrite
+sudo systemctl reload apache2
+
+>virtualhosts
+cd /etc/apache2/sites-available
+//sudo systemctl reload apache2
+sudo nano nfo.ovh.conf
+
+>"AllowOverride All" mean htaccess=ok : not use that if defs are in vhost, as there
+
+<VirtualHost *:80>
+DocumentRoot /home/nfo
+ServerName nfo.ovh
+<Directory /home/nfo>
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+RewriteEngine on
+RewriteRule ^([0-9]+)$ /?read=$1 [L]
+RewriteRule ^art/([^/])$ /?art=$1 [L]
+RewriteRule ^read/([^/])$ /?read=$1 [L]
+RewriteRule ^module/([^/]+)/(.+)$ /?module=m:$1,p:$2 [L]
+RewriteRule ^module/([^/]+)$ /?module=$1 [L]
+RewriteRule ^context/([^/]+)/(.+)$ /?module=m:context,p:$1&o=$2 [L]
+RewriteRule ^context/([^/]+)$ /?module=m:context,p:$1 [L]
+RewriteRule ^admin/([^/]+)/(.+)$ /?admin=$1 [L]
+RewriteRule ^msql/(.+)$ /?msql=$1 [L]
+RewriteRule ^([0-9]+)/look/([^/]+)$ /?read=$1&look=$2 [L]
+RewriteRule ^([0-9]+)/find/([^/]+)$ /?read=$1&look=$2&seg=1 [L]
+RewriteRule ^call/([^/]+)/([^/]+)/([^/]+)$ /call.php?a=$1&p=$2&o=$3 [L]
+RewriteRule ^call/([^/]+)/([^/]+)$ /call.php?a=$1&p=$2 [L]
+RewriteRule ^call/([^.]+)$ /call.php?a=$1 [L]
+RewriteRule ^app/([^/]+)/([^/]+)/([^/]+)$ /app.php?a=$1&p=$2&o=$3 [L]
+RewriteRule ^app/([^/]+)/([^/]+)$ /app.php?a=$1&p=$2 [L]
+RewriteRule ^app/([^/]+)$ /app.php?a=$1 [L]
+RewriteRule ^plug/([^/]+)$ /app.php?a=$1 [L]
+RewriteRule ^search/(.+)/([0-9]+)$ /?search=$1&dig=$2 [L]
+RewriteRule ^search/(.+)$ /?search=$1 [L]
+RewriteRule ^source/(.+)/([0-9]+)$ /?source=$1&dig=$2 [L]
+RewriteRule ^source/(.+)$ /?source=$1 [L]
+RewriteRule ^apicom/(.+)$ /call.php?a=apicom&p=$1 [L]
+RewriteRule ^api/(.+)$ /?api=$1 [L]
+RewriteRule ^rss/([^.]+)$ /call.php?a=rss&m=output&p=$1 [L]
+RewriteRule ^rss$ /call.php?a=rss&m=output [L]
+RewriteRule ^hub/([^.^/]+)$ /?hub=$1 [L]
+RewriteRule ^([^.^/]+)/([^.^/]+)/([0-9]+)/page/([0-9]+)$ /?$1=$2&dig=$3&page=$4 [L]
+RewriteRule ^([^.^/]+)/([^.^/]+)/page/([0-9]+)$ /?$1=$2&page=$3 [L]
+RewriteRule ^([^.^/]+)/([^.^/]+)/([0-9]+)$ /?$1=$2&dig=$3 [L]
+RewriteRule ^([^.^/]+)/([^.^/]+)$ /?$1=$2 [L]
+RewriteRule ^reload /?refresh== [L]
+RewriteRule ^home /?module=Home [L]
+RewriteRule ^all /?module=All [L]
+RewriteRule ^admin /?admin=console [L]
+RewriteRule ^update /?admin=update&update=program [L]
+RewriteRule ^login /?module=login [L]
+RewriteRule ^logon /?log=on [L]
+RewriteRule ^logout /?log=out [L]
+RewriteRule ^logoff /?log=off [L]
+RewriteRule ^reboot /?log=reboot [L]
+RewriteRule ^shutdown /?log=down [L]
+RewriteRule ^dev /?dev=b [L]
+RewriteRule ^#([^/]+)$ /?hash=$1 [L,R,NE]
+RewriteRule ^([^.]+)$ /?id=$1 [L]
+</Directory>
+ServerAlias www.nfo.ovh
+HostNameLookups on
+Options +FollowSymLinks
+</VirtualHost>
+
+>et hop
+>if already exists
+sudo a2dissite nfo.ovh
+>enable it
+sudo a2ensite nfo.ovh
+>test before reboot
+sudo apachectl configtest
+>reload
+sudo systemctl reload apache2
+sudo service apache2 reload
+
+----
+
+Now there is nothing, congratulations !!
+
+>cursor in dir "site":
+cd /home/nfo
+>if permission denied:
+sudo su
+>you could:
+sudo nano index.html
+>but remove it:
+sudo rm index.html
+>you can:
+mkdir _backup
+
+>install Philum
+cd /home/nfo
+sudo wget http://philum.fr/install.php
+>and call install.php in url
+
+>best is to take all and unzip it:
+cd /home/nfo
+>download
+sudo wget http://philum.fr/_backup/philum.tar.gz
+>untargz
+sudo tar -zxvf philum.tar.gz
+sudo rm philum.tar.gz
+sudo wget http://newsnet.fr/_backup/hubnewsnet.tar.gz
+sudo tar -zxvf hubnewsnet.tar.gz
+
+>img
+cd _backup
+sudo wget http://oumo.fr/_backup/imgqda_0-1000.tar
+sudo tar -xvf imgqda_0-1000.tar
+
+>if restore backups
+//from
+sudo mysqldump -u root -p -h localhost oom > /home/nfo/_backup/nfo.dump
+sudo gzip /home/ffw/_backup/nfo.dump
+//ffw
+sudo mysqldump -u root -p -h localhost ffw > /home/ffw/_sql/ffw.dump
+sudo gzip /home/ffw/_sql/ffw.dump
+//etc
+sudo mysqldump -u root -p -h localhost etc > /home/etc/_datas/etc.dump
+sudo gzip /home/etc/_datas/etc.dump
+
+>dir _backup
+sudo mkdir _backup
+cd _backup
+sudo wget http://newsnet.fr/_backup/nfo250404.dump.gz
+>unzip
+sudo gzip -d nfo250321.dump.gz
+
+>in mysql
+sudo mysql
+create database nfo;
+use nfo
+source nfo250321.dump;
+exit;
+
+>create connexion to mysql:
+sudo mkdir cnfg
+sudo nano cnfg/apc.ovh.php
+>and fill with
+<?php
+ses::$s=['qb'=>'newsnet','logo'=>'nn','enc'=>'utf-8','tw'=>4,'local'=>0,'oom'=>0,
+'updsoft'=>'no','updsrv'=>'philum.fr','mirsrv'=>'newsnet.fr','imgsrv'=>'newsnet.fr','frct'=>'logic.ovh',
+'tz'=>'Europe/Paris','goog'=>'','uplimit'=>'2500','trans'=>'deepl'];
+new sql(['localhost','root','t3vy20g1ls96dj25','nfo']);
+ses::$r['ftp']=['nfo','','','ftp.logic.ovh'];
+?>
+//let the installator create tables
+
+>we need to do that manually
+mkdir img imgc
+
+**********
+
+##SECURITY
+----------
+
+>prevent ddos attack
+apt-get install fail2ban
+cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.conf.backup
+>modif your settings
+nano /etc/fail2ban/jail.conf
+/etc/init.d/fail2ban restart
+
+>firewall
+iptables -L
+
+>see https://help.ovhcloud.com/csm/fr-vps-security-tips?id=kb_article_view&sysparm_article=KB0047708
+
+>ssl certificate
+sudo apt install python3-certbot-apache -y
+>
+sudo certbot --apache --agree-tos --redirect --hsts --staple-ocsp --email newsnetfr@gmail.com -d www.apc.ovh
+>enter email, say Yes or No, 
+>auto renewal
+sudo certbot renew --dry-run
+
+>httaccess for https
+>modif virtualhost
+
+<VirtualHost *:80>
+ServerName www.apc.ovh
+Redirect permanent / https://apc.ovh/
+</VirtualHost>
+<VirtualHost _default_:443>
+ServerName www.domaine.com
+DocumentRoot /usr/local/apache2/htdocs
+SSLEngine On
+...
+</VirtualHost>
+
+>installation of ssl have itself added lines like this :
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://domain.xyz/$1 [R=301,L]
+> or without www
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www. [NC]
+RewriteRule (.*) https://apc.ovh/$1 [R=301,L]
+>or
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+>or
+Redirect permanent / https://www.domaine.com/
+
+
+---
+
+>monitoring apache mod_status
+sudo a2enmod status
+sudo nano /etc/apache2/mods-enabled/status.conf
+>enter
+<Location /server-status>
+    SetHandler server-status
+    Require local
+</Location>
+>check
+http://your_server_IP/server-status
+
+---
+
+>update curl
+sudo apt-get install -y nghttp2 libnghttp2-dev libssl-dev libpsl-dev build-essential wget
+wget https://curl.se/download/curl-8.18.0.tar.xz
+tar -xvf curl-8.18.0.tar.xz
+rm curl-8.18.0.tar.xz
+cd curl-8.18.0
+./configure --prefix=/usr/local --with-ssl --with-nghttp2 --enable-versioned-symbols
+make
+sudo make install
+sudo ldconfig
+cd ..
+rm -r curl-8.18.0
+curl --version
+
+---
+
+>imagick
+sudo apt install imagemagick imagemagick-dev -y
+sudo apt install php8.5-imagick -y
+php -m | grep imagick
+
+***********
+
+##PROBLEMS
+---------
+
+>cd /home/{dir} says: permission denied
+sudo su
+//or try sudo chmod u+xr,go-rwx ~/.ssh
+
+>permissions for softwares
+sudo chmod -R 777 /home/nfo
+
+>problem of writing files (0 kb), frequently have to do:
+sudo chmod -R 777 /home/nfo
+
+>phpmyadmin not found? : 
+nano /etc/apache2/apache2.conf
+>àadd at end of file:
+include /etc/phpmyadmin/apache.conf
+service apache2 reload
+
+>#1366 - Incorrect integer value
+Msyql works in strict mode. Change that.
+/etc/mysql/my.cnf
+>set or add
+sql_mode = ""
+service mysql restart
+
+>Temporary failure in name resolution:
+nano /etc/resolv.conf
+>remplacer par:
+nameserver 8.8.8.8
+
+>rights in mysql (read olny)
+/etc/init.d/mysql stop
+chmod 755 /var/lib/mysql
+chmod 755 /var/lib/mysql/mysql
+chmod 660 /var/lib/mysql/*/*
+chown -h mysql:mysql /var/lib/mysql
+/etc/init.d/mysql start
+
+>marked as crashed and last (automatic?) repair failed
+service mysql stop
+myisamchk -r pub_live
+myisamchk -r -v -f pub_live
+service mysql start
+
+>Can't connect to local MySQL server through socket
+find / -name '*.sock'
+nano /var/run/mysqld/mysqld.sock
+ln -s <the file location> /var/run/mysqld/mysqld.sock
+rm /var/log/mysql/error.log
+ps ax | grep mysql
+chown mysql:mysql mysqld
+mysqld_safe
+service mysql start
+
+>pb apache, site unavailable
+sudo service apache2 status
+//to quit
+q
+>check if the parameter is correct
+lsof -i :80
+>find an error
+sudo apachectl stop
+//if it say pid:12345
+>kill apache pid
+kill 12345
+>check if dir have rights
+sudo chmod -R 777 nfo
+
+>reset psw mode rescue
+lsblk
+mount /dev/sdb1 /mnt/
+chroot /mnt
+passwd debian
+
+

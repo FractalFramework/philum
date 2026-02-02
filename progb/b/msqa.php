@@ -1,6 +1,9 @@
 <?php //microsql_admin
 
 class msqa{
+static $def='';
+static $defk=0;
+
 static function gpage($p=''){return $p?'&page='.get('page',$p):'';}
 
 //menu
@@ -16,13 +19,13 @@ return $ret;}
 static function slct($id,$k,$murl){
 return select_j($id.$k,'msqlc','',$murl,'','2');}
 
-static function menublocks($ra){
+static function dirlevels($ra){
 [$bases,$base,$dirs,$dir,$hubs,$hub,$files,$table,$ver,$folder]=$ra;
 $rb=$files[$hub]??''; $rc=$rb[$table]??''; $url=self::sesm('url'); $ret='';
 $b=$base.'/'; $d=$dir?$dir.'/':''; $p=$hub; $t='_'.$table; $tb=$t.'_'.$ver; 
 if($bases){asort($bases); $nurl=$url.'#/'.$d.$p.$t;//base
 	$rt['base']=self::block($bases,$nurl,$base);}
-if($dirs){asort($dirs); $nurl=$url.$b.'#/'.$p.$t;//dir
+if($dirs){asort($dirs); $nurl=$url.$b.'#/'.$p.$tb;//dir
 	$rt['directory']=self::block($dirs,$nurl,$dir);}
 if($hubs){asort($hubs); $nurl=$url.$b.$d.'#'.$t;//hub
 	$rt['hub']=self::block($hubs,$nurl,$hub);}
@@ -44,7 +47,7 @@ if($t)$ret.=popbub('admsq',$b.$bdr.'/'.$p.'/'.$t,$tn,$top,1);
 return $ret;}
 
 #callbacks
-static function normaliz($v){$v=str::normalize($v);
+static function normaliz($v){$v=str::normalize($v,1);
 return str_replace(['-','_'],'',$v);}
 
 static function prevnext($r,$d){$lk=self::sesm('lk'); $r=msql::prevnext($r,$d);
@@ -69,7 +72,7 @@ if(auth(6))$ret=msqbt($g1,$g2,$g3).' '; $ret.=btn('small',nl2br($v)); return $re
 static function msqread($g1,$g2,$g3,$g4){$r=msql::goodtable_b($g1.'_'.$g2.'_'.$g3.'|'.$g4.'|'.$g4);
 return conn::parser(stripslashes($r));}//unused
 static function msqlp($g1,$g2,$g3,$g4){$r=msql::row($g1,$g2,$g3);
-return is_array($r)?divtable($r,1):$r;}
+return is_array($r)?build::divtable($r,1):$r;}
 static function syshlp($g1,$g2,$g3,$g4){$b='';
 if(auth(6))$b=lj('','popup_msqa,editmsql___lang/fr/helps*txts_'.ajx($g1),picto('msql')).' ';
 $ret=conn::parser(helps($g1));
@@ -84,25 +87,30 @@ static function cutat($d){$r=explode(' ',$d); $n=count($r); $ret=''; $dot=''; $n
 for($i=0;$i<$n;$i++){$nb+=strlen($r[$i]); if($nb<256)$ret.=$r[$i].' ';}
 if($nb>=256)$dot=' (...)'; return $ret.$dot;}
 
-static function tabler_bypage($r,$csa,$csb,$murl){$td=''; $tr='';
-if(isset($r[msql::$m])){foreach($r[msql::$m] as $k=>$v)$td.=tagc('th',$csa,$v);
+static function findpage($r,$pg,$nbyp){$pg+=1;
+[$min,$max]=pop::pagination($pg,$nbyp);
+if(self::$defk>$max && $pg<100)$pg=self::findpage($r,$pg,$nbyp);
+return $pg;}
+
+static function tabler_bypage($r,$murl){$td=''; $tr='';
+if(isset($r[msql::$m])){foreach($r[msql::$m] as $k=>$v)$td.=tagb('th',$v);
 	$tr=tagb('tr',$td); unset($r[msql::$m]);}
-$n=count($r)+1; $page=get('page',1); $npg=500;
-//$ret=nb_page($n,$npg,$page,'');
-$bt=pop::btpages($npg,$page,$n,'msqdiv_msqa,home___'.ajx($murl).'_');//!
-$min=($page-1)*$npg; $max=$page*$npg; $i=0;
+$n=count($r)+1; $pg=(int)get('page',1); $nbyp=500; $i=0;
+if(self::$defk)$pg=self::findpage($r,0,$nbyp);
+[$min,$max]=pop::pagination($pg,$nbyp);
+$bt=pop::btpages($nbyp,$pg,$n,'msqdiv_msqa,home___'.ajx($murl).'_');//!
 if(is_array($r))foreach($r as $k=>$v){$td=''; $i++;
 	if($i>=$min && $i<$max && is_array($v))
-		foreach($v as $ka=>$va)$td.=tagc('td',$csb,$va);
+		foreach($v as $ka=>$va)$td.=tagb('td',$va);
 	if($td)$tr.=tagb('tr',$td);}
-$ret=tag('table',[],$tr); //$ret=scroll($r,$ret,500);
+$ret=tagb('table',$tr); //$ret=scroll($r,$ret,500);
 return div($bt.$ret.$bt,'','msqpg');}//scroll
 
 static function draw_table($r,$murl,$adm=''){//adm=saving
-[$dr,$nd,$n]=self::murlvars($murl); $jurl=ajx($murl); $def=get('def'); $i=0; $rh=[]; $datas=[];
+[$dr,$nd,$n]=self::murlvars($murl); $jurl=ajx($murl); $def=self::$def; $i=0; $rh=[]; $datas=[];
 if(is_array($r))foreach($r as $k=>$v){$ra=[]; $i++;
 	if(is_array($v))foreach($v as $ka=>$va)$ra[]=self::displaydata(self::cutat($va),1);
-	$css=$k==$def?'popsav':'popbt';
+	$css=$k==$def?'popsav':'popbt'; if($k==$def)self::$defk=$i;//autoselect page
 	$open=lj($css,'popup_msqa,editmsql___'.$jurl.'_'.ajx($k),$k);
 	if(auth(6))$del=lj('popdel','admsql_msqa,msqldel___'.$jurl.'_'.$k,pictit('del',nms(76))).' ';
 	if($k==msql::$m && $ra){$rh=['_'];
@@ -119,7 +127,7 @@ if(is_array($r))foreach($r as $k=>$v){$ra=[]; $i++;
 		array_unshift($ra,$open);}
 	else array_unshift($ra,$k); //eco($rh[$ka]);
 	$datas[$k]=$ra;}
-return self::tabler_bypage($datas,'popw','',$murl);}
+return self::tabler_bypage($datas,$murl);}
 
 #sav
 static function node_decompil($d){
@@ -138,7 +146,7 @@ static function msqlsav($id,$rg,$prm=[]){geta('msql',$id);
 if($rk!=$rg && substr($rg,0,1)!='@'){msql::modif($dir,$node,$rg,'mdfk',$rk); $rg=$rk;}
 //$prm=self::format_r($prm);
 $r=msql::modif($dir,$node,$prm,$rg);
-geta('def',$rg);
+self::$def=$rg;
 return self::editable($id,$r);}
 
 static function msqldel($id,$k){
@@ -147,7 +155,7 @@ $r=msql::delrow($dr,$nod,$k);
 return self::editable($id,$r);}
 
 static function msqldisplace($id,$va,$prm){$to=$prm[0]??'';
-[$dir,$node]=self::node_decompil($id); geta('def',$va);
+[$dir,$node]=self::node_decompil($id); self::$def=$va;
 $r=msql::read($dir,$node);
 $r=msql::displace($r,$va,$to);
 $r=msql::modif($dir,$node,$r,'arr');
@@ -211,7 +219,8 @@ if($va=='add'){$u=$o; $o=domain($u);
 	if(is_array($rh))$ra[$va]=array_combine($rh,$ry); else $ra[$va]=$ry; if(!isset($r[$va]))$r=$ra;
 	$rw=conv::recognize_defcon($u);
 	$ti='text start'; if(isset($r[$va][$ti]))$r[$va][$ti]=$rw[0]?$rw[0]:'entry-content::';
-	$ti='title start'; if(isset($r[$va][$ti]))$r[$va][$ti]=$rw[2]?$rw[2]:'::h1';}
+	$ti='title start'; if(isset($r[$va][$ti]))$r[$va][$ti]=$rw[2]?$rw[2]:'::h1';
+	$ti='jump div'; if(isset($r[$va][$ti]))$r[$va][$ti]=$rw[2]?$rw[2]:'sharedaddy::';}
 if($rh)$ntkp=1; else $ntkp=0; $i=0; $key=''; $def='';
 if($r){foreach($r as $k=>$v){$i++; if($k==$va){$n=$i; $key=$k; $def=$v;}
 	if(!$key){$key=$va; $n=$i+1; $def='';}}
@@ -222,7 +231,7 @@ if($r){foreach($r as $k=>$v){$i++; if($k==$va){$n=$i; $key=$k; $def=$v;}
 		$pn.=lj('txtx','popup_msqa,editmsql__x_'.$nodb.'_'.ajx($kt),picto('after'));}
 if(isset($ra))$r=$r[$va]; elseif($key)$r=msql::row($dir,$node,$key);
 if(is_array($r)){$i=0; $kys[]='k'.$rid;//keys to shift from array
-	foreach($r as $k=>$v){$kb=self::normaliz($idn.$k); $kys[]=$kb; $rhk=$rh[$k]??''; $i++;
+	foreach($r as $k=>$v){$kb=self::normaliz($idn.$k); $kys[]=self::normaliz($kb); $rhk=$rh[$k]??''; $i++;
 		if(substr($node,-7)=='defcons'){
 			if($rhk=='post-treat')$opt=br().jump_btns($kb,conv::ptvars(),'|'); else $opt=''; 
 			//if($rhk=='last-update')$opt=ljb('txtbox','jumpvalue',[$kb,date('ymd',time())],date('ymd',time()));
@@ -241,7 +250,7 @@ elseif($kb){$keys=$kb; $opt=self::slct($idn,$k,$dir.'/'.$node.'-0');
 else{$kb=randid('k'); $rc[1]=self::codearea($kb,''); $keys='k'.$rid.','.$kb;}//new
 //$ret=self::medit_ksav($nod,$key,$res);
 $ret=input('k'.$rid,$key,strlen($key));
-$ret.=on2cols($rc,540,5);//render
+$ret.=build::on2cols($rc,540,5);//render
 $bt='';//divc('popbt',$nod);
 if(auth(4)){
 	$bt.=lj('popsav',$tg.'_msqa,msqlsav_'.$keys.'_x_'.$nodb.'_'.$kyb.'_'.$ob,nms(27)).' ';//sav
@@ -471,7 +480,7 @@ foreach($r as $k=>$v){$obj=$v[$a]; $v[$a]=$v[$b]; $v[$b]=$obj; $rt[$k]=$v;}}
 return $rt;}
 
 static function addcol($r){$rt=[];
-//if(!isset($r[msql::$m]))$r[msql::$m]=msql::menublocks($r);
+//if(!isset($r[msql::$m]))$r[msql::$m]=msql::dirlevels($r);
 foreach($r as $k=>$v){$v[]=$k==msql::$m?'col'.(count($v)+1):''; $rt[$k]=$v;}
 return $rt;}
 
@@ -492,6 +501,16 @@ $rm=$r[msql::$m]??[]; $n=1; $ret=[]; if(isset($rm))$n=count($rm);
 else{foreach($r as $k=>$v)$n=count($v)>$n?count($v):$n; $ret[msql::$m]=array_pad([],$n,'');}
 foreach($r as $k=>$v)for($i=0;$i<$n;$i++)$ret[$k][]=$v[$i]??'';
 return $ret;}
+
+static function repair_rn0($r){//dicoen
+$ra=sql::read('word','dicofr','rv',['%mot'=>'rn']); $ra[]='Melbourne';
+foreach($ra as $k=>$v)$rb[]='['.$k.']';
+if($r)foreach($r as $k=>$v)foreach($v as $ka=>$va){
+	$va=str_replace($ra,$rb,$va);
+	$va=str_replace('rn',"\n",$va);
+	$va=str_replace($rb,$ra,$va);
+	$r[$k][$ka]=$va;}
+return $r;}
 
 static function repair_rn($r){
 $rn=fn($v)=>str_replace('rn',"\n",$v);
@@ -707,11 +726,11 @@ static function boot($msql){
 $auth=ses('auth'); $root='msql/';
 $ru=self::murlread($msql); ses('murl',$ru);
 [$b,$dir,$hub,$table,$version,$def]=$ru;
-if($def)geta('def',$def); $folder=$b.'/'.($dir?$dir.'/':'');
+if($def)self::$def=$def; $folder=$b.'/'.($dir?$dir.'/':'');
 if($def=get($def))$def;
-elseif(is_file($root.$folder.$hub.'_'.$table.'_'.$version.'.php'))geta('def',$def);
+elseif(is_file($root.$folder.$hub.'_'.$table.'_'.$version.'.php'))self::$def=$def;
 elseif(is_file($root.$folder.$hub.'_'.$table.'.php') && $version){
-	geta('def',ajx($version,1)); $version='';}
+	self::$def=ajx($version,1); $version='';}
 if($dir && !is_dir($root.$folder)){$folder=$b.'/'; $dir='';}
 $ra[0]=explore($root,'dirs',1); unset($ra[0]['_bak']);//bases
 if($auth<6){$rdel=['lang','server','clients','system'];
@@ -763,7 +782,7 @@ if($f && $f!='='){
 	$u=msql::url($folder,$node);
 	$is_file=is_file($u);
 	$lk=self::sesm('lk',$url.$folder.$node.self::gpage());}
-$def=ajx(get('def'),1);
+$def=ajx(self::$def,1);
 if(get('see'))$ret[]=tree($ra);
 //auth
 $localusr=$base=='users' && $hub==ses('usr')?1:0;
@@ -778,7 +797,7 @@ if(!$lh)for($i=0;$i<50;$i++)$lh[]=['',''];//null
 $jurl=ajx($murl); $rt=[];
 #-menus
 if(!$def && auth(6)){
-	if($ra)$ret['menus']=self::menublocks($ra);
+	if($ra)$ret['menus']=self::dirlevels($ra);
 	if(auth(4))$rt[]=lj('active','popup_msqa,creatable___'.$jurl,$lh[9][0]);
 	if($table && $authorized && $hub && $is_file){//$defs && 
 		$rt[]=self::opbt('backup',$jurl,$lh[2]);
@@ -799,7 +818,7 @@ if(!$def && auth(6)){
 		if(!$defs or isset($defs[0]))
 			$rt[]=self::opbt('repair',$jurl,$lh[12]);}
 		if(auth(6)){//($base=='system' or $hub=='public') && 
-			$rt[]=self::opbt('renove',$jurl,['renove','import from '.prms('srvmirror')]);
+			$rt[]=self::opbt('renove',$jurl,['renove','import from '.prms('srvmir')]);
 			$rt[]=self::opbt('resav',$jurl,['resav','resav']);}
 	if($rt)$ret['l1']=divc('menu',join(' ',$rt)); $rt=[];
 	#-util
@@ -826,7 +845,7 @@ if(!$def && auth(6)){
 		//$rt[]=self::opbt('connexions',$jurl,$lh[47],1);
 		$rt[]=self::opbt('friends',$jurl,$lh[46],1);
 		$ret['l2']=divc('menu',join(' ',$rt)); $rt=[];
-		if($base!='system' && is_file(self::sesm('root').'system/'.$node.'.php'))
+		if($base!='system' && msql::exists('system',$node))
 			$rt[]=self::opbt('update',$jurl,$lh[26]);
 		if($base=='lang')$rt[]=self::opbt('translate',$jurl,$lh[48]);
 		$rt[]=self::opbt('sort_table',$jurl,$lh[19],1);
@@ -862,10 +881,8 @@ if($table && $is_file){
 	$rt[]=self::search($murl);
 	if($rt)$ret['l4']=divc('menu',join(' ',$rt)); $rt=[];}
 #render
-if($defs && !get('def')){
-$out=divd('admsql',self::draw_table($defs,$murl,''));
-$ret[]=$out.br();}
-else $ret[]=divd('admsql','');
-return divd('msqdiv',implode('',$ret));}
+$admcnt='';
+if($defs && !self::$def)$admcnt=self::draw_table($defs,$murl,'').br();
+return divd('msqdiv',div(join('',$ret),'sticky').divd('admsql',$admcnt));}
 }
 ?>

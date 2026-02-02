@@ -1,6 +1,7 @@
 <?php 
 class social{
 static $cb='scl';
+static $lg='fr';
 
 static function sav($id,$type,$poll){$iq=ses('iq');
 $rx=sql('id,poll','qdf','w',['ib'=>$id,'type'=>$type,'iq'=>$iq]);
@@ -73,18 +74,31 @@ if($n && $d=='true')return true;
 if(!$n && !$d)return true;}
 
 static function content($id){//twit::content
-$suj=ma::suj_of_id($id); //$suj=html_entity_decode($suj);//str_replace("&nbsp;",' ',$suj);
+//$suj=ma::suj_of_id($id); //$suj=html_entity_decode($suj);//str_replace("&nbsp;",' ',$suj);
+[$suj,$lg,$lev]=sql('suj,lg,re','qda','w',$id); self::$lg=$lg;
 $author=sql::inner('tag','qdt','qdta','idtag','v',['cat'=>'auteurs','idart'=>$id]);
 [$cat,$source]=sql('frm,mail','qda','w',$id);
-$tag=$author?$author:($source?httproot($source):$cat); //$tag=ucwords(str::normalize($tag));//http_root
+$tag=$author?$author:($source?httproot($source):$cat);
+$plv=match($lev){'4'=>ascii('129352'),'5'=>ascii('129351'),default=>''};
+$pic=sesr('catemo',$cat); $iclg=flg($lg);//$lg!=prmb(25)?' '.flg($lg):'';
+//$tag=ucwords(str::normalize($tag));//http_root
 //$utagr=sql::inner('tag','qdt','qdta','idtag','v','cat>0 and idart="'.$id.'"');
 //if($utagr)$tag=implode(' #',$utagr);
-//$im=sql('img','qda','v',$id); if($im)$img=' '.host().pop::art_img($im,$id);
-return '['.$tag.'] '.delnbsp($suj);}
+//$im=artim::imgart($id); if($im)$img=' '.host().artim::ishero($im,$id);
+return $pic.' ['.$tag.'] '.$iclg.' '.$suj.' '.$plv;}
 
+static $suj='';
 static function twlink($id){//twit::content
-$txt=self::content($id); $url=host().urlread($id);
-return 'http://twitter.com/intent/tweet?url='.$url.'&text='.hed($txt);}
+$suj=self::content($id); $url=host().urlread($id);
+self::$suj=$suj; $suj=delnbsp($suj);
+//$suj=htmlentities($suj);jill all
+//$suj=urlencode($suj);//kill emojis
+//$suj=rawurlencode($suj);//kill emojis
+//$suj=hed($suj);//not works
+$suj=str_replace('%','pc',$suj);
+$suj=str_replace('|','-',$suj);
+$suj=str::clean_and($suj,self::$lg);
+return 'http://x.com/intent/tweet?url='.$url.'&text='.$suj;}
 
 static function fblink($id){$url=host().urlread($id);
 return 'http://www.facebook.com/sharer.php?u='.hed($url);}
@@ -102,19 +116,18 @@ if(self::rstopt($rst[125],$ro['agree']))$ret.=self::edt($id,'agree',$rf['agree']
 if(self::rstopt($rst[71],$ro['artstat']))$ret.=lj('','popup_stats,graph___nbp_'.$id,picto('stats',16)).' ';
 //if(self::rstopt($rst[86],!$ro['tracks']))$ret.=lj($css,'popup_tracks,form___'.$id,picto('forum')).' ';
 if(!$rst[100] && auth(6))$ret.=togbub('tlex,share',$id,picto('tlex')).' ';//,'color:gray'
-if(!$rst[99] && auth(6))$ret.=togbub('twit,share',$id,picto('tw')).' ';//,'color:gray'
-if(!$rst[45] && $prw>2)$ret.=lkt('',$rsoc[45],picto('tw2')).' ';
+//if(!$rst[99] && auth(6))$ret.=togbub('twit,share',$id,picto('tw')).' ';//,'color:gray'//99 used for tweetletter
+if(!$rst[45] && $prw>2)$ret.=lkt('',$rsoc[45],picto('X')).' ';
 if(!$rst[44] && $prw>2)$ret.=lkt('',$rsoc[44],picto('fb2')).' ';
 //if(!$rst[46] && $prw>2)$ret.=lkt('',$rsoc[46],icon('stumble')).' ';
 if(rstr(141))$ret.=lj('','pagup_book,read__css_'.$id.'__1',picto('script'),att('Player')).' ';
 if(!$rst[118] && $prw>2)$ret.=lkt('','/apicom/id:'.$id.',json:1',picto('emission'),att('Api')).' ';
-if(!$rst[130] && $prw>2)$ret.=lj('','popup_mkbook,call___'.$id.'_art',picto('book2'),att('Ebook')).' ';
+if(!$rst[130] && $prw>2)$ret.=lj('','popup_ebook,call___'.$id.'_art',picto('book2'),att('Ebook')).' ';
 if(!$rst[131] && $prw>2)$ret.=lj('','popup_api__3_id:'.$id.',preview:3,file:'.ajx($suj),picto('file-word'),att('Html')).' ';
 if(!$rst[47])$ret.=togbub('mails,sendart',$id,picto('mail')).' ';
 if(!$rst[12])$ret.=btj(picto('print'),'window.print()').' ';
 if(rstr(58))$ret.=lj('','popup_usg,editbrut___'.$id,picto('conn'));
-//if(!$rst[155])$ret.=btj(picto('input'),atj('dock',$id)).' ';
-if(!$rst[155])$ret.=self::edt($id,'dock',$rf['dock']).' ';
+//if(!$rst[155])$ret.=self::edt($id,'dock',$rf['dock']).' ';
 if(self::rstopt($rst[106],$ro['bckp']))$ret.=div(art::reviews($id,$ro['review']));//156
 return $ret;}
 

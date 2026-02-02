@@ -75,7 +75,7 @@ static function repair($p,$o){
 $r=sql('idvoc,idart,pos','qdvoc_b','','');
 foreach($r as $k=>$v)$rb[$v[0]][$v[1]][$v[2]]=1; //pr($rb);
 foreach($rb as $k=>$v)foreach($v as $ka=>$va)foreach($va as $kb=>$vb)$rc[]=[$k,$ka,$kb]; pr($rc);
-sql::sav2('qdvoc_b1',$rc,1);
+sql::savr('qdvoc_b1',$rc,1);
 return count($rc);}
 
 static function count(){

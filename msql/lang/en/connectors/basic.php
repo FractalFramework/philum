@@ -15,10 +15,19 @@ return ['_'=>['description'],
 'list'=>['list (for each line)'],
 'nh'=>['footnote'],
 'web'=>['Display the description of a web page'],
-'twitter'=>['Twitter API:rn- [123456789:twitter] returns a twitrn- [text|search:twitter] result of a searchrn- 123456789|thread:twitter] thread of a discussion (upwards)'],
-'art'=>['link to article : rn- [1234:art] button to open an article with his titlern- [1234|title:art] free titre'],
-'msql'=>['return datas of a table : rn[hub_table_(version)-(key)|(row)|option:microsql] ;rnoptions : pop, read, conn, last, count, graph, form, tmp'],
-'table'=>['- columns : | or commarn- lines : ¬ or break-linern- headers : |1'],
+'twitter'=>['Twitter-𝕏 API:
+- [123456789:twitter] returns a twit
+- [text|search:twitter] result of a search
+- 123456789|thread:twitter] thread of a discussion (upwards)'],
+'art'=>['link to article : 
+- [1234:art] button to open an article with his title
+- [1234|title:art] free titre'],
+'msql'=>['return datas of a table : 
+[hub_table_(version)-(key)|(row)|option:microsql] ;
+options : pop, read, conn, last, count, graph, form, tmp'],
+'table'=>['- columns : | or comma
+- lines : ¬ or break-line
+- headers : |1'],
 'center'=>['align to center'],
 'right'=>['align to right'],
 '--'=>['horizontal line'],

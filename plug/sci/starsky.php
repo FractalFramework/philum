@@ -26,7 +26,7 @@ foreach($r as $k=>$v){$i++; $y=$sz+$i*$sz+16;
 static function sttclr($stt,$klr){
 [$green,$orange,$yellow,$blue,$red,$gray]=$klr;
 if($stt=='amical')$clr=$green;
-elseif($stt=='inamical')$clr=$orange;//img::imgclr($im,'ff9900')
+elseif($stt=='inamical')$clr=$orange;//graph::imgclr($im,'ff9900')
 elseif($stt=='danger')$clr=$red;
 elseif($stt=='neutre')$clr=$yellow;
 elseif($stt=='galaxy')$clr=$blue;
@@ -97,7 +97,7 @@ for($i=0;$i<12;$i++){$y=$mh*$i;
 
 static function draw($out,$r){
 $w=self::$w; $h=$w/2; $im=imagecreate($w,$h);
-$klr=img::clrpack($im);//spe
+$klr=graph::clrpack($im);//spe
 [$white,$black,$red,$green,$blue,$yellow,$cyan]=$klr;
 $font=imageloadfont('fonts/gdf/Fixedsys.gdf');
 ImageFilledRectangle($im,0,0,$w,$h,$black);
@@ -137,7 +137,7 @@ if($p=='allstars'){$rb=msql::read('','ummo_exo_stars',1);
 $sq=star::sq($pb);
 $r=star::build($sq,1); //pr($r);
 $rb=self::prep($r,$ra); //pr($rb);
-$f='_datas/starsky.png';
+$f='_datas/png/starsky.png'; mkdir_r($f);
 self::draw($f,$rb);
 $ret=image('/'.$f.'?'.randid());
 return $ret;}
