@@ -740,11 +740,11 @@ $ra[2]=$dir?explore($root.$b,'dirs',1):'';//dirs
 $ra[3]=$dir;//dir
 $rt=explore($root.$folder,'all'); //pr($rt);
 $files=self::tables($rt); //pr($files);
-if($files && $b){$ra[4]=array_keys($files);//hubes
+if($files && $b){$ra[4]=array_keys($files); //hubes
 	foreach($ra[4] as $k=>$v)
-		if($b=='users' && $v!='public' && ($v!=ses('qb') or $auth<7))
+		if($b=='users' && $v!='public' && ($v!=ses('qb') && $auth<7))
 			unset($ra[4][$k]);}
-else $ra[4]='';
+else $ra[4]=[];
 $ra[5]=$hub;
 $ra[6]=$files;
 $rf=[];

@@ -1,17 +1,17 @@
 <?php 
 return ['1'=>['htaccess','yes'],
 '2'=>['create_hub','yes'],
-'3'=>['first_node','newsnet'],
+'3'=>['first_node','nfo'],
 '4'=>['sub_domain','yes'],
-'5'=>['update server','philum.fr'],
+'5'=>['update server','philum.ovh'],
 '6'=>['gdf_ability','yes'],
 '7'=>['google-site-verification',''],
 '8'=>['time_zone','Europe/Paris'],
 '9'=>['error_reporting','E_ALL'],
-'10'=>['ajax_buffer','4000'],
+'10'=>['srvim limit','150000'],
 '11'=>['utf8',''],
 '12'=>['upload','200000'],
 '13'=>['updates','1'],
 '14'=>['server mirror',''],
-'15'=>['server img','newsnet.ovh'],
-'16'=>['fractal','logic.ovh']]; ?>
+'15'=>['server img','hooks.ovh'],
+'16'=>['fractal','ffw.ovh']]; ?>

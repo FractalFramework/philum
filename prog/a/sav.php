@@ -375,7 +375,7 @@ return tagb('section',tagb('header',$ti).tag('article',$rp,$d));}
 
 //upload
 static function uploadsav($id,$type,$opt){$rid='upfile'.$id;
-$umf=ini_get('upload_max_filesize'); ini_set('post_max_size','220M');
+$umf=ini_get('upload_max_filesize'); ini_set('post_max_size',prms('uplimit'));//'220M'
 $f=$_FILES[$rid]['name']??''; $ft=$_FILES[$rid]['tmp_name']??''; $fn=$_FILES[$rid]['full_path']??'';
 if(!$f)return 'no file uploaded '; $er=''; $rep=''; $w='';
 $f=str::normalize($f,2); $xt=xt($f); $qb=ses('qb'); if(!auth(4))return;

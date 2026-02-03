@@ -194,6 +194,5 @@ imagecopyresampled($img,$im,$xa,$ya,$xb,$yb,$w,$h,$wo,$ho);
 match($ty){1=>imagegif($img,$out),2=>imagejpeg($img,$out,100),3=>imagepng($img,$out),18=>imagewebp($im,$out),default=>''};
 opcache($out);
 return $out;}
-
 }
 ?>

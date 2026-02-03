@@ -16,7 +16,7 @@ $d1='
 [popup_svg,home|[20,20|hello:text]:lj]
 [rand,red,2:attr][M150 0 L75 200 L225 200 Z:path]
 [purple,,,,,,rotate(330-40/20):attr][10,20|hello:text]
-[blue:attr][280,140,http://philum.fr|[80,20,,1|hello:text]:a]
+[blue:attr][280,140,http://philum.ovh|[80,20,,1|hello:text]:a]
 [20,20|[20,20|hello1:tspan][green:attr][20,40|hello2:tspan]:text]
 [|[f1,0,0|[SourceGraphic,15:feGaussianBlur]:filter]:defs][rand,,,,0.4:attr][300,200,200,1:circle]';
 $d2='

@@ -98,7 +98,7 @@ elseif(prmb(11)>=1 or $newhub or !$first or prms('create_hub')=='on'){$rl='ok';
 
 static function modif_cnfgtxt($qb,$first){$f=boot::cnf();
 if(is_file($f)){$d=read_file($f); $r=explode('#',$d);}
-else $r=[db('qd'),'no','yes',ses('qb'),'','philum.fr','','','','Europe/Paris','6135','4000'];
+else $r=[db('qd'),'no','yes',ses('qb'),'','philum.ovh','','','','Europe/Paris','6135','4000'];
 if(!$first)$r[3]=$qb; if(prms('htacc'))$r[1]='yes';
 write_file($f,implode('#',$r));}
 
@@ -154,8 +154,8 @@ msql::copy('system','default/clr/2','design',$qb.'/clr/2');
 msql::copy('system','default/mods','users',$qb.'/mods/1');
 msql::copy('system','default/rstr','users',$qb.'/rstr');
 msql::copy('system','default/apps','users',$qb.'/apps');
-//$r=msqa::import_defs('','http://philum.fr/users/philum/rstr'); msql::save('',$qb.'_rstr',$r);
-//$r=msqa::import_defs('','http://philum.fr/users/philum/mods/1'); $r[2][2]=2; msql::save('',$qb.'_mods_1',$r);
+//$r=msqa::import_defs('','http://philum.ovh/users/philum/rstr'); msql::save('',$qb.'_rstr',$r);
+//$r=msqa::import_defs('','http://philum.ovh/users/philum/mods/1'); $r[2][2]=2; msql::save('',$qb.'_mods_1',$r);
 if($restore){[$rstr,$config]=self::ndprms_defaults();
 sql::upd('qdu',['rstr'=>$rstr],['name'=>ses('qb')]);
 sql::upd('qdu',['config'=>$config],['name'=>ses('qb')]);}

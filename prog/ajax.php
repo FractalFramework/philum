@@ -16,7 +16,7 @@ $w=ses::$r['popw']??prma('content'); if($w)$s='max-width:'.($w+36).'px;';
 $bt=ljb('','Close','popup',picto('close'));
 $bt.=btj(picto('ktop'),'poprepos()');
 $bt.=ses::r('popm').' ';
-$bt.=tagb('small',$t); //$bt.=div(divr(ses::$er),'small');
+$bt.=tagb('small',$t); //$bt.=div(divr(ses::$er),'small');//user-select:none;
 $ret=tag('div',['id'=>'popa','class'=>'popa','ondblclick'=>atjr('reduce',[])],$bt);
 $ret.=div($d,'popu','popu');
 return div($ret,'popup','',$s);}

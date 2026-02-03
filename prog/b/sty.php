@@ -284,8 +284,8 @@ return $ret;}
 
 static function chargesets(){$qb=ses('qb');
 $rn=msql::read('',$qb.'_css','');
-$ra=msqa::choose('',$qb,'css'); asort($ra);
-$rb=msqa::choose('',$qb,'clr'); asort($rb);
+$ra=msqa::choose('',$qb,'css'); if($ra)asort($ra);
+$rb=msqa::choose('',$qb,'clr'); if($rb)asort($rb);
 $tab[]=['open','herit','colors'];
 $rt=[]; $rta=[]; $rtb=[];
 if($rb)foreach($ra as $k=>$v){

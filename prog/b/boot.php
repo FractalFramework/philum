@@ -12,7 +12,7 @@ $r['htacc']=$r[1]=='yes'?1:'';
 $r['create_hub']=$r[2]=='yes'?'on':'off';
 $r['default_hub']=$r[3]?$r[3]:ses::$s['qb'];
 $r['sbdm']=$r[4]=='yes'&&!ses('subd')?1:'';
-$r['srvup']=$r[5]?$r[5]:'philum.fr';//updates
+$r['srvup']=$r[5]?$r[5]:'philum.ovh';//updates
 $r['nogdf']=$r[6]=='no'?1:'';//gdf
 $r['goog']=$r[7];
 $r['timez']=$r[8]?$r[8]:'Europe/Paris';
@@ -71,7 +71,7 @@ if(!$r[17])$r[17]='ymd.Hi';//date
 if(!$r[18])$r[18]='tag';//tags
 if(!$r[19])$r[19]='tag';//pctg
 if(!$r[23])$r[23]='.txt.webp.pdf';//ext
-if(!$r[24])$r[24]='http://philum.fr';//server
+if(!$r[24])$r[24]='http://philum.ovh';//server
 if(!$r[25])$r[25]='fr';//lang
 if(!$r[26])$r[26]='fr en es';//langs
 if(!$r[27])$r[27]='440/320';//thumb

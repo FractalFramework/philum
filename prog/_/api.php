@@ -215,7 +215,7 @@ return 'select '.$slct.' from '.$qda.''.$in.' where '.$wh.$gr.$ord;}
 //dig
 static function dig($ra){$r=pop::define_digr();
 $n=$ra['minday']?$ra['minday']:ses('nbj'); $n=self::resetdig($n); $ret='';
-if(!$r[$n])$r[$n]=$n>=365?round($n/365,2):$n; $cur=$r[$n];
+if(!($r[$n]??''))$r[$n]=$n>=365?round($n/365,2):$n; $cur=$r[$n];
 $r[$n].=' '.($n<365?plurial($cur,3):plurial($cur,7));
 $r['all']=nms(100);
 $j=$ra['rid'].'_api,call2_hid'.$ra['rid'].'_exs__';

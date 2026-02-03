@@ -229,7 +229,7 @@ if(is_array($r))foreach($r as $k=>$v){$c=active($k,$vrf); $k=addslashes($k);
 	if($t=='-')$t='...'; $c=''; $vb=$v; if(isset($rb[$v])){$vb=$rb[$v]; $c='active';}
 	if($v)$rt[]=ljb($c,'cases_j',[$id,$v,$i],$vb,atd('bt'.$id.$i));
 	$i++;}
-if($o>=2)$ret.=self::dropmenuform($id,$id,$vrf,'bt');
+if($o>=2)$rt[]=self::dropmenuform($id,$id,$vrf,'bt');
 return div(join(' ',$rt),'list');}
 
 #admin

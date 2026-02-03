@@ -413,7 +413,7 @@ return $ret;}
 #utils
 function srvmir(){$srv=prms('srvmir'); if(!$srv)$srv=ses::$s['mirsrv']; if($srv)return http($srv);}
 function srvimg(){$srv=prms('srvimg'); if(!$srv)$srv=ses::$s['imgsrv']; if($srv)return http($srv);}
-function upsrv(){$srv=prms('srvup'); if(!$srv)$srv=ses::$s['updsrv']; return $srv?http($srv):'http://philum.fr';}
+function upsrv(){$srv=prms('srvup'); if(!$srv)$srv=ses::$s['updsrv']; return $srv?http($srv):'http://philum.ovh';}
 function checkupdate($n=1){return read_file2(upsrv().'/call/software,version/'.$n);}
 function checkupdate2(){return file_get_contents(upsrv().'/version.txt');}
 function checkversion($n=1){return msql::val('system','program_version',$n);}

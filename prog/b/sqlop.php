@@ -80,6 +80,10 @@ sql::qr($sql,0);
 if(sql::$er['qr']??'')self::$er['not_created']=$b;
 else self::$er['table_created'][]=$b;}
 
+static function create_database(){
+$sql='CREATE DATABASE '.sql::$db;
+sql::qr($sql,0);}
+
 static function array_diff_order($ra,$b){$n=count($ra);
 $rak=array_keys($ra); $rbk=sqb::cols($b,1);//rb in the good order
 for($i=0;$i<$n;$i++)if($rak[$i]!=$rbk[$i]??'')return true;}
