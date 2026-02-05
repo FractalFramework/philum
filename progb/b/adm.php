@@ -359,7 +359,7 @@ elseif(!$sup){
 	foreach($rb as $k=>$v)$rc[$k]=[$ra[$k]??'unassigned',$v];
 	msql::backup('server',nod('params'));
 	msql::save('server',nod('params'),$rc);
-	json::sav('srv',drn('params'),$rb);
+	//json::sav('srv',drn('params'),$rb);
 	self::dispatch_params($rb);
 	//boot::define_prmb();
 	ses('prmb',$rb);}

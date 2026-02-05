@@ -108,6 +108,13 @@ foreach($r as $k=>$v){$_SESSION['prms'][$k]=ses::$s[$v]; msql::modif('server',no
 static function prmb_machine(){$r=[1=>'qb',3=>'qb',8=>'logo'];
 foreach($r as $k=>$v){$_SESSION['prmb'][$k]=ses::$s[$v]; msql::modif('server',nod('params'),$v,'val',1,$k);}}
 
+static function cnfgsav_mod(){
+$r=ses('prmb'); $prmod=$r[1];
+$r=msql::modif('server',nod('params'),$prmod,'val',1,1);
+$r=msql::kx('server',nod('params'),1);
+adm::dispatch_params($r);
+return 'saved: '.$prmod;}
+
 #actions
 static function actions($p,$o){
 $f='cnfg/'.ses('qb').'_saveconfig.txt'; $ret=$p.':ok';
@@ -137,8 +144,7 @@ case('reset_rstr'):admx::backup_rstr('defaults'); break;
 //console
 case('slct_mods'):boot::select_mods($o); $rl=1; break;
 case('newfrom_mods'):adm::newmodfrom($o); boot::select_mods($o); $rl=1; break;
-case('adopt_mods'):$d=''; foreach(ses('prmb') as $k=>$v)$d.=$v.'#';
-	sql::upd('qdu',['config'=>$d],['name'=>ses('qb')]); $rl=1; break;
+case('adopt_mods'):self::cnfgsav_mod(); $rl=1; break;
 case('backup_mods'):copy(msql::url('',$nod),$fb); break;
 case('mk_default'):msql::copy('users',$nod,'system','default_mods');
 msql::copy('users',$nod,'users','public_mods_1'); alert('system/default_mods;public_mods_1'); break;

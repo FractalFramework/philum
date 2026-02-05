@@ -94,7 +94,7 @@ elseif(substr($act,0,1)=='@'){$n=substr($act,1); $nx=self::nextentry($r); $i=0;
 //	if($act=='mdf')$r[$k]=$ra; elseif($act=='del')unset($r[$k]);}}
 elseif($act)$r[$act]=$ra;
 if(isset($r[0]))$r=self::reorder($r); if(isset($rb))$rb+=$r; else $rb=$r;
-self::save($dr,$nod,$rb); //pr($rb);
+self::save($dr,$nod,$rb); //
 //json::add($dr,$nod,$r);
 return $rb;}
 

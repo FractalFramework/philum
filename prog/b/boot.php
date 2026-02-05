@@ -249,8 +249,7 @@ if($o)$_SESSION['cond']=$r; else return $r;}
 static function select_mods($d=''){
 if($d){$_SESSION['prmb1']=prmb(1); $_SESSION['prmb'][1]=$d;}
 elseif($_SESSION['prmb1']){$_SESSION['prmb'][1]=$_SESSION['prmb1']; $_SESSION['prmb1']='';}
-self::reset_mjx(); $_SESSION['modsnod']=nod('mods_'.prmb(1)); 
-self::define_mods(); self::define_condition();}
+$_SESSION['modsnod']=nod('mods_'.prmb(1)); self::define_mods(); self::define_condition();}
 
 #context
 static function context_mods($vl){$r=sesr('mods',$vl); $cnd=ses('cond'); $ret=[];
