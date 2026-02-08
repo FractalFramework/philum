@@ -106,6 +106,10 @@ $f=$srv.'/apicom/id:'.$id.',json:1';//,conn:1
 $d=read_file($f); $r=json_decode($d,true);
 return [$r['title'],$r['content']];}
 
+static function metaurl($d){
+//$dom=dom($d); return dom::extract($dom,'og(ddot)url:property:meta');
+return between($d,'property="og:url" content="','"');}
+
 static function vacuum($f,$sj='',$h=''){
 $f=http($f); $f=utmsrc($f); $suj=''; $rec=''; $ret=''; $enc=''; $lg='';
 $auv=video::detect($f);//video
@@ -113,6 +117,7 @@ if($auv){vacses($f,'d',$auv); $t=vacses($f,'t');
 if(!$t){[$t]=web::metayt(web::ytid($f)); vacses($f,'t',$t);} return [$t,$auv,$lg];}
 else $reb=vaccum_ses($f); if(!$reb){vacses($f,'b','x'); return ['','','','',''];}
 $reb=str::clean_html($reb);
+if(strpos($f,'newsnet.ovh/w/'))$f=self::metaurl($reb);//scrap
 //if($t=vacses($f,'t'))return [$t,vacses($f,'d'),''];
 //if(substr($reb,0,1)=='{')return self::vacuum_json($reb);
 [$defid,$defs]=self::find_defcon($f);//defcons
@@ -134,7 +139,7 @@ if($tit){$tit=str_replace('👁‍🗨 ','',$tit);}//stupid icons// $tit=str::cl
 if($defs[6]??'')$ret=self::post_treat($ret,$tit,$defs[6]);//post_treat
 if(ses::$r['sugm']??'')$sug=self::sugnote(); else $sug='';
 $ret.="\n\n".$sug.'['.$f.']'; vacses($f,'t',$tit);
-return [$tit,$ret,$lg];}
+return [$tit,$ret,$f];}
 
 //
 static function master($d,$defs){$ret='';
@@ -467,9 +472,8 @@ case 'figcaption': $fcapt=str_replace('|','-',trim($b));
 	//if($bim)$b=$n.$n.$bim.$n.$n; else $b=''; break;
 case 'source':$u=strprop($bin,'src');
 	if($u)$b='['.goodsrc($u).']'; break;
-case 'video':$u=strprop($bin,'src');
-	if(strpos($u,'.mp4'))$b='['.$u.']';
-	elseif($u)$b='['.goodsrc($u).':video]'; break;
+case 'video':$u=strprop($bin,'src'); if($u){
+	if(strpos($u,'.mp4'))$b='['.$u.']'; elseif($u)$b='['.goodsrc($u).':video]';} break;
 case 'audio':$u=strprop($bin,'src');
 	if($u)$b='['.goodsrc($u).':audio]'; break;
 case 'time':$b='['.trim($b).':time]'; break;
@@ -514,7 +518,7 @@ static function bal_conv_style($b,$bin){$bse=strtolower($bin);
 if(strpos($bse,'bold')!==false && self::notin($b,':b]'))$b='['.$b.':b]';
 elseif(strpos($bse,'italic')!==false && self::notin($b,':i]'))$b='['.$b.':i]';
 //elseif((strpos($bse,'#ff0000')!==false or strpos($bse,':red')!==false or strpos($bse,'rgb(255,0,0)')!==false) && self::notin($b,':red]'))echo $b='['.$b.':red]';
-elseif(strpos($bse,'background-image')!==false){$im=recupurlim($bse); if($im)$b='['.$b.']';}
+elseif(strpos($bse,'background-image')!==false){$im=self::recupurlim($bse); if($im)$b='['.$b.']';}
 elseif(strpos($bse,'background-color')!==false && self::notin($b,':bkgclr]')){
 	$clr=strpropcss($bse,'background-color');
 	if($clr)$clr=self::findclr($clr); if($clr && $clr!='white')$b='['.$b.'|'.$clr.':bkg]';}

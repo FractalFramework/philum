@@ -213,7 +213,7 @@ foreach($rt as $k=>$v)$rt[$k]=$r[$k]; return $rt;}
 static function order($r,$n){$i=0; if(isset($r['_'])){$rt['_']=$r['_']; unset($r['_']);}
 $rc=self::clb($r,$n); arsort($rc); foreach($rc as $k=>$v)$rt[]=$r[$k]; return $rt;}
 static function reorder($r){$i=0; if(isset($r['_'])){$rt['_']=$r['_']; unset($r['_']);}
-foreach($r as $k=>$v){$i++; $rt[$i]=$v;} return $rt??[];}
+foreach($r as $k=>$v){$i++; $rt[$i]=$v;} return $rt;}
 static function move($r,$id,$to){$rk=$r[$id]; unset($r[$id]); $i=0; $rt=[];
 foreach($r as $k=>$v){if($k==$to){$i++; $rt[$i]=$rk;} $i++; $rt[$k=='_'?$k:$i]=$v;} return $rt;}
 static function moveafter($r,$id,$to){$rk=$r[$id]; unset($r[$id]); $i=0; $rt=[];

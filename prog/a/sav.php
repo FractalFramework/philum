@@ -13,7 +13,7 @@ if($ib)$ib=trim($ib); if(!$ib or !is_numeric($ib))$ib=''; if($pub)$re=1; else $r
 if($url){$mail=http($url); $mail=utmsrc($mail);} if(!$ib)$ib='0';//!$sub or 
 if(!$name or $name==nms(38)){self::$er.='miss:name;';}
 if($mail=='mail' or $mail=='url'){$mail='';$url='';}
-if(!$d && $url)[$suj,$d]=conv::vacuum($mail,$suj);
+if(!$d && $url)[$suj,$d,$url]=conv::vacuum($mail,$suj);
 if($pdat)$dt=strtotime($pdat); else $dt=ses::$dayx;
 if(empty($suj))$suj='forbidden title';
 if(empty($d))self::$er='miss::msg;';
@@ -21,7 +21,7 @@ if(!self::$er){$img=''; $thm=str::hardurl($suj);//if(rstr(38))
 	$sz=mb_strlen($d); if(strlen($suj)>255)$suj=subtochar($suj,' ',200);
 	if(rstr(129))$lg=meta::detectlangbydicoperso($suj.' '.$d);
 	if($lg)$suj=str::clean_and($suj,$lg);
-	$rw=[$ib,$name,$mail,$dt,$qb,$frm,$suj,$re,0,$img,$thm,$sz,$lg];
+	$rw=[$ib,$name,$url,$dt,$qb,$frm,$suj,$re,0,$img,$thm,$sz,$lg];
 	$nid=sqlsav('qda',$rw,0); if($nid)$nib=sql::savi('qdm',[$nid,$d],0);
 	if($nid && $nib!=$nid)transart::repair($nid);}
 if($nid){$rc=[$dt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$url,$ib,$re,$lg];
@@ -30,7 +30,7 @@ if($nid){$rc=[$dt,$frm,$suj,$img,$qb,$thm,0,$name,$sz,$url,$ib,$re,$lg];
 	$rc[3]=artim::sethero($nid,conb::$rg);
 	ma::cacherow($nid,$rc); self::$r=[];
 	//geta('read',$nid); boot::deductions($nid);
-	if(strpos($mail,'x.com'))meta::recapauthor($nid);//twuser
+	if(strpos($url,'x.com'))meta::recapauthor($nid);//twuser
 	if(!in_array($frm,ses('cats')))boot::addcat($frm,$nid);
 	msql::mdf('server',nod('last'),[$nid,$dt],1);
 	vacses($url,'u','x');}
@@ -269,7 +269,7 @@ $r=ma::find_cat(30); ksort($r); $u=ajx($url); $rid=randid('addib');
 $head=select_j($rid,'parent','',0,picto('topo'),1).' ';//parent_slct('addib')
 $vrf=vacses($url,'c'); $ret='';
 foreach($r as $k=>$v){if($k==$vrf)$c='active'; else $c='';
-	$ret.=self::saveiec($u,ajx($k),'',$rid,$k,'',$c).' ';}//addart
+	$ret.=self::saveiec($u,ajx($k),'',$rid,$k,'',$c).' ';}//addurlsav
 return $head.divc('nbp',$ret);}//savart
 
 #batch

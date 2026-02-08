@@ -157,6 +157,12 @@ $pr=['id'=>$id]; $pr['style']=$p['style']??'';
 if(is_numeric($cl))$pr['cols']=$cl; else $pr['style'].='width:'.$cl.'; ';
 if(is_numeric($rw))$pr['rows']=$rw; else $pr['style'].='height:'.$rw.'; ';
 return tag('textarea',$pr+$p,$v);}
+
+function console($id,$v,$j,$o=''){
+$sj=$o?atjr('SaveJtim',[$j,1000]):sj($j);
+$pr=['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj];
+return textarea($id,$v,44,14,$pr);}
+
 function diveditbt($id){
 $r=['no'=>nms(72),'p'=>'normal','h1'=>'h1','h2'=>'h2','h3'=>'h3','h4'=>'h4','h5'=>'h5','fact'=>'fact'];
 $ret=select(['id'=>'wygs','onchange'=>'execom2(this.value)'],$r);
@@ -166,10 +172,12 @@ foreach($r as $k=>$v)$ret.=btj(picto($v,16),atj('execom',$k));
 //if(is_numeric($id))$ret.=lj('','art'.$id.'_mc,savwyg_art'.$id.'__'.$id.'_1',picto('save2',16));
 if(is_numeric($id))$ret.=btj(picto('save2',16),atj('saveart',$id));
 return btn('menu sticky',$ret);}
+
 function divarea($id,$d,$c='',$s='',$j='',$o=''){$ja='';
 $rp=['contenteditable'=>'true','id'=>$id,'class'=>$c,'style'=>$s];
 if($j){$attr=match($o){1=>'onblur',2=>'onkeydown',3=>'onpaste',default=>'onclick'}; $rp[$attr]=$j;}
 return tag('div',$rp,$d?$d:' ');}
+
 function divedit($id,$c,$s,$j,$d){return diveditbt($id).divarea($id,$d,$c,$s,$j);}
 function form($go,$d){return tag('form',['method'=>'post','action'=>$go],$d);}
 function goodarea($id,$v,$n=44){$nb=ceil(mb_strlen($v)/$n); $h=$nb>10?10:$nb;
@@ -241,14 +249,15 @@ function fex1($f){return @fopen($f,'r');}
 function fex2($f){$fp=curl_init($f); curl_setopt($fp,CURLOPT_NOBODY,true); curl_exec($fp);
 $d=curl_getinfo($fp,CURLINFO_HTTP_CODE); return $d==200?1:0;}
 
+#csv
 function writecsv($f,$r){
 file_put_contents($f,'');
 if(($h=fopen($f,'r+'))!==false){
 foreach($r as $k=>$v)if(is_array($v))fputcsv($h,$v,"\t",'"','\\'); fclose($h);}}
 
-function readcsv($f){$rb=[];
+function readcsv($f,$s="\t"){$rb=[];
 if(($h=fopen($f,'r'))!==false){$k=0;
-while(($r=fgetcsv($h,'',"\t"))!==false){$nb=count($r);
+while(($r=fgetcsv($h,null,$s,'"','\\'))!==false){$nb=count($r);
 for($i=0;$i<$nb;$i++)$rb[$k][]=$r[$i]; $k++;} fclose($h);}
 return $rb;}
 
@@ -256,15 +265,23 @@ function csvfile($f,$r,$t=''){$t=pictxt('file-data',$t?$t:$f);
 $f='_datas/csv/'.$f.'.csv'; mkdir_r($f); writecsv($f,$r);
 return lkc('txtx','/'.$f,$t);}
 
+function strgetcsv($d,$s="\t"){return str_getcsv($d,$s,'"','\\');}
+function csv2array($d){return array_map('strgetcsv',explode("\n",$d));}
+function array2csv($r,$s=',',$e='"',$es='\\'){$f=fopen('php://memory','r+');
+foreach($r as $k=>$v){array_unshift($v,$k); fputcsv($f,$v,$s,$e,$es);} rewind($f);
+return trim(stream_get_contents($f));}
+
+//vrf
 function joinable($d){$ok=@fopen($d,'r'); if($ok){fclose($ok); return true;}}
 function urlcheck($f){$r=@get_headers($f);
 return is_array($r)?preg_match('/^HTTP\\/\\d+\\.\\d+\\s+2\\d\\d\\s+.*$/',$r[0]):false;}
 function is_mail($d){return filter_var($d,FILTER_VALIDATE_EMAIL);}
 function is_url($d){return filter_var($d,FILTER_VALIDATE_URL);}
-function is_hex($d){$opts=['flags'=>FILTER_FLAG_ALLOW_HEX];
-return filter_var('0x'.$d,FILTER_VALIDATE_INT,$opts);}
+function is_hex($d){return ctype_xdigit((string)$d)?1:0;}
+//function is_hex($d){return filter_var('0x'.$d,FILTER_VALIDATE_INT,['flags'=>FILTER_FLAG_ALLOW_HEX]);}
 function is_alpha($d){return ctype_alpha($d)?1:0;}
 
+#getfiles
 function curl_get_cookies($f){$c=curl_init($f);
 curl_setopt($c,CURLOPT_FRESH_CONNECT,true);
 curl_setopt($c,CURLOPT_TIMEOUT,10);
@@ -570,12 +587,6 @@ if(function_exists($v))$_SESSION[$k]=$v($p,$o); return $_SESSION[$k]??[];}
 function sesmk2($a,$m,$p='',$b=''){$k=$a.$m.$p; if(empty($_SESSION[$k]) or $b)
 if(method_exists($a,$m))$_SESSION[$k]=$a::$m($p); return $_SESSION[$k]??'';}
 function setses($d,$o=''){return !isset($_SESSION[$d])?$_SESSION[$d]=$o:$_SESSION[$d];}
-
-#csv
-function csv2array($d){return array_map('str_getcsv',explode("\n",$d));}
-function array2csv($r,$s=',',$e='"',$es='\\'){$f=fopen('php://memory','r+');
-foreach($r as $k=>$v){array_unshift($v,$k); fputcsv($f,$v,$s,$e,$es);} rewind($f);
-return trim(stream_get_contents($f));}
 
 #access
 function ishttp($f){return substr($f,0,4)=='http'?1:0;}

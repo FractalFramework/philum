@@ -97,8 +97,9 @@ if(is_string($f) && isset($alx[$f]))return $alx[$f];
 elseif(isset($alx[$d]))return $alx[$d];
 //elseif(isset($alx[substr($f??'',7)]))return $alx[substr($f??'',7)];
 //elseif($d){$suj2=self::wordsuj($d); $id=$alx[$suj2]??''; if($id)return $id;}
-$id=sql('id','qda','v',['nod'=>ses('qb'),'mail'=>$f,'_limit'=>'1']);
-if(!$id)$id=sql('id','qda','v',['nod'=>ses('qb'),'%suj'=>$d,'_limit'=>'1']);
+$id=sqb::read('id','art','v',['nod'=>ses('qb'),'or'=>['mail'=>$f,'%suj'=>$d],'_limit'=>'1']);
+//$id=sql('id','qda','v',['nod'=>ses('qb'),'or'=>['mail'=>$f,'%suj'=>$d],'_limit'=>'1']);
+//if(!$id)$id=sql('id','qda','v',['nod'=>ses('qb'),'%suj'=>$d,'_limit'=>'1']);
 return $id;}
 
 static function wordsuj($d){
@@ -171,18 +172,19 @@ static function call($kn,$u,$prm=[]){//rssin
 [$kn,$mth]=expl('-',$kn,2); chrono();
 [$f,$o]=prepdlink($u); $f=http($f); $i=0; $ret=''; //$mth=2;
 $r=self::load($f,$mth); $nb=count($r); $ni=0;//$ret=hidden('addop',1); //$ru=self::usedcat($f);
-foreach($r as $k=>$v){$btc=''; [$va,$lnk,$dat,$id,$txt]=$v; $i++;
-	if($id)$btc.=ma::popart($id); $lnk=self::repairlk($lnk); $lnj=ajx($lnk);
-	$btc.=lj('','popup_sav,batchpreview__3_'.$lnj,picto('view'));//,att(htmlentities($txt))
-	//if(auth(4))$btc.=select(['id'=>$kn.$k],$ru,'vv','','socket_sav,addfromlist_'.$kn.$k.'_7_'.$lnj.'_');
-	if(auth(4) && !$id)$btc.=togbub('rssin,select',$kn.$k.'_'.$lnj,picto('submenu'));
-	$btc.=lkt('',$lnk,picto('url')); $btc.=btn('txtsmall',$dat);
+foreach($r as $k=>$v){$btc=''; [$va,$lnk,$dat,$id,$txt]=$v; $i++; $rc=[];
+	if($id)$rc[]=ma::popart($id); $lnk=self::repairlk($lnk); $lnj=ajx($lnk);
+	$rc[]=lj('','popup_sav,batchpreview__3_'.$lnj,picto('view'));//,att(htmlentities($txt))
+	//if(auth(4))$rc[]=select(['id'=>$kn.$k],$ru,'vv','','socket_sav,addfromlist_'.$kn.$k.'_7_'.$lnj.'_');
+	if(auth(4) && !$id)$rc[]=togbub('rssin,select',$kn.$k.'_'.$lnj,picto('submenu'));
+	$rc[]=lkt('',$lnk,picto('url')); $rc[]=btn('txtsmall',$dat);
 	if(auth(4) && !$id){$mem=vacses($lnk,'b')?picto('ok'):picto('add');
-		$btc.=ljbt('',rid('ars'.$i).'_sav,batch___'.$lnj.'_p',$mem);}
-	if(!$id)$btc.=lj('','popup_search,home__3_'.ajx($va).'_',picto('search'));
+		$rc[]=ljbt('',rid('ars'.$i).'_sav,batch___'.$lnj.'_p',$mem);}
+	if(!$id)$rc[]=lj('','popup_search,home__3_'.ajx($va).'_',picto('search'));
 	if(!$id && !$ni)self::$mem[$u][]=$lnj; elseif(self::$mem[$u]??[])$ni=1;
-	$btc.=lj('','popup_usg,iframe___'.ajx($lnk),picto('window'));
-	if($va)$ret.=divc('',$btc.' '.$va);}//$id?'hide':
+	$rc[]=lj('','popup_usg,iframe___'.ajx($lnk),picto('window'));
+	$rc[]=$va;
+	if($va)$ret.=div(join(' ',$rc),$id?'hide':'');}
 $ret=scroll($nb,$ret,22,'');
 $bt=self::menubt($kn,$u,$f);
 return $bt.tagc('ul','panel',$ret);}
@@ -191,6 +193,7 @@ static function menu($p,$n=3){
 $bt=msqbt('',nod($p)).' ';
 for($i=1;$i<=$n;$i++)$bt.=lj('txtsmall','rssj_rssin,home___'.$p.'_'.$i,$i).' ';
 $bt.=lj('txtsmall','rssj_xss,home___'.$p.'','xss').' ';
+$bt.=lj('txtsmall','rssj_scrap,call___'.$p.'','scrap').' ';
 //$bt.=lj('txtsmall','rssj_twss,home___'.$p.'','twss').' ';
 return $bt;}
 

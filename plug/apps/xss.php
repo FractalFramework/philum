@@ -15,7 +15,7 @@ $r=$q->getElementsByTagName($va[2]);
 if($r)foreach($r as $k=>$v){$mark=domattr($v,$va[1]); if($mark==$va[0] or !$va[0])$vr[]=$v;}
 return $vr;}
 
-static function build($p,$o){$ret=''; 
+static function build($p,$o){$rt=[]; 
 $nod=nod('xss'); $r=msql::row('',$nod,$p,1); //pr($r);
 $alx=sesmk2('rssin','alx');
 $pb=http($r['url']); $q=fdom($pb,1); $vr=[]; $rb=[]; $ra=[];
@@ -27,15 +27,15 @@ if($vr)foreach($vr as $k=>$v){
 	foreach($r as $ka=>$va){//pr($v);
 		//$rb[$k][$ka]=self::find($v,$va);
 		$rb[$k][$ka]=$va?dom::extract($v,$va):'';}} //pr($rb);
-if($rb)foreach($rb as $k=>$v)if($v['title']){$rt=''; $btc='';
+if($rb)foreach($rb as $k=>$v)if($v['title']){$reb=''; $rc=[];
 	$id=rssin::recognize_article($v['link'],$v['title'],$alx);
-	if($id)$btc.=ma::popart($id);
-	//foreach($v as $ka=>$va)$rt.=tagb($ka,$va);
-	//$ret.=tagb('channel',$rt); $rt='';
-	$ret.=$btc.lj('','popup_sav,batchpreview__3_'.ajx($v['link']),pictxt('view',$v['title'])).br();
-	//if($v['descr'])$ret.=tagb('section',image($v['img']).$v['descr']);
-	}
-return div($ret,'');}
+	if($id)$rc[]=ma::popart($id);
+	//foreach($v as $ka=>$va)$reb.=tagb($ka,$va);
+	//$ret.=tagb('channel',$reb); $rt='';
+	$rc[]=lj('','popup_sav,batchpreview__3_'.ajx($v['link']),pictxt('view',$v['title']));
+	//if($v['descr'])$rt[]=tagb('section',image($v['img']).$v['descr']);
+	$rt[]=div(join(' ',$rc));}
+return div(join('',$rt),'');}
 
 static function bt($p,$o){
 $nod=nod('xss'); $jurl=ajx('users/'.$nod); $pb=http($p);

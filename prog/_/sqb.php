@@ -48,13 +48,16 @@ foreach($r as $k=>$v)switch($p){
 	default:$rt[]=$v; break;}
 return $rt;}
 
-static function where($r){$rb=[]; $rt=[]; $w='';
+static function where($r,$o=''){$rb=[]; $rc=[]; $rt=[]; $w='';
 if(is_numeric($r))$r=['id'=>$r]; $i=0;
 if(is_array($r))foreach($r as $k=>$v){$i++;
 	$c=substr($k,0,1); $kb=substr($k,1); $kc=$kb.$i;
 	if($k=='_order')$w=' order by '.$v;
 	elseif($k=='_group')$w.=' group by '.$v;
 	elseif($k=='_limit')$w.=' limit '.$v;
+	elseif($k=='or'){//'or'=>['!status'=>'3','!typ'=>'0']
+		[$a,$b]=self::where($v,1); $rc+=$a; $rt+=$b;}
+	elseif($c=='|'){$rc[]=$kb.'='.$kc; $rt[$kc]=$v;}//or
 	elseif($c=='<'){$rb[]=$kb.'<:'.$kc; $rt[$kc]=$v;}
 	elseif($c=='>'){$rb[]=$kb.'>:'.$kc; $rt[$kc]=$v;}
 	elseif($c=='{'){$rb[]=$kb.'<=:'.$kc; $rt[$kc]=$v;}
@@ -74,6 +77,8 @@ if(is_array($r))foreach($r as $k=>$v){$i++;
 	elseif($k==='not null'){$rb[]=$kb.' is not null';}//?
 	elseif($k==='is null'){$rb[]=$kb.' is null';}
 	else{$rb[]=$k.'=:'.$k; $rt[$k]=$v;}}
+if($rc)$rb[]='('.implode(' or ',$rc).')';
+if($o)return [$rb,$rt];
 $q=implode(' and ',$rb); if($q)$q='where '.$q; if($w)$q.=$w;
 return [$rt,$q];}
 
@@ -97,7 +102,7 @@ return $stmt;}
 
 static function query($sql,$r,$p,$z=''){
 $stmt=self::prep($sql,$r,$z); $rt=self::fetch($stmt,$p);
-if($p)$rt=self::format($rt,$p);
+if($rt && $p)$rt=self::format($rt,$p);
 $stmt->closeCursor();
 return $rt;}
 

@@ -20,7 +20,7 @@ foreach($r as $k=>$v){[$v1,$v2,$v3]=$v;
 	if(is_array($v[2]))$v3=self::mkconn($v3);
 	if(is_array($v[1])){$v2='';
 		foreach($v[1] as $ka=>$va)$v2.='['.$va.':'.$ka.']';}
-	else $v2='['.$v2.':class]';
+	//else $v2='['.$v2.':class]';
 	if($v1=='url' or $v1=='hurl' or $v1=='jurl')$ret.='['.$v2.'|'.$v3.':'.$v1.']';
 	elseif(!$v1)$ret.=$v3;
 	else $ret.='['.$v3.'|'.$v2.':'.$v1.']';}
@@ -73,7 +73,7 @@ static function tables(){//patches::views
 return ['art','cat','catfast','read','tracks','simple','simplenoim','little','fast','tracks','tracks2','titles','pubart','pubartb','pubartc','panart','cover','weblink','bublh','bublj','bublk','book','file','product'];}
 
 static function reflush($d){
-$r=self::tables(); echo 'updated:'.$d.' in '.(auth(7)?'json/sys, ':'').'json/srv, msql/server: '; ; 
+$r=self::tables(); echo 'updated:'.$d.' in '.(auth(7)?'json/sys, ':'').'json/srv, msql/server: '; 
 foreach($r as $v){echo $v.' '; $rb=datas::$v();
 	if(auth(7))json::sav('sys','views/'.$v,$rb);
 	json::sav('srv',drn('views/'.$v),$rb);

@@ -228,8 +228,9 @@ return div(playr($r,'',0),'','drop');}
 #clr
 function connclr(){return msql::kv('system','connectors_clr');}
 function connclr2(){return array_flip(connclr());}
-function goodclr($d){$rcl=sesmk('connclr','',''); $c=$rcl[$d]??$d; return is_hex($c)?'#'.$c:$c;}
-function colors(){return msql::read('system','edition_colors');}
+function goodclr($d){$r=sesmk('connclr','',''); $c=$r[$d]??$d; return is_hex($c)?'#'.$c:$c;}
+function colors(){return msql::kv('system','edition_colors');}
+function findclr($d){$r=sesmk('colors','',''); $c=$r[$d]??$d; return is_hex($c)?'#'.$c:$c;}
 function rand_clr(){$r=colors(); $rb=array_keys_r($r,0); sort($rb);
 $n=rand(0,count($rb)); return $rb[$n];}
 function getclrs($k='',$n=''){$k=$k?$k:ses('prmd'); $r=sesr('clrs',$k);

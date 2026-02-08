@@ -109,7 +109,7 @@ $ob->setFormat('jpg');//jpeg
 $nm=str_replace($xt,'.jpg',$im);
 $ob->setFileName('img/'.$nm);
 $ob->writeImage('img/'.$nm);
-unlink($im);//rm($im);
+rm($im);
 return $nm;}
 
 #thumb
@@ -126,7 +126,7 @@ static function build_mini($img,$sz='',$m='',$x=''){
 if(!$x)$x=ses('rebuild_img');
 [$w,$h,$m]=self::thumbprm($sz,$m);
 if($sz)$imgc=self::thumbname($img,$w,$h,$m); else $imgc=$img;
-if(is_file('img/'.$img) && (!file_exists('imgc/'.$imgc) or $x)){//unlink($thumb);
+if(is_file('img/'.$img) && (!file_exists('imgc/'.$imgc) or $x)){//rm($thumb);
 	 self::build('img/'.$img,'imgc/'.$imgc,$w,$h,$m);}
 return '/imgc/'.$imgc.($x?'?'.randid():'');}
 
