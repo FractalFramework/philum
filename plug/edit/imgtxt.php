@@ -1,59 +1,81 @@
-<?php //imgtxtb
+<?php 
 class imgtxt{
-static function gdf_nblines($t,$maxl){$n=0; 
-$t=str_replace("\n"," \n",$t); $r=explode(' ',$t); $ret=[]; $nb=0;
-foreach($r as $k=>$v){$len=strlen($v); $nb+=$len+1; $pos=strpos($v,"\n");
-	if($nb>$maxl){$v; $pos=strlen($v); $ret[$n].=substr($v,0,$pos); $n++;
-		$vb=substr($v,$pos); $nb=strlen($vb); 
-		if($nb>$maxl){$nbb=floor($nb/$maxl);//todo:saut de ligne
-			for($i=0;$i<$nbb;$i++){$ret[$n]=substr($vb,$maxl*$i,$maxl); $n++;}}
-		else $ret[$n]=$vb.' ';}
-	elseif($pos!==false){$ret[$n].=substr($v,0,$pos); $n++;
-		$ret[$n]=substr($v,$pos+1).' '; $nb=strlen($ret[$n]);}
-	else $ret[$n].=trim($v).' ';}
-return $ret;}
 
-/*function mk($p,$n){ 
-$l=50; $s=strlen($p); $n=ceil($s/$l); $sz=$s<$l?($s/5)*40:400;
-for($i=0;$i<$n;$i++){$v=substr($p,$i*$l,$l); $pos=strpos($v,"\n");
-	if($pos!==false){$r[]=substr($v,0,$pos); $r[]=substr($p,$pos+1);}
-	else $r[]=$v;}
-return $r;}*/
+static function lines($t,$maxl){$n=0; $rt=[]; $rc=[];
+$r=explode("\n",$t); $nb=0;
+foreach($r as $k=>$v){$rb=explode(' ',trim($v)); $rc=[];
+	foreach($rb as $kb=>$vb){$l=strlen($vb); $nb+=$l+1;
+		if($nb>$maxl){$rt[]=join(' ',$rc); $rc=[]; $nb=0;}
+		$rc[]=$vb;}
+	if($rc)$rt[]=join(' ',$rc);
+	$n++;}
+return $rt;}
 
-static function build($t,$fx,$fy,$lac,$hac,$fnt,$clr,$dest){
-$t=str_replace("&nbsp;",' ',$t);
-$nb_chars=strlen($t); $width=400;
-if($lac && $width)$maxl=floor($width/$lac); else $maxl=400;
-$la=$nb_chars*$lac; 
-$la=$la>$width-8?$width-8:$la;
-if($nb_chars>$maxl or strpos($t,"\n")!==false)$r=self::gdf_nblines($t,$maxl);
-//$r=else::mk($t); 
-$ha=!empty($r)?$hac*count($r):($hac?$hac:20); $clr=$clr?$clr:'000000';
-$rh=hexdec(substr($clr,0,2));$gh=hexdec(substr($clr,2,2));$bh=hexdec(substr($clr,4,2));
-$image=imagecreate($la,$ha);
-$blanc=imagecolorallocate($image,255,255,255);
-$color=imagecolorallocate($image,$rh,$gh,$bh);
-$font=imageloadfont($fnt);
-if(!empty($r))foreach($r as $k=>$v){$fx=$k*$lac; $fy=$k*$hac;
-	imagestring($image,$font,1,$fy,$v,$color);}
-else imagestring($image,$font,$fx?$fx:0,$fy?$fy:0,$t,$color);
-imagecolortransparent($image,$blanc);
-imagepng($image,$dest);}
+static function mkim($r,$p){
+[$f,$w,$h,$lh,$clr,$bkg,$fnt]=vals($p,['f','w','h','lh','clr','bkg','fnt']);
+if(!$fnt)$fnt='Fixedsys';
+$im=imagecreate($w,$h);
+$bkg=$bkg?$bkg:'000000'; [$rh,$gh,$bh]=hexrgb_r($bkg);
+$blanc=imagecolorallocate($im,$rh,$gh,$bh);
+$clr=$clr?$clr:'ffffff'; [$rh,$gh,$bh]=hexrgb_r($clr);
+$color=imagecolorallocate($im,$rh,$gh,$bh);
+$font=imageloadfont('fonts/gdf/'.$fnt.'.gdf');
+if($r)foreach($r as $k=>$v){$fy=$k*$lh;
+	imagestring($im,$font,1,$fy,$v,$color);}
+else imagestring($im,$font,1,10,join(' ',$r),$color);
+imagecolortransparent($im,$blanc);//kill bkg
+imagepng($im,$f);}
 
-static function home($t,$fnt,$cod=''){
-$t=str_replace('/','|',$t);//nodirs
-$t=$t?$t:'error'; $fnt=$fnt?$fnt:'Fixedsys';
-$font='fonts/gdf/'.$fnt.'.gdf'; mkdir_r('imgb/cod');
-$clr='#000000';
-if($cod=='out'){$f=ses('out');}
-elseif($cod or $fnt=='crackman')$f='imgb/cod/cod'.$t.'.png';
-else $f='imgb/cod/'.ses('read').'_imgtxt.png';
-$r=msql::row('system','edition_fontes',$fnt);
-if(!is_array($r[3]) && is_file($font)){
-	if(!file_exists($f) or $cod or get('rebuild_img'))
-	if($r)self::build($t,$r[0],$r[1],$r[2],$r[3],$font,$clr,$f);
-[$w,$h]=imsize($f);
-return image('/'.$f.'?'.randid(),$w,$h);}
-else return $t;}
+static function mkim2($r,$p){
+[$f,$w,$h,$sz,$lh,$fw,$clr,$bkg,$fnt]=vals($p,['f','w','h','sz','lh','fw','clr','bkg','fnt']);
+if(!$fnt)$fnt='Lato-Black'; if(!$clr)$clr='ff0000'; if(!$bkg)$bkg='000000'; $n=0; $center=0;
+$im=new Imagick();
+$im->newImage($w,$h,new ImagickPixel('#'.$bkg));
+//$im->resizeImage($w,$h,Imagick::FILTER_LANCZOS,1);
+//$im->adaptiveResizeImage($w,$h,1);
+$im->newPseudoImage($w,$h,'plasma:fractal');
+//$im->compositeImage($im,Imagick::COMPOSITE_ATOP,0,0);
+$draw=new ImagickDraw();
+$draw->setFont('fonts/win/'.$fnt.'.ttf');
+$draw->setFontSize($sz);
+$draw->setFillColor('#'.$clr);
+if($r)foreach($r as $k=>$v){$fy=($k+1)*$lh;
+	if($center)$fx=round((($w-10)-(strlen($v)*$fw))/2,2); else $fx=10;
+	$im->annotateImage($draw,$fx,$fy,0,$v);}
+//echo img64($im);
+$im->writeImage($f);}
+
+static function dim($n){
+return match($n){
+'Fixedsys'=>[12,8,20],
+'Lato-Black'=>[22,13,30],
+'microsys4'=>[31,10,40],
+'arial'=>[22,13,30],
+'ariblk'=>[22,13,30],
+'microsoft-sans-serif'=>[22,13,30],
+default=>[12,8,20]};}
+
+static function build($f,$t,$plsm,$fnt,$clr,$bkg){
+$t=str_replace("&nbsp;",' ',$t); $rt=[]; $fx=''; $fy='';
+if($plsm){$fnt='ariblk'; $clr='ffffff';} else $fnt='Fixedsys';
+[$sz,$fw,$lh]=self::dim($fnt);//fontsize,fontwidth,lineheight
+$n=strlen($t); $w=500; $wb=$w-10;
+$maxl=ceil($wb/$fw);
+$rt=self::lines($t,$maxl); //pr($rt);
+$na=count($rt); $h=$na*$lh+$sz-10;
+$pr=['f'=>$f,'w'=>$w,'h'=>$h,'sz'=>$sz,'lh'=>$lh,'fw'=>$fw,'clr'=>$clr,'bkg'=>$bkg,'fnt'=>$fnt];
+if($fnt=='Fixedsys')self::mkim($rt,$pr);
+else self::mkim2($rt,$pr);}
+
+static function call($t,$plsm,$fnt='',$clr='',$bkg=''){
+mkdir_r('imgb/cod');
+if($clr && !is_hex($clr))$clr=findclr($clr);
+$id=ses('read'); if(!$id)$id=datz('ymdHi');
+$f='imgb/cod/imgtxt_'.$id.'.png';
+self::build($f,$t,$plsm,$fnt,$clr,$bkg);
+return image('/'.$f.'?'.randid());}
+
+static function home($t,$fnt='Fixedsys',$clr='red'){
+return self::call($t,$fnt,$clr,'000000');}
 }
 ?>
