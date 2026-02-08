@@ -95,9 +95,9 @@ qr('delete from '.db('qdd').' where val="lang"'); sql::reflush('qdd',1);}
 
 //160606
 function patch_tracks(){
-$qdi=qb('idy'); $qdk='tracks';
-$sql='RENAME TABLE '.$qdi.' TO '.$qdk.';'; qr($sql);
-$sql='ALTER TABLE '.$qdk.' DROP lu, DROP img, DROP thm;'; qr($sql);
+//$qdi=qb('idy'); $qdk='tracks';
+//$sql='RENAME TABLE '.$qdi.' TO '.$qdk.';'; qr($sql);
+//$sql='ALTER TABLE '.$qdk.' DROP lu, DROP img, DROP thm;'; qr($sql);
 //$sql='ALTER TABLE '.$qdk.' CHANGE `ib` `i.ib` INT(7) NOT NULL, CHANGE `name` `i.name` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `mail` `i.mail` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `day` `i.day` INT(10) NOT NULL, CHANGE `nod` `i.nod` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `frm` `i.frm` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `suj` `i.suj` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "0", CHANGE `msg` `i.msg` MEDIUMTEXT CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL, CHANGE `re` `i.re` ENUM("0","1","2","3","4") CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL, CHANGE `lu` `i.lu` INT(7) NOT NULL, CHANGE `img` `i.img` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `thm` `i.thm` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "", CHANGE `host` `i.host` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_german1_ci NOT NULL DEFAULT "";';
 //qr($sql);
 }

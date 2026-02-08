@@ -25,7 +25,7 @@ $ret.=tabler($r,'txtcadr','').br();
 return $ret;}
 
 static function home($p,$id){$rid='mfr'.randid(); //echo $p.'-'.$id;
-$nod=ses('mform',ses('qb').'_microform_'.$id); 
+$nod=ses('mform',nod('microform_'.$id)); 
 ses('mformj',$rid.'_microform,home___'.ajx($p).'_'.$id);
 [$p,$tp]=opt($p,'|'); $rb=self::mr($p); //p($rb);
 msql::read('',$nod,'',$rb);

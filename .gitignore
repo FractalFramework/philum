@@ -43,6 +43,12 @@ css
 !css/_*
 !css/public*
 
+plug/dev*
+plug/old/*
+plug/tiers/*
+plug/unused/*
+plug/tools/*
+
 msql/design/*
 !msql/design/public/*
 msql/users/*

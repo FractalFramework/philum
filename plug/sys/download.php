@@ -14,7 +14,7 @@ flush();//Envoie le buffer
 readfile($f);}
 
 static function eye($f){
-$nod=ses('qb').'_downloads';
+$nod=nod('downloads');
 $dy=date('ymdhi',time()); $r=[$f,ip()]; 
 if(ses('qb'))msql::modif('',$nod,$r,'row',['file','ip'],$dy);}
 

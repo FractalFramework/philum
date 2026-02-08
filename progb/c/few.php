@@ -8,13 +8,15 @@ $USE=ses('usr'); $mn=$_SESSION['mn']; $qb=ses('qb'); $dy=$_SESSION['dayb'];
 $j='exp'.$id.'_few,exportation___'; $ret=''; $rte='';
 if($frm)$ret.=lj('popbt',$j.$id.'_'.$node,picto('left')).' ';
 if($node!=$qb && $mn)$ret.=slctmnuj($mn,$j.$id.'_',$qb,' ','k');
-$r=sql('distinct(frm)','qda','rv','nod="'.$node.'" and day>'.(timeago(360)).' order by frm');	
+$sq=['>day'=>timeago(360),'_order'=>'frm'];
+$r=sql('distinct(frm)','qda','rv',$sq);	
 if($r && !$frm)$ret.=slctmnuj($r,$j.$id.'_'.$node.'_',$frm,' ','v');
 if($frm && !$sub){//topic
 	$lk=$j.$id.'_'.$node.'_'.$frm.'_';
 	$ret.=lj('popsav',$lk.'ok','save in: '.$frm);
-	$w=$dy?' and day>'.$dy:'';
-	$r=sql('id,suj','qda','kv','nod="'.$node.'" and frm="'.$frm.'"'.$w.' order by id desc limit 100');
+	if($dy)$sq=['>day'=>$dy];
+	$sq+=['frm'=>$frm,'_order'=>'id','_limit'=>'100'];
+	$r=sql('id,suj','qda','kv',$sq);
 	if($r)foreach($r as $k=>$v)$rte.=lj('',$lk.$k,$v).br();
 	if($rte)$ret.=' '.btn('txtx','or affiliate to:').br().divc('nbp',$rte);}
 if($sub){$nid=self::hubimport($node,$id,$USE,$frm,$qb,$sub);//sub
@@ -51,7 +53,7 @@ return divc('txtcadr',picto('lock').' '.nms(137).' : '.inputj('artpswd','',$j).l
 #seesrc
 static function seesrc($f){
 $bt=lj('','popup_few,seesrc2__3_'.ajx($f),pictit('file-html','code')).' ';
-[$title,$ret]=conv::vacuum($f); $d=self::progcode($d);
+[$t,$ret]=conv::vacuum($f); $d=self::progcode($ret);
 return $bt.tagc('code','console',$d);}
 
 static function seesrc2($f){$d=getfile($f);
@@ -74,11 +76,12 @@ return div(trim($d),'code','','');}
 
 #calendar
 static function is_arts($frm,$daya,$dayb){
-if($frm)$fr='AND frm="'.$frm.'" '; if($dayb)$df='AND day>"'.$dayb.'" ';
-$n=sql('id','qda','v','nod="'.ses('qb').'" '.$fr.' AND day<"'.$daya.'" '.$df.' ORDER BY day DESC LIMIT 1'); 
+if($frm)$sq['frm']=$frm; if($dayb)$sq['>day']=$dayb;
+$sq['<day']=$daya; $sq['_order']='day desc'; $sq['_limit']='1';
+$n=sql('id','qda','v',$sq); 
 if($n)return true;}
 
-static function nb_arts($daya,$dayb){return sql('COUNT(id)','qda','v','nod="'.ses('qb').'" AND re>0 AND day<'.$daya.' AND day>'.$dayb.'');}
+static function nb_arts($daya,$dayb){return sql('COUNT(id)','qda','v','re>0 and day<'.$daya.' AND day>'.$dayb.'');}
 
 static function calendar($date){$ret='';
 $gd=getdate($date); $dcible=date('d',$_SESSION['daya']); $dyam=$gd['mon'];

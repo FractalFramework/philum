@@ -5,7 +5,8 @@ if($_POST["submit"]){self::save($_POST["name"],$cht,$_POST["msg"],$_POST["suj"])
 $qdi=db('qdi');$qb=ses('qb');
 if($_GET['open']) $ar[]=["name","date","msg"]; 
 else $ar[]=["title","msg","nb","name","date"];
-$otp=sql('suj,id','qdi','kr','nod="'.$qb.'" AND frm="forum'.$cht.'" ORDER BY id desc');
+$sq=['>re'=>'0','frm'=>'forum'.$cht,'_order'=>'id desc'];
+$otp=sql('suj,id','qdi','kr',$sq);
 if($otp){foreach($otp as $suj=>$r){$mx=count($r); $bid=$r[0];
 	[$id,$name,$day,$msg]=sql('id,name,day,msg','qdi','r','id='.$bid);
 	$suj=lkc('','/'.ses('read').'&suj='.$suj.'&open='.$bid,$suj);

@@ -23,10 +23,10 @@ elseif(strpos($v,'msql/_bak/')!==false){
 	if(strpos($v,'_bak/users//public/')!==false)$rt[]=$v;}
 else $rt[]=$v;}
 //msql/lang/fr/connectors_clbasic.php
-/**/foreach($rt as $k=>$v){
+/*foreach($rt as $k=>$v){
 	$ra=explode('/',$v);
 	if(strpos($ra[3]??'','.php')){$dr=$ra[1].'/'.$ra[2]; $nod=str_replace('.php','',$ra[3]);}
-	else{$dr=$ra[1]; $nod=str_replace('.php','',$ra[2]);}}
+	else{$dr=$ra[1]; $nod=str_replace('.php','',$ra[2]);}}*/
 //return implode(' ',$rt);
 pr($rt);
 }

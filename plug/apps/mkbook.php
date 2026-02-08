@@ -82,20 +82,18 @@ if($r){self::manifest($r,$dr.'/OEBPS',$ti);
 else return 'no results';}
 
 static function req($p,$lg='',$pg=0){
-//sql::setutf8();
-//Oaxiiboo 6,Oolga Waam,Oomo Toa,Oyagaa Ayoo Yissaa
-$qda=db('qda'); $qdm=db('qdm'); $wh='nod="'.ses('qb').'"';
+$qda=db('qda'); $qdm=db('qdm');
 $ra=explode(',',$p); foreach($ra as $k=>$v)if(is_numeric($v))$r1[]=$v; else $r2[]=$v;
-if(isset($r1))$wh.=' and '.$qda.'.id in ("'.implode('","',$r1).'")';
-if(isset($r2))$wh.=' and '.$qda.'.frm in ("'.implode('","',$r2).'")';
+if(isset($r1))$wh=$qda.'.id in ("'.implode('","',$r1).'")';
+if(isset($r2))$wh.=$qda.'.frm in ("'.implode('","',$r2).'")';
 if($lg)$wh.=' and lg="'.$lg.'"';
 if($pg)$limit='limit '.(($pg-1)*20).',20'; else $limit='';
 $sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day asc '.$limit;
 return sql::call($sql,'',0);}
 
 static function req2($p,$lg=''){//***
-$qda=db('qda'); $qdm=db('qdm'); $wh='nod="'.ses('qb').'"';
-$wh.=' and '.$qda.'.re>3 and day>'.calctime(365);
+$qda=db('qda'); $qdm=db('qdm');
+$wh=$qda.'.re>3 and day>'.calctime(365);
 if($lg)$wh.=' and lg="'.$lg.'"';
 $sql='select '.$qda.'.id,day,suj,msg,lg from '.$qda.' inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id where '.$wh.' order by day asc ';
 return sql::call($sql,'',0);}

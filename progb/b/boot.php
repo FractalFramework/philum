@@ -143,7 +143,7 @@ self::define_closed_hub();}
 static function time_system($cache){$prmb16=prmb(16); $gnbj=get('nbj'); $snbj=ses('nbj');
 if($gnbj){ses('nbj',$gnbj); $cache='ok';}
 if((!$snbj or $cache=='ok') && !$gnbj){
-	if(rstr(3) or $prmb16=='auto')ses('nbj',self::dayslength(ses('qb'),50));
+	if(rstr(3) or $prmb16=='auto')self::dayslength(50);
 	else{ses('dayb',0); ses('nbj','');}
 	if(is_numeric($prmb16))ses('nbj',$prmb16);}
 if(!ses('daya') or ses::$dayx-ses('daya')<86400 or $cache=='ok')ses('daya',ses::$dayx);
@@ -151,12 +151,12 @@ if($gtim=get('timetravel')){ses('daya',sqldate2time($gtim)); ses('timetravel',$g
 if(ses('nbj'))ses('dayb',timeago(ses('nbj')));
 return $cache;}
 
-static function dayslength($qb,$limit){
-$r=[1,7,10,90,365,720,1440,2920,5840,11680,23360,46720,93440];//16y,32,64,128y!
+static function dayslength($limit){
+$r=[1,7,30,90,365,720,1440,2920,5840,11680,23360,46720,93440];//16y,32,64,128y!
 for($i=0;$i<9;$i++){$nbj=$r[$i];
-	$nb=sql('count(id)','qda','v','nod="'.ses('qb').'" and day>"'.timeago($nbj).'"');
+	$nb=sql('count(id)','qda','v',['>re'=>'0','>day'=>timeago($nbj)]);
 	if($nb>$limit)$i=9;}
-return $nbj;}
+ses('nbj',$nbj);}
 
 static function seslng($o=''){if(empty($_SESSION['lang']) or $o){
 	$hal=isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])?$_SERVER['HTTP_ACCEPT_LANGUAGE']:'';
@@ -197,7 +197,7 @@ if(!$r){$r=msql::read('system','default_mods');
 	if(auth(4))alert('using minimal config '.lkc('txtx','/admin/hubs&reinit==','reinit?'));} 
 return $r;}
 
-static function define_mods(){$nod=ses('qb').'_mods_'.prmb(1);
+static function define_mods(){$nod=nod('mods_'.prmb(1));
 $r=msql::read('',$nod,1); if(!$r)$r=self::repair_mods($nod); $tmp=[];
 if($r)foreach($r as $k=>$v){
 	if($v[0]=='system' && $v[1]=='template')$tmp[$v[4]]=$v[2];
@@ -273,8 +273,8 @@ msql::modif('',$qb.'_autodesign',[1],'one','',$phi);
 alert('css_auto re-generated');}}
 
 static function negcss(){$_SESSION['night']=1;
-if($n=$_SESSION['prmb'][5]??'')$nod=ses('qb').'_auto';
-else $nod=ses('qb').'_design_'.ses('prmd');
+if($n=$_SESSION['prmb'][5]??'')$nod=nod('auto');
+else $nod=nod('design_'.ses('prmd'));
 $f='css/'.$nod.'_neg.css'; $tima=ftime('css/'.$nod.'.css','ymdHi'); $timb=ftime($f,'ymdHi');
 if($tima>$timb){$clr=getclrs(); $klr=sty::invertclrs($clr);
 //setclrs($klr,ses('prmd').'_neg');

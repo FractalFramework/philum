@@ -19,7 +19,7 @@ return '@'.twit::recupnm($d);}
 static function trkowner($id,$o,$prm){
 if($prm)sql::upd('qdi',['name'=>$prm[0]],$id);
 $nm=sql('name','qdi','v',$id);
-//$r=sql('name','qdi','rv','nod="'.ses('qb').'"');
+//$r=sql('name','qdi','rv','');
 $j='trknm'.$id.'_tracks,trkowner_trkchgnm__'.$id;
 $ret=inputj('trkchgnm',$nm,$j).lj('',$j,picto('ok'));
 $ret.=lj('','trkchgnm_tracks,findtwusr__4_'.$id,picto('enquiry'));

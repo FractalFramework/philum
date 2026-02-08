@@ -3,10 +3,10 @@ class chat{
 static function data($p){;
 return msql::read('',nod('chat_'.$p),1,['time','name','msg']);}
 
-static function erz($p,$erz){$nod=ses('qb').'_chat_'.$p;
+static function erz($p,$erz){$nod=nod('chat_'.$p);
 msql::modif('',$nod,$erz,'del'); return self::read($p);}
 
-static function sav($p,$nm,$prm=[]){$nod=ses('qb').'_chat_'.$p; $msg=$prm[0]??'';;
+static function sav($p,$nm,$prm=[]){$nod=nod('chat_'.$p); $msg=$prm[0]??'';;
 if($msg)msql::modif('',$nod,[time(),$nm,str::embed_links($msg)],'push');
 return self::read($p);}
 

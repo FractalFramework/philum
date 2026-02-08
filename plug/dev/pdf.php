@@ -55,7 +55,7 @@ class pdf
 		$dya = $dya ? $dya : time();
 		$dyb = $dyb ? $dyb : 0;
 		$dt = [];
-		$sq = 'nod="' . ses('qb') . '" and day<' . $dya . ' and day>' . $dyb . ' AND re="1"';
+		$sq = 'day<' . $dya . ' and day>' . $dyb . ' AND re>"0"';
 		$r = sql::read('id,frm,thm,day', 'qda', '', $sq);
 		foreach ($r as $k => $v) {
 			$dt['cat'][ajx($v['frm'], '')] += 1;

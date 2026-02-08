@@ -588,7 +588,7 @@ return $ret;}
 
 //categories
 static function cat2tag($d,$tg='tag'){
-$r=sql('id','qda','k','nod="'.ses('qb').'" and frm="'.$d.'"');
+$r=sql('id','qda','k',['>re'=>'0','frm'=>$d]);
 foreach($r as $k=>$v)meta::sav_tag('',$k,$tg,$d);
 return btn('txtred','all articles of this category have been taged with the name of the category');}
 
@@ -617,7 +617,7 @@ if($cat){//champs
 return $ret;}
 
 static function adm_categories(){
-$r=sql('frm','qda','k','nod="'.ses('qb').'" ORDER BY frm');
+$r=sql('frm','qda','k',['>re'=>'0','_order'=>'frm']);
 $rt[]=[nms(9),'nb'];
 if($r)foreach($r as $k=>$v){
 	if(auth(6))$lk=lj('','edtcat_adm,edit*cats___'.ajx($k),$k); else $lk=$k;
@@ -631,9 +631,9 @@ if($id)sql::upd('qdd',['msg'=>$over.'/'.$cat],$id);
 else sql::sav('qdd',[ses('qbd'),'surcat',$over.'/'.$cat]);
 return self::adm_overcat(1);}
 
-static function update_cats($r,$rb){
-$rc=msql::read('',nod('pictocat'),1); foreach($rc as $k=>$v)$rd[$v[0]]=$v[1];
-foreach($r as $k=>$v)sql::savup('qdc',['cat'=>$k,'pic'=>$rd[$k]??'','no'=>0]);}
+static function update_cats($r){
+$rc=msql::read('server',nod('pictocat'),1); foreach($rc as $k=>$v)$rd[$v[0]]=$v[1];
+foreach($r as $k=>$v)sql::savup('qdc',['cat'=>$k,'pic'=>$rd[$k]??'','last'=>$v,'no'=>0]);}
 
 static function patch_overcats(){
 $r=sql('id,msg','qdd','kv',['val'=>'surcat']);//'ib'=>ses('qbd'),
@@ -646,8 +646,8 @@ static function adm_overcat($o=''){$rb=[];
 self::patch_overcats();
 $r=sql('id,msg','qdd','kv',['val'=>'surcat']);
 if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rb[$cat]=[$ov,$k];}
-$r=sql('frm','qda','k','nod="'.ses('qb').'" order by frm');
-self::update_cats($r,$rb);
+$r=sql('frm,id','qda','kv',['>re'=>'0','_order'=>'id']);
+self::update_cats($r);
 $jb='scat_adm,overcatdel___';
 $ret=div(helps('overcat').hlpbt('overcats_menu')); $rt=[];
 if($r)foreach($r as $k=>$v){$id=randid();

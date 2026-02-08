@@ -59,15 +59,14 @@ foreach($r as $k=>$v){$c=$k==$travel?'active':''; $ic=$travel==$k?'clock':'hour'
 	$ret.=lj('','content_api___maxtime:'.$v.',t:'.$yr,pictxt($ic,$yr));}
 return divc('menus',$ret);}
 
-static function prevnext_art($b,$o,$id,$tg=''){$wh=''; $rb=[];
-$id=$id?$id:ses('read'); $ta=picto('kleft'); $tb=picto('kright'); $htacc=htacc('read');
-if($b=='rub')$wh='and frm="'.get('frm').'" ';
+static function prevnext_art($b,$o,$id,$tg=''){
+$id=$id?$id:ses('read'); $ta=picto('kleft'); $tb=picto('kright');
+$sq['>re']='0'; $dy=0; if($b=='rub')$sq['frm']=get('frm');
 $ord=strtolower(prmb(9)); $col=strto($ord,' ');
-$w='and nod="'.ses('qb').'" and re>"0" '.$wh; $dy=0;
-if($col=='day'){$dy=sql('day','qda','v',$id); $w1='day<"'.$dy.'"'; $w2='day>"'.$dy.'"';}
-if($col=='id' or $dy==0){$col='id'; $w1='id<"'.$id.'"'; $w2='id>"'.$id.'"';}
-$k1=sql('id','qda','v',$w1.' '.$w.' order by '.$col.' desc limit 1');
-$k2=sql('id','qda','v',$w2.' '.$w.' order by '.$col.' asc limit 1');
+if($col=='day'){$dy=sql('day','qda','v',$id); $sq1['<day']=$dy; $sq2['>day']=$dy;}
+if($col=='id' or $dy==0){$col='id'; $sq1['<id']=$id; $sq2['>id']=$id;}
+$k1=sql('id','qda','v',$sq+$sq1+['_order'=>$col.' desc','_limit'=>'1']);
+$k2=sql('id','qda','v',$sq+$sq1+['_order'=>$col.' asc','_limit'=>'1']);
 if($tg)$j='pagup_popart__x_'; elseif($o)$j='popup_popart__x_'; else $j='content_mod,playmod__u_read_';
 $ret=!$k1?btn('hide',$ta):lj('',$j.$k1,$ta,att($k1));
 $ret.=!$k2?btn('hide',$tb):lj('',$j.$k2,$tb,att($k2));
@@ -208,16 +207,16 @@ return sql('ib','qdd','kv',['val'=>'lastup','_order'=>'msg desc','_limit'=>$n.',
 
 //todo:unify
 static function cat_mod($p,$o,$d){
-$w='nod="'.ses('qb').'"'; $nbj=ses('nbj');
-if($nbj==7 or $nbj=='auto')$w.=' and day>'.calctime(30);
-$r=sql('distinct(frm)','qda','rv',$w); $d=$d?$d:'lines'; $lin=[]; $get=get('cat');
+$sq['>re']='0'; $nbj=ses('nbj');
+if($nbj==7 or $nbj=='auto')$sq['>day']=calctime(30);
+$r=sql('distinct(frm)','qda','rv',$sq); $d=$d?$d:'lines'; $lin=[]; $get=get('cat');
 if($r)foreach($r as $k=>$v)$lin[]=[$get,'cat',$v,catico($v,20).$v];//if(rstr(112))
 return $lin;}
 
 static function cat_mod_j($p,$prw,$d,$tp){$rid=randid('cats');
-$w='nod="'.ses('qb').'"'; $nbj=ses('nbj'); $bt=''; $sp=sti();
-if($nbj==7 or $nbj=='auto')$w.=' and day>'.calctime(30);
-$r=sql('distinct(frm)','qda','rv',$w); $d=$d?$d:'lines';
+$sq['>re']='0'; $nbj=ses('nbj'); $bt=''; $sp=sti();
+if($nbj==7 or $nbj=='auto')$sq['>day']=calctime(30);
+$r=sql('distinct(frm)','qda','rv',$sq); $d=$d?$d:'lines';
 if($r)foreach($r as $k=>$v)//active($v,$p)
 	$bt.=lh('','cat/'.$v,catico($v).$sp.$v);
 $prw=$prw?$prw:(rstr(41)?3:2);
@@ -240,7 +239,7 @@ return $rt;}
 
 static function most_read($dyb,$mx=''){
 $dayb=$dyb?timeago($dyb):$_SESSION['dayb']; $mx=$mx?$mx:50;
-return sql('id,lu','qda','kv','nod="'.ses('qb').'" and re>="1" and day>'.$dayb.' order by cast(lu as integer) desc limit '.$mx);}//unsigned integer
+return sql('id,lu','qda','kv',['>re'=>'1','>day'=>$dayb,'_order'=>'cast(lu as integer)','_limit'=>'desc limit '.$mx]);}//unsigned integer
 
 static function most_polled($p,$o){$qda=db('qda'); if(!$o)$o=200;
 $r=sql::inner($qda.'.id,count(poll) as nb','qda','qdf','ib','kv','order by cast(nb as integer) desc limit '.$o);
@@ -275,7 +274,7 @@ foreach($load as $cat=>$ids){$i++;
 if($ret)return pop::columns($ret,1,'board','pubart');}
 
 static function gallery($p,$o=''){$load=[];
-$r=sql('frm,id,img','qda','kkv','nod="'.ses('qb').'" and re>"0" and lg="'.ses('lng').'"');
+$r=sql('frm,id,img','qda','kkv',['>re'=>'0','lg'=>ses('lng')]);
 foreach($r as $ka=>$va)foreach($va as $k=>$v)if($v){$rb=explode('/',$v);
 	if($rb)foreach($rb as $vb)if($vb && !is_numeric($vb)){
 		$f='img/'.$vb; $s=is_file($f)?filesize($f):0;
@@ -286,11 +285,13 @@ if($rb)return self::title($load,'Gallery',61).$ret;}
 static function trkarts($p,$t,$d,$o,$rch='',$typ=''){//see also api cmd:tracks
 $qda=db('qda'); $qdi=db('qdi'); $pg=$o?$o:1; $tri=$d==1?$qdi:$qda;
 $p=get('dig',$p); $p=is_numeric($p)?$p:ses('nbj'); if(!$p)$p=30; $np=time_prev($p);
-if($rch)$w=' and msg like "%'.$rch.'%"';
-else{$w=' and '.$tri.'.day>'.timeago($p); if($p!=7 && $p!=1)$w.=' and '.$tri.'.day<'.timeago($np);}
-if($typ)$w.=' and re="'.$typ.'"';
-if(!auth(6))$w.=' and '.$qda.'.re>"0" and '.$qdi.'.re="1"';
-$r=sql::inner($qdi.'.id,'.$qdi.'.ib','qda','qdi','ib','kv',$qda.'.nod="'.ses('qb').'"'.$w.' order by '.$qdi.'.day desc',0);
+if($rch)$sq['%msg']=$rch;
+else{$sq['>'.$tri.'.day']=timeago($p);
+	if($p!=7 && $p!=1)$sq['<'.$tri.'.day']=timeago($np);}
+if($typ)$sq['re']=$typ;
+if(!auth(6)){$sq['>'.$qda.'.re']='0'; $sq[$qdi.'.re']='1';}
+$sq['_order']=$qdi.'.day desc';
+$r=sql::inner($qdi.'.id,'.$qdi.'.ib','qda','qdi','ib','kv',$sq,0);
 if(!$d)$r=array_flip($r);//permut k and v in output_arts_trk
 $j='modtrk_mod,callmod___m:tracks,p:'.$p.',t:'.ajx($t).',d:'.yesno($d).',o:'.$o;
 $bt=lj('txtbox',$j,nmx([185,$d?22:2]));

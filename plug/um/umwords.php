@@ -32,8 +32,8 @@ else return 'already exists';
 return $ret.'added in '.$idvoc.'-'.$nid;}
 
 static function build($p,$o){$ratio=50; $min=$p*$ratio;
-if($o)$wh='and art.id='.$o; else $wh='limit '.$limit=$min.', '.($min+$ratio);
-$r=sql::inner('art.id,msg','qda','qdm','id','kv','nod="ummo" '.$wh);// and art.id>1689
+if($o)$sq['art.id']=$o; else $sq['_limit']=$min.', '.($min+$ratio);
+$r=sql::inner('art.id,msg','qda','qdm','id','kv',$sq);
 if($r)foreach($r as $k=>$v){
 	$v=str_replace("'",' ',$v); //$v=str_replace('-',' ',$v);
 	$rb=str_word_count($v,2);
