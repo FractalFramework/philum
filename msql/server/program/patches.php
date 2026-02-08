@@ -19,4 +19,6 @@ return ['_'=>['valid'],
 '200601'=>['1'],
 '240320'=>['1'],
 'config'=>[''],
-'setconfig'=>['1']]; ?>
+'setconfig'=>['1'],
+'killslashesparams'=>['1'],
+'nonarts'=>['1']]; ?>
