@@ -9,8 +9,7 @@ static function select_mods_m(){
 $r=msqa::choose('users',ses('qb'),'mods'); if($r)sort($r); $nw=msql::nextnod($r);
 $ret=slctmnuj($r,'admcnt_console,actions___slct*mods_',prmb(1),' ','v');
 $ret.=self::admactbt('newfrom_mods','','admcnt',$nw,nms(99).':'.$nw);//new
-$prmb=sql('config','qdu','v','name="'.ses('qb').'"');
-if($prmb)$prmb1=strprm($prmb,1,'#'); else $prmb1='';
+$prmb1=msql::val('server',nod('params'),1,1);
 if($prmb1!=prmb(1))$ret.=self::admactbt('adopt_mods',nms(66),'admcnt');//apply
 return btn('nbp',btn('txtsmall','mods').' '.$ret).hlpbt('console_mods').' ';}
 

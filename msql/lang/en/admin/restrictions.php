@@ -169,4 +169,5 @@ return ['_'=>['name','description'],
 '167'=>['srvimg','save local images from srvimg server'],
 '168'=>['noim','template preview1 with no image'],
 '169'=>['onetag','autor'],
-'170'=>['related','related arts']]; ?>
+'170'=>['related','related arts'],
+'171'=>['edit preview','edit preview']]; ?>

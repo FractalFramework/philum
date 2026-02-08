@@ -8,9 +8,7 @@ if(!empty($r[2]))$im=divs('float:left; margin-right:10px',image(goodroot($img),9
 $ret=$im.lka($u,$tit).divc('',$txt).divc('small grey',lkt('',$u,pictxt('url',preplink($u))));
 return tagb('blockquote',$ret.divc('clear',''));}
 
-static function ytid($u){
-if(strpos($u,'='))return strin($u,'=','&');
-return strend($u,'/');}
+static function ytid($u){if(strpos($u,'='))return strin($u,'=','&'); return strend($u,'/');}
 static function imgyt($id){return 'https://img.youtube.com/vi/'.$id.'/hqdefault.jpg';}
 static function metayt($id){
 $u='https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='.$id.'&format=json';
@@ -18,14 +16,16 @@ $r=json_decode(getfile($u),true); if(!isset($r['title']))return ['empty','',''];
 $t=$r['title']; $im=$r['thumbnail_url'];
 $tx=trim($r['author_name']).' / '.strend($r['author_url'],'/').' ('.$r['type'].')';
 return [$t,$tx,$im];}
-static function metaob($u){$ra=get_meta_tags(https($u)); $t=$tx=$im='';
+
+static function metaob($u){$t=$tx=$im='';
+try{$ra=get_meta_tags(https($u));}catch(Exception $e){echo $e->getMessage(); return;}
 $r=['og:title','twitter:title','shorttitle']; foreach($r as $v)if(!$t)$t=$ra[$v]??'';
 $r=['og:description','description','twitter:description']; foreach($r as $v)if(!$tx)$tx=$ra[$v]??'';
 $r=['og:image','twitter:image:src','twitter:image']; foreach($r as $v)if(!$im)$im=$ra[$v]??'';
 return [$t,$tx,$im];}
 
 //get_metas($u,2);//img
-static function get_metas($u,$k){//$ra=['t'=>0,'tx'=>1,'im'=>2];
+static function get_metas($u,$k){//0=t,1=tx,2=im
 $r=self::metaob($u); return $r[$k]??'';}
 
 static function metas($u,$d=''){
@@ -86,7 +86,7 @@ $u=nohttp(utmsrc($u));
 if($id)$r=self::read($u,1,$id);
 elseif($u){[$ti,$tx,$im,$ib]=arr($r,4);
 	$ex=sql('id','qdw','v',['url'=>$u],0);
-	$rs=['ib'=>$ib,'url'=>$u,'tit'=>($ti),'txt'=>($tx),'img'=>$im];
+	$rs=['ib'=>$ib?$ib:0,'url'=>$u,'tit'=>($ti),'txt'=>($tx),'img'=>$im];
 	if($ex)sqlup('qdw',$rs,['url'=>$u]);
 	else sqlsav('qdw',$rs);}
 if(strpos($u,'youtube.com')!==false)return video::any(strfrom($u,'='),$r[3],3);

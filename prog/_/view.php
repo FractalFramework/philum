@@ -14,13 +14,13 @@ foreach($r as $k=>$v)
 return $rv;}
 
 //r to tmp
-//view::mkconn(view::little());
+//view::mkconn(datas::little());
 static function mkconn($r){$ret='';
 foreach($r as $k=>$v){[$v1,$v2,$v3]=$v;
 	if(is_array($v[2]))$v3=self::mkconn($v3);
 	if(is_array($v[1])){$v2='';
 		foreach($v[1] as $ka=>$va)$v2.='['.$va.':'.$ka.']';}
-	//else $v2='['.$v2.':class]';
+	else $v2='['.$v2.':class]';
 	if($v1=='url' or $v1=='hurl' or $v1=='jurl')$ret.='['.$v2.'|'.$v3.':'.$v1.']';
 	elseif(!$v1)$ret.=$v3;
 	else $ret.='['.$v3.'|'.$v2.':'.$v1.']';}
@@ -69,37 +69,40 @@ $d=self::play($r);
 return $d;}
 
 //json
-static function patch(){//2504
-$ra=['art','cat','read','tracks','simple','simplenoim','little','fast','titles','pubart','pubartb','pubartc','panart','cover','weblink','bublh','bublj','bublk','book','file','product'];
-foreach($ra as $v){$r=datas::$v(); if(auth(4))echo $v.' '; json::sav('sys','views/'.$v,$r);}}
+static function tables(){//patches::views
+return ['art','cat','catfast','read','tracks','simple','simplenoim','little','fast','tracks','tracks2','titles','pubart','pubartb','pubartc','panart','cover','weblink','bublh','bublj','bublk','book','file','product'];}
 
-static function reflush($d){//patches::views
-if(auth(4))echo 'updated:'.$d.' '; self::patch();}
+static function reflush($d){
+$r=self::tables(); echo 'updated:'.$d.' in '.(auth(7)?'json/sys, ':'').'json/srv, msql/server: '; ; 
+foreach($r as $v){echo $v.' '; $rb=datas::$v();
+	if(auth(7))json::sav('sys','views/'.$v,$rb);
+	json::sav('srv',drn('views/'.$v),$rb);
+	$db=self::mkconn($rb); //eco($db);
+	msql::save('server',nod('views/'.$v),[$db]);}}
 
-static function autoreflush($d){
+static function isnew($d){
 $src=ftime('progb/b/datas.php');
 $dst=ftime('json/sys/views/'.$d.'.json'); //echo $src.'-'.$dst.' ';
 return $src>$dst?1:0;}
 
-static function getmp($d){
+static function getmpsys($d){
 return json::read('sys','views/'.$d);}
 
-static function getmp2($d){
-return json::read('srv','views/'.$d);}
+static function getmpsrv($d){
+return json::read('srv','views/'.drn($d));}
 
 static function batch($r,$rb){$rt=[];
 foreach($rb as $k=>$v)$rt[]=self::call($r,$v);
 return join('',$rt);}
 
 static function com($tmp,$ra){$r=[]; $rf=0;
-//if(ses('dev'))$rf=self::autoreflush($tmp);
-if(rstr(162)){$rf?self::reflush($tmp):'';
-	//$r=sesmk2('view','getmp2',$tmp,1);
-	//if(!$r)$r=sesmk2('view','getmp',$tmp,$rf);
-	}
-//if(!$r)$r=sesmk2('datas',$tmp,'',$rf);
+if(ses('dev'))$rf=self::isnew($tmp); //$rf=1;
+if($rf && auth(4))self::reflush($tmp);
+if(rstr(162)){//json
+	$r=sesmk2('view','getmpsrv',$tmp,$rf);
+	if(!$r)$r=sesmk2('view','getmpsys',$tmp,$rf);}
+if(!$r)$r=sesmk2('datas',$tmp,'',$rf);
 if(!$r)$r=datas::$tmp();
-//if(!$r)self::reflush($tmp);//patch
 return self::call($r,$ra);}
 
 }

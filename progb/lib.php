@@ -4,13 +4,6 @@ for($i=0;$i<5;$i++)if(is_file($f=$dr.$r[$i].'/'.$a.'.php')){require($f); return;
 $r=sesmk('scandir_b','plug',0);
 if($r)foreach($r as $v)if(is_file($f='plug/'.$v.'/'.$a.'.php')){require($f); return;}});
 
-#blup
-/*function mb_strlen($d){return strlen($d);}
-function mb_strtolower($d){return strtolower($d);}
-function mb_strrpos($d,$n){return strrpos($d,$n);}
-function mb_strpos($d,$n){return strpos($d,$n);}
-function mb_substr($d,$a,$b=null){return substr($d,$a,$b);}*/
-
 #html
 function p($r){print_r($r);}
 function n(){return "\n";}
@@ -104,7 +97,7 @@ return '<input'.atr($pr).'/>';}
 function inputj($d,$v,$j,$h='',$s='',$p=[]){$js='checkj(this)'; $ju='';//'sj(this)';
 return taga('input',$p+['id'=>$d,'type'=>'text','value'=>$v,'placeholder'=>$h,'size'=>$s,'data-j'=>$j,'onkeyup'=>$js,'onblur'=>$ju]);}
 function inpsw($d,$v,$s='',$p=[]){return inputb($d,$v,$s,'password','100',['type'=>'password']);}
-function inpdate($id,$v,$min='',$max='',$o='',$j=''){$ty=$o?'datetime-local':'date';//time
+function inpdate($id,$v,$min='',$max='',$o='',$j=''){$ty=$o?'datetime-local':'date';
 return input($id,$v,'',['type'=>$ty,'min'=>$min,'max'=>$max,'onchange'=>sj($j)]);}//step=1
 function inpnb($id,$v,$j='',$p=[]){if($j)$p['onchange']=sj($j);
 return input($id,$v,'',$p+['type'=>'number','name'=>$id,'min'=>1,'step'=>1,'size'=>'8']);}
@@ -172,7 +165,7 @@ foreach($r as $k=>$v)$ret.=btj(picto($v,16),atj('execom',$k));
 //$ret.=bubble('','mc,navs','ascii','&#128578;').' ';
 //if(is_numeric($id))$ret.=lj('','art'.$id.'_mc,savwyg_art'.$id.'__'.$id.'_1',picto('save2',16));
 if(is_numeric($id))$ret.=btj(picto('save2',16),atj('saveart',$id));
-return btn('menu',$ret);}
+return btn('menu sticky',$ret);}
 function divarea($id,$d,$c='',$s='',$j='',$o=''){$ja='';
 $rp=['contenteditable'=>'true','id'=>$id,'class'=>$c,'style'=>$s];
 if($j){$attr=match($o){1=>'onblur',2=>'onkeydown',3=>'onpaste',default=>'onclick'}; $rp[$attr]=$j;}
@@ -270,6 +263,7 @@ function is_mail($d){return filter_var($d,FILTER_VALIDATE_EMAIL);}
 function is_url($d){return filter_var($d,FILTER_VALIDATE_URL);}
 function is_hex($d){$opts=['flags'=>FILTER_FLAG_ALLOW_HEX];
 return filter_var('0x'.$d,FILTER_VALIDATE_INT,$opts);}
+function is_alpha($d){return ctype_alpha($d)?1:0;}
 
 function curl_get_cookies($f){$c=curl_init($f);
 curl_setopt($c,CURLOPT_FRESH_CONNECT,true);
@@ -295,7 +289,7 @@ curl_setopt($c,CURLOPT_FOLLOWLOCATION,true);
 curl_setopt($c,CURLOPT_RETURNTRANSFER,true);
 curl_setopt($c,CURLOPT_COOKIESESSION,true);
 curl_setopt($c,CURLOPT_COOKIEFILE,'_datas/cookies/'.domain($f).'.txt');
-$ret=curl_exec($c); //$http=curl_getinfo($c,CURLINFO_HTTP_CODE); //eco($http);
+$ret=curl_exec($c); //$http=curl_getinfo($c,CURLINFO_HTTP_CODE);
 return $ret;}
 
 function curl_get_contents($f,$post='',$json=0,$cook=''){
@@ -425,6 +419,8 @@ if($pa!==false){$pa+=mb_strlen($a); $pb=$nb?mb_strrpos($d,$b,$pa):mb_strpos($d,$
 	if($pb!==false)return mb_substr($d,$pa,$pb-$pa); elseif($o)return mb_substr($d,$pa); else return '';}}
 function strin($d,$a,$b){return between($d,$a,$b,0,0,1);}
 function strprop($d,$v){return between($d,$v.'="','"',0,0,1);}
+function strpropcss($d,$v){$n=strpos($d,$v.':'); $nb=strpos($d,';',$n); $s=$nb!==false?$s=';':'"';
+	return between($d,$v.':',$s,0,0,1);}
 function isnum($d){return preg_replace("/[^0-9]/",'',$d);}
 function str_slice($d,$n=1){$r=[]; $nb=mb_strlen($d); $na=ceil($nb/$n);
 for($i=0;$i<$na;$i++)$r[]=mb_substr($d,$i*$n,$n); return $r;}
@@ -526,6 +522,7 @@ function is_tw($d){if(strpos($d,'twitter.com')!==false or strpos($d,'x.com')!==f
 //vars
 function expk($s,$d){[$k,$v]=explode($s,$d); return [$k=>$v];}
 function expl($s,$d,$n=2){$r=explode($s,$d??''); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
+function expld($d,$s=''){if(!$s)$s=strpos($d,';')!==false?';':' '; return explode($s,$d);}
 function impl($s,$r){$rb=[]; foreach($r as $k=>$v)if($v)$rb[]=$v; return join($s,$rb);}
 function opt($d,$s,$n=2){$r=explode($s,$d); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}//old
 function arr($r,$n=''){$rb=[]; $n=$n?$n:count($r); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
@@ -601,7 +598,7 @@ return stristr($s,'android') || stristr($s,'iPhone') || stristr($s,'iPad');}
 #fileinfo
 function recup_fileinfo($doc){if(is_file($doc))
 return date('ymd',filemtime($doc)).'-'.round(filesize($doc)/1024).'Ko';}
-function ftime($f,$d=''){if(is_file($f))return date($d?$d:'ymd.Hi',filemtime($f));}
+function ftime($f,$d=''){if(is_file($f))return datz($d?$d:'ymd.Hi',filemtime($f));}
 function fsizeformat($sz=0){return $sz>1048576?round($sz/1048576,2).' Mo':round($sz/1024,2).' Ko';}
 function fsize($f,$o=''){$sz=is_file($f)?filesize($f):false; if(!$o)return $sz; return fsizeformat($sz);}
 //function imsize($f){return is_file($f)?@getimagesize($f):[0,0,0];}
@@ -649,7 +646,6 @@ return $rt;}
 function compute_time($s){$rt=[]; $r=compute_timer($s);
 $ra=['year','month','week','day','h','min','s'];
 foreach($r as $k=>$v)
-//$rt[]=$v.' '.$ra[$k].($v>1?'s':'');
 if($s>86400){if($k<4)$rt[]=$v.' '.$ra[$k].($v>1?'s':'');}
 else if($k>=4)$rt[]=$v.$ra[$k];
 return join(' ',$rt);}
@@ -727,7 +723,7 @@ function divergentserie($n){for($i=1;$i<=$n;$i++)$r[]=$i; return array_sum($r);}
 #tools
 function exc($d){if(auth(6))return shell_exec(escapeshellcmd($d));}
 function sys($d){if(auth(6))system(escapeshellcmd($d),$d); return $d;}
-function excdir(){$r=explode('/',__DIR__); return '/'.$r[1].'/'.$r[2];}
+function excdir(){[$a,$b,$c]=expl('/',__DIR__,3); return '/'.$b.'/'.$c;}
 function wget($u,$f){$e='wget -O '.excdir().'/'.$f.' '.$u; echo exc($e); return 1;}
 function copim($u,$f){$e='wget -O '.excdir().'/img/'.$f.' '.$u; exc($e); return 1;}
 function exchmod(){return exc('sh pub/sh/chmod.sh '.excdir());}

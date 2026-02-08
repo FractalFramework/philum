@@ -44,6 +44,28 @@ static function cat(){return [
 		['article',['id'=>'art{id}'],'{msg}'],
 		['clear','','']]]]]];}
 
+static function catfast(){return [
+['div',['class'=>''],[
+	['header',[],[
+		['div',['id'=>'meta{id}'],[
+			['span','','{back} {avatar} {cat}'],
+			['span',['class'=>'txtbox'],'{search}'],
+			['span',['class'=>'txtnoir'],'{nbarts}'],
+			['span',['class'=>'txtsmall2'],'{date}'],
+			['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}'],
+			['div',['class'=>'right'],'{togprw}']]],
+		['h4','','{parent}'],
+		['div',['class'=>'right','style'=>'text-align:right;'],'{edit}{br}{artlang} {social} {words} {open}'],
+		['h2','','{title}'],
+		['div',['class'=>'grey tright'],'']]],
+	['div',['class'=>'grid-art','style'=>'grid-template-columns:140px auto;'],[
+		['div',['class'=>'row1 col1'],[
+			['p',[],[
+				['div',[],'{thumb}']]]]],
+		['div',['class'=>'row1 col2'],[
+			['article',['id'=>'art{id}'],'{msg}'],
+			['clear','','']]]]]]]];}
+
 static function read(){return [
 ['header',['class'=>''],[
 	['div',['id'=>'meta{id}'],[

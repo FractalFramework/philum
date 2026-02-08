@@ -53,7 +53,7 @@ $rh[]=['meta'=>['http-equiv','pragma','no-cache']];*/
 if(ses('cssn'))$rh[]=['jslink'=>'/js/live.js#css'];
 $rh[]=['jscode'=>mod::jsmap('rha')];
 //$rh[]=['jslink'=>'https://platform.twitter.com/widgets.js'];
-//<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+/*<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>*/
 $ret.=head::call($rh);
 $ret.='</head>'."\n";
 $ret.='<body onclick="clpop(event)" onmousemove="popslide(event)">'."\n";

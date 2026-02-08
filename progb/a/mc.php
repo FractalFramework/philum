@@ -71,10 +71,10 @@ asort($rb); if($r)foreach($rb as $k=>$v){if($v)
 return scroll($r,$ret,22);}
 
 static function video($v){
-$ret=divc('small',helps('video'));
-$ret.=inputb('url',$v,22,'url');
+$ret=inputb('url',$v,22,'url');
 $ret.=lj('popsav','url_video,extractid_url_5','ok').' ';
 if(auth(4))$ret.=hlpbt('popvideo');
+$ret.=divc('small',helps('video'));
 return $ret;}
 
 static function upload($id){

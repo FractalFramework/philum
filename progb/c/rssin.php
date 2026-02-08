@@ -161,13 +161,18 @@ $j='socket_sav,addurlsav__7_'.$lnj.'_';
 foreach($r as $k=>$v)$ret.=lj('',$j.ajx($v).'_1',$v).' ';//pictocat($k,20).
 return $ret;}
 
+static function repairlk($d){
+$d=str_replace(':443','',$d);
+if(strpos($d,'://presstv')!==false)$d=str_replace('presstv.ir','french.presstv.ir',$d);
+return $d;}
+
 static function call($kn,$u,$prm=[]){//rssin
 [$kn,$u]=prmg($prm,$kn,$u);
 [$kn,$mth]=expl('-',$kn,2); chrono();
 [$f,$o]=prepdlink($u); $f=http($f); $i=0; $ret=''; //$mth=2;
 $r=self::load($f,$mth); $nb=count($r); $ni=0;//$ret=hidden('addop',1); //$ru=self::usedcat($f);
 foreach($r as $k=>$v){$btc=''; [$va,$lnk,$dat,$id,$txt]=$v; $i++;
-	if($id)$btc.=ma::popart($id); $lnk=str_replace(':443','',$lnk); $lnj=ajx($lnk);
+	if($id)$btc.=ma::popart($id); $lnk=self::repairlk($lnk); $lnj=ajx($lnk);
 	$btc.=lj('','popup_sav,batchpreview__3_'.$lnj,picto('view'));//,att(htmlentities($txt))
 	//if(auth(4))$btc.=select(['id'=>$kn.$k],$ru,'vv','','socket_sav,addfromlist_'.$kn.$k.'_7_'.$lnj.'_');
 	if(auth(4) && !$id)$btc.=togbub('rssin,select',$kn.$k.'_'.$lnj,picto('submenu'));

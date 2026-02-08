@@ -81,7 +81,7 @@ if(sql::$er['qr']??'')self::$er['not_created']=$b;
 else self::$er['table_created'][]=$b;}
 
 static function create_database(){
-$sql='CREATE DATABASE '.sql::$db;
+$sql='create database '.sql::$db;
 sql::qr($sql,0);}
 
 static function array_diff_order($ra,$b){$n=count($ra);

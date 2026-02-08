@@ -103,8 +103,8 @@ return taga('link',['href'=>'/css/'.$d.'.css'.$c,'rel'=>'stylesheet','id'=>$d]).
 static function js($d){$c=self::$rid; $b=ses('dev');
 return tag('script',['src'=>'/prog'.$b.'/j/'.$d.'.js'.$c,'id'=>$d],'')."\n";}
 static function link($d,$v){return taga('link',['href'=>$v,'rel'=>$d])."\n";}
-static function temporize($fc,$code,$p){$fc.=randid();
-return 'function '.$fc.'(){'.$code.' clearTimeout(x); x=setTimeout(\''.$fc.'()\','.$p.');} '.$fc.'();';}
+static function temporize($fc,$code,$n=1000){$fc.=randid();
+return 'function '.$fc.'(){'.$code.' clearTimeout(x); x=setTimeout(\''.$fc.'()\','.$n.');} '.$fc.'();';}
 static function relod($v){echo self::jscode('window.location="'.$v.'"');}
 static function build(){$r=self::$r; $rt=[];
 if($r)foreach($r as $k=>$v){$va=current($v); $ka=key($v); $rt[]=match($ka){
@@ -420,7 +420,7 @@ function checkversion($n=1){return msql::val('system','program_version',$n);}
 function forbidden_img($nm){$r=explode(' ',prmb(21));
 if($r)foreach($r as $v)if($v && strpos($nm,$v)!==false)return false; return $nm;}
 function antipuces($v){if(forbidden_img($v)!==false && strpos($v,'puce')===false)return $v;}
-function opcache($d){if(!ses::$s['local'])opcache_invalidate($d);}
+function opcache($d){opcache_invalidate($d);}//if(!ses::$s['local'])
 function unlinkb($f){$fb='_backup/imtrash/'.$f; mkdir_r($fb); copy($f,$fb); unlink($f);}
 function rm($f){if(!is_dir($f) && boot::auth()){unlinkb($f); json::add('','rmim',[$f,ip()]);}}
 

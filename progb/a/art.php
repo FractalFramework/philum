@@ -523,10 +523,10 @@ if($re==2)$tks='30,240,30'; elseif($re==3)$tks='240,30,30'; elseif($re==4)$tks='
 if($tks)$rt['sty']='background-color:rgba('.$tks.',0.1);';
 if($host==$ip && (ses::$dayx-$day)<600 or auth(6))//redit
 	$rt['edit'].=lj('','popup_tracks,redit___'.$id,picto('edit')).' ';
-$rc=explode('/','/'.prmb(10));
+$rc=prmd(prmb(10),'/');//!
 if($name==$usr)$name='Admin';
 $rt['author']=lj('','popup_tracks,form___'.$read.'_'.$id,$name?$name:nms(210)).' ';
-if($re>1 && isset($rc[$re]))$rt['opt']=$rc[$re];
+if($re>1 && isset($rc[$re+1]))$rt['opt']=$rc[$re+1];
 $f='imgb/usr/'.$name.'_avatar.gif';
 if(is_file($f))$rt['avatar']=image($f,48,48,ats('vertical-align:bottom;'));
 $len=mb_strlen($msg); 

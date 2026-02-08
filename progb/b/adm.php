@@ -336,8 +336,8 @@ echo btn('txtyl','_mods_'.$d.' created from _mods_'.prmb(1));}}
 
 //adm_params
 static function dispatch_params($r){
-$r[7]=explode(';',$r[7]); msql::save('server',nod('priority'),$r[7]);
-$r[10]=explode('/',$r[10]); msql::save('server',nod('tracks'),$r[10]);
+$r[7]=expld($r[7]); msql::save('server',nod('priority'),$r[7]);
+$r[10]=explode('/',$r[10]); msql::save('server',nod('tracks'),$r[10]);//expl//!
 $r[18]=explode(' ','tag '.$r[18]); msql::save('server',nod('tags'),$r[18]); $rc=[];
 $r[19]=explode(' ','tag '.$r[19]); foreach($r[18] as $k=>$v)$rc[]=[$v,$r[19][$k]];
 msql::save('server',nod('pictotag'),$rc,['tag','picto']);
@@ -359,7 +359,6 @@ elseif(!$sup){
 	foreach($rb as $k=>$v)$rc[$k]=[$ra[$k]??'unassigned',$v];
 	msql::backup('server',nod('params'));
 	msql::save('server',nod('params'),$rc);
-	//json::sav('srv',drn('params'),$rb);
 	self::dispatch_params($rb);
 	//boot::define_prmb();
 	ses('prmb',$rb);}

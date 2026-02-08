@@ -94,7 +94,7 @@ foreach($r as $k=>$v){$b++; if(is_array($v))$v=join('',$v);
 	$dsp=$b==$ib?'block':'none'; $cs=$b==$ib?'txtaa':'txtab';
 	$menu.=ljb($cs,'toggle_tab',[$id,$b],$k).$sp;
 	if(is_array($v))$v=divc('list',self::onxcols($v,3,''));
-	$divs.=div($v,$c,'div'.$id.$b,'display:'.$dsp);}
+	$divs.=div($v,'scroll '.$c,'div'.$id.$b,'display:'.$dsp);}
 return div($menu,'','mnuab'.$id,'').$divs;}
 
 static function on2cols($r,$w,$p){$w1=round($w/$p); $w2=round($w-$w1); $ret='';

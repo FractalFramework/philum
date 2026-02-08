@@ -46,7 +46,7 @@ if($txt)return $a::sh($txt,$to,$from);}
 
 //txt,len,day,ip,qb
 static function barometer(){
-$r=scanfiles('json/usr/'.ses('qb').'/trans'); $rc=[]; $rd=[]; $n=0;
+$r=scanfiles('json/usr/'.drn('trans')); $rc=[]; $rd=[]; $n=0;
 foreach($r as $k=>$v){
 	$f='trans/'.between($v,'/','.',1); $dayf=substr($f,-6);
 	$rb=json::read('',$f); $rl=array_column($rb,1);

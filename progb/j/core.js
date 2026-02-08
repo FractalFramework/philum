@@ -218,6 +218,7 @@ if(va.indexOf('vk.com/clips')!==-1){var d=strfrom(va,'?z=clip'); var r=d.split('
 	va='https://vk.com/video_ext.php?oid=-'+oid+'&id='+id+'&autoplay=0';}
 if(va.indexOf('odysee.com/@')!==-1){va=va.replace('/@','/$/embed/@'); va=strto(va,':a');}
 if(va.indexOf('rutube.ru/video')!==-1){va=va.replace('video/','play/embed/'); va=va.replace('/?r=plemwd','');}
+if(va.indexOf('crowdbunker')!==-1){va=va.replace('/v/','/embed/');}
 if(vp!='')val=va+'|'+vp; else val=va;
 if(va)insert('['+val+':'+cnn+']');}
 

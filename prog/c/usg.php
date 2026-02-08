@@ -216,7 +216,7 @@ if(is_array($r))foreach($r as $k=>$v){$c=active($k,$vrf); $k=addslashes($k);//ad
 	elseif($v)$rt[]=ljb($c,'hidslct',[$id,$k,ajx($t),$o],$v);}
 if($o>=2)$rt[]=self::dropmenuform($id,$id,$vrf,'bt');
 //$ret=scroll($r,$ret,40,'');
-return div(join(' ',$rt),'sub menu');}
+return div(join(' ',$rt),'list');}
 
 static function chkslct($id,$d,$vrf,$o,$prm=[]){//chkj//slct_cases()
 $vrf=$prm[0]??$vrf; $r=self::slct_r($d,$o,$vrf); $i='0'; $ra=explode('~',$vrf); $rt=[];

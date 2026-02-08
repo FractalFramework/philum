@@ -94,7 +94,7 @@ elseif(substr($act,0,1)=='@'){$n=substr($act,1); $nx=self::nextentry($r); $i=0;
 //	if($act=='mdf')$r[$k]=$ra; elseif($act=='del')unset($r[$k]);}}
 elseif($act)$r[$act]=$ra;
 if(isset($r[0]))$r=self::reorder($r); if(isset($rb))$rb+=$r; else $rb=$r;
-self::save($dr,$nod,$rb); //
+self::save($dr,$nod,$rb); //pr($rb);
 //json::add($dr,$nod,$r);
 return $rb;}
 
@@ -213,7 +213,7 @@ foreach($rt as $k=>$v)$rt[$k]=$r[$k]; return $rt;}
 static function order($r,$n){$i=0; if(isset($r['_'])){$rt['_']=$r['_']; unset($r['_']);}
 $rc=self::clb($r,$n); arsort($rc); foreach($rc as $k=>$v)$rt[]=$r[$k]; return $rt;}
 static function reorder($r){$i=0; if(isset($r['_'])){$rt['_']=$r['_']; unset($r['_']);}
-foreach($r as $k=>$v){$i++; $rt[$i]=$v;} return $rt;}
+foreach($r as $k=>$v){$i++; $rt[$i]=$v;} return $rt??[];}
 static function move($r,$id,$to){$rk=$r[$id]; unset($r[$id]); $i=0; $rt=[];
 foreach($r as $k=>$v){if($k==$to){$i++; $rt[$i]=$rk;} $i++; $rt[$k=='_'?$k:$i]=$v;} return $rt;}
 static function moveafter($r,$id,$to){$rk=$r[$id]; unset($r[$id]); $i=0; $rt=[];

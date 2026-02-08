@@ -29,9 +29,9 @@ static function trkstatus($id,$st){$ret='';
 if($st){sql::upd('qdi',['re'=>$st],$id); return art::trkone($id);}
 $re=sql('re','qdi','v',$id);
 //$r=[1=>nms(21),nms(171),nms(91),nms(182)];//commentaire/question/réponse/solution
-$r=explode('/','/'.prmb(10));
-for($i=1;$i<=4;$i++){$c=active($i,$re);
-	$ret.=lj($c,'trk'.$id.'_tracks,trkstatus___'.$id.'_'.$i,$r[$i]);}
+$r=expld(prmb(10),'/');//??!
+for($i=0;$i<4;$i++){$c=active($i,$re);
+	$ret.=lj($c,'trk'.$id.'_tracks,trkstatus___'.$id.'_'.($i+1),$r[$i]);}
 return divc('list',$ret);}
 
 static function trklang($id,$lang){$ret='';

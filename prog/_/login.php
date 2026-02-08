@@ -7,7 +7,8 @@ if($t)$ret=divc('txtcadr',$t);
 if(!is_numeric($rg)){$j='lgn_login,call_lgu,lgp,lgc,lgm__';//self
 $ret.=inputj('lgu','',$j,'user',12,['onkeyup'=>atj('log_finger','lgu')]);
 $ret.=inputj('lgp','',$j,'password',12,['type'=>'password']);
-if(rstr(59))$ret.=checkbox_j('lgc',1,'','stay loged').' '; else $ret.=hidden('lgc',1);
+//if(rstr(59))$ret.=checkbox_j('lgc',1,'','stay loged').' '; else
+$ret.=hidden('lgc',1);
 $ret.=hidden('lgm','');
 $ret.=lj('',$j,picto('logout'),att(helps('login')));
 return divd('lgn',$ret);}}

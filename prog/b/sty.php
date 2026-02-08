@@ -317,33 +317,34 @@ return $ret;}
 static function petit_clr($t,$clr){
 if(!$t)$t=0; $a=explode('|',$t); $ret='';
 foreach($a as $v){if(!$v)$v='-'; $c=isset($clr[$v])?$clr[$v]:'';
-	$ret.=bts('background:#'.$c.'; color:#'.clrneg($c,1).'; padding:0; float:left; width:8px;',$v);}
+	$s='background:#'.$c.'; color:#'.clrneg($c,1).';';
+	$ret.=span($v,'css-clr','',$s);}
 return $ret;}
 
-static function name_line_j($k,$p,$op,$clrb=''){
-$csa='txtnoir'; $t=self::name_classe($p);
-$css=get('edit_css')==$k?' active':'';
-if($clrb==1)$clr=msql::kv('system','default_clr_1');
-elseif($clrb==2)$clr=msql::kv('system','default_clr_2');
-else $clr=getclrs();
-$s='float:left; text-align:left; margin:1px; width:';
-if($k)$ret=toggle($csa.$css,'css'.$k.'_sty,editcss___'.$k,$t,'',ats($s.'190px;'));
-else $ret=span($t,$csa,'',$s.'190px;');
-for($i=3;$i<6;$i++)$ret.=span(self::petit_clr($p[$i]??'-',$clr),$csa,'',$s.'50px;');
-if($op){$pb=isset($p[6])?etc(str_replace('; ',';'.br(),stripslashes($p[6])),1000):'-';
-$ret.=span($pb,$csa,'',$s.'250px;');}
-return divc('clear',$ret);}
+static function name_line_j($k,$p,$op,$clr){
+$t=self::name_classe($p);
+$c=get('edit_css')==$k?' active':'';
+$ret=div(toggle($c,'css'.$k.'_sty,editcss___'.$k,'[#'.$k.'] '.$t),'col cl1');
+for($i=3;$i<6;$i++)$ret.=div(self::petit_clr($p[$i]??'-',$clr),'col cl2');
+if($op){$pb=isset($p[6])?etc(str_replace('; ',';'.br(),$p[6]),1000):'-';
+$ret.=div($pb,'col cl3');}
+//$ret=div($ret,'');//used for flex
+return $ret;}
 
 static function design_edit($r,$defsb,$edit,$op){
-$ret=self::name_line_j(0,$defsb,$op).br();//keys
-$ra=['divs'=>$ret,'classes'=>$ret,'elements'=>$ret];
+$clr=getclrs(); $c='float-css';//
+$ret=self::name_line_j(0,$defsb,$op,$clr);//keys
+//$ra=['divs'=>$ret,'classes'=>$ret,'elements'=>$ret];
+$ra=[]; $rb=[]; $rc=[];
 if($r){foreach($r as $k=>$v){$ret='<a name="'.$k.'"></a>';
-	if($k){$ret.=self::name_line_j($k,$v,$op).br();//if(!$edit) 
-	if($edit==$k)$t=self::form_facilities($r,$edit); else $t='';}
-$ret.=divd('css'.$k,$t);
-if($v[0])$ra['divs'].=$ret; elseif($v[1])$ra['classes'].=$ret; 
-elseif($v[2])$ra['elements'].=$ret;}}
-return divs('min-width:440px',build::tabs($ra,'css'.$edit));}
+	if($k){$ret=self::name_line_j($k,$v,$op,$clr);//if(!$edit) 
+		if($edit==$k)$t=self::form_facilities($r,$edit); else $t='';}
+	$ret.=div($t,'colspan16','css'.$k);
+	if($v[0])$ra[]=$ret; elseif($v[1])$rb[]=$ret; elseif($v[2])$rc[]=$ret;}}
+$rt['divs']=div(join('',$ra),$c);
+$rt['classes']=div(join('',$rb),$c);
+$rt['elements']=div(join('',$rc),$c);
+return div(build::tabs($rt,'css'.$edit),'');}//'min-width:440px',
 
 static function saveclr($p){
 $qb=ses('qb'); $tosave=$p[0];
@@ -649,15 +650,17 @@ return form($url.'#'.$k,$t);}
 static function facil_globalc($k,$nc){$r=self::css_default(1);
 $ret=btn('txtcadr','herit from _global.css').' ';
 $ret.=msqbt('',pub('css_1')).br().br();
+$clr=msql::kv('system','default_clr_1');
 if($r)foreach($r as $k=>$v){$ncb=self::name_classe($v);
-	if($ncb==$nc)$ret.=self::name_line_j($k,$v,1,1);}
+	if($ncb==$nc)$ret.=self::name_line_j($k,$v,1,$clr);}
 return $ret;}
 
 static function facil_reset($k,$nc){$ret=btn('txtcadr','default').' ';
 $ret.=lkc('txtx','/?admin=css&edit_css='.$k.'&reset_this==#'.$k,'reset').br().br();
 $r=self::css_default();
+$clr=msql::kv('system','default_clr_2');
 if($r)foreach($r as $k=>$v){$ncb=self::name_classe($v);
-	if($ncb==$nc)$ret.=self::name_line_j($k,$v,1,2);}
+	if($ncb==$nc)$ret.=self::name_line_j($k,$v,1,$clr);}
 return $ret;}
 
 static function facil_pos($defs,$k){
@@ -672,19 +675,17 @@ static function form_facilities($defs,$k){
 if(empty($defs[$k]))return;
 $val=stripslashes($defs[$k][6]);//freecss
 $nc=self::name_classe($defs[$k]);
-$url='/?admin=css&edit_css='.$k; $end=divc('clear','');
-$ret=btn('txtcadr',trim($nc)).' '.btn('txtsmall2','#'.$k.'').' ';
-$rt['classe']=self::facil_css($k,$url,$val).$end;//css_free
-$rt['colors']=self::facil_colors($defs,$k,$url).$end;//colors
-$rt['default']=self::facil_reset($k,$nc).$end;//reset
-$rt['global']=self::facil_globalc($k,$nc).$end;//global
-//if($nc=='@font-face '){$ret.=self::facil_fonts($defs,$k,$url).$end;}//fonts
-$rt['images']=self::facil_images($k,$url,$val).$end;//images
+$url='/?admin=css&edit_css='.$k;
+$rt['classe']=self::facil_css($k,$url,$val);//css_free
+$rt['colors']=self::facil_colors($defs,$k,$url);//colors
+$rt['default']=self::facil_reset($k,$nc);//reset
+$rt['global']=self::facil_globalc($k,$nc);//global
+//if($nc=='@font-face '){$rt['fonts']=self::facil_fonts($defs,$k,$url);}//fonts
+$rt['images']=self::facil_images($k,$url,$val);//images
 $rt['name']=self::facil_names($defs,$k);//classname
-$rt['tools']=self::facil_pos($defs,$k).$end;//pos
-//$ret.=divc('imgr',self::facil_pos($defs,$k));
-$ret.=build::tabs($rt,'csf'.$k);
-return div($ret,'clear','','padding:10px; width:550px;');}
+$rt['tools']=self::facil_pos($defs,$k);//pos
+//$rt['img']=divc('imgr',self::facil_pos($defs,$k));
+return build::tabs($rt,'csf'.$k);}
 
 static function form_edit_css($d){
 $ret=lj('','popup_cssedt,home__'.$d.'_330',picto('plus')).' ';

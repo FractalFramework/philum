@@ -169,4 +169,5 @@ return ['_'=>['category','name'],
 '167'=>['img','srvimg'],
 '168'=>['template','noim'],
 '169'=>['template','onetag'],
-'170'=>['template','related arts']]; ?>
+'170'=>['template','related arts'],
+'171'=>['save','edit preview']]; ?>

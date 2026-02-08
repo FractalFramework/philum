@@ -164,6 +164,11 @@ return $d;}
 static function clean_html($d,$o=''){
 //$d=hed($d);//create infinite loop
 //$d=htmlspecialchars_decode($d);//create infinite loop
+/*$d=$d
+|>self::html_entity_decode_b(...)
+|>self::clean_spaces(...)
+|>self::clean_acc(...)
+|>self::stupid_acc(...);*/
 $d=self::html_entity_decode_b($d);
 $d=self::clean_spaces($d);
 $d=self::clean_acc($d);

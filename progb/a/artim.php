@@ -109,13 +109,10 @@ return $ret;}
 static function rzim($ret,$da,$dca,$id,$w,$h){
 $sz=fsize($dca); $xt=xtb($da); $bt='';
 $did=strend(strto($da,'.'),'_');
-if($sz>1000){
-	$bt.=btn('txtred',$w.'px/'.$h.'px - '.fsizeformat($sz));
+if($sz>1000000 or $w>500 or $h>200){
 	//$bt.=lj('txtyl',$did.'_img,rewrite__3_'.ajx($da),'del exef');//resolve exef
 	//$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_0_'.$id,'reduce to 940|940');
-	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50%');}
-elseif($w>1000 or $h>800){
-	$bt.=btn('txtred',$w.'px/'.$h.'px - '.$sz.'ko');
+	$bt.=btn('txtred',$w.'px/'.$h.'px - '.fsizeformat($sz));
 	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50%');}
 elseif(!$w){$ex=img::original($da,$id);
 	if($ex)$bt.=lj('popdel',$did.'_img,restoreim__3_'.ajx($da).'_'.$id.'_1','restore');}
@@ -159,7 +156,7 @@ if($id){$nmw=$qb.'_'.$id.'_'.rid($da).$xt;//soon, del qb
 	else return;}
 else return $da;}
 
-static function mkimg($da,$m,$pw='',$id='',$nl=''){
+static function mkimg($da,$m,$pw='',$id='',$nl='',$rid=''){
 if(!$pw)$pw=prma('content'); $pwb=round($pw*0.5); $br=''; $p['id']='';//rez
 if($m=='noimages')return ' '; $http=''; $p['style']=''; $w=''; $h='';
 if(rstr(142))return self::orimg($da,$id,0);//distant original
@@ -169,6 +166,7 @@ if(substr($da??'',0,4)=='http'){
 	return image($da);}
 else $pre=jcim($da);//,1
 $dca=$pre.$da;
+if($rid)$rid=randid('?');
 if($nl){$http=host().'/'; $dca=str_replace('../','',$dca);}
 if(rstr(167) && $id<prms('srvimax'))[$http,$dca]=self::distant_img($da,$http);
 [$w,$h]=imsize($http.$dca);
@@ -179,7 +177,7 @@ if(rstr(17))$pwb/=2;
 if($nl)$p['style']='max-width:100%';
 //if(rstr(9) && $w<$pwb)$p['style']='float:left; margin-right:10px;';
 //if($w && $w<$pwb)$p['style'].=' width:'.$w.'px;';
-$p['src']=$http.'/'.$dca; //if(!rstr(9) && $h>40)$br="\n\n";
+$p['src']=$http.$dca.($rid); //if(!rstr(9) && $h>40)$br="\n\n";
 $p['title']=ses::adm('alert');
 $ret='<p><img'.atr($p).' /></p>';//image()
 if($w>$pw && $pw && !$nl)$ret=ljb('','SaveBf',ajx($da).'_'.$w.'_'.$h.'_'.$id,$ret).$br;

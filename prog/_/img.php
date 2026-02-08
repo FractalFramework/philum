@@ -60,10 +60,10 @@ return [round($w2),round($h2)];}
 
 static function reduce($d,$o,$id=''){$im='img/'.$d;
 [$wo,$ho,$ty]=imsize($im);
-if($o){$w=$wo/2; $h=$ho/2;}
+if($o){$w=round($wo/2); $h=round($ho/2);}
 else [$w,$h]=self::sz($wo,$ho,940,940);
 self::build($im,$im,$w,$h,'');
-return artim::mkimg($d.'?'.$w,3,920,$id,'');}
+return artim::mkimg($d,3,920,$id,'',1);}
 
 static function gif2png($a,$id){
 $b=str_replace('.gif','.png',$a);

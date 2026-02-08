@@ -359,7 +359,7 @@ elseif($api)$ret=api::load($api);//api
 if(!$ret && !$lin && !$load && $p && $m){//user_mods
 	$func=msql::val('',nod('modules'),$m);
 	if($func && !is_array($func))$ret=cbasic::read($func,$p);}
-if($ret){if($dv)return divc('mod',$ret); else return $ret;}}
+if($ret){if($dv)return div($ret,'mod',$p); else return $ret;}}
 
 //['button','type','process','param','option','condition','root','icon','hide','private']
 static function mod_desk($r,$m){

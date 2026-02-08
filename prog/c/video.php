@@ -2,7 +2,7 @@
 class video{
 static $rp=['youtube','youtu','vimeo','rumble','rutube','vk','dailymotion','framatube','crowdbunker','ted','livestream'];
 
-static function yt($f){$f=trim($f); $d=''; $tm=''; //echo $f;
+static function yt($f){$f=trim($f); $d=''; $tm='';
 if($p=strpos($f,'.be/'))$f=substr($f,$p+4);
 if($p=strpos($f,'live/'))$f=substr($f,$p+5);
 if($p=strpos($f,'v='))$f=substr($f,$p+2);
@@ -11,7 +11,7 @@ if($p=strpos($f,'&'))$f=substr($f,0,$p);
 return $f.($tm?'|'.$tm:'');}
 
 static function detect($f,$o='',$t='',$op=''){
-if(!$f)return; $fb=$f; //echo $f.'--'.$t;
+if(!$f)return; $fb=$f;
 //if(strpos($f,'/')===false)return '['.$f.'|'.$t.':'.$o.'video]';
 $f=nohttp($f); $fa=httproot($f); $ret='';
 if(strpos($f,'#'))$f=strto($f,'#'); $f=urldecode($f);//if(strpos($f,'?'))$f=strend($f,'?');
@@ -24,9 +24,9 @@ if(in_array($fa,self::$rp))switch($fa){
 	case('rumble'):$ret=between($f,'rumble.com/','-'); break;
 	case('rutube'):$ret=between($f,'video/','/?'); break;
 	case('vk'):$ret=between($f,'/video-','_'); break;
+	case('crowdbunker'):$ret=strend($f,'/'); break;
 	//case('livestream'):$ret=between($f,'com/','/'); break;
 	//case('framatube'):$ret=strend($f,'/'); break;
-	//case('crowdbunker'):$ret=strend($f,'/'); break;
 	default:return $fb;}
 //elseif(strpos($f,'.mp4'))return $fb;
 if($ret){
@@ -46,8 +46,8 @@ static function providers($d){
 if($nb==32)$vid='rutube';
 elseif($nb==7 && is_numeric($d))$vid='rutube'; //elseif($nb==9)$vid='vk';
 elseif($nb==9 && is_numeric($d))$vid='vimeo';
-//elseif($nb==11)$vid='crowdbunker';//collision with yt
 elseif($nb==11 or $nb==9)$vid='youtube';
+//elseif($nb==11 && is_alpha($d))$vid='crowdbunker';
 elseif($nb==7)$vid='rumble';
 elseif($nb==5 or $nb==6 or $nb==7 or $nb==18 or $nb==19)$vid='daily';
 elseif($nb==36)$vid='peertube';//d2a5ec78-5f85-4090-8ec5-dc1102e022ea
@@ -73,7 +73,7 @@ static function lk($d){[$d,$t]=cprm($d);
 $p=self::providers($d); $u=self::url($d,$p); if($u)$u=http($u);
 return lkt('',$u,pictxt('chain',$t?$t:$p));}
 
-static function lknl($d,$id){[$d,$t]=cprm($d);
+static function lknl($d,$id){[$d,$t]=cprm($d); $ti='';
 [$d,$tm]=expl('|',$d); if($tm)$tm='&t='.$tm.'s';
 $p=self::providers($d); $u=self::url($d,$p); 
 if($u)[$ti,$tx,$im]=web::read($u,0,$id);
@@ -85,8 +85,6 @@ if($p=='youtube')$u='https://img.youtube.com/vi/'.$id.'/hqdefault.jpg';
 //elseif($p=='daily')$u='https://dailymotion.com/video/'.$id;
 //elseif($p=='peertube')$u='https://framatube.org/videos/watch/'.$id;
 //elseif($p=='ted')$u='https://embed.ted.com/talks/'.$id;
-//elseif($p=='rumble')$u=web::get_metas(self::url($id,$p),2);
-//elseif($p=='rutube')$u=web::get_metas(self::url($id,$p),2);
 else $u=web::get_metas(self::url($id,$p),2);
 return $u;}
 
@@ -173,12 +171,12 @@ static function reader($d,$p,$w,$h,$id){$w=$w?$w:'100%'; $h='320px';
 $u=match($p){
 'youtube'=>'www.youtube.com/embed/'.$d.''.$tm,
 'youtu'=>'www.youtube.com/embed/'.$d.''.$tm,
-'rumble'=>'rumble.com/embed/'.$d.'/?pub=4',
 'daily'=>'www.dailymotion.com/embed/video/'.$d,
 'vimeo'=>'player.vimeo.com/video/'.$d,
 'vk'=>'vk.com/video_ext.php?oid='.$d.'&hd=2',
 'peertube'=>'framatube.org/videos/embed/'.$d,
 'crowdbunker'=>'crowdbunker.com/embed/'.$d,
+'rumble'=>'rumble.com/embed/'.$d.'/?pub=4',
 'rutube'=>'rutube.ru/play/embed/'.$d,
 'ted'=>'video.ted.com/'.$d,
 'vk'=>'video.vk.com/'.$d,

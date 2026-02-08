@@ -74,7 +74,7 @@ $ret.=picto('sunset').' '.self::digits(struntil($rb['sunset'],':')).' ';//10548/
 //$ma=($rb['moon_age'])/6; $mx=60; $mi=$mx/8;//&#127761;->&#127768;
 //for($i=0;$i<8;$i++)if($ma<$i)$mn=$i; $mo=127761+$mn; //$ret.='&#'.$mo.';';
 //$phases=[1=>127761,127762,127763,127764,127765,127766,127767,127768,127761];
-$ret.=calendav::callbt();
+//$ret.=calendav::callbt();
 return $ret;}
 
 static function build($p,$o){$ret='-'; $day=date('ymdH');

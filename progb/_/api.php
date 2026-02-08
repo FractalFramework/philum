@@ -215,7 +215,7 @@ return 'select '.$slct.' from '.$qda.''.$in.' where '.$wh.$gr.$ord;}
 //dig
 static function dig($ra){$r=pop::define_digr();
 $n=$ra['minday']?$ra['minday']:ses('nbj'); $n=self::resetdig($n); $ret='';
-if(!($r[$n]??''))$r[$n]=$n>=365?round($n/365,2):$n; $cur=$r[$n];
+if(!$r[$n])$r[$n]=$n>=365?round($n/365,2):$n; $cur=$r[$n];
 $r[$n].=' '.($n<365?plurial($cur,3):plurial($cur,7));
 $r['all']=nms(100);
 $j=$ra['rid'].'_api,call2_hid'.$ra['rid'].'_exs__';
@@ -273,7 +273,7 @@ if(empty($ra['nopages']))$ret.=self::pages($ra);
 $ra['page']=1;//reinit page 1 after dig //$ra['page']??1
 $com=implode_k($ra,',',':');
 $ret.=hidden('hid'.$ra['rid'],$com);
-return tagb('header',$ret);}
+return tag('header',['id'=>'headload'],$ret);}
 
 #build
 static function build($r,$ra){$n=count($r); $rm=[]; $rd=[]; $rt=[];
