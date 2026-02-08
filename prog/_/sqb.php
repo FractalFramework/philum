@@ -76,7 +76,7 @@ if(is_array($r))foreach($r as $k=>$v){$i++;
 		$rb[]=$kb.' not in (:'.implode(',:',array_keys($rta)).')';}
 	elseif($k==='not null'){$rb[]=$kb.' is not null';}//?
 	elseif($k==='is null'){$rb[]=$kb.' is null';}
-	else{$rb[]=$k.'=:'.$k; $rt[$k]=$v;}}
+	else{$rb[]=$k.'=:'.$kc; $rt[$kc]=$v;}}
 if($rc)$rb[]='('.implode(' or ',$rc).')';
 if($o)return [$rb,$rt];
 $q=implode(' and ',$rb); if($q)$q='where '.$q; if($w)$q.=$w;

@@ -47,7 +47,7 @@ if($lmt)$wh.=' and '.$limit.'>='.$lmt;
 //$ret=sql::call($sql,'',0);//auth(6)?1:
 $sql='select '.$qda.'.id,msg from '.$qda.' 
 inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id
-where nod="'.ses('qb').'" and substring(frm,1,1)!="_" and re>0 and '.$qda.'.id>'.$min.' and '.$qda.'.id<='.$max.' and (msg LIKE "%'.$p.'%" or suj LIKE "%'.$p.'%") '.$wh.' order by '.$qda.'.'.prmb(9);
+where nod="'.ses('qb').'" and re>0 and '.$qda.'.id>'.$min.' and '.$qda.'.id<='.$max.' and (msg LIKE "%'.$p.'%" or suj LIKE "%'.$p.'%") '.$wh.' order by '.$qda.'.'.prmb(9);
 $rq=sql::qr($sql); $rt=[];
 if($p)while($r=sql::qrw($rq)){$msg=strtolower($r[1]);
 	$rt[]=[isint($id),$r[0],substr_count($msg,strtolower($p))];}

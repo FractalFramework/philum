@@ -61,7 +61,7 @@ return divc('menus',$ret);}
 
 static function prevnext_art($b,$o,$id,$tg=''){$wh=''; $rb=[];
 $id=$id?$id:ses('read'); $ta=picto('kleft'); $tb=picto('kright'); $htacc=htacc('read');
-if($b=='rub')$wh='and frm="'.get('frm').'" '; else $wh='and substring(frm,1,1)!="_"';
+if($b=='rub')$wh='and frm="'.get('frm').'" ';
 $ord=strtolower(prmb(9)); $col=strto($ord,' ');
 $w='and nod="'.ses('qb').'" and re>"0" '.$wh; $dy=0;
 if($col=='day'){$dy=sql('day','qda','v',$id); $w1='day<"'.$dy.'"'; $w2='day>"'.$dy.'"';}
@@ -290,7 +290,7 @@ if($rch)$w=' and msg like "%'.$rch.'%"';
 else{$w=' and '.$tri.'.day>'.timeago($p); if($p!=7 && $p!=1)$w.=' and '.$tri.'.day<'.timeago($np);}
 if($typ)$w.=' and re="'.$typ.'"';
 if(!auth(6))$w.=' and '.$qda.'.re>"0" and '.$qdi.'.re="1"';
-$r=sql::inner($qdi.'.id,'.$qdi.'.ib','qda','qdi','ib','kv',$qda.'.nod="'.ses('qb').'"'.$w.' and substring('.$qda.'.frm,1,1)!="_" order by '.$qdi.'.day desc',0);
+$r=sql::inner($qdi.'.id,'.$qdi.'.ib','qda','qdi','ib','kv',$qda.'.nod="'.ses('qb').'"'.$w.' order by '.$qdi.'.day desc',0);
 if(!$d)$r=array_flip($r);//permut k and v in output_arts_trk
 $j='modtrk_mod,callmod___m:tracks,p:'.$p.',t:'.ajx($t).',d:'.yesno($d).',o:'.$o;
 $bt=lj('txtbox',$j,nmx([185,$d?22:2]));

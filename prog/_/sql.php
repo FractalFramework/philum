@@ -70,14 +70,14 @@ if($q)foreach($q as $k=>$v){
 	elseif($k=='_code')$w.=' '.$v.' ';
 	elseif($k=='or')$rc+=self::where($v,1);//'or'=>['!status'=>'3','!typ'=>'0']
 	elseif($k=='and')$rb+=self::where($v,1);//second iteration
-	elseif($c1=='|')$rc[]=$k1.'='.self::qres($v);//or
-	elseif($c1=='!')$rb[]=$k1.'!='.self::qres($v);
-	//elseif($c2=='>=')$rb[]=$k2.'>='.self::qres($v);
-	//elseif($c2=='<=')$rb[]=$k2.'<='.self::qres($v);
-	elseif($c1=='>')$rb[]=$k1.'>'.self::qres($v);
-	elseif($c1=='<')$rb[]=$k1.'<'.self::qres($v);
-	elseif($c1=='}')$rb[]=$k1.'>='.self::qres($v);
-	elseif($c1=='{')$rb[]=$k1.'<='.self::qres($v);
+	elseif($c1=='|')$rc[]=$k1.'="'.self::qres($v).'"';//or
+	elseif($c1=='!')$rb[]=$k1.'!="'.self::qres($v).'"';
+	//elseif($c2=='>=')$rb[]=$k2.'>="'.self::qres($v).'"';
+	//elseif($c2=='<=')$rb[]=$k2.'<="'.self::qres($v).'"';
+	elseif($c1=='>')$rb[]=$k1.'>"'.self::qres($v).'"';
+	elseif($c1=='<')$rb[]=$k1.'<"'.self::qres($v).'"';
+	elseif($c1=='}')$rb[]=$k1.'>="'.self::qres($v).'"';
+	elseif($c1=='{')$rb[]=$k1.'<="'.self::qres($v).'"';
 	elseif($c1=='%')$rb[]=$k1.' like "%'.self::qres($v).'%"';
 	elseif($c1=='[')$rb[]=$k1.' like "'.self::qres($v).'%"';
 	elseif($c1==']')$rb[]=$k1.' like "%'.self::qres($v).'"';
@@ -85,7 +85,7 @@ if($q)foreach($q as $k=>$v){
 	elseif($c1=='&')$rb[]=$k1.' between ("'.$v[0].'" and "'.$v[1].'")';
 	elseif($c1=='(')$rb[]=$k1.' in ('.implode(',',self::atmr($v)).')';
 	elseif($c1==')')$rb[]=$k1.' not in ('.implode(',',self::atmr($v)).')';
-	elseif($c1=='#')$rb[]='date_format('.$k1.',"%y%m%d")='.self::qres($v);
+	elseif($c1=='#')$rb[]='date_format('.$k1.',"%y%m%d")="'.self::qres($v).'"';
 	//elseif($c1=='-')$rb[]='substring('.$k1.',1,1)!="'.$v.'"';
 	elseif($c1=='-')$rb[]='substring('.$k1.',1,'.strlen($v).')!="'.self::qres($v).'"';
 	elseif($c1=='+')$rb[]='substring('.$k1.',1,'.strlen($v).')="'.self::qres($v).'"';

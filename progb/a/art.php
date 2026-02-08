@@ -288,11 +288,11 @@ return $rb;}
 
 //subarts
 static function ib_arts_nb($id){$sq['ib']=$id;
-if(!auth(1))$sq['}re']='1';// $sq['-frm']='_';
+if(!auth(1))$sq['>re']='0';
 return $ids=sql('count(id)','qda','v',$sq);}
 
 static function ibload($id,$ord,$pg=1){$bt=''; if(!$pg)$pg=1;
-$w=auth(4)?'':'and re>="1" and substring(frm,1,1)!="_"';
+$w=auth(4)?'':'and re>="1"';
 $r=sql('id','qda','k','ib="'.$id.'" '.$w.' order by id '.($ord?'desc':'asc')); if(!$r)return;
 $ra=array_chunk($r,20,true); $nb=count($r); $rb=$ra[$pg-1]??$r;
 [$is,$go]=$ord?[41,40]:[40,41]; $ic=$ord?'s-top':'s-down'; $t=pictxt($ic,nms($is));

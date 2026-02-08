@@ -35,7 +35,7 @@ return $t.tabler($ret);}
 
 static function matchres($p,$o,$prm=[]){
 $d=$prm[0]??''; $o=strpos($d,' ')?' IN BOOLEAN MODE':'';
-$sql='select art.id,MATCH (msg) AGAINST ("'.$d.'"'.$o.') as score from art inner join txt on txt.id=art.id where day>'.timeago(90).' and day<'.ses('dayx').' and nod="'.ses('qb').'" and substring(frm,1,1)!="_" and re>0 and MATCH (msg) AGAINST ("'.$d.'"'.$o.') order by score DESC';
+$sql='select art.id,MATCH (msg) AGAINST ("'.$d.'"'.$o.') as score from art inner join txt on txt.id=art.id where day>'.timeago(90).' and day<'.ses('dayx').' and nod="'.ses('qb').'" and re>0 and MATCH (msg) AGAINST ("'.$d.'"'.$o.') order by score DESC';
 $r=sql::call($sql,''); //pr($r);
 return tabler($r);}
 

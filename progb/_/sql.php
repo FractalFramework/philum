@@ -83,13 +83,13 @@ if($q)foreach($q as $k=>$v){
 	elseif($c1==']')$rb[]=$k1.' like "%'.self::qres($v).'"';
 	elseif($c1=='~')$rb[]=$k1.' like "'.self::qres($v).'"';
 	elseif($c1=='&')$rb[]=$k1.' between ("'.$v[0].'" and "'.$v[1].'")';
-	elseif($c1=='(')$rb[]=$k1.' in ("'.implode('","',self::atmr($v)).'")';
-	elseif($c1==')')$rb[]=$k1.' not in ("'.implode('","',self::atmr($v)).'")';
+	elseif($c1=='(')$rb[]=$k1.' in ('.implode(',',self::atmr($v)).')';
+	elseif($c1==')')$rb[]=$k1.' not in ('.implode(',',self::atmr($v)).')';
 	elseif($c1=='#')$rb[]='date_format('.$k1.',"%y%m%d")="'.self::qres($v).'"';
 	//elseif($c1=='-')$rb[]='substring('.$k1.',1,1)!="'.$v.'"';
 	elseif($c1=='-')$rb[]='substring('.$k1.',1,'.strlen($v).')!="'.self::qres($v).'"';
 	elseif($c1=='+')$rb[]='substring('.$k1.',1,'.strlen($v).')="'.self::qres($v).'"';
-	elseif(is_array($v))$rb[]=$k.' ("'.implode('","',self::atmr($v)).'")';
+	elseif(is_array($v))$rb[]=$k.' ('.implode(',',self::atmr($v)).')';
 	//elseif(is_array($v))$rb+=self::where($v,1);
 	elseif(substr($v??'',0,9)=='substring')$rb[]=$v;
 	//elseif(strpos($v,' in'))$rb[]=$v;

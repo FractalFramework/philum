@@ -155,7 +155,6 @@ $daya=time_prev($days); $daya=$daya?timeago($daya):ses('daya');
 $sq['daymax']='day<'.$daya;
 $sqnd['suj']='suj like "%'.$rch.'%" ';
 $sq['nod']='nod="'.$qb.'"';
-$sq['frm']='substring(frm,1,1)!="_"';
 $sq['re']='re>0';
 if(!$tit && $rch){
 	//$sqin['msg']='inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id';
@@ -194,7 +193,7 @@ return $ret;}
 
 static function rechday($d){
 $first=sql('day','qda','v','day>"'.$d.'" limit 1');
-$ret=sql::call('select '.db('qda').'.id from '.db('qda').' where nod="'.ses('qb').'" and substring(frm,1,1)!="_" and day<="'.$first.'" order by day desc limit 200','k',0);//auth(6)?1:
+$ret=sql::call('select '.db('qda').'.id from '.db('qda').' where nod="'.ses('qb').'" and day<="'.$first.'" order by day desc limit 200','k',0);//auth(6)?1:
 return $ret;}
 
 static function array_intersect_c($r){$rt=[]; $rb=[]; $mx=1;

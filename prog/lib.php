@@ -539,7 +539,7 @@ function is_tw($d){if(strpos($d,'twitter.com')!==false or strpos($d,'x.com')!==f
 //vars
 function expk($s,$d){[$k,$v]=explode($s,$d); return [$k=>$v];}
 function expl($s,$d,$n=2){$r=explode($s,$d??''); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
-function expld($d,$s=''){if(!$s)$s=strpos($d,';')!==false?';':' '; return explode($s,$d);}
+function expld($d,$s=' '){$s=strpos($d,';')!==false?';':$s; return explode($s,$d);}
 function impl($s,$r){$rb=[]; foreach($r as $k=>$v)if($v)$rb[]=$v; return join($s,$rb);}
 function opt($d,$s,$n=2){$r=explode($s,$d); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}//old
 function arr($r,$n=''){$rb=[]; $n=$n?$n:count($r); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}

@@ -103,7 +103,7 @@ $_SESSION['cats']=$r?$r:[]; return $r;}
 
 static function cats($o=''){
 $sq=['nod'=>ses('qb'),'re>'=>'0','_order'=>'frm'];
-if(!$o)$sq['-frm']='_';
+if(!$o)$sq['-frm']='_';//!
 return sql('distinct(frm)','qda','rv',$sq);}
 
 static function define_qbn(){

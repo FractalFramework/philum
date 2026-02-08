@@ -3,7 +3,7 @@ class umdico{
 static function source(){//AADOAUGOO
 $r=msql::read('users','ummo_umvoc_1');
 $ry=['','word','expression','name','planet','unit','math'];
-$sql='nod="ummo" and substring(frm,1,1)!="_" and frm!="Etudes" and frm!="Blog" and substring(frm,1,2)!="ES" and re>0 and msg like ';
+$sql='nod="ummo" and frm!="Etudes" and frm!="Blog" and re>0 and msg like ';
 if($r)foreach($r as $k=>$v){if($k!=msql::$m)
 	$rb=sql::inner('frm','qdm','qda','id','k',$sql.'"% '.$v[0].' %"','');
 	$v[2]=is_numeric($v[2])?$ry[$v[2]]:$v[2];

@@ -646,7 +646,7 @@ static function adm_overcat($o=''){$rb=[];
 self::patch_overcats();
 $r=sql('id,msg','qdd','kv',['val'=>'surcat']);
 if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rb[$cat]=[$ov,$k];}
-$r=sql('frm','qda','k','nod="'.ses('qb').'" and substring(frm,1,1)!="_" order by frm');
+$r=sql('frm','qda','k','nod="'.ses('qb').'" order by frm');
 self::update_cats($r,$rb);
 $jb='scat_adm,overcatdel___';
 $ret=div(helps('overcat').hlpbt('overcats_menu')); $rt=[];

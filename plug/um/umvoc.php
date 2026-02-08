@@ -16,9 +16,9 @@ foreach($r as $k=>$v)$rb[$v[0]]=$v[0]; sort($rb);
 return $rb;}
 
 static function findrefs($d){$rb=[];
-$w='nod="ummo" and substring(frm,1,1)!="_" and frm!="Etudes" and frm!="Blog" and (lg="fr" or lg="") and re>0 ';
+$w='nod="ummo" and frm!="Etudes" and frm!="Blog" and (lg="fr" or lg="") and re>0 ';
 $r=sql::inner('distinct(suj)','qdm','qda','id','rv',$w.'and msg REGEXP "[[:blank:]]'.$d.'[[:blank:]]"',0);
-if(!$r)$r=sql::inner('distinct(suj)','qdm','qda','id','rv',$w.'and msg REGEXP "[[:<:]]'.$rch.'[[:>:]]"',0);
+if(!$r)$r=sql::inner('distinct(suj)','qdm','qda','id','rv',$w.'and msg REGEXP "[[:<:]]'.$d.'[[:>:]]"',0);
 //if(!$r)$r=sql::inner('distinct(suj)','qdm','qda','id','rv',$w.'and msg like "%'.$d.'%"',0);
 foreach($r as $k=>$v)$rb[]=between($v,'[',']');
 return join(' ',$rb);}
