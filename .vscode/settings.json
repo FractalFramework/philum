@@ -1,6 +1,6 @@
 {
 	"editor.insertSpaces": false,
-	"editor.wordWrap": "on",
+	"editor.wordWrap": "off",
 	"files.eol": "\n",
 	"editor.acceptSuggestionOnCommitCharacter": false,
 	"editor.suggest.showFields": false,
@@ -8,12 +8,12 @@
 	"editor.suggest.showEnums": false,
 	"editor.suggest.showEnumMembers": false,
 	"editor.suggest.showConstants": false,
-	"editor.quickSuggestionsDelay": 100,
+	"editor.quickSuggestionsDelay": 300,
 	"editor.inlineSuggest.showToolbar": "never",
 	"editor.inlineSuggest.enabled": false,
 	"editor.acceptSuggestionOnEnter": "smart",
 	"diffEditor.experimental.showEmptyDecorations": false,
-	"diffEditor.wordWrap": "on",
+	"diffEditor.wordWrap": "off",
 	"editor.renderWhitespace": "none",
 	"editor.autoIndent": "none",
 	"editor.guides.indentation": false,
@@ -31,5 +31,7 @@
 	"editor.guides.highlightActiveIndentation": false,
 	"php.format.codeStyle": "Off",
 	"ipynb.pasteImagesAsAttachments.enabled": false,
-	"npm.autoDetect": "off"
+	"npm.autoDetect": "off",
+	"editor.wrappingIndent": "none",
+	"editor.indentSize": "tabSize"
 }

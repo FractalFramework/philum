@@ -662,9 +662,8 @@ else if($k>=4)$rt[]=$v.$ra[$k];
 return join(' ',$rt);}
 
 #builders
-function scroll($r,$d,$max=10,$w='',$h='',$id=''){$h=is_numeric($h)?$h.'px':$h;
-$n=is_array($r)?count($r):$r; $s=$w?'width:'.$w.'px; ':''; $s.='max-height:'.($h?$h:'420px').';';
-if($n>$max or !$n)return div($d,'scroll','scrll'.$id,$s); else return $d;}
+function divscroll($d,$h='420',$id=''){
+return div($d,'scroll',$id,'max-height:'.$h.'px;');}
 
 #medias
 function iframe($d,$w='',$h=''){

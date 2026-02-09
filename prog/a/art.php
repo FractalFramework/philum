@@ -288,11 +288,11 @@ return $rb;}
 
 //subarts
 static function ib_arts_nb($id){$sq['ib']=$id;
-if(!auth(1))$sq['}re']='1';// $sq['-frm']='_';
+if(!auth(1))$sq['>re']='0';
 return $ids=sql('count(id)','qda','v',$sq);}
 
 static function ibload($id,$ord,$pg=1){$bt=''; if(!$pg)$pg=1;
-$w=auth(4)?'':'and re>="1" and substring(frm,1,1)!="_"';
+$w=auth(4)?'':'and re>="1"';
 $r=sql('id','qda','k','ib="'.$id.'" '.$w.' order by id '.($ord?'desc':'asc')); if(!$r)return;
 $ra=array_chunk($r,20,true); $nb=count($r); $rb=$ra[$pg-1]??$r;
 [$is,$go]=$ord?[41,40]:[40,41]; $ic=$ord?'s-top':'s-down'; $t=pictxt($ic,nms($is));
@@ -461,7 +461,7 @@ if($prw==3 && $rch)ses::$r['look']=$rch;
 if($prw=='rch' && !$rch)$prw=2;//close after contradict rch
 if($prw=='rch' && $rch){get('search',$rch); $rt=ma::prepare_rech($id,$msg,[]); $ret=$rt['msg'];}
 else $ret=self::prepare_msg($id,$msg,$r,$prw); //$ret.=divc('clear','');
-if(rstr(35) && $prw<3)$ret=scroll(strlen($ret),$ret,1000,'','400',$id);//navig($id).
+if(rstr(35) && $prw==3)$ret=divscroll($ret,'320',$id);
 return $ret;}
 
 static function playd($id,$prw,$tp='',$nl=''){//4ajax: reload inside

@@ -113,12 +113,12 @@ if($sz>1000000 or $w>500 or $h>200){
 	//$bt.=lj('txtyl',$did.'_img,rewrite__3_'.ajx($da),'del exef');//resolve exef
 	//$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_0_'.$id,'reduce to 940|940');
 	$bt.=btn('txtred',$w.'px/'.$h.'px - '.fsizeformat($sz));
-	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50%');}
+	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50%');
+	$bt.=lj('txtyl',$did.'_artim,imdel___'.ajx($da).'_'.$id,'del');}
 elseif(!$w){$ex=img::original($da,$id);
 	if($ex)$bt.=lj('popdel',$did.'_img,restoreim__3_'.ajx($da).'_'.$id.'_1','restore');}
 if($xt=='.png')$bt.=lj('txtyl',$did.'_artim,png2jpg___'.ajx($da).'_'.$id,'png2jpg');
 elseif($xt=='.webp')$bt.=lj('txtyl',$did.'_artim,webp2jpg___'.ajx($da).'_'.$id,'webp2jpg');
-if($sz>800)$bt.=lj('txtyl',$did.'_artim,imdel___'.ajx($da).'_'.$id,'del');
 if($bt)$ret=divd($did,$ret.$bt); return $ret;}
 
 static function getimg($da,$id,$m=''){

@@ -42,7 +42,12 @@ if(ses('dev')){$rt['chrono']=btj($chrono,'relj()','popbt').' | '.btn('small','ra
 if(ses::$er)$rt['err']=div(divr(ses::$er),'small');}
 return $rt;}
 
-static function artbtedt($id){return $id?lj('','popup_meta,metall___'.$id.'_3',picto('tag',20)).' '.lj('','popup_meta,titedt___'.$id.'_3',picto('meta',20)).' '.lj('','popup_edit,call____'.$id,picto('edit',20)).' '.btj(picto('edit2',20),atj('editart',$id)):'';}
+static function artbtedt($id){if(!$id)return;
+$rt[]=lj('','popup_meta,metall___'.$id.'_3',picto('tag',20));
+$rt[]=lj('','popup_meta,titedt___'.$id.'_3',picto('meta',20));
+$rt[]=lj('','popup_edit,call____'.$id,picto('edit',20));
+$rt[]=btj(picto('edit2',20),atj('editart',$id));
+return join(' ',$rt);}
 
 //poplinks
 static function popadmin($st){

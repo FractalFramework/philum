@@ -131,9 +131,9 @@ if($ret)return tagb($ul,$ret);}
 static function anchor($d){
 [$n,$v]=split_one('|',$d,2); return lkn($n,$v);}
 
-static function iframe_bt($d,$m,$nl){
+static function iframe_bt($d,$m,$id,$nl){
 [$u,$t]=cprm($d); $t=$t==1?nms(194):$t; $bt=lkt('',$u,picto('url'));
-if($nl)return lk($u);
+if($nl && $id!='test')return lk($u);
 elseif($m==3 && !$t)return iframe($d,'100%','').lkc('small',$u,domain($u)).br();
 else return lj('txtx','popup_usg,iframe__3_'.ajx($u),pictxt('window',$t)).' '.$bt;}
 

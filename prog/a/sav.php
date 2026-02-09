@@ -330,7 +330,7 @@ $bt=hidden($id,$t); if(!$t)$t=picto('filelist'); $opt='adcat';//innerhtml
 return $bt.togbub('sav,catslct',$id.'_'.$id.'_'.$opt.'_'.$n,btd($opt.$id,$t));}
 
 static function catslct($btid,$hid,$opt,$n){$frm=ses('frm');
-//$r=sql('frm','qda','k',['nod'=>ses('qb'),'-frm'=>'_','>day'=>timeago(360),'_order'=>'frm']);
+//$r=sql('frm','qda','k',['nod'=>ses('qb'),'>re'=>'0','>day'=>timeago(360),'_order'=>'frm']);
 $r=ses('cats'); $r=array_flip($r);
 if(auth(3))$r['_system']=1; if(!isset($r[$frm]))$r[$frm]=1; $r['public']=1;
 return usg::dropmenu_jb($r,$hid,$btid,'adcat',$n);}

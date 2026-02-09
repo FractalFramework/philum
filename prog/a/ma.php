@@ -29,7 +29,7 @@ static function jread($c,$id,$t){$ic=self::find_art_link($id);
 return self::popart(is_numeric($ic)?$ic:$id,$t);}
 
 static function read_msg($d,$m){$id=self::find_id($d); if(!$id)return;
-$ok=sql('id','qda','v',['id'=>$id,'>re'=>'0']); if(!$ok)return;//'-frm'=>'_','name'=>ses('usr')
+$ok=sql('id','qda','v',['id'=>$id,'>re'=>'0']); if(!$ok)return;//'name'=>ses('usr')
 $ret=sql('msg','qdm','v',$id);
 if($m==2 or $m=='noimages' or $m=='nl')$ret=art::preview($ret,$id);
 elseif($m=='inner')$ret=conn::parser($ret,$m,$id);
@@ -41,13 +41,13 @@ static function lastartid(){$r=self::lastart(); return $r[0]??0;}
 static function lastartday(){$r=self::lastart(); return $r[1]??0;}
 static function lastid($b){return sql('id',$b,'v',['_order'=>prmb(9),'_limit'=>'1']);}
 static function lastartrq(){
-return sql('id,day','qda','a',['nod'=>ses('qb'),'>re'=>'0','-frm'=>'_','_order'=>'id desc','_limit'=>'1']);}
+return sql('id,day','qda','a',['nod'=>ses('qb'),'>re'=>'0','_order'=>'id desc','_limit'=>'1']);}
 static function oldestart(){
-return sql('day','qda','v',['nod'=>ses('qb'),'>re'=>'0','-frm'=>'_','_order'=>'day asc','_limit'=>'1']);}
+return sql('day','qda','v',['nod'=>ses('qb'),'>re'=>'0','_order'=>'day asc','_limit'=>'1']);}
 
 static function find_id($id){if($id=='last')return self::lastid('qda');
 elseif(!is_numeric($id))return self::id_of_suj($id); else return $id;}
-static function is_public($id){return sql('id','qda','v',['id'=>$id,'>re'=>'0','-frm'=>'_']);}
+static function is_public($id){return sql('id','qda','v',['id'=>$id,'>re'=>'0']);}
 static function maxdays(){$d=sesmk2('ma','oldestart'); if(!$d)$d=0;
 $t=ses('daya'); if(!$t)$t=time(); $e=$t-$d; if($e)return round($e/84600);}
 static function maxyears(){return ceil(self::maxdays()/365);}
@@ -55,7 +55,7 @@ static function id_of_suj($id){
 return sql('id','qda','v',['suj'=>$id,'nod'=>ses('qb'),'_order'=>'id asc','_limit'=>'1']);}
 static function ib_of_id($id){
 $ib=sql('ib','qda','v',$id); if($ib && is_numeric($ib) && $ib!=$id)return $ib;}
-static function id_of_ib($ib){return sql('id','qda','k',['ib'=>$ib,'>re'=>'0','-frm'=>'_']);}
+static function id_of_ib($ib){return sql('id','qda','k',['ib'=>$ib,'>re'=>'0']);}
 static function suj_of_id($id){$suj=sql('suj','qda','v',$id); if(is_string($suj))return $suj;}
 static function related_arts($id){$d=sql('msg','qdd','v',['ib'=>$id,'val'=>'related']);
 return $d?explode(' ',$d):[];}
@@ -83,7 +83,6 @@ return $r;}
 static function rqtall($c='',$kv='',$sq=[],$z=''){
 $sq+=['>re'=>0,'nod'=>ses('qb')];////??!1
 $sq['<day']=ses('daya'); if(rstr(3))$sq['>day']=ses('dayb');
-if(!isset($sq['frm']))$sq['-frm']='_';
 if(!isset($sq['_order']))$sq['_order']=prmb(9);
 //if(!isset($sq['lg']) && ses('lang')!='all')$sq['lg']=ses('lang');
 if(!$c)$c='id,day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg';

@@ -137,7 +137,6 @@ else $sq['slct'][]=$qda.'.id,'.$qda.'.ib,'.$qda.'.day,'.$qda.'.mail,'.$qda.'.frm
 if($p['json'] or $p['sql'] or $p['msg'])$sq['slct'][]='msg';
 //if($p['catid']){$qdc=db('qdc'); $sq['inner'][]='inner join '.$qdc.' on '.$qdc.'.id='.$qda.'.frm and '.$qda.'.frm="'.$p['catid'].'"';}
 if($p['cat'])$sq['and'][]=$qda.'.frm'.self::sql_in($p['cat']);
-//else $sq['and'][]='substring('.$qda.'.frm,1,1)!="_"';
 else $sq['and'][]=$qda.'.frm not in ("_system","_trash")';
 if($p['nocat'])$sq['and'][]=$qda.'.frm'.self::sql_in($p['nocat'],1);
 if($p['nochilds'])$sq['and'][]=$qda.'.ib="0"';
@@ -451,8 +450,9 @@ return [$vb,urldecode($g),urldecode($v)];}}
 
 //mod-articles
 static function load_rq(){$g=ses::$r['get'];//boot build_content
-$rb=valk($g,['tag','search','source','parent','folder','author','rubtag','tagid','utag','cluster']);
+$rb=valk($g,['tag','cat','frm','search','source','parent','folder','author','rubtag','tagid','utag','cluster']);
 if($d=$rb['tag']){$ra['tag']=self::tag_ci($d); $ra['ti']='tag';}
+elseif($d=$rb['frm']){$ra['cat']=str::protect_url($d,1); $ra['ti']='cat';}
 elseif($d=$rb['search']){$ra['search']=str::protect_url($d,1); $ra['ti']='search';}
 elseif($d=$rb['author']){$ra['owner']=str::protect_url($d,1); $ra['ti']='author';}
 elseif($d=$rb['folder']){$ra['folder']=str::protect_url($d,1); $ra['ti']='folder';}

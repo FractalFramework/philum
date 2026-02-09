@@ -59,8 +59,8 @@ while($r=self::qrw($rq))if($r)switch($p){
 return $rt;}
 
 static function where($q,$o=''){$rb=[]; $rc=[]; $w='';
-if(is_numeric($q))return 'where id='.self::atm($q); elseif(!$q)return;
-elseif(is_string($q))return 'where '.$q;
+if(is_numeric($q))return 'where id="'.$q.'"'; elseif(!$q)return;
+elseif(is_string($q))return 'where '.$q;//to depreciate
 if($q)foreach($q as $k=>$v){
 	$c1=substr($k,0,1); $k1=substr($k,1);
 	//$c2=substr($k,0,2); $k2=substr($k,2);

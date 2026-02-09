@@ -152,6 +152,11 @@ $c=$v?' active':''; $t=$t?$t:($v?$v:'...'); $h=hidden($id,$v);
 $hid='bt'.$id; $j=$id.'_'.$f.'_'.ajx($v).'_'.ajx($o);
 return lj('txtx'.$c,'popup_chkj_'.$id.'_'.$hid.'_'.$j,$t,atd($hid)).$h;}
 
+#builders
+function scroll($r,$d,$max=10,$w='',$h='',$id=''){$h=is_numeric($h)?$h.'px':$h;
+$n=is_array($r)?count($r):$r; $s=$w?'width:'.$w.'px; ':''; $s.='max-height:'.($h?$h:'420px').';';
+if($n>$max or !$n)return div($d,'scroll','scrll'.$id,$s); else return $d;}
+
 #roots
 function groot($d=''){return (is_dir('plug')?'':'/').$d;}//used by rss
 function htac($d){return prms('htacc')?'/'.$d.'/':'/?'.$d.'=';}

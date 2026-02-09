@@ -229,7 +229,7 @@ return match($c){
 ':tw'=>pop::tw($d),
 ':twusr'=>twapi::play_usrs($d),
 ':twimg'=>twit::img($d,1),
-':iframe'=>mk::iframe_bt($d,$m,$nl),
+':iframe'=>mk::iframe_bt($d,$m,$id,$nl),
 ':webm'=>pop::getmp4($d.'.webm',$id,rstr(145)?0:1),
 ':mp4'=>pop::getmp4($d.'.mp4',$id,rstr(145)?0:1),
 ':mp3'=>pop::getmp3($d.'.mp3',$id,rstr(145)?0:1),

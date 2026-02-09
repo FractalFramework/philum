@@ -461,7 +461,7 @@ if($prw==3 && $rch)ses::$r['look']=$rch;
 if($prw=='rch' && !$rch)$prw=2;//close after contradict rch
 if($prw=='rch' && $rch){get('search',$rch); $rt=ma::prepare_rech($id,$msg,[]); $ret=$rt['msg'];}
 else $ret=self::prepare_msg($id,$msg,$r,$prw); //$ret.=divc('clear','');
-if(rstr(35) && $prw<3)$ret=scroll(strlen($ret),$ret,1000,'','400',$id);//navig($id).
+if(rstr(35) && $prw==3)$ret=divscroll($ret,'320',$id);
 return $ret;}
 
 static function playd($id,$prw,$tp='',$nl=''){//4ajax: reload inside
