@@ -259,7 +259,7 @@ static function quality_stats($id,$t,$o){//dev
 return $id.'-'.$t.'-'.$o.br();}
 
 static function short_arts($p=4000){$dayb=$p?timeago($p):ses('dayb');
-return sql('id','qda','k',['nod'=>ses('qb'),'}re'=>'1','>day'=>$dayb,'<host'=>$p,'_order'=>prmb(9)]);}
+return sql('id','qda','k',['>re'=>'0','>day'=>$dayb,'<host'=>$p,'_order'=>prmb(9)]);}
 
 static function home_plan($load){
 if(!$load)return; ksort($load); $i=0; $ret=[];
@@ -334,7 +334,7 @@ static function child_arts($id){if(!$id)$id=ses('read');
 return sql('id','qda','k',['ib'=>$id]);}
 
 static function same_title($id){if(!$id)$id=ses('read');
-return sql('id','qda','k',['suj'=>$id,'nod'=>ses('qb'),'!id'=>$id,'_order'=>prmb(9)]);}
+return sql('id','qda','k',['suj'=>$id,'!id'=>$id,'_order'=>prmb(9)]);}
 
 static function call_context($cntx){
 $r=$_SESSION['mods']; $ret='';//context as module

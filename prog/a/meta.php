@@ -761,7 +761,7 @@ $ret.=divd('cbk'.$rid,'');
 return divd($rid,$ret);}
 
 static function tags_list($cat){$ret='';
-//$ra=sql::inner('idtag,idart','qda','qdta','idart','k',['nod'=>ses('qb')]);
+//$ra=sql::inner('idtag,idart','qda','qdta','idart','k',[]);
 $ra=sql('idtag,idart','qdta','k',''); if($ra)arsort($ra);
 $rb=sql('id,tag','qdt','kv',['cat'=>$cat]); $rc=[]; $rd=[];
 if($ra)foreach($ra as $k=>$v)if(isset($rb[$k]))$rc[$k]=[$rb[$k],$v];//idtag=>id,tag

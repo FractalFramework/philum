@@ -21,7 +21,7 @@ $d=str_replace ("\n",' ',$d); $r=explode(' ',$d);
 foreach($r as $k=>$v)$rt[]=self::popart($v,1);
 return div(join('',$rt),'list');}
 
-static function find_art_link($d){$sq=['nod'=>ses('qb')];
+static function find_art_link($d){
 if(is_numeric($d))$sq['id']=$d; else $sq['suj']=$d;
 return sql('id','qda','v',$sq);}
 
@@ -43,7 +43,7 @@ static function lastid($b){return sql('id',$b,'v',['_order'=>prmb(9),'_limit'=>'
 static function lastartrq(){
 return sql('id,day','qda','a',['nod'=>ses('qb'),'>re'=>'0','_order'=>'id desc','_limit'=>'1']);}
 static function oldestart(){
-return sql('day','qda','v',['nod'=>ses('qb'),'>re'=>'0','_order'=>'day asc','_limit'=>'1']);}
+return sql('day','qda','v',['nod'=>ses('qb'),'>re'=>0,'_order'=>'day asc','_limit'=>'1']);}
 
 static function find_id($id){if($id=='last')return self::lastid('qda');
 elseif(!is_numeric($id))return self::id_of_suj($id); else return $id;}
@@ -52,7 +52,7 @@ static function maxdays(){$d=sesmk2('ma','oldestart'); if(!$d)$d=0;
 $t=ses('daya'); if(!$t)$t=time(); $e=$t-$d; if($e)return round($e/84600);}
 static function maxyears(){return ceil(self::maxdays()/365);}
 static function id_of_suj($id){
-return sql('id','qda','v',['suj'=>$id,'nod'=>ses('qb'),'_order'=>'id asc','_limit'=>'1']);}
+return sql('id','qda','v',['suj'=>$id,'_order'=>'id asc','_limit'=>'1']);}
 static function ib_of_id($id){
 $ib=sql('ib','qda','v',$id); if($ib && is_numeric($ib) && $ib!=$id)return $ib;}
 static function id_of_ib($ib){return sql('id','qda','k',['ib'=>$ib,'>re'=>'0']);}
@@ -63,8 +63,8 @@ static function data_val($v,$id,$val,$m=''){$sq=$id?['ib'=>$id]:[];
 return sql($v,'qdd',$m?$m:'v',$sq+['val'=>$val]);}
 
 static function id_of_urlsuj($d){$id='';
-$id=sql('id','qda','v',['nod'=>ses('qb'),'thm'=>$d]);//if(rstr(38))
-if(!$id){$id=sql('id','qda','v',['nod'=>ses('qb'),'}re'=>'1','%suj'=>$d,'_limit'=>'1']);
+$id=sql('id','qda','v',['>re'=>'0','thm'=>$d]);//if(rstr(38))
+if(!$id){$id=sql('id','qda','v',['>re'=>'0','%suj'=>$d,'_limit'=>'1']);
 	if($id){$suj=self::suj_of_id($id); $thm=str::hardurl($suj); sql::upd('qda',['thm'=>$thm],$id);}}
 return $id;}
 
@@ -73,7 +73,7 @@ static function import_art($d,$m){
 return self::popart($d,$suj).n().n();}
 
 static function find_cat($nbj){
-if($nbj){$sq=['nod'=>ses('qb')];
+if($nbj){$sq=[];
 	if(prmb(16))$sq['>day']=timeago($nbj);
 	$r=sql('frm','qda','k',$sq,0);}
 else $r=array_flip(ses('cats'));
@@ -81,7 +81,7 @@ return $r;}
 
 #rqt
 static function rqtall($c='',$kv='',$sq=[],$z=''){
-$sq+=['>re'=>0,'nod'=>ses('qb')];////??!1
+$sq+=['>re'=>0];
 $sq['<day']=ses('daya'); if(rstr(3))$sq['>day']=ses('dayb');
 if(!isset($sq['_order']))$sq['_order']=prmb(9);
 //if(!isset($sq['lg']) && ses('lang')!='all')$sq['lg']=ses('lang');

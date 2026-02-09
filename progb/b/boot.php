@@ -51,7 +51,7 @@ $v=sql('hub','qdu','v',['name'=>ses('usr')]);
 if($v)$_SESSION['mn'][$uid]=$v;}}
 
 static function define_qb(){$hub=get('hub');
-$r=ses('mn'); $defo=prms('default_hub'); //if(!$hub)$hub=$defo;
+$r=ses('mn'); $defo=prms('default_hub');
 if($hub && $hub!='=' && isset($_SESSION['mn'][$hub])){$aqb=$hub; $qbd=$_SESSION['mnd'][$hub];}
 elseif($defo && !ses('qb'))[$qbd,$aqb]=arr(sql('id,name,hub','qdu','r',['name'=>$defo]),2);
 if(isset($aqb)){$_SESSION['qb']=$aqb; $_SESSION['qbd']=$qbd;}
@@ -102,7 +102,7 @@ if(!$r or $o){$r=self::cats(); $r=msql::save('server',nod('cats'),$r);}
 $_SESSION['cats']=$r?$r:[]; return $r;}
 
 static function cats($o=''){
-$sq=['nod'=>ses('qb'),'re>'=>'0','_order'=>'frm'];
+$sq=['nod'=>ses('qb'),'>re'=>'0','_order'=>'frm'];
 if(!$o)$sq['-frm']='_';//!
 return sql('distinct(frm)','qda','rv',$sq);}
 
@@ -401,7 +401,7 @@ ses::$m=[
 
 #cache
 static function cache_arts($x=''){//if()return;
-$lastart=''; $rtb=[]; $rt=[]; $main=[]; $nod=nod('cache');
+$lastart=''; $rt=[]; $main=[]; $nod=nod('cache');
 if($x)msql::del('',$nod); $main=msql::read('',$nod,1);
 if($main)$last=current($main); $lastart=$last[0]??ma::lastid('qda');
 if(($lastart && !isset($main[$lastart])) or $x){$r=[];
@@ -418,7 +418,7 @@ static function init(){self::define_config(); $_SESSION['philum']=checkversion()
 self::define_hubs(); self::define_qb(); self::define_params();}
 
 static function reboot(){
-require(boot::cnc()); self::reset_ses(); ses::$dayx=time();//self::cats(); 
+require(self::cnc()); self::reset_ses(); ses::$dayx=time();//self::cats(); 
 self::init(); self::define_use(); self::define_iq(); self::define_auth(); self::seslng(1); self::time_system('ok'); self::cache_arts(); self::define_condition();}// self::define_clr();
 
 static function rebuild(){$_SESSION['rqt']=[]; ses::$dayx=time(); ses('daya',ses::$dayx);

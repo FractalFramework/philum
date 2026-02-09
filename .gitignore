@@ -48,6 +48,15 @@ plug/old/*
 plug/tiers/*
 plug/unused/*
 plug/tools/*
+plug/sci/*
+!plug/sci/maths*
+!plug/sci/pi*
+!plug/sci/phi*
+!plug/sci/anagram*
+plug/spi/*
+!plug/sspici/atomic*
+
+plg/um/*
 
 msql/design/*
 !msql/design/public/*

@@ -402,13 +402,13 @@ function appin($a,$m,$p='',$o='',$ob=''){
 if(method_exists($a,$m))return $a::$m($p,$o,$ob);}
 
 #eye
-function eye($p=''){$iq=ses('iq'); $qbd=ses('qbd');
+function eye(){$iq=ses('iq'); $qbd=ses('qbd');
 //json::add('sys','eye',[$iq,$_SERVER['HTTP_HOST']]);
 $pag=ses::$r['get']['read']??'';
 if(!$pag)$pag=implode_k(ses::$r['get'],'&','='); if(get('id')=='imgc/')exit;
 /*if(!rstr(22) && !auth(6)){if(!isset($_SESSION['crwl'][$iq]))$_SESSION['crwl'][$iq]=0;
 	$_SESSION['crwl'][$iq]+=1; if($_SESSION['crwl'][$iq]>100)exit;}*/
-if($pag && $iq)sql::sav('qdv',['iq'=>$iq,'qb'=>$qbd,'page'=>$pag,'time'=>sqldate()],0,0);}
+if($pag && $iq)sql::sav('qdv',['iq'=>$iq,'qb'=>$qbd,'page'=>$pag,'time'=>'NOW()'],0,0);}
 
 #ftp
 function ftp($d){$r=ses::s('ftp'); if(!$r)return 'no';

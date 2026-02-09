@@ -6,14 +6,14 @@ static $cats=['O6'=>'Oaxiiboo 6','OW'=>'Oolga Waam','OT'=>'Oomo Toa','OAY'=>'Oya
 static function cats($p){$r=self::$cats;
 return $p=='All'?implode('","',$r):$r[$p]??$p;}
 
-static function req_arts_c($p){$w=self::cats($p);
-return sql('count(id)','qda','v','frm in ("'.$w.'")');}
+static function req_arts_c($p){
+return sql('count(id)','qda','v',['(frm'=>self::cats($p)]);}
 
-static function req_last($p='All'){$w=self::cats($p);
-return sql('id','qda','v','frm in ("'.$w.'") order by day desc limit 1');}
+static function req_last($p='All'){
+return sql('id','qda','v',['(frm'=>self::cats($p),'_order'=>'day desc','_limit'=>'1']);}
 
 static function id_of_suj($id){
-return sql('id','qda','v',['%suj'=>$id,'nod'=>ses('qb'),'(frm'=>self::$cats,'_order'=>'id asc','_limit'=>'1']);}
+return sql('id','qda','v',['%suj'=>$id,'(frm'=>self::$cats,'_order'=>'id asc','_limit'=>'1']);}
 
 static function req_arts_y($p,$pg,$lg){$nbp=prmb(6);
 if($pg!='all' && is_numeric($pg))$limit='limit '.(($pg-1)*20).',20'; else $limit='';//limit 10

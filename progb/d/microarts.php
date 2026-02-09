@@ -54,7 +54,7 @@ return view::call(self::tmp(),$rb);}
 
 static function build($p,$o=1){$rid=self::rid($p);
 $edt=''; $del=''; $rb=[]; if(!$o)$o=1;
-$sq=['nod'=>ses('qb'),'frm'=>'microart','suj'=>$p,'_order'=>'id desc'];
+$sq=['frm'=>'microart','suj'=>$p,'_order'=>'id desc'];
 $min=($o-1)*self::$nbp;
 $r=sql('id,day,msg,name','qdi','',$sq+['_limit'=>$min.','.self::$nbp]);
 $n=sql('count(id)','qdi','v',$sq);
@@ -77,7 +77,7 @@ return;}
 
 static function nav($p,$o){
 if(!$p)$p=self::$default; $rid=self::rid($p);
-$r=sql('distinct(suj)','qdi','rv',['frm'=>'microart','nod'=>ses('qb'),'_order'=>'suj']);
+$r=sql('distinct(suj)','qdi','rv',['frm'=>'microart','>re'=>'0','_order'=>'suj']);
 $j=$rid.'_microarts,call_inp_3';
 $ret=datalist('inp',$r,$p,16,'',$j);
 $ret.=lj('',$j,picto('ok')).' ';
