@@ -17,8 +17,14 @@ $t=$r['title']; $im=$r['thumbnail_url'];
 $tx=trim($r['author_name']).' / '.strend($r['author_url'],'/').' ('.$r['type'].')';
 return [$t,$tx,$im];}
 
+static function urlresolution($u){$u=nohttp($u);
+$r=[http($u),https('www.'.$u),http('www.'.$u)];//https($u),
+foreach($r as $k=>$v)if(joinable($v))return $v;}
+
 static function metaob($u){$t=$tx=$im='';
-try{$ra=get_meta_tags(https($u));}catch(Exception $e){echo $e->getMessage(); return;}
+//try{$ra=get_meta_tags(http($u));}catch(Exception $e){echo $e->getMessage(); echo $u; return;}
+$ra=@get_meta_tags(https($u));
+if(!$ra)$ra=@get_meta_tags(self::urlresolution($u));
 $r=['og:title','twitter:title','shorttitle']; foreach($r as $v)if(!$t)$t=$ra[$v]??'';
 $r=['og:description','description','twitter:description']; foreach($r as $v)if(!$tx)$tx=$ra[$v]??'';
 $r=['og:image','twitter:image:src','twitter:image']; foreach($r as $v)if(!$im)$im=$ra[$v]??'';

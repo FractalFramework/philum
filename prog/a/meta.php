@@ -119,7 +119,7 @@ $suj=ma::suj_of_id($id); return str::hardurl($suj);}
 
 #meta menu
 static function titedt($id,$m,$rch){$css='poph'; $ret='';
-$ra=sql('ib,day,name,nod,mail,suj,frm,img,thm,re,lg','qda','r',$id,1);
+$ra=sql('ib,day,name,nod,mail,suj,frm,img,thm,re,lg','qda','r',$id);
 [$ib,$day,$name,$hub,$src,$suj,$frm,$img,$url,$re,$lg]=$ra; if(!$lg)$lg=ses('lng');
 if(rstr(38))$ret.=btn('txtsmall2','#'.$id).' ';
 $ret.=toggle('','cbk'.$id.'_usg,getparent___'.$id,picto('topo'));

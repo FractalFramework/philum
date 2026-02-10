@@ -51,19 +51,11 @@ $v=sql('hub','qdu','v',['name'=>ses('usr')]);
 if($v)$_SESSION['mn'][$uid]=$v;}}
 
 static function define_qb(){$hub=get('hub');
-$r=ses('mn'); $defo=prms('default_hub'); //if(!$hub)$hub=$defo;
+$r=ses('mn'); $defo=prms('default_hub');
 if($hub && $hub!='=' && isset($_SESSION['mn'][$hub])){$aqb=$hub; $qbd=$_SESSION['mnd'][$hub];}
 elseif($defo && !ses('qb'))[$qbd,$aqb]=arr(sql('id,name,hub','qdu','r',['name'=>$defo]),2);
 if(isset($aqb)){$_SESSION['qb']=$aqb; $_SESSION['qbd']=$qbd;}
 if(!ses('qbd') && ses('qb'))$_SESSION['qbd']=sql('id','qdu','v',['name'=>ses('qb')]);}
-
-/*static function define_qb(){$hub=get('hub');
-$mn=ses('mn'); $defo=prms('default_hub');
-if($hub && $hub!='=' && isset($mn[$hub])){$qb=$hub; $qbd=$_SESSION['mnd'][$hub];}
-elseif($defo && !ses('qb')){
-	$r=sql('id,name','qdu','w',['name'=>$defo],1); if($r)[$qbd,$qb]=$r;}
-if(isset($qb)){$_SESSION['qbd']=$qbd; $_SESSION['qb']=$qb;}
-if(!ses('qbd') && ses('qb'))$_SESSION['qbd']=sql('id','qdu','v',['name'=>ses('qb')]);}*/
 
 static function prmb_defaults($r){
 //$ra=[1=>'1',3=>400,6=>20,7=>'1;2;3;4',8=>'phi',9=>'id desc'];
