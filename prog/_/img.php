@@ -21,7 +21,7 @@ static function rewrite($d){$im='img/'.$d;
 [$w,$h,$ty]=imsize($im);
 self::build($im,$im,$w,$h,'');
 $bt=btn('txtyl',$w.'-'.$h.':'.fsize($im));
-return image($im).$bt;}
+return img($im).$bt;}
 
 static function save($id,$im,$dc){
 $ex=sql('id','qdg','v',['ib'=>$id,'im'=>$im]);

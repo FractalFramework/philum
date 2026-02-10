@@ -101,7 +101,7 @@ if($r)foreach($r as $k=>$v){
 $im=img::build_mini($v,'72/48',0,0); $f='img/'.$v;
 if(is_file($f))[$w,$h]=imsize($f); else [$w,$h]=['',''];
 if($h && $h<200)$vb=$v.':sim'; else $vb=$v;
-if($im)$rt[]=ljb('','insert','['.$vb.']',image($im.'?'.$rid,'72','',att($v.':'.$w.'-'.$h)));}
+if($im)$rt[]=ljb('','insert','['.$vb.']',image($im.'?'.$rid,'72','','',$v.':'.$w.'-'.$h));}
 return join('',$rt);}
 
 static function searchbt($d){[$p,$o]=cprm($d);

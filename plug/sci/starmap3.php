@@ -77,7 +77,7 @@ $rb=starlib::prep($r,$ra,$p); //pr($rb);
 $rb=starlib::positions($rb);
 $f='_datas/png/starmap3.png'; mkdir_r($f);
 self::draw($f,$rb);
-//$ret=image('/'.$f.'?'.randid());
+//$ret=img('/'.$f.'?'.randid());
 $ret=btim(''.$f.'?'.randid(),self::$w);
 return $ret;}
 

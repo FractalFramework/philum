@@ -139,7 +139,7 @@ $r=star::build($sq,1); //pr($r);
 $rb=self::prep($r,$ra); //pr($rb);
 $f='_datas/png/starsky.png'; mkdir_r($f);
 self::draw($f,$rb);
-$ret=image('/'.$f.'?'.randid());
+$ret=img('/'.$f.'?'.randid());
 return $ret;}
 
 static function call($p,$o,$prm=[]){

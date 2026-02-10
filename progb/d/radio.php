@@ -7,7 +7,7 @@ static $default='';
 static function r($r){$ret='';
 foreach($r as $k=>$v){
 if(is_array($v)){$rt=self::r($v); if($rt)$ret.=tagc('ul','pubart',$rt);}
-elseif($v)$ret.=llj('popbt','popup_radio,edit__x__'.ajx($v).'',$v);}
+elseif($v)$ret.=li(lj('popbt','popup_radio,edit__x__'.ajx($v),$v));}
 return $ret;}
 
 static function funcradio($d,$k,$v,$n){//dir,url,file,tnb

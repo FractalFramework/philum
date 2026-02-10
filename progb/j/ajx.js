@@ -316,7 +316,7 @@ addEvent(popa,'mouseup',function(event){stop_drag(event); selectable(popa,true);
 var popu=getbyid('popu'); poph(popu);//before ppos
 var pos=ppos(popu,decal);
 if(act>100)var pos=bpos('bt'+act,'pop'+nb,0);
-else if(!isNumeric(act)){
+else if(!isnum(act)){
 	if(act.substr(0,4)=='bpop'){var ab=1; var pos=bpos('btpop'+act,nb,1);}
 	else if(act.substr(0,2)=='bt'){var ab=0; var pos=bpos(act,'pop'+nb,1);
 		addclp('pop'+nb); if(popa)popa.style.display='none'; var as=1;}
@@ -519,7 +519,7 @@ var dn=j.split("_"); //exs=[];//dn[5]=i;//dn[3]='exs';
 //active_modlist(bt.parentNode.id,ia);//mod
 active_divlist(bt.parentNode,ia);//mod
 if(b!=2)updateurl('menu',j,ia,b);
-ajaxcall('artbtedt','pop,artbtedt',[dn[3]],[],'');
+//if(isnum(dn[3]))ajaxcall('artbtedt','pop,artbtedt',[dn[3]],[],'');
 ajaxcall(dn[0],dn[1],[dn[2],dn[3]],[],'');}
 
 function SaveBf(val){//photo

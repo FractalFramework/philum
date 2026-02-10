@@ -191,9 +191,9 @@ $ret.=divd('banslct',self::bandir(''));
 return $ret;}
 
 static function faviconsav($d){$f='imgb/icons/system/philum/16/'.$d.'.png';
-copy($f,'favicon.ico'); return image($f);}
+copy($f,'favicon.ico'); return img($f);}
 static function favicon(){$dr='imgb/icons/system/philum/16';
-$r=explore($dr,'files',1); $ret=btn('small','favicon').' : '.btd('favc',image('favicon.ico')).br();;
+$r=explore($dr,'files',1); $ret=btn('small','favicon').' : '.btd('favc',img('favicon.ico')).br();;
 if($r)foreach($r as $k=>$v){$v=strto($v,'.'); $ico=img($dr.'/'.$v.'.png').' ';
 	$ret.=lj('','favc_adm,faviconsav_'.$v,$ico);}
 return divc('bkg',$ret);}

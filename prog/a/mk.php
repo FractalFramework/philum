@@ -428,7 +428,7 @@ return html_entity_decode($d);}
 static function thumb_b($f,$id){$xt=xt($f); $w=200; $h=140;
 $imb=img::thumbname(str_replace('/','',$f),$w,$h);
 if(!file_exists('imgc/'.$imb) or ses('rebuild_img'))img::build($f,$imb,$w,$h,$_SESSION['rstr'][16]);
-return ljb('','SaveBf',ajx($f).'___'.$id,image($imb));}
+return ljb('','SaveBf',ajx($f).'___'.$id,img($imb));}
 
 static function popim($im,$d,$id=''){
 return ljb('','SaveBf',ajx($im).'___'.$id,$d);}

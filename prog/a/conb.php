@@ -146,7 +146,7 @@ return match($c){
 //':mini'=>$b=='epub'?$da=$p:'',
 ':download'=>lka($p),
 ':pdf'=>lka($p),
-':img'=>image($p),
+':img'=>img($p),
 ':picto'=>picto($p,$o),
 ':ascii'=>ascii($p,$o),
 ':glyph'=>glyph($p,$o),
@@ -213,11 +213,11 @@ elseif(is_numeric($p))return ma::jread('',$p,$o);}
 
 static function sconn_links($d,$p,$o,$c,$xt,$b){
 if(is_img($p)){//image|text
-	if(!$o)return image(goodroot($p));
-	if(is_img($o))return lkt('',goodroot($p),image(goodroot($o)));
+	if(!$o)return img(goodroot($p));
+	if(is_img($o))return lkt('',goodroot($p),img(goodroot($o)));
 	return mk::popim($p,pictxt('img',$o),'test');}
 elseif(is_img($o)){//link|image
-	return lkt('',goodroot($p),image(goodroot($o)));}
+	return lkt('',goodroot($p),img(goodroot($o)));}
 elseif(substr($p,0,1)=='/')return lka($p,$o);
 elseif(substr($p,0,4)=='http')return lka($p,$o);}
 
@@ -227,7 +227,7 @@ static function scapp_tag($d){[$p,$o]=cprm($d); if(!$o)$o=sql('cat','qdt','v',['
 
 static function epub($c,$da,$d){
 if(is_img($da) && strpos($da,'|')===false){$im=goodroot($da,''); $fb='_datas/epub/OEBPS/images/';
-	if(file_exists($im) && !file_exists($fb.$da))copy($im,$fb.$da); return image('../images/'.$da);}
+	if(file_exists($im) && !file_exists($fb.$da))copy($im,$fb.$da); return img('../images/'.$da);}
 $ret=match($c){
 ':twitter'=>pop::twitxt($da,''),
 ':videourl'=>video::lk($d),
@@ -237,10 +237,10 @@ $ret=match($c){
 default=>''};}
 
 static function img($da,$d,$b){
-//if(is_img($p))return image(goodroot($p,1));
+//if(is_img($p))return img(goodroot($p,1));
 if(is_img($da) && strpos($da,'|')===false){$im=goodroot($da,'');
-	if($b=='mini'){[$w,$h]=imsize($im); if($w>400 or $h>300)return artim::minimg($d,'');}// return image($im);
-	elseif(is_file($im))return image($im);//;artim::mkimg($da,3,'','',1)
+	if($b=='mini'){[$w,$h]=imsize($im); if($w>400 or $h>300)return artim::minimg($d,'');}// return img($im);
+	elseif(is_file($im))return img($im);//;artim::mkimg($da,3,'','',1)
 	else return picto('img');}}
 
 #wygsyg//sconn2:$a=1
@@ -433,7 +433,7 @@ if(!$ret)$ret=match($c){
 ':date'=>mkday(is_numeric($o)?$o:'',$p),
 ':title'=>ma::suj_of_id($p),
 ':read'=>ma::read_msg($o,3),
-':image'=>image($p),
+':image'=>img($p),
 ':thumb'=>artim::thumb_d($p,$o,''),
 ':picto'=>picto($p,$o),
 //high_level

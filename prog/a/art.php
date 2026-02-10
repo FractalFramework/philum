@@ -460,8 +460,8 @@ if($prw>1)$msg=sql('msg','qdm','v',$id);//rstr(5) or
 if($prw==3 && $rch)ses::$r['look']=$rch;
 if($prw=='rch' && !$rch)$prw=2;//close after contradict rch
 if($prw=='rch' && $rch){get('search',$rch); $rt=ma::prepare_rech($id,$msg,[]); $ret=$rt['msg'];}
-else $ret=self::prepare_msg($id,$msg,$r,$prw); //$ret.=divc('clear','');
-if(rstr(35) && $prw<3)$ret=scroll(strlen($ret),$ret,1000,'','400',$id);//navig($id).
+else $ret=self::prepare_msg($id,$msg,$r,$prw);
+if(rstr(35) && $prw==3)$ret=divscroll($ret,'320',$id);
 return $ret;}
 
 static function playd($id,$prw,$tp='',$nl=''){//4ajax: reload inside
@@ -523,12 +523,12 @@ if($re==2)$tks='30,240,30'; elseif($re==3)$tks='240,30,30'; elseif($re==4)$tks='
 if($tks)$rt['sty']='background-color:rgba('.$tks.',0.1);';
 if($host==$ip && (ses::$dayx-$day)<600 or auth(6))//redit
 	$rt['edit'].=lj('','popup_tracks,redit___'.$id,picto('edit')).' ';
-$rc=prmd(prmb(10),'/');//!
+$rc=expld(prmb(10));
 if($name==$usr)$name='Admin';
 $rt['author']=lj('','popup_tracks,form___'.$read.'_'.$id,$name?$name:nms(210)).' ';
 if($re>1 && isset($rc[$re+1]))$rt['opt']=$rc[$re+1];
 $f='imgb/usr/'.$name.'_avatar.gif';
-if(is_file($f))$rt['avatar']=image($f,48,48,ats('vertical-align:bottom;'));
+if(is_file($f))$rt['avatar']=image($f,48,48,'vertical-align:bottom;');
 $len=mb_strlen($msg); 
 if($re && $len>400 && !$o){$kmx=str::kmax_nb(800,$msg);
 	if($len>$kmx){$msg=mb_substr($msg,0,$kmx);

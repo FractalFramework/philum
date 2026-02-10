@@ -20,7 +20,7 @@ if($auth>1){
 	if($auth>3 && !$rst[76])$rt['batch']=popbub('call','batch',$ico[4],$top,$hv);}
 if($auth>2){
 	if(!$rst[79])$rt['addurl']=popbub('call','addart',$ico[7],$top,$hv);
-	//if(!$rst[79])$rt['addurl']=llj('','bubble_sav,addart',$ico[7]);
+	//if(!$rst[79])$rt['addurl']=li(lj('','bubble_sav,addart',$ico[7]));
 	else $rt['addart']=li(btj($ico[7],sj('popup_edit,call').' closebub(this);'));}
 if(!$rst[81])$rt['favs']=popbub('','favs',$ico[17],$top,$hv);//favs
 if(!$rst[80])$rt['arts']=popbub('','arts',$ico[6],$top,$hv);//arts
@@ -133,9 +133,9 @@ static function getmp4($d,$id,$o=1){if($o)$d=self::vacuum_media($d,$id); return 
 static function getmp3($d,$id,$o=1){if($o)$d=self::vacuum_media($d,$id); return audio($d);}
 static function getimg($d,$id,$m,$nl,$pw){$im=artim::getimg($d,$id,$m);
 return artim::mkimg($im,$m,$pw,$id,$nl);}
-static function getxif($d){$d=gcim($d); $r=imgexif($d); return image('/'.$d).tabler($r);}
+static function getxif($d){$d=gcim($d); $r=imgexif($d); return img('/'.$d).tabler($r);}
 static function imgdata($d){[$d,$xt]=cprm($d); if(!$xt)$xt='jpeg';
-return image('data:image/'.$xt.';base64,'.base64_encode($d));}
+return img('data:image/'.$xt.';base64,'.base64_encode($d));}
 
 #pages
 static function btpages_nb($nbp,$pg){

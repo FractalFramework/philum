@@ -70,7 +70,7 @@ return self::draw_canvas($ret,$w,$h);}
 static function graph_mk($r,$w,$h){
 $dr='_datas/stats/'; $f=$dr.'/'.date('ymd').'.png'; mkdir_r($f); if(!is_dir($dr))mkdir($dr);
 if($r)graph::draw($f,$w,$h,$r,'','yes');//getclrs('',7);
-return image('/'.$f.'?'.randid(),'','');}
+return img('/'.$f.'?'.randid());}
 
 static function graph($c,$n,$prm){
 [$r,$w,$h]=self::boot($c,$n,$prm);

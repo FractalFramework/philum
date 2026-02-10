@@ -71,7 +71,7 @@ imagestring($im,$font,$w-24,$h+4,'al',$black);
 //imagefilledellipse($im,$ctr,$ctr,10,10,$white);
 //imageellipse($im,$ctr,$ctr,10,10,$black);
 imagepng($im,$out);
-return image('/'.$out.'?'.randid());}
+return img('/'.$out.'?'.randid());}
 
 static function algo_manu($p,$b,$out){
 $ra[]=['volume unitaire','IMOO','WOAM'];
@@ -125,7 +125,7 @@ foreach($r as $k=>$v){
 imagefilledellipse($im,$ctr,$ctr,10,10,$white);
 imageellipse($im,$ctr,$ctr,10,10,$black);
 imagepng($im,$out);
-return image('/'.$out.'?'.randid());}
+return img('/'.$out.'?'.randid());}
 
 //p=rayon en al, o=nb mondes
 static function algo(int $p,$b,$m){$rt=[];

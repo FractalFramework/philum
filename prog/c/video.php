@@ -117,7 +117,7 @@ return lka(http($u),$ti??'');}
 static function imlk($d,$id){
 $p=self::providers($d); $u=self::url($d,$p);
 if($u)[$ti,$tx,$im]=web::read($u,0,$id);
-return lk(http($u),image($im));}
+return lk(http($u),img($im));}
 
 static function play($da,$id,$m){[$d,$o]=cprm($da); //[$d,$tm]=expl('|',$d);
 if(substr($d,0,4)=='http'){$p=self::extractpr($d); $d=self::detect($d,$m,'',2);}
@@ -134,7 +134,7 @@ else $j=$rid.'_video,call___'.ajx($d).'_'.$p.'_';
 //$t=$o&&$o!='1'?$o:($ti);
 if($p=='youtube' or $p=='vimeo')$ic=$p; else $ic='video';
 $lk=lkt('',http($u),$ti).' ';
-if($im && ((!$o && $m>2) or $m=='vd'))$ic=image($im); else $ic=picto($ic,28);
+if($im && ((!$o && $m>2) or $m=='vd'))$ic=img($im); else $ic=picto($ic,28);
 $bt=lj('',$j,$ic).sti();
 if($tx)$lk.=togbub('video,txt',ajx($d).'_'.$id,picto('bubble'));
 if(auth(4))$lk.=togbub('web,redit',ajx($u).'_'.$rid.'_'.$id,picto('editxt'));

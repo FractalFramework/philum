@@ -33,7 +33,7 @@ if($rb)foreach($rb as $k=>$v)if($v['title']){$reb=''; $rc=[];
 	//foreach($v as $ka=>$va)$reb.=tagb($ka,$va);
 	//$ret.=tagb('channel',$reb); $rt='';
 	$rc[]=lj('','popup_sav,batchpreview__3_'.ajx($v['link']),pictxt('view',$v['title']));
-	//if($v['descr'])$rt[]=tagb('section',image($v['img']).$v['descr']);
+	//if($v['descr'])$rt[]=tagb('section',img($v['img']).$v['descr']);
 	$rt[]=div(join(' ',$rc));}
 return div(join('',$rt),'');}
 

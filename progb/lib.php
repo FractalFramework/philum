@@ -48,7 +48,6 @@ function lka($u,$v='',$p=''){return '<a href="'.$u.'"'.$p.'>'.($v?$v:domain($u))
 function lkc($c,$u,$v){return '<a href="'.$u.'"'.atc($c).'>'.$v.'</a>';}
 function lkt($c,$u,$v,$p=''){return '<a href="'.$u.'"'.atc($c).$p.' target="_blank">'.($v?$v:$u).'</a>';}
 function lkn($u,$v=''){return '<a name="'.$u.'">'.$v.'</a>';}
-//function lkh($oc,$ov,$v,$c=''){return '<a'.atc($c).atk($oc).atmo($ov).'>'.$v.'</a>';}
 function llk($c,$u,$v){return li(lk($u,$v),$c);}
 function lj($c,$j,$v,$p=''){if(ses('dev'))$p.=att($j);
 	return '<a onclick="sj(this)" data-j="'.$j.'"'.atc($c).$p.'>'.$v.'</a>';}//att
@@ -56,13 +55,10 @@ function ljr($r,$v,$c='',$t=''){return '<a onclick="'.atjr('sjr',$r).'" '.atc($c
 function lh($c,$h,$v,$p=''){return '<a href="'.$h.'" onclick="return hj(this)"'.atc($c).$p.'>'.$v.'</a>';}
 function ljb($c,$j,$p,$v,$o=''){$j=atjr($j,$p); return '<a'.atk($j).atc($c).$o.'>'.$v.'</a>';}
 function ljh($c,$j,$p,$v,$o=''){$j=atjr($j,$p); return '<a'.atmo($j).atmu($j).atc($c).$o.'>'.$v.'</a>';}
-//function ljp($p,$j,$v){return '<a'.atk(sj($j)).' '.$p.'>'.$v.'</a>';}//obs
 function blj($c,$id,$j,$v,$o=''){return span(lj('',$id.'_'.$j,$v,$o),$c,$id);}//kill
 function ljbt($c,$j,$v,$o=''){return span(lj('',$j,$v,$o),$c,strto($j,'_'));}
-function llj($c,$j,$v,$id='',$a=''){return '<li'.atd($id).'>'.lj($c,$j,$v,'').'</li>';}
-function image($d,$w='',$h='',$p=''){//if(substr($d,0,4)=='img/')$d='/'.$d;
-//if(!is_file($d))return picto('img');
-return '<img src="'.$d.'"'.atb('width',$w).atb('height',$h).' '.$p.'>';}
+function image($d,$w='',$h='',$s='',$t=''){
+return taga('img',['src'=>$d,'width'=>$w,'height'=>$h,'style'=>$s,'title'=>$t]);}
 function img($d,$s=''){return '<img src="'.$d.'"'.ats($s).'>';}
 function rolloverimg($a,$b){
 return taga('img',['src'=>$a,'onmouseover'=>'this.src=\''.$b.'\'','onmouseout'=>'this.src=\''.$a.'\'']);}
@@ -662,9 +658,8 @@ else if($k>=4)$rt[]=$v.$ra[$k];
 return join(' ',$rt);}
 
 #builders
-function scroll($r,$d,$max=10,$w='',$h='',$id=''){$h=is_numeric($h)?$h.'px':$h;
-$n=is_array($r)?count($r):$r; $s=$w?'width:'.$w.'px; ':''; $s.='max-height:'.($h?$h:'420px').';';
-if($n>$max or !$n)return div($d,'scroll','scrll'.$id,$s); else return $d;}
+function divscroll($d,$h='420',$id=''){
+return div($d,'scroll',$id,'max-height:'.$h.'px;');}
 
 #medias
 function iframe($d,$w='',$h=''){

@@ -35,7 +35,7 @@ else sql::sav('profil',$ra);
 return btn('txtyl','ok');}
 
 static function avatar($u){$f=adm::avatarimg($u);
-return image('/'.$f,'48','48',ats('vertical-align:0px;'));}
+return image('/'.$f,'48','48','vertical-align:0px;');}
 
 static function form($r,$o=''){
 //$ret=tagb('h2','','My Profil :)');

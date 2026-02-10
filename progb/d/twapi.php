@@ -202,7 +202,7 @@ foreach($rb as $k=>$v){
 $rb[$k][1]=lkt('',twit::lk($v[1]),pictxt('link-out',$v[1],14));
 $rb[$k][2]=lj('','popup_twit,call__3_'.ajx($v[1]).'_ban',pictxt('popup',$v[2],14));
 $im=twit::getimg($v[5],1);
-$rb[$k][5]=image(host().'/img/'.$im,ats('max-width: inherit;'));}
+$rb[$k][5]=img(host().'/img/'.$im,'max-width: inherit;');}
 return $rb;}
 
 static function play_usrs($d){$rid=rid($d);//from list of usrs

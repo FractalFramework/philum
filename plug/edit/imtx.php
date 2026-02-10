@@ -15,6 +15,6 @@ $j=$rid.'_imtx,call_txtarec,plsm_2';
 $ret=console('txtarec',$p,$j);
 $ret.=checkbox_j('plsm','','plasma','',$j);
 $ret.=lj('',$j,picto('ok')).' ';
-return $ret.divd($rid,image('/'.self::$f));}
+return $ret.divd($rid,img('/'.self::$f));}
 }
 ?>

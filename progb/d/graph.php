@@ -95,7 +95,7 @@ return tabler($rt);}
 static function img($r,$t,$w=600,$h=100){
 $dr='_datas/graphs/'; $f=$dr.'/'.$t.'.png'; mkdir_r($f);
 if($r)self::draw($f,$w,$h,$r,'999999','yes');
-return image('/'.$f.'?'.randid(),'','');}
+return img('/'.$f.'?'.randid());}
 
 static function call($r,$t){
 $ret=self::img($r,$t,800,100);

@@ -140,8 +140,8 @@ return match($c){
 ':console'=>divc('console',$d),
 ':figure'=>artim::figure($d,$pw,$nl,$id),
 ':effect'=>btn('effect',$d),
-':img'=>image($d),
-':jpg'=>image($d.'.jpg'),//old
+':img'=>img($d),
+':jpg'=>img($d.'.jpg'),//old
 ':math'=>tagb('math',conb::parse($d,'math')),
 ':td'=>tagb('td',$d),
 ':tr'=>tagb('tr',$d),
@@ -253,7 +253,7 @@ return match($c){
 ':download'=>mk::download($d),
 ':exif'=>pop::getxif($d),
 //':b64'=>img64($d),
-':b64'=>image('img/'.artim::b64img($d,$id,$m)),
+':b64'=>img('img/'.artim::b64img($d,$id,$m)),
 ':mini'=>artim::minimg($d,$id),
 ':sim'=>artim::minimg($d.'|/22',$id,1),
 ':thumb'=>artim::mini_d($d,$id,$nl),
@@ -324,7 +324,7 @@ $xt=strtolower(strrchr($da,'.'));
 if($da=='--')return hr();
 elseif($xt=='.pdf')return mk::pdfdoc($da,$nl,$pw);
 elseif($xt=='.epub')return lkt('',$p,pictxt('book2',$o?$o:strend($p,'/')));
-elseif($xt=='.svg'){[$p,$w,$h]=subparams($da); return image(goodroot($p),$w,$h);}//svg($da)
+elseif($xt=='.svg'){[$p,$w,$h]=subparams($da); return img(goodroot($p),$w,$h);}//svg($da)
 elseif($xt=='.txt'){$dt=goodroot($da); return lkt('',$dt,strrchr($dt,'/'));}
 //elseif($xt=='.heic')return img::heic2jpg($da);
 elseif($xt=='.gz')return mk::download($da);
@@ -380,7 +380,7 @@ if(is_img($p) && !$par){// && $html===false
 	$ret=artim::mkimg($p,$m,$pw,$id,$nl);}
 elseif(($par or $http) && $html===false){//secure double hooks
 	if(is_img($p)){//img|txt
-		if(is_img($o))$ret=mk::popim($p,image(goodroot($o)),$id);//mini
+		if(is_img($o))$ret=mk::popim($p,img(goodroot($o)),$id);//mini
 		$ret=mk::popim($p,pictxt('img',$o),$id);}
 	elseif(is_img($o)){//link|img
 		if(substr($o,0,4)=='http')$o=artim::getimg($o,$id,$m);
@@ -400,14 +400,14 @@ elseif(($par or $http) && $html===false){//secure double hooks
 	elseif(strpos($p,'/'))$ret=lkt('',goodroot($p),$o);
 	elseif(is_numeric($p) && strpos($o,':')===false && !$c)$ret=ma::jread('',$p,$o);}
 elseif($par){
-	if(is_img($p) && is_img($o))$ret=mk::popim($p,image(goodroot($o)),$id);//mini
+	if(is_img($p) && is_img($o))$ret=mk::popim($p,img(goodroot($o)),$id);//mini
 	elseif(is_img($p)){//img|txt
-		if(is_http($o))$ret=lkt('',$o,image(goodroot($p)));
+		if(is_http($o))$ret=lkt('',$o,img(goodroot($p)));
 		$ret=mk::popim($p,pictxt('img',$o,16),$id);}
 	elseif(is_img($o)){//link|img
 		if(substr($p,0,4)=='http')$ret=lkt('',$p,artim::mkimg($o,$m,$pw,$id,1));
 		elseif(is_numeric($p))$ret=mk::popim($o,pictxt('img',urlread($p)),$id);
-		else $ret=lkt('',$o,image(goodroot($p)));}
+		else $ret=lkt('',$o,img(goodroot($p)));}
 	else $ret=lkt('',$p,$o);}
 elseif(substr($da,0,1)=='@' && $tw=substr($da,1))$ret=pop::poptwit($da,'ban',$nl);
 //elseif(substr($da,0,1)=='#' && $tw=substr($da,1))$ret=pop::poptwit($da,'search',$nl);

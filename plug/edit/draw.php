@@ -67,7 +67,7 @@ static function css(){return '#canvas{border:1px solid #999; margin:0; display:b
 static function save($d){$f='img/draw_temp.png'; //$d.='=';
 //echo textarea('',$d,20,10);//(substr($d,22));
 write_file($f,base64_decode(substr($d,22)));
-return image($f);}
+return img($f);}
 
 static function home($w=580,$h=420){
 head::add('jslink','/js/jquery.js');

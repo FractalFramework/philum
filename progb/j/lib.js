@@ -100,8 +100,8 @@ function opac(op,id){if(id!=null){var ob=getbyid(id); if(ob!=undefined)ob.style.
 function resiz(op,id){getbyid(id).style.height=op+'px';}
 function slide(op,id){getbyid(id).style.marginLeft=op+'px';}
 function scrl(op,id){getbyid(id).scrollTo=op;}
-function isNumeric(n){return !isNaN(parseFloat(n)) && isFinite(n);}//Number(parseFloat(n))===n;
-function isNumber(n){return (n>=0||n<0);}//old
+function isnum(n){if(typeof n!="string")return false;
+return !isNaN(n) && !isNaN(parseFloat(n));}
 
 function setit(d,e){popw=getbyid(e);
 if(typeof(popw)!='undefined')popw.style.backgroundColor='#'+d;}

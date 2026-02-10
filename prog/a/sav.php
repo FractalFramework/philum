@@ -213,7 +213,7 @@ if($r)foreach($r as $k=>$dc){$bt=''; $f='img/'.$k; $fc='imgc/'.$k; $kb=ajx($k); 
 	$im=img::build_mini($k,'72/48',0,$z); $szx=fsize($f); $sz=round($szx/1024,2).' Ko';
 	$dob=in_array($szx,$rz)?1:0; $rz[$k]=$szx;
 	[$w,$h]=imsize($f); if($h && $h<200)$ks=$k.':sim'; else $ks=$k;
-	if($im)$bt=ljb('','insert','['.$ks.']',image($im.'?'.$rid,'72','',att($w.'/'.$h.' - '.$sz.' Ko'))); 
+	if($im)$bt=ljb('','insert','['.$ks.']',image($im.'?'.$rid,'72','','',$w.'/'.$h.' - '.$sz.' Ko')); 
 	else $bt=picto('img2',24);
 	$bt.=lj('txtx'.active($k,$imh),'img'.$id.',pim'.$id.'_sav,mkhero___'.$kb.'_'.$id,$i).' ';
 	$bt.=btn('small',$k);
@@ -233,7 +233,7 @@ return scroll($r,$ret,7,'',320);}
 static function placeimtrk($f,$id){$ret='';
 $fb=img::thumbname($f,72,72);
 $im=img::build('img/'.$f,$fb,'','',1);
-$ret=ljb('','insert_b',['['.$f.']',$id],image('/'.$im,'72','72',att($f)));
+$ret=ljb('','insert_b',['['.$f.']',$id],image('/'.$im,'72','72','',$f));
 return $ret;}
 
 static function art_gallery($id){$ret='';

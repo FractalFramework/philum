@@ -12,7 +12,7 @@ foreach($r as $k=>$v){
 		$vb=$v;}}
 $f='_datas/png/umd.png'; mkdir_r($f);
 graph::draw($f,'800','200',$bit,'','');
-$ret=image('/'.$f);
+$ret=img('/'.$f);
 $ret.=tabler($rb,'popw','');
 return $ret;}
 

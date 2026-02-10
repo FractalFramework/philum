@@ -8,8 +8,8 @@ static function build($p,$o){
 $r=scandir_b(self::$dr); //pr($r);
 $ima='/'.self::$dr.'/'.$r[$a];
 $imb='/'.self::$dr.'/'.$r[$b];
-$rt=div(image($ima),'','im1','position:absolute;');
-if(!$o)$rt.=div(image($imb),'','im2','position:absolute;');
+$rt=div(img($ima),'','im1','position:absolute;');
+if(!$o)$rt.=div(img($imb),'','im2','position:absolute;');
 //$ret=divc('txtcadr',$r[$a].'/'.$r[$b]);
 $ret=lj('',$rid.'_uban,call__2_'.$a.'-'.$b.'_'.($o?0:1),picto($o?'arrow-down':'arrow-top'));
 $ret.=div($rt);

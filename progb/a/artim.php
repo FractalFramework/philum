@@ -80,7 +80,7 @@ static function orimg($im,$id,$o){
 $dc=img::original($im,$id);
 if(!$dc)return picto('img2');
 if($o)return lkt('',$dc,picto('img2'));
-return image($dc);}
+return img($dc);}
 
 #render
 static function b64img($d,$id,$m=''){if(!$id)return; $xt=''; $da=$d;
@@ -163,7 +163,7 @@ if(rstr(142))return self::orimg($da,$id,0);//distant original
 if(rstr(143))return self::orimg($da,$id,1);//link to distant
 if(substr($da??'',0,4)=='http'){
 	if(strpos($da,'Capture-'))$da=str_replace("'","’",$da);//%E2%80%99
-	return image($da);}
+	return img($da);}
 else $pre=jcim($da);//,1
 $dca=$pre.$da;
 if($rid)$rid=randid('?');
@@ -179,7 +179,7 @@ if($nl)$p['style']='max-width:100%';
 //if($w && $w<$pwb)$p['style'].=' width:'.$w.'px;';
 $p['src']=$http.$dca.($rid); //if(!rstr(9) && $h>40)$br="\n\n";
 $p['title']=ses::adm('alert');
-$ret='<p><img'.atr($p).' /></p>';//image()
+$ret='<p><img'.atr($p).' /></p>';//img()
 if($w>$pw && $pw && !$nl)$ret=ljb('','SaveBf',ajx($da).'_'.$w.'_'.$h.'_'.$id,$ret).$br;
 if(auth(6) && rstr(121) && !$nl)$ret=self::rzim($ret,$da,$dca,$id,$w,$h);
 return $ret;}//.$br
@@ -190,12 +190,12 @@ if(rstr(142) && !auth(6))return self::orimg($d,$id,0);
 if(rstr(143))return self::orimg($d,$id,1);
 [$im,$t]=cprm($d); $img=''; $pre=jcim($im,$nl); $ret='';
 if(is_img($pre.$im) && strpos($im,'<')===false){
-	if(is_file($pre.$im)){[$w,$h]=imsize($pre.$im); $img=image($pre.$im);
+	if(is_file($pre.$im)){[$w,$h]=imsize($pre.$im); $img=img($pre.$im);
 		if($w>$pw && !$nl)$ret=ljb('','SaveBf',ajx($im).'_'.$w.'_'.$h.'_'.$id,$img);
-		else $ret=image($pre.$im);
+		else $ret=img($pre.$im);
 		if(auth(6) && rstr(121) && !$nl)$ret=self::rzim($ret,$im,$pre.$im,$id,$w,$h);}
-	elseif($id!='test' && !$nl){$im=self::recup_image($im,$id); $pre=jcim($im,$nl); if($im)$ret=image($pre.$im);}
-	elseif($im)$ret=image($pre.$im);}
+	elseif($id!='test' && !$nl){$im=self::recup_image($im,$id); $pre=jcim($im,$nl); if($im)$ret=img($pre.$im);}
+	elseif($im)$ret=img($pre.$im);}
 else $ret=$im;
 return tagb('figure',$ret.tagb('figcaption',$t));}
 
@@ -210,7 +210,7 @@ static function mini_empty($prm){
 [$w,$h]=explode('/',prmb(27)); $out='/imgc/'.ses('qb').'_empty.jpg';
 $clr=getclrs('',1); if($prm=='nl'||!$prm)$c=atc('imgl');
 if(!file_exists($out) or ses('rebuild_img'))graph::draw($out,$w,$h,'',$clr,'');
-return image($out,'','',$c);}
+return taga('img',['src'=>$out,'class'=>$c]);}
 
 static function autothumb($f){
 if(is_file($f)){[$w,$h]=imsize($f);
@@ -248,7 +248,7 @@ else return picto('img',48);}
 
 static function mini_d($da,$id,$nl){//im|w/h//conn_thumb//conb
 [$v,$p]=split_one('|',$da,1); $img=self::thumb_d($v,$p,$id);
-if($nl)return image(goodroot($v),prma('content'),'');
+if($nl)return image(goodroot($v),prma('content'));
 else return mk::popim($v,$img,$id);}
 
 //:mini

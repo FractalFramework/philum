@@ -73,7 +73,7 @@ if($clr && !is_hex($clr))$clr=findclr($clr);
 $id=ses('read'); if(!$id)$id=datz('ymdHi');
 $f='imgb/cod/imgtxt_'.$id.'.png';
 self::build($f,$t,$plsm,$fnt,$clr,$bkg);
-return image('/'.$f.'?'.randid());}
+return img('/'.$f.'?'.randid());}
 
 static function home($t,$fnt='Fixedsys',$clr='red'){
 return self::call($t,$fnt,$clr,'000000');}
