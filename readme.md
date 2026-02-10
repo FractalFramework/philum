@@ -3,6 +3,9 @@ CMS, Articles Agregator
 Free License GNU/GPL
 ====================
 
+# Required
+Php 8.5, MariaDb
+
 # Overview
 - save articles from the web
 - edit on place
@@ -22,9 +25,9 @@ Free License GNU/GPL
 - continuous update
 
 # Installation
-- createdatabase `mysite`
+- create database `mysite`
 - ALTER DATABASE `mysite` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-- set init variables in /conf/mysite.com.php
+- set init variables in `/conf/mysite.com.php`
 - open `/install.php`
 - instructions to install a fresh new server in `vps.txt`
 - auto-updates
@@ -49,7 +52,7 @@ Css are edited with css editor.
 Good to know : modules have ids reached by css.
 
 # Authes
-- After install, you become superadmin (level 7).
+- After install, user `mynode` become superadmin (level 7).
 - You can let your users create their own blogs (level 6).
 - You can delegate admin of design (level 5),
 - publication to editors (level 4) and members of staff (level 3)
@@ -98,21 +101,34 @@ There is actually hundred of connectors.
 Apps are microapplications built from `model.php`.
 In general term, their is different places for Apps (and everything is an App) :
 - `/prog` contains main software :
--- `/prog/_` contains critical libraries
--- `/prog/a` contains system features
--- `/prog/b` is for admin system
--- `/prog/c` contains server features
--- `/prog/d` contains optionnal features
+- - `/prog/_` contains critical libraries
+- - `/prog/a` contains system features
+- - `/prog/b` is for admin system
+- - `/prog/c` contains server features
+- - `/prog/d` contains optionnal features
 - `/plug` contains external features
-- `/plug/admin` contains admin of external features
-- `/plug/app` contains essential apps
-- `/plug/..` all others Apps (edition, sciences, etc.)
+- - `/plug/admin` contains admin of external features
+- - `/plug/app` contains essential apps
+- - `/plug/..` all others Apps (edition, sciences, etc.)
+
+# Usage
+This system have been built for datajournalism. That consists to scrap datas and classify and relate them.
+- You can use types of tags
+- you can use translations and synonyms
+- `clusters` can emerge families of subjects from a list of tags
+- videos, images, thumbnails and `Tweets` are saved locally
+- You can edit everything on place
+- each article have 2 boards of settings : `links` and `metas`
+- You can be very creative on the design, for example : transform you site in a `Desktop`
+- Find fastly datas which you vaguely remember
+- Scrap datas from `Rss`, `Xss` (vacuum pages), or manually saved scraps (using '*save the link target as*')
+- Publish contents in seconds (paste the images directly).
 
 # Message to the world
 Dependency is slavery.
 This work is made alone, with exclusive tools for working alone, and everything is much faster and more fun, innovative and scalable.
-Nobody likes it, but you are wrong, lol
-Because this software at least has been working continuously for twenty years and is always at the cutting edge. And also, I've already said it but it needs to be said again, it consumes 10,000 times less electricity than the others.
+Nobody likes it, but you are wrong, lol :)
+This software has been working continuously for twenty years and is always at the cutting edge. And also, And again, it consumes 10,000 times less electricity than the others.
 
 #Philum 2004-2026
 https://github.com/FractalFramework/philum
