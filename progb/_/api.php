@@ -451,8 +451,9 @@ return [$vb,urldecode($g),urldecode($v)];}}
 
 //mod-articles
 static function load_rq(){$g=ses::$r['get'];//boot build_content
-$rb=valk($g,['tag','search','source','parent','folder','author','rubtag','tagid','utag','cluster']);
+$rb=valk($g,['tag','cat','frm','search','source','parent','folder','author','rubtag','tagid','utag','cluster']);
 if($d=$rb['tag']){$ra['tag']=self::tag_ci($d); $ra['ti']='tag';}
+elseif($d=$rb['frm']){$ra['cat']=str::protect_url($d,1); $ra['ti']='cat';}
 elseif($d=$rb['search']){$ra['search']=str::protect_url($d,1); $ra['ti']='search';}
 elseif($d=$rb['author']){$ra['owner']=str::protect_url($d,1); $ra['ti']='author';}
 elseif($d=$rb['folder']){$ra['folder']=str::protect_url($d,1); $ra['ti']='folder';}

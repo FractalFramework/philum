@@ -66,9 +66,10 @@ function gridpos($d){$r=explode('-',$d); return 'grid-row:'.$r[0].'; grid-column
 function btim($d,$w='',$h=''){$j=str_replace('_','*',$d).'_'.$w.'_'.$h;
 return lj('','popup_usg,overim___'.$j,image('/'.$d,$w));}
 
-//ff//else $ret.=' '.$k;
-function atr($r){$ret=''; if($r)foreach($r as $k=>$v)if($v)$ret.=' '.$k.'="'.$v.'"'; return $ret;}
-function atp($r){$ret=''; $ra=['class','id','style','title','onclick'];
+//ff
+function ata($k,$v){return !is_numeric($k) && $v?' '.$k.'="'.$v.'"':($v?$v:'');}
+function atr($r){$ret=''; if($r)foreach($r as $k=>$v)$ret.=ata($k,$v); return $ret;}
+function atp($r){$ra=['class','id','style','title','onclick'];
 if($r)foreach($r as $k=>$v)if($v)$rt[$ra[$k]]=$v; return $rt??[];}
 function tag($b,$p,$d){return '<'.$b.atr($p).'>'.$d.'</'.$b.'>';}
 function tagb($b,$d){return '<'.$b.'>'.$d.'</'.$b.'>';}
@@ -278,7 +279,7 @@ function is_hex($d){return ctype_xdigit((string)$d)?1:0;}
 function is_alpha($d){return ctype_alpha($d)?1:0;}
 
 #getfiles
-function curl_get_cookies($f){$c=curl_init($f);
+function curl_set_cookies($f,$o='set'){$c=curl_init($f);
 curl_setopt($c,CURLOPT_FRESH_CONNECT,true);
 curl_setopt($c,CURLOPT_TIMEOUT,10);
 curl_setopt($c,CURLOPT_CONNECTTIMEOUT,10);
@@ -289,19 +290,9 @@ curl_setopt($c,CURLOPT_RETURNTRANSFER,true);
 curl_setopt($c,CURLOPT_COOKIESESSION,true);
 //curl_setopt($c,CURLOPT_POST,true);
 //curl_setopt($c,CURLOPT_POSTFIELDS,['name'=>'','password'=>'','login-submit'=>'Connexion']);
-curl_setopt($c,CURLOPT_COOKIEJAR,'_datas/cookies/'.domain($f).'.txt');
-curl_exec($c);}
-
-function curl_set_cookies($f){$c=curl_init($f);
-curl_setopt($c,CURLOPT_FRESH_CONNECT,true);
-curl_setopt($c,CURLOPT_TIMEOUT,10);
-curl_setopt($c,CURLOPT_CONNECTTIMEOUT,10);
-curl_setopt($c,CURLOPT_SSL_VERIFYPEER,false);
-curl_setopt($c,CURLOPT_SSL_VERIFYHOST,0);
-curl_setopt($c,CURLOPT_FOLLOWLOCATION,true);
-curl_setopt($c,CURLOPT_RETURNTRANSFER,true);
-curl_setopt($c,CURLOPT_COOKIESESSION,true);
-curl_setopt($c,CURLOPT_COOKIEFILE,'_datas/cookies/'.domain($f).'.txt');
+$f='_datas/cookies/'.domain($f).'.txt';
+if($o=='get')curl_setopt($c,CURLOPT_COOKIEJAR,$f);
+else curl_setopt($c,CURLOPT_COOKIEFILE,$f);
 $ret=curl_exec($c); //$http=curl_getinfo($c,CURLINFO_HTTP_CODE);
 return $ret;}
 
@@ -535,7 +526,7 @@ function is_tw($d){if(strpos($d,'twitter.com')!==false or strpos($d,'x.com')!==f
 //vars
 function expk($s,$d){[$k,$v]=explode($s,$d); return [$k=>$v];}
 function expl($s,$d,$n=2){$r=explode($s,$d??''); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}
-function expld($d,$s=''){if(!$s)$s=strpos($d,';')!==false?';':' '; return explode($s,$d);}
+function expld($d,$s=' '){$s=strpos($d,';')!==false?';':$s; return explode($s,$d);}
 function impl($s,$r){$rb=[]; foreach($r as $k=>$v)if($v)$rb[]=$v; return join($s,$rb);}
 function opt($d,$s,$n=2){$r=explode($s,$d); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}//old
 function arr($r,$n=''){$rb=[]; $n=$n?$n:count($r); for($i=0;$i<$n;$i++)$rb[]=$r[$i]??''; return $rb;}

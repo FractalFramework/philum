@@ -83,9 +83,7 @@ return self::mkform($rt);}
 
 //upload
 static function upload_j($id,$typ,$o=''){$o=hidden('opt'.$id,$o);//to sav::uploadsav
-$d=taga('input',['type'=>'file','id'=>'upfile'.$id,'name'=>'upfile'.$id,'multiple']);
-$d=tag('label',['class'=>'uplabel btn'],$d.hidden('typ'.$id,$typ).$o.picto('upload'));
-return tag('form',['id'=>'upl'.$id,'style'=>'display:inline-block','method'=>'post','action'=>'#','enctype'=>'multipart/form-data','name'=>'max_file_size','value'=>'200000','onchange'=>atj('upload',$id),'accept-charset'=>'utf-8'],$d).btd($id.'up','').btd($id.'prg','');}
+return '<form id="upl'.$id.'" style="display:inline-block" method="post" action="#" enctype="multipart/form-data" name="max_file_size" value="200000" onchange="upload(\''.$id.'\')" accept-charset="utf-8"><label class="uplabel btn"><input type="file" id="upfile'.$id.'" name="upfile'.$id.'" multiple />'.hidden('typ'.$id,$typ).$o.picto('upload').'</label></form>'.btd($id.'up','').btd($id.'prg','');}
 
 //tabs
 static function tabs($r,$ud='',$c=''){

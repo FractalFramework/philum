@@ -225,4 +225,5 @@ return ['_'=>['title'],
 '223'=>['relancer'],
 '224'=>['caractères'],
 '225'=>['Articles liés'],
-'226'=>['Légende']]; ?>
+'226'=>['Légende'],
+'227'=>['Contexte']]; ?>
