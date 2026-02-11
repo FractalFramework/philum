@@ -267,7 +267,7 @@ case('words2'):$rb['words'][]=ljtog('',$j1,$j2,picto('discussion'),att(nms(167))
 case('words3'):$rb['words'][]=ljtog('','art'.$id.'_ma,xltags___'.$id.'_all',$j2,picto('highlight'),att(nms(190))); break;
 case('words4'):$rb['words'][]=togbub('searched,look',$id,picto('telescope'),'',att(nms(177))); break;
 case('words5'):$rb['words'][]=togbub('meta,uwords',$id,picto('tag2'),'',att(nms(47))); break;
-case('words6'):$rb['words'][]=togbub('mod,callmod','m:cluster*tags,p:'.$id,picto('art-tags'),'',att(nms(201))); break;
+case('words6'):$rb['words'][]=togbub('mod,callmod','m:cluster*tags,p:'.$id,picto('social'),'',att(nms(201))); break;
 case('words7'):$rb['words'][]=togbub('mod,callmod','m:same*tags,p:'.$id,picto('folder-tags'),'',att(nms(187))); break;
 case('words8'):$rb['words'][]=lj('','popup_mod,callmod___m:folders*varts,p:'.ajx($vr).',t:'.ajx($vr).',d:icons',picto('virtual'),att($vr)); break;
 case('words10'):$rb['words'][]=togbub('mod,callmod','m:related,p:'.$id.',t:'.nms(225),picto('ptag'),'',att(nms(225))); break;
@@ -519,14 +519,13 @@ $rt['date']=mkday($day,'Y-m-d');//time_ago($day);
 $rt['url']=host().urlread($id);
 $rt['edit']=''; $msgbt=''; $tks='';
 if($re==0 && $host==$ip){$rt['sty']='opacity:0.5;'; $rt['edit'].=btn('txtsmall',helps('trackbacks')).' ';}
-if($re==2)$tks='30,240,30'; elseif($re==3)$tks='240,30,30'; elseif($re==4)$tks='30,30,240';
+$tks=match($re){'2'=>'30,240,30','3'=>'240,30,30','4'=>'30,30,240',default=>''};
 if($tks)$rt['sty']='background-color:rgba('.$tks.',0.1);';
 if($host==$ip && (ses::$dayx-$day)<600 or auth(6))//redit
 	$rt['edit'].=lj('','popup_tracks,redit___'.$id,picto('edit')).' ';
-$rc=expld(prmb(10));
 if($name==$usr)$name='Admin';
 $rt['author']=lj('','popup_tracks,form___'.$read.'_'.$id,$name?$name:nms(210)).' ';
-if($re>1 && isset($rc[$re+1]))$rt['opt']=$rc[$re+1];
+$rc=expld(prmb(10)); if($re>1)$rt['opt']=$rc[$re-1]??'';
 $f='imgb/usr/'.$name.'_avatar.gif';
 if(is_file($f))$rt['avatar']=image($f,48,48,'vertical-align:bottom;');
 $len=mb_strlen($msg); 

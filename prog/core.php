@@ -57,7 +57,7 @@ if($d=='call' or $c)$id=($c?$c:'c').$id; $j='bubble_bubs,call__'.$id.'_'.$d.'_'.
 return tag('li',['id'=>'bb'.$id],lj('',$j,$v,$o));}
 function panup($d,$j,$v,$c){$id=randid();
 if($d=='call' or $c)$id=($c?$c:'c').$id; $j='panup_bubs,call__'.$id.'_'.$d.'_'.$j;
-return tag('li',['id'=>'bb'.$id],lj('',$j,$v,));}
+return tag('li',['id'=>'bb'.$id],lj('',$j,$v));}
 function togbub($ja,$j,$t,$c='',$o='',$a=''){$id=randid();//bub from j, using closebub
 return btd('bt'.$id,ljb($c,'togglebub',$ja.'__'.$id.'_'.$j,$t,$o));}//ljh()
 function togbubjs($t,$d,$c='',$o=''){$id=randid('tg');
@@ -152,6 +152,7 @@ $c=$v?' active':''; $t=$t?$t:($v?$v:'...'); $h=hidden($id,$v);
 $hid='bt'.$id; $j=$id.'_'.$f.'_'.ajx($v).'_'.ajx($o);
 return lj('txtx'.$c,'popup_chkj_'.$id.'_'.$hid.'_'.$j,$t,atd($hid)).$h;}
 
+#builders
 function scroll($r,$d,$max=10,$w='',$h='',$id=''){$h=is_numeric($h)?$h.'px':$h;
 $n=is_array($r)?count($r):$r; $s=$w?'width:'.$w.'px; ':''; $s.='max-height:'.($h?$h:'420px').';';
 if($n>$max or !$n)return div($d,'scroll','scrll'.$id,$s); else return $d;}
@@ -346,7 +347,7 @@ return is_file($f)?imgico($jc.$f,$h,$t):$t;}
 /**/function ico($d,$t=''){[$p,$c]=explode(':',$d); if($c=='icon')return icon($p,$t);
 elseif(is_numeric($c))return icosys($p,$c); elseif($c=='svg')return svg($p);
 elseif($p!==false)return picto($p); else return $t;}
-/**/function icosys($d,$s=''){return img('/imgb/icons/system/philum/'.($s?$s:16).'/'.$d.'.png');}
+/**/function icosys($d,$s=''){$s=$s?$s:16; return image('/imgb/icons/system/philum/'.$s.'/'.$d.'.png');}
 function digit($n,$o=''){return picto('digit'.$o.'-'.$n);}
 function digits($n,$o='',$c=''){$rt=[]; $n=str_replace([':','.'],['h','d'],$n); $r=str_split($n);
 foreach($r as $v)$rt[]=digit($v,$o); if($rt)return spanp(join('',$rt),[$c]);}

@@ -394,6 +394,7 @@ elseif($type=='css'){$fb='usr/'.$qb.'_css_'.$f; $dir='imgb/';}
 elseif($type=='bkgim'){$fb='usr/'.$qb.'_bkg.jpg'; $dir='imgb/';}
 elseif($type=='disk'){$dir='users/'.$opt.'/'; $fb=$f; if($opt!=$qb)mkdir_r($dir);}
 elseif($type=='trk'){$fb=$qb.'_'.substr($id,2).'_'.substr(md5($f),0,6).$xt; $dir=$rep?$rep:'img/';}
+elseif($type=='scrap'){$fb=$f; $dir='w/';}
 else{$fb=$qb.'_'.$id.'_'.substr(md5($f),0,6).$xt; $dir=$rep?$rep:'img/';}
 if(!is_dir($dir))mkdir_r($dir); $fc=$dir.$fb;
 if(is_uploaded_file($ft)){// && !$er

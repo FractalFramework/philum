@@ -381,12 +381,6 @@ var mnu=getbyid(id).getElementsByTagName('a');
 //for(i=0;i<mnu.length;i++){if(i==n)mnu[i].classList.add("active"); else mnu[i].classList.remove("active");}
 for(i=0;i<mnu.length;i++){if(i==n)mnu[i].className='active'; else mnu[i].className='';}}
 
-function active_list_byhref(c,nm){//menus
-var div=getbycss(c); var mnu=div[0].getElementsByTagName('a');
-for(i=0;i<mnu.length;i++){var lk=decodeURI(strend(mnu[i].href,'/'));
-if(lk==nm){mnu[i].classList.add("active");}
-else mnu[i].classList.remove("active");}}
-
 function active_modlist(id,n){var mnu=getbyid(id).getElementsByTagName('a');
 for(i=0;i<mnu.length;i++){if(mnu[i].id=='n'+n)mnu[i].className='active'; else mnu[i].className='';}}
 
@@ -485,7 +479,8 @@ for(i=0;i<vn.length;i++){
 if(!nb[1] && !nb[2] && !nb[3])nm=nm.replace('///','');
 if(!nb[0] && !nb[1] && !nb[2] && !nb[3])nm=nm.replace(':','');
 var to=getbyid(tar).value; if(to)nm=to+',\n'+nm;
-getbyid(tar).value=decodeURI(nm);}
+getbyid(tar).value=utflatin(nm);}
+
 
 //mkforms
 function jumpMenu_addtext(val){var dn=val.split("_");

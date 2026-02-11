@@ -5,7 +5,7 @@ $npg=$_SESSION['prmb'][6]; $page=get('page');
 $min=($page-1)*$npg; $max=$page*$npg; $ret=''; $i=0; $rb=[];
 	if(is_array($otp)){foreach($otp as $id=>$nb){if(is_numeric($id)){$i++; 
 	if($i>=$min && $i<$max){$mg=$http.'/imgc/'.pop::art_img($nb[3],$rb[1]);
-		if(is_link($mg))$ret.=btn('imgl',img($mg,'',50));
+		if(is_link($mg))$ret.=btn('imgl',image($mg,'',50));
 		$ret.=tagb('h2',lka($http.'/'.$id,$nb[2]));
 		$ret.=btn('txtx',$nb[1]).' ';
 		if(rstr(27))$ret.=btn('txtsmall',mkday($nb[0],1)).' '.art::pub_link($nb[9]).' ';

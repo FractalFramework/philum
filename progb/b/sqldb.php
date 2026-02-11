@@ -19,11 +19,11 @@ static function defs(){$u=0;
 $r['art']=['id'=>'ai','ib'=>'int','name'=>'mvar','mail'=>'var','day'=>'bint','nod'=>'svar','frm'=>'var','suj'=>'var','re'=>'int','lu'=>'int','img'=>'text','thm'=>'bvar','host'=>'var','lg'=>'var2','key'=>'KEY `nod_frm` (`day`,`frm`), KEY `suj` (`suj`), KEY `nod_day` (`day`,`nod`)'];
 $r['txt']=['id'=>'ai','msg'=>'text'];
 $r['txb']=['id'=>'ai','ib'=>'int','msg'=>'text','date'=>'time'];
-$r['cat']=['id'=>'ai','hub'=>'var','cat'=>'var','pic'=>'svar','last'=>'int','no'=>'sint'];
-$r['hub']=['id'=>'ai','hub'=>'var','no'=>'sint'];
+$r['cat']=['id'=>'ai','cat'=>'var','pic'=>'svar','last'=>'int','no'=>'sint'];//,'hub'=>'svar'
+//$r['hub']=['id'=>'ai','hub'=>'var','no'=>'sint'];
 $r['trk']=['id'=>'ai','ib'=>'int','name'=>'var','mail'=>'var','day'=>'bint','nod'=>'var','frm'=>'svar','suj'=>'var','msg'=>'text','re'=>'int','host'=>'var','lg'=>'var2','key'=>'KEY `nod` (`nod`), KEY `suj_nod` (`suj`,`nod`), KEY `day_nod` (`day`,`nod`)'];
 $r['user']=['id'=>'ai','name'=>'var','pass'=>'var','mail'=>'var','day'=>'bint','clr'=>'var','ip'=>'var','rstr'=>'var','mbrs'=>'bvar','hub'=>'var','nbarts'=>'int','config'=>'bvar','struct'=>'var','dscrp'=>'var','menus'=>'var','active'=>'int','key'=>'UNIQUE KEY `one` (`name`)'];
-$r['user0']=['id'=>'ai','name'=>'var','pass'=>'var','mail'=>'var','day'=>'bint','ip'=>'var','active'=>'int','key'=>'UNIQUE KEY `one` (`name`)'];
+$r['user0']=['id'=>'ai','name'=>'var','pass'=>'var','mail'=>'var','day'=>'bint','ip'=>'var','active'=>'int','key'=>'UNIQUE KEY `one` (`name`)'];//to renove
 $r['data']=['id'=>'ai','ib'=>'var','val'=>'mvar','msg'=>'var','key'=>'KEY `ib_val` (`ib`,`val`)'];
 $r['ips']=['id'=>'aib','ip'=>'var','nav'=>'var','ref'=>'var','nb'=>'int','time'=>'time','key'=>'KEY `ip` (`ip`)'];
 $r['iqs']=['id'=>'ai','iq'=>'int','ok'=>'int','usr'=>'svar','time'=>'time'];
@@ -40,7 +40,7 @@ $r['meta_mul']=['id'=>'ai','idart'=>'int','tg'=>'var','lg'=>'var2'];
 $r['favs']=['id'=>'ai','ib'=>'int','iq'=>'int','type'=>'svar','poll'=>'int'];
 $r['search']=['id'=>'ai','word'=>'var'];
 $r['search_art']=['id'=>'ai','ib'=>'int','art'=>'int','nb'=>'int'];
-$r['mbr']=['id'=>'ai','name'=>'svar','hub'=>'svar','auth'=>'int'];
+$r['mbr']=['id'=>'ai','name'=>'svar','auth'=>'int'];//,'hub'=>'svar'
 $r['img']=['id'=>'ai','ib'=>'int','im'=>'var','dc'=>'var'];//,'no'=>'sint'
 $r['trans']=['id'=>'ai','ref'=>'var11','txt'=>'text','lang'=>'var2'];
 $r['web']=['id'=>'ai','ib'=>'int','url'=>'var','tit'=>'var','txt'=>'text','img'=>'var'];

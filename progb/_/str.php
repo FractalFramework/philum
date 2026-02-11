@@ -37,7 +37,7 @@ foreach($r as $c){$o=ord($c);
 return $ret;}
 
 #filters
-static function hardurl($d){//dont change
+static function hardurl($d){//dont change//slug
 $d=self::eradic_acc($d); $d=mb_strtolower($d); $d=delnbsp($d); $d=hed($d); if(!$d)return;
 $r=['/','«','»',',','.',';',':','!','?','|','§','%','&','$','#','_','+','=','\n','\\','~','(',')','[',']','{','}'];
 $d=str_replace($r,'',$d);
@@ -46,9 +46,12 @@ $d=preg_replace('/(-){2,}/','-',$d??'');
 return $d;}
 
 static function protect_url($d,$o=''){
-if($o)$r=[['--','__','_','(t)','(u)'],['(t)','(u)',' ','-','_']];
-else $r=[['-','_',' ','(t)','(u)'],['(t)','(u)','_','--','__']];
-if($d)return str_replace($r[0],$r[1],$d);}
+//$ra=['(t)','(u)',' ','-','_'];
+//$rb=['--','__','_','(t)','(u)'];
+$ra=[' '];
+$rb=['_'];
+if($o)[$rb,$ra]=[$ra,$rb];
+if($d)return str_replace($ra,$rb,$d);}
 
 #enc
 static function html_entity_decode_b($v){$v=str_replace('&amp;','&',$v??'');//14

@@ -1,18 +1,21 @@
 //lib
+oldj='';
 
 //states
-oldj='';
 function updateurl(a,j,io,b){
 var dn=j.split("_");
 if(a=='read'){a='art'; var u='/'+dn[5];
 	setTimeout(function(){document.title=recuptit();},200);}
 else if(a=='menu'){var bt=getbyid('n'+io); var tit=bt.innerHTML;
+	//var pm=explodek(dn[2],',',':');
+	//pm.bt=0; var cmd=implodek(pm,',',':');
 	//if(pm.m=='context')var u='/context/'+pm.p;else 
 	if(tit)var u='#'+tit;//#
 	else var u='/module/'+dn[3];}
-else var u='/'+dn[4]+(dn[5]?'/'+slug(dn[5])+(dn[6]?'/'+ajx(dn[6],1):''):''); //pr(u);
+else var u='/'+dn[4]+(dn[5]?'/'+ajx(dn[5],1)+(dn[6]?'/'+ajx(dn[6],1):''):'');
 var r={u:u,a:a,j:j,k:io,t:''};
-if(j!=oldj)window.history.pushState(r,a,u); oldj=j;// && r.j!=event.state.r.j
+if(j!=oldj)window.history.pushState(r,a,u);// && r.j!=event.state.r.j
+oldj=j;
 if('scrollRestoration' in history)history.scrollRestoration='manual';}
 
 function restorestate(st){if(!st)return;
@@ -413,15 +416,15 @@ if(n){for(var i=0;i<arr.length;i++){val=strreplace(arb[i],arr[i],val);}}//decode
 else{for(var i=0;i<arr.length;i++){val=strreplace(arr[i],arb[i],val);}}
 return val;}
 
-function normalize(va){
-var arr=['=','~','è','é','ê','à','â','ô','ö','û','ü','ù','î','ï',' ',',',';',':','!','?','§','%','&','|'];
-var arb=['','','e','e','e','a','a','o','o','u','u','u','i','i','','','','','','','','','',''];
+function utflatin(va){
+var arr=['%3D','%7E','%E8','%E9','%EA','%E0','%E2','%F4','%F6','%FB','%FC','%F9','%EE','%EF','%20','%2C','%3B','%3A','%21','%3F','%A7','%25','%26','%7C'];
+var arb=['=','~','è','é','ê','à','â','ô','ö','û','ü','ù','î','ï',' ',',',';',':','!','?','§','%','&','|'];
 for(var i=0;i<arr.length;i++)va=strreplace(arr[i],arb[i],va);
 return va;}
 
-function slug(va){
-var arr=[' ','è','é','ê','à','â','ô','ö','û','ü','ù','î','ï'];
-var arb=['_','e','e','e','a','a','o','o','u','u','u','i','i'];
+function normalize(va){
+var arr=['=','~','è','é','ê','à','â','ô','ö','û','ü','ù','î','ï',' ',',',';',':','!','?','§','%','&','|'];
+var arb=['','','e','e','e','a','a','o','o','u','u','u','i','i','','','','','','','','','',''];
 for(var i=0;i<arr.length;i++)va=strreplace(arr[i],arb[i],va);
 return va;}
 

@@ -109,7 +109,7 @@ foreach($r as $n=>$k){
 	$ct=$cat[0]; for($i=2;$i<=$nb;$i++)$ct.='/'.$cat[$i-1];
 	$isdir=substr($r[$n+1],0,1)=='-'?1:0;
 	if($nb==0 && $isdir)$ret.=popbub('bubses',ajx($d),$d,'d');
-	elseif($nb==0)$ret.=li(lk($lk,$d));
+	elseif($nb==0)$ret.=li(lkc('',$lk,$d));
 	else $ra[]=[$d,'link','',$lk,'','',$ct,''];}}
 $_SESSION['bubses']=$ra;
 return mkbub($ret,$inl,1,'');}

@@ -139,7 +139,7 @@ if($rt)return join(n(),$rt);}
 
 static function menubt($k,$u,$f){$mth=self::$mth; $rid=rid($u); $rp=[];
 $ret=lj('','popup_plugin___rssin_'.ajx($u),picto('get'));
-$ret.=lj('','adc_sav,batchprep__3_'.ajx($u),picto('update'),att('put all in cache'));//216
+$ret.=lj('','adc_sav,batchprep__3_'.ajx($u),picto('update'),'put all in cache');//216
 $ret.=lj('','popup_msqledit___users_'.ses('qb').'*rssurl_'.$k.'_2',picto('flag'));
 $ret.=lj(active($mth,1),'rsj'.$k.'_rssin,call__3_'.$k.'-1_'.ajx($f),'1');
 $ret.=lj(active($mth,2),'rsj'.$k.'_rssin,call__3_'.$k.'-2_'.ajx($f),'2');
@@ -193,7 +193,7 @@ static function menu($p,$n=3){
 $bt=msqbt('',nod($p)).' ';
 for($i=1;$i<=$n;$i++)$bt.=lj('txtsmall','rssj_rssin,home___'.$p.'_'.$i,$i).' ';
 $bt.=lj('txtsmall','rssj_xss,home___'.$p.'','xss').' ';
-$bt.=lj('txtsmall','rssj_scrap,home___'.$p.'','scrap').' ';
+$bt.=lj('txtsmall','rssj_scrap,call___'.$p.'','scrap').' ';
 //$bt.=lj('txtsmall','rssj_twss,home___'.$p.'','twss').' ';
 return $bt;}
 

@@ -52,7 +52,7 @@ return div($ret).tabler($rb);}
 static function graph_mk($r,$d,$w=600,$h=100){
 $dr='_datas/frequency/'; $f=$dr.'/'.$d.'.png'; mkdir_r($f);
 if($r)graph::draw($f,$w,$h,$r,'999999','yes');
-return image('/'.$f.'?'.randid(),'','');}
+return image('/'.$f.'?'.randid());}
 
 static function render($rc,$p,$o,$dt){
 $ret=tagb('h4','frequency of '.$p.' / '.$dt);

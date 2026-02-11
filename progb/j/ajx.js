@@ -119,11 +119,14 @@ function sjx(p){SaveJ(p); th=o; return false;}//unused
 function hj(o){var com=o.href; var r=com.split('/'); r=undefiner(r,5); var diez;//unused
 	if(r[3].indexOf('#')!=-1){var rd=r[3].split('#'); r[3]=rd[0]; var diez='#'+rd[1];}
 	var pp=getbyid('content')==undefined?'popup':'';
+	var pp2=getbyid('loadmodart')?'loadmodart':'content';
+	r[4]=decodeURI(r[4]);
 	//if(r[3]>0)ajaxcall('page','mod,playcontext',['read',r[3]],[],'u');//+diez//secondary action ?
 	if(r[3]>0){ajaxcall(pp?pp:'content','mod,playmod',['read',r[3]],[],'u');}
-	else if(r[3]=='art')ajaxcall(pp?pp:'content','mod,playmod',['art',r[4]],[],'u');
+	else if(r[3]=='art')ajaxcall(pp?pp:'content','mod,playmod',['art',r[4]],[],'a');
+	else if(r[3]=='cat'){ajaxcall(pp2,'mod,playmod',['cat',r[4]],[],'u');
+		active_list_byhref('menus',r[4]);}
 	else ajaxcall(pp?pp:'page','mod,playcontext',[r[3],r[4],r[5]],[],'u');
-	
 	return false;}
 
 //saves
@@ -142,8 +145,8 @@ function jurl(){return '/ajax.php?app=';}
 //dn2=posts
 function ajaxcall(tg,app,ra,prm,tp){
 var fd=''; var get=jx(app); ra=jrb(ra);
-if(tp=='u')updateurl(ra[0],tg+'_'+app+'___'+ra[0]+'_'+ra[1]);
-if(tp=='u')ajaxcall('artbtedt','pop,artbtedt',[ra[1]],[],'');
+if(tp=='u'||tp=='a')updateurl(ra[0],tg+'_'+app+'___'+ra[0]+'_'+ra[1]);
+if(tp=='a')ajaxcall('artbtedt','pop,artbtedt',[ra[1]],[],'');
 if(prm){var fd=new FormData(); for(var i in prm)fd.append(i,prm[i]);}
 if(tp=='g')for(var i in ra)fd.append('g'+i,ra[i]); else get+=jrc(ra);
 new AJAX(jurl()+get+'&tg='+tg,tg,tp,fd);}

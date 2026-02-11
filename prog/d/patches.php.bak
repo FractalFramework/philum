@@ -310,24 +310,6 @@ pr($rc);}
 //backupim::killcatim//2504
 //backupim::fixcatim//2504
 
-//2602
-static function killslashesparams(){
-$rb=msql::kx('server',nod('params'),1);
-$ra=msql::kx('system','admin_params',1);
-foreach($rb as $k=>$v){
-if($k==10)$v=str_replace('/',';',$v);
-$rc[$k]=[$ra[$k]??'unassigned',$v];
-$rd[$k]=$v;} pr($rd);
-//msql::backup('server',nod('params'));
-msql::save('server',nod('params'),$rc);
-adm::dispatch_params($rd);
-ses('prmb',$rd);}
-
-static function nonarts(){
-$sq=['!nod'=>ses('qb'),'+frm'=>'_'];
-echo $n=sqb::read('count(id)','art','v',['re'=>1,'or'=>$sq],0);
-if($n)sqb::upd('art',['re'=>0],['re'=>1,'or'=>$sq],1);}
-
 #call2
 static function call($p,$o,$prm=[]){$r=[];
 [$p1,$o]=prmp($prm,$p,$o);
@@ -338,13 +320,12 @@ return $bt.self::$p($p1,$o,$prm);}
 
 static function menu($p){$rb=[];$rt=[];
 $ret=inputb('fto',$p,18,'directory');
+$rok=['cats'];//'tags','msql2','msql2b','views','config','setconfig','unifynod','catim'
 //$rok=['usr_resav','usr_update','usr_rollback'];
-$ra=['utf','headers','splitters'];//works on msql
-//foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,callm_fto_3_'.$v,$v);
-$ra=['dbutf','dbsplitters','catarts','catartsrev','hubs','hubarts','noqd','return','bak','dir','reboot','tags','cats','psw','msql2','msql2b','unifynod','views','config','setconfig'];//
-//foreach($ra as $v)$rt[$v]=lj('popbt','fut_patches,call_fto_3_'.$v,$v);
-$rold=['tags','msql2','msql2b','views','config','setconfig','unifynod','catim','cats'];
-$rok=['killslashesparams','nonarts'];
+$ra=['utf','headers','splitters'];
+//foreach($ra as $v)$rb[$v]=lj('popbt','fut_patches,callm_fto_3_'.$v,$v);
+$ra=['dbutf','dbsplitters','catarts','catartsrev','hubs','hubarts','noqd','return','bak','dir','reboot','tags','cats','psw','msql2','msql2b','unifynod','views','config','setconfig'];
+//foreach($ra as $v)$rb[$v]=lj('popbt','fut_patches,call_fto_3_'.$v,$v);
 $rb=msql::kv('server','program_patches');
 foreach($rok as $v)$rt[$v]=lj('popbt '.active($rb[$v]??'',1),'fut_patches,call_fto_3_'.$v,$v);
 return join('',$rt);}

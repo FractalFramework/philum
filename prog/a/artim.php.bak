@@ -113,12 +113,12 @@ if($sz>1000000 or $w>500 or $h>200){
 	//$bt.=lj('txtyl',$did.'_img,rewrite__3_'.ajx($da),'del exef');//resolve exef
 	//$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_0_'.$id,'reduce to 940|940');
 	$bt.=btn('txtred',$w.'px/'.$h.'px - '.fsizeformat($sz));
-	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50%');
-	$bt.=lj('txtyl',$did.'_artim,imdel___'.ajx($da).'_'.$id,'del');}
+	$bt.=lj('txtyl',$did.'_img,reduce__3_'.ajx($da).'_1_'.$id,'reduce by 50%');}
 elseif(!$w){$ex=img::original($da,$id);
 	if($ex)$bt.=lj('popdel',$did.'_img,restoreim__3_'.ajx($da).'_'.$id.'_1','restore');}
 if($xt=='.png')$bt.=lj('txtyl',$did.'_artim,png2jpg___'.ajx($da).'_'.$id,'png2jpg');
 elseif($xt=='.webp')$bt.=lj('txtyl',$did.'_artim,webp2jpg___'.ajx($da).'_'.$id,'webp2jpg');
+if($sz>800)$bt.=lj('txtyl',$did.'_artim,imdel___'.ajx($da).'_'.$id,'del');
 if($bt)$ret=divd($did,$ret.$bt); return $ret;}
 
 static function getimg($da,$id,$m=''){
@@ -206,9 +206,9 @@ $im=self::make_thumb($img);
 if($im)return img::embed_thumb($im,$prm);
 elseif(rstr(87))return self::mini_empty($prm);}
 
-static function mini_empty($prm){$c='';
+static function mini_empty($prm){
 [$w,$h]=explode('/',prmb(27)); $out='/imgc/'.ses('qb').'_empty.jpg';
-$clr=getclrs('',1); if($prm=='nl'||!$prm)$c='imgl';//unused
+$clr=getclrs('',1); if($prm=='nl'||!$prm)$c=atc('imgl');
 if(!file_exists($out) or ses('rebuild_img'))graph::draw($out,$w,$h,'',$clr,'');
 return taga('img',['src'=>$out,'class'=>$c]);}
 

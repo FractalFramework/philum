@@ -131,9 +131,9 @@ if($ret)return tagb($ul,$ret);}
 static function anchor($d){
 [$n,$v]=split_one('|',$d,2); return lkn($n,$v);}
 
-static function iframe_bt($d,$m,$nl){
+static function iframe_bt($d,$m,$id,$nl){
 [$u,$t]=cprm($d); $t=$t==1?nms(194):$t; $bt=lkt('',$u,picto('url'));
-if($nl)return lk($u);
+if($nl==1 && $id!='test')return lk($u);
 elseif($m==3 && !$t)return iframe($d,'100%','').lkc('small',$u,domain($u)).br();
 else return lj('txtx','popup_usg,iframe__3_'.ajx($u),pictxt('window',$t)).' '.$bt;}
 
@@ -393,7 +393,7 @@ if($r && $rep)foreach($r as $k=>$v){$i++; $bit[$k]=$v[$rep];}
 elseif($r && $op){foreach($r as $k=>$v){$i++; $bit[$k]=$v;}}
 $output='/imgc/'.db('qd').'_'.ses('read').'_graph_'.$n.'.png';
 graph::draw($output,$pw,140,$bit,getclrs('',7),'yes');///
-if(get('read'))return image($output,'','',ats('border:0'))."\n";}
+if(get('read'))return image($output,'','','border:0;')."\n";}
 
 static function microread($d){[$nod,$tmp]=cprm($d);
 return msqlvue::call($nod,$tmp);}
@@ -428,7 +428,7 @@ return html_entity_decode($d);}
 static function thumb_b($f,$id){$xt=xt($f); $w=200; $h=140;
 $imb=img::thumbname(str_replace('/','',$f),$w,$h);
 if(!file_exists('imgc/'.$imb) or ses('rebuild_img'))img::build($f,$imb,$w,$h,$_SESSION['rstr'][16]);
-return ljb('','SaveBf',ajx($f).'___'.$id,img($imb));}
+return ljb('','SaveBf',ajx($f).'___'.$id,image($imb));}
 
 static function popim($im,$d,$id=''){
 return ljb('','SaveBf',ajx($im).'___'.$id,$d);}

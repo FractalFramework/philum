@@ -51,7 +51,7 @@ return divc('txtcadr',picto('lock').' '.nms(137).' : '.inputj('artpswd','',$j).l
 #seesrc
 static function seesrc($f){
 $bt=lj('','popup_few,seesrc2__3_'.ajx($f),pictit('file-html','code')).' ';
-[$title,$ret]=conv::vacuum($f); $d=self::progcode($d);
+[$t,$ret]=conv::vacuum($f); $d=self::progcode($ret);
 return $bt.tagc('code','console',$d);}
 
 static function seesrc2($f){$d=getfile($f);

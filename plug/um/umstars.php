@@ -22,7 +22,7 @@ foreach($r as $k=>$v){
 
 /*  [star] => HD 150680
 	[name] => Zeta Herculis
-	[planet] => Dookaï¿½a
+	[planet] => Dookaïa
 	[status] => amical
 	[ad] => 240.68
 	[dc] => 31.36
@@ -95,7 +95,7 @@ $ad2=mb_substr($ad,3,2); if(!is_numeric($ad2))$ad2=0;
 $ad=round($ad1/24*360+$ad2/60,2);
 //$rb[$k]['ada']=$v[2];
 $rb[$k]['ad']=$ad;
-$dc=$v[3];//+31ï¿½36'
+$dc=$v[3];//+31°36'
 //$rb[$k]['dca']=$v[3];
 $sign=substr($dc,0,1);
 $dc1=substr($dc,1,2); if(!is_numeric($dc1))$dc1=0;
