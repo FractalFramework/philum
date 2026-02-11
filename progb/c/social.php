@@ -133,7 +133,7 @@ return $ret;}
 
 static function call($id,$prw){
 $r=art::datas($id); if(!$r)return;
-//$msg=sql('msg','qdm','v',$id); //$rear=art::ib_arts_nb($id)+1; $otp=ma::read_idy($id,'ASC');
+//$msg=ma::artxt($id); //$rear=art::ib_arts_nb($id)+1; $otp=ma::read_idy($id,'ASC');
 $ro=art::metart($id); $rf=art::favs($id); $suj=$r['suj'];
 $ret=self::build($id,$suj,$ro,$rf,3);
 return $ret;}

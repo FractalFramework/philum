@@ -13,8 +13,8 @@ static function markers($n){$days=$n?$n:ses('nbj');
 if(!rstr(3))return [0,ma::lastartid()];
 $daymin=timeago($days); $prev=time_prev($days); $daymax=$prev?timeago($prev):ses('daya');
 //echo $n.'-'.$days.'-'.date('ymd:Hi',$daymin).'-'.$prev.'-'.date('ymd:Hi',$daymax).'--';
-$minid=sql('id','qda','v',['>day'=>$daymin,'_limit'=>'1']);
-$maxid=sql('id','qda','v',['{day'=>$daymax,'_order'=>'day desc','_limit'=>'1']);//need use day
+$minid=sqb('id','art','v',['>day'=>$daymin,'_limit'=>'1']);
+$maxid=sqb('id','art','v',['{day'=>$daymax,'_order'=>'day desc','_limit'=>'1']);//need use day
 return [$minid,$maxid];}
 
 static function results($p,$minid,$maxid,$n=''){
@@ -47,14 +47,15 @@ if($lmt)$wh.=' and '.$limit.'>='.$lmt;
 //$ret=sql::call($sql,'',0);//auth(6)?1:
 $sql='select '.$qda.'.id,msg from '.$qda.' 
 inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id
-where nod="'.ses('qb').'" and substring(frm,1,1)!="_" and re>0 and '.$qda.'.id>'.$min.' and '.$qda.'.id<='.$max.' and (msg LIKE "%'.$p.'%" or suj LIKE "%'.$p.'%") '.$wh.' order by '.$qda.'.'.prmb(9);
+where nod="'.ses('qb').'" and re>0 and '.$qda.'.id>'.$min.' and '.$qda.'.id<='.$max.' and (msg LIKE "%'.$p.'%" or suj LIKE "%'.$p.'%") '.$wh.' order by '.$qda.'.'.prmb(9);
 $rq=sql::qr($sql); $rt=[];
 if($p)while($r=sql::qrw($rq)){$msg=strtolower($r[1]);
 	$rt[]=[isint($id),$r[0],substr_count($msg,strtolower($p))];}
 return $rt;}
+//inner($d,$b1,$b2,$k2,$p,$q,$z='')
 
 static function id_word($p){
-$id=sql('id','qdsr','v','word="'.$p.'"');
+$id=sql('id','qdsr','v',['word'=>$p]);
 if(!$id)$id=sql::sav('qdsr',[$p]);
 return $id;}
 
@@ -86,7 +87,7 @@ return $ok;}
 
 static function look($id){
 $ret=divc('txtcadr',nms(177)); $rc=[]; $rd=[];
-$msg=sql('msg','qdm','v',$id); $r=sql('id,word','qdsr','kv',''); 
+$msg=ma::artxt($id); $r=sql('id,word','qdsr','kv',''); 
 if($r)foreach($r as $k=>$v)if($v){$re='';
 	$rb=str::detect_words($msg,$v,1);
 	if($rb){$n=count($rb);

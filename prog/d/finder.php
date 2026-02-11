@@ -220,7 +220,7 @@ return $ret;}
 
 static function finfo($d,$id,$f,$dj){$ra=explode('/',$d); $nm=strend($f,'/');
 $ret=lkt('popw" title="'.$f,$f,picto('url').' '.$nm).br();
-if(substr(self::droot(),0,4)=='http'){$size=self::info_dist($f,'fsize'); 
+if(ishttp(self::droot())){$size=self::info_dist($f,'fsize'); 
 	$date=mkday(self::info_dist($f,'fdate'));} else{$date=ftime($f,'ymd'); $size=fsize($f,1);}
 $ret.=btn('txtsmall2',$size.' '.$date.' '.strprm($d));
 return $ret;}

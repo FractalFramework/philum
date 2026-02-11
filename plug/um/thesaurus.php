@@ -6,7 +6,7 @@ if($r)foreach($r as $v){$p=strrpos($v,'['); if($p)$v=substr($v,$p+1);
 return $ret;}*/
 
 /*static function thr_sav($p,$o,$prm){$def=$prm[0]??'';
-$rb=sql::inner('frm','qdm','qda','id','k','nod="ummo" and substring(frm,1,1)!="_" and frm!="Etudes" and frm!="Blog" and substring(frm,1,2)!="ES" and re>0 and msg like "%'.$p.' %"','');
+$rb=sql::inner('frm','qdm','qda','id','k','nod="ummo" and frm!="Etudes" and frm!="Blog" and re>0 and msg like "%'.$p.' %"','');
 if($rb)$ref=implode(' ',array_keys($rb));
 $defs=array(strtoupper($p),$def,'',$ref);
 $r=msql::modif('',ses('umvcnod'),$defs,'push','','');

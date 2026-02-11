@@ -55,7 +55,7 @@ ses('daya',ses::$dayx);
 return $nid;}
 
 static function backart($id){
-$d=sql('msg','qdm','v',$id);
+$d=ma::artxt($id);
 if($d)sqlsav('qdmb',[$id,$d,sqldate()]);}
 
 static function modif_art($id,$d,$cont=''){
@@ -70,7 +70,9 @@ return stripslashes($d??'');}
 static function editart($id,$cont,$prm){$d=$prm[0]??'';
 $d=str::post_treat_repair($d);
 $d=self::modif_art($id,$d,$cont);
-$edt=edit::txarea($d,$id); $txt=ma::read_msg($id,3);
+$txt=ma::read_msg($id,3);//render img
+$d=ma::artxt($id);
+$edt=edit::txarea($d,$id);
 return $cont?[$edt,$txt]:$txt;}
 
 static function publish_art($d,$id,$bs){
@@ -107,7 +109,8 @@ return [$t,$d,$ud];}
 static function websav($id,$f){
 if(!auth(6))return;
 [$t,$d]=self::webread($f);
-$sq=['suj'=>$t,'mail'=>$f,'img'=>'','thm'=>str::hardurl($t)];//if(rstr(38))//,'re'=>1
+$lg=rstr(129)?meta::detectlangbydicoperso($t.' '.$d):'';
+$sq=['suj'=>$t,'mail'=>$f,'img'=>'','thm'=>str::hardurl($t),'lg'=>$lg];//if(rstr(38))//,'re'=>1
 sqlup('qda',$sq,$id);
 self::modif_art($id,$d); vacses($f,'t','x'); //report();
 return $d;}
@@ -127,7 +130,7 @@ $ret=self::websav($id,$u);}
 return art::playd($id,$prw,'');}
 
 static function bckpart($id){
-$d=sql('msg','qdm','v',$id);
+$d=ma::artxt($id);
 msql::modif('',nod('backup_'.$id),[mkday(),$d],'push');}
 
 static function recapart($id,$prw=1){
@@ -246,7 +249,7 @@ $r=msql::ses('col','system','connectors_old',0); if($r)$rk=array_keys($r);
 $d=delbr($d,"\n"); $d=str::clean_br($d); return str_replace($rk,$r,$d);}
 
 static function rectifart($id,$prw=3){
-$d=sql('msg','qdm','v',$id);
+$d=ma::artxt($id);
 $d=str_replace("&#13;",'',$d??'');//
 $d=delnl($d);
 $d=self::modif_art($id,$d);

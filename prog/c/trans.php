@@ -139,7 +139,7 @@ if(!$to)$to=ses('lng');//$to=setlng($to);
 $ind=substr($ref,0,3); $id=substr($ref,3);
 //[$ex,$exlg]=sql('txt,lg','trn','r',['ref'=>$ref,'lang'=>$to]);
 //if(!$ret){}
-if($ind=='art'){$ret=sql('msg','qdm','v',$id); $lg=sql('lg','qda','v',$id);}
+if($ind=='art'){$ret=ma::artxt($id); $lg=sql('lg','qda','v',$id);}
 elseif($ind=='trk')[$ret,$lg]=sql('msg,lg','qdi','w',$id);
 elseif($ind=='suj')[$ret,$lg]=sql('suj,lg','qda','w',$id);
 elseif($ind=='twt')[$ret,$lg]=sql('txt,lang','qdtw','w',['twid'=>$id]);

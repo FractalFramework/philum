@@ -60,7 +60,7 @@ elseif($op=='stripimg'){if(!is_img($p))return '['.$p.']';}
 elseif($op=='stripvideo'){if($c==':video')return '['.$p.'|1:video]';}
 elseif($op=='striplink'){
 	if(is_numeric($p))return $o?$o:host().urlread($p);
-	elseif(substr($p,0,4)=='http')return $o?$o:domain($p);
+	elseif(ishttp($p))return $o?$o:domain($p);
 	elseif($c==':pub'){if(!is_numeric($p))$p=ma::id_of_suj($p); return ma::suj_of_id($p).' ('.host().urlread($p).') ';}
 	elseif($c==':figure')return $o;}
 elseif($op=='stripvk')return '['.mc::stripvk($p).($o?'|'.mc::stripvk($o):'').($c?$c:'').']';
@@ -208,7 +208,7 @@ elseif(strpos($p,':pdf'))return lj('','popup_mk,pdfreader__xr_'.ajx($p).'_3__aut
 elseif(strpos($p,'twitter.com')!==false && strpos($p,'status/')!==false)return pop::poptwit($d);
 elseif(strpos($p,'x.com')!==false && strpos($p,'status/')!==false)return pop::poptwit($d);
 elseif(strpos($p,'wikipedia.org')!==false)return mk::wiki($d,0);
-elseif(substr($p,0,4)=='http')return rstr(111)?mk::webview($d,$b):lka($p,$o);
+elseif(ishttp($p))return rstr(111)?mk::webview($d,$b):lka($p,$o);
 elseif(is_numeric($p))return ma::jread('',$p,$o);}
 
 static function sconn_links($d,$p,$o,$c,$xt,$b){
@@ -219,7 +219,7 @@ if(is_img($p)){//image|text
 elseif(is_img($o)){//link|image
 	return lkt('',goodroot($p),img(goodroot($o)));}
 elseif(substr($p,0,1)=='/')return lka($p,$o);
-elseif(substr($p,0,4)=='http')return lka($p,$o);}
+elseif(ishttp($p))return lka($p,$o);}
 
 static function scapp_app($d){[$p,$o,$fc]=unpack_conn($d); return appin($fc,'call',$p,$o);}
 static function scapp_tag($d){[$p,$o]=cprm($d); if(!$o)$o=sql('cat','qdt','v',['tag'=>$p]);
@@ -322,9 +322,9 @@ elseif($c=='video'){
 
 static function savimg($d,$id){
 [$p,$o,$c]=poc($d); //ses('read',$id);
-if(isimhtml($p) && substr($p,0,4)=='http'){
+if(isimhtml($p) && ishttp($p)){
 	$im=artim::getimg($p,$id); self::$rg[]=$im; return '['.$im.($o?'|'.$o:'').']';}
-elseif(isimhtml($o) && substr($o,0,4)=='http'){
+elseif(isimhtml($o) && ishttp($o)){
 	$im=artim::getimg($o,$id); self::$rg[]=$im; return '['.($p?$p.'|':'').$im.']';}
 elseif($c=='video'){$im=video::savimyt($p,$id); self::$rg[]=$im; return '['.$d.']';}
 else return '['.$d.']';}
@@ -391,7 +391,7 @@ if($c=='numlist'){$r=explode("\n",$d); foreach($r as $k=>$v)$ret.=$k.'. '.$v.n()
 if($c=='php'){$r=explode("\n",$d); foreach($r as $k=>$v)$ret.="\t".$v.n();}
 if(is_img($d)){$ret='![]('.gcim($d).')';}
 [$p,$o]=cprm($d);
-if(substr($p,0,4)=='http' or substr($p,0,2)=='//')$ret=($o?'['.$o.']':'').'('.$p.')';
+if(ishttp($p))$ret=($o?'['.$o.']':'').'('.$p.')';
 return $ret?$ret:$da;}
 
 #json//tst
@@ -487,7 +487,7 @@ if($o)return self::parse($p,'template');
 return self::parse($p,'sconn2');}
 
 static function png2jpg($id,$d=''){
-$d=$d?$d:sql('msg','qdm','v',$id); $r=self::imgs($d,$id);
+$d=$d?$d:ma::artxt($id); $r=self::imgs($d,$id);
 foreach($r as $k=>$v)if(substr($v,0,4)!='http'){$xt=substr($v,-4);
 	if($xt=='.png')artim::png2jpg($v,$id);
 	elseif($xt=='webp' && rstr(48))artim::webp2jpg($v,$id);}

@@ -97,7 +97,7 @@ function opac(op,id){if(id!=null){var ob=getbyid(id); if(ob!=undefined)ob.style.
 function resiz(op,id){getbyid(id).style.height=op+'px';}
 function slide(op,id){getbyid(id).style.marginLeft=op+'px';}
 function scrl(op,id){getbyid(id).scrollTo=op;}
-function isnum(n){if(typeof n!="string")return false;
+function isnum(n){if(typeof n=="string")return false;
 return !isNaN(n) && !isNaN(parseFloat(n));}
 
 function setit(d,e){popw=getbyid(e);

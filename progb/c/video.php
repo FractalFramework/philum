@@ -120,7 +120,7 @@ if($u)[$ti,$tx,$im]=web::read($u,0,$id);
 return lk(http($u),img($im));}
 
 static function play($da,$id,$m){[$d,$o]=cprm($da); //[$d,$tm]=expl('|',$d);
-if(substr($d,0,4)=='http'){$p=self::extractpr($d); $d=self::detect($d,$m,'',2);}
+if(ishttp($d)){$p=self::extractpr($d); $d=self::detect($d,$m,'',2);}
 else $p=self::providers($d);
 $u=self::url($d,$p); $rid=rid($d); $im=''; $tx=''; $ti='';
 if($u)[$ti,$tx,$im]=web::read($u,0,$id);
@@ -150,7 +150,7 @@ static function any($d,$id,$m,$nl=''){//p|w/h
 if($nl)return self::lknl($d,$id);
 if(strpos($d,'.mp4') or strpos($d,'.m3u8'))return video($d);
 if(rstr(132) or $id=='epub')return self::player($d);
-if(substr($d,0,4)=='http'){[$d,$tx]=cprm($d);//contourne procédure
+if(ishttp($d)){[$d,$tx]=cprm($d);//contourne procédure
 	$pr=self::extractpr($d); $d2=self::detect($d,$m,'',2);
 	if($tx)return self::play($d,$id,$m?$m:3);
 	else return self::reader($d2,$pr,'','',$id);}

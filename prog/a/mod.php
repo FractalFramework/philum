@@ -395,7 +395,7 @@ if($lin)foreach($lin as $k=>$v){
 if($re)return self::mod_lin_build($re,$t,$d,$o);}
 
 static function mod_load($load,$m,$t,$d,$o,$obj,$prw,$tp,$id,$pp,$pg){$ret='';
-if(!$prw)$prw='prw'; if($t)$t=self::title($load,$t,$obj,$pp,$pg); $mx=prmb(6);
+if(!$prw)$prw='prw'; $mx=prmb(6); if($t)$t=self::title($load,$t,$obj,$pp,$pg);
 if($d=='read')foreach($load as $id=>$prw)$ret.=divc('justy',ma::read_msg($id,3)).br();
 elseif($d=='articles')$ret=ma::output_arts($load,$prw,$tp);
 elseif($d=='viewer')$ret=md::art_viewer($load);
@@ -416,10 +416,10 @@ if($ret)return divd($m,$t.$ret);}
 #titles
 static function mdtitle($d){if($d)return divd('titles',tagb('h3',$d));}
 
-static function title($load,$t,$n='',$bt='',$pg=''){$nb='';
-$na=$load?count_r($load):''; if($na)$nb=btn('small',nbof($na,$n?$n:1)).' ';
-if($pg)$bt=divc('nbp',build::nb_pages_j($load,$bt,$pg));
-return divd('titles',tagb('h3',$t).' '.$nb.$bt);}
+static function title($load,$t,$ty='',$pp='',$pg=''){$bt='';
+$n=$load?count_r($load):''; if($n)$bt=btn('small',nbof($n,$ty?$ty:1)).' ';
+if($pg)$bt.=divc('nbp',build::nb_pages_j($load,$pp,$pg));
+return divd('titles',tagb('h3',$t).' '.$bt);}
 
 #paneart
 static function pane_art($id,$o,$tp='',$pp='',$ra=[]){

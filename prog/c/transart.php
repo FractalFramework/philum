@@ -97,7 +97,7 @@ $suj=trans::read($r['suj'],$lga,$lgb,'html','suj'.$ida);//html
 $suj=self::glossary($suj,$lga,$lgb);
 $rb['suj']=$suj;
 //$msg=trans::call('art'.$ida,$lgset,2);
-$msga=sql('msg','qdm','v',['id'=>$ida]);
+$msga=ma::artxt($id);
 $msg=trans::read($msga,$lga,$lgb,'html','art'.$ida);
 $msg=self::glossary($msg,$lga,$lgb);
 $rb['host']=mb_strlen($msg);
@@ -122,7 +122,7 @@ if($id && auth(6))$id=sql::upd('qdm',['msg'=>$msg],['id'=>$id]);
 return $msg;}
 
 static function convert($p){
-$msg=sql('msg','qdm','v',$p);
+$msg=ma::artxt($id);
 $msg=conv::call($msg);
 sql::upd('qdm',['msg'=>$msg],$p);
 return 'ok';}
@@ -130,7 +130,7 @@ return 'ok';}
 static function rediff($p){
 $r=sql('ib,name,mail,day,nod,frm,suj,re,lu,img,thm,host,lg','qda','a',$p);
 $r['day']=time(); $r['frm']='rediffusion';//
-$msg=sql('msg','qdm','v',$p);
+$msg=ma::artxt($id);
 if($msg)$id=sqlsav('qda',$r,0,1);
 if($id)$id=sql::savi('qdm',[$id,$msg]);
 return 'ok';}
@@ -139,7 +139,7 @@ return 'ok';}
 $r=sql('id,ib,name,mail,day,nod,frm,suj,re,lu,img,thm,host,lg','qda','a','1');
 $r['re']=0; $r['frm']='_system';
 for($i=1;$i<468;$i++){
-	$id=sql('id','qda','v',$i);
+	$id=ma::artex($i);
 	if(!$id){$r['id']=$i;
 		$id=sql::savi('qda',$r); echo $id.' ';
 		if($id)self::repair($id);}}

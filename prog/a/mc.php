@@ -207,7 +207,7 @@ if($o)return btj(picto('save',''),atj('saveart',$id),'active');
 else return btj(picto('editor'),atj('editart',$id));}
 
 static function artsconn($id){
-$d=sql('msg','qdm','v',$id);
+$d=ma::artxt($id);
 return conb::read($d);}
 
 static function wygopn($id){
@@ -273,7 +273,7 @@ return match($va){
 'imglabel'=>self::add_comments($d),
 'oldconn'=>sav::conn_retape($d,$va),
 'replace'=>str_replace($rep,$by,$d),
-'revert'=>sql('msg','qdm','v',ses('read')),
+'revert'=>ma::artxt(ses('read')),
 'postreat'=>conv::post_treat($d,$va,$opt),
 'delh'=>str_replace([':h1',':h2',':h3',':h4',':h5'],':h',$d),
 'inclusive'=>str::clean_inclusive($d),
@@ -468,10 +468,10 @@ static function restore($g1,$g2){$v=sql('msg','qdmb','v',['id'=>$g1]); return ed
 static function backdel($g1,$id){if($g1 && auth(6))sql::del('qdmb',$g1); meta::utag_sav($id,'review','');
 return self::navs('backup',$id);}
 static function addrev($id,$nid){meta::utag_sav($id,'review',$nid); return 'ok';}
-static function mkbackup($id,$o=''){$d=sql('msg','qdm','v',['id'=>$id]);
+static function mkbackup($id,$o=''){$d=ma::artxt($id);
 $nid=sqlsav('qdmb',[$id,$d,sqldate()]); if($o)self::addrev($id,$nid); return 'ok';}
 static function replacext($id,$a,$prm){self::mkbackup($id,1);
-$d=sql('msg','qdm','v',['id'=>$id]); if(is_array($prm))[$a,$b]=arr($prm,2); else $b=$prm;
+$d=ma::artxt($id); if(is_array($prm))[$a,$b]=arr($prm,2); else $b=$prm;
 $d=str_replace($a,$b,$d); if(auth(6))sqlup('qdm',['msg'=>$d],$id); return 'ok';}
 static function replacextfrom($id){$prm=[':ured','|red:under']; return self::replacext($id,1,$prm);}
 static function replaceoldconn($id){$r=msql::where('system','connectors_old',[1=>'']); $rt=[];

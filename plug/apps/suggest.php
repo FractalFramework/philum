@@ -22,7 +22,7 @@ return $ret;}
 static function rapport($m){
 $r=msql::read('',nod('suggest'));
 if($r)foreach($r as $k=>$v){$id='';
-	if($v[3])$id=sql('id','qda','v','mail="'.$v[3].'"'); 
+	if($v[3])$id=sql('id','qda','v',['mail'=>$v[3]]); 
 	if($id)$art=lj('popw','popup_popart__3_'.$id.'_3',nms(89));
 	$pub=$v[1]?$art:btn('popbt',nms(56)); 
 	if($v[3]==$m)$ra[]=array($v[0],lka('popbt',$v[2]),$pub);}

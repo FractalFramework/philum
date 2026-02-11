@@ -310,7 +310,7 @@ if(substr($im,0,2)=='//')$im=substr($im,2);
 if(substr($im,0,1)=='/')$im=substr($im,1);
 //else $root=struntil(ses::$urlsrc,'/');//relative links
 if($root && substr($root,-1)!='/')$root.='/';
-if(substr($im,0,4)=='http')$root='';
+if(ishttp($im))$root='';
 //$im=antipuces($im);//obs
 if(in_array($im,self::$imrold))return;//onetime
 self::$imrold[]=$im;
@@ -411,19 +411,19 @@ case 'blockquote':
 		//if(strpos($d,':twitter'))$d=between($d,'[https://twitter.com/',':twitter]',1);
 		if(strpos($d,':twitter'))$d=between($d,'[https://x.com/',':twitter]',1);
 		if($d)$b='[https://x.com/'.$d.':twitter]'.$n;}
-	elseif(self::notin($b,':q]'))$b=$n.$n.'['.$b.':q]'.$n.$n; break;
-case 'strong':if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
-case 'bold':if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
-case 'em':if(self::notin($b,':em]') && self::notin($b,':twitter]'))$b='['.$b.':i]'; break;
-case 'h1':if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h1':'h').']'.$n.$n; break;//
-case 'h2':if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h2':'h').']'.$n.$n; break;//
-case 'h3':if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h3':'h').']'.$n.$n; break;//
-case 'h4':if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h4':'h').']'.$n.$n; break;//
-case 'h5':if(self::notin($b,':b]'))$b=$n.$n.'['.$b.':'.($h?'h5':'h').']'.$n.$n; break;//
-case 'i':if(self::notin($b,':i]'))$b='['.$b.':i]'; break;
-case 'b':if(self::notin($b,':b]'))$b='['.$b.':b]'; break;
-case 'u':if(self::notin($b,':u]'))$b=self::deco($bin,$b); break;
-case 'q':if(self::notin($b,':q]'))$b='['.$b.':qu]'; break;
+	elseif(self::notin($b,'q'))$b=$n.$n.'['.$b.':q]'.$n.$n; break;
+case 'strong':if(self::notin($b,'b'))$b='['.$b.':b]'; break;
+case 'bold':if(self::notin($b,'b'))$b='['.$b.':b]'; break;
+case 'em':if(self::notin($b,'em') && self::notin($b,'twitter'))$b='['.$b.':i]'; break;
+case 'h1':if(self::notin($b,'b'))$b=$n.$n.'['.$b.':'.($h?'h1':'h').']'.$n.$n; break;//
+case 'h2':if(self::notin($b,'b'))$b=$n.$n.'['.$b.':'.($h?'h2':'h').']'.$n.$n; break;//
+case 'h3':if(self::notin($b,'b'))$b=$n.$n.'['.$b.':'.($h?'h3':'h').']'.$n.$n; break;//
+case 'h4':if(self::notin($b,'b'))$b=$n.$n.'['.$b.':'.($h?'h4':'h').']'.$n.$n; break;//
+case 'h5':if(self::notin($b,'b'))$b=$n.$n.'['.$b.':'.($h?'h5':'h').']'.$n.$n; break;//
+case 'i':if(self::notin($b,'i'))$b='['.$b.':i]'; break;
+case 'b':if(self::notin($b,'b'))$b='['.$b.':b]'; break;
+case 'u':if(self::notin($b,'u'))$b=self::deco($bin,$b); break;
+case 'q':if(self::notin($b,'q'))$b='['.$b.':qu]'; break;
 case 'td':$td[]=self::prep_table($b); break;
 case 'th':$td[]=self::prep_table($b); break;
 case 'tr':$tr[]=$td; $td=[]; break;
@@ -515,14 +515,14 @@ case 'iframe':
 return [$taga,$b,$tagb];}
 
 static function bal_conv_style($b,$bin){$bse=strtolower($bin);
-if(strpos($bse,'bold')!==false && self::notin($b,':b]'))$b='['.$b.':b]';
-elseif(strpos($bse,'italic')!==false && self::notin($b,':i]'))$b='['.$b.':i]';
-//elseif((strpos($bse,'#ff0000')!==false or strpos($bse,':red')!==false or strpos($bse,'rgb(255,0,0)')!==false) && self::notin($b,':red]'))echo $b='['.$b.':red]';
+if(strpos($bse,'bold')!==false && self::notin($b,'b'))$b='['.$b.':b]';
+elseif(strpos($bse,'italic')!==false && self::notin($b,'i'))$b='['.$b.':i]';
+//elseif((strpos($bse,'#ff0000')!==false or strpos($bse,':red')!==false or strpos($bse,'rgb(255,0,0)')!==false) && self::notin($b,'red'))echo $b='['.$b.':red]';
 elseif(strpos($bse,'background-image')!==false){$im=self::recupurlim($bse); if($im)$b='['.$b.']';}
-elseif(strpos($bse,'background-color')!==false && self::notin($b,':bkgclr]')){
+elseif(strpos($bse,'background-color')!==false && self::notin($b,'bkgclr')){
 	$clr=strpropcss($bse,'background-color');
 	if($clr)$clr=self::findclr($clr); if($clr && $clr!='white')$b='['.$b.'|'.$clr.':bkg]';}
-elseif(strpos($bse,'color')!==false){// && self::notin($b,':clr]')
+elseif(strpos($bse,'color')!==false){// && self::notin($b,'clr')
 	$clr=strpropcss($bse,'color'); if(!$clr)$clr=strprop($bse,'color');//!
 	if($clr)$clr=self::findclr($clr);
 	if($clr && $clr!='black')$b='['.$b.'|'.$clr.':clr]';}
@@ -532,7 +532,7 @@ elseif(strpos($bse,'border-bottom')!==false){//few usited
 	if($clr)$clr=self::findclr($clr); if($ty=='solid')$ty=''; if($sz==1)$sz='';
 	$pm=joinif(',',[$clr,$sz,$ty]);
 	if($pm)$b='['.$b.'|'.$pm.':borderline]';}
-//elseif(strpos($bse,'underline')!==false && self::notin($b,':u]'))$b='['.$b.':u]';
+//elseif(strpos($bse,'underline')!==false && self::notin($b,'u'))$b='['.$b.':u]';
 elseif(strpos($bse,'border')!==false){
 	$prm=strpropcss($bse,'border'); [$sz,$ty,$clr]=expl(' ',$prm,3);
 	$sz=str_replace('px','',$sz); $clr=str_replace(';','',$clr);
@@ -543,8 +543,8 @@ elseif(strpos($bse,'id="rumble_"')!==false)$b='['.between($bse,'id="rumble_','"'
 elseif(strpos($bse,'text-decoration')!==false)$b=self::deco($bse,$b);
 elseif(strpos($bse,'background-image')!==false)$b='['.between($bse,"url('","')").']';
 elseif(strpos($bse,'line-through;')!==false)$b='['.$b.':k]';
-elseif(strpos($bse,'margin-left')!==false)$b='['.$b.':q]';// && self::notin($b,':q]')
-elseif(strpos($bse,'padding-left')!==false)$b='['.$b.':q]';// && self::notin($b,':q]')
+elseif(strpos($bse,'margin-left')!==false)$b='['.$b.':q]';// && self::notin($b,'q')
+elseif(strpos($bse,'padding-left')!==false)$b='['.$b.':q]';// && self::notin($b,'q')
 elseif(strpos($bse,'spip_doc_descriptif')!==false)$b='['.$b.':q]';
 elseif(strpos($bse,'ndtref')!==false)$b='['.$b.':grey]';
 elseif(strpos($bse,'ndwref')!==false)$b='['.$b.':grey]';
@@ -565,7 +565,7 @@ return $b;}
 //strings
 static function notin($d,$c){
 $b=preg_replace("/(\r)|(\n)|( )|(&nbsp;)/",'',$d);
-if($b && strpos($d,$c)===false && !is_img($d))return true;}//
+if($b && strpos($d,':'.$c.']')===false && !is_img($d) && !strpos($d,'data/image')===false)return true;}
 
 static $splitable='¬';//"\n";
 static function prep_table($d){$d=trim($d);

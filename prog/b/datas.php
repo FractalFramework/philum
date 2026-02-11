@@ -23,10 +23,10 @@ static function art(){return [
 
 static function cat(){return [
 ['div',['class'=>'grid-art'],[
-	['div',['class'=>'row1 col1'],[
+	['div',['class'=>''],[
 		['div',[],'{thumb}'],
 		['div',['class'=>'tags hide-simple scrollb'],'{tag}']]],
-	['div',['class'=>'row1 col2'],[
+	['div',['class'=>''],[
 		['header',[],[
 			['div',['id'=>'meta{id}'],[
 				['span','','{back} {avatar} {cat}'],
@@ -59,10 +59,10 @@ static function catfast(){return [
 		['h2','','{title}'],
 		['div',['class'=>'grey tright'],'']]],
 	['div',['class'=>'grid-art','style'=>'grid-template-columns:140px auto;'],[
-		['div',['class'=>'row1 col1'],[
+		['div',['class'=>''],[
 			['p',[],[
 				['div',[],'{thumb}']]]]],
-		['div',['class'=>'row1 col2'],[
+		['div',['class'=>''],[
 			['article',['id'=>'art{id}'],'{msg}'],
 			['clear','','']]]]]]]];}
 
@@ -89,9 +89,9 @@ static function read(){return [
 //prw1
 static function simple(){return [
 ['div',['class'=>'grid-art'],[
-	['div',['class'=>'row1 col1 simple'],[
+	['div',['class'=>'simple'],[
 		['div',[],'{thumb}']]],
-	['div',['class'=>'row1 col2'],[
+	['div',['class'=>''],[
 		['header','',[
 			['div',['id'=>'meta{id}'],[
 				['span','','{cat} {avatar}'],
@@ -179,14 +179,14 @@ static function tracks(){return [
 
 static function tracks2(){return [
 ['div',['class'=>'grid-art {css}','style'=>'{sty}'],[
-	['div',['class'=>'row1 col1'],[
+	['div',['class'=>''],[
 		['anchor','','trk{id}'],
 		['span',[],'{avatar} '],
 		['span',['class'=>'txtx'],'{author}'],
 		['span',['class'=>'txtbox'],'{opt}'],
 		['span',['class'=>'txtsmall2'],'{date} #{id}'],
 		['','','{edit}']]],
-	['div',['id'=>'art{id}','class'=>'row1 col2'],[
+	['div',['id'=>'art{id}','class'=>''],[
 		['div',['class'=>'trkmsg'],'{msg}']]]]]];}
 
 static function titles(){return [
@@ -197,28 +197,28 @@ static function titles(){return [
 	['','','{date} {opt} {parent}']]]];}
 
 static function pubart(){return [
-['div',['class'=>'imgl'],[
-	['thumb','44/44','{img1}']]],
-['span',['class'=>'author'],'{auteurs}'],
-['h4','',[
-	['jurl','{jurl}','{suj}']]],
-['','','{video}']];}
+['div',['class'=>'grid-pub'],[
+	['div',['class'=>'colspan12'],[
+		['span',['class'=>'author'],'{auteurs}']]],
+	['div',[],[
+		['thumb','44/44','{img1}']]],
+	['div',[],[
+		['h4','',[
+			['jurl','{jurl}','{suj}']]]]]]]];}
 
 static function pubartb(){return [
 ['div',['class'=>'imgl'],[
 	['thumb','44/44','{img1}']]],
 ['span',['class'=>'author'],'{auteurs}'],
 ['h4','',[
-	['hurl','{url}','{suj}']]],
-['','','{video}']];}
+	['hurl','{url}','{suj}']]]];}
 
 static function pubartc(){return [
 ['url','{url}',[
 	['thumb','200/100','{img1}']]],
 ['span',['class'=>'author'],'{auteurs}'],
 ['h4','',[
-	['hurl','{url}','{suj}']]],
-['','','{video}']];}
+	['hurl','{url}','{suj}']]]];}
 
 static function panart(){return [
 ['hurl','{url}',[

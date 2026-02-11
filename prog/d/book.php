@@ -64,7 +64,7 @@ $p['opt']=$r[1]; //$p['tag']=$r[5];
 $p['length']=art::length($r[8]); 
 //$p['length'].=' '.lka(urlread($id),picto('articles'));
 $p['length'].=' '.ma::popart($id);
-$msg=sql('msg','qdm','v',$id);
+$msg=ma::artxt($id);
 $msg=conn::read($msg,'',$id,1);
 $p['player']=self::pages($id,$rid);
 $p['msg']=self::scroll($msg,$rid);

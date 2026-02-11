@@ -18,7 +18,7 @@ return hr().tagb('b',$r[0]).$ret.divc('justy',nl2br(stripslashes($r[1])));}
 
 //edit
 static function sav($p,$o,$prm){$def=$prm[0]??'';
-$rb=sql::inner('frm','qdm','qda','id','k','nod="ummo" and substring(frm,1,1)!="_" and frm!="Etudes" and substring(frm,1,2)!="ES" and re>0 and msg like "% '.$p.' %"',''); if($rb)$ref=implode(' ',array_keys($rb));
+$rb=sql::inner('frm','qdm','qda','id','k','nod="ummo"and frm!="Etudes" and re>0 and msg like "% '.$p.' %"',''); if($rb)$ref=implode(' ',array_keys($rb));
 $defs=[$p,$def,'',$ref];
 msql::modif('',ses('umncnod'),$defs,'push','','');
 return self::search($p,'1',$prm);}

@@ -63,7 +63,6 @@ if(is_numeric($q))return 'where id="'.$q.'"'; elseif(!$q)return;
 elseif(is_string($q))return 'where '.$q;
 if($q)foreach($q as $k=>$v){
 	$c1=substr($k,0,1); $k1=substr($k,1);
-	//$c2=substr($k,0,2); $k2=substr($k,2);
 	if($k=='_order')$w.=' order by '.$v;
 	elseif($k=='_group')$w.=' group by '.$v;
 	elseif($k=='_limit')$w.=' limit '.$v;
@@ -72,8 +71,6 @@ if($q)foreach($q as $k=>$v){
 	elseif($k=='and')$rb+=self::where($v,1);//second iteration
 	elseif($c1=='|')$rc[]=$k1.'="'.self::qres($v).'"';//or
 	elseif($c1=='!')$rb[]=$k1.'!="'.self::qres($v).'"';
-	//elseif($c2=='>=')$rb[]=$k2.'>="'.self::qres($v).'"';
-	//elseif($c2=='<=')$rb[]=$k2.'<="'.self::qres($v).'"';
 	elseif($c1=='>')$rb[]=$k1.'>"'.self::qres($v).'"';
 	elseif($c1=='<')$rb[]=$k1.'<"'.self::qres($v).'"';
 	elseif($c1=='}')$rb[]=$k1.'>="'.self::qres($v).'"';
@@ -86,13 +83,11 @@ if($q)foreach($q as $k=>$v){
 	elseif($c1=='(')$rb[]=$k1.' in ('.implode(',',self::atmr($v)).')';
 	elseif($c1==')')$rb[]=$k1.' not in ("'.implode(',',self::atmr($v)).')';
 	elseif($c1=='#')$rb[]='date_format('.$k1.',"%y%m%d")="'.self::qres($v).'"';
-	//elseif($c1=='-')$rb[]='substring('.$k1.',1,1)!="'.$v.'"';
 	elseif($c1=='-')$rb[]='substring('.$k1.',1,'.strlen($v).')!="'.self::qres($v).'"';
 	elseif($c1=='+')$rb[]='substring('.$k1.',1,'.strlen($v).')="'.self::qres($v).'"';
 	elseif(is_array($v))$rb[]=$k.' ('.implode(',',self::atmr($v)).')';
 	//elseif(is_array($v))$rb+=self::where($v,1);
-	elseif(substr($v??'',0,9)=='substring')$rb[]=$v;
-	//elseif(strpos($v,' in'))$rb[]=$v;
+	//elseif(substr($v??'',0,9)=='substring')$rb[]=$v;
 	elseif($k==='not null')$rb[]=$v.' is not null';
 	elseif($k==='is null')$rb[]=$v.' is null';
 	elseif(is_numeric($k))$rb[]=$v;

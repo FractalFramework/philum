@@ -166,7 +166,7 @@ $clr=msql::kv('system','default_clr_2');
 $css='css/'.$qb.'_design_2.css'; sty::build_css($css,sty::css_default(),$clr);
 sql::upd('qdu',['menus'=>ses::$dayx],['name'=>$qb]);
 if(!is_dir('users/'.$qb))mkdir_r('users/'.$qb);
-$first=sql('id','qda','v','1');
+$first=ma::artex(1);
 if(!$first){
 	$rw=['0',$qb,'',time(),$qb,'public',nms(186).' &#127804;',1,0,'','','',ses('lng')];
 	$nid=sqlsav('qda',$rw); sql::savi('qdm',[$nid,'[philum?48:picto]']);}

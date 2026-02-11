@@ -173,7 +173,7 @@ return $ret;}
 //ban
 static function bansav($d){copy($d,'imgb/usr/'.ses('qb').'_ban.jpg');return btn('txtyl','saved: '.$d);}
 static function bandir($id){$r=[]; $ret='';
-if(substr($id,0,4)=='http'){$d=read_file($id);
+if(ishttp($id)){$d=read_file($id);
 	write_file('imgb/usr/'.ses('qb').'_ban.jpg',$d);}
 elseif($id && !is_numeric($id)){
 	$dir='users/'; $dirb=ses('qb').'/'.$id.'/';
@@ -528,7 +528,7 @@ return $rt;}
 
 static function artedit($id,$o='',$prm=[]){
 $id=$id?$id:$prm[0]??1;
-$msg=sql('msg','qdm','v',$id);
+$msg=ma::artxt($id);
 $ath=ma::data_val('msg',$id,'authlevel');
 if($ath>$_SESSION['auth']){ses::$r['popw']=320; ses::$r['popt']='article '.$id; return nms(55);}
 $j='popup_usg,editbrut_edit'.$id.'_x_'.$id;
@@ -646,7 +646,7 @@ static function adm_overcat($o=''){$rb=[];
 self::patch_overcats();
 $r=sql('id,msg','qdd','kv',['val'=>'surcat']);
 if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rb[$cat]=[$ov,$k];}
-$r=sql('frm','qda','k','nod="'.ses('qb').'" and substring(frm,1,1)!="_" order by frm');
+$r=sql('frm','qda','k',['nod'=>ses('qb'),'_order'=>'frm']);
 self::update_cats($r,$rb);
 $jb='scat_adm,overcatdel___';
 $ret=div(helps('overcat').hlpbt('overcats_menu')); $rt=[];

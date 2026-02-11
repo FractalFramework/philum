@@ -102,7 +102,7 @@ if(!$r or $o){$r=self::cats(); $r=msql::save('server',nod('cats'),$r);}
 $_SESSION['cats']=$r?$r:[]; return $r;}
 
 static function cats($o=''){
-$sq=['nod'=>ses('qb'),'re>'=>'0','_order'=>'frm'];
+$sq=['nod'=>ses('qb'),'>re'=>'0','_order'=>'frm'];
 if(!$o)$sq['-frm']='_';
 return sql('distinct(frm)','qda','rv',$sq);}
 

@@ -82,7 +82,7 @@ $rb=web::read($r[$i],1); pr($rb);}}
 
 //rpl
 static function replacext($id,$o,$prm=[]){if($o)$d=mc::mkbackup($id,$o);
-$d=sql('msg','qdm','v',['id'=>$id]); [$a,$b]=arr($prm,2);
+$d=ma::artxt($id); [$a,$b]=arr($prm,2);
 $d=str_replace($a,$b,$d); if(auth(7))sqlup('qdm',['msg'=>$d],$id); return $id;}
 
 static function batchreplace($g1,$g2,$prm=[]){

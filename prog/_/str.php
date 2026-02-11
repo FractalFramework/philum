@@ -116,7 +116,7 @@ foreach($ra as $k=>$v){$a=''; $b=''; $deb=substr($v,0,1); $end=substr($v,-1);
 		if($deb==$va){$a=$va; $v=substr($v,1); $end=substr($v,-1);}//avoid double on ":"
 		if($end==$va){$b=$va; $v=substr($v,0,-1);}}
 	if(substr($v,0,2)=='//' && strpos($v,'.'))$v='[https:'.$v.']';
-	elseif(substr($v,0,4)=='http' or substr($v,-4)=='.jpg'){
+	elseif(ishttp($v) or substr($v,-4)=='.jpg'){
 		$oa=strrpos($v,'['); $ob=strrpos($v,']'); $oc=strrpos($v,':'); $od=strrpos($v,'|');
 		if($oa===false && $ob===false && $od===false)$v='['.$v.']';
 		elseif($od!==false && $oc!==false && $oc>$od)$v='['.substr($v,0,$od).']'.substr($v,$od);

@@ -86,7 +86,7 @@ return count($rc);}
 static function affect_arts(){
 $r=sql('id,ref','thesaurus','kv','idart=266'); //p($r);
 if($r)foreach($r as $k=>$v){
-$id=sql('id','qda','v','suj like "['.$v.']%" and re="1" and lg="fr"');
+$id=sqb('id','art','v',['%suj'=>'['.$v.']','>re'=>'0','lg'=>'fr']);
 if($id){sql::upd('thesaurus',['idart'=>$id],$k);}}
 return count($r);}
 

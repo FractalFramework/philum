@@ -137,7 +137,6 @@ else $sq['slct'][]=$qda.'.id,'.$qda.'.ib,'.$qda.'.day,'.$qda.'.mail,'.$qda.'.frm
 if($p['json'] or $p['sql'] or $p['msg'])$sq['slct'][]='msg';
 //if($p['catid']){$qdc=db('qdc'); $sq['inner'][]='inner join '.$qdc.' on '.$qdc.'.id='.$qda.'.frm and '.$qda.'.frm="'.$p['catid'].'"';}
 if($p['cat'])$sq['and'][]=$qda.'.frm'.self::sql_in($p['cat']);
-//else $sq['and'][]='substring('.$qda.'.frm,1,1)!="_"';
 else $sq['and'][]=$qda.'.frm not in ("_system","_trash")';
 if($p['nocat'])$sq['and'][]=$qda.'.frm'.self::sql_in($p['nocat'],1);
 if($p['nochilds'])$sq['and'][]=$qda.'.ib="0"';

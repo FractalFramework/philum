@@ -288,12 +288,12 @@ return $rb;}
 
 //subarts
 static function ib_arts_nb($id){$sq['ib']=$id;
-if(!auth(1))$sq['}re']='1';// $sq['-frm']='_';
+if(!auth(1))$sq['}re']='1';
 return $ids=sql('count(id)','qda','v',$sq);}
 
 static function ibload($id,$ord,$pg=1){$bt=''; if(!$pg)$pg=1;
-$w=auth(4)?'':'and re>="1" and substring(frm,1,1)!="_"';
-$r=sql('id','qda','k','ib="'.$id.'" '.$w.' order by id '.($ord?'desc':'asc')); if(!$r)return;
+if(auth(4))$sq['>re']='0';
+$r=sql('id','qda','k',$sq+['ib'=>$id,'_order'=>'id '.($ord?'desc':'asc')]); if(!$r)return;
 $ra=array_chunk($r,20,true); $nb=count($r); $rb=$ra[$pg-1]??$r;
 [$is,$go]=$ord?[41,40]:[40,41]; $ic=$ord?'s-top':'s-down'; $t=pictxt($ic,nms($is));
 if($nb>1)$bt=lj('small','ch'.$id.'_art,ibload___'.$id.'_'.yesno($ord),$t,att(nms($go)));
@@ -435,7 +435,7 @@ return implode("\n\n",$rb);}
 #read
 static function read($id,$tp=''){$tp=$tp?$tp:'read'; $prw=0; $ret='';
 $r=self::datas($id); $r['o']=self::metart($id); if(!$r)return; $nl=get('nl');
-$msg=sql('msg','qdm','v',$id);
+$msg=ma::artxt($id);
 if($id && ($r['re']>='1' or auth(3) or ses('usr')==$r['name'])){$prw=3;
 	//$ret=self::build($id,$r,$msg,$prw,$tp,$nl);
 	$ret=self::callout($id,$r,$msg,$prw,$tp,$nl);}
@@ -449,14 +449,14 @@ if($id=='last')$id=ma::lastartid(); elseif(!is_numeric($id))$id=ma::id_of_suj($i
 if($prw==3){geta('read',$id); $_SESSION['read']=$id; $tp=$tp?$tp:'read';}
 $r=self::datas($id); if(!$r)return; $r['o']=self::metart($id); $msg=''; ses::$r['suj']=$r['suj']??'';
 if($id && !$r['re'] && !auth(4))return divc('frame-red',helps('not_published'));
-if((int)$prw!=1)$msg=sql('msg','qdm','v',$id);//1.2.3.nl//rstr(5)
+if((int)$prw!=1)$msg=ma::artxt($id);//1.2.3.nl//rstr(5)
 //$ret=self::build($id,$r,$msg,$prw,$tp,$nl,$nb);
 return self::callout($id,$r,$msg,$prw,$tp,$nl,$nb,$trk,$trktyp);}
 
 static function playc($id,$prw,$rch=''){//from metas
 if($prw>2)$_SESSION['read']=$id; else $_SESSION['read']=''; $msg='';
 $r=self::datas($id); $r['o']=self::metart($id); //$prw=self::slct_media($prw);
-if($prw>1)$msg=sql('msg','qdm','v',$id);//rstr(5) or 
+if($prw>1)$msg=ma::artxt($id);//rstr(5) or 
 if($prw==3 && $rch)ses::$r['look']=$rch;
 if($prw=='rch' && !$rch)$prw=2;//close after contradict rch
 if($prw=='rch' && $rch){get('search',$rch); $rt=ma::prepare_rech($id,$msg,[]); $ret=$rt['msg'];}
@@ -469,12 +469,12 @@ if($id=='last')$id=ma::lastartid(); elseif(!is_numeric($id))$id=ma::id_of_suj($i
 geta('read',$id); $msg='';
 if($prw=='rch'){$prw=2; if($tp){ses::$r['look']=$tp; get('search',$tp); $tp='';}}//from titsav, no $tp
 $r=self::datas($id); $r['o']=self::metart($id); if(!$r)return;
-if(($prw>=2) && $r['re'])$msg=sql('msg','qdm','v',$id);//rstr(5) or
+if(($prw>=2) && $r['re'])$msg=ma::artxt($id);//rstr(5) or
 return self::callin($id,$r,$msg,$prw,$tp,$nl,$n='',$trk='');}
 
 static function playq($id,$pos,$r35,$quot=''){//quotes
 $_SESSION['read']=$id; $r=self::datas($id); $r['o']=self::metart($id);
-$msg=sql('msg','qdm','v',$id);
+$msg=ma::artxt($id);
 $msg=ma::applyquote2($msg,$id,$pos,$r35,$quot);
 $ret=self::prepare_msg($id,$msg,$r,3); $ret.=divc('clear','');
 return $ret;}
@@ -519,14 +519,13 @@ $rt['date']=mkday($day,'Y-m-d');//time_ago($day);
 $rt['url']=host().urlread($id);
 $rt['edit']=''; $msgbt=''; $tks='';
 if($re==0 && $host==$ip){$rt['sty']='opacity:0.5;'; $rt['edit'].=btn('txtsmall',helps('trackbacks')).' ';}
-if($re==2)$tks='30,240,30'; elseif($re==3)$tks='240,30,30'; elseif($re==4)$tks='30,30,240';
+$tks=match($re){'2'=>'30,240,30','3'=>'240,30,30','4'=>'30,30,240',default=>''};
 if($tks)$rt['sty']='background-color:rgba('.$tks.',0.1);';
 if($host==$ip && (ses::$dayx-$day)<600 or auth(6))//redit
 	$rt['edit'].=lj('','popup_tracks,redit___'.$id,picto('edit')).' ';
-$rc=expld(prmb(10));
 if($name==$usr)$name='Admin';
 $rt['author']=lj('','popup_tracks,form___'.$read.'_'.$id,$name?$name:nms(210)).' ';
-if($re>1 && isset($rc[$re+1]))$rt['opt']=$rc[$re+1];
+$rc=expld(prmb(10)); if($re>1)$rt['opt']=$rc[$re-1]??'';
 $f='imgb/usr/'.$name.'_avatar.gif';
 if(is_file($f))$rt['avatar']=image($f,48,48,'vertical-align:bottom;');
 $len=mb_strlen($msg); 

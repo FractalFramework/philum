@@ -345,7 +345,7 @@ function pagpos(){
 var popup=getbyid('pop'+curid);
 //popup.style.left=0; popup.style.top=0;
 popup.style.width='calc(100vw - 16px)';
-popup.style.height='100%';popup.style.left='0';
+popup.style.height='100%'; popup.style.left='0';
 popup.style.top='0'; popup.style.bottom='0';
 popup.style.backgroundColor='rgba(0,0,0,0.9)';
 popup.style.boxShadow='0px 0px #000;';}

@@ -5,7 +5,7 @@ class usg{
 static function trkplay($g1){$_SESSION['read']=$g1;
 return art::output_trk(ma::read_idy($g1,'ASC'));}
 
-static function delconn($g1){$d=sql('msg','qdm','v',$g1); 
+static function delconn($g1){$d=ma::artxt($g1); 
 $d=html_entity_decode($d,true,ses::$s['enc']);
 $d=conb::parse($d,'delconn'); return str::clean_lines($d);}
 
@@ -126,7 +126,7 @@ static function nbp($id,$read){
 ses::$r['popt']='footnote #'.$id;
 if(strpos($id,'-'))[$id,$i]=explode('-',$id);
 $t=lkc('nbp',urlread($read).'#nb'.$id.'" name="nh'.$id,'['.$id.']');//nb($id,1)
-$d=sql('msg','qdm','v',$read);
+$d=ma::artxt($read);
 $pos=strpos($d,'['.$id.':nb]'); $posb=0; $d2=substr($d,$pos);
 if(is_numeric($id))$posb=strpos($d2,'['.($id+1).':nb]'); if($posb)$posb-=2;
 if(!$posb)$posb=strpos($d2,':aside]'); if($posb)$posb+=$pos+1;
@@ -257,7 +257,7 @@ $d=conv::call($d);//$d=str::embed_links($d);
 $d=str_replace(['[img/','[users/'],'',$d);
 return $d;}
 
-static function conn2($g1){$d=sql('msg','qdm','v',$g1); 
+static function conn2($g1){$d=ma::artxt($g1); 
 $d=conn::read($d,'',$g1,1); return str_replace('</p>',"</p>\n",$d);}
 
 #windows

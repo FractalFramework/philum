@@ -152,7 +152,7 @@ return taga('img',$rp);}
 static function make_thumb_c($img,$sz='',$s=''){
 if(!$sz)$sz=prmb(27); [$w,$h]=explode('/',$sz);
 if(strpos($img,'?'))$img=strto($img,'?'); $wo=0;
-if(substr($img,0,4)=='http')$b=substr(md5($img),0,6).'.'.strend($img,'.');
+if(ishttp($img))$b=substr(md5($img),0,6).'.'.strend($img,'.');
 else{$b=str_replace(['users/','img/','imgb/','icons','/'],'',$img);}
 $thumb=self::build_mini($b,$sz,$s);
 return taga('img',['src'=>$thumb]);}

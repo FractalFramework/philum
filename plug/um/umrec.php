@@ -10,7 +10,7 @@ static function req_arts_c($p){$w=self::cats($p);
 return sql('count(id)','qda','v','frm in ("'.$w.'")');}
 
 static function req_last($p='All'){$w=self::cats($p);
-return sql('id','qda','v','frm in ("'.$w.'") order by day desc limit 1');}
+return sql('id','qda','v',['(frm'=>$w,'_order'=>'day desc','_limit'=>'1']);}
 
 static function id_of_suj($id){
 return sql('id','qda','v',['%suj'=>$id,'nod'=>ses('qb'),'(frm'=>self::$cats,'_order'=>'id asc','_limit'=>'1']);}

@@ -1,7 +1,5 @@
-<?php //clics
-
+<?php 
 class clics{
-
 /*
 static function consolid_stats(){
 $r=sql('substring(page,6)','qdv2','k','page LIKE "read=%" limit 0,10000'); //pr($r);

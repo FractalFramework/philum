@@ -395,7 +395,7 @@ elseif(($par or $http) && $html===false){//secure double hooks
 	elseif(strpos($p,'x.com')!==false)$ret=lkt('',$p,pictxt('X',$o));
 	elseif(strpos($p,':iframe')){if($nl)$ret=struntil($p,':iframe');
 		$ret=lj('','popup_conn,parser___['.ajx($p).']_3_test',pictxt('window',$o));}
-	elseif(substr($p,0,4)=='http')$ret=rstr(111)&&!$nl?mk::webview($da,$id):lka($p,$o);
+	elseif($http)$ret=rstr(111)&&!$nl?mk::webview($da,$id):lka($p,$o);
 	elseif(substr($p,0,1)=='/')$ret=lkt('',$p,$o);
 	elseif(strpos($p,'/'))$ret=lkt('',goodroot($p),$o);
 	elseif(is_numeric($p) && strpos($o,':')===false && !$c)$ret=ma::jread('',$p,$o);}
@@ -405,7 +405,7 @@ elseif($par){
 		if(is_http($o))$ret=lkt('',$o,img(goodroot($p)));
 		$ret=mk::popim($p,pictxt('img',$o,16),$id);}
 	elseif(is_img($o)){//link|img
-		if(substr($p,0,4)=='http')$ret=lkt('',$p,artim::mkimg($o,$m,$pw,$id,1));
+		if($http)$ret=lkt('',$p,artim::mkimg($o,$m,$pw,$id,1));
 		elseif(is_numeric($p))$ret=mk::popim($o,pictxt('img',urlread($p)),$id);
 		else $ret=lkt('',$o,img(goodroot($p)));}
 	else $ret=lkt('',$p,$o);}

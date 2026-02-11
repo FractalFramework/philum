@@ -13,7 +13,7 @@ img::save($id,$d,$dc);
 self::sethero($id);}
 
 static function updmsg($id,$a,$b,$c=''){
-$d=sql('msg','qdm','v',$id); if($c)$d=str_replace($a.':'.$c,$b,$d); $d=str_replace($a,$b,$d);
+$d=ma::artxt($id); if($c)$d=str_replace($a.':'.$c,$b,$d); $d=str_replace($a,$b,$d);
 $d=str::clean_br_lite($d); sql::upd('qdm',['msg'=>$d],$id);
 if($c=='b64')sql::upd('qda',['host'=>strlen($d)],$id);}
 
@@ -50,7 +50,7 @@ if($o)return $im;}
 
 #hero
 static function recenseim($id,$d=''){
-$d=$d?$d:sql('msg','qdm','v',$id);
+$d=$d?$d:ma::artxt($id);
 $r=conb::imgs($d,$id); $n=img::updr($id,$r);
 return 'new img found:'.$n.'/'.count($r);}
 
@@ -122,7 +122,7 @@ elseif($xt=='.webp')$bt.=lj('txtyl',$did.'_artim,webp2jpg___'.ajx($da).'_'.$id,'
 if($bt)$ret=divd($did,$ret.$bt); return $ret;}
 
 static function getimg($da,$id,$m=''){
-if($m=='noimages' or !$da)return; if(rstr(40) && substr($da,0,4)=='http')return $da;
+if($m=='noimages' or !$da)return; if(rstr(40) && ishttp($da))return $da;
 $xt=xt($da); $qb=ses('qb'); if($id=='test')return $da; $b64='';
 if(strpos($da,';base64,'))return self::b64img($da,$id,$m);
 if(!$xt or $xt=='.php' or $xt=='.jpeg')$xt='.jpg'; $ok='';// or $xt=='.webp'
@@ -161,7 +161,7 @@ if(!$pw)$pw=prma('content'); $pwb=round($pw*0.5); $br=''; $p['id']='';//rez
 if($m=='noimages')return ' '; $http=''; $p['style']=''; $w=''; $h='';
 if(rstr(142))return self::orimg($da,$id,0);//distant original
 if(rstr(143))return self::orimg($da,$id,1);//link to distant
-if(substr($da??'',0,4)=='http'){
+if(ishttp($da??'')){
 	if(strpos($da,'Capture-'))$da=str_replace("'","’",$da);//%E2%80%99
 	return img($da);}
 else $pre=jcim($da);//,1
@@ -238,12 +238,12 @@ return lj('','popup_popart__3_'.$id.'_3',$ret);}
 //:thumb
 static function thumb_d($im,$sz,$id){//web,vue,conb
 [$w,$h]=opt($sz,'/'); if(!$w)$w=prma('content');
-if(substr($im,0,4)=='http')$imn=ses('qb').'_'.$id.'_'.substr(md5($sz),0,6).xt($im);
+if(ishttp($im))$imn=ses('qb').'_'.$id.'_'.substr(md5($sz),0,6).xt($im);
 elseif(strpos($im,'/')!==false)$imn=str_replace('/','',$im); else $imn=$im;
-$imb=img::thumbname($imn,$w,$h); $im=goodroot($im);
-if(is_file('img/'.$im) or substr($im,0,4)=='http'){$lmt='';//$_SESSION['rstr'][16];
+$imb=img::thumbname($imn,$w,$h); //$img=goodroot($im);
+if(is_file('img/'.$im)){$lmt='';//rstr(16); or ishttp($im)
 	if(!file_exists('imgc/'.$imb) or ses('rebuild_img'))img::build('img/'.$im,'imgc/'.$imb,$w,$h,$lmt);
-	return image($imb,$w,$h);}
+	return image('imgc/'.$imb,$w,$h);}
 else return picto('img',48);}
 
 static function mini_d($da,$id,$nl){//im|w/h//conn_thumb//conb

@@ -98,8 +98,6 @@ elseif(isset($alx[$d]))return $alx[$d];
 //elseif(isset($alx[substr($f??'',7)]))return $alx[substr($f??'',7)];
 //elseif($d){$suj2=self::wordsuj($d); $id=$alx[$suj2]??''; if($id)return $id;}
 $id=sqb::read('id','art','v',['nod'=>ses('qb'),'or'=>['mail'=>$f,'%suj'=>$d],'_limit'=>'1']);
-//$id=sql('id','qda','v',['nod'=>ses('qb'),'or'=>['mail'=>$f,'%suj'=>$d],'_limit'=>'1']);
-//if(!$id)$id=sql('id','qda','v',['nod'=>ses('qb'),'%suj'=>$d,'_limit'=>'1']);
 return $id;}
 
 static function wordsuj($d){

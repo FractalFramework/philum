@@ -29,12 +29,19 @@ static function jread($c,$id,$t){$ic=self::find_art_link($id);
 return self::popart(is_numeric($ic)?$ic:$id,$t);}
 
 static function read_msg($d,$m){$id=self::find_id($d); if(!$id)return;
-$ok=sql('id','qda','v',['id'=>$id,'>re'=>'0']); if(!$ok)return;//'-frm'=>'_','name'=>ses('usr')
-$ret=sql('msg','qdm','v',$id);
+$ok=self::artex($id,1); if(!$ok)return;
+$ret=ma::artxt($id);
 if($m==2 or $m=='noimages' or $m=='nl')$ret=art::preview($ret,$id);
 elseif($m=='inner')$ret=conn::parser($ret,$m,$id);
 elseif($m!='brut')$ret=conn::read($ret,$m,$id);
 return $ret;}
+
+static function artex($id,$re=''){
+$sq=['id'=>$id]; if($re)$sq['>re']='0';
+return sqb::read('id','art','v',$sq);}
+
+static function artxt($id){
+return sqb::read('msg','txt','v',$id);}
 
 static function lastart(){$r=msql::row('server',nod('last'),1); if(!$r)$r=self::lastartrq(); return $r;}
 static function lastartid(){$r=self::lastart(); return $r[0]??0;}
@@ -47,7 +54,7 @@ return sql('day','qda','v',['nod'=>ses('qb'),'>re'=>'0','-frm'=>'_','_order'=>'d
 
 static function find_id($id){if($id=='last')return self::lastid('qda');
 elseif(!is_numeric($id))return self::id_of_suj($id); else return $id;}
-static function is_public($id){return sql('id','qda','v',['id'=>$id,'>re'=>'0','-frm'=>'_']);}
+static function is_public($id){return self::artex($id,1);}
 static function maxdays(){$d=sesmk2('ma','oldestart'); if(!$d)$d=0;
 $t=ses('daya'); if(!$t)$t=time(); $e=$t-$d; if($e)return round($e/84600);}
 static function maxyears(){return ceil(self::maxdays()/365);}
@@ -64,7 +71,7 @@ return sql($v,'qdd',$m?$m:'v',$sq+['val'=>$val]);}
 
 static function id_of_urlsuj($d){$id='';
 $id=sql('id','qda','v',['nod'=>ses('qb'),'thm'=>$d]);//if(rstr(38))
-if(!$id){$id=sql('id','qda','v',['nod'=>ses('qb'),'}re'=>'1','%suj'=>$d,'_limit'=>'1']);
+if(!$id){$id=sql('id','qda','v',['nod'=>ses('qb'),'>re'=>'0','%suj'=>$d,'_limit'=>'1']);
 	if($id){$suj=self::suj_of_id($id); $thm=str::hardurl($suj); sql::upd('qda',['thm'=>$thm],$id);}}
 return $id;}
 
@@ -81,13 +88,11 @@ return $r;}
 
 #rqt
 static function rqtall($c='',$kv='',$sq=[],$z=''){
-$sq+=['>re'=>0,'nod'=>ses('qb')];////??!1
+$sq+=['>re'=>0];//,'nod'=>ses('qb')
 $sq['<day']=ses('daya'); if(rstr(3))$sq['>day']=ses('dayb');
-if(!isset($sq['frm']))$sq['-frm']='_';
 if(!isset($sq['_order']))$sq['_order']=prmb(9);
 //if(!isset($sq['lg']) && ses('lang')!='all')$sq['lg']=ses('lang');
 if(!$c)$c='id,day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg';
-//return sql::read($c,'qda',$kv,$sq,$z);
 return sqb::read($c,'art',$kv,$sq);}
 
 static function rqtart($id){
@@ -284,7 +289,7 @@ else return $d;}
 
 //highlight begin
 static function allquotes($id){
-$msg=sql('msg','qdm','v','id="'.$id.'"');
+$msg=ma::artxt($id);
 $r=sql('id,name,msg','qdi','','ib="'.$id.'"');
 if($r)foreach($r as $k=>$v){$rb=explode(':callquote]',$v[2]); $n=count($rb);
 	if($n>1){foreach($rb as $ka=>$va){$s1=mb_strrpos($va,'['); $va=mb_substr($va,$s1+1); [$p,$s]=cprm($va);
@@ -306,13 +311,13 @@ if($r)foreach($r as $k=>$v){$rb=explode(':callquote]',$v[2]); $n=count($rb);
 //quotes in trk
 static function callquote($d,$idtrk,$id){
 if(!$id)$id=sql('ib','qdi','v',$idtrk);
-if(!$idtrk)$idtrk=sql('id','qda','v',$id);
+if(!$idtrk)$idtrk=self::artex($id);
 [$p,$o]=cprm($d);//from track, go to art_read_c
 $nb=ljb('','callquote',[$id,$o,ajx($p),$idtrk],picto('arrow-top'),atd('qnb'.$o));
 return tagb('blockquote',$p.' '.$nb);}//findquotes
 
 //xltags
-static function xltags($id,$conn,$msg=''){if(!$msg)$msg=sql('msg','qdm','v','id="'.$id.'"');
+static function xltags($id,$conn,$msg=''){if(!$msg)$msg=ma::artxt($id);
 return tag('div',['ondblclick'=>atjr('xltags',['this',$id,$conn])],conn::read($msg,3,$id,''));}
 
 /**/static function xltagslct($id){$r=['fact','quote','stabilo'];
@@ -327,7 +332,7 @@ $ret=divc('trkmsg',$pad); $bt=''; $p=ajx($pad);
 foreach($r as $k=>$v)$bt.=lj('','art'.$id.'_ma,applyconn__x_'.$id.'_'.$p.'_'.$s.'_'.$v,$v);
 return $ret.divc('nbp',$bt);}
 
-static function applyconn($id,$pad,$s,$conn){$msg=sql('msg','qdm','v',$id);
+static function applyconn($id,$pad,$s,$conn){$msg=ma::artxt($id);
 [$d1,$d2,$d3]=self::findquotes($msg,$id,$s,$pad,3+mb_strlen($conn));
 if($d2){$msg=$d1.'['.$d2.':'.$conn.']'.$d3; sqlup('qdm',['msg'=>$msg],$id);}
 return self::xltags($id,$conn,$msg);}

@@ -176,18 +176,14 @@ function gcim($im,$o=''){return jcim($im,$o).$im;}
 
 function goodroot($f,$h=''){$f=stripfirst($f,'/');
 if($h==1)$h=host().'/'; elseif($h)$h=http($h).'/'; else $h='';//
-if(substr($f,0,4)=='http')return $f;
-elseif(substr($f,0,6)=='video/')return $h.$f;
-elseif(substr($f,0,4)=='img/')return $h.$f;
-elseif(substr($f,0,4)=='app/')return $h.$f;
-elseif(substr($f,0,7)=='_datas/')return $h.$f;
-elseif(strpos($f,'/'))return $h.'/users/'.$f;//videos in html output
-elseif(strpos($f,'/')===false)return $h.'img/'.$f;
-else return $f;}
+if(strpos($f,'/')===false)return $h.'img/'.$f;
+$d=strto($f,'/');
+$ret=match($d){'http'=>$f,'video'=>$h.$f,'img'=>$h.$f,'app'=>$h.$f,'_datas'=>$h.$f,
+default=>strpos($f,'/')?$h.'/users/'.$f:$f};}//videos in html output
 
 function urlroot($u){
 $h=findroot(ses::$urlsrc);
-if($h==host() or substr($u,0,4)=='http')$h='';
+if($h==host() or ishttp($u))$h='';
 if(substr($u,0,2)=='//')$h='https:';
 if($h && substr($u,0,1)!='/')$u='/'.$u;
 return $h.$u;}
@@ -249,6 +245,7 @@ function qr($sql,$o=''){return sql::qr($sql,$o);}
 function sqlsav($b,$r,$o='',$vrf=''){return sql::sav($b,$r,$o,$vrf);}
 function sqlup($b,$r,$q,$o='',$vrf=''){return sql::upd($b,$r,$q,$o,$vrf);}
 function sql($d,$b,$p,$q,$z=''){return sql::read($d,$b,$p,$q,$z);}
+function sqb($d,$b,$p,$q,$z=''){return sqb::read($d,$b,$p,$q,$z);}
 
 #ses
 function db($k){return $_SESSION['db'][$k]??$k;}

@@ -33,10 +33,10 @@ $ret='['.$id.'|'.mkday($day).':art]'.n().n().'['.$id.':read]';
 if($nid)return sql::savi('qdm',[$nid,$ret]);}
 
 static function importation($id){
-$d=sql('msg','qdm','v',$id); $idb=between($d,'[',':import]');
+$d=ma::artxt($id); $idb=between($d,'[',':import]');
 if(is_numeric($idb)){
 $day=sql('day','qda','v',$idb);
-$ret=sql('msg','qdm','v',$idb);
+$ret=ma::artxt($idb);
 $ret='['.$id.'|'.mkday($day).':art]'.n().n().$ret;
 sql::upd('qdm',['msg'=>$ret],$id);}
 return $ret;}
@@ -74,8 +74,8 @@ return div(trim($d),'code','','');}
 
 #calendar
 static function is_arts($frm,$daya,$dayb){
-if($frm)$fr='AND frm="'.$frm.'" '; if($dayb)$df='AND day>"'.$dayb.'" ';
-$n=sql('id','qda','v','nod="'.ses('qb').'" '.$fr.' AND day<"'.$daya.'" '.$df.' ORDER BY day DESC LIMIT 1'); 
+if($frm)$sq['frm'=$frm; if($dayb)$sq['>day']=$dayb;
+$n=sql('id','qda','v',$sq+['>day'=>$daya,'_order'=>'day desc','_limit'='1']); 
 if($n)return true;}
 
 static function nb_arts($daya,$dayb){return sql('COUNT(id)','qda','v','nod="'.ses('qb').'" AND re>0 AND day<'.$daya.' AND day>'.$dayb.'');}

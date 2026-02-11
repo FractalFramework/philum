@@ -44,8 +44,8 @@ if(trim($in))return $ret;}
 
 static function friend_rub($o){
 $id=ma::id_of_suj(get('frm')); if(!$id)return;
-$ok=sql('id','qda','v',['id'=>$id,'>re'=>'0']); if(!$ok)return;
-$ret=sql('msg','qdm','v',$ok);
+$ex=ma::artex($id,1); if(!$ok)return;
+$ret=ma::artxt($ex);
 if(auth(4))$bt=ma::popart($id);
 return divc($o,$bt.conn::read($ret,'3',''));}
 
@@ -59,15 +59,17 @@ foreach($r as $k=>$v){$c=$k==$travel?'active':''; $ic=$travel==$k?'clock':'hour'
 	$ret.=lj('','content_api___maxtime:'.$v.',t:'.$yr,pictxt($ic,$yr));}
 return divc('menus',$ret);}
 
-static function prevnext_art($b,$o,$id,$tg=''){$wh=''; $rb=[];
+//
+static function prevnext_art($b,$o,$id,$tg=''){$rb=[];
 $id=$id?$id:ses('read'); $ta=picto('kleft'); $tb=picto('kright'); $htacc=htacc('read');
-if($b=='rub')$wh='and frm="'.get('frm').'" '; else $wh='and substring(frm,1,1)!="_"';
+if($b=='rub')$sq['frm']=get('frm');
 $ord=strtolower(prmb(9)); $col=strto($ord,' ');
-$w='and nod="'.ses('qb').'" and re>"0" '.$wh; $dy=0;
-if($col=='day'){$dy=sql('day','qda','v',$id); $w1='day<"'.$dy.'"'; $w2='day>"'.$dy.'"';}
-if($col=='id' or $dy==0){$col='id'; $w1='id<"'.$id.'"'; $w2='id>"'.$id.'"';}
-$k1=sql('id','qda','v',$w1.' '.$w.' order by '.$col.' desc limit 1');
-$k2=sql('id','qda','v',$w2.' '.$w.' order by '.$col.' asc limit 1');
+$sq['nod']=ses('qb'); $sq['>re']='0'; $dy=0;
+if($col=='day'){$dy=sql('day','qda','v',$id); $sq1['<day']=$dy; $sq2['>day']=$dy;}
+if($col=='id' or $dy==0){$col='id'; $sq1['<id']=$id; $sq2['>id']=$id;}
+$sq1['_order']=$col.' desc'; $sq2['_order']=$col.' asc'; 
+$k1=sql('id','qda','v',$sq+$sq1+['_limit'=>'1']);
+$k2=sql('id','qda','v',$sq+$sq2+['_limit'=>'1']);
 if($tg)$j='pagup_popart__x_'; elseif($o)$j='popup_popart__x_'; else $j='content_mod,playmod__u_read_';
 $ret=!$k1?btn('hide',$ta):lj('',$j.$k1,$ta,att($k1));
 $ret.=!$k2?btn('hide',$tb):lj('',$j.$k2,$tb,att($k2));
@@ -290,7 +292,7 @@ if($rch)$w=' and msg like "%'.$rch.'%"';
 else{$w=' and '.$tri.'.day>'.timeago($p); if($p!=7 && $p!=1)$w.=' and '.$tri.'.day<'.timeago($np);}
 if($typ)$w.=' and re="'.$typ.'"';
 if(!auth(6))$w.=' and '.$qda.'.re>"0" and '.$qdi.'.re="1"';
-$r=sql::inner($qdi.'.id,'.$qdi.'.ib','qda','qdi','ib','kv',$qda.'.nod="'.ses('qb').'"'.$w.' and substring('.$qda.'.frm,1,1)!="_" order by '.$qdi.'.day desc',0);
+$r=sql::inner($qdi.'.id,'.$qdi.'.ib','qda','qdi','ib','kv',$qda.'.nod="'.ses('qb').'"'.$w.' order by '.$qdi.'.day desc',0);
 if(!$d)$r=array_flip($r);//permut k and v in output_arts_trk
 $j='modtrk_mod,callmod___m:tracks,p:'.$p.',t:'.ajx($t).',d:'.yesno($d).',o:'.$o;
 $bt=lj('txtbox',$j,nmx([185,$d?22:2]));

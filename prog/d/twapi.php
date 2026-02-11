@@ -319,7 +319,7 @@ if(is_numeric($p) && isset($prm[0])){$id=$p; $p=$prm[0];}
 elseif($prm)[$p,$o]=prmp($prm,$p,$o);
 //if($o=='stream' && $p){$minid=$p; $p='';}
 if(rstr(158))return twit::twalter($p,$o);
-if(substr($p,0,4)=='http')$p=strend($p,'/');
+if(ishttp($p))$p=strend($p,'/');
 /**/if($p=='plug' or substr($o,0,9)=='twit/app'){
 //json::add('','twit',[$p.':stopped',$o,$id,$minid,$prm[0],0,ip()]);
 return;}

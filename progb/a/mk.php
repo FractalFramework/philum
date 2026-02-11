@@ -241,7 +241,7 @@ if(is_file($f)){$nb=read_file($f); return btn("txtsmall",':: '.$nb.' downloads')
 static function plan($id,$m,$d,$lk=''){//echo $id;
 [$t,$o]=cprm($d); if($t==1)$t=''; if($t)$t=btn('txtcadr',$t);
 if(!is_numeric($id) or $m<3)return;
-$d=sql('msg','qdm','v',['id'=>$id]);
+$d=ma::artxt($id);
 if(strpos($d,':h1]')===false)return 'bruuu'; echo strpos($d,':h1]');
 $d=str_replace(':h]',':h2]',$d);
 $r=explode("\n",$d); $ret=[]; $rb=[]; $rt=[]; $n1=0; $n2=0; $n3=0; $n4=0;
@@ -401,7 +401,7 @@ return msqlvue::call($nod,$tmp);}
 static function msqdata($d,$id){
 [$v,$k]=split_right('|',$d); $k=$k?$k:1;
 if($v){$ra=[$v];
-	if($k){$msg=sql('msg','qdm','v',$id);
+	if($k){$msg=ma::artxt($id);
 	$msg=str_replace($d.':msq_data',$k.':msq_data',$msg);
 	sql::upd('qdm',['msg'=>$msg],$id);}
 $r=msql::create('art_'.$id,$ra,['txt'],$k); return $r[$k][0];}
@@ -495,7 +495,7 @@ else $bt.=span(picto('kright'),'popbt grey');
 return div($bt).div(base64_decode($d),'panel twit');}
 
 static function slide($d,$id,$i=0){$rid='sld'.$id; $hid='';
-//$d=sql('msg','qdm','v',$id); $d=conb::parse($d,'extract',':slide');
+//$d=ma::artxt($id); $d=conb::parse($d,'extract',':slide');
 $r=explode('--',$d); $n=count($r)-1; $hid=hidden($rid.'n',$n); //eco(pr($r));
 $ret=self::slideread($id,0,[$n,base64_encode($r[$i])]);
 foreach($r as $k=>$v)$hid.=tag('aside',['id'=>$rid.$k,'style'=>'display:none'],base64_encode(trim($v)));

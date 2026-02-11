@@ -106,7 +106,7 @@ else $j='_conn,read_'.$d.'['.$id.']';
 return toggle('',$rid.$j,$t?$t:nms(25)).' '.btd($rid,'');}*/
 
 static function btart($d){[$id,$t]=split_one('|',$d);//conn
-if(substr($d,0,4)=='http')$j='popup;mc,api_read;;3;'.ajx($id).';1';
+if(ishttp($d))$j='popup;mc,api_read;;3;'.ajx($id).';1';
 else $j='popup_popart__3_'.$id.'_3'; $t=$t?$t:ma::suj_of_id($id);
 return lj('popbt',$j,pictxt('articles',!$t&&$d?preplink($d):$t));}
 
@@ -204,14 +204,14 @@ return twit::call($p,$o);}
 static function poptwit($d,$o='',$nl=''){[$u,$nm]=cprm($d);
 if(substr($u,-8)=='/photo/1')$u=substr($u,0,-8); $n='';
 if(strpos($u,'?'))$u=strto($u,'?');
-if(substr($u,0,4)=='http'){$n=strend($u,'/'); $lk=$u;}
+if(ishttp($u)){$n=strend($u,'/'); $lk=$u;}
 else $lk='https://x.com/'.$u;
 if(is_img($nm))$nm=img('img/'.$nm);
 $t=$nm?$nm:($n?$n:$u); $bt=lk($lk,$t);
 return togbub('twit,callbub',ajx(nohttp($u)).'_'.$o,picto('X'),'').'&nbsp;'.$bt;}//'&#120143;
 
 static function twitart($d,$id,$ty='',$nl=''){[$k,$nm]=cprm($d);
-if(substr($k,0,4)=='http'){$n=strprm($k,5,'/'); if($nm==1)$nm=$n;}
+if(ishttp($k)){$n=strprm($k,5,'/'); if($nm==1)$nm=$n;}
 if($nl)return ($nm!=1?$nm.' ':'').'('.$k.')';
 if($nm=='thread')return self::twitapi($d);
 if($nm=='users')return twapi::play_usrs($d);
@@ -222,7 +222,7 @@ if($k && rstr(158))return twit::twalter($k,$id);//twdie
 if($k)return twit::cache($k,$id);}
 
 static function twitxt($d,$id,$tx=''){[$k,$nm]=cprm($d);//totest
-if(substr($k,0,4)=='http')$k=strend($k,'/'); if($nm==1)$nm=$k;
+if(ishttp($k))$k=strend($k,'/'); if($nm==1)$nm=$k;
 if($tx)return twit::playxt($k);
 if($k)return lk(twit::lk($k,$id));}
 

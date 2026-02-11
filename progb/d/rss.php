@@ -32,7 +32,7 @@ if(substr($v[1],0,1)!='_' && $v[7]){$i++;
 	//$rt[$k]['item']['link']=$url;
 	$rt[$k]['item']['guid isPermaLink="true"']=$url;
 	$rt[$k]['item']['pubDate']=date('r',$v[0]);
-	/**/$msg=sql('msg','qdm','v','id="'.$k.'"');
+	/**/$msg=ma::artxt($id);
 	$msg=conb::parse($msg,'corrfast','b i h c s');
 	if($prw!='full')$msg=substr($msg,0,str::kmax_nb(400,$msg));
 	//$msg=conn::read($msg,$prw,$k,'nl');

@@ -1,5 +1,6 @@
 <?php
 class view{
+static $rf=0;
 
 static function vars(){$rt=[];
 $r=['artedit','pid','id','jurl','hurl','url2','url','edit','title','suj','cat','msg','img1','video','btim','back','avatar','author','date','day','nbarts','tag','priority','words','search','parent','rss','social','open','tracks','source','length','player','lang','artlang','opt','css','sty','addclr','thumb','trkbk','float','js','ovc','btrk','btxt','togprw','br']; $rb=sesmk('tags'); foreach($rb as $v)$rb[]=str::eradic_acc($v); $r=array_merge($r,$rb);
@@ -74,11 +75,9 @@ return ['art','cat','catfast','read','tracks','simple','simplenoim','little','fa
 
 static function reflush($d){
 $r=self::tables(); echo 'updated:'.$d.' in '.(auth(7)?'json/sys, ':'').'json/srv, msql/server: '; 
-foreach($r as $v){echo $v.' '; $rb=datas::$v();
-	if(auth(7))json::sav('sys','views/'.$v,$rb);
-	json::sav('srv',drn('views/'.$v),$rb);
-	$db=self::mkconn($rb); //eco($db);
-	msql::save('server',nod('views/'.$v),[$db]);}}
+foreach($r as $v){echo $v.' '; $rb=datas::$v(); sesz('datas'.$v); sesz('viewgetmpsrv'.$v);
+	if(auth(7))json::sav('sys','views/'.$v,$rb); json::sav('srv',drn('views/'.$v),$rb);
+	$db=self::mkconn($rb); msql::save('server',nod('views/'.$v),[$db]);}}
 
 static function isnew($d){
 $src=ftime('progb/b/datas.php');

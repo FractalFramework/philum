@@ -153,9 +153,8 @@ if(rstr(3)){$days=$days?$days:ses('nbj'); $sq['daymin']='day>'.timeago($days);}
 if(ses::$dayx-ses('daya')<86400)ses('daya',time());
 $daya=time_prev($days); $daya=$daya?timeago($daya):ses('daya');
 $sq['daymax']='day<'.$daya;
-$sqnd['suj']='suj like "%'.$rch.'%" ';
+$sqnd['suj']='suj like "%'.sql::qres($rch).'%" ';
 $sq['nod']='nod="'.$qb.'"';
-$sq['frm']='substring(frm,1,1)!="_"';
 $sq['re']='re>0';
 if(!$tit && $rch){
 	//$sqin['msg']='inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id';
@@ -193,8 +192,8 @@ if(!$ret && $rch && (rstr(62) or ses('rstr62'))){
 return $ret;}
 
 static function rechday($d){
-$first=sql('day','qda','v','day>"'.$d.'" limit 1');
-$ret=sql::call('select '.db('qda').'.id from '.db('qda').' where nod="'.ses('qb').'" and substring(frm,1,1)!="_" and day<="'.$first.'" order by day desc limit 200','k',0);//auth(6)?1:
+$first=sqb('day','art','v',['>day'=>$d,'_limit'=>'1']);
+$ret=sqb::read('id','art','k',['{day'=>$first,'_order'=>'day desc','_limit'=>'200']);
 return $ret;}
 
 static function array_intersect_c($r){$rt=[]; $rb=[]; $mx=1;
@@ -229,9 +228,9 @@ $maxid=ma::lastartid();
 //if(is_float($rech))echo $rech=(string) $rech;
 if($rech && !is_numeric($rech) && strlen($rech)>7)$isdate=strtotime($rech);
 if($rech=='1'){$id=$maxid; $load[$id]=1; return build::popart2($id);}
-if($rech && is_http($rech)){$id=sql('id','qda','v',['mail'=>$rech]); if($id)return build::popart2($id);}
+if($rech && is_http($rech)){$id=sqb('id','art','v',['mail'=>$rech]); if($id)return build::popart2($id);}
 //if(is_numeric($rech) && strpos($rech,'.')===false && $rech<=$maxid)$load[abs($rech)]=1;
-if(is_numeric($rech)){$id=sql('id','qda','v',$rech); if($id)return build::popart2($id);}
+if(is_numeric($rech)){$id=sqb('id','art','v',$rech); if($id)return build::popart2($id);}
 //if(is_numeric($rech) && $rech<=$maxid)return art::playb($rech,3);
 elseif($rech && strpos($rech,':') && strpos($rech,',')){
 	$ra=explode_k($rech,',',':');

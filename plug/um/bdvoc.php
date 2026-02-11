@@ -77,7 +77,7 @@ return $ret;}
 static function arts(){
 $r=sql('id,ref','bdvoc','kv','idart=0');
 if($r)foreach($r as $k=>$v){
-	$id=sql('id','qda','v','suj like "%['.$v.']%" and re="1" and lg="fr"');
+	$id=sqb('id','art','v',['%suj'=>'['.$v.']','>re'=>'0','lg'=>'fr']);
 	if($id){sql::upd('bdvoc',['idart'=>$id],$k); echo $v.':'.$id.'-';}}
 return count($r);}
 

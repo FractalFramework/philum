@@ -79,7 +79,7 @@ static function png2jpg($id,$m){conb::png2jpg($id); echo divr(ses::$er);
 return art::playd($id,$m);}
 
 static function addfoot($id,$m){
-$d=sql('msg','qdm','v',$id); $d=mc::add_anchors($d);
+$d=ma::artxt($id); $d=mc::add_anchors($d);
 if($d)sql::upd('qdm',['msg'=>$d],$id);
 return art::playd($id,$m);}
 
@@ -353,12 +353,12 @@ return $ret;}
 
 //links
 static function collectweb($id){$rt=[];
-$d=sql('msg','qdm','v',$id); $r=conb::links($d);
+$d=ma::artxt($id); $r=conb::links($d);
 foreach($r as $k=>$v)web::read($v,0,$id);
 return 'links collected: '.count($r);}
 
 static function addrelated($id,$o,$prm=[]){$rt=[];
-$d=sql('msg','qdm','v',$id); $p=$prm[0]??''; $rb=[]; if($p)$rb[]=$p;
+$d=ma::artxt($id); $p=$prm[0]??''; $rb=[]; if($p)$rb[]=$p;
 $r=conb::links($d);
 $rd=sqb::read('id','art','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
 return implode(' ',$rb);}

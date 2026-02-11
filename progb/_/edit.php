@@ -70,7 +70,7 @@ $ret.=div(textarea($rid,$d,$w,$h,['class'=>'console']+$js));
 return $ret;}
 
 static function txarea($d,$id=''){$pr=[];
-if(rstr(171))$s='margin:0; min-width:430px; width:100%; min-height:440px;';
+if(rstr(171))$s='margin:0; min-width:408px; width:100%; min-height:440px;';
 else $s='margin:0; width:100%; min-width:600px; min-height:280px;';
 //$js=temporize('prwlive',sj($j),1000);
 if(rstr(171)){$j='prw'.$id.'_edit,conn2wyg_txtarea_2_'.$id; $pr=['onclick'=>sj($j)];}
@@ -82,8 +82,9 @@ $d=tagb('p','')."\n"; $d=nl2br($d); $j='';
 if(rstr(171))$j=sj('txtarea_edit,wyg2conn_editarea_2_'.$id);
 return divedit($rid,'editarea justy','max-width:720px','',$d);}
 
-static function wyg2conn($p,$o,$prm=[]){
-return usg::html2conn($prm[0]);}
+static function wyg2conn($p,$o,$prm=[]){//usg::html2conn
+ses::$urlsrc=host().'/'; $d=conv::call($prm[0]);
+return str_replace(['[img/','[users/'],'',$d);}
 
 static function conn2wyg($p,$o,$prm=[]){
 $d=conn::read($prm[0],'3','test',1);
@@ -147,7 +148,7 @@ if($id){
 	$msg=sql::read('msg','qdm','v',$id);
 	$msg=str_replace("\r",'',$msg);//msg
 	$msg=str_replace(["<br />\n",'<br />','<br>'],"\n",$msg);}
-elseif($url && substr($url,0,4)=='http'){$url=nohttps(utmsrc($url));//vacuum
+elseif($url && ishttp($url)){$url=nohttps(utmsrc($url));//vacuum
 	ses::$urlsrc=$url; [$suj,$msg]=conv::vacuum($url,'');}
 $rp=['urlsrc','addib','frm','pdat','trkname','trkmail','pub','psuj'];//,'sub'
 $rt=self::form($url,$id,$suj,$msg,$rid,$rp);

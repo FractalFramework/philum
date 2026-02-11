@@ -222,7 +222,7 @@ if($rb)foreach($rb as $v)if($v){$v=trim($v);
 	elseif(strpos($v,'.mp3'))$txt.=audio($v);
 	elseif(strpos($v,'.pdf'))$txt.=mk::pdfdoc($v,0,640);
 	elseif(strpos($v,'t.co/'))$txt.='';//lka($v);
-	elseif(substr($v,0,4)=='http')$txt.=web::call(self::nocomma($v),'');
+	elseif(ishttp($v))$txt.=web::call(self::nocomma($v),'');
 	else $txt.=br().video::play($v,$aid,1);}
 return $txt;}
 
@@ -287,7 +287,7 @@ if($r)foreach($r as $k=>$v){$u=$v['expanded_url'];
 		if(is_numeric($id_rtw) && $id_rtw!=$rtw && $id_rtw!=$id)$rb[]=$id_rtw;}
 	//elseif(substr($u,0,16)=='https://youtu.be')$rb[]=strend($u,'/');
 	//elseif(substr($u,0,23)=='https://www.youtube.com')$rb[]=between($u,'v=','&');
-	elseif(substr($u,0,4)=='http')$rb[]=self::tco($u);}
+	elseif(ishttp($u))$rb[]=self::tco($u);}
 return $rb;}
 
 static function medias($q){$rb=[];
