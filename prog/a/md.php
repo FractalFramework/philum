@@ -154,7 +154,7 @@ return $rt;}
 static function same_tags($id){
 $ra=sql('idtag','qdta','rv',['idart'=>$id]); $rb=[];
 //$ra=sql::inner('idtag','qdt','qdta','idtag','rv',['idart'=>$id,'cat'=>'tag']);
-if($ra)$rb=sql('idart,count(id) as nb','qdta','kv',['idtag in ('.implode(',',$ra).') group by idart order by nb desc limit 20'],0);//and idart!="'.$id.'"
+if($ra)$rb=sql('idart,count(id) as nb','qdta','kv',['(idtag'=>$ra,'_group'=>'idart','_order'=>'nb desc','_limit'=>'20'],0);//and '!idart'=>$id
 if(isset($rb[$id]))unset($rb[$id]);
 return $rb;}
 
@@ -198,7 +198,7 @@ $ret.=lj('popbt','popup_api__3_'.$p.':'.$k,$k."&nbsp".'('.$fa.')',ats('font-size
 return $ret;}
 
 static function last_tags($p,$o){$p=$p?$p:10;
-$sq=['_order'=>db('qdt').'.id desc','_limit'=>$p];
+$sq=['_order'=>'b1.id desc','_limit'=>$p];
 if($o!='nb')$r=sql('tag,cat','qdt','',$sq);
 else $r=sql::inner('tag,cat,count(idart)','qdt','qdta','idtag','',['_group'=>'idtag']+$sq);
 if($r)foreach($r as $k=>$v){if($o=='nb')$n=' ('.$v[2].')';
@@ -244,12 +244,12 @@ static function most_read($dyb,$mx=''){
 $dayb=$dyb?timeago($dyb):$_SESSION['dayb']; $mx=$mx?$mx:50;
 return sql('id,lu','qda','kv','nod="'.ses('qb').'" and re>="1" and day>'.$dayb.' order by cast(lu as integer) desc limit '.$mx);}//unsigned integer
 
-static function most_polled($p,$o){$qda=db('qda'); if(!$o)$o=200;
-$r=sql::inner($qda.'.id,count(poll) as nb','qda','qdf','ib','kv','order by cast(nb as integer) desc limit '.$o);
+static function most_polled($p,$o){if(!$o)$o=200;
+$r=sql::inner('b1.id,count(poll) as nb','qda','qdf','ib','kv',['_order'=>'cast(nb as integer) desc','_limit'=>$o]);
 return $r;}
 
-static function score_datas($p,$o){$qda=db('qda'); if(!$o)$o=200;
-$r=sql::inner($qda.'.id,msg','qda','qdd','ib','kv',['val'=>$p,'_order'=>'cast(msg as integer) desc','_limit'=>$o]);
+static function score_datas($p,$o){if(!$o)$o=200;
+$r=sql::inner('b1.id,msg','qda','qdd','ib','kv',['val'=>$p,'_order'=>'cast(msg as integer) desc','_limit'=>$o]);
 return $r;}
 
 static function special_polls($id,$t,$o){
@@ -286,13 +286,13 @@ if($load)$ret=self::home_plan($load);
 if($rb)return self::title($load,'Gallery',61).$ret;}
 
 static function trkarts($p,$t,$d,$o,$rch='',$typ=''){//see also api cmd:tracks
-$qda=db('qda'); $qdi=db('qdi'); $pg=$o?$o:1; $tri=$d==1?$qdi:$qda;
+$qda=db('qda'); $qdi=db('qdi'); $pg=$o?$o:1; $tri=$d==1?'b2':'b1'; //$tri=$d==1?$qdi:$qda;
 $p=get('dig',$p); $p=is_numeric($p)?$p:ses('nbj'); if(!$p)$p=30; $np=time_prev($p);
-if($rch)$w=' and msg like "%'.$rch.'%"';
-else{$w=' and '.$tri.'.day>'.timeago($p); if($p!=7 && $p!=1)$w.=' and '.$tri.'.day<'.timeago($np);}
-if($typ)$w.=' and re="'.$typ.'"';
-if(!auth(6))$w.=' and '.$qda.'.re>"0" and '.$qdi.'.re="1"';
-$r=sql::inner($qdi.'.id,'.$qdi.'.ib','qda','qdi','ib','kv',$qda.'.nod="'.ses('qb').'"'.$w.' order by '.$qdi.'.day desc',0);
+if($rch)$sq['%msg']=$rch;
+else{$sq['>'.$tri.'.day']=timeago($p); if($p!=7 && $p!=1)$sq['{'.$tri.'.day']=timeago($np);}
+if($typ)$sq['re']=$typ;
+if(!auth(6))$sq['>b1.re']='0'; $sq['b2.re']='1';
+$r=sql::inner('b2.id,b2.ib','qda','qdi','ib','kv',$sq+['b1.nod'=>ses('qb'),'_order'=>'b2.day desc'],0);
 if(!$d)$r=array_flip($r);//permut k and v in output_arts_trk
 $j='modtrk_mod,callmod___m:tracks,p:'.$p.',t:'.ajx($t).',d:'.yesno($d).',o:'.$o;
 $bt=lj('txtbox',$j,nmx([185,$d?22:2]));

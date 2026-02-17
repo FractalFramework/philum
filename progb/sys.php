@@ -3,10 +3,10 @@ gets(); $cache=''; //echo ses('dev'); //$_SESSION=['dev'=>'b'];
 ses::$dayx=substr($stime,0,10); geta('nl',0);
 if(!ses('qb') or get('hub') or get('refresh') or get('log')){$cache='ok'; boot::reset_ses();}
 if(get('dev')){$_SESSION['dev']='b'; head::relod('/reload');}
-if(get('module')=='Home')geta('module','');//old htaccess
+//if(get('module')=='Home')geta('module','');//old htaccess
 if($cache)boot::init();
 //if(ses('dev'))error_report();
-if($log=get('log'))boot::log_mods($log);
+if($log=get('log'))headsj('popup_boot,logmod___'.$log);
 if(!ses('usr'))boot::define_use();
 $cache=boot::deductions($cache);
 if($bim=get('rebuild_img'))ses('rebuild_img',$bim);
@@ -39,7 +39,7 @@ else $out=mod::blocks();
 #admin
 $madmin='';
 if(!rstr(98) or auth(4))$madmin=pop::popadmin($stime);
-if(rstr(155) && !prma('desktop') && !$adm)head::add('jscode',sj('desktop_favs,dock___dock'));
+if(rstr(155) && !prma('desktop') && !$adm)headsj('desktop_favs,dock___dock');
 if(prma('background') && !$adm)head::add('csscode',desk::deskbkg(1));
 #meta
 head::$rid='?'.randid();//if(ses('dev')

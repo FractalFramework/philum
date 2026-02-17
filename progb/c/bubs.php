@@ -51,6 +51,7 @@ if(auth(6)){
 	$ret[]=['publish','ajax','popup','pubdate,call','','','dev','export'];
 	if(!prms('aupdate'))$ret[]=['update','ajax','popup','software,home','','','dev','update'];
 	$ret[]=['cron','ajax','popup','cron,play','','','dev','bot'];
+	$ret[]=['devnotes','ajax','popup','msql___system_program_updates*'.datz('ym'),'','','dev','discipline'];
 	if(ses('rebuild_img')){$bt='-off'; $n=0;} else{$bt=''; $n=1;}
 	$ret[]=['mini'.$bt,'ajax','socket','sesmake___rebuild*img_'.$n,'','','dev','img'];
 	$ret[]=['updateip','ajax','socket','boot,updateip','','','dev','recycle'];

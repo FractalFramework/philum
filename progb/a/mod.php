@@ -135,7 +135,7 @@ if($r)foreach($r as $k=>$v){if(!$v[7] && (!$v[11] or $ath)){//hide/private
 		if(!$mdc){$rt[$k]=self::build($v); $_SESSION['mdc'][$k]=$rt[$k];}
 		else $rt[$k]=$mdc;}
 	//elseif($v[11]??'')$rt[$k]=divd('mod'.$k,lj('txtcadr','mod'.$k.'_md::modj___'.$k.'_'.$va,$v[2]));
-	//elseif($v[14]??''){$rt[$k]=divd('mod'.$k,''); head::add('jscode',sj('mod'.$k.'_mod,callmod___'.$k));}
+	//elseif($v[14]??''){$rt[$k]=divd('mod'.$k,''); headsj('mod'.$k.'_mod,callmod___'.$k);}
 	else $rt[$k]=self::build($v);}}
 if($rl)$ret=implode('',$rl);
 if($rt)$ret.=implode(n(),$rt);
@@ -167,11 +167,11 @@ if(auth(6))$pv=0;
 if(!$hd && !$pv)
 switch($m){
 //main
-case('LOAD'):echo get('module');
+case('LOAD'):
 	if($id=get('read'))$ret=art::read($id,$tp);
 	elseif($gmd=get('module'))$ret=self::callmod($gmd);
 	elseif($cmd=get('api'))$ret=api::call($cmd);
-	elseif($ra=api::load_rq())$ret=api::load($ra);//gets
+	elseif($ra=api::load_rq())$ret=api::boot($ra);//gets
 	elseif(ses::$loader)$ret=ses::$loader;//menus#
 	else $ret=api::arts(get('frm'),$o,$tp,$d); break;
 case('BLOCK'):$ret=self::block($p); break;
@@ -262,7 +262,7 @@ case('sources'):if($t)$t=lkc('','/module/source',$t); $lin=md::art_sources($p); 
 case('folder'):$lin=desk::vfolders($p); break;
 //menus
 case('link'):$ret=md::modlk($p,$t,$o); break;
-case('app_popup'):head::add('jscode',sj(desk::read(explode(',',$p)))); break;
+case('app_popup'):headsj(desk::read(explode(',',$p))); break;
 case('overcats'):return mkbub(bubs::call('overcat','zero'),'inline','position:relative');
 case('MenuBub'):return mkbub(bubs::call('menubub','zero',$p),'inline','position:relative');
 case('timetravel'):return md::timetravel();
@@ -349,13 +349,13 @@ case('module'):$ret=self::callmod($p); break;
 case('command'):$ret=self::com_mod($p); break;
 case('vacuum'):$ret=self::com_vacuum($p,$o); break;
 case('app'):[$pa,$pb,$oa,$ob]=expl('_',$p,4);
-	//if($pp){$rid=randid($pa); $ret=divd($rid,''); head::add('jscode',sj($rid.'_'.$pa.','.$pb.'___'.$oa.'_'.$ob));}
+	//if($pp){$rid=randid($pa); $ret=divd($rid,''); headsj($rid.'_'.$pa.','.$pb.'___'.$oa.'_'.$ob);}
 	if($t)$ret=self::title('',$t,''); $ret.=appin($pa,$pb?$pb:'home',$oa,$ob); break;
 case('close'):$ret='';
 default:if(method_exists($m,'home'))$ret=$m::home($p,$o); break;}
 if($lin)$ret=self::mod_lin($lin,$t,$d,$o);//menus
 elseif($load)$ret=self::mod_load($load,$m,$t,$d,$o,$obj,$prw,$tp,$id,$pp,$pg);//arts
-elseif($api)$ret=api::load($api);//api
+elseif($api)$ret=api::boot($api);//api
 if(!$ret && !$lin && !$load && $p && $m){//user_mods
 	$func=msql::val('',nod('modules'),$m);
 	if($func && !is_array($func))$ret=cbasic::read($func,$p);}
@@ -409,7 +409,7 @@ elseif($load)$ret=self::m_pubart($load,$d,$o,$tp,$pp);
 if($o=='scroll')$ret=scroll($load,$ret,10);
 elseif($o=='cols')$ret=pop::columns($ret,240,'','');
 elseif($o=='inline')$ret=divc('inline',$ret);
-elseif($o=='blocks')$ret=divc('blocks',$ret);
+elseif($o=='blocks')$ret=divc('grid-blocks',$ret);
 elseif($o=='list')$ret=self::m_publist($load,$tp);
 if($ret)return divd($m,$t.$ret);}
 
@@ -512,7 +512,7 @@ foreach($r as $k=>$v){
 	$md=self::build($v);
 	if($md)$rt[$k]=$md?scroll(0,$md,''):nmx([11,1]);}//
 if($d=='tabs')return build::tabs($rt,randid('tmd'));
-return $rt?join('',$rt):nmx([11,16]);}
+return $rt?join('',$rt):noresult();}
 
 static function fav_mod($p,$t){$ret='';
 $r=msql::read('',nod('coms'),1); $r=array_reverse($r);

@@ -54,7 +54,7 @@ foreach($r as $k=>$v){
 foreach($rc as $k=>$v)$rd[$k]=array_sum($v); ksort($rd);
 return tabler($rd);}
 
-static function cut($txt){
+/**/static function cut($txt){
 $na=2000; $nb=strlen($txt); $n=ceil($nb/$na); $r=explode(' ',$txt); $nc=0; $ret='';
 if($nb>$na){foreach($r as $k=>$v){$nc+=strlen($v)+1;
 	if($nc<$na)$ret.=$v.' '; else{$rb[]=$ret; $nc=0; $ret='';}}
@@ -148,7 +148,7 @@ if(!$ret)return 'empty ref'; if(!$lg)$lg=prmb(25);
 if($o && $lg!=$to)$ret=self::com($ref,$ret,$to,$lg);//new
 elseif($lg!=$to){//echo $lg.'-'.$to;//eco($ret);
 	if(!$lg)$lg=self::detect('','',$ret);
-	if($lg!=$to)$retb=self::read($ret,$lg,$to,'plain',$ref);
+	if($lg!=$to)$retb=self::read($ret,$lg,$to,'text',$ref);
 	if($retb){$ret=$retb; self::update($ret,$ref,$to);}}
 elseif($o){$id=sql::sav('trn',[$ref,$ret,$lg],0);}
 elseif($lg==$to)self::update($ret,$ref,$to);//restore original
@@ -165,7 +165,7 @@ if($r)foreach($r as $k=>$v){
 	if(substr($v,0,1)!='@')$rb[$k]=trim($v);}
 if($rb)$d=implode(' ',$rb);
 $d=str_replace(' ## ',"\n",$d);
-$d=delnl($d);
+$d=twonl($d);
 $d=str::clean_br(trim($d));
 return trim($d);}
 

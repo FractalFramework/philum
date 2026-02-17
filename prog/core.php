@@ -122,6 +122,8 @@ static function page($d,$lg){return self::generate($lg).tagb('body',$d).'</html>
 static function call($r=[]){if($r)self::$r=array_merge($r,self::$r); return self::build();}
 static function get(){return self::build();}}
 
+function headsj($j){head::add('jscode',sj($j));}
+
 function wpg($d,$t='',$s='',$lg='fr'){$c=head::css(boot::define_design());
 $head=taga('meta',['charset'=>'utf-8']).tagb('title',$t).$c.tag('style',['type'=>'text/css'],$s);
 return head::html($lg).tagb('head',$head).tagb('body',$d).'</html>';}
@@ -178,7 +180,7 @@ function goodroot($f,$h=''){$f=stripfirst($f,'/');
 if($h==1)$h=host().'/'; elseif($h)$h=http($h).'/'; else $h='';//
 if(strpos($f,'/')===false)return $h.'img/'.$f;
 $d=strto($f,'/');
-$ret=match($d){'http'=>$f,'video'=>$h.$f,'img'=>$h.$f,'app'=>$h.$f,'_datas'=>$h.$f,
+return match($d){'http:'=>$f,'https:'=>$f,'video'=>$h.$f,'img'=>$h.$f,'app'=>$h.$f,'_datas'=>$h.$f,
 default=>strpos($f,'/')?$h.'/users/'.$f:$f};}//videos in html output
 
 function urlroot($u){
@@ -198,15 +200,19 @@ if(substr($u,0,4)!='http'){
 return $u;}
 
 #tables
-function tabler($r,$head='',$keys='',$frame=''){$i=0; $td=''; $tr='';
-if(is_array($head)){array_unshift($r,$head); $head=1;}
-if(is_array($r))foreach($r as $k=>$v){$td=''; $i++; $tag=$i==1&&$head?'th':'td';
-	if($keys)$td.=tagb($tag,$k);
-	if(is_array($v))foreach($v as $ka=>$va)$td.=tagb($tag,$va);
-	else $td.=tagb($tag,$k).tagb($tag,$v);
-	if($td)$tr.=tagb('tr',$td);}//ats('valign','top')
-$ret=tagb('table',tagb('tbody',$tr));
-if($frame)$ret=divs('width:100%; height:'.($frame>1?$frame:400).'px; overflow:auto; scrollbar-width:thin;',$ret);
+function tabler($r,$rh='',$keys='',$scrl=''){
+$tr=[]; $ra=[]; $rb=[]; $rt=[]; $i=0;
+if(is_array($rh)){$r=['_'=>$rh]+$r; $rh=1;}
+if(is_array($r))foreach($r as $k=>$v){$td=[]; $i++;
+	$tag=$i==1&&$rh?'th':'td';//($rh||$k=='_')
+	if($keys)$td[]=tagb($tag,$k);
+	if(is_array($v))foreach($v as $ka=>$va)$td[]=tagb($tag,$va);
+	else $td[]=tagb($tag,$k).tagb($tag,$v);
+	if($td){$rc=tagb('tr',join('',$td));
+		if($i==1&&$rh)$rt[]=tagb('thead',$rc); else $rb[]=$rc;}}
+if($rb)$rt[]=tagb('tbody',join('',$rb));
+$ret=tagb('table',join('',$rt));
+if($scrl)$ret=divscroll($ret);
 return $ret;}
 
 //playr
@@ -254,9 +260,11 @@ function rstr($n){return ($_SESSION['rstr'][$n]??1)?0:1;}
 function prms($n){return $_SESSION['prms'][$n]??'';}
 function prma($n){return $_SESSION['prma'][$n]??'';}
 function prmb($n){return $_SESSION['prmb'][$n]??'';}
+function langs(){return explode(' ',prmb(26));}
 function nms($n){return $_SESSION['nms'][$n]??($n);}//trans::nms
 function mn($n){return $_SESSION['mn'][$n]??'';}
 function nmx($r){$rb=[]; foreach($r as $k=>$v)$rb[]=nms($v); return implode(' ',$rb);}
+function noresult(){return nmx([11,16]);}
 function yesnoses($d){return $_SESSION[$d]=($_SESSION[$d]??'')==1?0:1;}
 function nbw($n,$i){return $n."&nbsp;".nms($i);}
 function nbof($n,$i){if(!$n)return nms(11)."&nbsp;".nms($i); else return $n.' '.($n>1?nms($i+1):nms($i));}
@@ -303,9 +311,10 @@ function conn_ref_out(){return sesmk('conn_ref','',0);}
 
 #ajax
 function ajx($v,$p=''){#lib.js
+//return $p?urldecode($v):urlencode($v);//ouch
 $r=['*','_','(star)']; $a=$p?1:0; $b=$p?0:1; $c=$p?0:2; $d=$p?2:0;
-$a=[$r[$a],$r[$b],'_','&','+',"'",' '];//,':','#','/','"'
-$b=[$r[$c],$r[$d],'(und)','(and)','(add)','(quote)','(space)'];//,'(ddot)','(diez)','(slash)','(dquote)'
+$a=[$r[$a],$r[$b],'_','&','+',"'",';','?','#',' '];//,'/','"',',',':'
+$b=[$r[$c],$r[$d],'{u}','{a}','{p}','{q}','{dc}','{m}','{z}','{s}'];//,'{h}','{dq}','{c}','{dd}'
 if($p)[$b,$a]=[$a,$b]; if($v)$v=str_replace($a,$b,$v);
 return $v;}
 
@@ -405,7 +414,8 @@ $pag=ses::$r['get']['read']??'';
 if(!$pag)$pag=implode_k(ses::$r['get'],'&','='); if(get('id')=='imgc/')exit;
 /*if(!rstr(22) && !auth(6)){if(!isset($_SESSION['crwl'][$iq]))$_SESSION['crwl'][$iq]=0;
 	$_SESSION['crwl'][$iq]+=1; if($_SESSION['crwl'][$iq]>100)exit;}*/
-if($pag && $iq)sql::sav('qdv',['iq'=>$iq,'qb'=>$qbd,'page'=>$pag,'time'=>sqldate()],0,0);}
+$r=['iq'=>$iq,'qb'=>$qbd,'page'=>$pag,'time'=>sqldate()];
+if($pag && $iq && $qbd)sql::sav('qdv',$r,0,0);}
 
 #ftp
 function ftp($d){$r=ses::s('ftp'); if(!$r)return 'no';
@@ -429,7 +439,7 @@ function rm($f){if(!is_dir($f) && boot::auth()){unlinkb($f); json::add('','rmim'
 
 function er($d){ses::$er[]=$d;}
 function report(){json::add('','report',[ses::$er]);}
-function alert($d){if(ses('dev'))head::add('jscode',sj('popup_alert___'.ajx($d))); geta('er',$d);}
+function alert($d){if(ses('dev'))headsj('popup_alert___'.ajx($d)); ses::er('logon');}
 function patch_replace($bs,$in,$wh,$repl){$rq=sql('id',$bs,'q',$in.'="'.$wh.'"');
 while($data=sql::qrw($rq)){echo $data[0].'_'; //sql::del($bs,$data['id']);
 sql::upd($bs,[$in=>$repl],['id'=>$data[0]]);}}

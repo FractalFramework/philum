@@ -252,7 +252,7 @@ return sql::read('ib,img','imgart','rr',$sq);}
 static function imgfromart($p,$o=''){//recence//todo:if image have been deleted from art
 [$min,$max]=self::minmax($p); $rc=[]; $rr=[];
 $ra=sqb::read('img','imgart','k',['}ib'=>$min,'<ib'=>$max]);
-$r=sql::inner('art.id,msg','qda','qdm','id','kv',['}art.id'=>$min,'<art.id'=>$max]);
+$r=sql::inner('art.id,msg','qda','qdm','id','kv',['}b1.id'=>$min,'<b1.id'=>$max]);
 foreach($r as $k=>$v){
 	$rb=conb::imgs($v,$k); //pr($rb);
 	if($rb)foreach($rb as $kb=>$vb)if($vb){
@@ -290,7 +290,7 @@ return $p.':'.count($rr).';';}
 /*
 static function imgbasefromart($min,$max){$rc=[]; $rr=[];
 $ra=sqb::read('im','img','k',['}ib'=>$min,'{ib'=>$max]);
-$r=sql::inner('art.id,msg','qda','qdm','id','kv',['}art.id'=>$min,'{art.id'=>$max]);
+$r=sql::inner('b1.id,msg','qda','qdm','id','kv',['}b1.id'=>$min,'{b1.id'=>$max]);
 foreach($r as $k=>$v){
 	$rb=conb::imgs($v,$k); //pr($rb);
 	if($rb)foreach($rb as $kb=>$vb)if($vb){

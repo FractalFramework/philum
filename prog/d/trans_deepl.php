@@ -55,7 +55,23 @@ $f='_datas/sh/trad.sh'; mkdir_r($f);
 $fb='_datas/sh/result.txt';
 if(is_file($fb))unlink($fb);
 $context='';//Use a friendly, diplomatic tone
+$format='html';
+$formality='default';//More
 $custom='';//'"custom_instructions": ["Use a friendly, diplomatic tone"],';
+$txt=str::clean_acc($txt);
+$txt=delr($txt);
+$txt=delbr($txt,"\n");
+$txt=deln($txt,' (*) ');
+$txt=htmlentities($txt);
+//$txt=urlencode($txt);
+//$txt=rawurlencode($txt);
+//$txt=delnbsp($txt);
+//$txt=str_replace("'",' ',$txt);
+//$txt=utf8enc($txt);
+//$txt=addslashes($txt);
+//$txt=json_encode($txt);
+//$txt=escapeshellcmd($txt);
+//eco($txt);
 $d='#! /bin/bash
 
 curl --request POST \
@@ -65,7 +81,7 @@ curl --request POST \
   --data \'
 {
   "text": [
-    "'.escapeshellcmd($txt).'"
+    "'.$txt.'"
   ],
   "target_lang": "'.strtoupper($to).'",
   "source_lang": "'.strtoupper($from).'",
@@ -73,9 +89,9 @@ curl --request POST \
   "show_billed_characters": true,
   "split_sentences": "1",
   "preserve_formatting": true,
-  "formality": "default",
+  "formality": "'.$formality.'",
   '.$custom.'
-  "tag_handling": "html",
+  "tag_handling": "'.$format.'",
   "tag_handling_version": "v1",
   "non_splitting_tags": [
   ],
@@ -88,11 +104,15 @@ curl --request POST \
 ';
 file_put_contents($f,$d);
 passthru('sh '.$f,$s); //echo $s; //pr($r); //proc_open
-$ret=is_file($fb)?file_get_contents($fb):'{}';
+$ret=is_file($fb)?file_get_contents($fb):'{}'; //eco($ret);
 $r=json_decode($ret,true); //pr($r);
 if(isset($r['message'])){echo $r['message']; $r=['text'=>$txt];}
 else $r=$r['translations'][0]??'';
-$from=$r['detected_source_language']??''; $txt=$r['text']??'';
+$from=$r['detected_source_language']??'';
+$txt=$r['text']??'';
+//$txt=urldecode($txt);
+//$txt=rawurldecode($txt);
+$txt=str_replace([' (*) ','(*) '],["\n",''],$txt);
 $n=$r['billed_characters']??'';
 if($n)json::add('','trans',[$txt,$n,'',$from,$to,ip()]);
 return ['text'=>$txt,'from'=>$from];}

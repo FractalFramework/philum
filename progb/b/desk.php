@@ -13,8 +13,8 @@ return match($v[1]){//p/t/d/o/c/h/tp/br
 'ajax'=>$v[2].'_'.$v[3].'_'.$v[4],
 'popup'=>'popup_'.$v[2].'_'.$v[3].($v[4]?'_'.$v[4]:''),
 'desktop'=>($tg?$tg:'popup').'_desk,deskroot__15_'.$v[2].'_'.$v[3].'_'.$v[4].'_'.$tg,//type
-'module'=>$rid.'_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]),
-'mod'=>$rid.'_mod,callmod__3_m:'.ajx($v[2]).',p:'.ajx($v[3]),//from desk
+'module'=>$rid.'_mod,callmod__3_m:'.ajx($v[2]).','.ajx($v[3]),//p:
+'mod'=>$rid.'_mod,callmod__3_m:'.ajx($v[2]).','.ajx($v[3]),//from desk//p:
 'modin'=>'content_mod,callmod__3_'.ajx($v[3]),//alias of module not in desk
 'modpop'=>'popup_mod,callmod__3_'.ajx($v[3]),//alias of module in desk
 'page'=>'page_mod,playcontext__3_'.ajx($v[3]),//from desk(use $v[2])
@@ -224,7 +224,7 @@ return $dr.'/'.($r[rand(0,$n-1)]??'');}
 static function deskbkg($o=''){$klr=0;
 $prmd=$_SESSION['prmd']; if(isset($_SESSION['negcss']))$prmd.='_neg';
 $clr=getclrs($prmd); $g=prma('background'); ses::$r['popm']=lj('','page_desk,deskbkg',picto('desktop'));//
-if($g)$g=goodroot($g); if(!$g)$g='top,#_4,#_2'; else $g=stripfirst($g,'/');
+if($g)$g=goodroot($g); if(!$g)$g='to bottom,#_4,#_2'; else $g=stripfirst($g,'/');
 $s='background-size:cover; background-color:black; background-repeat:no-repeat;
 background-position:center center; background-attachment:fixed;';
 if(is_dir($g))$ret='background:url('.self::randimg($g).'); '.$s;

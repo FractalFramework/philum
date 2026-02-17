@@ -2,7 +2,7 @@
 class searched{
 //tagsav
 static function tagfull($cat,$tag){if(!meta::tag_auth($cat))return;
-$r=sql::inner('art','qdsr','qdsra','ib','k','word="'.$tag.'" order by art desc');
+$r=sql::inner('art','qdsr','qdsra','ib','k',['word'=>$tag,'_order'=>'art desc']);
 if($r)foreach($r as $k=>$v)meta::sav_tag('',$k,$cat,$tag);}
 
 static function tagfull_slct($srch,$rid){$r=sesmk('tags'); $ret='';
@@ -28,31 +28,26 @@ if(!$rb)$r=$ra; else foreach($ra as $k=>$v)if(!in_array($v[1],$rb))$r[]=$v;//new
 if($r)return sql::qrid('insert into '.db('qdsra').' values '.sql::atmrb($r,1));}
 
 //search and add results
-static function add($p,$n){//if(!rstr(3))self::save($p);
-[$minid,$maxid]=self::markers($n); //echo 'id:'.$minid.'-'.$maxid;
-$ret=self::results($p,$minid,$maxid); //p($ret);
-$not=$ret?implode(',',array_keys($ret)):'';
-$rb=self::build('',$p,$minid,$maxid,'',$not); //p($rb);
+static function add($p,$n){$rt=[];//if(!rstr(3))self::save($p);
+[$minid,$maxid]=self::markers($n);
+$rb=self::results($p,$minid,$maxid);
+$rn=$rb?array_keys($rb):[];
+$rb=self::build('',$p,$minid,$maxid,'',$rn);
 if($rb && !is_numeric($p))self::save_results($p,$rb);// && $n>7
-if($rb)foreach($rb as $k=>$v)$ret[$v[1]]=$v[2];
-if($ret)krsort($ret);
-return $ret;}
+if($rb)foreach($rb as $k=>$v)$rt[$v[1]]=$v[2];
+if($rt)krsort($rt);
+return $rt;}
 
 //search
-static function build($id,$p,$min,$max,$lmt,$not=''){
-$qda=db('qda'); $qdm=db('qdm'); $qds=db('qdsra'); $limit='';
-$wh=$not?'and '.$qda.'.id not in ('.$not.')':'';
-$limit='FLOOR((LENGTH('.$qdm.'.msg)-LENGTH(REPLACE(lower('.$qdm.'.msg),lower("'.$p.'"),"")))/(LENGTH("'.$p.'")))';
-if($lmt)$wh.=' and '.$limit.'>='.$lmt;
-//$ret=sql::call($sql,'',0);//auth(6)?1:
-$sql='select '.$qda.'.id,msg from '.$qda.' 
-inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id
-where nod="'.ses('qb').'" and re>0 and '.$qda.'.id>'.$min.' and '.$qda.'.id<='.$max.' and (msg LIKE "%'.$p.'%" or suj LIKE "%'.$p.'%") '.$wh.' order by '.$qda.'.'.prmb(9);
-$rq=sql::qr($sql); $rt=[];
-if($p)while($r=sql::qrw($rq)){$msg=strtolower($r[1]);
-	$rt[]=[isint($id),$r[0],substr_count($msg,strtolower($p))];}
+static function build($id,$p,$min,$max,$lmt,$rn=[]){
+$qda=db('qda'); $qdm=db('qdm'); $qds=db('qdsra'); $id=isint($id); $rt=[];
+$sq['nod']=ses('qb'); $sq['>re']='0'; $sq['>b1.id']=$min; $sq['{b1.id']=$max; if($rn)$sq[')b1.id']=$rn;
+$sq['or']=['%msg'=>$p,'%suj'=>$p]; if($lmt)$sq[]=sql::countrefs($p,1).'>='.$lmt;
+$sq['_order']='b1.'.prmb(9);
+//$r=sql::inner('b1.id,lower(msg)','qda','qdm','id','',$sq,0);
+$r=sqb::inner('b1.id,lower(msg)','art','txt','id','',$sq,0);
+foreach($r as $k=>$v)$rt[]=[$id,$v[0],substr_count($v[1],$p)];
 return $rt;}
-//inner($d,$b1,$b2,$k2,$p,$q,$z='')
 
 static function id_word($p){
 $id=sql('id','qdsr','v',['word'=>$p]);
@@ -74,9 +69,9 @@ $ok=div('start:'.$minid.'-end:'.$maxid.' - loops:');
 for($i=0;$i<$n;$i++){
 	$min=$minid+$nb*$i; $max=$min+$nb;
 	$ok.='from '.$min.' to '.$max.' : ';
-	$ex=sql('art','qdsra','k',['ib'=>$id,'>art'=>$min,'{art'=>$max],0);
-	$not=$ex?implode(',',array_keys($ex)):'';
-	$rt=self::build($id,$p,$min,$max,$lmt,$not);
+	$rb=sql('art','qdsra','k',['ib'=>$id,'>art'=>$min,'{art'=>$max],0);
+	$rn=$rb?array_keys($rb):[];
+	$rt=self::build($id,$p,$min,$max,$lmt,$rn);
 	$na=count($rt); $nt+=$na;
 	$ok.=$na.' ref added '.br();
 	if($rt)self::save_results($id,$rt,$ra);}
@@ -100,7 +95,7 @@ if($r)foreach($r as $k=>$v)if($v){$re='';
 	if(auth(6))$re.=lj('','popup_searched,save__3_'.$va,picto('save2'));
 	$rd[$k]=div($re);}}}
 if($rd){arsort($rc); foreach($rc as $k=>$v)$ret.=$rd[$k];}
-else $ret.=btn('txtx',nmx([11,16]));
+else $ret.=btn('txtx',noresult());
 return divs('text-align:left',$ret);}
 
 static function maintenance($d){

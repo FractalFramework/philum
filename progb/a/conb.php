@@ -289,7 +289,8 @@ for($i=0;$i<$n;$i++)if($c==':'.$r[$i])$no=1;
 if(!$no)return '['.$da.']';
 elseif($c==':twitter'){
 	if(str_starts_with($da,'http'))return str_replace(['|1:twitter',':twitter'],'','['.$da.']');}
-elseif(str_starts_with($da,'http'))return $o;}
+elseif(str_starts_with($da,'http'))return $o;
+else return $p;}
 
 static function striptw($d,$op){
 if(strpos($d,'//t.co')!==false)return;
@@ -429,7 +430,7 @@ if(!$ret)$ret=match($c){
 ':hurl'=>lh('',$p,$o?$o:preplink($p)),
 ':jurl'=>lj('',$p,$o),
 //':link'=>md::special_link($p.'|'.$o),
-':anchor'=>lkn($p),
+':anchor'=>lkn($p,$o),
 ':date'=>mkday(is_numeric($o)?$o:'',$p),
 ':title'=>ma::suj_of_id($p),
 ':read'=>ma::read_msg($o,3),
@@ -465,7 +466,7 @@ static function build($d,$r){
 foreach($r as $k=>$v){$va='_'.strtoupper($k); $ra[$k]=$va;
 	if(!$v)$d=str_replace($va,'',$d);//del empty
 	else $r[$k]=self::read($v);}
-$d=str::repair_tags($d); $d=delsp($d); $d=str::clean_lines($d); $d=delnl($d);
+$d=str::repair_tags($d); $d=delsp($d); $d=str::clean_lines($d); $d=twonl($d);
 //$d=preg_replace('/(\n){1,}/',"\n",$d);
 $d=self::parse($d,'template');
 return str_replace($ra,$r,$d);}//conn::embed_p($d);
@@ -485,6 +486,12 @@ static function calli($p,$o,$prm=[]){
 [$p,$o]=prmp($prm,$p,$o);
 if($o)return self::parse($p,'template');
 return self::parse($p,'sconn2');}
+
+static function stripcn($d,$c){
+return self::parse($d,'stripconn',$c);}
+
+static function delcn($d){
+return self::parse($d,'delconn');}
 
 static function png2jpg($id,$d=''){
 $d=$d?$d:ma::artxt($id); $r=self::imgs($d,$id);
@@ -509,6 +516,5 @@ $bt=div(checkbox_j('chk'.$rid,'','template'));
 $bt.=edit::area('inp'.$rid,$p,54,8,$js,1);
 $ret=self::calli($p,$o);
 return $bt.divd($rid,$ret);}
-
 }
 ?>

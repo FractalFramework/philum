@@ -81,13 +81,16 @@ if($q)foreach($q as $k=>$v){
 	elseif($c1=='~')$rb[]=$k1.' like "'.self::qres($v).'"';
 	elseif($c1=='&')$rb[]=$k1.' between ("'.$v[0].'" and "'.$v[1].'")';
 	elseif($c1=='(')$rb[]=$k1.' in ('.implode(',',self::atmr($v)).')';
-	elseif($c1==')')$rb[]=$k1.' not in ("'.implode(',',self::atmr($v)).')';
+	elseif($c1==')')$rb[]=$k1.' not in ('.implode(',',self::atmr($v)).')';
 	elseif($c1=='#')$rb[]='date_format('.$k1.',"%y%m%d")="'.self::qres($v).'"';
 	elseif($c1=='-')$rb[]='substring('.$k1.',1,'.strlen($v).')!="'.self::qres($v).'"';
 	elseif($c1=='+')$rb[]='substring('.$k1.',1,'.strlen($v).')="'.self::qres($v).'"';
 	elseif(is_array($v))$rb[]=$k.' ('.implode(',',self::atmr($v)).')';
 	//elseif(is_array($v))$rb+=self::where($v,1);
 	//elseif(substr($v??'',0,9)=='substring')$rb[]=$v;
+	elseif($k=='')$rb+=self::where($v,1);//second iteration
+	//elseif($k==='match')$rb[]='match (msg) against ("'.self::qres($v).'")';
+	//elseif($k==='regexp')$rb[]=$v[0].' REGEXP "[[:<:]]'.self::qres($v[1]).'[[:>:]]"';
 	elseif($k==='not null')$rb[]=$v.' is not null';
 	elseif($k==='is null')$rb[]=$v.' is null';
 	elseif(is_numeric($k))$rb[]=$v;
@@ -132,17 +135,21 @@ return $ret;}
 
 static function inner($d,$b1,$b2,$k2,$p,$q,$z=''){
 if($d==$k2)$d=db($b2).'.'.$d;
-$sql='select '.$d.' from '.db($b1).' inner join '.db($b2).'
-on '.db($b1).'.id='.db($b2).'.'.$k2.' '.self::where($q);
+$sql='select '.$d.' from '.db($b1).' b1 inner join '.db($b2).' b2
+on b1.id=b2.'.$k2.' '.self::where($q);
 $rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
 if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
 return $ret;}
 
-static function arts($d,$p,$q,$z=''){if(is_numeric($q))$q=['ta.id'=>$q];
-$sql='select '.$d.' from '.db('qda').' ta inner join '.db('qdm').' tb on ta.id=tb.id '.self::where($q);
+static function in($d,$b,$in,$p,$q,$z=''){if(is_numeric($q))$q=['b1.id'=>$q];
+$sql='select '.$d.' from '.$b.' b1 '.$in.' '.self::where($q);
 $rq=self::qr($sql,$z); $ret=$p=='v'?'':[];
 if($rq){$ret=self::format($rq,$p); if($rq)self::qrf($rq);}
 return $ret;}
+
+static function arts($d,$p,$q,$z=''){
+$in='natural join '.db('qdm').' b2 ';
+return self::in($d,db('qda'),$in,$p,$q,$z);}
 
 static function com($sql,$z=''){
 return self::qr($sql,$z);}
@@ -168,5 +175,7 @@ self::qr('create table '.db($b).' like '.$bb); self::qr('insert into '.db($b).' 
 static function reflush($b,$o=''){self::qr('alter table '.db($b).' order by id');
 if($o){$n=ma::lastid($b); if($n)self::resetdb($b,$n+1);}}
 static function maintenance($k,$v,$b1,$b2){return self::read2($k.','.$v,$b1,'kv','b1 left outer join '.db($b2).' b2 on b2.id=b1.'.$k.' where b2.id is null group by '.$k,1);}//maintenance('idtag','tag','qdta','qdt');
+static function countrefs($d,$o=''){if($o)$d=strtolower($d);
+return 'floor((length(b2.msg)-length(replace(lower(b2.msg),"'.$d.'","")))/(LENGTH("'.$d.'")))';}
 }
 ?>

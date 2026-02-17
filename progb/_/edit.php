@@ -65,51 +65,37 @@ foreach($r as $k=>$v){$txt=self::icon($k); $rid=''; if($k=='nl')$v[1]='\n';
 return divc('nbp',$ret.divd('scb',''));}
 
 static function area($rid,$d='',$w=80,$h=16,$js=[],$o=''){//external
-$ret=self::connbt($rid,$o); //$ret.=lj('','popup_tracks,preview_'.$rid,picto('view'),att(nms(65))).' ';
+$ret=self::connbt($rid,$o);
 $ret.=div(textarea($rid,$d,$w,$h,['class'=>'console']+$js));
 return $ret;}
 
 static function txarea($d,$id=''){$pr=[];
-if(rstr(171))$s='margin:0; min-width:408px; width:100%; min-height:440px;';
-else $s='margin:0; width:100%; min-width:600px; min-height:280px;';
-//$js=temporize('prwlive',sj($j),1000);
-if(rstr(171)){$j='prw'.$id.'_edit,conn2wyg_txtarea_2_'.$id; $pr=['onclick'=>sj($j)];}
+$s='margin:0; min-width:308px; width:100%; min-height:340px;';
 return tag('textarea',['id'=>'txtarea','name'=>'msg','class'=>'console','style'=>$s]+$pr,$d);}
-
-static function divarea($url,$id){$rid='edt'.$id; //mc::wygedt;
-$ret=lj('','txtarea_mc,wygok_edt'.$id.'_23_'.$id,picto('save2')).' ';
-$d=tagb('p','')."\n"; $d=nl2br($d); $j='';
-if(rstr(171))$j=sj('txtarea_edit,wyg2conn_editarea_2_'.$id);
-return divedit($rid,'editarea justy','max-width:720px','',$d);}
 
 static function wyg2conn($p,$o,$prm=[]){//usg::html2conn
 ses::$urlsrc=host().'/'; $d=conv::call($prm[0]);
 return str_replace(['[img/','[users/'],'',$d);}
 
-static function conn2wyg($p,$o,$prm=[]){
+static function conn2wyg($id,$o,$prm=[]){
 $d=conn::read($prm[0],'3','test',1);
-$j=sj('txtarea_edit,wyg2conn_editarea_2_'.$p);
-return divedit('editarea','editarea justy scroll','max-width:720px; max-height:500px;',$j,$d);}
+$j=sj('txtarea_edit,wyg2conn_editarea_2_'.$id);//update wyg2conn
+$bt=lj('','prw'.$id.'_edit,conn2wyg_txtarea_2_'.$id,picto('get'),att('update'));//get txarea
+return divedit('editarea','editarea justy scroll','max-width:720px; max-height:500px;',$j,$d,$bt);}
 
-/*static function tpl($rid){
-return [
-['div',[],'{savebt}{urlsrc}{editm}{savebt}{frm}{pdat}{trkname}{trkmail}{addib}{pub}'],
+static function tpl($rid=''){return [
+['div',[],'{saveb2}{savebt}{urledt}{artedit}{preview}{urlsrc}{addib}{frm}{pdat}{trkname}{trkmail}{pub}'],
 ['div',[],'{psuj}'],
-['div',['id'=>$rid],[
-	['div',[],'{editbt}'],
-	['div',['id'=>'txarea'],'{txarea}']]]];}*/
+['div',[],'{edition}'],
+['div',['id'=>$rid],[]]];}
 
-static function view($rt,$rp){
-//return view::call(self::tpl(),$rt);
-$rp=array_merge(['saveb2','savebt','urledt','artedt','preview'],$rp,['edition']);//editbt','txarea'
-$rp=array_flip($rp);
-$r=sortbyarray($rt,$rp);
-return join('',$r);}
+static function view($rt,$rp,$rid){
+return view::call(self::tpl($rid),$rt);}
 
 static function modif($id){
 $rt['savebt']=lj('popsav','txarea,art'.$id.'_sav,editart_txtarea_id4_'.$id.'_1',nms(27)).' ';
 $rt['saveb2']=lj('popbt','art'.$id.'_sav,editart_txtarea_id4_'.$id,picto('save'));
-$rt['urledt']=self::urledt($id);//defcon//sav::urledt($url)
+$rt['urledt']=self::urledt($id);//defcon//sav::urledt
 $rt['pub']=hidden('pub',0);
 return $rt;}
 
@@ -119,13 +105,11 @@ $rt['savebt']=lj('popsav','socket_sav,createart_txtarea,'.$ids.'_'.(rstr(57)?7:9
 $rt['urlsrc']=inputb('urlsrc',$url,16,'url','255',['onclick'=>atj('SaveI','urlsrc'),'onContextMenu'=>'SaveIt()']).btd('urledt','');
 $rt['addib']=select_j('addib','parent',rstr(10)?ses('read'):'',0,picto('topo'),1);
 if(auth(3))$rt['pub']=checkbox_j('pub',$_SESSION['auth']<4?0:rstr(11),nms(29));
-$rt['trkname']=hidden('trkname',$usr); //$rt['trkmail']=hidden('trkmail','');
+$rt['trkname']=hidden('trkname',$usr);
 $rt['frm']=select_j('frm','cat',$frm,'3',$frm,'');
 $rt['pdat']=inpdate('pdat',datz('Y-m-d\TH:i'),'2000-01-01T00:00','2040-01-01T00:00',1);
 $rt['psuj']=inputb('psuj',$suj,'',nms(71),250,['name'=>'psuj','class'=>'editor','style'=>'width:99%;']);
-//$rt['editxt']=lj('','edt'.$id.'_edit,call__x__'.$id.'',picto('editxt')).' ';
-//$rt['close']=btj(picto('sclose'),'tog_cl(this)');
-//if(auth(4))$rt['randim']=checkbox('randim','ok','rename_img',0);//obs
+$rt['saveb2']=''; $rt['urledt']='';//empty
 return $rt;}
 
 static function fillempty($rt,$rp){
@@ -136,9 +120,7 @@ static function form($url,$id,$suj,$msg,$rid,$rp){
 if(!$id)$rt=self::create($url,$suj,$rp);
 else $rt=self::modif($id);
 $rt['artedt']=ljb('','edtmode',[$rid,$id],picto('artedit'),atd('edtmd')).' ';//mc::wygedt
-$rt['preview']=toggle('','prw'.$id.'_connectors,call_txtarea',picto('view'),'',att('preview')).' ';
-//$rt['preview'].=ljb('','captslct','preview',picto('view'),att('preview selection')).' ';
-//$rt['wygedt']=lj('',$rid.'_mc,wygedt_txtarea__'.$id.'_txtarea',picto('artedit'));
+$rt['preview']=toggle('','prw'.$id.'_edit,conn2wyg_txtarea_2_'.$id,picto('view'),'',att('preview'));
 return self::fillempty($rt,$rp);}
 
 #call
@@ -157,9 +139,8 @@ if($msg)$menu.=self::correct($msg);
 $area=divd('txarea',self::txarea($msg,$id));
 //$area=self::divarea($msg,$id);
 $rt['edition']=div($menu.$area,'');
-$ret=self::view($rt,$rp);
-if(rstr(171))return div(div($ret,'col1').div('','col2','prw'.$id),'grid-pad',$rid);
-else return div($ret,'col1',$rid).div('','','prw'.$id);}
+$ret=self::view($rt,$rp,$rid);
+return div(div($ret,'col1').div('','col2','prw'.$id),'grid-pad',$rid);}
 
 static function com($f,$o,$prm=[]){$u=vacurl($f);
 $_SESSION['vac'][$u]['u']=$f; $_SESSION['vac'][$u]['b']=$prm[0];

@@ -245,13 +245,13 @@ if($r)foreach($r as $v)if($v)$ret.=mk::popim($v,img::embed_thumb($v,$id),$id);
 return $ret;}
 
 static function conn_retape($d,$id){
-$r=msql::ses('col','system','connectors_old',0); if($r)$rk=array_keys($r);
+$r=sesmk2('conn','oldconn'); if($r)$rk=array_keys($r);
 $d=delbr($d,"\n"); $d=str::clean_br($d); return str_replace($rk,$r,$d);}
 
 static function rectifart($id,$prw=3){
 $d=ma::artxt($id);
 $d=str_replace("&#13;",'',$d??'');//
-$d=delnl($d);
+$d=twonl($d);
 $d=self::modif_art($id,$d);
 return ma::read_msg($id,$prw);}
 
@@ -359,7 +359,7 @@ static function hardedit($f){
 return divarea('newhdt',$f);}
 
 static function batchpreview($f,$sug='',$prm=[]){$f=$prm[0]??$f; $d=''; $t='';
-$f=trim($f); $fb=http($f); ses::$urlsrc=$fb;
+$f=trim($f); $fb=https($f); ses::$urlsrc=$fb;
 if($f){[$t,$d]=conv::vacuum($f); vacses($f,'d',$d);}
 if(!$d)$d='nothing';
 if($sug){$r=msql::row('',nod('suggest'),$sug); [$day,$ok,$url,$mail,$t,$d,$iq]=$r;}

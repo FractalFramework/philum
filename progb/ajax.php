@@ -86,7 +86,7 @@ if(!$ret)$ret=match($app){
 'lang'=>usg::setlng($g1),
 'hidj'=>usg::hidslct($g1,$g2,$g3,$g4,$prm),
 'chkj'=>usg::chkslct($g1,$g2,$g3,$g4,$prm),
-'alert'=>divc('',picto('alert').' '.$g1),
+'alert'=>div(picto('alert').' '.$g1),
 'rebuild'=>boot::rebuild(),
 'reset'=>boot::reboot(),
 #actions

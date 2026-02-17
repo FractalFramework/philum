@@ -172,7 +172,7 @@ if(rstr(38)){
 $ret.=self::catedit($id,$frm);//$tags
 $ret.=self::art_options($id,$lg).' ';//art_options
 $r=ses('art_options'); foreach($r as $k=>$v)if($v!='lang')$dn[]=$v;//by meta_all
-//$r=self::langs(); if($r)foreach($r as $k=>$v)$dn[]='lang'.$v;//lang
+//$r=langs(); if($r)foreach($r as $k=>$v)$dn[]='lang'.$v;//lang
 foreach($dn as $k=>$v)$dn[$k]=$v.$id;//add id
 $sav=lj('popsav',$id.'_meta,titsav_'.implode(',',$dn).'_k_'.$id.'_'.$m.'_'.ajx($rch),picto('valid')).' ';
 ses::$r['popw']=640;
@@ -183,7 +183,7 @@ static function detectlangbytrans($id){
 $suj=sql('suj','qda','v',$id);
 return trans::detect($suj);}
 
-static function detectlangbytags($id){$r=self::langs();
+static function detectlangbytags($id){$r=langs();
 foreach($r as $k=>$v){$rb=self::matchall_r($id,$v); $rn=[];
 	foreach($rb as $ka=>$va)$rn[]=count($va[0]);
 	$rt[$v]=array_sum($rn);}
@@ -220,7 +220,7 @@ return self::langslct($id,$lg);}
 
 static function langslct($id,$lg=''){$bt='';
 if($lg)self::definelg($id,$lg);
-if(!$lg)$lg=self::curlg($id); $r=self::langs();
+if(!$lg)$lg=self::curlg($id); $r=langs();
 $lgn=msql::val('system','edition_flags_7',$lg,0);
 $bt.=lj('','lng'.$id.'_meta,findlg___'.$id.'_bytrans',picto('deepl',16),att('api deepl'));
 //$bt.=lj('','lng'.$id.'_meta,findlg___'.$id.'_bytags',picto('enquiry'),att('bt tags'));
@@ -241,7 +241,7 @@ $r=msql::two('system','edition_flags_4');
 foreach($r as $k=>$v)$ret.=lj(active($k,$lg),'lng'.$id.'_meta,langslct___'.$id.'_'.$k,$v);
 return divc('list scroll',$ret);}
 
-static function otherlangs($id,$lg=''){$r=self::langs();
+static function otherlangs($id,$lg=''){$r=langs();
 if(!$lg)$lg=self::curlg($id);
 $ret=lj('','art'.$id.'_trans,play__3_art'.$id.'_'.$lg,flag($lg)).'&#8658';
 foreach($r as $k=>$v)if($v!=$lg)$ret.=lj('','art'.$id.'_trans,call__3_art'.$id.'_'.$v.'-'.$lg,flag($v)).' ';
@@ -267,12 +267,12 @@ if($r)foreach($r as $k=>$v)if(substr($v,0,4)=='lang'){
 	$lgb=self::curlg($k); self::utag_sav($id,'lang'.$lgb,$k); self::importags($id);}}
 
 static function affectlangs($id,$lg){$ret=''; if(!$lg)$lg=ses('lng'); self::affectlgr($id);
-$lgs=self::langs(); $r=[];
+$lgs=langs(); $r=[];
 foreach($lgs as $k=>$v)$r[]=sql('msg','qdd','v',['val'=>'lang'.$v,'ib'=>$id]);
 return json_encode($r);}
 
 static function translations($id,$lg,$ra=[]){
-$rl=self::langs(); $ret='';
+$rl=langs(); $ret='';
 if(!$lg)$lg=self::curlg($id);
 if(!$ra)$ra=sql('val,msg','qdd','kv',['ib'=>$id]);
 if($rl)foreach($rl as $va){$rid='lang'.$va.$id; $dn[]=$rid;
@@ -286,7 +286,7 @@ $ret.=hlpbt('meta_lang').span('','','lgs'.$id);
 $ret.=div(self::otherlangs($id),'nbp');
 return $ret;}
 
-static function langsav($id,$rb,$prm=[]){$rl=self::langs();//also from translations
+static function langsav($id,$rb,$prm=[]){$rl=langs();//also from translations
 if(!$rb)$rb=sql('val,msg','qdd','kv',['ib'=>$id]);//known
 if($rl)foreach($rl as $ka=>$va){$known=$rb['lang'.$va]??''; $newval=trim($prm['lang'.$va.$id]??'');
 //if(!$newval && $know)self::utag_sav($id,'lang'.$va,''); else
@@ -295,7 +295,7 @@ if($newval!=$known){self::utag_sav($id,'lang'.$va,$newval);
 	self::affectlgr($id); self::affectlgr($newval); self::affectlgr($known);}}
 return 'ok';}
 
-static function langdel($id,$rb,$prm=[]){$rl=self::langs();
+static function langdel($id,$rb,$prm=[]){$rl=langs();
 foreach($rl as $k=>$v){self::utag_sav($id,'lang'.$v,''); $rt['lang'.$v.$id]='';}
 return $rt;}
 
@@ -305,7 +305,7 @@ if((!$rst && !$val) or $val=='true')$chk=1; else $chk=0;
 return btn('txtx',checkbox_j($sid,$chk,$v));}
 
 static function art_options($id,$lg){$ret='';
-$r=ses('art_options'); $lgs=self::langs();
+$r=ses('art_options'); $lgs=langs();
 $ra=sql('val,msg','qdd','kv',['ib'=>$id]); $rst=ses('rstr');
 $rd=valk($ra,$r);
 if($r)foreach($r as $k=>$v){$val=$rd[$v]; $hlp=''; $sid=str::normalize($v).$id; if($val=='1')$val='true';
@@ -377,7 +377,7 @@ foreach($rg as $k=>$v){[$r,$re]=self::matchtags($id,$k,2,$d,$ra); $rt='';
 	foreach($r as $ka=>$va){$n=isset($re[$ka])?' ('.$re[$ka].')':'';
 		if($ka)$rt.=lj('','popup_api___'.$tg.':'.$va,$ka.$n).' ';}
 	if($rt)$ret.=divc('nbp',$rta.$rt);}}
-return $ret?$t.$ret:nmx([11,16]);}
+return $ret?$t.$ret:noresult();}
 
 #saves
 //save all from search
@@ -494,7 +494,7 @@ return $ret;}
 
 #editor
 static function read_tags($idart,$cat){//tag_arts
-return sql::inner('idtag,tag','qdt','qdta','idtag','kv',['cat'=>$cat,'idart'=>$idart,'_order'=>db('qdta').'.id asc']);}
+return sql::inner('idtag,tag','qdt','qdta','idtag','kv',['cat'=>$cat,'idart'=>$idart,'_order'=>'b2.id asc']);}
 
 static function tag_auth($cat){
 if(auth(4) or $cat==ses('iq'))return true;}
@@ -545,7 +545,6 @@ return self::add_tag_btn($r,$id,$cat);}
 #match
 static function catag(){return explode(' ','tag '.prmb(18));}//incorp
 static function pctag(){return explode(' ','tag '.prmb(19));}
-static function langs(){return explode(' ',prmb(26));}
 
 static function each_words($d){
 $d=str_replace(['?','.','/',',',';',':','!','"','(',')','[',']','«','»'],'',$d);
@@ -557,10 +556,8 @@ return $rt;}
 
 static function prep_msg($id){
 [$suj,$d]=sql::arts('suj,msg','w',$id); $d=html_entity_decode($suj."\n".$d);
-if(strpos($d,':import') or strpos($d,':read'))$d=strip_tags(conn::read($d,$id,3));
-else $d=str::stripconn($d); $d=strtolower(str::eradic_acc($d)); $d=deln($d,' ');
-$d=str_replace("&nbsp;",' ',$d);
-return $d;}
+//if(strpos($d,':import') or strpos($d,':read'))$d=strip_tags(conn::read($d,$id,3)); else 
+return $d|>conb::delcn(...)|>str::eradic_acc(...)|>strtolower(...)|>nl2sp(...)|>delnbsp(...);}
 
 //$ra:mot=>nb occurences //$rb,rx,rd,rf:tag=>id //rdb:id=>tag //re:id=>nb
 //todo:mots reconnus comme étant déjà tagués dans une autre langue via leur id
@@ -722,7 +719,7 @@ return divd($rid,$ret);}
 
 static function recatagmsq($idtag,$cat1,$cat2,$d){$lg=prmb(25);
 $rn=array_flip(sesmk('tags')); $n1=$rn[$cat1]; $n2=$rn[$cat2];
-$rl=self::langs(); foreach($rl as $k=>$v){
+$rl=langs(); foreach($rl as $k=>$v){
 $rb=msql::modif('lang/'.$v,nod('tags_'.$n2),[$d],'row','',$idtag);
 $rb=msql::modif('lang/'.$v,nod('tags_'.$n1),'','del','',$idtag);}
 return $d.': passed from '.$cat1.' to '.$cat2.' => '.msqbt('',nod('tags_'.$n2.'lg'));}
@@ -771,7 +768,7 @@ $j='popup_meta,tagedit___';
 if($rc)foreach($rc as $idtag=>$v)
 	$ret.=lj('txtx',$j.$idtag.'_'.$cat,pictxt('popup',$v[0].'&nbsp;('.$v[1].')')).' ';
 //sql::maintenance('idtag','tag','qdta','qdt');
-//$ra=sql::inner('idtag,tag','qdta','qdt','idtag','kv','idtag is null',1); p($ra);
+//$ra=sql::inner('idtag,tag','qdta','qdt','idtag','kv',['isnull'=>'idtag'],1);
 return $ret;}
 
 static function tags_menu($cat,$rid){
@@ -839,7 +836,7 @@ return $ret;}
 static function tags2msql($cat,$lg){
 $rt=self::catag(); $rn=[]; $bt=''; $n=0; $ret=divc('txtcadr',nms(191)); $lga='fr';//ses('lng')
 foreach($rt as $k=>$v){$rn[$v]=$k+1; $bt.=lj(active($cat,$v),'tg2msq_meta,tags2msql___'.$v.'_'.$lg,$v).' ';}
-foreach(self::langs() as $k=>$v){$bt.=lj(active($lg,$v),'tg2msq_meta,tags2msql___'.$cat.'_'.$v,$v).' ';}
+foreach(langs() as $k=>$v){$bt.=lj(active($lg,$v),'tg2msq_meta,tags2msql___'.$cat.'_'.$v,$v).' ';}
 $ret.=divc('nbp',$bt); if(!$cat)return divd('tg2msq',$ret);
 $n=$rn[$cat];//auteurs thèmes pays type personnalité org corp
 $ra=sql('id,tag','qdt','kv',['cat'=>$cat],0);

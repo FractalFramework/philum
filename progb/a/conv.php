@@ -212,7 +212,7 @@ $sp='';$sp2='';$mid='';$txt='';$txb='';$bend='';$tag='';$len=0;$nb=0;$dz='';$imn
 if($txa){$tag='href='; $len=6;
 	if(substr($txa,0,1)==' ')$sp=' '; if(substr($txa,-1,1)==' ')$sp2=' '; $txt=trim($txa);}
 if($txt){
-	if(!is_img($txt))$txt=str::stripconn($txt);//kill conns inside links
+	if(!is_img($txt))$txt=conb::delcn($txt);//kill conns inside links
 	if($n=strpos($txt,'>'))$txt=substr($txt,$n+1);
 	$txt=utmsrc($txt); if($txt)$txt=str_replace(["\n","\t"],'',$txt);
 	if($txt && substr($txt,0,1)=='/')$txt=substr($txt,1);
@@ -255,6 +255,7 @@ elseif($src){$src=trim($src);
 	if(is_img($txt))return '['.$txt.']'; //echo($txt).'- ';//$srcim && 
 	if(strpos($src,'javascript')!==false)$src='';
 	if(strpos($bin,'cs_glossaire')!==false)$mid=$txt;//strend($txt,'|')
+	if(strpos($src,'app/')!==false)return '['.strend($src,'/').'|'.$txt.':appbt]';
 	if(!$srcim && !is_url($rot.$src) && $txt)return $txt;
 	elseif($srcim && !$txt)$mid='['.$rot.$src.'] ';//href to img
 	elseif($txt){$sp='';
@@ -428,7 +429,7 @@ case 'td':$td[]=self::prep_table($b); break;
 case 'th':$td[]=self::prep_table($b); break;
 case 'tr':$tr[]=$td; $td=[]; break;
 case 'table':$b=$n.$n.'['.implode_r($tr,self::$splitable,'|').':table]'; $tr=[]; break;
-case 'li':$b=trim($b); $b.=$n; break;//whichsplit $b=deln($b,' ');
+case 'li':$b=trim($b); $b.=$n; break;//whichsplit $b=nl2sp($b);
 case 'ul':$b=$n.'['.$b.':list]'.$n; break;
 case 'ol':$b=$n.'['.$b.':numlist]'.$n; break;
 case 'strike':$b='['.$b.':k]'; break;
@@ -437,13 +438,16 @@ case 'small':$b='['.$b.':s]'; break;
 case 'big':$b='['.$b.':h]'; break;
 case 'sup':$b='['.$b.':e]'; break;
 case 'pre':$b='['.$b.':pre]'; break;
-case 'code':$b='['.$b.':code]'; break;
+case 'code':
+	if(strpos($bin,'color:')!==false)$b='['.conb::stripcn($b,'clr').':prog]';
+	else $b='['.$b.':code]'; break;
 case 'center':$b='['.$b.':center]'; break;
 case 'red':$b='['.$b.':red]'; break;//wyg
 case 'txtclr':$b='['.$b.':c]'; break;//wyg
 case 'fact':$b='['.$b.':fact]'; break;//xlhtml
 case 'quote':$b='['.$b.':quote]'; break;//xlhtml
 case 'stabilo':$b='['.$b.':stabilo]'; break;//wyg
+case 'on':$b='['.$b.':on]'; break;//wyg
 case 'p':$taga=$n.$n; $tagb=$n.$n; break;
 case 'dir':$b=$n.'['.$b.':q]'; break;
 case 'br':if(get('nobr')=='ok')$taga=$n; $tagb=$n; break;
@@ -493,6 +497,8 @@ case 'embed':$taga=$n; $tagb=$n;
 	elseif(strpos($bin,'rutube')!==false)$b=self::piege_rutube($bin);
 	elseif(strstr($bin,'.mp')!==false)$b=self::piegemedia($bin);
 	else $b='<'.self::correct_widths($bin).'>'; break;
+//case 'pagespeed_iframe':$b='['.$bin.':iframe]'; break;
+case 'pagespeed_iframe':$bal='iframe'; break;//?
 case 'iframe':
 	if(strpos($bin,'data-tweet-id')!==false){
 		$d=strprop($bin,'data-tweet-id'); $b='['.$d.':twitter]';}
@@ -564,8 +570,10 @@ return $b;}
 
 //strings
 static function notin($d,$c){
-$b=preg_replace("/(\r)|(\n)|( )|(&nbsp;)/",'',$d);
-if($b && strpos($d,':'.$c.']')===false && !is_img($d) && !strpos($d,'data/image')===false)return true;}
+//$d=preg_replace("/(\r)|(\n)|( )|(&nbsp;)/",'',$d);
+if($d && strpos($d,':'.$c.']')===false)return true;
+if($d && strpos($d,'data/image')===false)return true;
+if(!is_img($d))return true;}
 
 static $splitable='¬';//"\n";
 static function prep_table($d){$d=trim($d);
@@ -573,7 +581,7 @@ static function prep_table($d){$d=trim($d);
 return str_replace('|','-',$d);}//['�','|']
 
 static function whichsplit($d){
-$d=preg_replace('/(\n){2,}/',"\n",$d);
+$d=onenl($d);
 //if(strpos($d,"\n"))$d.='¬';
 return $d.self::$splitable;}
 
@@ -653,7 +661,6 @@ if($aa_bal=='head' or $aa_bal=='style')$bal='';// or $aa_bal=='script'
 //itération
 if(strpos($bal,'<')!==false)$bal=self::interpret_html($bal,$X,$h);//100909
 if($X!='ok'){//else interdit l'imbrication
-	if($aa_bal=='pagespeed_iframe')$aa_bal='iframe';//patch
 	if($aa_bal=='!--')$aa_in='';
 	$rt=self::bal_conv($aa_bal,$aa_in,$bb_bal,$bal,$h);
 	if($rt[1]==$bal && trim($bal))$bal=self::bal_conv_style($bal,$aa_in);

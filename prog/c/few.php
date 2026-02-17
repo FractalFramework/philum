@@ -62,20 +62,24 @@ static function insrc($f){
 $bt=lj('popsav','popup_edit,com_insrc_x_'.ajx($f),pictxt('save','take it'));
 return div($bt).textarea('insrc','',64,8);}
 
-static function progcode($d){$d=trim($d);
-ini_set('highlight.comment','gray');
-ini_set('highlight.default','silver');
-ini_set('highlight.html','red');
-ini_set('highlight.keyword','orange');
-ini_set('highlight.string','green');
+/*static function pgcode_signs($d){$ra=str_split($d);
+$r=['(',')','[',']','{',']','<','>','=','+','-','.',',',';','!','?'];
+$rt=array_map(fn($d)=>'<span style="color:red">'.$d.'</span>',$ra);
+return join('',$rt);}*/
+
+static function progcode($d,$o=''){$d=trim($d);
+$r=['comment'=>'gray','default'=>'#e5c07b','html'=>'','keyword'=>'#56b6c2','string'=>'#98c379'];//#e06c75#abb2bf
+if($o)$r=['comment'=>'gray','default'=>'silver','html'=>'red','keyword'=>'orange','string'=>'green'];//defaults
+foreach($r as $k=>$v)ini_set('highlight.'.$k,$v);
+//$d=self::pgcode_signs($d);
 $d=highlight_string('<?php'."\n".$d,true);
-$d=str_replace(['&lt;?php'."\n",'?>','<br />','<pre>','</pre>','<code style="color: red">','</code>'],'',$d);
+$d=str_replace(['&lt;?php'."\n",'?>','<pre>','</pre>'],'',$d);//,'<code style="color: #e06c75">','</code>'
 return div(trim($d),'code','','');}
 
 #calendar
 static function is_arts($frm,$daya,$dayb){
-if($frm)$sq['frm'=$frm; if($dayb)$sq['>day']=$dayb;
-$n=sql('id','qda','v',$sq+['>day'=>$daya,'_order'=>'day desc','_limit'='1']); 
+if($frm)$sq['frm']=$frm; if($dayb)$sq['>day']=$dayb;
+$n=sql('id','qda','v',$sq+['>day'=>$daya,'_order'=>'day desc','_limit'=>'1']); 
 if($n)return true;}
 
 static function nb_arts($daya,$dayb){return sql('COUNT(id)','qda','v','nod="'.ses('qb').'" AND re>0 AND day<'.$daya.' AND day>'.$dayb.'');}

@@ -369,7 +369,8 @@ return $ret;}
 
 #retrictions
 static function defaults_rstr($o){
-if($o)$r=msql::kx('',nod('rstr'),0);
+if($o==1)$r=msql::kx('',nod('rstr'),0);
+elseif($o==2)$r=msql::kx('server',nod('rstr'),0);
 else $r=msql::kx('system','default_rstr',0);
 return arr($r,200);}
 
@@ -377,18 +378,16 @@ static function edit_rstr(){
 $ret=msqbt('server',nod('rstr'));
 $ret.=console::admactbt('bckp_rstr','backup');
 $ret.=console::admactbt('restore_rstr','restore');
-$ret.=msqbt('system','default_rstr');
+$ret.=msqbt('',nod('rstr'));
 $ret.=console::admactbt('mkdef_rstr','make_default');
 $ret.=console::admactbt('reset_rstr','reset');
+$ret.=msqbt('system','default_rstr');
 if(auth(6))$ret.=msqbt('system','admin_restrictions');
+$ret.=lj('','popup_admx,reloadrstr',pictit('reload','reload'));
 return $ret;}
 
 static function save_msql_json($r){
 json::sav('srv',drn('rstr'),$r);}
-
-static function save_msql_qdu($r){
-if(is_array($r))array_unshift($r,'0');
-sql::upd('qdu',['rstr'=>implode('',$r)],['name'=>ses('qb')]);}
 
 static function save_rstr_msql($r,$b){$rc=[]; $max=max(array_keys($r));
 for($i=1;$i<=$max;$i++)$rc[$i]=!empty($r[$i])?[1]:[0];
@@ -403,11 +402,17 @@ elseif($b=='restore')$r=self::defaults_rstr(1);
 else $r=ses('rstr'); if(!$r)$r=self::defaults_rstr(1);
 return $r;}
 
-static function backup_rstr($b){$r=self::getrstr($b);
+static function backup_rstr($b){
+$r=self::getrstr($b);
 self::save_rstr_msql($r,$b);
-self::save_msql_qdu($r);
 self::save_msql_json($r);
 if($b!='save')$_SESSION['rstr']=$r;}
+
+static function reloadrstr(){
+//boot::define_rstr();
+$r=self::getrstr('reload');
+$_SESSION['rstr']=$r;
+return 'rstr reloaded';}
 
 static function rstrsav2($d){
 if($d)$_SESSION['rstr'][$d]=rstr($d)?'1':'0';

@@ -57,6 +57,8 @@ if($uid){[$ip,$usrhub]=sql('ip,hub','qdu','r',['name'=>$usr]);
 	if($ip!=$host)sql::upd('qdu',['ip'=>$host],['name'=>$usr]);
 	if($usrhub)$qb=$usr;
 	return self::log_result($usr,$uid,$qb,'',$cook);}
+//form
+elseif(!$usr)return self::form($usr,'','');
 //autolog
 elseif($usr=='login'){//is_numeric($ath[$usr])
 	if(!rstr(73))return self::form($usr,'','');//autolog

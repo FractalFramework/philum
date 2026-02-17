@@ -58,7 +58,7 @@ if($rech && strpos($rech,','))$api='search:'.$rech; else $api='search:'.$rech.',
 if($rech)$rt1.=lh('','search/'.$rech.($dig?'/'.$dig:''),picto('link',16)).' ';//.$urg
 $rt1.=toggle('txtx','apicom_apicom,build___'.ajx($api).'_'.$rid,pictit('emission','Api')).' ';
 if($load)$rt1.=btn('txtnoir',nbof(count($load),1));//if(auth(6))$rt1.=nbof(array_sum_r($load),16);
-else $rt1.=btn('txtnoir',nmx([11,16]));
+else $rt1.=btn('txtnoir',noresult());
 if(ses::$s['oom']){$rt1.=lj('popbt','popup_umvoc,home___'.ajx($rech).'_1','vocables');//bdvoc
 	$rt1.=lj('popbt','popup_umrec,home__3_'.ajx($rech),'twits');}
 $ret=div($rt1);
@@ -105,91 +105,61 @@ foreach($r as $v){$ad=substr($v,0,1);
 if($ad=='+')$rca[]=substr($v,1); elseif($ad=='-')$rcb[]=substr($v,1);}
 return [$rca,$rcb];}
 
-static function cat($cat){$sq=[];
-[$rca,$rcb]=self::intersections($cat);
-if($rca)$sq[]='frm in ("'.join('","',$rca).'")';
-if($rcb)$sq[]='frm not in ("'.join('","',$rcb).'")';
-if($sq)return join(' and ',$sq);}
-
-static function tag($tag,$catag){
-$qda=db('qda'); $qdta=db('qdta');
-[$rca,$rcb]=self::intersections($tag);
-if($rca){$w=['tag in'=>$rca];
-	$rtg=sql::inner('idart','qdt','qdta','idtag','rv',$w);
-	$tg=' and '.$qda.'.id in ("'.join('","',$rtg).'")';}
-if($rcb){$w=['tag in'=>$rcb];
-	$rtg=sql::inner('idart','qdt','qdta','idtag','rv',$w);
-	$tg.=' and '.$qda.'.id not in ("'.join('","',$rtg).'")';}
-return ' inner join '.$qdta.' on '.$qda.'.id='.$qdta.'.idart '.$tg;}
-
 static function adds($tag,$col){$sq=[];
-$qda=db('qda'); $lgs=prmb(25);
 [$rca,$rcb]=self::intersections($tag);
-foreach($rca as $k=>$v)if($v==$lgs)$rca[]='';
-if($rca)$sq[]=$col.' in ("'.join('","',$rca).'")';
-if($rcb)$sq[]=$col.' not in ("'.join('","',$rcb).'")';
-if($sq)return join(' and ',$sq);}
+if($rca)$sq['('.$col]=$rca;
+if($rcb)$sq[')'.$col]=$rcb;
+return $sq;}
+
+static function tag($tag){
+[$rca,$rcb]=self::intersections($tag);
+if($rca)$sq['(b1.id in']=sql::inner('idart','qdt','qdta','idtag','rv',['(tag'=>$rca]);
+if($rcb)$sq[')b1.id in']=sql::inner('idart','qdt','qdta','idtag','rv',['(tag'=>$rcb]);
+return $sq;}
 
 static function overcats($d){$rb=[]; $rba=[]; $rbb=[]; $sq=[];
 [$rca,$rcb]=self::intersections($d);
 $r=sql('id,msg','qdd','kv',['val'=>'surcat']);//'ib'=>ses('qbd'),
 if($r)foreach($r as $k=>$v){[$ov,$cat]=split_right('/',$v,1); $rb[$ov][]=$cat;}
 if($rca)foreach($rca as $k=>$v)if($rb[$v]??[])$rba=array_merge($rba,$rb[$v]);
-if($rba)$sq[]='frm in ("'.join('","',$rba).'")';
+if($rba)$sq['(frm']=$rba;
 if($rcb)foreach($rcb as $k=>$v)if($rb[$v]??[])$rbb=array_merge($rbb,$rb[$v]);
-if($rbb)$sq[]='frm not in ("'.join('","',$rbb).'")';
-if($sq)return join(' and ',$sq);}
+if($rbb)$sq[')frm']=$rbb;
+return $sq;}
 
 static function call($rch,$days=''){$rp=self::$rp; $rch=sql::qres($rch);
 [$rech,$dig,$bol,$ord,$tit,$seg,$pag,$cat,$tag,$ovc,$lim,$lng,$pri,$len]=arb(self::$rp);
-$tit=$tit?1:0; //if($tag=='tag')$tag='';
-$qb=ses('qb'); $qda=db('qda'); $qdm=db('qdm'); $qdt=db('qdt'); $qdta=db('qdta');
-//sql
-$fr='k';//filter
-$ft='';//fulltext//score:1->11//bool:nb of verified words
-//if(ses::$s['oom'])
-//$ft='MATCH (msg) AGAINST ("'.$rch.'")';//'.($bol?' IN BOOLEAN MODE':'').'//method of intersect
-if(rstr(3)){$days=$days?$days:ses('nbj'); $sq['daymin']='day>'.timeago($days);}
-if(ses::$dayx-ses('daya')<86400)ses('daya',time());
-$daya=time_prev($days); $daya=$daya?timeago($daya):ses('daya');
-$sq['daymax']='day<'.$daya;
-$sqnd['suj']='suj like "%'.sql::qres($rch).'%" ';
-$sq['nod']='nod="'.$qb.'"';
-$sq['re']='re>0';
+$tit=$tit?1:0; $qb=ses('qb'); $qda=db('qda'); $qdm=db('qdm');
+$sq['nod']=$qb; $sq['>re']='0';
+if(rstr(3)){$days=$days?$days:ses('nbj');
+	if(ses::$dayx-ses('daya')<86400)ses('daya',time());
+	$daya=time_prev($days); $daya=$daya?timeago($daya):ses('daya');
+	$sq['{day']=$daya; $sq['>day']=timeago($days);}
 if(!$tit && $rch){
-	//$sqin['msg']='inner join '.$qdm.' on '.$qdm.'.id='.$qda.'.id';
-	$sqin['msg']='natural join '.$qdm;
-	if($ft)$sqnd['msg']=$ft;
-	elseif($seg)$sqnd['msg']=$qdm.'.msg REGEXP "[[:<:]]'.$rch.'[[:>:]]"';
-	//elseif($seg)$sqnd['msg']=$qdm.'.msg regexp "^[[:blank:]]'.$rch.'[[:blank:]]$"';
-	else $sqnd['msg']=$qdm.'.msg like "%'.($rch).'%" ';}//html_entity_decode//collate utf8mb4_unicode_ci
-if($cat)$sq['cat']=self::cat($cat);
-if($tag)$sqin['tag']=self::tag($tag,'tag');
-if($ovc)$sq['ovc']=self::overcats($ovc);
-if($lng)$sq['lng']=self::adds($lng,'lg');
-if($pri)$sq['re']=self::adds($pri,'re'); else $sq['re']='re>0';
+	if($seg)$sq[]='b2.msg REGEXP "[[:<:]]'.$rch.'[[:>:]]"';
+	else $sq['or']=['%msg'=>$rch,'%suj'=>$rch];}
+elseif($tit)$sq['%suj']=$rch;
+if($cat)$sq+=self::adds($cat,'frm');
+if($tag)$sq+=self::tag($tag);
+if($ovc)$sq+=self::overcats($ovc);
+if($lng)$sq+=self::adds($lng,'lg');
+if($pri)$sq+=self::adds($pri,'re'); else $sq['>re']='0';
 if($len){if($len==60)$min=30; elseif($len=='more'){$min=60; $len=1000;} else $min=$len-10;
-$sq['host']='(host between '.($min*1400).' and '.($len*1400).')';}
-//$rchb=$seg?'[[:<:]]'.$rch.'[[:>:]]':$rch;//REGEXP_REPLACE//(?i) //mariadb is sensitive
-$counter='FLOOR((LENGTH('.$qdm.'.msg)-LENGTH(REPLACE(lower('.$qdm.'.msg),lower("'.$rch.'"),"")))/(LENGTH("'.$rch.'")))';
-if($lim)$sq['lim']=$counter.'>='.$lim;
+$sq['&host']=[$min*1400,$len*1400];}
+$counter=sql::countrefs($rch,1);
+if($lim)$sq[]=$counter.'>='.$lim;
+$sq['_order']='b1.'.prmb(9);
 //req
-$wh=impl(' and ',$sq);
-if($sqnd['suj'] && isset($sqnd['msg']))$wh.=' and ('.$sqnd['msg'].' or '.$sqnd['suj'].')';
-elseif($sqnd['suj'])$wh.=' and '.$sqnd['suj']; elseif($sqnd['msg'])$wh.=' and '.$sqnd['msg'];
-if(isset($sqin))$inner=join('',$sqin); else $inner='';
-$sqc[]=$qda.'.id';
-//if($ft)$sqc[]=$ft.' as score';//change $fr
-$w=' where '.$wh.' order by '.$qda.'.'.prmb(9);
-if($ord){$fr='kv'; $sqc[]=$counter.' as nb';}//scores
-$sql='select '.implode(',',$sqc).' from '.$qda.' '.$inner.$w;
-$ret=sql::call($sql,$fr,0);
-if($ord && $ret)arsort($ret);
+$sqc[]='b1.id'; $p='k';
+if($ord){$p='kv'; $sqc[]=$counter.' as nb';}
+//$r=sql::inner(join(',',$sqc),'qda','qdm','id',$p,$sq,1);
+$r=sqb::inner(join(',',$sqc),$qda,$qdm,'id',$p,$sq,0);
+if($ord && $r)arsort($r);
 //loop
-if(!$ret && $rch && (rstr(62) or ses('rstr62'))){
+if(!$r && $rch && (rstr(62) or ses('rstr62'))){
 	$ndig=self::next_sptime($days); if($ndig)self::$rp['dig']=$ndig;
 	if($ndig)return self::call($rch,$ndig);}
-return $ret;}
+return $r;}
 
 static function rechday($d){
 $first=sqb('day','art','v',['>day'=>$d,'_limit'=>'1']);
@@ -235,7 +205,8 @@ if(is_numeric($rech)){$id=sqb('id','art','v',$rech); if($id)return build::popart
 elseif($rech && strpos($rech,':') && strpos($rech,',')){
 	$ra=explode_k($rech,',',':');
 	foreach($ra as $k=>$v)//{//inform motor
-		if($k=='search' or $k==0)self::$rp['search']=$v;
+		if(is_numeric($k)){$k='search'; $ra[$k]=$v;}
+		if($k=='search')self::$rp['search']=$v;
 		//if($k=='cat')self::$rp['cat']=$cat='+'.str_replace('|','~+',$v);
 		//if($k=='tag')self::$rp['tag']=$tag='+'.str_replace('|','~+',$v);}
 	//self::$rp['nodig']=1; 

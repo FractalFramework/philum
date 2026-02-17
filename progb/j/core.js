@@ -704,11 +704,11 @@ else{ajaxcall('desktop','favs,favsav',[id,'dock','1'],[],'');
 //prw
 function fold(id){
 var bt=getbyid('fd'+id); var bta=bt.getElementsByTagName("span")[0];
-var prw=bt.dataset.prw;
+var prw=bt.dataset.prw; var div=getbyid(id);
 if(prw=='2'){ajaxcall(id,'art,playd',[id,'1'],[],'2');
-	bta.className='philum drawer-off'; bt.title='fermer';}
+	bta.className='philum drawer-off'; bt.title='fermer'; div.className='prw1';}
 else{ajaxcall(id,'art,playd',[id,'2'],[],'2');
-	bta.className='philum drawer-on'; bt.title='ouvrir';}
+	bta.className='philum drawer-on'; bt.title='ouvrir';div.className='prw2';}
 Close('popup');}
 
 //continuous scroll
@@ -725,10 +725,10 @@ if(!last)return;
 var id=last.id;
 var idx=exs.indexOf(id);
 if(idx==-1 && scrl>pos.y){exs.push(id);
-	var rq=getbyid('hid'+div);
+	var rq=getbyid('hidloadmodart');
 	if(rq.value!='undefined'){
 		ajaxcall(div,'api,callj',[rq.value,'to:'+id],[],'after');}}}//addiv()
-addEvent(document,'scroll',function(){artlive2('loadmodart')});
+addEvent(document,'scroll',function(){artlive2('apicnt')});
 
 function artlive(){var ret=''; var ia=0; var nbyp=40;
 var scrl=pageYOffset+innerHeight;

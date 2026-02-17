@@ -2,6 +2,7 @@
 class rssin{
 static $mth=0;
 static $mem=[];
+static $lev=0;
 
 //1
 static function datas_old($data,$t,$r){//lit_rss
@@ -65,6 +66,9 @@ foreach($r as $item){$suj=''; $lnk=''; $com=''; $guid=''; $dat=''; $pdat=''; $tx
 	//case('description'):$txt=$child->nodeValue; break;
 	if(!$lnk && $com)$lnk=strto($com,'#'); //if(!$lnk && $guid)$lnk=$guid;
 	if(is_numeric($lnk))$lnk=''; if(!$dat && $pdat)$dat=$pdat;}
+	//$suj=str::clean_title($suj);
+	//$suj=str::clean_acc($suj);
+	//$suj=str::delnbsp($suj);
  	if($lnk)$rt[]=[$suj,$lnk,$dat,$txt];}
 return $rt;}
 
@@ -91,28 +95,42 @@ if($rss)foreach($rss as $k=>$v){
 	$ret[]=[$va,$lnk,$dat,$txt];}
 return $ret;}
 
-//load
-static function recognize_article($f,$d,$alx){
-if(is_string($f) && isset($alx[$f]))return $alx[$f]; 
-elseif(isset($alx[$d]))return $alx[$d];
-//elseif(isset($alx[substr($f??'',7)]))return $alx[substr($f??'',7)];
-//elseif($d){$suj2=self::wordsuj($d); $id=$alx[$suj2]??''; if($id)return $id;}
-$id=sqb::read('id','art','v',['nod'=>ses('qb'),'or'=>['mail'=>$f,'%suj'=>$d],'_limit'=>'1']);
-return $id;}
+//alx
+static function distance($d,$o='',$max=20){
+$r=sesmk2('ma','readcache'); $rt=[];
+if($r)foreach($r as $k=>$v){
+	$dist=levenshtein($d,$v[2]); //grapheme_levenshtein
+	if($dist<100)$rt[$dist]=[$k,ma::popart($k,$v[2])];}
+if($rt){ksort($rt);
+	if($o){$dist=array_key_first($rt);
+		self::$lev=$dist<$max?$dist:false;
+		return $dist<$max?array_first($rt)[0]:'';}
+	else return tabler($rt,['id',$d],1,1);}
+return noresult();}
 
 static function wordsuj($d){
 $r=meta::each_words($d);
 return join(' ',$r);}
 
 static function alx(){$rt=[];//already_exists, suj&url
-$r=ma::readcache();//sesmk2('ma','readcache');//
+$r=ma::readcache();//sesmk2('ma','readcache');
 if($r)foreach($r as $k=>$v){
 	$suj=$v[2]??''; $src=$v[9]??''; //$suj2=self::wordsuj($suj); $rt[$suj2]=$k;
 	if($suj && $src){$rt[$suj]=$k; $rt[$src]=$k;}}
 return $rt;}
 
+static function recognize_article($f,$d){
+$r=sesmk2('rssin','alx'); //$r=self::alx();
+if(is_string($f) && isset($r[$f]))return $r[$f]; 
+elseif(isset($r[$d]))return $r[$d];
+//elseif(isset($r[substr($f??'',7)]))return $r[substr($f??'',7)];
+//elseif($d){$suj2=self::wordsuj($d); $id=$r[$suj2]??''; if($id)return $id;}
+$id=sqb::read('id','art','v',['nod'=>ses('qb'),'or'=>['mail'=>$f,'%suj'=>$d],'_limit'=>'1']);
+if(!$id)$id=self::distance($d,1,10);
+return $id;}
+
+//load
 static function load($f,$mth=2){$r=[];
-$alx=sesmk2('rssin','alx'); //$alx=self::alx();
 $ret=[];
 switch($mth){
 	case(1):$r=self::rssin_dom($f);break;
@@ -127,8 +145,8 @@ if($r)foreach($r as $k=>$v)if($v[0]){[$suj,$lnk,$dat,$txt]=arr($v,4);
 	$suj=str::clean_title($suj); $lnk=utmsrc($lnk); 
 	//if(strpos($lnk,'feedproxy'))$lnk=self::feedproxy($lnk);
 	//if(strpos($lnk,'spip.'))$lnk=strto($lnk,'spip.').strend($lnk,'/spip');
-	$id=self::recognize_article($lnk,$suj,$alx);
-	$ret[]=[$suj,$lnk,$dat,$id,$txt];}
+	$id=self::recognize_article($lnk,$suj);
+	$ret[]=[$suj,$lnk,$dat,$id,$txt,self::$lev];}
 return $ret;}
 
 static function addjs($p,$o,$prm=[]){
@@ -170,7 +188,7 @@ static function call($kn,$u,$prm=[]){//rssin
 [$kn,$mth]=expl('-',$kn,2); chrono();
 [$f,$o]=prepdlink($u); $f=http($f); $i=0; $ret=''; //$mth=2;
 $r=self::load($f,$mth); $nb=count($r); $ni=0;//$ret=hidden('addop',1); //$ru=self::usedcat($f);
-foreach($r as $k=>$v){$btc=''; [$va,$lnk,$dat,$id,$txt]=$v; $i++; $rc=[];
+foreach($r as $k=>$v){$btc=''; [$va,$lnk,$dat,$id,$txt,$lev]=$v; $i++; $rc=[];
 	if($id)$rc[]=ma::popart($id); $lnk=self::repairlk($lnk); $lnj=ajx($lnk);
 	$rc[]=lj('','popup_sav,batchpreview__3_'.$lnj,picto('view'));//,att(htmlentities($txt))
 	//if(auth(4))$rc[]=select(['id'=>$kn.$k],$ru,'vv','','socket_sav,addfromlist_'.$kn.$k.'_7_'.$lnj.'_');
@@ -181,6 +199,7 @@ foreach($r as $k=>$v){$btc=''; [$va,$lnk,$dat,$id,$txt]=$v; $i++; $rc=[];
 	if(!$id)$rc[]=lj('','popup_search,home__3_'.ajx($va).'_',picto('search'));
 	if(!$id && !$ni)self::$mem[$u][]=$lnj; elseif(self::$mem[$u]??[])$ni=1;
 	$rc[]=lj('','popup_usg,iframe___'.ajx($lnk),picto('window'));
+	$rc[]=lj('','popup_rssin,distance___'.ajx($va),picto('ear',$lev));
 	$rc[]=$va;
 	if($va)$ret.=div(join(' ',$rc),$id?'hide':'');}
 $ret=scroll($nb,$ret,22,'');

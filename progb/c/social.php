@@ -82,7 +82,7 @@ $tag=$author?$author:($source?httproot($source):$cat);
 $plv=match($lev){'4'=>ascii('129352'),'5'=>ascii('129351'),default=>''};
 $pic=sesr('catemo',$cat); $iclg=flg($lg);//$lg!=prmb(25)?' '.flg($lg):'';
 //$tag=ucwords(str::normalize($tag));//http_root
-//$utagr=sql::inner('tag','qdt','qdta','idtag','v','cat>0 and idart="'.$id.'"');
+//$utagr=sql::inner('tag','qdt','qdta','idtag','v',['>cat'=>'0','idart'=>$id]);
 //if($utagr)$tag=implode(' #',$utagr);
 //$im=artim::imgart($id); if($im)$img=' '.host().artim::ishero($im,$id);
 return $pic.' ['.$tag.'] '.$iclg.' '.$suj.' '.$plv;}

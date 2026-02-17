@@ -1,5 +1,6 @@
 <?php 
 class art{
+static $prw_global='';
 
 #template
 //tmp_common//let rstr55,65,66,67,88
@@ -7,7 +8,7 @@ static function decide_tpl($prw){$tp=prma('template');//from mod
 if(!$tp){$r=ses('tmpc'); $c=$_SESSION['cond'][0]; $tp=$r[$c]??'';}//from context
 if(!$tp){
 	if($prw==1 && rstr(168))$tp='simplenoim';
-	elseif($prw==1 && rstr(88))$tp='simple';//
+	elseif($prw==1 && rstr(88))$tp='semi';//simple
 	elseif($prw<3)$tp='cat';
 	elseif($prw==3)$tp='read';
 	elseif(substr($prw,0,4)=='conn')$tp='cat';
@@ -117,7 +118,8 @@ if($rt)return hlpbt('clusters','social').sti().implode(' ',$rt);}
 
 static function review($id){
 $r=sql('ib,date_format(date,"%y%m%d.%H%i"),msg','qdmb','w',$id); [$ib,$dt,$d]=$r?$r:[$id,'',''];
-return tagb('section',tagb('h2',$ib.':'.$dt).tag('article',['class'=>'justy'],conn::call($d)));}
+$ret=tagb('h2',$ib.':'.$dt).tag('article',['class'=>'justy'],conn::call($d));
+return self::section($ret,$id,3);}
 
 static function reviews($id,$ex){$ret='';//ex=last known revision
 $r=sql('id,date_format(date,"%y%m%d")','qdmb','kv',['ib'=>$id]);
@@ -316,7 +318,7 @@ return $d;}
 static function metas($d,$r,$id=''){if(!$d)return;
 //$d=conn::read($d,'noimages',$id); $d=strip_tags($d);
 $d=conb::parse($d,'delconn','noimages');
-$d=deln(trim($d),' '); $d=delsp($d); $l=mb_strlen($d);
+$d=$d|>trim(...)|>nl2sp(...)|>delsp(...); $l=mb_strlen($d);
 if($l>200)$n=mb_strpos($d,'.',200); else $n=$l; $d=mb_substr($d,0,$n+1);
 ses::$m['descr']=stripslashes($d);
 ses::$m['img']=host().'/img/'.$r['img'];//without rstr19
@@ -325,7 +327,7 @@ $suj=delnbsp($r['suj']); if(ses('dev'))$suj=$id.'-'.$suj;
 ses::$m['title']=$suj;}
 
 static function preview($d,$id){
-if(rstr(64))$d=conb::parse($d,'stripconn','figure q twitter table msql iframe');//thumb 
+if(rstr(64))$d=conb::stripcn($d,'figure q twitter table msql iframe');//thumb 
 if(rstr(34)){//bitchs
 	$d=conb::parse($d,'corrfast','b i u h c l h1 h2 h3 h4 list numlist figure under clr');
 	$d=conb::parse($d,'correct','striplink');
@@ -337,7 +339,7 @@ if(rstr(117)){//firstlines
 else $d=str::kmax($d);
 $d=conn::read($d,'noimages',$id);//if(strlen($d)>400)$d=etc($d);
 //$d=str::clean_br_lite($d);//if(rstr(9))
-$d=delnl($d,' ');
+$d=twonl($d,' ');
 return $d;}
 
 //msg img suit
@@ -394,6 +396,9 @@ $rt=self::titles($id,$r,$rear,$otp,$prw,$nl,$nb,$rt);
 return $rt;}
 
 #call
+static function section($ret,$id,$prw){$c='prw'.($prw==1?1:2);
+return tag('section',['id'=>$id,'class'=>$c],$ret)."\n";}
+
 static function call($id,$r,$otp,$msg,$prw,$tp='',$nl='',$n='',$trk=''){
 $r['o']=self::metart($id);
 if(!$otp)$otp=ma::read_idy($id,'ASC');
@@ -410,7 +415,7 @@ $ret=self::call($id,$r,$otp,$msg,$prw,$tp,$nl,$n,$trk);
 if($prw==3 or $trk){
 	$ret.=self::propose_tracks($id,$r['o']);//$id==get('read')
 	$ret.=self::present_tracks($id,$otp);}
-$ret=tag('section',['id'=>$id],$ret)."\n";
+$ret=self::section($ret,$id,$prw);
 if($prw==3 && rstr(33))$ret.=self::ib_arts($id,$prw);
 return $ret;}
 
@@ -485,7 +490,8 @@ $trk=self::output_trk($otp);
 $rt['id']=$id; $rt['suj']=$r['suj'];
 $rt['css']=$r['re']==0?'hide':'';
 $rt=self::titles($id,$r,'',$otp,1,'',ses::$n,$rt);
-return tag('section',['id'=>$id],self::template($rt,$tp)).$trk."\n";}
+$ret=self::template($rt,$tp).$trk;
+return self::section($ret,$id,$prw);}
 
 static function look($id,$rch,$nb){
 ses::$r['look']=$rch;

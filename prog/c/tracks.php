@@ -75,7 +75,7 @@ if($nread)return divd('trk'.$nread,art::trkone($nread));}
 
 //redit
 static function reditsav($id,$o,$prm){
-$d=$prm[0]??''; $d=preg_replace('/(\n){2,}/',"\n\n",$d);
+$d=$prm[0]??''; $d=twonl($d);
 $r=explode("\n",$d); foreach($r as $v)$rb[]=trim($v); $d=implode("\n",$rb);
 sql::upd('qdi',['msg'=>$d],$id);
 if($o)return self::thread($id);

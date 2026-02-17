@@ -129,7 +129,7 @@ foreach($r as $v){if(substr($v,0,1)=='-')$v=substr($v,1); $v=trim($v);
 if($ret)return tagb($ul,$ret);}
 
 static function anchor($d){
-[$n,$v]=split_one('|',$d,2); return lkn($n,$v);}
+[$n,$v]=split_one('|',$d,2); return lkn($v,$n);}
 
 static function iframe_bt($d,$m,$id,$nl){
 [$u,$t]=cprm($d); $t=$t==1?nms(194):$t; $bt=lkt('',$u,picto('url'));
@@ -225,11 +225,11 @@ return divs('padding:6px; border:1px solid '.$c,$d);}
 
 static function nh($d,$id,$m){static $i; $i++;//.'-'.$i
 if($m==3)return togbub('usg,nbp',$d.'-'.$i.'_'.$id,$d,'',atn('nh'.$d),0);//over
-else return '<a href="#nb'.$d.'" id="nh'.$d.'">'.$d.'</a>';}
+else return lkd($d,'#nb'.$d,'nh'.$d);}
 
 static function nb($d,$id,$m){
 if($m==3)return lk(urlread($id).'#nh'.$d,$d,atn('nb'.$d).atc('note'));
-else return '<a href="#nh'.$d.'" id="nb'.$d.'">'.$d.'</a>';}
+else return lkd($d,'#nh'.$d,'nb'.$d);}
 
 static function nbdwnl($f){$f=str::normalize($f);
 if(strrpos($f,"/")!==false)$f=substr($f,strrpos($f,"/")+1);
@@ -246,12 +246,12 @@ if(strpos($d,':h1]')===false)return 'bruuu'; echo strpos($d,':h1]');
 $d=str_replace(':h]',':h2]',$d);
 $r=explode("\n",$d); $ret=[]; $rb=[]; $rt=[]; $n1=0; $n2=0; $n3=0; $n4=0;
 foreach($r as $k=>$v)switch(substr($v,-3)){
-	case('h1]'):$rb[0][$k]=1; $rt[$k]=str::stripconn($v); $n1=$k; break;
-	case('h2]'):$rb[$n1][$k]=1; $rt[$k]=str::stripconn($v); $n2=$k; break;
-	case(':h]'):$rb[$n1][$k]=1; $rt[$k]=str::stripconn($v); $n2=$k; break;
-	case('h3]'):$rb[$n2][$k]=1; $rt[$k]=str::stripconn($v); $n3=$k; break;
-	case('h4]'):$rb[$n3][$k]=1; $rt[$k]=str::stripconn($v); $n4=$k; break;
-	case('h5]'):$rb[$n4][$k]=1; $rt[$k]=str::stripconn($v); break;}
+	case('h1]'):$rb[0][$k]=1; $rt[$k]=conb::delcn($v); $n1=$k; break;
+	case('h2]'):$rb[$n1][$k]=1; $rt[$k]=conb::delcn($v); $n2=$k; break;
+	case(':h]'):$rb[$n1][$k]=1; $rt[$k]=conb::delcn($v); $n2=$k; break;
+	case('h3]'):$rb[$n2][$k]=1; $rt[$k]=conb::delcn($v); $n3=$k; break;
+	case('h4]'):$rb[$n3][$k]=1; $rt[$k]=conb::delcn($v); $n4=$k; break;
+	case('h5]'):$rb[$n4][$k]=1; $rt[$k]=conb::delcn($v); break;}
 if(!isset($rb))return; $ret=self::taxonomy($rb);
 if($lk && $rt)foreach($rt as $k=>$v)$rt[$k]=lk('/'.$id.'#h'.$k,$v);
 if($o)return $t.divc('ulnone',self::make_ulb($ret[0],$rt,'ul'));

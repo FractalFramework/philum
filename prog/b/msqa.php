@@ -92,9 +92,9 @@ static function findpage($r,$pg,$nbyp){$pg+=1;
 if(self::$defk>$max && $pg<100)$pg=self::findpage($r,$pg,$nbyp);
 return $pg;}
 
-static function tabler_bypage($r,$murl){$td=''; $tr='';
+static function tabler_bypage($r,$murl){$td=''; $tr=''; $tr1='';
 if(isset($r[msql::$m])){foreach($r[msql::$m] as $k=>$v)$td.=tagb('th',$v);
-	$tr=tagb('tr',$td); unset($r[msql::$m]);}
+	$tr1=tagb('thead',tagb('tr',$td)); unset($r[msql::$m]);}
 $n=count($r)+1; $pg=(int)get('page',1); $nbyp=500; $i=0;
 if(self::$defk)$pg=self::findpage($r,0,$nbyp);
 [$min,$max]=pop::pagination($pg,$nbyp);
@@ -103,7 +103,7 @@ if(is_array($r))foreach($r as $k=>$v){$td=''; $i++;
 	if($i>=$min && $i<$max && is_array($v))
 		foreach($v as $ka=>$va)$td.=tagb('td',$va);
 	if($td)$tr.=tagb('tr',$td);}
-$ret=tagb('table',$tr); //$ret=scroll($r,$ret,500);
+$ret=tagb('table',$tr1.tagb('tbody',$tr)); //$ret=scroll($r,$ret,500);
 return div($bt.$ret.$bt,'','msqpg');}//scroll
 
 static function draw_table($r,$murl,$adm=''){//adm=saving
@@ -212,7 +212,7 @@ return self::editmsql($nod,$d,$o,$ob);}
 static function editmsql($nod,$va,$o,$ob){
 $tg=$ob?'socket':'admsql'; $rid=randid(); $rh=[];
 [$dir,$node]=self::node_decompil($nod); $nodb=ajx($nod); $pn=''; $rc=[]; $kb=''; $kyb='';
-$r=msql::read($dir,$node); $h=isset($r[msql::$m])?1:0; if($r)$rh=$h?$r[msql::$m]:current($r);
+$r=msql::read($dir,$node); $h=isset($r[msql::$m])?1:0; if($r)$rh=$h?$r[msql::$m]:array_first($r);
 if($r)$nxtk=msql::nextentry($r); $idn=randid();
 if($va=='add'){$u=$o; $o=domain($u);
 	$va=$o?$o:self::findnextkey($r,0); $ry=array_fill(0,count($rh),'');
@@ -261,7 +261,7 @@ if(auth(4)){
 	$bt.=select_j('pos'.$rid,'msql',$key,$nod,'');//displace
 	$bt.=lj('popbt',$tg.'_msqa,msqldisplace_pos'.$rid.'__'.$nodb.'_'.ajx($key),nms(158)).' ';
 	$bt.=lj('popdel',$tg.'_msqa,msqldel__x_'.$nodb.'_'.$kyb,pictit('del',nms(76))).' ';}//del
-if(substr($nod,0,4)=='lang'){$lg=strprm($nod,1,'/'); $rl=meta::langs(); $nd=strend($node,'/');//trans
+if(substr($nod,0,4)=='lang'){$lg=strprm($nod,1,'/'); $rl=langs(); $nd=strend($node,'/');//trans
 	foreach($rl as $k=>$v)if($v!=$lg)$bt.=lj('popbt','popup_msqa,editmsql___lang/'.$v.'/'.ajx($nd).'_'.ajx($va),$v);
 	if($lg!=ses('lng'))$bt.=lj('popbt','popup_msqa,translate__x_lang/'.$lg.'/'.ajx($nd).'_'.ajx($va),picto('translate'));}
 $bt.=msqbt($dir,$node).hlpbt('defcons');

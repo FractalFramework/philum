@@ -151,9 +151,6 @@ $kmx=self::kmax_nb(prmb(3),$d);
 return mb_substr($d,0,$kmx);}
 
 #repairs
-static function stripconn($d){
-return conb::parse($d,'delconn');}
-
 static function kill_doublons($d){
 $r=['b','i','u','em','strong','blockquote']; //$n=count($r);
 for($i=0;$i<6;$i++){
@@ -198,9 +195,10 @@ return $d;}
 
 #postreat
 static function clean_acc($d){if(!$d)return;
-$a=['»»',"’","‘",'“','”','“','„',"…","–","\t"];//,'«','»'//no detructive because of odd number
+$a=['»»',"’","‘",'“','”','“','„',"…","–","\t"];//,'«','»'//no destructive because of odd number
 $b=['⇒',"'","'",'"','"','"','"',"...","-",''];//,'"','"'
-if(substr_count($d,'«')==substr_count($d,'»')){$a+=['«','»']; $b+=['"','"'];}
+$d=delnbsp($d); $a2=['« ',' »','«','»']; $b2=['"','"','"','"'];
+if(substr_count($d,'«')==substr_count($d,'»')){$a=array_merge($a,$a2); $b=array_merge($b,$b2);}
 foreach($a as $k=>$v)$d=str_replace([htmlentities($v),$v],$b[$k],$d);
 return $d;}
 
@@ -294,7 +292,7 @@ static function clean_prespace($d){if(!$d)return '';
 $d=delr($d);
 $d=delt($d);
 $d=delnbsp($d);
-$d=delnl($d);
+$d=twonl($d);
 $d=self::clean_whitespaces($d);
 $d=str_replace("\n ","\n",$d);
 $d=str_replace(" \n","\n",$d);
@@ -307,7 +305,7 @@ return $d;}
 
 static function clean_spaces($d){
 $d=self::clean_whitespaces($d);
-$d=delnl($d);
+$d=twonl($d);
 return $d;}
 
 static function clean_br_lite($d){if(!$d)return;
@@ -320,12 +318,12 @@ if(substr($d,0,1)=='µ')$d=substr($d,1);
 if(substr($d,-1)=='µ')$d=substr($d,0,-1);
 $d=str_replace('µ',"\n",$d);
 $d=str_replace('(micro)','µ',$d);
-$d=delnl($d);
+$d=twonl($d);
 return trim($d);}
 
 static function clean_br($d,$o=''){if(!$d)return;
 $d=preg_replace("/(\r\n)|(\r)/","\n",$d);
-$d=delnl($d);
+$d=twonl($d);
 if($o)$d=self::clean_prespace($d);
 if($o)$d=self::repair_badn($d);
 //$d=self::repair_badn($d);
@@ -388,7 +386,7 @@ $ra=['[µ[','µ:h]','µ:b]','µ:i]','µ:u]','µ:q]','µ:q]','|µ','| ','-µ'];
 $rb=['µ[[',':h]µ',':b]µ',':i]µ',':u]µ',':q]µ',':q]','|','|','- '];
 $d=str_replace($ra,$rb,$d);
 $d=str_replace('µ',"\n",$d);
-$d=preg_replace('/(\n){2,}/',"\n\n",$d);
+$d=twonl($d);
 $d=str_replace('(micro)','µ',$d);
 return trim($d);}
 
@@ -403,7 +401,7 @@ $d=strip_tags($d);
 $d=hed($d);//add spaces
 $d=self::html_entity_decode_b($d);
 $d=delnbsp($d);
-$d=deln($d);
+$d=nl2sp($d);
 $d=str_replace('|','',$d);
 $d=self::clean_acc($d);
 $d=self::clean_whitespaces($d);
@@ -432,7 +430,7 @@ $d=self::clean_punctuation($d);
 $d=self::add_nbsp($d);
 $d=self::clean_br($d);
 $d=self::clean_lines($d);
-$d=delnl($d);
+$d=twonl($d);
 $d=delsp($d);
 return $d;}
 }

@@ -1,4 +1,4 @@
-@font-face {font-family: "philum"; src: url("/fonts/philum.woff2?v2.2602101036") format("woff2"), url("/fonts/philum.woff?v2.2602101036") format("woff"), url("/fonts/philum.svg#philum") format("svg"), url("/fonts/philum.ttf") format("truetype");}
+@font-face {font-family: "philum"; src: url("/fonts/philum.woff2?v2.2602130631") format("woff2"), url("/fonts/philum.woff?v2.2602130631") format("woff"), url("/fonts/philum.svg#philum") format("svg"), url("/fonts/philum.ttf") format("truetype");}
 .philum{font-family:"philum";}
 .ic-alert:before{content:"\0021";}
 .ic-quote:before{content:"\0022";}

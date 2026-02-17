@@ -124,7 +124,7 @@ if($n=strrpos($ret,'https://buff.ly')){
 	$lk=self::tco($lk); if($lk)$lk.=' ';
 	$ret=substr($ret,0,$n);}
 $ret=delbr($ret,"\n");
-$ret=preg_replace('/(\n){2,}/',"\n",$ret);
+$ret=onenl($ret);
 return [$ret,$lk];}
 
 static function text($f){$r=fdom($f,1);

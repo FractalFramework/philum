@@ -11,14 +11,14 @@ static function prms_defaults($r){
 $r['htacc']=$r[1]=='yes'?1:'';
 $r['create_hub']=$r[2]=='yes'?'on':'off';
 $r['default_hub']=$r[3]?$r[3]:ses::$s['qb'];
-$r['sbdm']=$r[4]=='yes'&&!ses('subd')?1:'';
+//$r['sbdm']=$r[4]=='yes'&&!ses('subd')?1:'';
 $r['srvup']=$r[5]?$r[5]:'philum.ovh';//updates
 $r['nogdf']=$r[6]=='no'?1:'';//gdf
 $r['goog']=$r[7];
 $r['timez']=$r[8]?$r[8]:'Europe/Paris';
-$r['error']=$r[9]?$r[9]:'NULL';
+//$r['error']=$r[9]?$r[9]:'NULL';
 $r['srvimax']=$r[10]?$r[10]:'100000';
-//$r['enc']=ses::$s['enc']);//defined by cnfg
+//$r['enc']=$r[11]?$r[11]:'utf-8';);//ses::$s['enc']
 $r['uplimit']=$r[12]?$r[12]:'2500';
 $r['aupdate']=$r[13];//updates
 $r['srvmir']=$r[14];
@@ -39,7 +39,7 @@ write_file($f,$d);}
 
 static function define_hubs(){$mn=[]; $mnd=[];
 $ex=sql('id','qdu','v',['_limit'=>'1']);
-if(!$ex){$_SESSION['stsys']=1; $_SESSION['first']=1; head::add('jscode',sj('popup_login,form'));}
+if(!$ex){$_SESSION['stsys']=1; $_SESSION['first']=1; headsj('popup_login,form');}
 $r=sql::read('id,name,hub','qdu','kvv',['active'=>1,'_order'=>'nbarts desc']);
 foreach($r as $k=>[$nm,$hb]){$mn[$k]=$nm; $mnd[$k]=$hb;} 
 $_SESSION['mn']=$mn; $_SESSION['mnd']=$mnd;}
@@ -86,7 +86,9 @@ $_SESSION['prmb']=$r;}
 
 static function define_rstr(){$r=[];
 $r=json::read('srv',drn('rstr'));
+if($r && arraysumstr($r)==0)$r=[];
 if(!$r)$r=msql::kx('server',nod('rstr'),0);
+if($r && arraysumstr($r)==0)$r=[];
 if(!$r)$r=msql::kx('',nod('rstr'),0);
 if(!$r)$r=msql::col('system','default_rstr',0,1);
 $_SESSION['rstr']=arr($r,180);}
@@ -306,7 +308,7 @@ elseif(is_numeric($n))return 'public_design_'.$n;}
 
 #users
 //log
-static function log_mods($log){//eco($log);
+static function logmod($log){
 $use=ses('usr'); $ret='';
 switch($log){
 case('on'): $usr=post('user','login');
@@ -321,7 +323,7 @@ case('create_hub'): $_POST['create_hub']=ses('qb');
 case('off'): $qd=db('qd'); $dev=$_SESSION['dev']; session_destroy();
 	$_SESSION['db']['qd']=$qd; $_SESSION['dev']=$dev; head::relod('/?qd='.$qd); break;
 case('down'): session_destroy(); head::relod('/'); break;}
-if($ret)alert($ret);}
+return $ret;}
 
 //auth
 //0=no;1=read;2=tracks;3=propose;4=publish;5=edit;6=admin;7=host;
@@ -367,9 +369,9 @@ static function verif_update(){
 if($_SESSION['auth']>5){
 	if(!prms('aupdate')){
 	$localver=checkversion(2); $distver=sesmk('checkupdate',2,0);
-	if($distver>$localver)head::add('jscode',sj('popup_software,call___1'));}
+	if($distver>$localver)headsj('popup_software,call___1');}
 	if(!isset($_SESSION['verifs'])){
-	if(prms('srvmir'))head::add('jscode',sj('popup_transport,batch__3'));}
+	if(prms('srvmir'))headsj('popup_transport,batch__3');}
 $_SESSION['verifs']=1;}}
 
 #state
@@ -384,7 +386,7 @@ return $ret;}
 
 static function deskpage(){$ret=self::state();
 head::add('jscode',desk::desktop_js('boot'));
-if($ret)head::add('jscode',sj('popup_'.$ret));}
+if($ret)headsj('popup_'.$ret);}
 
 static function favicon(){$c='blue'; return 'favicon.ico';
 if(ses('dev'))$c='violet'; if(ses::$s['local'])$c='pink';

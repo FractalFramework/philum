@@ -364,21 +364,41 @@ elseif(!$sup){
 	ses('prmb',$rb);}
 return self::config($sup);}
 
-static function cnfgform($ra,$prms,$sup){$max='';
-if($sup)$hl='lang_admin*config_'; else $hl='lang_admin*params_'; $lc='msql/lang/';
-foreach($ra as $t=>$ak)foreach($ak as $i=>$v)if($i!=22){
+static function cnfgform_sup($r,$prms){$rt=[];
+$hl='lang_admin*config_'; $max=0; $rno=[4,9,11];
+foreach($r as $t=>$ak)foreach($ak as $i=>$v)if(!in_array($i,$rno)){
+	$rm[$i]='pms'.$i;
+	$attr=['id'=>$rm[$i],'style'=>'width:200px;'];
 	if($max<$i)$max=$i;
-	$attr=['id'=>'pms'.$i,'style'=>'width:200px;'];
-	if($i==11 && !$sup)$r[$t][]=select($attr,self::affect_auth(ses('auth')),'kv',$prms[$i]??'');
-	elseif($i==25){$dirs=explore($lc,'dirs',1); $dirs=str_replace($lc,'',$dirs);
-		$r[$t][]=select($attr,$dirs,'vv',$prms[$i]??'');}
-	elseif($i==21)$r[$t][]=textarea('pms'.$i,$prms[$i]??'',31,5).' ';
-	else $r[$t][]=input('pms'.$i,$prms[$i]??'','34').' ';
-	$r[$t][]=btn('txtblc',$v).' '.btn('txtsmall2',togbub('usg,popmsqt',$hl.$i,$i,'grey')).br();
-	$rm[$i]='pms'.$i;}
-for($i=1;$i<=$max;$i++)$rmb[$i]=$rm[$i]??''; $mv=implode(',',$rmb);
+	$rt[$t][]=input($rm[$i],$prms[$i]??'','34');
+	$rt[$t][]=btn('txtblc',$v).' '.btn('txtsmall2',togbub('usg,popmsqt',$hl.$i,$i,'grey')).br();}
+return [$rt,$rm,$max];}
+
+static function cnfgform_srv($r,$prms){$rt=[];
+$hl='lang_admin*params_'; $max=0; $rno=[22];
+$newusr=fn($p,$attr)=>select($attr,self::affect_auth(ses('auth')),'kv',$p);
+$syslang=function($p,$attr){$lc='msql/lang/';
+	$dirs=explore($lc,'dirs',1); $dirs=str_replace($lc,'',$dirs);
+	return select($attr,$dirs,'vv',$p);};
+foreach($r as $t=>$ak)foreach($ak as $i=>$v)if(!in_array($i,$rno)){
+	$rm[$i]='pms'.$i;
+	$attr=['id'=>$rm[$i],'style'=>'width:200px;'];
+	if($max<$i)$max=$i;
+	$rt[$t][]=match($i){
+	'11'=>$newusr($prms[$i]??'',$attr),
+	'25'=>$syslang($prms[$i]??'',$attr),
+	'21'=>textarea($rm[$i],$prms[$i]??'',31,5),
+	default=>input($rm[$i],$prms[$i]??'','34')};
+	$rt[$t][]=btn('txtblc',$v).' '.btn('txtsmall2',togbub('usg,popmsqt',$hl.$i,$i,'grey')).br();}
+return [$rt,$rm,$max];}
+
+static function cnfgform($ra,$prms,$sup){
+$hl=$sup?'lang_admin*config_':'lang_admin*params_';
+if($sup)[$rt,$rm,$max]=self::cnfgform_sup($ra,$prms);
+else [$rt,$rm,$max]=self::cnfgform_srv($ra,$prms);
+for($i=1;$i<=$max;$i++)$pr[$i]=$rm[$i]??''; $mv=implode(',',$pr);
 $bt=lj('popsav','admprm_adm,cnfgsav_'.$mv.'_k_'.$sup.'_'.$max,picto('save')).' ';
-return build::tabs($r,'prm').$bt;}
+return build::tabs($rt,'prm').$bt;}
 
 static function config($sup){$rb=[];
 if($sup){$rb=msql::kx('server',nod('config'),1); $ra=msql::prep('system','admin_config');}

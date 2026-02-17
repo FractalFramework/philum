@@ -233,7 +233,7 @@ if(rstr(93)){//as css
 	if($im)$ret=div('','thumb','','background-image:url('.$im.');');
 	else $ret=divc('thumb',' ');}
 else $ret=self::art_thumb($im,'');
-return lj('','popup_popart__3_'.$id.'_3',$ret);}
+return lj('','pagup_popart__3_'.$id.'_3',$ret);}
 
 //:thumb
 static function thumb_d($im,$sz,$id){//web,vue,conb

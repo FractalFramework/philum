@@ -8,6 +8,7 @@ if($p=strpos($f,'live/'))$f=substr($f,$p+5);
 if($p=strpos($f,'v='))$f=substr($f,$p+2);
 if($p=strpos($f,'t=')){$tm=substr($f,$p+2); if(substr($tm,-1)=='s')$tm=substr($tm,0,-1); $f=substr($f,0,$p-1);}
 if($p=strpos($f,'&'))$f=substr($f,0,$p);
+if($p=strpos($f,'?'))$f=substr($f,0,$p);
 return $f.($tm?'|'.$tm:'');}
 
 static function detect($f,$o='',$t='',$op=''){
@@ -56,7 +57,7 @@ else $vid='';//livestream
 return $vid;}
 
 static function url($d,$p){
-[$d,$t]=expl('|',$d); if($t)$t='&t='.$t.'s';
+//[$d,$t]=expl('|',$d); if($t)$t='&t='.$t.'s';
 return match($p){
 'vimeo'=>'vimeo.com/'.$d,
 'youtube'=>'youtube.com/watch?v='.$d,
@@ -70,14 +71,14 @@ default=>''};}//return https($u);
 
 static function lk($d){[$d,$t]=cprm($d);
 [$d,$tm]=expl('|',$d); if($tm)$tm='&t='.$tm.'s';
-$p=self::providers($d); $u=self::url($d,$p); if($u)$u=http($u);
-return lkt('',$u,pictxt('chain',$t?$t:$p));}
+$p=self::providers($d); $u=self::url($d,$p).$tm;
+return lkt('',https($u),pictxt('chain',$t?$t:$p));}
 
 static function lknl($d,$id){[$d,$t]=cprm($d); $ti='';
 [$d,$tm]=expl('|',$d); if($tm)$tm='&t='.$tm.'s';
-$p=self::providers($d); $u=self::url($d,$p); 
-if($u)[$ti,$tx,$im]=web::read($u,0,$id);
-return lk(http($u),$ti?$ti:$p);}
+$p=self::providers($d); $u=self::url($d,$p).$tm;
+if(!$t && $u)[$ti,$tx,$im]=web::read($u,0,$id);
+return lk(https($u),$t?$t:$ti);}
 
 static function imgurl($id,$p){$u='';
 if($p=='youtube')$u='https://img.youtube.com/vi/'.$id.'/hqdefault.jpg';
@@ -125,8 +126,7 @@ else $p=self::providers($d);
 $u=self::url($d,$p); $rid=rid($d); $im=''; $tx=''; $ti='';
 if($u)[$ti,$tx,$im]=web::read($u,0,$id);
 if($o){if($o==1)$ti=$p; elseif(is_numeric($o)){$ti=$p; $o=''; $d=$da;} else $ti=$o;}
-if($o && !is_numeric($o))$ti=$o; 
-elseif($o && $o!=1)$ti=$o; //else $ti=$p;
+//if($o && !is_numeric($o))$ti=$o; elseif($o && $o!=1)$ti=$o; //else $ti=$p;
 if($im)$im='img/'.self::img($d,$id,$im);
 if($im && !$o && $m>2)$j=$rid.'_video,call___'.ajx($d).'_'.$p.'_';//$m=idtrack
 elseif($o)$j='popup_video,call___'.ajx($d).'_'.$p.'_640';
@@ -146,7 +146,6 @@ else $ret=div($bt.divc('small',$lk),'video',$rid);
 return $ret;}
 
 static function any($d,$id,$m,$nl=''){//p|w/h
-//if($nl)return self::lk($d);
 if($nl)return self::lknl($d,$id);
 if(strpos($d,'.mp4') or strpos($d,'.m3u8'))return video($d);
 if(rstr(132) or $id=='epub')return self::player($d);

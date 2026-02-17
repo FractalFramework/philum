@@ -59,12 +59,11 @@ static function maxdays(){$d=sesmk2('ma','oldestart'); if(!$d)$d=0;
 $t=ses('daya'); if(!$t)$t=time(); $e=$t-$d; if($e)return round($e/84600);}
 static function maxyears(){return ceil(self::maxdays()/365);}
 static function id_of_suj($id){
-return sql('id','qda','v',['suj'=>$id,'nod'=>ses('qb'),'_order'=>'id asc','_limit'=>'1']);}
-static function ib_of_id($id){
-$ib=sql('ib','qda','v',$id); if($ib && is_numeric($ib) && $ib!=$id)return $ib;}
-static function id_of_ib($ib){return sql('id','qda','k',['ib'=>$ib,'>re'=>'0','-frm'=>'_']);}
-static function suj_of_id($id){$suj=sql('suj','qda','v',$id); if(is_string($suj))return $suj;}
-static function related_arts($id){$d=sql('msg','qdd','v',['ib'=>$id,'val'=>'related']);
+return sqb('id','art','v',['suj'=>$id,'nod'=>ses('qb'),'_order'=>'id asc','_limit'=>'1']);}
+static function ib_of_id($id){$ib=sqb('ib','art','v',$id); if($ib && is_numeric($ib) && $ib!=$id)return $ib;}
+static function id_of_ib($ib){return sqb('id','art','k',['ib'=>$ib,'>re'=>'0','-frm'=>'_']);}
+static function suj_of_id($id){$suj=sqb('suj','art','v',$id); if(is_string($suj))return $suj;}
+static function related_arts($id){$d=sqb('msg','data','v',['ib'=>$id,'val'=>'related']);
 return $d?explode(' ',$d):[];}
 static function data_val($v,$id,$val,$m=''){$sq=$id?['ib'=>$id]:[];
 return sql($v,'qdd',$m?$m:'v',$sq+['val'=>$val]);}
@@ -191,7 +190,7 @@ static function prepare_rech($id,$msg,$rt){if(!$msg)return;
 $rch=ses::r('search'); $nbp=0; $ret=''; ses::$n=0;
 if(get('bool')){$r=explode(' ',trim($rch)); $nbp=count($r);}
 if(strpos($rch,'|')){$r=explode('|',$rch); $nbp=count($r);}
-$msg=str::stripconn($msg); $msgi=strtolower($msg); $msgb=$msg;//$msg=strip_tags($msg); 
+$msg=conb::delcn($msg); $msgi=strtolower($msg); $msgb=$msg;//$msg=strip_tags($msg); 
 if(get('titles'))$rt['msg']='';
 elseif($nbp>1){foreach($r as $k=>$v)if($v){$ret.=self::find_word($msg,$v,'',$id);}}
 else $ret=self::find_word($msg,$rch,'',$id);

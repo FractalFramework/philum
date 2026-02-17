@@ -256,10 +256,17 @@ return false;}
 function wheelinc(e){//getbyid(id)
 addEvent(document,"mousewheel",function(){wheelcount(event)});}
 
+function getPositionOf(e,c){if(e==null)return {x:0,y:0,w:0,h:0,ok:0};
+var left=0; var top=0; var w=e.offsetWidth; var h=e.offsetHeight; var ok='';
+while(e.offsetParent && e.className!=c){left+=e.offsetLeft; top+=e.offsetTop; e=e.offsetParent;}
+left+=e.offsetLeft; top+=e.offsetTop; if(e.className==c)ok=1;
+return {x:left,y:top,w:w,h:h,ok:ok};}
+
 function getPosition(e){if(e==null)return {x:0,y:0,w:0,h:0};
 var left=0; var top=0; var w=e.offsetWidth; var h=e.offsetHeight;
 while(e.offsetParent){left+=e.offsetLeft; top+=e.offsetTop; e=e.offsetParent;}
 left+=e.offsetLeft; top+=e.offsetTop; return {x:left,y:top,w:w,h:h};}
+
 function get_dim(e){
 return {x:e.offsetLeft,y:e.offsetTop,w:e.offsetWidth,h:e.offsetHeight};}
 
@@ -407,8 +414,8 @@ ul.className=a?'on':'off';}
 //utils
 function ajx(val,n){
 if(!val || val=='undefined' || val>0)return val;
-var arr=['_','*','&','+','_'];//'?',':','#','’','“','”','/',"'",'"',' '
-var arb=['(und)','(star)','(and)','(add)','*'];//,'(qmark)','(ddot)','(diez)','(quote)','(dquote)','(dquote)','(slash)','(quote)','(dquote)','(space)'
+var arr=['_','*','+',"'",':','?','#',' '];//,'&',',',';','/','"'
+var arb=['{u}','{r}','{p}','{q}','{d}','{m}','{z}','{s}'];//,'{a}','{c}','{dc}','{h}','{dq}'
 if(n){for(var i=0;i<arr.length;i++){val=strreplace(arb[i],arr[i],val);}}//decode
 else{for(var i=0;i<arr.length;i++){val=strreplace(arr[i],arb[i],val);}}
 return val;}

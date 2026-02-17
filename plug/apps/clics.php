@@ -20,7 +20,7 @@ pr($r);
 //return self::clic_stats($p);
 
 /*static function build_stats($p){
-//if($p)$r=sql::inner('id,day,lu','qda','qdv2','index','mail LIKE "%'.$p.'%"'); //pr($r);
+//if($p)$r=sql::inner('id,day,lu','qda','qdv2','index','mail like "%'.$p.'%"'); //pr($r);
 $sql='select '.db('qda').' ,day,lu from '.db('qda').' inner join '.db('qdv').'  
 on '.db('qda').'.id like page '.$q;
 //$rq=qr($sql);

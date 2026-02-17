@@ -6,7 +6,7 @@ static $cb='ccs';
 static function cleanup($d){
 $d=str_replace("\n ","\n",$d);
 $d=str_replace(" \n","\n",$d);
-$d=delnl($d);
+$d=twonl($d);
 $d=str_replace(' ','',$d);
 return $d;}
 

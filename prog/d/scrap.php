@@ -9,11 +9,16 @@ static $ru;
 
 //see conv::metaurl(
 static function infos($f){
+//$r=web::lookheaders($f); 
+$r=getheaders($f); pr($r);
 $d=file_get_contents($f);
-$r[]=strtotime(between($d,'datetime="','"'));
-$r[]=between($d,'property="og:title" content="','"');
-$r[]=between($d,'property="og:url" content="','"');
-return $r;}
+$dt=between($d,'datetime="','"');//reseauint
+if(!$dt)$dt=$dt=between($d,'<span class="post-meta-actual-date">','</span>');//arretsurinfo
+if($dt)$dt=strtotime($dt);
+$t=between($d,'property="og:title" content="','"');
+if(!$t)[$t]=web::metaob($f);
+$u=between($d,'property="og:url" content="','"');
+return [$dt,$t,$u];}
 
 static function rfiles(){
 $r=scanfiles('w');
@@ -35,8 +40,10 @@ static function build($p){
 $r=self::$rb;
 foreach($r as $ts=>[$i,$k,$f,$t,$u,$id]){$rc=[];
 	if($id)$rc[]=ma::popart($id);
-	$rc[]=datz('ymd:His',$ts);
 	$rc[]=lj('','popup_sav,batchpreview__3_http://newsnet.ovh/'.ajx($f),picto('view'));
+	$rc[]=datz('ymd:His',$ts);
+	$rc[]=lkt('',$u,picto('url'));
+	$rc[]=lj('','popup_rssin,distance___'.ajx($t),picto('ear'));
 	$rc[]=lj('','scrp'.$ts.'_scrap,del___'.ajx($f),picto('del'));
 	$rc[]='['.$i.'] '.$t;
 	$rt[]=div(join(' ',$rc),'','scrp'.$ts);}
@@ -45,15 +52,15 @@ return div(join('',$rt),'menu','scrap');}
 static function prep(){
 $r=self::rfiles();
 if(!$r)return;
-$alx=sesmk2('rssin','alx');
 $rb=[]; $ru=[]; $i=0;
 foreach($r as $k=>$v){$i++;
 	[$ts,$t,$u]=self::infos($r[$k]);
+	$t=str::clean_acc($t);
 	//$rb[$k]=ftime($v,'ymdHis');
-	$id=rssin::recognize_article($u,$t,$alx);
-	if(!$id)$ru[]='http://newsnet.ovh/'.$v;
+	$id=rssin::recognize_article($u,$t);
+	if(!$id)$ru[$ts]='http://newsnet.ovh/'.$v;
 	$rb[$ts]=[$i,$k,$v,$t,$u,$id];}
-ksort($rb);//pr($rb);
+krsort($rb); krsort($ru);
 self::$rb=$rb; self::$ru=$ru;
 return $rb;}
 

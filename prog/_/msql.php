@@ -238,7 +238,7 @@ static function reverse($r){$rh=val($r,'_'); if($rh)unset($r['_']);
 if($r){$r=array_reverse($r); array_unshift($r,$rh);} return $r;}
 static function merge($r,$dr,$nd){$rt=self::read($dr,$nd,1); return array_merge_b($r,$rt);}
 static function date($dr,$nod){$f=self::url($dr,$nod); if(is_file($f))return filemtime($f);}
-static function ses($dr,$nod,$u,$fn){$d=$fn.$dr.$nod.$u;
+static function ses($dr,$nod,$u,$fn='read'){$d=$fn.$dr.$nod.$u;
 	if(!isset($_SESSION['mfn'][$d]))$_SESSION['mfn'][$d]=self::$fn($dr,$nod,$u); return $_SESSION['mfn'][$d];}
 static function json($dr,$nod,$in='',$u=''){$r=self::read($dr,$nod,$in,$u); return mkjson($r);}
 static function bt($b,$p,$d=''){$u=($b?$b:'users').'_'.ajx($p).($d?'-'.ajx($d):'');

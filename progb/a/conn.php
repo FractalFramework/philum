@@ -49,13 +49,13 @@ $d=nl2br($d);
 return $d;}
 
 static function connbr($msg){
-$r=[':q]',':h]',':h1]',':h2]',':h3]',':h4]',':ul]',':ol]',':pre]',':table]',':figure]',':video]',':php]',':photo]',':iframe]']; $n=count($r);
+$r=[':q]',':h]',':h1]',':h2]',':h3]',':h4]',':ul]',':ol]',':table]',':figure]',':video]',':php]',':iframe]',':aside]']; $n=count($r);//,':pre]',':photo]'
 for($i=0;$i<$n;$i++)$msg=str_replace($r[$i]."\n\n",$r[$i]."\n",$msg);
 return $msg;}
 
 static function embed_p($d){
 $r=explode("\n\n",$d??''); $ret='';
-$ex='<h1<h2<h3<h4<h5<br<hr<bl<pr<di<if<fi';//<a <ob<sv<sp<bi<li<im<ta<ol<ul
+$ex='<h1<h2<h3<h4<h5<br<hr<bl<pr<di<if<fi<as';//<a <ob<sv<sp<bi<li<im<ta<ol<ul
 foreach($r as $k=>$v){if($v=trim($v)){$cn=substr($v,0,3);
 	if(strpos($ex,$cn)!==false)$ret.=$v; else $ret.='<p>'.($v).'</p>';}}
 $ret=str_replace('<p></p>','',$ret);
@@ -63,13 +63,19 @@ $ret=str_replace('<p></p>','',$ret);
 //$ret=str_replace('</blockquote>','</p></blockquote>',$ret);
 return $ret;}
 
-static function art_retape($d,$id){$r=ses::$r['rtp'.$id]??[];
-foreach($r as $k=>$v)$d=str_replace($k,$v,$d);
+static function art_retape($d,$id){
+$r=ses::$r['rtp'.$id]??[]; if(!$r)return;
+foreach($r as $k=>$v)$d=str_replace($k,$v,$d); pr($r);
 if($id){sql::upd('qdm',['msg'=>$d],$id); ses::$r['rtp'.$id]=[];}}
+
+static function oldconn(){
+$r=msql::read('system','connectors_old',1);
+foreach($r as $k=>$v)if($v[1]!='1')$rt[$k]=$v[0];
+return $rt;}
 
 static function detect_retape($c,$id){
 if(!isset(ses::$r['rtp'.$id]))ses::$r['rtp'.$id]=[];
-$r=msql::ses('col','oldconn','system','connectors_old',0);
+$r=sesmk2('conn','oldconn');
 if(isset($r[$c])){ses::$r['rtp'.$id][$c]=$r[$c]; return $r[$c];}
 return $c;}
 
@@ -136,7 +142,7 @@ return match($c){
 ':nh'=>mk::nh($d,$id,$nl?2:$m),
 ':nb'=>mk::nb($d,$id,$nl?2:$m),
 ':pre'=>tagb('pre',str::htmlentities_a($d)),
-':code'=>tagb('code',delbr($d)),
+':code'=>tag('code',['class'=>'code'],delbr($d)),
 ':console'=>divc('console',$d),
 ':figure'=>artim::figure($d,$pw,$nl,$id),
 ':effect'=>btn('effect',$d),
@@ -144,8 +150,11 @@ return match($c){
 ':jpg'=>img($d.'.jpg'),//old
 ':math'=>tagb('math',conb::parse($d,'math')),
 ':td'=>tagb('td',$d),
+':th'=>tagb('th',$d),
 ':tr'=>tagb('tr',$d),
-':ta'=>tagb('table',$d),
+':thead'=>tagb('thead',$d),
+':tbody'=>tagb('tbody',$d),
+':tb'=>tagb('table',$d),
 ':hr'=>mk::hr($d),
 ':br'=>br(),
 ':bi'=>'<b><i>'.$d.'</i></b>',
@@ -287,7 +296,7 @@ return match($c){
 ':sigle'=>'&'.$d.';',
 ':caviar'=>mk::caviar($d),
 ':exec'=>cbasic::run($d,$id),
-':on'=>'['.delbr($d).']',
+':on'=>'['.tagb('on',$d).']',
 ':off'=>$d,
 ':ko'=>'['.$d.']',
 default=>''};}

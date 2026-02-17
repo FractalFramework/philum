@@ -47,7 +47,8 @@ function lk($u,$v='',$p=''){return '<a href="'.$u.'"'.$p.'>'.($v?$v:$u).'</a>';}
 function lka($u,$v='',$p=''){return '<a href="'.$u.'"'.$p.'>'.($v?$v:domain($u)).'</a>';}
 function lkc($c,$u,$v){return '<a href="'.$u.'"'.atc($c).'>'.$v.'</a>';}
 function lkt($c,$u,$v,$p=''){return '<a href="'.$u.'"'.atc($c).$p.' target="_blank">'.($v?$v:$u).'</a>';}
-function lkn($u,$v=''){return '<a name="'.$u.'">'.$v.'</a>';}
+function lkd($v,$a,$d=''){return tag('a',['href'=>$a,'id'=>$n],$v);}
+function lkn($v,$n){return tag('a',['name'=>$n],$v);}
 function llk($c,$u,$v){return li(lk($u,$v),$c);}
 function lj($c,$j,$v,$p=''){if(ses('dev'))$p.=att($j);
 	return '<a onclick="sj(this)" data-j="'.$j.'"'.atc($c).$p.'>'.$v.'</a>';}//att
@@ -160,7 +161,7 @@ $sj=$o?atjr('SaveJtim',[$j,1000]):sj($j);
 $pr=['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj];
 return textarea($id,$v,44,14,$pr);}
 
-function diveditbt($id){
+function diveditbt($id,$bt=''){
 $r=['no'=>nms(72),'p'=>'normal','h1'=>'h1','h2'=>'h2','h3'=>'h3','h4'=>'h4','h5'=>'h5','fact'=>'fact'];
 $ret=select(['id'=>'wygs','onchange'=>'execom2(this.value)'],$r);
 $r=['increaseFontSize'=>'size','decreaseFontSize'=>'fontsize','bold'=>'bold','italic'=>'italic','underline'=>'underline','strikeThrough'=>'strike','insertUnorderedList'=>'textlist','Indent'=>'block','Outdent'=>'unblock','stabilo'=>'highlight','createLink'=>'url'];
@@ -168,14 +169,14 @@ foreach($r as $k=>$v)$ret.=btj(picto($v,16),atj('execom',$k));
 //$ret.=bubble('','mc,navs','ascii','&#128578;').' ';
 //if(is_numeric($id))$ret.=lj('','art'.$id.'_mc,savwyg_art'.$id.'__'.$id.'_1',picto('save2',16));
 if(is_numeric($id))$ret.=btj(picto('save2',16),atj('saveart',$id));
-return btn('menu sticky',$ret);}
+return btn('menu sticky',$ret.$bt);}
 
 function divarea($id,$d,$c='',$s='',$j='',$o=''){$ja='';
 $rp=['contenteditable'=>'true','id'=>$id,'class'=>$c,'style'=>$s];
 if($j){$attr=match($o){1=>'onblur',2=>'onkeydown',3=>'onpaste',default=>'onclick'}; $rp[$attr]=$j;}
 return tag('div',$rp,$d?$d:' ');}
 
-function divedit($id,$c,$s,$j,$d){return diveditbt($id).divarea($id,$d,$c,$s,$j);}
+function divedit($id,$c,$s,$j,$d,$bt=''){return diveditbt($id,$bt).divarea($id,$d,$c,$s,$j);}
 function form($go,$d){return tag('form',['method'=>'post','action'=>$go],$d);}
 function goodarea($id,$v,$n=44){$nb=ceil(mb_strlen($v)/$n); $h=$nb>10?10:$nb;
 $hb=substr_count($v,"\n"); if($hb>$h)$h=$hb>10?10:$h; if($h==0)$h=1; $hx='height:'.(22*$h).'px;';
@@ -269,9 +270,9 @@ foreach($r as $k=>$v){array_unshift($v,$k); fputcsv($f,$v,$s,$e,$es);} rewind($f
 return trim(stream_get_contents($f));}
 
 //vrf
+function getheaders($u){return @get_headers($u);}
 function joinable($d){$ok=@fopen($d,'r'); if($ok){fclose($ok); return true;}}
-function urlcheck($f){$r=@get_headers($f);
-return is_array($r)?preg_match('/^HTTP\\/\\d+\\.\\d+\\s+2\\d\\d\\s+.*$/',$r[0]):false;}
+function urlcheck($u){return preg_match('/^HTTP\\/\\d+\\.\\d+\\s+2\\d\\d\\s+.*$/',$u);}
 function is_mail($d){return filter_var($d,FILTER_VALIDATE_EMAIL);}
 function is_url($d){return filter_var($d,FILTER_VALIDATE_URL);}
 function is_hex($d){return ctype_xdigit((string)$d)?1:0;}
@@ -403,6 +404,7 @@ function split_r($d,$n){return [substr($d,0,$n),substr($d,$n)];}
 function array_combine_b($ra,$rb){$na=count($ra); $nb=count($rb); $rt=[];
 if($na==$nb)$rt=array_combine($ra,$rb); else er('ra:'.$na.',rb:'.$nb); return $rt;}
 function array_merge_cols($r1,$r2){foreach($r1 as $k=>$v)$r1[$k]=[$v,$r2[$k]??'']; return $r1;}
+function arraysumstr($r){$d=0; foreach($r as $k=>$v)$d+=(int)$v; return $d;}
 //str
 function strprm($d,$n=0,$s='/'){$r=explode($s,$d??''); return $r[$n]??'';}
 function strto($v,$s){$p=mb_strpos($v??'',$s); return $p!==false?mb_substr($v,0,$p):$v;}
@@ -492,9 +494,11 @@ function prepk($r){foreach($r as $k=>[$a,$b])$rb[$a]=$b; return $rb;}
 #filters
 function delbr($d,$o=''){return str_replace(['<br />','<br/>','<br>'],$o,$d??'');}
 function deln($d,$o=''){return str_replace("\n",$o,$d??'');}
+function nl2sp($d,$o=''){return deln($d,' ');}
 function delr($d,$o=''){return str_replace("\r",$o,$d??'');}
 function delt($d,$o=''){return str_replace("\t",$o,$d??'');}
-function delnl($d){return preg_replace('/(\n){2,}/',"\n\n",$d??'');}
+function twonl($d){return preg_replace('/(\n){2,}/',"\n\n",$d??'');}
+function onenl($d){return preg_replace('/(\n){2,}/',"\n",$d??'');}
 function delsp($d){return preg_replace('/( ){2,}/',' ',$d??'');}
 function delnbsp($d){return str_replace("&nbsp;",' ',$d??'');}
 function delr_r($r){foreach($r as $k=>$v)$r[$k]=delr($v); return $r;}

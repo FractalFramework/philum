@@ -7,7 +7,8 @@ return art::output_trk(ma::read_idy($g1,'ASC'));}
 
 static function delconn($g1){$d=ma::artxt($g1); 
 $d=html_entity_decode($d,true,ses::$s['enc']);
-$d=conb::parse($d,'delconn'); return str::clean_lines($d);}
+$d=conb::delcn($d);
+return str::clean_lines($d);}
 
 static function editbrut($g1,$g2,$prm){
 $p1=$prm[0]??''; if($p1)adm::artsav($p1,$g1);

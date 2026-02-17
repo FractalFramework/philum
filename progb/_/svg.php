@@ -142,7 +142,7 @@ if($b=='stop'){$pr['style']='stop-color:'.self::clr($pr['style']).'; ';
 if($b!='attr')return tag($b,$pr,$v);}
 
 static function com($d){
-$d=deln($d); $d=str_replace("&nbsp;",' ',$d);//eco($d,1);
+$d=deln($d); $d=delnbsp($d);
 return conb::parse($d,'svg');}
 
 static function call($p,$o,$prm=[]){

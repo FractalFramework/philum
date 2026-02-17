@@ -6,7 +6,7 @@ static $cb='cep';
 static function cleanup($d){
 $d=str_replace("\n ","\n",$d);
 $d=str_replace(" \n","\n",$d);
-$d=delnl($d);
+$d=twonl($d);
 return $d;}
 
 //<a epub:type="noteref" href="#dataF1">
@@ -54,7 +54,7 @@ case 'td':$td[]=conv::prep_table(conv::delhook($b)); break;
 case 'th':$td[]=conv::prep_table($b); break;
 case 'tr':$tr[]=$td; $td=[]; break;
 case 'table':$b=$n.'['.implode_r($tr,conv::$splitable,'|').':table]'; $tr=[]; break;
-case 'li':$b=trim($b); $b.=$n; break;//whichsplit $b=deln($b,' ');
+case 'li':$b=trim($b); $b.=$n; break;//whichsplit $b=nl2sp($b);
 case 'ul':$b=$n.'['.$b.':list]'.$n; break;
 case 'ol':$b=$n.'['.$b.':numlist]'.$n; break;
 case 'strike':$b='['.$b.':k]'; break;

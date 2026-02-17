@@ -51,32 +51,35 @@ return $rt;}
 static function where($r,$o=''){$rb=[]; $rc=[]; $rt=[]; $w='';
 if(is_numeric($r))$r=['id'=>$r]; $i=0;
 if(is_array($r))foreach($r as $k=>$v){$i++;
-	$c=substr($k,0,1); $kb=substr($k,1); $kc=$kb.$i;
+	$c=substr($k,0,1); $kb=substr($k,1); $t='';
+	if(strpos($kb,'.'))[$t,$kb]=expl('.',$kb);
+	$kc=$kb.$i; $ka=':'.$kc; if($t)$kb=$t.'.'.$kb;
 	if($k=='_order')$w=' order by '.$v;
 	elseif($k=='_group')$w.=' group by '.$v;
 	elseif($k=='_limit')$w.=' limit '.$v;
 	elseif($k=='or'){//'or'=>['!status'=>'3','!typ'=>'0']
 		[$a,$b]=self::where($v,1); $rc+=$a; $rt+=$b;}
-	elseif($c=='|'){$rc[]=$kb.'='.$kc; $rt[$kc]=$v;}//or
-	elseif($c=='<'){$rb[]=$kb.'<:'.$kc; $rt[$kc]=$v;}
-	elseif($c=='>'){$rb[]=$kb.'>:'.$kc; $rt[$kc]=$v;}
-	elseif($c=='{'){$rb[]=$kb.'<=:'.$kc; $rt[$kc]=$v;}
-	elseif($c=='}'){$rb[]=$kb.'>=:'.$kc; $rt[$kc]=$v;}
-	elseif($c=='!'){$rb[]=$kb.'!=:'.$kc; $rt[$kc]=$v;}
-	elseif($c=='%'){$rb[]=$kb.' like :'.$kc; $rt[$kc]='%'.$v.'%';}
-	elseif($c=='['){$rb[]=$kb.' like :'.$kc; $rt[$kc]=''.$v.'%';}
-	elseif($c==']'){$rb[]=$kb.' like :'.$kc; $rt[$kc]='%'.$v.'';}
-	elseif($c=='~'){$rb[]=$kb.' like :'.$kc; $rt[$kc]=''.$v.'';}
-	elseif($c=='-'){$rb[]='substring('.$kb.',1,'.strlen($v).')!=:'.$kc.''; $rt[$kc]=$v;}
-	elseif($c=='+'){$rb[]='substring('.$kb.',1,'.strlen($v).')=:'.$kc.''; $rt[$kc]=$v;}
-	elseif($c=='&'){$rb[]=$kb.' between :'.$kc.'1 and :'.$kc.'2'; $rt[$kc.'1']=$v[0]; $rt[$kc.'2']=$v[1];}
+	elseif($c=='|'){$rc[]=$kb.'='.$ka; $rt[$kc]=$v;}//or
+	elseif($c=='<'){$rb[]=$kb.'<'.$ka; $rt[$kc]=$v;}
+	elseif($c=='>'){$rb[]=$kb.'>'.$ka; $rt[$kc]=$v;}
+	elseif($c=='{'){$rb[]=$kb.'<='.$ka; $rt[$kc]=$v;}
+	elseif($c=='}'){$rb[]=$kb.'>='.$ka; $rt[$kc]=$v;}
+	elseif($c=='!'){$rb[]=$kb.'!='.$ka; $rt[$kc]=$v;}
+	elseif($c=='%'){$rb[]=$kb.' like '.$ka; $rt[$kc]='%'.$v.'%';}
+	elseif($c=='['){$rb[]=$kb.' like '.$ka; $rt[$kc]=''.$v.'%';}
+	elseif($c==']'){$rb[]=$kb.' like '.$ka; $rt[$kc]='%'.$v.'';}
+	elseif($c=='~'){$rb[]=$kb.' like '.$ka; $rt[$kc]=''.$v.'';}
+	elseif($c=='-'){$rb[]='substring('.$kb.',1,'.strlen($v).')!='.$ka.''; $rt[$kc]=$v;}
+	elseif($c=='+'){$rb[]='substring('.$kb.',1,'.strlen($v).')='.$ka.''; $rt[$kc]=$v;}
+	elseif($c=='&'){$rb[]=$kb.' between '.$ka.'1 and '.$ka.'2'; $rt[$kc.'1']=$v[0]; $rt[$kc.'2']=$v[1];}
 	elseif($c=='('){foreach($v as $ka=>$va)$rta['in'.$ka]=$va; $rt+=$rta;
 		$rb[]=$kb.' in (:'.implode(',:',array_keys($rta)).')';}
 	elseif($c==')'){foreach($v as $ka=>$va)$rta['nin'.$ka]=$va; $rt+=$rta;
 		$rb[]=$kb.' not in (:'.implode(',:',array_keys($rta)).')';}
 	elseif($k==='not null'){$rb[]=$kb.' is not null';}//?
 	elseif($k==='is null'){$rb[]=$kb.' is null';}
-	else{$rb[]=$k.'=:'.$kc; $rt[$kc]=$v;}}
+	elseif(is_numeric($k))$rb[]=$v;
+	else{$rb[]=$k.'='.$ka; $rt[$kc]=$v;}}
 if($rc)$rb[]='('.implode(' or ',$rc).')';
 if($o)return [$rb,$rt];
 $q=implode(' and ',$rb); if($q)$q='where '.$q; if($w)$q.=$w;
@@ -94,7 +97,7 @@ static function bind($stmt,$r){
 foreach($r as $k=>$v)$stmt->bindValue(':'.$k,$v,is_numeric($v)?PDO::PARAM_INT:PDO::PARAM_STR);}
 
 static function prep($sql,$r,$z=''){
-$qr=self::rq(); if($z)echo self::see($sql,$r);
+$qr=self::rq(); if($z){echo $sql; pr($r);}//echo self::see($sql,$r);
 $stmt=$qr->prepare($sql);
 self::bind($stmt,$r);
 $stmt->execute();

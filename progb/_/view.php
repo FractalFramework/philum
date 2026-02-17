@@ -1,6 +1,8 @@
 <?php
 class view{
 static $rf=0;
+static array $ra;
+static array $rc;
 
 static function vars(){$rt=[];
 $r=['artedit','pid','id','jurl','hurl','url2','url','edit','title','suj','cat','msg','img1','video','btim','back','avatar','author','date','day','nbarts','tag','priority','words','search','parent','rss','social','open','tracks','source','length','player','lang','artlang','opt','css','sty','addclr','thumb','trkbk','float','js','ovc','btrk','btxt','togprw','br']; $rb=sesmk('tags'); foreach($rb as $v)$rb[]=str::eradic_acc($v); $r=array_merge($r,$rb);
@@ -59,10 +61,8 @@ if($r)foreach($r as $k=>$v){[$c,$p,$d]=$v; $pr=[];
 $ret=str_replace('<p></p>','',$ret);
 return $ret;}
 
-static array $ra;
-static array $rc;
-
-static function call($r,$ra){$rb=sesmk2('view','vars',1);
+static function call($r,$ra){
+$rb=sesmk2('view','vars',1);
 $ra+=$rb; $rc=[]; $ra['br']=br();
 foreach($ra as $k=>$v)$rc[$k]='{'.$k.'}';
 self::$ra=$ra; self::$rc=$rc;
@@ -70,18 +70,17 @@ $d=self::play($r);
 return $d;}
 
 //json
-static function tables(){//patches::views
-return ['art','cat','catfast','read','tracks','simple','simplenoim','little','fast','tracks','tracks2','titles','pubart','pubartb','pubartc','panart','cover','weblink','bublh','bublj','bublk','book','file','product'];}
-
 static function reflush($d){
-$r=self::tables(); echo 'updated:'.$d.' in '.(auth(7)?'json/sys, ':'').'json/srv, msql/server: '; 
-foreach($r as $v){echo $v.' '; $rb=datas::$v(); sesz('datas'.$v); sesz('viewgetmpsrv'.$v);
+$r=get_class_methods('datas');
+echo 'updated:'.$d;//.' in '.(auth(7)?'json/sys, ':'').'json/srv, msql/server: '; 
+foreach($r as $v){$rb=datas::$v(); //echo $v.' ';
+	sesz('datas'.$v); sesz('viewgetmpsrv'.$v); sesz('viewgetmpsys'.$v);
 	if(auth(7))json::sav('sys','views/'.$v,$rb); json::sav('srv',drn('views/'.$v),$rb);
 	$db=self::mkconn($rb); msql::save('server',nod('views/'.$v),[$db]);}}
 
 static function isnew($d){
 $src=ftime('progb/b/datas.php');
-$dst=ftime('json/sys/views/'.$d.'.json'); //echo $src.'-'.$dst.' ';
+$dst=ftime('json/srv/'.drn('views').'/'.$d.'.json'); //echo $src.'-'.$dst.' ';
 return $src>$dst?1:0;}
 
 static function getmpsys($d){

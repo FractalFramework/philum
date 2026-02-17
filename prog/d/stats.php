@@ -174,7 +174,7 @@ return mktime(0,0,0,substr($d,2,2),substr($d,4,2),substr($d,0,2));}
 
 static function call($p,$o){if(!$p)$p=0; $o=100; $ret=[]; $qdl='live';
 //$r=sql('iq,qb,page,time','qdv','','id>'.$p.' order by id desc');
-$r=sql::inner('ip,qb,page,DATE_FORMAT('.$qdl.'.time,\'%H:%i:%s\')','qdp','qdv','iq','',$qdl.'.id>'.($p).' order by '.$qdl.'.id desc limit '.$o);
+$r=sql::inner('ip,qb,page,date_format(b2.time,\'%H:%i:%s\')','qdp','qdv','iq','',['>b2.id'=>$p,'_order'=>'b2.id desc','_limit'=>$o]);
 if($r)foreach($r as $k=>$v)$ret[]=[$k,$v[3],$v[0],$v[2]];
 return tabler($ret,['n','hour','ip','page']);}
 

@@ -5,7 +5,7 @@ static function cssnode($d){return nod('css_'.$d);}
 static function clrnode($d){return nod('clr_'.$d);}
 
 static function actions($p,$o,$prm){$res=$prm[0]??'';
-$qb=ses('qb'); $lh=sesmk2('adm','csslang');
+$qb=ses('qb'); //$lh=sesmk2('adm','csslang');
 $defsb=['div','class','element','color','bkg','border','free'];
 $cssn=ses('cssn');
 if($cssn){
@@ -41,15 +41,21 @@ case('make_global'):self::build_css('css/_global.css',$defs);
 	msql::copy('',$noc,'system','default_clr_1'); 
 	alert('modified: system/default_css_1, _global.css'); break;
 case('make_default'):self::build_css('css/_classic.css',$defs);
-	msql::save('system','default_css_2',$defs);
-	msql::copy('',$noc,'system','default_clr_2');
+	msql::save('system','default_css_3',$defs);
+	msql::copy('',$noc,'system','default_clr_3');
 	$defse=self::empty_design($defs,'clr'); self::build_css('css/_default.css',$defse);
-	alert('modified: table system/default_css_2, _classic.css, _default.css (no colors)'); break;
-case('reset_clr'):sesr('clrs',$clrn,msql::kv('system','default_clr_2')); 
+	alert('modified: table system/default_css_3, _classic.css, _default.css (no colors)'); break;
+case('reset_global_clr'):$defs=self::clr_default('global'); sesr('clrs',$clrn,$defs);
 	self::save_clr($noc); break;
-case('reset_default'):$defs=self::css_default(); unset($defs[msql::$m]);
+case('reset_admin_clr'):$defs=self::clr_default('admin'); sesr('clrs',$clrn,$defs); 
+	self::save_clr($noc); break;
+case('reset_clr'):$defs=self::clr_default('classic'); sesr('clrs',$clrn,$defs); 
+	self::save_clr($noc); break;
+case('reset_global'):$defs=self::css_default('global'); unset($defs[msql::$m]);
 	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
-case('reset_global'):$defs=self::css_default(1); unset($defs[msql::$m]);
+case('reset_default'):$defs=self::css_default('classic'); unset($defs[msql::$m]);
+	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
+case('reset_admin'):$defs=self::css_default('admin'); unset($defs[msql::$m]);
 	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
 case('public_clr'):sesr('clrs',$clrn,msql::kv('',pub('clr_'.$o)));
 	self::save_clr($noc); break;
@@ -59,25 +65,25 @@ case('empty_design'):$defs=self::empty_design($defs,'css');
 	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
 case('null_clr'):sesr('clrs',$clrn,['','','','','','','','']);
 	self::save_clr($noc); break;
-case('null_design'):$defs=self::css_default(); $defs=self::empty_design($defs,'css');
+case('null_design'):$defs=self::css_default('classic'); $defs=self::empty_design($defs,'css');
 	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
-case('append'):$defsc=self::css_default(); unset($defsc[msql::$m]);
+case('append'):$defsc=self::css_default('classic'); unset($defsc[msql::$m]);
 	$defs=self::array_append_css($defs,$defsc); msql::save('',$nod,$defs);
 	self::build_css($ftmp,$defs); break;
-case('append_global'):$defsc=self::css_default(); unset($defsc[msql::$m]);
+case('append_global'):$defsc=self::css_default('global'); unset($defsc[msql::$m]);
 	$defs=self::array_append_css($defs,$defsc); msql::save('',$nod,$defs);
 	self::build_css($ftmp,$defs); break;
-case('inject_global'):$defsc=self::css_default(); unset($defsc[msql::$m]);
+case('inject_global'):$defsc=self::css_default('global'); unset($defsc[msql::$m]);
 	$defs=self::append_design($defs,$defsc); msql::save('',$nod,$defs);
 	self::build_css($ftmp,$defs); break;
-case('reset_this'):$defsc=self::css_default(); $ecb=self::find_value($defsc,$defs[$o]);
+case('reset_this'):$defsc=self::css_default('classic'); $ecb=self::find_value($defsc,$defs[$o]);
 	if($ecb){$defs[$o]=$defsc[$ecb]; msql::save('',$nod,$defs);
 	self::build_css($ftmp,$defs);} break;
 case('open_design'):ses('cssn',$o); ses('clrn',$o); break;
-case('herit_design'):[$qbb,$nbd]=explode('_',$o);
+case('herit_design'):[$qbb,$sdr,$nbd]=explode('_',$o);
 	$defs=msql::read('',$qbb.'_css_'.$nbd,'',$defsb);
 	msql::save('',$nod,$defs); self::build_css($ftmp,$defs); break;
-case('herit_clrset'):[$qbb,$nbd]=explode('_',$o);
+case('herit_clrset'):[$qbb,$sdr,$nbd]=explode('_',$o);
 	sesr('clrs',$clrn,msql::kv('',$qbb.'_clr_'.$nbd));
 	self::save_clr($noc); self::build_css($ftmp,$defs); break;
 case('addff'):$defs=self::defs_adder_ff($defs,$o);
@@ -105,8 +111,8 @@ case('restore_clr'):$r=msql::read('',$noc,'',[],1); $clrst[0]='';
 	self::build_css($ftmp,$defs); break;
 case('exit_design'):sesz('cssn'); sesz('clr'); ses::$adm['css']='';
 	boot::define_mods(); boot::define_condition(); return '/admin'; //boot::define_clr();
-case('displaycss'):return nl2br(read_file($fcss));
-case('displaycsstmp'):return nl2br(read_file($ftmp));}
+case('displaycss'):return few::progcode(read_file($fcss));
+case('displaycsstmp'):return few::progcode(read_file($ftmp));}
 //if(in_array($p,['save','make_public','make_default','make_global','displaycss','displaycsstmp']))
 if(get('tg')=='alertmsg')return btn('popdel',$p.' '.$fcss.': ok');
 return self::home(0);}
@@ -162,7 +168,7 @@ $rt[]=self::cssactbt('save',nms(27),'','','').' ';
 $rt[]=span('','','alertmsg');
 //$rt[]=self::cssactbt('build_css',nms(93),'','');//rebuild
 $ret.=div(implode('',$rt)); $rt=[];
-$rt[]=self::cssactbt('new_from',nms(44),'url','');//url
+$rt[]=self::cssactbt('new_from',nms(98),'url','');//url
 $rt[]=self::cssactbt('empty_design',nms(46),'self','');
 $rt[]=self::cssactbt('invert_clr',nms(115),'self','');
 $rt[]=self::cssactbt('make_public',$lh[4],'','');//make_public
@@ -174,19 +180,22 @@ if(auth(5)){$r=msql::row('',nod('css'),$cssn);
 	else $make='make_default';
 	$rt[]=self::cssactbt($make,$make,'','','');}
 $ret.=div(implode('',$rt)); $rt=[];
-$rt[]=self::cssactbt('reset_default',nms(96).' design','self','');
-$rt[]=self::cssactbt('reset_clr',nms(96).' clr','self','');
-$rt[]=self::cssactbt('reset_global','global design','self','');
-$rt[]=self::cssactbt('public_clr','global clr','self','1');
-$rt[]=self::cssactbt('public_design','classic design','self','2');
-$rt[]=self::cssactbt('public_clr','classic clr','self','2');
-$rt[]=self::cssactbt('null_design','null','self','');
-$rt[]=self::cssactbt('null_clr','clr','self','2');
+if($desgname=='global')$rt[]=self::cssactbt('reset_global','reset global design','self','');
+elseif($desgname=='admin')$rt[]=self::cssactbt('reset_admin','reset global design','self','');
+else $rt[]=self::cssactbt('reset_default','reset classic design','self','');
+if($desgname=='global')$rt[]=self::cssactbt('reset_global_clr','reset global clr','self','');
+elseif($desgname=='admin')$rt[]=self::cssactbt('reset_admin_clr','reset admin clr','self','');
+else $rt[]=self::cssactbt('reset_clr','reset classic clr','self','');
+//$rt[]=self::cssactbt('public_clr','global clr','self','1');
+//$rt[]=self::cssactbt('public_design','classic design','self','3');
+//$rt[]=self::cssactbt('public_clr','classic clr','self','3');
+//$rt[]=self::cssactbt('null_design','null','self','');
+//$rt[]=self::cssactbt('null_clr','clr','self','3');
 $rt[]=lj('txtx','popup_fontface___1','@font-face');
-$ret.=div(implode('',$rt)); $rt=[];
 $rt[]=self::cssactbt('append',nms(92).' defaults','self','');
-$rt[]=self::cssactbt('append_global',nms(92).' global','self','');
-$rt[]=self::cssactbt('inject_global',$lh[9],'self','');
+//if($desgname=='global')$rt[]=self::cssactbt('append_global',nms(92).' global','self','');
+//if($desgname=='global')$rt[]=self::cssactbt('inject_global',$lh[9],'self','');
+$ret.=div(implode('',$rt)); $rt=[];
 $rt[]=self::cssactbt('displaycss',$lh[10],'3','');
 $rt[]=self::cssactbt('displaycsstmp',$lh[11],'3','');
 $rt[]=lj('txtx','popup_sty,chargeclr','clrset').' ';
@@ -198,8 +207,13 @@ if($defs)$ret.=self::design_edit($defs,$defsb,'',1).br();
 return $ret;}
 
 #builders
-static function css_default($o=''){$o=$o?$o:'2';
-return msql::read('system','default_css_'.$o);}
+static function css_default($k=3){
+$r=['global'=>1,'admin'=>2,'classic'=>3];
+return msql::read('system','default_css_'.($r[$k]??3));}
+
+static function clr_default($k=3){
+$r=['global'=>1,'admin'=>2,'classic'=>3];
+return msql::read('system','default_clr_'.($r[$k]??3));}
 
 static function save_clr($nod,$o=''){
 $r=sesr('clrs',ses('clrn')); 
@@ -647,25 +661,18 @@ $t=self::form_edit_css($k);
 $t.=textarea('cssarea'.$k,$v,60,10,['class'=>'console']).' ';
 return form($url.'#'.$k,$t);}
 
-static function facil_globalc($k,$nc){$r=self::css_default(1);
-$ret=btn('txtcadr','herit from _global.css').' ';
-$ret.=msqbt('',pub('css_1')).br().br();
-$clr=msql::kv('system','default_clr_1');
-if($r)foreach($r as $k=>$v){$ncb=self::name_classe($v);
-	if($ncb==$nc)$ret.=self::name_line_j($k,$v,1,$clr);}
-return $ret;}
-
-static function facil_reset($k,$nc){$ret=btn('txtcadr','default').' ';
-$ret.=lkc('txtx','/?admin=css&edit_css='.$k.'&reset_this==#'.$k,'reset').br().br();
-$r=self::css_default();
-$clr=msql::kv('system','default_clr_2');
-if($r)foreach($r as $k=>$v){$ncb=self::name_classe($v);
-	if($ncb==$nc)$ret.=self::name_line_j($k,$v,1,$clr);}
+static function facil_resetcss($k,$nm,$n){
+$r=self::css_default('global');
+$ret=btn('txtcadr','from global('.$n.')');
+$ret.=msqbt('system','default_css_'.$n);
+$clr=msql::kv('system','default_clr_'.$n);
+if($r)foreach($r as $k=>$v){$nmb=self::name_classe($v);
+	if($nmb==$nm)$ret.=div(self::name_line_j($k,$v,1,$clr));}
 return $ret;}
 
 static function facil_pos($defs,$k){
 $ret=self::cssactbt('erase','delete','self',$k);
-$ret.=self::cssactbt('newfrom',nms(44),'self',$k);
+$ret.=self::cssactbt('newfrom',nms(98),'self',$k);
 foreach($defs as $ka=>$v)$rb[$ka]=self::name_classe($v);
 $ret.=label('sdx'.$k,'position:','txtx').select(['id'=>'sdx'.$k],$rb,'kv',$k);
 $ret.=self::cssactbt('atpos','ok','self',$k,'','sdx'.$k);
@@ -678,8 +685,8 @@ $nc=self::name_classe($defs[$k]);
 $url='/?admin=css&edit_css='.$k;
 $rt['classe']=self::facil_css($k,$url,$val);//css_free
 $rt['colors']=self::facil_colors($defs,$k,$url);//colors
-$rt['default']=self::facil_reset($k,$nc);//reset
-$rt['global']=self::facil_globalc($k,$nc);//global
+$rt['global']=self::facil_resetcss($k,$nc,1);//global
+$rt['classic']=self::facil_resetcss($k,$nc,3);//reset
 //if($nc=='@font-face '){$rt['fonts']=self::facil_fonts($defs,$k,$url);}//fonts
 $rt['images']=self::facil_images($k,$url,$val);//images
 $rt['name']=self::facil_names($defs,$k);//classname

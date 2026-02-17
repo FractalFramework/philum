@@ -2,7 +2,7 @@
 class datas{
 #json/srv/views/
 
-static function art(){return [
+/**/static function art(){return [
 ['header',['id'=>'meta{id}'],[
 	['','','{back} {avatar} {cat}'],
 	['span',['class'=>'txtbox'],'{search}'],
@@ -16,10 +16,7 @@ static function art(){return [
 ['','','{artedit}{float}'],
 ['span',['class'=>'grey right'],'{artlang} {social} {words} {open}'],
 ['div',['class'=>'txtsmall'],'{tag}'],
-['clear','',''],
-['article',['id'=>'art{id}','class'=>'justy','onclick'=>'{js}'],'{msg}'],
-['clear','','']
-];}
+['article',['id'=>'art{id}','class'=>'justy','onclick'=>'{js}'],'{msg}']];}
 
 static function cat(){return [
 ['div',['class'=>'grid-art'],[
@@ -36,13 +33,14 @@ static function cat(){return [
 				['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}'],
 				['div',['class'=>'right'],'{togprw}']]],
 			['h4','','{parent}'],
-			['div',['class'=>'right','style'=>'text-align:right;'],'{edit}{br}{artlang} {social} {words} {open}'],
+			['div',['class'=>'right'],[
+				['div','','{edit}'],
+				['div','','{artlang} {social} {words} {open}']]],
 			['h2','','{title}'],
 			['div',['class'=>'grey tright'],'']]],
 		['','','{float}'],
 		['','','{artedit}'],
-		['article',['id'=>'art{id}'],'{msg}'],
-		['clear','','']]]]]];}
+		['article',['id'=>'art{id}'],'{msg}']]]]]];}
 
 static function catfast(){return [
 ['div',['class'=>''],[
@@ -55,7 +53,9 @@ static function catfast(){return [
 			['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}'],
 			['div',['class'=>'right'],'{togprw}']]],
 		['h4','','{parent}'],
-		['div',['class'=>'right','style'=>'text-align:right;'],'{edit}{br}{artlang} {social} {words} {open}'],
+			['div',['class'=>'right'],[
+				['div','','{edit}'],
+				['div','','{artlang} {social} {words} {open}']]],
 		['h2','','{title}'],
 		['div',['class'=>'grey tright'],'']]],
 	['div',['class'=>'grid-art','style'=>'grid-template-columns:140px auto;'],[
@@ -63,8 +63,7 @@ static function catfast(){return [
 			['p',[],[
 				['div',[],'{thumb}']]]]],
 		['div',['class'=>''],[
-			['article',['id'=>'art{id}'],'{msg}'],
-			['clear','','']]]]]]]];}
+			['article',['id'=>'art{id}'],'{msg}']]]]]]]];}
 
 static function read(){return [
 ['header',['class'=>''],[
@@ -79,12 +78,10 @@ static function read(){return [
 	['div',['class'=>'right'],'{edit}'],
 	['h1',['id'=>'tit{id}'],'{title}'],
 	['div',['class'=>'grey right'],'{artlang} {social} {words} {open}'],
-	['clear','',''],
 	['','','{float}'],
 	['div',['class'=>'tags'],'{tag}']]],
 ['','','{artedit}'],
-['article',['id'=>'art{id}','class'=>'justy','ondblclick'=>atjr('rbt',['this','{id}'])],'{msg}'],
-['clear','','']];}
+['article',['id'=>'art{id}','class'=>'justy','ondblclick'=>atjr('rbt',['this','{id}'])],'{msg}']];}
 
 //prw1
 static function simple(){return [
@@ -105,8 +102,7 @@ static function simple(){return [
 			['h3','','{title}']]],
 		['','','{float}'],
 		['','','{artedit}'],
-		['article',['id'=>'art{id}'],'{msg}'],
-		['clear','','']]]]]];}
+		['article',['id'=>'art{id}'],'{msg}']]]]]];}
 
 static function simplenoim(){return [
 ['div',[],[
@@ -123,8 +119,24 @@ static function simplenoim(){return [
 		['div',['class'=>'txtsmall'],'{tag}']]],
 	['','','{float}'],
 	['','','{artedit}'],
-	['article',['id'=>'art{id}'],'{msg}'],
-	['clear','','']]]];}
+	['article',['id'=>'art{id}'],'{msg}']]]];}
+
+static function semi(){return [
+['div',['class'=>'grid-semi'],[
+	['div',['class'=>''],[
+		['div',[],'{thumb}']]],
+	['div',['class'=>''],[
+		['header','',[
+			['div',['id'=>'meta{id}'],[
+				['span','','{cat} {avatar}'],
+				['span',['class'=>'txtbox'],'{search}'],
+				['span',['class'=>'txtnoir'],'{nbarts}'],
+				['span',['class'=>'txtsmall2'],'{date}'],
+				['span',['class'=>'txtsmall'],'{author} {source} {btim} {opt} {lang} {pid}'],
+				['span',['class'=>'right'],'{togprw}']]],
+			['span',['class'=>'right'],'{edit}'],
+			['h3','','{title}']]],
+		['article',['id'=>'art{id}'],'{msg}']]]]]];}
 
 //search
 static function little(){return [
@@ -145,8 +157,7 @@ static function little(){return [
 		['div',[],'{thumb}'],
 		['div',['class'=>'panel scrollb txtsmall'],'{tag}']]],
 	['div',['class'=>'row2 col2'],[
-		['article',['id'=>'art{id}'],'{msg}'],
-		['clear','','']]]]]];}
+		['article',['id'=>'art{id}'],'{msg}']]]]]];}
 
 /*static function small(){return [
 ['hurl','{url}',[
@@ -155,8 +166,7 @@ static function little(){return [
 			['div',['class'=>'pantxt'],[
 				['span',['class'=>'author'],'{auteurs}'],
 				['div',[],'{cat}'],
-				['div',['class'=>'title'],'{suj}'],
-				['clear','','']]]]]]]]]];}*/
+				['div',['class'=>'title'],'{suj}']]]]]]]]]];}*/
 
 static function fast(){return [
 ['div',[],[
@@ -221,13 +231,12 @@ static function pubartc(){return [
 	['hurl','{url}','{suj}']]]];}
 
 static function panart(){return [
-['hurl','{url}',[
-	['div',['class'=>'panart'],[
+['div',['class'=>'panart'],[
+	['hurl','{url}',[
 		['div',['class'=>'panbkg','style'=>'{sty}'],[
 			['div',['class'=>'pantxt'],[
 				['span',['class'=>'author'],'{auteurs}'],
-				['div',['class'=>'title'],'{cat} {suj}'],
-				['clear','','']]]]]]]]]];}
+				['div',['class'=>'title'],'{cat} {suj}']]]]]]]]]];}
 
 static function panartj(){return self::panart();}
 static function pubkg(){return self::panart();}
@@ -246,8 +255,7 @@ static function weblink(){return [
 		['thumb','90/90','{img1}']]],
 	['div',['style'=>'font-size:14px;'],[
 		['hurl','{url}','{suj}'],
-		['div',[],'{msg}']]],
-	['clear','','']]]];}
+		['div',[],'{msg}']]]]]];}
 
 static function bublh(){
 return [['hurl','{url}','{suj}']];}
@@ -272,9 +280,7 @@ static function file(){return [
 ['h1',[],[
 	['url','{url}','{suj}']]],
 ['article',['id'=>'art{id}'],[
-	['','','{msg}'],
-	['clear','','']]],
-['br','','']];}
+	['','','{msg}']]]];}
 
 static function product(){return [
 ['div',['style'=>'float:left; width:142px; margin:2px; padding:5px; border:1px solid black;'],[

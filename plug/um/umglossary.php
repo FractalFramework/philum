@@ -19,9 +19,9 @@ $nid=sql::qrid('insert into umvoc values '.sql::atmrb($rb,1));
 return $nid;}
 
 static function build($p,$o){$ratio=50; $min=$p*$ratio;
-if($o)$wh='and art.id='.$o;
-else $wh='limit '.$limit=$min.', '.($min+$ratio);
-$r=sql::inner('art.id,msg','qda','qdm','id','kv','nod="ummo" '.$wh);
+if($o)$sq['b1.id']=$o;
+else $sq['_limit']=$min.', '.($min+$ratio);
+$r=sql::inner('art.id,msg','qda','qdm','id','kv',$sq);
 if($r)foreach($r as $k=>$v){
 	$v=str_replace("'",' ',$v); //$v=str_replace('-',' ',$v);
 	$rb=str_word_count($v,2);

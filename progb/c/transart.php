@@ -5,7 +5,7 @@ class transart{
 static $a=__CLASS__;
 static $default='';
 
-static function structure(){$r=meta::langs(); $rt=[];//sets of langs//fr=>[en,es],en=>[fr,es],es=>[fr,en]
+static function structure(){$r=langs(); $rt=[];//sets of langs//fr=>[en,es],en=>[fr,es],es=>[fr,en]
 foreach($r as $k=>$v)foreach($r as $ka=>$va)if($va!=$v)$rt[$v][]=$va;
 return $rt;}
 
@@ -27,7 +27,7 @@ foreach($r as $k=>$v)if($k!=$id)$rt+=self::allg($k);
 return $rt;}
 
 static function missing($id,$lg=''){//missing links//[es,de]
-$ra=meta::langs(); $r=self::exists($id); $r=array_flip($r); $rt=[];
+$ra=langs(); $r=self::exists($id); $r=array_flip($r); $rt=[];
 foreach($ra as $k=>$v)if(!isset($r[$v]))$rt[]=$v;
 return $rt;}
 
@@ -162,7 +162,7 @@ $ret.=lj('',$j,picto('ok'),att('translate')).' ';
 $r=self::missing($p); $lg=meta::curlg($o);
 $ret.=span('translate to:','txtbox');
 foreach($r as $k=>$v)if($v!=$lg)$ret.=lj('txtx',$rid.'_transart,call__3_'.$v.'_'.$p,$v).' ';
-$r=self::allg($p); //$r=meta::langs();
+$r=self::allg($p); //$r=langs();
 if($r)$ret.=span('remake from:','txtbox').' ';
 foreach($r as $k=>$v)$ret.=lj('txtx',$rid.'_transart,redo___'.$p.'_'.$v,$v).' ';
 //$ret.=lj('txtx',$rid.'_transart,repair___'.$p,'create_msg_ifnotex').' ';
