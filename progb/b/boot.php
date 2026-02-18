@@ -91,6 +91,7 @@ if(!$r)$r=msql::kx('server',nod('rstr'),0);
 if($r && arraysumstr($r)==0)$r=[];
 if(!$r)$r=msql::kx('',nod('rstr'),0);
 if(!$r)$r=msql::col('system','default_rstr',0,1);
+if(mobile())$_SESSION['rstr'][149]=1;
 $_SESSION['rstr']=arr($r,180);}
 
 static function addcat($d,$id=''){
@@ -161,7 +162,7 @@ for($i=0;$i<9;$i++){$nbj=$r[$i];
 return $nbj;}
 
 static function seslng($o=''){if(empty($_SESSION['lang']) or $o){
-	$hal=isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])?$_SERVER['HTTP_ACCEPT_LANGUAGE']:'';
+	$hal=$_SERVER['HTTP_ACCEPT_LANGUAGE']??'';
 	$lg=substr($hal,0,2); $syslg=prmb(25);
 	if(!rstr(53))$lg='all'; elseif(!$lg)$lg=$syslg; $_SESSION['lang']=$lg;
 	$_SESSION['lng']=$lg!='all'?$lg:$syslg;}//translations
@@ -221,7 +222,8 @@ $ret[$k][$ka]=$va; $rb[$va[0]]=$ka;}}
 if($ret)ksort($ret); $_SESSION['modc']=$ret;}
 
 #config
-static function define_prma(){$r=sesr('modc','system'); $_SESSION['prma']=[];
+static function define_prma(){
+$r=sesr('modc','system'); $_SESSION['prma']=[];
 if($r)foreach($r as $k=>$v){
 //if($v[0]=='design' && empty($_SESSION['desgn'])){$_SESSION['prmd']=$v[1];
 if($v[0]=='design' && !ses('cssn')){$_SESSION['prmd']=$v[1];
@@ -229,7 +231,7 @@ if($v[0]=='design' && !ses('cssn')){$_SESSION['prmd']=$v[1];
 if($v[0]=='csscode' && $v[1])head::add('csscode',$v[1]);
 elseif($v[0]=='jscode' && $v[1])head::add('jscode',$v[1]);
 elseif($v[0]=='jslink' && $v[1])head::add('jslink',$v[1]);
-elseif($v[1])$_SESSION['prma'][$v[0]]=$v[1];}}
+else $_SESSION['prma'][$v[0]]=$v[1]?$v[1]:1;}}
 
 static function define_condition(){//context=>module=m:context,p:
 $gmd=get('module'); $frm=get('frm'); $read=get('read');
@@ -274,7 +276,7 @@ sty::build_css('css/'.$qb.'_auto.css',$r);
 msql::modif('',$qb.'_autodesign',[1],'one','',$phi);
 alert('css_auto re-generated');}}
 
-static function negcss(){$_SESSION['night']=1;
+static function negcss(){ses('night',1);
 if($n=$_SESSION['prmb'][5]??'')$nod=ses('qb').'_auto';
 else $nod=ses('qb').'_design_'.ses('prmd');
 $f='css/'.$nod.'_neg.css'; $tima=ftime('css/'.$nod.'.css','ymdHi'); $timb=ftime($f,'ymdHi');
@@ -351,7 +353,7 @@ static function define_iq(){$ip=sesmk('ip');
 $iq=sql('id','qdp','v',['ip'=>$ip,'_limit'=>'1']);
 if(!$iq){$iq=cookie('iq');
 	if($iq)sqlup('qdp',['ip'=>$ip],['id'=>$iq]);}
-if(!$iq){$nav=$_SERVER['HTTP_USER_AGENT']??''; $ref=$_SERVER['HTTP_REFERER']??'';
+if(!$iq){$nav=usgagent(); $ref=httpref();
 	$iq=sql::sav('qdp',[$ip,$nav,$ref,1,'NOW()']);}
 $_SESSION['iqa']=sql('ok','qdk','v',['iq'=>$iq],0);
 $_SESSION['ip']=$ip; $_SESSION['iq']=$iq;}

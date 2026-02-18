@@ -166,7 +166,7 @@ $e=strrpos($ref,'#EXT-X-ENDLIST'); $ref=trim(substr($ref,0,$e));
 $xt='.mp4';//$xt=xt($ref);//.ts=>.mp4
 $fb='video/'.$fa.'_2'.$xt;
 $lk='https://video.twimg.com/'.$ref;
-return lkt('',$lk,pictxt('movie',nms(187)));}//waiting solution
+return lkt('',$lk,pictxt('movie',nms(193)));}//waiting solution
 /* if(!is_file($fb))copy($lk,$fb);//video src
 if(is_file($fb))return video('/'.$fb);
 return lj('','popup_usg,iframe___'.ajx($fb),domain($f));*/
@@ -187,7 +187,7 @@ static function upvideo_ts($f,$id){
 $xt='.ts'; $fb='video/'.strprm($f,4).$xt;
 if(!is_file($fb) && auth(4))wget($f,$fb);//@copy($f,$fb);
 //if(is_file($fb))$tmp=read_file($fb); else return; eco($tmp);
-return lkt('',$fb,pictxt('movie',nms(187)));
+return lkt('',$fb,pictxt('movie',nms(193)));
 //if(is_file($fb))return video('/'.$fb);
 //return lj('','popup_usg,iframe___'.ajx($fb),domain($f));
 }

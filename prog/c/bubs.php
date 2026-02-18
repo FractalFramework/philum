@@ -16,13 +16,13 @@ static function ucom_btn(){//obs
 $j='sjtime(\'ucom\',\'socket_ucom_ucom_url\');';
 $ret=inputj('ucom','',$j,'command');
 return divc('search',$ret);}
-//lang
+//
 static function langs(){$r=explode(' ',prmb(26));
 $ico=$_SESSION['lang']=='all'?'circle-full':'circle-empty';//setlang
-$ret[]=[nms(100),'ajax','socket','lang___all','admsq','','lang',$ico];
-$rb=msql::kv('system','helps_langs'); $lg=ses('lang');
+$ret[]=[nms(100),'ajax','socket','lang__self_all','admsq','','lang',$ico];
+$rb=langnames(); $lg=ses('lang');
 foreach($r as $v){$ico=$v==$lg?'circle-full':'circle-empty';
-	$ret[]=[$rb[$v]??'','ajax','socket','lang___'.$v,'admsq','','lang',$ico];}
+	$ret[]=[$rb[$v]??'','ajax','socket','lang__self_'.$v,'admsq','','lang',$ico];}
 return $ret;}
 //plug
 //0:usage/1:dir/2:loadable/3:callable/4:interface/5:state/6:private

@@ -43,6 +43,11 @@ window.history.replaceState(r,st.a,u);}
 window.onpopstate=function(e){restorestate(e.state);}
 window.onload=function(e){startstate(state);}
 
+function reload2(){//without #
+let u=document.URL; let s=u.indexOf('#');
+if(s!=-1)u=u.substring(0,s);//document.URL
+window.location.reload(u);}
+
 //inner
 function addiv(tar,res,st){var ob=getbyid(tar); if(ob==null)return;
 var div=document.createElement('div'); div.innerHTML=res; var parent=ob.parentNode;

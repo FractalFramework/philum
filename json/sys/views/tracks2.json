@@ -1,0 +1,1 @@
+[["div",{"class":"grid-art {css}","style":"{sty}"},[["div",{"class":""},[["anchor","","trk{id}"],["span",[],"{avatar} "],["span",{"class":"txtx"},"{author}"],["span",{"class":"txtbox"},"{opt}"],["span",{"class":"txtsmall2"},"{date} #{id}"],["","","{edit}"]]],["div",{"id":"art{id}","class":""},[["div",{"class":"trkmsg"},"{msg}"]]]]]]

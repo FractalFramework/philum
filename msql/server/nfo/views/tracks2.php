@@ -1,0 +1,2 @@
+<?php 
+return ["1"=>['[[[trk{id}|:anchor][{avatar} |:span][{author}|[txtx:class]:span][{opt}|[txtbox:class]:span][{date} #{id}|[txtsmall2:class]:span]{edit}|[:class]:div][[{msg}|[trkmsg:class]:div]|[art{id}:id][:class]:div]|[grid-art {css}:class][{sty}:style]:div]']]; ?>

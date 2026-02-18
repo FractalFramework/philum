@@ -32,7 +32,7 @@ function progressHandler(ev){uploaded=Math.round((ev.loaded/ev.total)*100,2);}
 
 //0-1:fading 2:nofading 4-7:value 5:insert 6:insert-close 7:popup newart 8:multithread
 //9: newart 10:confirm ok 11:select text 13:track 14:addiv 16:csscode 17:jscode 18:rebond
-//3:loading 7:reload/save 9:reload 12:reload, 15:repos 19:unhide 20:toggle btn 21:autoscroll 23;affect as var 24:poprepos timed 25:poprepos timed2 26:dong
+//3:loading 7:saveart 9:reloadsavedart 12:reload, 15:repos 19:unhide 20:toggle btn 21:autoscroll 23;affect as var 24:poprepos timed 25:poprepos timed2 26:dong
 AJAX.prototype.handleResponse=function(){
 var act=this.act; var tg=this.tg;
 //if(tg.indexOf(',')!=-1)var act='json';
@@ -64,7 +64,7 @@ if(this.m_Request.readyState==4){wait=0;
 		else if(act==17)jscode(res);
 		else if(act==18)SaveJc(res);
 		else if(act==20){if(res)activeid(tg);}
-		else if(act=='self')window.location=document.URL;
+		else if(act=='self')reload2();
 		else if(act=='url')window.location=res;
 		else if(act=='var')window[tg]=JSON.parse(res);
 		else if(act=='repl')mozWrap(res,'','','repl');
@@ -77,7 +77,7 @@ if(this.m_Request.readyState==4){wait=0;
 			if(typ=='text'||typ=='hidden'||typ=='textarea'||typ=='number')cb.value=res;
 			else cb.innerHTML=res;}
 		//deco
-		if(res.substr(0,6)=='logon:')window.location=document.URL;
+		if(res.substr(0,6)=='logon:')reload2();//
 		if(act==3||act==7||act==9||act==15)Hide('popw');
 		if(act==7){var read=getbyid('socket').value;
 			if(typeof(curid)!='undefined')Close('popup');
@@ -482,8 +482,8 @@ if(dn[3]=='3x'||dn[3]=='3xx'||dn[3]=='4x'||dn[3]=='5x'){var tp=dn[3].substr(0,1)
 else if(dn[3]=='14x'){var tp='after'; dn[3]='x';}//trksav
 else if(dn[3]=='14xt'){var tp='after'; dn[3]='xt';}//trksav
 else if(dn[3]=='14xk'){var tp='after'; dn[3]='xk';}//close trkdsk
-else if(dn[3]=='exs'){var tp='1'; exs=[];} else if(dn[3]!='pop'|'x'|'xx'|'xd'|'tg')var tp=dn[3];
-//var dn3=dn[3].split(','); for(i=0;i<dn3.length;i++){if(dn3[i]==''}
+else if(dn[3]=='exs'){var tp='1'; exs=[];}//reset scroll
+else if(dn[3]!='pop'|'x'|'xx'|'xd'|'tg')var tp=dn[3];
 if(dn[0]=='pop'){dn[0]='pop'+curid; var tp=12;}
 else if(dn[0]=='json' || dn[0].indexOf(',')!=-1){tp='json'; dn[3]=tp;}
 if(dn[2])prm=mkprm(dn[2],dn[3]);//k,head,addjs

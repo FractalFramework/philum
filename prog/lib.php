@@ -47,7 +47,7 @@ function lk($u,$v='',$p=''){return '<a href="'.$u.'"'.$p.'>'.($v?$v:$u).'</a>';}
 function lka($u,$v='',$p=''){return '<a href="'.$u.'"'.$p.'>'.($v?$v:domain($u)).'</a>';}
 function lkc($c,$u,$v){return '<a href="'.$u.'"'.atc($c).'>'.$v.'</a>';}
 function lkt($c,$u,$v,$p=''){return '<a href="'.$u.'"'.atc($c).$p.' target="_blank">'.($v?$v:$u).'</a>';}
-function lkd($v,$a,$d=''){return tag('a',['href'=>$a,'id'=>$n],$v);}
+function lkd($v,$a,$d=''){return tag('a',['href'=>$a,'id'=>$d],$v);}
 function lkn($v,$n){return tag('a',['name'=>$n],$v);}
 function llk($c,$u,$v){return li(lk($u,$v),$c);}
 function lj($c,$j,$v,$p=''){if(ses('dev'))$p.=att($j);
@@ -304,7 +304,7 @@ $c=curl_init(); curl_setopt($c,CURLOPT_URL,$f); $er='';
 curl_setopt($c,CURLOPT_HTTPHEADER,$json?['accept: application/json','content-type: application/json']:[]);
 if($post){if(is_array($post))$post=http_build_query($post);
 curl_setopt($c,CURLOPT_POST,TRUE); curl_setopt($c,CURLOPT_POSTFIELDS,$post);}
-curl_setopt($c,CURLOPT_USERAGENT,$_SERVER['HTTP_USER_AGENT']);
+curl_setopt($c,CURLOPT_USERAGENT,usgagent());
 //curl_setopt($c,CURLOPT_FRESH_CONNECT,true);
 curl_setopt($c,CURLOPT_FOLLOWLOCATION,true);
 curl_setopt($c,CURLOPT_SSL_VERIFYPEER,0);
@@ -592,10 +592,13 @@ function utmsrc($f){if(!$f)return; $r=['?fbclid','&fbclid','?utm','&utm'];
 foreach($r as $k=>$v)if($n=strpos($f,$v))$f=strto($f,$v); return $f;}
 function host(){return 'http://'.$_SERVER['HTTP_HOST'];}
 function hst(){return str_replace('www.','',$_SERVER['HTTP_HOST']);}
+function usgagent(){return $_SERVER['HTTP_USER_AGENT']??'';}
+function httpref(){return $_SERVER['HTTP_REFERER']??'';}
 function ip(){$ip=$_SERVER['REMOTE_ADDR']??'';
 if(strstr($ip,' ')){$r=explode(' ',$ip); return $r[0];} else return gethostbyaddr($ip);}
-function mobile(){$s=$_SERVER['HTTP_USER_AGENT']??'';
-return stristr($s,'android') || stristr($s,'iPhone') || stristr($s,'iPad');}
+function mobile(){$d=usgagent(); $r=['android','iphone','ipad','webos','phone','tablet'];
+//foreach($r as $k=>$v)if(strpos($d,$v))return 1;
+return str_replace($r,'',$d)!=$d;}
 
 #fileinfo
 function recup_fileinfo($doc){if(is_file($doc))

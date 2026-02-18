@@ -22,7 +22,7 @@ static function cleanup($r){pr($r);
 $p=explode('--',$r[0][0]);
 $rb[$p[0]]=$p[1];
 foreach($r as $k=>$v){
-if(isset($v[1]))$v[1]=deln($v[1],' ');
+if(isset($v[1]))$v[1]=nl2sp($v[1]);
 $t='Origin of the objects types';
 if(strpos($v[0],$t)!==false)$rb[$t]=$v[1];
 if($k==2){$p=explode(' ',$v[1]);

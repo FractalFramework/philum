@@ -1,0 +1,17 @@
+<?php 
+return ['1'=>['htaccess','yes'],
+'2'=>['create_hub','yes'],
+'3'=>['first_node','nfo'],
+'4'=>['sub_domain',''],
+'5'=>['update server','newsnet.ovh'],
+'6'=>['gdf_ability','yes'],
+'7'=>['google-site-verification',''],
+'8'=>['time_zone','Europe/Paris'],
+'9'=>['error_reporting',''],
+'10'=>['srvim limit','400000'],
+'11'=>['utf8',''],
+'12'=>['upload','200000'],
+'13'=>['updates','1'],
+'14'=>['server mirror',''],
+'15'=>['server img','newsnet.ovh'],
+'16'=>['fractal','ffw.ovh']]; ?>

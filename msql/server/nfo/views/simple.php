@@ -1,0 +1,2 @@
+<?php 
+return ["1"=>['[[[{thumb}|:div]|[simple:class]:div][[[[{cat} {avatar}|:span][{search}|[txtbox:class]:span][{nbarts}|[txtnoir:class]:span][{date}|[txtsmall2:class]:span][{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|[txtsmall:class]:span][{togprw}|[right:class]:span]|[meta{id}:id]:div][{parent}|:h4][{edit}|[right:class]:span][{title}|:h3]|:header]{float}{artedit}[{msg}|[art{id}:id]:article]|[:class]:div]|[grid-art:class]:div]']]; ?>

@@ -113,7 +113,7 @@ static function datas($r,$lang,$mode='',$q2=''){
 if(!$lg)$lg='fr'; $nl=0;
 $rb=['id'=>$id,'suj'=>$suj,'day'=>date('Y-m-d H:i',$day),'source'=>'','author'=>'','tracks'=>'','player'=>''];
 $rb['url']='/'.$id;//'/app/umcom/'.$id;
-$msgb=str::stripconn($msg); $msgb=trim($msgb); $from='';
+$msgb=conb::delcn($msg); $msgb=trim($msgb); $from='';
 //if(substr($msgb,0,1)=='@')$from=strto($msgb,' ');
 $rb['lang']=self::slctlng($id,'umrec'.$id,$lang,$lg,$mode);//slctlng
 $rtg=ma::art_tags($id,'vv');

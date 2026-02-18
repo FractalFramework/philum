@@ -293,8 +293,8 @@ static function ib_arts_nb($id){$sq['ib']=$id;
 if(!auth(1))$sq['}re']='1';
 return $ids=sql('count(id)','qda','v',$sq);}
 
-static function ibload($id,$ord,$pg=1){$bt=''; if(!$pg)$pg=1;
-if(auth(4))$sq['>re']='0';
+static function ibload($id,$ord,$pg=1){
+$bt=''; $sq=[]; if(!$pg)$pg=1; if(auth(4))$sq['>re']='0';
 $r=sql('id','qda','k',$sq+['ib'=>$id,'_order'=>'id '.($ord?'desc':'asc')]); if(!$r)return;
 $ra=array_chunk($r,20,true); $nb=count($r); $rb=$ra[$pg-1]??$r;
 [$is,$go]=$ord?[41,40]:[40,41]; $ic=$ord?'s-top':'s-down'; $t=pictxt($ic,nms($is));

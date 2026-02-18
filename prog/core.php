@@ -70,10 +70,10 @@ function togbt($v,$t){$id=randid('tg'); $ret=ljb('','toggle_block',$id,$t,atd('b
 $ret.=span($v,'twit',$id,'display:none;'); return $ret;}
 function togses($v,$t){$rid=randid('bt'); $c=ses($v)?'active':'';
 return btn('nbp',lj($c,$rid.'_tog__20_'.$v,$t,atd($rid)));}
-function swapbt($jr,$v,$ic=0,$o=0){$a=yesno($o);
+function swapbt($j,$rj,$rb,$ic=0,$o=0){$a=yesno($o);
 $p0=atjr('swapbt',[$o,'this',$ic]); $p1=atjr('swapbt',[$a,'this',$ic]);
-$p=atb('data-bt0',$v[0]).atb('data-bt1',$v[1]).atmo($p1).atmu($p0);
-return lj('',$jr[$a],$ic?picto($v[$o],16):$v[$o],$p);}
+$p=atb('data-bt0',$rb[0]).atb('data-bt1',$rb[1]).att(lgnm($rj[$o]));//.atmo($p1).atmu($p0)
+return lj('',$j.$rj[$a],$ic?picto($rb[$o],16):$rb[$o],$p);}
 function inputses($k,$v){$j=$k.'p_sesmake_'.$k.'p__'.ajx($k);
 return input($k.'p',$v,4,['onkeyup'=>'checkj(this)','data-j'=>$j]);}
 
@@ -261,6 +261,7 @@ function prms($n){return $_SESSION['prms'][$n]??'';}
 function prma($n){return $_SESSION['prma'][$n]??'';}
 function prmb($n){return $_SESSION['prmb'][$n]??'';}
 function langs(){return explode(' ',prmb(26));}
+function lgnm($d){$r=sesmk('langnames'); return $r[$d]??nms(100);}
 function nms($n){return $_SESSION['nms'][$n]??($n);}//trans::nms
 function mn($n){return $_SESSION['mn'][$n]??'';}
 function nmx($r){$rb=[]; foreach($r as $k=>$v)$rb[]=nms($v); return implode(' ',$rb);}
@@ -279,11 +280,12 @@ $ip=sql('ip','qdu','v',['name'=>ses('qb')]);
 if(auth(6) && ip()==$ip)return true;}
 
 //lang
-function setlng($p){if($p && $p!='all')return $p; $lg=$_SESSION['lng']; return $lg?$lg:prmb(25);}
+function setlng($p){if($p && $p!='all')return $p; $lg=ses('lng'); return $lg?$lg:prmb(25);}
 function voc($d,$b='helps_voc'){return trans::voc($d,$b);}
 
 //sesmk
 function msqlang($d){return msql::read('lang',$d,1);}
+function langnames(){return msql::kv('system','helps_langs');}
 function usrconn(){return msql::kv('',nod('connectors'));}
 //function scanplug(){return explore('plug','dirs',1);}
 function emoj(){return msql::kv('system','edition_pictos_4');}
@@ -313,8 +315,8 @@ function conn_ref_out(){return sesmk('conn_ref','',0);}
 function ajx($v,$p=''){#lib.js
 //return $p?urldecode($v):urlencode($v);//ouch
 $r=['*','_','(star)']; $a=$p?1:0; $b=$p?0:1; $c=$p?0:2; $d=$p?2:0;
-$a=[$r[$a],$r[$b],'_','&','+',"'",';','?','#',' '];//,'/','"',',',':'
-$b=[$r[$c],$r[$d],'{u}','{a}','{p}','{q}','{dc}','{m}','{z}','{s}'];//,'{h}','{dq}','{c}','{dd}'
+$a=[$r[$a],$r[$b],'_','&','+',"'",'"',';','?','#',' '];//,'/',',',':'
+$b=[$r[$c],$r[$d],'{u}','{a}','{p}','{q}','{dq}','{dc}','{m}','{z}','{s}'];//,'{h}','{c}','{dd}'
 if($p)[$b,$a]=[$a,$b]; if($v)$v=str_replace($a,$b,$v);
 return $v;}
 
@@ -434,7 +436,7 @@ function forbidden_img($nm){$r=explode(' ',prmb(21));
 if($r)foreach($r as $v)if($v && strpos($nm,$v)!==false)return false; return $nm;}
 function antipuces($v){if(forbidden_img($v)!==false && strpos($v,'puce')===false)return $v;}
 function opcache($d){opcache_invalidate($d);}//if(!ses::$s['local'])
-function unlinkb($f){$fb='_backup/imtrash/'.$f; mkdir_r($fb); copy($f,$fb); unlink($f);}
+function unlinkb($f){$fb='_backup/imtrash/'.$f; mkdir_r($fb); if(is_file($f)){copy($f,$fb); unlink($f);}}
 function rm($f){if(!is_dir($f) && boot::auth()){unlinkb($f); json::add('','rmim',[$f,ip()]);}}
 
 function er($d){ses::$er[]=$d;}

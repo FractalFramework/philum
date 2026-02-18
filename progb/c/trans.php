@@ -18,7 +18,7 @@ curl_setopt($d,CURLOPT_HTTPHEADER,$head);
 if($post){
 	curl_setopt($d,CURLOPT_POST,TRUE);
 	curl_setopt($d,CURLOPT_POSTFIELDS,($post));}//http_build_query
-curl_setopt($d,CURLOPT_USERAGENT,$_SERVER['HTTP_USER_AGENT']);
+curl_setopt($d,CURLOPT_USERAGENT,usgagent());
 //'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:147.0) Gecko/20100101 Firefox/147.0';
 curl_setopt($d,CURLOPT_SSL_VERIFYPEER,0);
 curl_setopt($d,CURLOPT_SSL_VERIFYHOST,0);

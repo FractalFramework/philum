@@ -1,0 +1,2 @@
+<?php 
+return ["1"=>['[[{avatar} {back} {cat}[{search}|[txtbox:class]:span][{date}|[txtsmall2:class]:span][{nbarts}|[txtnoir:class]:span][{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|[txtsmall:class]:span]|[meta{id}:id]:div][{parent}|:h4][{edit}|[right:class]:div][{title}|[tit{id}:id]:h1][{artlang} {social} {words} {open}|[grey right:class]:div]{float}[{tag}|[tags:class]:div]|[:class]:header]{artedit}[{msg}|[art{id}:id][justy:class][rbt(this,\'{id}\');:ondblclick]:article]']]; ?>

@@ -15,7 +15,7 @@ $rh[]=['taga'=>['base'=>['href'=>host()]]];
 $rh[]=['meta'=>['name','robots',rstr(22)?'index, follow':'nofollow']];
 $rh[]=['meta'=>['name','revisit-after','1 hour']];
 $rh[]=['meta'=>['name','distribution','Global']];
-$rh[]=['meta'=>['Content-Security-Policy','distribution','upgrade-insecure-requests']];
+//$rh[]=['meta'=>['Content-Security-Policy','distribution','upgrade-insecure-requests']];
 $rh[]=['name'=>['distribution','Global']];
 if(rstr(74)){
 	$rh[]=['meta'=>['property','og:title',ses::$m['title']]];
@@ -31,7 +31,7 @@ $rh[]=['meta'=>['name','category',get('frm')]];
 $rh[]=['meta'=>['name','generator','philum_'.ses('philum')]];//needed
 $rh[]=['meta'=>['name','hub',ses('qb')]];
 //$rh[]=['meta'=>['name','copyright','GNU/GPLv3']]
-$rh[]=['meta'=>['name','viewport','user-scalable=yes, initial-scale=1, minimum-scale=1, maximum-scale=2, width=device-width']];//prmb(4)?prmb(4):
+$rh[]=['meta'=>['name','viewport','user-scalable=yes, initial-scale=1, minimum-scale=1, maximum-scale=10, width=device-width']];//prmb(4)?prmb(4):
 $rh[]=['meta'=>['name','apple-mobile-web-app-capable','yes']];
 $rh[]=['meta'=>['name','mobile-web-app-capable','yes']];
 $rh[]=['meta'=>['name','google-site-verification',prms('goog')]];

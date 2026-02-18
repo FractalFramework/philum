@@ -223,13 +223,15 @@ $r=['white','blue','green','cyan','yellow','purple','orange','black'];
 if(in_array($c,$r))return divc('frame-'.$c,$d);
 return divs('padding:6px; border:1px solid '.$c,$d);}
 
-static function nh($d,$id,$m){static $i; $i++;//.'-'.$i
+static function nh($d,$id,$m,$nl){static $i; $i++;//.'-'.$i
+if($nl)return lkd($d,'#nb'.$d,'nh'.$d);
 if($m==3)return togbub('usg,nbp',$d.'-'.$i.'_'.$id,$d,'',atn('nh'.$d),0);//over
-else return lkd($d,'#nb'.$d,'nh'.$d);}
+else return '('.$d.')';}
 
-static function nb($d,$id,$m){
+static function nb($d,$id,$m,$nl){
+if($nl)return lkd($d,'#nh'.$d,'nb'.$d);
 if($m==3)return lk(urlread($id).'#nh'.$d,$d,atn('nb'.$d).atc('note'));
-else return lkd($d,'#nh'.$d,'nb'.$d);}
+else return '('.$d.')';}
 
 static function nbdwnl($f){$f=str::normalize($f);
 if(strrpos($f,"/")!==false)$f=substr($f,strrpos($f,"/")+1);

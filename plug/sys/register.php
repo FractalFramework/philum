@@ -8,7 +8,7 @@ static $default='';
 static function build($p,$o){
 $r=msql::read('clients',self::$md);
 msql::read('clients',self::$md,self::$rh);
-$ref=$_SERVER['HTTP_REFERER']??'';
+$ref=httpref();
 $r=[$p,$ref,ip(),mkday()];
 msql::modif('clients',self::$md,$r,'push','','');
 return join(', ',$r);}

@@ -241,13 +241,13 @@ $nbyp=$ra['nbyp']??20; $pg=$ra['page']?$ra['page']:1; $ret=''; $prw=''; $nbp=0;
 if($ra['nbarts']>$nbyp)$nbp=ceil($ra['nbarts']/$nbyp);
 if($nbp)$rp=self::pages_nb($nbp,$pg);
 $j=$ra['rid'].'_api,call2_hid'.$ra['rid'].'_exs__';
-if(rstr(110)){$prw=art::slct_media($ra['preview']??''); $prwa=art::slct_media($ra['prw']??'');
-	$icr=[picto('filelist',16),picto('preview',16)]; if($prwa==1)$prwa=2;
-	$rj=[$j.'pg:'.$pg.',prw:1',$j.'pg:'.$pg.',prw:'.$prwa]; $rb=['filelist','preview'];
-	$ret.=swapbt($rj,$rb,1,$prw==1?0:1).' ';}
-if(rstr(53)){$lg=$ra['lg']??''; $lng=ses('lng');
-	if($lg==$lng){$c='active'; $lgb='';} else{$c=''; $lgb=$lng;}
-	$ret.=lj($c,$j.'pg:'.$pg.',prw:'.$prw.',lg:'.$lgb,flag($lng)).' ';}//reset rq_nb
+if(rstr(110)){$prw=art::slct_media($ra['preview']??''); $jb=$j.'pg:'.$pg.',prw:';
+	$prwa=art::slct_media($ra['prw']??''); if($prwa==1)$prwa=2;
+	$rj=['1',$prwa]; $rb=['filelist','preview'];
+	$ret.=swapbt($jb,$rj,$rb,1,$prw==1?0:1).' ';}
+if(rstr(53)){$lg=$ra['lang']??''; $lng=ses('lng'); $jb=$j.'pg:1,lang:';
+	$rj=['all',$lng]; $rb=['globe',$lng=='fr'?'france':'flag'];
+	$ret.=swapbt($jb,$rj,$rb,1,$lg==$lng?1:0).' ';}
 if(isset($rp))foreach($rp as $i=>$v)
 	$ret.=lj($i==$pg?'active':'',$j.'pg:'.$i,$i).'';
 if($ret)return btn('nbp',$ret);}
@@ -269,7 +269,7 @@ if($t && !empty($ra[$t])){$ti=$ra['t']??$ra[$t];//used for num tags
 elseif(!empty($ra['t']))$ret.=divd('titles',tagb('h3',$ra['t'].$nboc));
 if($tt=ses('timetravel'))$ret.=md::temporalnav($tt);
 $ret.=lj('popbt','popup_api,com_hid'.$ra['rid'],nbof($ra['nbarts'],1)).'';
-if(rstr(3) && !isset($ra['nodig']))$ret.=self::dig($ra);
+if(rstr(3) && !isset($ra['nodig']))$ret.=self::dig($ra).' | ';
 if(empty($ra['nopages']))$ret.=self::pages($ra);
 $ra['page']=1;//reinit page 1 after dig //$ra['page']??1
 $com=implode_k($ra,',',':');
@@ -388,7 +388,7 @@ return self::boot($ra);}
 
 #get
 static function defaults_rq($ra,$rb=[]){if(!$ra)$ra=[];
-[$pg,$to,$dig,$prw,$lg]=vals($rb,['pg','to','dig','prw','lg']);
+[$pg,$to,$dig,$prw,$lg,$lang]=vals($rb,['pg','to','dig','prw','lg','lang']);
 if($to){$ord=self::order($ra['order']??'');
 	if($ord=='id-desc')$ra['maxid']=$to;
 	elseif($ord=='day-desc')$ra['maxtime']=sql('day','qda','v',$to);
@@ -406,7 +406,7 @@ elseif(empty($ra['minday']) && !isset($ra['id']) && empty($ra['mintime']) && emp
 	$pday=time_prev($ra['minday']); if($pday==1)$pday=0; $ra['maxday']=$pday;}
 elseif(!empty($ra['maxtime'])){$ra['nbdays']=7; $ra['mintime']=$ra['maxtime']-(84600*7); $dig='';}//let dig from past??kill timetravel//
 $ra['page']=$pg?$pg:$ra['page']??sesb('page',1);
-if($lg)$ra['lg']=$lg;
+if($lg)$ra['lg']=$lg; if($lang)$ra['lang']=$lang;//trad,art
 if($ra['id']??'')if(strpos($ra['id'],' ')){$ra['id']=str_replace(' ','|',$ra['id']);}//facilitate edit favs
 if($ra['id']??'' or $ra['parent']??''){
 	if(isset($ra['minday']))unset($ra['minday']); if(isset($ra['maxday']))unset($ra['maxday']);}

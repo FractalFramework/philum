@@ -59,7 +59,7 @@ elseif((strpos($v[5],$cnd)!==false or !$v[5])){$t=$v[0];
 	if($is && $nv>$nd)$is=false;
 	if($is && !$hide && !$private && $cntk){$j=self::read($v,$o);//
 		//if($v[1]=='link')$rt[$t]=['link',$v[3]];
-		if($j)$rt[$t]=$j;}}}
+		if($j)$rt[$t]=$j;}}} 
 return $rt;}
 
 static function datas($p=''){$p=$p?$p:'apps';
@@ -68,7 +68,8 @@ $rb=msql::read('',nod($p),1);
 if(isset($r))$rb=self::array_merge_p($r,$rb);
 return $rb;}
 
-static function build_from_datas($cnd,$dir='',$p='',$o=''){$r=self::datas();
+static function build_from_datas($cnd,$dir='',$p='',$o=''){
+$r=self::datas();
 return self::build($r,$cnd,$dir,$p,$o);}
 
 static function play($id){

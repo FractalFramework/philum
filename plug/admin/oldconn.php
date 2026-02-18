@@ -1,4 +1,4 @@
-<?php 
+<?php //oldconn
 class oldconn{
 static function build($p,$o){
 $repl=msql::val('system','connectors_old',$p,0);

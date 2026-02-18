@@ -12,7 +12,7 @@ return $ret;}
 static function merge($r,$d){$d=strend($d,'_');
 if($r)foreach($r as $k=>$v){$dy=substr($v[1],0,6); 
 $msg=$v[2]; 
-$msg=conb::delconn($msg);
+$msg=conb::delcn($msg);
 $msg=self::msg($msg);
 //$msg=miniconn($msg);
 //$msg=str::embed_links($msg);
