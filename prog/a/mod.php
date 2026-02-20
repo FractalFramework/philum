@@ -183,7 +183,7 @@ case('ARTMOD'):$ret=self::block($p); break;
 case('TABMOD'):$ret=self::artmod($p,$d); break;
 case('ART'):$ret=self::block('article'); break;
 case('All'):$api=api::arts_rq($p,$o); $api['t']=$t?$t:nms(100); break;
-//case('Home'):$ret=self::playcontext('home',''); break;//stupid
+//case('Home'):$ret=self::playcontext('home',''); break;//module:Home
 case('article'):$ret=art::read($p,$tp); break;
 case('articles'):$load=api::mod_arts_row($p); $obj=1; break;
 case('api'):$ret=api::call(str_replace(';',',',$p),$o); break;
@@ -325,7 +325,7 @@ case('lastup')://$pg=$p; $pp=$m.'_mod,callmod___m:'.ajx($m).',d:'.$d.',t:'.ajx($
 case('login'):$ret=md::login_btn($p,$o); break;
 case('login_popup'):$ret=self::login_btn_p($p,$o); break;
 case('log-out'):if(ses('usr'))$ret.=lkc($csb,'/logout',picto('logout')); break;
-case('search'):$ret=build::search_btn($o); break;
+case('search'):$ret=search::form($o); break;
 //banner
 case('Banner'):$ret=self::make_ban($p,$o,$t); break;
 case('ban_art'):if($p!=1)$ret.=lk(subdomain(ses('qb')),ma::read_msg($p,'')); break;

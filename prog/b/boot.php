@@ -237,6 +237,7 @@ static function define_condition(){//context=>module=m:context,p:
 $gmd=get('module'); $frm=get('frm'); $read=get('read');
 if($read)$cnd=['art',$read];
 elseif($frm)$cnd=['cat',$frm];
+elseif($gmd=='Home')$cnd=['home',''];
 elseif($gmd)$cnd=['module',$gmd];//it's not a context!
 elseif(!$frm)$cnd=['home',''];
 $_SESSION['cond']=$cnd; self::define_modc(); self::define_prma();}

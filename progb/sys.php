@@ -30,10 +30,10 @@ $p1=ses('prmb1'); if($p1 && $p1!=prmb(1))ses::$adm['alert']='mod:'.prmb(1);
 #eye
 if(!ses('stsys'))eye();
 #structure
-$out=[];
+$out=[]; $cnd=$_SESSION['cond']; //pr($cnd);
 if($adm=get('admin'))$out['content']=adm::home();
 elseif($msq=get('msql'))$out['content']=msqa::home();
-elseif(prma('desktop') && (!rstr(146) or $_SESSION['cond'][0]=='home'))//rstr(85)
+elseif(prma('desktop') && (!rstr(146) or $cnd[0]=='home' or $cnd[1]=='Home'))//rstr(85)
 	$out['content']=boot::deskpage();
 else $out=mod::blocks();
 #admin

@@ -69,12 +69,6 @@ $bt=pop::btpages((int)$nbp,(int)$pg,(int)$n,$j);
 $ret=$pg?$fc($pg):'';
 return div(div($bt).$ret,'',$rid);}
 
-//search
-static function search_btn($o=''){
-$id='srch'; $t='&#128270; '.nms(24); $s=12; $j=atj('SearchT',$id);
-$ret=input($id,'',12,['type'=>'search','onclick'=>$j,'onkeyup'=>$j,'oncontextmenu'=>$j,'role'=>'search','placeholder'=>$t]);
-return $o?$ret:div($ret,'search','ada');}
-
 //$ra=[['id','type','value','opt']];
 //foreach($r as $k=>$v)$rt[$k]=array_combine($ra,$v);
 static function callform($ra,$r=[]){$rt=[];

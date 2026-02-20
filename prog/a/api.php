@@ -215,7 +215,7 @@ return 'select '.$slct.' from '.$qda.''.$in.' where '.$wh.$gr.$ord;}
 
 //dig
 static function dig($ra){$r=pop::define_digr();
-$n=$ra['minday']?$ra['minday']:ses('nbj'); $n=self::resetdig($n); $ret='';
+$n=$ra['minday']?$ra['minday']:ses('nbj'); $n=pop::digquantize($n,$r); $ret='';
 if(!$r[$n])$r[$n]=$n>=365?round($n/365,2):$n; $cur=$r[$n];
 $r[$n].=' '.($n<365?plurial($cur,3):plurial($cur,7));
 $r['all']=nms(100);
@@ -229,17 +229,10 @@ for($i=0;$i<$nb;$i++){$k=$rb[$i]; $v=$r[$k];
 return btn('nbp',$ret);}
 
 //pages
-static function pages_nb($nbp,$pg){
-$left=$pg-1; $right=$nbp-$pg; $r[1]=1; $r[$nbp]=1;
-for($i=0;$i<$left;$i++){$r[$pg-$i]=1; $i*=2;}
-for($i=0;$i<$right;$i++){$r[$pg+$i]=1; $i*=2;}
-if($r)ksort($r);
-return $r;}
-
 static function pages($ra){
 $nbyp=$ra['nbyp']??20; $pg=$ra['page']?$ra['page']:1; $ret=''; $prw=''; $nbp=0;
 if($ra['nbarts']>$nbyp)$nbp=ceil($ra['nbarts']/$nbyp);
-if($nbp)$rp=self::pages_nb($nbp,$pg);
+if($nbp)$rp=pop::pages_nb($nbp,$pg);
 $j=$ra['rid'].'_api,call2_hid'.$ra['rid'].'_exs__';
 if(rstr(110)){$prw=art::slct_media($ra['preview']??''); $jb=$j.'pg:'.$pg.',prw:';
 	$prwa=art::slct_media($ra['prw']??''); if($prwa==1)$prwa=2;
@@ -422,10 +415,6 @@ $r=array_merge(['cat','tag','search','author','source','folder'],sesmk('tags'));
 for($i=0;$i<$n;$i++)if(isset($ra[$r[$i]]))return $r[$i];}
 
 #config
-static function resetdig($d){$r=pop::define_digr();
-if($d=='all')return $d; $dig='';
-foreach($r as $k=>$v)if($k<=$d)$dig=$k;
-return $dig;}
 static function mod_call($load){
 $ra['id']=implode('-',array_keys($load));
 return self::boot($ra);}
@@ -475,7 +464,7 @@ elseif(get('timetravel')){$ra['maxtime']=ses('daya'); $ra['dig']='';}
 elseif($gt=self::detect_uget()){$ra[$gt[2]]=self::tag_ci($gt[1]); $ra['ti']=$gt[2];}
 else return;
 $ra['lang']=ses('lang'); if(!isset($ra['t']))$ra['t']=$d;
-$dig=self::resetdig($g['dig']??'');
+$dig=pop::digquantize($g['dig']??'');
 return self::defaults_rq($ra,['dig'=>$dig]);}
 
 //mod

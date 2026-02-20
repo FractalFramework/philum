@@ -600,7 +600,7 @@ else{
 	$qrt=['id'=>'ID','suj'=>'Title (edit)','frm'=>'Category','day'=>'Date','name'=>'Author','re'=>'Published'];
 	$dig=$dig?$dig:$_SESSION['nbj']; $nbj=$dig?$dig:9999;
 	$r=self::artlist($qr,$admin,$dig); if($r)$r=self::list_articles($r);
-	if(rstr(3))$ret.=div(pop::dig_it_j($nbj,'admarts_adm,articles___'.ajx($admin).'_'));
+	if(rstr(3))$ret.=div(pop::digj($nbj,'admarts_adm,articles___'.ajx($admin).'_'));
 	$ret.=self::adminarts_pages($r,$qrt,$admin,$dig,$page);}
 $ret=divc('menus',$bt).$ret;
 if(!$admin)$ret=divd('admarts',$ret);

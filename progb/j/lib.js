@@ -342,7 +342,9 @@ if(e && e.which)var char=e.which; else var char=e.keyCode;
 if(char!=13 && char!=37 && char!=38 && char!=39 && char!=40)return true;}
 
 function checkj(o){if(checkEnter())SaveJ(o.dataset.j);}
-function checksearch(id){if(checkEnter())Search2(id);}
+function checksearch(id){if(checkEnter())Search(id);}
+function checksearch1(id){if(checkEnter())Search1(id);}
+function checksearch2(id){if(checkEnter())Search2(id);}
 function response(o){if(alphaEnter())SaveJ(o.dataset.response);}
 
 function cases_j(id,v,n){var rb=[]; var bt=getbyid('bt'+id+n);

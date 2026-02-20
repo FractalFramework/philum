@@ -16,16 +16,20 @@ $rh[]=['meta'=>['name','robots',rstr(22)?'index, follow':'nofollow']];
 $rh[]=['meta'=>['name','revisit-after','1 hour']];
 $rh[]=['meta'=>['name','distribution','Global']];
 //$rh[]=['meta'=>['Content-Security-Policy','distribution','upgrade-insecure-requests']];
-$rh[]=['name'=>['distribution','Global']];
+//$rh[]=['name'=>['distribution','Global']];
 if(rstr(74)){
 	$rh[]=['meta'=>['property','og:title',ses::$m['title']]];
 	$rh[]=['meta'=>['property','og:type',$read?'article':'website']];
 	$rh[]=['meta'=>['property','og:image',ses::$m['img']??'']];
-	$rh[]=['meta'=>['property','og:description',ses::$m['descr']??'']];}
+	$rh[]=['meta'=>['property','og:description',ses::$m['descr']??'']];
+	$rh[]=['meta'=>['property','og:url-full',ses::$m['url-full']??'']];
+	$rh[]=['meta'=>['property','og:url',ses::$m['url']??'']];}
 else{
 	$rh[]=['meta'=>['name','title',ses::$m['title']]];
 	$rh[]=['meta'=>['name','image',ses::$m['img']??'']];
-	$rh[]=['meta'=>['name','description',ses::$m['descr']]];}
+	$rh[]=['meta'=>['name','description',ses::$m['descr']]];
+	$rh[]=['meta'=>['name','url-full',ses::$m['url-full']]];
+	$rh[]=['meta'=>['name','url',ses::$m['url']]];}
 //$rh[]=['meta'=>['name','author',ses::$m['author']]];
 $rh[]=['meta'=>['name','category',get('frm')]];
 $rh[]=['meta'=>['name','generator','philum_'.ses('philum')]];//needed

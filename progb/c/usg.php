@@ -116,12 +116,6 @@ foreach($r as $k=>[$id,$d])if(in_array($id,$ra)){
 		if($s!==false)$rt[]=[$id,substr($rb[$i],$s+1)];}}
 return $rt;}
 
-static function searched($p,$o='',$prm=[]){
-//$p=$p?$p:$prm[0]??''; //if(!$p)return;//datalist
-$r=sql('word','qdsr','rv',['[word'=>$p]);
-foreach($r as $k=>$v)$rt[]=taga('option',['value'=>$v]);
-return join('',$rt);}
-
 //footnotes
 static function nbp($id,$read){
 ses::$r['popt']='footnote #'.$id;

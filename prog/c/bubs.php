@@ -5,14 +5,14 @@ class bubs{
 //function rightarrow(){return; bts('float:right;','&#9658;');}
 
 //addart_fast
-static function addart_btn(){//sav::newartcat
+static function addart_form(){//sav::newartcat
 $p=['onclick'=>'SaveIeb()','oncontextmenu'=>'SaveIeb()','onchange'=>'SaveIeb()','onpaste'=>'SaveIeb()'];
 $t=inputb('addsrc','',43,'url',256,$p);
 $t.=lj('','popup_edit,call',picto('add',14));
 return span($t,'search','adb');}
 
 //ucom
-static function ucom_btn(){//obs
+static function ucom_form(){//obs
 $j='sjtime(\'ucom\',\'socket_ucom_ucom_url\');';
 $ret=inputj('ucom','',$j,'command');
 return divc('search',$ret);}
@@ -407,9 +407,9 @@ $ret=match($dir){//pre-rendered, intercepte navigation
 'batch'=>sav::batch('','c'),
 'fastmenu'=>self::fastmenu(),
 'fastmenu2'=>self::fastmenu2(),
-'search'=>build::search_btn(),
-'addart'=>self::addart_btn(),
-'ucom'=>self::ucom_btn(),
+'search'=>search::form(),
+'addart'=>self::addart_form(),
+'ucom'=>self::ucom_form(),
 'arts'=>self::adm_arts_fast(),
 'favs'=>favs::home('',''),
 'user'=>self::adm_user_fast(),

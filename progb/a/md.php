@@ -22,7 +22,7 @@ $o=is_numeric($o)?$o:10;
 $wh['nod']=ses('qb');//slowlog
 if($d=='auto')$wh['frm']=get('frm');
 elseif($d!='all' && $d!=1 && $d)$wh['frm']=$d;
-return sql('id','qda','k',$wh+['}re('=>'1','_order'=>prmb(9),'_limit'=>$o]);}
+return sql('id','qda','k',$wh+['}re'=>'1','_order'=>prmb(9),'_limit'=>$o]);}
 
 static function pub_art_b($id,$t,$o){
 [$dy,$frm,$suj,$img]=ma::rqtart($id);
@@ -129,12 +129,11 @@ if(!is_numeric($p))$taxcat=$superline[$p];
 elseif(is_numeric($p)){$hie=self::supertriad_c(ses('dayb')); $taxcat=$hie[$p];}
 return $taxcat;}
 
-static function topoart($id){
-}
+static function topoart($id){}
 
 static function birthday($p){if(!$p)$p=date('d-m-Y'); $time=strtotime($p); $d=date('d-m',$time);
 [$day,$month]=explode('-',$d); $day=(int)$day; $month=frdate((int)$month);
-return search::call($day.' '.$month);}
+return search::build($day.' '.$month);}
 
 static function artsofcluster($d){$rt=[];
 $rb=sql('idtag','qdtc','rv',['word'=>$d]);
@@ -299,7 +298,7 @@ $bt=lj('txtbox',$j,nmx([185,$d?22:2]));
 $j='modtrk_md,trkrch_trkrch__'.ajx($t);
 $bt.=inputj('trkrch',$rch,$j);
 $ret=self::title($r,$t?$t:'Tracks',1,$bt);
-if(auth(6))$ret.=pop::dig_it_j($p,'modtrk_mod,callmod___m:tracks,p:VAR,t:'.ajx($t).',d:'.$d).br();
+if(auth(6))$ret.=pop::digj($p,'modtrk_mod,callmod___m:tracks,p:VAR,t:'.ajx($t).',d:'.$d).br();
 $j='modtrk_md,trkmod___'.$p.'_'.$t.'_'.$d.'_';
 if($r)$ret.=self::output_arts_trk($r,$d,$pg,$j,1,($d?'desc limit 1':'asc'));//
 return divd('modtrk',$ret);}

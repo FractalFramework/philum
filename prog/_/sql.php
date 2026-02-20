@@ -175,7 +175,7 @@ self::qr('create table '.db($b).' like '.$bb); self::qr('insert into '.db($b).' 
 static function reflush($b,$o=''){self::qr('alter table '.db($b).' order by id');
 if($o){$n=ma::lastid($b); if($n)self::resetdb($b,$n+1);}}
 static function maintenance($k,$v,$b1,$b2){return self::read2($k.','.$v,$b1,'kv','b1 left outer join '.db($b2).' b2 on b2.id=b1.'.$k.' where b2.id is null group by '.$k,1);}//maintenance('idtag','tag','qdta','qdt');
-static function countrefs($d,$o=''){if($o)$d=strtolower($d);
+static function countrefs($d,$o=''){if(!$d)return; if($o)$d=strtolower($d);
 return 'floor((length(b2.msg)-length(replace(lower(b2.msg),"'.$d.'","")))/(LENGTH("'.$d.'")))';}
 }
 ?>

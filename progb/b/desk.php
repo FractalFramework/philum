@@ -53,9 +53,9 @@ elseif((strpos($v[5],$cnd)!==false or !$v[5])){$t=$v[0];
 	self::$rico[$t]=$v[7]; $rv=explode('/',$v[6]); $nv=$v[6]?count($rv):0;
 	if($dir==$v[6])$is=true; else $is=self::match_vdir($dr,$nd,$rv);
 	if($is && $nv==$nd+1 && !$hide && !$private){//dirs
-		$rt[$rv[$nv-1]]=$tg.'_desk,deskroot__15_'.$cnd.'_'.ajx($v[6]).'_'.$p.'_'.$o;}
+		$rt[$rv[$nv-1]]=$tg.'_desk,deskroot__15_'.$cnd.'_'.ajx($v[6]).'_'.$p.'_'.($o?$o:'autowidth');}
 	elseif($is && !empty($rv[$nd]) && !$hide){$v6=implode('/',array_slice($rv,0,$nd+1));
-		$rt[$rv[$nd]]=$tg.'_desk,deskroot__15_'.$cnd.'_'.ajx($v6).'_'.$p.'_'.$o;}
+		$rt[$rv[$nd]]=$tg.'_desk,deskroot__15_'.$cnd.'_'.ajx($v6).'_'.$p.'_'.($o?$o:'autowidth');}
 	if($is && $nv>$nd)$is=false;
 	if($is && !$hide && !$private && $cntk){$j=self::read($v,$o);//
 		//if($v[1]=='link')$rt[$t]=['link',$v[3]];
@@ -115,14 +115,14 @@ static function icoart($k,$v,$c){$ico=''; $id='ic'.$k;//(rstr(85)?'popup':'conte
 if(is_numeric($k)){$v='popup_popart__3_'.$k; $ic=self::thumb($k); $k=ma::suj_of_id($k);}
 else $ic=self::desk_icon($k,$v);
 if($ic)$ico=strpos($ic,'<')!==false?$ic:mimes($k,$ic,32);
-return lj('',$v,divc($c,span($ico).span(etc($k,50))),att($k).atd($id));}
+return lj('',$v,divc($c,span($ico).span(etc($k,40))),att($k).atd($id));}
 
 static function callicoart($k,$v){
 return self::icoart($k,$v,'sicon');}
 
 static function pane_icons($r,$c=''){$ret='';
 if(is_array($r))foreach($r as $k=>$v)$ret.=self::icoart($k,$v,$c);
-return divc('deskicons',$ret);}
+return divc('grid-desk',$ret);}//deskicons
 
 static function desktop_js($d){$r=self::build_from_datas($d); $ret='';
 if($d=='boot' && !$r)$r=['desktop_desk,deskico___desk','page_desk,deskbkg'];
@@ -235,7 +235,7 @@ else{$g=sty::affect_rgba($g,$clr); $gh=$g?$g:'#'.$clr[4].',#'.$clr[1]; $klr=self
 	if(!$g)$g='to bottom, '.hexrgb($clr[4],0.4).', '.hexrgb($clr[1],1).'';
 	$ret='height:100%; background:linear-gradient('.$g.') no-repeat fixed;';}
 $code='body {'.$ret.'}
-	#desktop a, #desktop .philum {color:#'.clrneg($klr,1).';}';
+	}';//#desktop a, #desktop .philum {color:#'.clrneg($klr,1).';
 if($o)return $code;
 return head::csscode($code);}
 
@@ -256,7 +256,8 @@ self::poplist(); $optb=$optb?$optb:randid('dk');
 $r=self::desktop($p,$dr,$opt,$optb);
 if($optb)$bt=self::deskmenu($dr,$p,$opt,$optb);
 $ret=self::pane_icons($r);
-return div($bt.$ret,'',$optb);}
+$s=get('sz'); if(!$s)$s=650;
+return div($bt.$ret,'',$optb,'min-width:'.($s-6).'px;');}
 
 static function deskload($p){if($p)$r=self::build_from_datas($p);//deskload
 if(!$r)$r=['desktop_desk,deskico___desk','page_desk,deskbkg'];

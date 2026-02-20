@@ -108,7 +108,10 @@ return [$r['title'],$r['content']];}
 
 static function metaurl($d){
 //$dom=dom($d); return dom::extract($dom,'og(ddot)url:property:meta');
-return between($d,'property="og:url" content="','"');}
+$u=between($d,'property="og:url" content="','"');
+if(!$u)$u=between($d,'property="twitter:url" content="','"');
+if(!$u)$u=dom::detect($d,'og(ddot)url:property:meta');
+return $u;}
 
 static function vacuum($f,$sj='',$h=''){
 $f=http($f); $f=utmsrc($f); $suj=''; $rec=''; $ret=''; $enc=''; $lg='';

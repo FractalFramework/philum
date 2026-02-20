@@ -128,16 +128,16 @@ static function readcacheval($id,$k){$r=self::readcacherow($id); return $r[$k]??
 static function readcachedel($id){unsetif($_SESSION['rqt'],$id); return msql::delrow('',nod('cache'),$id);}
 
 #outputs
-static function output_arts($r,$md,$tp,$j=''){$rch=ses::r('search');
+static function output_arts($r,$md,$tp,$j=''){$rch=ses::r('search'); $fw=1;
 if(rstr(39) or $md=='flow'){$fw=$j?0:1; geta('flow',1); $md=rstr(8)?'auto':$md;}
 $npg=prmb(6); $page=get('page',1); $ret='';
 $min=($page-1)*$npg; $max=$page*$npg; $md=art::slct_media($md); $i=0;
 if(is_array($r))foreach($r as $id=>$nb)if($id>0){$i++;
 	if($md=='prw')$media=$nb; elseif($rch)$media='rch'; else $media=$md;
-	if($i>=$min && $i<$max)$ret.=art::playb($id,$media,$tp,'',$nb);
-	elseif($fw)$ret.=tag('socket',['id'=>'d'.$id,'data-prw'=>$media],'');}
+	if($i>=$min && $i<$max)$ret.=art::playb($id,$media,$tp,'',$nb);}
+	//elseif($fw)$ret.=tag('div',['id'=>'d'.$id,'data-prw'=>$media],'');
 $nbpg=!$fw?pop::btpages($npg,$page,$i,$j):'';
-return $nbpg.$ret.$nbpg;}
+return $nbpg.div($ret,'grid-sections').$nbpg;}
 
 static function read_idy($ib,$o,$frm=0,$re='',$id=''){
 $rw=['ib'=>$ib]; if($frm)$rw['frm']=$frm; if($re)$rw['re']=$re; if($id)$rw['id']=$id; $rw['_order']='day '.$o;

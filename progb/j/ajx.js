@@ -154,8 +154,8 @@ new AJAX(jurl()+get+'&tg='+tg,tg,tp,fd);}
 function mkprm(dn2,dn3){var prm=[]; var dna=dn2.split(','); var vl='';
 for(i=0;i<dna.length;i++){var tg=jx(dna[i]);
 	vl=capture(tg); if(vl!=undefined){
-		if(dn3=='k' || dn3=='head' || dn3=='addjs')prm[tg]=vl;//
-		else prm[i]=vl;}}//prm.push(vl);
+		if(dn3=='k' || dn3=='head' || dn3=='addjs')prm[tg]=vl;
+		else prm[i]=vl;}}
 return prm;}
 
 function sjr(tg,a,m,pr,ind,p,o,ob,oc){//th=o; 
@@ -410,7 +410,7 @@ if(bub.style)bub.style.maxHeight=''; var adjust=80;
 var ha=innerH(); var hb=bub.offsetHeight; //alert(hb+'-'+top);
 if(top+hb>ha){//var newH=(ha-top-adjust); if(newH>320)
 	bub.style.maxHeight=(ha-top-adjust)+'px';
-	bub.style.overflowY='auto'; popu.style.scrollbarWidth='thin';}
+	bub.style.overflowY='auto'; bub.style.scrollbarWidth='thin';}
 else if(bub.style){bub.style.overflowY='visible';}}
 
 function panpos(bub,li){
@@ -488,8 +488,8 @@ if(dn[0]=='pop'){dn[0]='pop'+curid; var tp=12;}
 else if(dn[0]=='json' || dn[0].indexOf(',')!=-1){tp='json'; dn[3]=tp;}
 if(dn[2])prm=mkprm(dn[2],dn[3]);//k,head,addjs
 for(i=4;i<8;i++)get.push(dn[i]);
-if(dn[7]=='autosize'){opt+='&sz='+innerW()+'-'+innerH(); get[7]='';}//todo:in place of i
-if(dn[7]=='autowidth'){opt+='&sz='+(document.body.offsetWidth); get[7]='';}
+if(dn[7]=='autosize')get[7]='&sz='+innerW()+'-'+innerH();//todo:in place of i
+if(dn[7]=='autowidth')get[7]='&sz='+innerW();
 ajaxcall(dn[0],dn[1]+opt,get,prm,tp);
 rebound(dn,prm);}
 
@@ -572,7 +572,10 @@ for(i=0;i<r.length;i++)prm.push(getbyid(r[i]).value);
 ajaxcall('popup','search,home',[],prm,3);
 Close('popup');}
 
-function Search(old,id){
+function Search1(id){
+ajaxcall('panup','search,com','',[getbyid(id).value],'d'+id);}
+
+function Search(id,old){
 var ob=getbyid(id); if(ob!=null)var src=ob.value;
 if((!src||src.length<2)&& src!='1')return;
 if(src!=old){if(!old)return SearchT(id); else return;}
@@ -581,7 +584,7 @@ if(src){inform_field(id,(id=='srchb'?'ada':''));
 
 function SearchT(id){var ob=getbyid(id);
 if(ob!=null)var old=(ob.value); else var old='';
-setTimeout(function(){Search(old,id)},1000);}
+setTimeout(function(){Search(id,old)},1000);}
 
 //edit
 function editart(id){var ob=getbyid('art'+id);

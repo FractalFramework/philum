@@ -290,7 +290,7 @@ if(!$no)return '['.$da.']';
 elseif($c==':twitter'){
 	if(str_starts_with($da,'http'))return str_replace(['|1:twitter',':twitter'],'','['.$da.']');}
 elseif(str_starts_with($da,'http'))return $o;
-else return $p;}
+elseif(!is_img($p))return $p;}
 
 static function striptw($d,$op){
 if(strpos($d,'//t.co')!==false)return;

@@ -1,0 +1,2 @@
+<?php 
+return ["1"=>['[[[[[{cat}|:span][{search}|[txtbox:class]:span][{nbarts}|[txtnoir:class]:span][{date}|[txtsmall2:class]:span][{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}|[txtsmall:class]:span]|[meta{id}:id]:div]|:header]|[row1 colspan13:class]:div][[{thumb}|:div]|[:class]:div][[{edit} {artlang}|[right tright:class]:div][{parent}|:h4][{title}|:h3]|[:class]:div]|[grid-little:class]:div]']]; ?>

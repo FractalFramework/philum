@@ -72,7 +72,7 @@ return $d;}
 //json
 static function reflush($d){
 $r=get_class_methods('datas');
-echo 'updated:'.$d;//.' in '.(auth(7)?'json/sys, ':'').'json/srv, msql/server: '; 
+echo 'update: templates';//$d.' in '.(auth(7)?'json/sys, ':'').'json/srv, msql/server: '; 
 foreach($r as $v){$rb=datas::$v(); //echo $v.' ';
 	sesz('datas'.$v); sesz('viewgetmpsrv'.$v); sesz('viewgetmpsys'.$v);
 	if(auth(7))json::sav('sys','views/'.$v,$rb); json::sav('srv',drn('views/'.$v),$rb);

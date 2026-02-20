@@ -12,8 +12,10 @@ if(!$rst[51])$rt['desk']=popbub('desk','',$ico[3],$top,$hv);
 if($auth>4){
 	if(!$rst[120])$rt['admin']=popbub('fadm','fastmenu',$ico[2],$top,$hv);
 	else $rt['admin']=popbub('fadm','fastmenu2',$ico[2],$top,$hv);}
-if(!$rst[75]){
-	if($top)$rt['search']=build::search_btn(1);
+if(!$rst[75]){$rid=randid('');
+	//if($top)$rt['search']=search::form(1);
+	if($top)$rt['search']=search::form1($rid);
+	//if($top)$rt['search']=tag('li',['id'=>'bbd'.$rid],search::form1($rid,1));
 	else $rt['search']=popbub('call','search',$ico[5],$top,$hv);}
 if($auth>1){
 	if(!$rst[83])$rt['ucom']=popbub('call','ucom',$ico[8],$top,$hv);
@@ -143,15 +145,15 @@ static function imgdata($d){[$d,$xt]=cprm($d); if(!$xt)$xt='jpeg';
 return img('data:image/'.$xt.';base64,'.base64_encode($d));}
 
 #pages
-static function btpages_nb($nbp,$pg){
-$cases=5; $left=$pg-1; $right=$nbp-$pg; $r[1]=1; $r[$nbp]=1;
-for($i=0;$i<$left;$i++){$r[$pg-$i]=1; $i*=2;}
-for($i=0;$i<$right;$i++){$r[$pg+$i]=1; $i*=2;}
+static function pages_nb($nbp,$pg){if(!$pg)$pg=1;
+$left=$pg-1; $right=$nbp-$pg; $r[1]=1; $r[$nbp]=$nbp;
+for($i=0;$i<$left;$i++){$n=$pg-$i; $r[$n]=$n; $i*=2;}
+for($i=0;$i<$right;$i++){$n=$pg+$i; $r[$n]=$n; $i*=2;}
 if($r)ksort($r);
 return $r;}
 
 static function btpages(int $nbyp,int $pg,int $nb,$j){$ret=''; if(!$nbyp)$nbyp=(int)prmb(6);
-if($nb>$nbyp){$nbp=ceil($nb/$nbyp); if($nbp)$rp=self::btpages_nb($nbp,$pg);}
+if($nb>$nbyp){$nbp=ceil($nb/$nbyp); if($nbp)$rp=self::pages_nb($nbp,$pg);}
 if(isset($rp))foreach($rp as $k=>$v)$ret.=lj($k==$pg?'active':'',$j.ajx($k),$k).' ';
 if($ret)return btn('nbp',$ret);}
 
@@ -169,12 +171,19 @@ for($i=0;$i<$n;$i++)if($r[$i]<=$dy)$rt[$r[$i]]=$r[$i]<365?$r[$i]:($r[$i]/365);
 $_SESSION['digr']=$rt;
 return $rt;}
 
-static function dig_it_j_nb($r,$n){$nb=count($r); $i=0; $rb=[]; $na=10; $a=0;
-foreach($r as $k=>$v){$i++; if($k==$n)$a=$i;} $i=0;
-foreach($r as $k=>$v){$i++; if($i>$a-$na && $i<$a+$na)$rb[$k]=$v;}
-return $rb;}
+static function dignb($r,$n){$i=0; $rt=[]; $pg=1;
+$rk=array_keys($r); foreach($rk as $k=>$v)if($v==$n)$pg=$k;
+$nbp=array_key_last($rk); $rb=self::pages_nb($nbp,$pg);
+foreach($rb as $k=>$v){$ka=$rk[$k]; $rt[$ka]=$r[$ka];}
+return $rt;}
 
-static function dig_it_j($n,$j){$r=self::define_digr(); $ra=self::dig_it_j_nb($r,$n);//most_read,trk
+static function digquantize($d,$r=[]){
+if(!$r)$r=pop::define_digr();
+if($d=='all')return $d; $dig='';
+foreach($r as $k=>$v)if($k<=$d)$dig=$k;
+return $dig;}
+
+static function digj($n,$j){$r=self::define_digr(); $ra=self::dignb($r,$n);//most_read,trk
 if(!isset($ra[$n]))$ra[$n]=$n>365?round($n/365,2):$n; $nprev=time_prev($n);
 $ra[$n].=' '.($n<365?plurial($ra[$n],3):plurial($ra[$n],7));
 if($n!=1 && $n!=7)$ra[$n]=val($ra,$nprev).' '.nms(36).' '.$ra[$n];//from

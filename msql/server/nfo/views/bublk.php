@@ -1,2 +1,2 @@
 <?php 
-return ["1"=>['[{jurl}|{suj}:jurl]']]; ?>
+return ["1"=>['[{url}|{suj}:hurl]']]; ?>

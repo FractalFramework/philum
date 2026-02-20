@@ -31,7 +31,7 @@ static function cat(){return [
 				['span',['class'=>'txtnoir'],'{nbarts}'],
 				['span',['class'=>'txtsmall2'],'{date}'],
 				['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}'],
-				['div',['class'=>'right'],'{togprw}']]],
+				['div',['class'=>'right tright'],'{togprw}']]],
 			['h4','','{parent}'],
 			['div',['class'=>'right'],[
 				['div','','{edit}'],
@@ -43,8 +43,8 @@ static function cat(){return [
 		['article',['id'=>'art{id}'],'{msg}']]]]]];}
 
 static function catfast(){return [
-['div',['class'=>''],[
-	['header',[],[
+['div',['class'=>'grid-art'],[
+	['header',['class'=>'colspan13'],[
 		['div',['id'=>'meta{id}'],[
 			['span','','{back} {avatar} {cat}'],
 			['span',['class'=>'txtbox'],'{search}'],
@@ -53,12 +53,12 @@ static function catfast(){return [
 			['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}'],
 			['div',['class'=>'right'],'{togprw}']]],
 		['h4','','{parent}'],
-			['div',['class'=>'right'],[
+			['div',['class'=>'right tright'],[
 				['div','','{edit}'],
 				['div','','{artlang} {social} {words} {open}']]],
 		['h2','','{title}'],
 		['div',['class'=>'grey tright'],'']]],
-	['div',['class'=>'grid-art','style'=>'grid-template-columns:140px auto;'],[
+	['div',[],[
 		['div',['class'=>''],[
 			['p',[],[
 				['div',[],'{thumb}']]]]],
@@ -141,7 +141,7 @@ static function semi(){return [
 //search
 static function little(){return [
 ['div',['class'=>'grid-little'],[
-	['div',['class'=>'row1 colspan1'],[
+	['div',['class'=>'row1 colspan13'],[
 		['header','',[
 			['div',['id'=>'meta{id}'],[
 				['span',[],'{cat}'],
@@ -150,23 +150,32 @@ static function little(){return [
 				['span',['class'=>'txtsmall2'],'{date}'],
 				['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}']]],
 			['h4','','{parent}'],
-			['span',['class'=>'right'],'{edit}'],
-			['h2','','{title}'],
-		['div',['class'=>'grey tright'],'{artlang} {social} {words} {open}']]]]],
-	['div',['class'=>'row2 col1'],[
+			['div',['class'=>'right tright'],[
+				['div','','{edit}'],
+				['div','','{artlang} {social} {words} {open}']]],
+			['h2','','{title}']]]]],
+	['div',['class'=>''],[
 		['div',[],'{thumb}'],
-		['div',['class'=>'panel scrollb txtsmall'],'{tag}']]],
-	['div',['class'=>'row2 col2'],[
+		['div',['class'=>'scrollc txtsmall'],'{tag}']]],
+	['div',['class'=>''],[
 		['article',['id'=>'art{id}'],'{msg}']]]]]];}
 
-/*static function small(){return [
-['hurl','{url}',[
-	['div',['class'=>'panart'],[
-		['div',['class'=>'panbkg','style'=>'{sty}'],[
-			['div',['class'=>'pantxt'],[
-				['span',['class'=>'author'],'{auteurs}'],
-				['div',[],'{cat}'],
-				['div',['class'=>'title'],'{suj}']]]]]]]]]];}*/
+static function small(){return [
+['div',['class'=>'grid-little'],[
+	['div',['class'=>'row1 colspan13'],[
+		['header','',[
+			['div',['id'=>'meta{id}'],[
+				['span',[],'{cat}'],
+				['span',['class'=>'txtbox'],'{search}'],
+				['span',['class'=>'txtnoir'],'{nbarts}'],
+				['span',['class'=>'txtsmall2'],'{date}'],
+				['span',['class'=>'txtsmall'],'{author} {source} {length} {priority} {btim} {tracks} {opt} {lang} {pid}']]]]]]],
+	['div',['class'=>''],[
+		['div',[],'{thumb}']]],
+	['div',['class'=>''],[
+		['div',['class'=>'right tright'],'{edit} {artlang}'],
+		['h4','','{parent}'],
+		['h3','','{title}']]]]]];}
 
 static function fast(){return [
 ['div',[],[
@@ -208,7 +217,7 @@ static function titles(){return [
 
 static function pubart(){return [
 ['div',['class'=>'grid-pub'],[
-	['div',['class'=>'colspan12'],[
+	['div',['class'=>'colspan13'],[
 		['span',['class'=>'author'],'{auteurs}']]],
 	['div',[],[
 		['thumb','44/44','{img1}']]],

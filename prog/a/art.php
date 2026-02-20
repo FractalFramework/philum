@@ -7,12 +7,12 @@ static $prw_global='';
 static function decide_tpl($prw){$tp=prma('template');//from mod
 if(!$tp){$r=ses('tmpc'); $c=$_SESSION['cond'][0]; $tp=$r[$c]??'';}//from context
 if(!$tp){
-	if($prw==1 && rstr(168))$tp='simplenoim';
+	if($prw==1 && rstr(168))$tp='simple';
 	elseif($prw==1 && rstr(88))$tp='semi';//simple
 	elseif($prw<3)$tp='cat';
 	elseif($prw==3)$tp='read';
 	elseif(substr($prw,0,4)=='conn')$tp='cat';
-	elseif($prw=='rch')$tp='cat';//decided by search
+	elseif($prw=='rch')$tp='little';//small
 	else $tp='cat';//default needed
 	//if($prw==2 && ses::r('search'))$tp='little';//decided by search
 	}//obs
@@ -323,8 +323,9 @@ if($l>200)$n=mb_strpos($d,'.',200); else $n=$l; $d=mb_substr($d,0,$n+1);
 ses::$m['descr']=stripslashes($d);
 ses::$m['img']=host().'/img/'.$r['img'];//without rstr19
 ses::$m['lang']=$r['lg']?$r['lg']:prmb(25);
-$suj=delnbsp($r['suj']); if(ses('dev'))$suj=$id.'-'.$suj;
-ses::$m['title']=$suj;}
+ses::$m['title']=delnbsp($r['suj']);
+ses::$m['url-full']=host().'/'.$r['thm'];
+ses::$m['url']=host().'/'.$id;}
 
 static function preview($d,$id){
 if(rstr(64))$d=conb::stripcn($d,'figure q twitter table msql iframe');//thumb 
