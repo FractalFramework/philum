@@ -215,7 +215,7 @@ foreach($r as $k=>$v)$rt[]=popbub('admin',$k,mimes($k).'&nbsp;'.$v,'',1);
 return join('',$rt);}
 
 static function fastmenu2(){
-return divc('',adm::fastmenu(1));}
+return div(adm::fastmenu(1),'menu');}
 
 //innerbub
 static function app($d){
@@ -348,6 +348,7 @@ $ret[]=['users','ajax','popup','msql___users_'.ses('qb'),'','','Microsql','windo
 if(auth(6))$ret[]=['system','ajax','popup','msql___system','','','Microsql','window'];
 if(auth(6))$ret[]=['server','ajax','popup','msql___server','','','Microsql','window'];
 if(auth(6))$ret[]=['lang','ajax','popup','msql___lang','','','Microsql','window'];
+if(auth(6))$ret[]=['nominations','ajax','popup','msql___lang_helps*nominations','','','Microsql','window'];
 if($u=ses('murl'))$r[]=[$u,'ajax','bubble','bubs,call','','','Microsql','window'];
 foreach($r as $k=>$v){if($k==$dir)foreach($v as $ka=>$va){$t=$rm[$ka]??$ka;
 	if($k!='Microsql')$ret[]=[$t,'ajax','popup','admin___'.ajx($ka),'','',$k,mime($ka)];

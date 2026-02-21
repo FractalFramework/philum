@@ -53,7 +53,7 @@ $j='edt'.$idtag.'_clusters,sav3__2_'.ajx($cat).'_'.$idtag.'_';
 if($r)foreach($r as $k=>$v)$ret.=lj('popsav',$j.ajx($k),$k).' ';
 $j='edt'.$idtag.'_clusters,sav2_'.$inpid.'_2_'.ajx($cat).'_'.$idtag;
 $ret.=inputj($inpid,'',$j).' '.lj('txtsav',$j,picto('ok'));
-return divc('nbp',$ret);}
+return divc('list',$ret);}
 
 static function classtags($j){$ret='';
 $r=sql('distinct(cat)','qdt','rv','');

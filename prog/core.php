@@ -261,7 +261,7 @@ function prms($n){return $_SESSION['prms'][$n]??'';}
 function prma($n){return $_SESSION['prma'][$n]??'';}
 function prmb($n){return $_SESSION['prmb'][$n]??'';}
 function langs(){return explode(' ',prmb(26));}
-function lgnm($d){$r=sesmk('langnames'); return $r[$d]??nms(100);}
+function lgnm($d){$r=sesmk('langnames'); return $r[$d]??nms(228);}
 function nms($n){return $_SESSION['nms'][$n]??($n);}//trans::nms
 function mn($n){return $_SESSION['mn'][$n]??'';}
 function nmx($r){$rb=[]; foreach($r as $k=>$v)$rb[]=nms($v); return implode(' ',$rb);}

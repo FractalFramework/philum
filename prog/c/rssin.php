@@ -127,7 +127,7 @@ elseif(isset($r[$d]))return $r[$d];
 //elseif($d){$suj2=self::wordsuj($d); $id=$r[$suj2]??''; if($id)return $id;}
 $id=sqb::read('id','art','v',['nod'=>ses('qb'),'or'=>['mail'=>$f,'%suj'=>$d],'_limit'=>'1']);
 if(!$id)$id=self::distance($d,1,10);
-return $id;}
+if(is_numeric($id))return $id;}
 
 //load
 static function load($f,$mth=2){$r=[];

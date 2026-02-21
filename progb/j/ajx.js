@@ -572,14 +572,15 @@ for(i=0;i<r.length;i++)prm.push(getbyid(r[i]).value);
 ajaxcall('popup','search,home',[],prm,3);
 Close('popup');}
 
-function Search1(id){
-ajaxcall('panup','search,com','',[getbyid(id).value],'d'+id);}
+function Search1(id){var d=getbyid(id);
+if(d.value)ajaxcall('panup','search,com',[id],[d.value],'d'+id);
+else closebub(d);}
 
 function Search(id,old){
 var ob=getbyid(id); if(ob!=null)var src=ob.value;
 if((!src||src.length<2)&& src!='1')return;
 if(src!=old){if(!old)return SearchT(id); else return;}
-if(src){inform_field(id,(id=='srchb'?'ada':''));
+if(src){inform_field(id,'');//id=='srchb'?'ada':
 	ajaxcall('popup','search,home',[],[src],3);}}
 
 function SearchT(id){var ob=getbyid(id);

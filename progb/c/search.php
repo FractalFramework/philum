@@ -41,17 +41,22 @@ $r=sql('word','qdsr','rv',['[word'=>$p]);
 foreach($r as $k=>$v)$rt[]=taga('option',['value'=>$v]);
 return join('',$rt);}
 
-static function form($o=''){
+/*static function form($o=''){
 $rid='srch'; $t='&#128270; '.nms(24); $s=12;
 $pr=['type'=>'search','role'=>'search','placeholder'=>$t,'onclick'=>atj('Search',$rid),'onkeyup'=>atj('checksearch',$rid),'oncontextmenu'=>atj('SearchT',$rid)];
 $ret=input($rid,'',$s,$pr);
-return $o?$ret:div($ret,'search','ada');}
+return $o?$ret:div($ret,'search','ada');}*/
 
 static function form1($rid='',$o=''){//0:popup, 1:panup, 2:with params
 $t='&#128270; '.nms(24); $s=16;
 $js=atj('checksearch'.$o,$rid).' response(this);'; $jb='dt'.$rid.'_search,known_'.$rid.'_4';
 $pr=['type'=>'search','role'=>'search','placeholder'=>$t,'list'=>'dt'.$rid,'onkeyup'=>$js,'data-response'=>$jb,'onclick'=>atj('Search',$rid),'oncontextmenu'=>atj('SearchT',$rid)];
 return input($rid,'',$s,$pr).tag('datalist',['id'=>'dt'.$rid],'');}
+
+static function formpane($rid=''){
+$t='&#128270; '.nms(24); $s=16; $jb=atj('Search1',$rid); 
+$pr=['type'=>'search','role'=>'search','placeholder'=>$t,'onkeyup'=>$jb,'onclick'=>$jb,'onpaste'=>$jb];
+return input($rid,'',$s,$pr);}
 
 static function form2($rid,$d=''){
 $t='&#128270; '.nms(24); $s=32;
@@ -60,32 +65,22 @@ $pr=['type'=>'search','role'=>'search','placeholder'=>$t,'list'=>'dt'.$rid,'onke
 return input($rid,$d,$s,$pr).tag('datalist',['id'=>'dt'.$rid],'');}
 
 //titles
-static function titles2($vrf,$tot,$cac){$rt3='';
+static function titles2($rid,$vrf,$tot){
 [$rech,$dig,$bol,$ord,$tit,$seg,$pag,$cat,$tag,$ovc,$lim,$lng,$pri,$len]=arb(self::$rp);
-$load=self::$load; $rid=randid('search');
-$ret=hidden($rid,$rech);
-$ret.=ljb('popsav','Search2',$rid,picto('popup')).' ';
+$load=self::$load; 
+if($load)$ret=btn('txtnoir',nbof(count($load),1)).' ';
+else $ret=btn('txtnoir',noresult()).' ';
+$ret.=btn('txtbox',nbof(ses::$nb,16)).' ';
 $rg=sql('cat','qdt','rv',['tag'=>$rech]);
 if($rg)foreach($rg as $k=>$v)$ret.=lj('popbt','popup_api__3_'.$v.':'.ajx($rech),self::pictag($v),att($v));
-if($cac)$ret.=blj('popbt','srcac','search,rech___'.$vrf,picto('del'),att('del cache'));
-if($load)$ret.=btn('txtnoir',nbof(count($load),1)).' ';
-else $ret.=btn('txtnoir',noresult()).' ';
-$ret.=btn('txtbox',nbof(ses::$nb,16));
-$ret=div($ret);
-if(rstr(3) && !isset(self::$rp['nodig']))$rt3=self::dig($dig,$rid); else $rt3.=hidden('srdig','');
-if(!isset($_SESSION['rstr62']))$_SESSION['rstr62']=rstr(62);
-if(rstr(3))$rt3.=togses('rstr62',pictit('after',nms(134),16)).' ';//dig
-//$urg=self::mkurl(['bool','titles','cat','tag']);
-$ret.=div($rt3);
-$ret.=div(self::pages($tot,$rid));//pages
-return $ret;}
+$ret.=btj(picto('get'),atj('Search',$rid).' closebub(this);','popsav');
+$ret.=btj(picto('del'),atjr('jumpval',[$rid,'']).' closebub(this);','popdel');
+return div($ret);}
 
 static function titles($vrf,$tot,$cac){$rt3='';
 [$rech,$dig,$bol,$ord,$tit,$seg,$pag,$cat,$tag,$ovc,$lim,$lng,$pri,$len]=arb(self::$rp);
 $load=self::$load; $rid=randid('search');
-//$rt1=btn('search',inputb($rid,$rech,32,'',150,['onkeyup'=>atj('checksearch',$rid)])).' ';
 $rt1=btn('search',self::form2($rid,$rech)).' ';
-//$rmd=sesmk('tags'); if(auth(6))$rt1.=select(['id'=>'mode'],$rmd);
 $rt1.=ljb('popsav','Search2',$rid,picto('search').' '.nms(24)).' '.hlpbt('search').' ';
 $rg=sql('cat','qdt','rv',['tag'=>$rech]);
 if($rg)foreach($rg as $k=>$v)$rt1.=lj('popbt','popup_api__3_'.$v.':'.ajx($rech),self::pictag($v),att($v));
@@ -93,7 +88,7 @@ if($cac)$rt1.=blj('popbt','srcac','search,rech___'.$vrf,picto('del'),att('del ca
 if($rech && strpos($rech,','))$api='search:'.$rech; else $api='search:'.$rech.',cat:'.str_replace('+','|',$cat).',tag:'.str_replace('+','|',$tag);
 if($rech)$rt1.=lh('','search/'.$rech.($dig?'/'.$dig:''),picto('link',16)).' ';//.$urg
 $rt1.=toggle('txtx','apicom_apicom,build___'.ajx($api).'_'.$rid,pictit('emission','Api')).' ';
-if($load)$rt1.=btn('txtnoir',nbof(count($load),1));//if(auth(6))$rt1.=nbof(array_sum_r($load),16);
+if($load)$rt1.=btn('txtnoir',nbof(count($load),1));
 else $rt1.=btn('txtnoir',noresult());
 if($nboc=ses::$nb)$rt1.=btn('txtbox',nbof($nboc,16));
 if(ses::$s['oom']){$rt1.=lj('popbt','popup_umvoc,home___'.ajx($rech).'_1','vocables');//bdvoc
@@ -187,7 +182,7 @@ if($lim)$sq[]=$counter.'>='.$lim;
 $sq['_order']='b1.'.prmb(9);
 //req
 $sqc[]='b1.id'; $p='k';
-if($ord){$p='kv'; $sqc[]=$counter.' as nb';}
+if($ord && $rch){$p='kv'; $sqc[]=$counter.' as nb';}
 //$r=sql::inner(join(',',$sqc),'qda','qdm','id',$p,$sq,1);
 $r=sqb::inner(join(',',$sqc),$qda,$qdm,'id',$p,$sq,0);
 if($ord && $r)arsort($r);
@@ -254,7 +249,7 @@ elseif($b){//=='x'
 	$load=self::array_intersect_d($ra);}
 elseif($rech && $vrf==str::normalize($rech.$n,1) && !ses('rstr62') && !is_numeric($rech)){
 	$load=searched::add($rech,$n);}
-else $load=self::build($rech,$n);
+elseif($rech)$load=self::build($rech,$n);
 if($load && !is_array($load))$load=[];
 //if(!$load && $sg){self::$rp['seg']=1; $load=self::build($rech,$n);}//less fast
 //if(!$load)$load=[995=>1];
@@ -265,12 +260,13 @@ if(!$load)$_SESSION['recache'][$vrf]=[995=>1];
 ses::$r['search']=self::$rp['search']??$rech;
 return [$load,$vrf,$nb,$cac,$n];}
 
-static function com($d0,$n0,$prm=[]){
-[$load,$vrf,$nb,$cac,$n]=self::call($d0,$n0,$prm);
+static function com($rid,$n0,$prm=[]){
+if(!$prm[0])return; $prm[3]=1;
+[$load,$vrf,$nb,$cac,$n]=self::call('',$n0,$prm);
 if($load){$res='';
 	if($load==[995=>1])self::$load=[];
 	else $res=ma::output_arts($load,'rch','small');}
-$ret=self::titles2($vrf,$nb,$cac);
+$ret=self::titles2($rid,$vrf,$nb);
 $ret.=divd('apicom','');
 ses::$r['popm']=span(chrono('search'),'small'); $_SESSION['oldig']=$n;
 if($load)$ret.=divscroll($res,400);

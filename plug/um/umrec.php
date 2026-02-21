@@ -78,7 +78,7 @@ if($id && !$ex){$ra=self::umtwits_r(); $rb=[]; $nid='';
 static function pages($p,$pg){
 $nb=self::req_arts_c($p); $ret='';
 $nbyp=prmb(6); $nbyp=20; $nbp=ceil($nb/$nbyp);
-if($nbp)$rp=api::pages_nb($nbp,$pg=='all'?1:$pg);
+if($nbp)$rp=pop::pages_nb($nbp,$pg=='all'?1:$pg);
 if($rp){foreach($rp as $i=>$v)
 	$ret.=lj($i==$pg?'active':'','umrec_umrec,callj__3_'.ajx($p).'_'.$i,$i).' ';
 $ret.=lj('all'==$pg?'active':'','umrec_umrec,callj__3_'.ajx($p).'_all',nms(100)).' ';

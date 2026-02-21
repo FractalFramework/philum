@@ -3,38 +3,38 @@ class pop{
 #admin
 static function m_system($st){$auth=$_SESSION['auth']; $id=get('read');
 $rst=ses('rstr'); $top=!$rst[69]?'':'d'; $hv=1;
-$ra=[0=>prmb(8),1=>'loading',2=>'admin',3=>'desktop',4=>'download',5=>'search',6=>'articles',7=>'add',8=>'link',9=>'language',10=>'time',11=>'circle-full',12=>'circle-empty',13=>'list',14=>'user',15=>'menu',16=>'circle-half',17=>'bookmark2']; 
-foreach($ra as $k=>$v)$ico[$k]=picto($v);
-$rt['home']=popbub('home','',$ico[0],$top,$hv);//if(!$rst[20])
-if(prma('MenuBub'))$rt['menuB']=popbub('menubub','',$ico[15],$top,$hv);//if(!$rst[94])
-if(!$rst[95])$rt['menuO']=popbub('overcat','',$ico[15],$top,$hv);
-if(!$rst[51])$rt['desk']=popbub('desk','',$ico[3],$top,$hv);
+$ra=[0=>prmb(8),1=>'loading',2=>'admin',3=>'desktop',4=>'download',5=>'search',6=>'articles',7=>'add',8=>'link',9=>'language',10=>'time',11=>'circle-full',12=>'circle-empty',13=>'textlist',14=>'user',15=>'menu',16=>'circle-half',17=>'bookmark2',18=>'organigram']; $ic=array_map(fn($v)=>picto($v),$ra);
+$rt['home']=popbub('home','',$ic[0],$top,$hv);//if(!$rst[20])
+if(prma('MenuBub'))$rt['menuB']=popbub('menubub','',$ic[15],$top,$hv);//if(!$rst[94])
+if(!$rst[95])$rt['menuO']=popbub('overcat','',$ic[18],$top,$hv);
+if(!$rst[51])$rt['desk']=popbub('desk','',$ic[3],$top,$hv);
 if($auth>4){
-	if(!$rst[120])$rt['admin']=popbub('fadm','fastmenu',$ico[2],$top,$hv);
-	else $rt['admin']=popbub('fadm','fastmenu2',$ico[2],$top,$hv);}
+	if(!$rst[120])$rt['admin']=popbub('fadm','fastmenu',$ic[2],$top,$hv);
+	else $rt['admin']=popbub('fadm','fastmenu2',$ic[2],$top,$hv);}
 if(!$rst[75]){$rid=randid('');
 	//if($top)$rt['search']=search::form(1);
-	if($top)$rt['search']=search::form1($rid);
-	//if($top)$rt['search']=tag('li',['id'=>'bbd'.$rid],search::form1($rid,1));
-	else $rt['search']=popbub('call','search',$ico[5],$top,$hv);}
+	if($top){
+		if(!rstr(172))$rt['search']=search::form1($rid);
+		else $rt['search']=tag('li',['id'=>'bbd'.$rid],search::formpane($rid,1));}
+	else $rt['search']=popbub('call','search',$ic[5],$top,$hv);}
 if($auth>1){
-	if(!$rst[83])$rt['ucom']=popbub('call','ucom',$ico[8],$top,$hv);
-	if($auth>3 && !$rst[76])$rt['batch']=popbub('call','batch',$ico[4],$top,$hv);}
+	if(!$rst[83])$rt['ucom']=popbub('call','ucom',$ic[8],$top,$hv);
+	if($auth>3 && !$rst[76])$rt['batch']=popbub('call','batch',$ic[4],$top,$hv);}
 if($auth>2){
-	if(!$rst[79])$rt['addurl']=popbub('call','addart',$ico[7],$top,$hv);
-	//if(!$rst[79])$rt['addurl']=li(lj('','bubble_sav,addart',$ico[7]));
-	else $rt['addart']=li(btj($ico[7],sj('popup_edit,call').' closebub(this);'));}
-if(!$rst[81])$rt['favs']=popbub('','favs',$ico[17],$top,$hv);//favs
-if(!$rst[80])$rt['arts']=popbub('','arts',$ico[6],$top,$hv);//arts
-if(!$rst[82])$rt['lang']=popbub('lang','lang',$ico[9],$top,$hv);//lang
+	if(!$rst[79])$rt['addurl']=popbub('call','addart',$ic[7],$top,$hv);
+	//if(!$rst[79])$rt['addurl']=li(lj('','bubble_sav,addart',$ic[7]));
+	else $rt['addart']=li(btj($ic[7],sj('popup_edit,call').' closebub(this);'));}
+if(!$rst[81])$rt['favs']=popbub('','favs',$ic[17],$top,$hv);//favs
+if(!$rst[80])$rt['arts']=popbub('','arts',$ic[6],$top,$hv);//arts
+if(!$rst[82])$rt['lang']=popbub('lang','lang',$ic[9],$top,$hv);//lang
 if($past=(abs(ses::$dayx-ses('daya'))>86400) or !$rst[84]){//back_in_time
-	$rt['timetravel']=popbub('timetravel','',$ico[10],$top,$hv);//archives
+	$rt['timetravel']=popbub('timetravel','',$ic[10],$top,$hv);//archives
 	if($past)$rt['timeout']=lkc('popsav','/reload',nms(82).' '.date('Y',ses('daya')));}
 if($des=ses('cssn'))$rt['design']=lj('popbt','socket;sty,actions;;url;exit_design','design:'.$des);
 if(!$rst[48]){if($top)$nm=' '.btn('small',ses('usr'));//usr
-	$rt['user']=popbub('user','',$ico[14],$top,$hv);}//user on prm1=app user, on prm2=bubfast
-if($id && !$rst[89])$rt['seek']=popbub('seek','',$ico[13],$top,$hv);//metas
-$dev=ses('dev'); $ic=$dev=='b'?$ico[11]:($dev=='c'?$ico[16]:$ico[12]);
+	$rt['user']=popbub('user','',$ic[14],$top,$hv);}//user on prm1=app user, on prm2=bubfast
+if($id && !$rst[89])$rt['seek']=popbub('seek','',$ic[13],$top,$hv);//metas
+$dev=ses('dev'); $ic=$dev=='b'?$ic[11]:($dev=='c'?$ic[16]:$ic[12]);
 if(!$rst[157])$rt['night']=li(btj(btd('swcs',picto(ses('negcss')?'moon':'light')),'switchcss()',''));
 if(auth(6) or $dev)$rt['dev']=popbub('dev','dev',$ic,$top,$hv);//dev
 if(auth(6))$rt['art']=btd('artbtedt',self::artbtedt($id));

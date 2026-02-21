@@ -68,7 +68,7 @@ if($day && auth(5)){sql::upd('qda',['day'=>$day],$id); ma::cacheval($id,0,$day);
 return self::editday($id).btn('txtyl','saved');}
 
 static function editday($id){
-$time=sql('day','qda','v',$id); $day=datz('Y-m-d\TH:i',$time);//$day=date('Y-m-d\TH:i',$time);
+$time=sql('day','qda','v',$id); $day=date('Y-m-d\TH:i',$time);//$day=date('Y-m-d\TH:i',$time);
 $ret=inpdate('chd'.$id,$day,'','',1);
 $ret.=lj('popw','cbk'.$id.'_meta,editdaysav_chd'.$id.'__'.$id,'ok');
 return $ret;}

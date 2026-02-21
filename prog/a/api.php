@@ -162,7 +162,7 @@ if($p['source'])$sq['and'][]='mail like "%'.$p['source'].'%"';
 if($p['parent'])$sq['and'][]='('.$qda.'.id="'.$p['parent'].'" or '.$qda.'.ib="'.$p['parent'].'")';
 if($p['nbchars'])$sq['and'][]='host'.self::comp($p['nbchars']);
 if($p['id'])$sq['and'][]=$qda.'.id'.self::sql_in($p['id']);
-if($p['lang'])$sq=self::sql_lang($p['lang'],$sq);// && !rstr(107)
+if($p['lang'])$sq=self::sql_lang($p['lang'],$sq);
 if($p['search'])$sq=self::search($p['search'],$sq,$p['search_whole']);
 if($p['fullsearch'])$sq=self::search2($p['search'],$sq);
 if($p['avoid'])$sq=self::avoid($p['avoid'],$sq);
@@ -238,7 +238,7 @@ if(rstr(110)){$prw=art::slct_media($ra['preview']??''); $jb=$j.'pg:'.$pg.',prw:'
 	$prwa=art::slct_media($ra['prw']??''); if($prwa==1)$prwa=2;
 	$rj=['1',$prwa]; $rb=['filelist','preview'];
 	$ret.=swapbt($jb,$rj,$rb,1,$prw==1?0:1).' ';}
-if(rstr(53)){$lg=$ra['lang']??''; $lng=ses('lng'); $jb=$j.'pg:1,lang:';
+if(rstr(107)){$lg=$ra['lang']??''; $lng=ses('lng'); $jb=$j.'pg:1,lang:';
 	$rj=['all',$lng]; $rb=['globe',$lng=='fr'?'france':'flag'];
 	$ret.=swapbt($jb,$rj,$rb,1,$lg==$lng?1:0).' ';}
 if(isset($rp))foreach($rp as $i=>$v)
@@ -429,7 +429,7 @@ if($dig=='all'){$ra['minday']=max(array_flip($_SESSION['digr'])); unset($ra['max
 elseif($dig){$ra['minday']=$dig; $ra['maxday']=time_prev($dig);}
 elseif(ses('nbj')){$ra['mintime']=ses('dayb'); $ra['maxtime']=ses('daya'); $ra['minday']='';}
 else{$ra['mintime']=''; $ra['maxtime']=''; $ra['minday']='';}
-if(!rstr(107)){$lg=ses('lang'); $ra['lang']=$lg!='all'?$lg:'';} //$ra['nl']=get('nl');
+if(!($ra['lang']??'')){$lg=ses('lang'); $ra['lang']=$lg!='all'?$lg:'';} //$ra['nl']=get('nl');
 $ra['order']=self::order(''); $ra['nbyp']=prmb(6); $ra['page']=get('page');
 //$ra['verbose']=1;$ra['seesql']=1;//$ra['group']='id';
 return $ra;}

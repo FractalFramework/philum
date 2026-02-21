@@ -256,7 +256,7 @@ self::poplist(); $optb=$optb?$optb:randid('dk');
 $r=self::desktop($p,$dr,$opt,$optb);
 if($optb)$bt=self::deskmenu($dr,$p,$opt,$optb);
 $ret=self::pane_icons($r);
-$s=get('sz'); if(!$s)$s=650;
+$s=get('sz'); if(!$s)$s=650; if($s>650)$s=650;
 return div($bt.$ret,'',$optb,'min-width:'.($s-6).'px;');}
 
 static function deskload($p){if($p)$r=self::build_from_datas($p);//deskload

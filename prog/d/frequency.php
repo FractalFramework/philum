@@ -24,7 +24,7 @@ return $ret;}*/
 
 static function inner3($d,$br,$p,$q,$z=''){
 $sql='select '.$d.' from '.db($br[0][0][0]).' ';
-foreach($br as [$b1,$b2])
+foreach($br as $k=>[$b1,$b2])
 $sql.='inner join '.db($b2[0]).' on '.db($b1[0]).'.'.$b1[1].'='.db($b2[0]).'.'.$b2[1].' ';
 $sql.=sql::where($q);
 $rq=sql::qr($sql,$z); $ret=$p=='v'?'':[];
@@ -77,7 +77,7 @@ $sq['tag']=$p; if($o)$sq['>day']=timeago($o); $sq['_order']='art.id asc'; //$sq[
 //$r=sql::inner2('day','qdt','qdta','idtag','qda','idart','rv',$sq,1);
 //$r=sql::inner2b('day',['qdt','id'],['qdta','idtag'],['qda','id'],['qdta','idart'],'rv',$sq,1);
 $br=[[['qdt','id'],['qdta','idtag']],[['qdta','idart'],['qda','id']]];
-$r=sql::inner3('day',$br,'rv',$sq,0); //pr($r);
+$r=self::inner3('day',$br,'rv',$sq,0); //pr($r);
 $n=count($r); if($o>10000)$dt='Y'; elseif($o>1000)$dt='y/m'; else $dt='y-m-d';
 if($r)foreach($r as $k=>$v)if($v){$day=date($dt,$v); $rb[$day][]=1;}
 if($rb)foreach($rb as $k=>$v)$rc[$k]=count($v); //pr($rc);
@@ -85,16 +85,17 @@ return self::render($rc,$p,$o,$dt);}
 
 static function assume_word($d){
 $ex=sql('id','qdsr','v',['word'=>$d]);
-if(!$ex)searched::save($d);}
+if(!$ex){searched::save($d); $ex=sql('id','qdsr','v',['word'=>$d]);}
+return $ex;}
 
 static function nbslices($rb,$o,$dt){
 //$n=count($rc); $a=min($rc); $b=max($rc);
 return match($dt){'Y'=>round($o/365),'y-m'=>round($o/30),default=>$o};}
 
-static function words($p,$o){$rb=[]; $rc=[]; $sq=[]; self::assume_word($p);//$o=100;
-$sq['word']=$p; if($o)$sq['>day']=timeago($o); $sq['_order']='art.id asc';
-$br=[[['qdsr','id'],['qdsra','ib']],[['qdsra','art'],['qda','id']]];
-$r=sql::inner3('day,nb',$br,'kv',$sq,0); //pr($r);
+static function words($p,$o){$rb=[]; $rc=[]; $sq=[]; $ib=self::assume_word($p);//$o=100;
+$sq['word']=$p; if($o)$sq['>day']=timeago($o); $sq['_order']='art.id asc';//$sq['search_art.ib']=$ib;
+$br=[[['qdsr','id'],['qdsra','ib']],[['qdsra','art'],['qda','id']]];//
+$r=self::inner3('day,nb',$br,'kv',$sq,0); //pr($r);
 $n=count($r); if($o>10000)$dt='Y'; elseif($o>1000)$dt='y/m'; else $dt='y-m-d';
 if($r)foreach($r as $k=>$v)if($v){$day=date($dt,$k); $rb[$day][]=$v;} //$n=self::nbslices($rb,$o,$dt);
 //if($rb)foreach($rb as $k=>$v)$rc[$k]=count($v); //pr($rc);
@@ -161,7 +162,7 @@ return $ret;}
 static function menu($p,$o,$rid){
 if(!$p)$p=self::$default;
 $r=['twits','arts','length','stats','dist'];
-$j=$rid.'_frequency,call_inp,ind_1_'.$p.'_'.$o;
+$j=$rid.'_frequency,call_inp,ind_2_'.$p.'_'.$o;
 //$ret=inputj('inp',$p,$j,'word');
 $ret=datalist('inp',$r,$p,16,'',$j);
 $ret.=inpnb('ind',$o?$o:7,$j);
