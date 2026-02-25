@@ -52,8 +52,8 @@ while($r=self::qrw($rq))if($r)switch($p){
 	case('kvv'):$rt[$r[0]]=[$r[1],$r[2]]; break;
 	case('kkr'):$rt[$r[0]][$r[1]][]=$r[2]; break;
 	case('krr'):$rt[$r[0]][]=$r; break;
-	case('kx'):$rt[$r[0]]=explode('/',$r[1]??''); break;
-	case('ks'):$rt[$r[0]]=explode(' ',$r[1]??''); break;
+	case('kx'):$rt[$r[0]]=explode('/',$r[1]??''); break;//img
+	case('ks'):$rt=array_flip(explode(' ',$r[0]??'')); break;//qdd-msg
 	case('index'):$rt[$r[0]]=$r; break;
 	default:$rt[]=$r; break;}
 return $rt;}

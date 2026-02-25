@@ -226,4 +226,5 @@ return ['_'=>['title'],
 '224'=>['caractères'],
 '225'=>['Articles liés'],
 '226'=>['Légende'],
-'227'=>['Contexte']]; ?>
+'227'=>['Contexte'],
+'228'=>['Multilingue']]; ?>

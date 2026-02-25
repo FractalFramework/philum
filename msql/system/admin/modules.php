@@ -150,4 +150,5 @@ return ['_'=>['category','param','title','command','option','cache','template','
 'background'=>['system','','','','','','','','','',''],
 'lastup'=>['app','','','','','','','','','',''],
 'temporalnav'=>['app','','','','','','','','','',''],
-'topfolders'=>['app','','','','','','','','','','']]; ?>
+'topfolders'=>['app','','','','','','','','','',''],
+'description'=>['system','','','','','','','','','','']]; ?>

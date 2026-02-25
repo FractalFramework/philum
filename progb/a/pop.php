@@ -1,13 +1,13 @@
-<?php //popular constructors
+<?php 
 class pop{
 #admin
 static function m_system($st){$auth=$_SESSION['auth']; $id=get('read');
 $rst=ses('rstr'); $top=!$rst[69]?'':'d'; $hv=1;
 $ra=[0=>prmb(8),1=>'loading',2=>'admin',3=>'desktop',4=>'download',5=>'search',6=>'articles',7=>'add',8=>'link',9=>'language',10=>'time',11=>'circle-full',12=>'circle-empty',13=>'textlist',14=>'user',15=>'menu',16=>'circle-half',17=>'bookmark2',18=>'organigram']; $ic=array_map(fn($v)=>picto($v),$ra);
 $rt['home']=popbub('home','',$ic[0],$top,$hv);//if(!$rst[20])
+if(!$rst[51])$rt['desk']=popbub('desk','',$ic[3],$top,$hv);
 if(prma('MenuBub'))$rt['menuB']=popbub('menubub','',$ic[15],$top,$hv);//if(!$rst[94])
 if(!$rst[95])$rt['menuO']=popbub('overcat','',$ic[18],$top,$hv);
-if(!$rst[51])$rt['desk']=popbub('desk','',$ic[3],$top,$hv);
 if($auth>4){
 	if(!$rst[120])$rt['admin']=popbub('fadm','fastmenu',$ic[2],$top,$hv);
 	else $rt['admin']=popbub('fadm','fastmenu2',$ic[2],$top,$hv);}

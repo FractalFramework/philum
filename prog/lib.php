@@ -12,6 +12,7 @@ function hr(){return "<hr />";}
 function sep(){return "&nbsp;";}
 function sti(){return "&#8239;";}
 function thin(){return "&thinsp;";}
+function pq($d){return '\''.$d.'\'';}
 function atb($d,$v){return $v?' '.$d.'="'.$v.'"':'';}
 function atc($d){return $d?' class="'.$d.'"':'';}
 function atd($d){return $d?' id="'.$d.'"':'';}
@@ -51,13 +52,12 @@ function lkd($v,$a,$d=''){return tag('a',['href'=>$a,'id'=>$d],$v);}
 function lkn($v,$n){return tag('a',['name'=>$n],$v);}
 function llk($c,$u,$v){return li(lk($u,$v),$c);}
 function lj($c,$j,$v,$p=''){if(ses('dev'))$p.=att($j);
-	return '<a onclick="sj(this)" data-j="'.$j.'"'.atc($c).$p.'>'.$v.'</a>';}//att
+	return '<a onclick="sj(this)" data-j="'.$j.'"'.atc($c).$p.'>'.$v.'</a>';}
 function ljr($r,$v,$c='',$t=''){return '<a onclick="'.atjr('sjr',$r).'" '.atc($c).att($t).'>'.$v.'</a>';}
 function lh($c,$h,$v,$p=''){return '<a href="'.$h.'" onclick="return hj(this)"'.atc($c).$p.'>'.$v.'</a>';}
 function ljb($c,$j,$p,$v,$o=''){$j=atjr($j,$p); return '<a'.atk($j).atc($c).$o.'>'.$v.'</a>';}
 function ljh($c,$j,$p,$v,$o=''){$j=atjr($j,$p); return '<a'.atmo($j).atmu($j).atc($c).$o.'>'.$v.'</a>';}
-function blj($c,$id,$j,$v,$o=''){return span(lj('',$id.'_'.$j,$v,$o),$c,$id);}//kill
-function ljbt($c,$j,$v,$o=''){return span(lj('',$j,$v,$o),$c,strto($j,'_'));}
+function blj($c,$j,$v,$o=''){$rid=randid(); return lj($c,$rid.'_'.$j,$v,$o).span('','',$rid);}
 function image($d,$w='',$h='',$s='',$t=''){
 return taga('img',['src'=>$d,'width'=>$w,'height'=>$h,'style'=>$s,'title'=>$t]);}
 function img($d,$s=''){return '<img src="'.$d.'"'.ats($s).'>';}
@@ -656,8 +656,8 @@ else if($k>=4)$rt[]=$v.$ra[$k];
 return join(' ',$rt);}
 
 #builders
-function divscroll($d,$h='420',$id=''){
-return div($d,'scroll',$id,'max-height:'.$h.'px;');}
+function divscroll($d,$h='420',$id='',$c=''){
+return div($d,'scroll '.$c,$id,'max-height:'.$h.'px;');}
 
 #medias
 function iframe($d,$w='',$h=''){

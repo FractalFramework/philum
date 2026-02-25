@@ -149,8 +149,6 @@ if($o=='all'){$dt=date('ymd');
 		//$e="SET names 'utf8'"; exc($e);
 		//$e='SOURCE '.$dr.'/'.$fb; exc($e);
 		return 'restored';}}
-$f=$srv.'/call/transport/'.$p.'/last'; $dist_maxid=getfile($f);
-$maxid=self::last($p); if($maxid=='' or $o=='d')$maxid=0;
 if($o=='z' && auth(7)){sql::drop(self::ts_db($p));//$b=self::pub($p); qr('drop table '.$b);//reinit
 	sqldb::install($p);//$r=install::db(); $d=$r[$p]; if($d)qr($d); 
 	$res=$p.':z';}
@@ -158,7 +156,7 @@ elseif($o=='zz' && auth(7)){$r=self::tables();//reinstal tables
 	foreach($r as $k=>$v)sql::drop(self::ts_db($v));//qr('drop table '.self::pub($v));
 	return sqldb::batchinstall();}//install::home(db('qd'))
 elseif($o=='json'){//dj
-	$u=$srv.'/call/transport/'.$p.'/dj'; $d=getfile($u); //echo $u.';;';//build?? //.($o?$o:$maxid)
+	$u=$srv.'/call/transport/'.$p.'/dj'; $d=getfile($u);//build?? //.($o?$o:$maxid)
 	$f='_backup/'.$p.'.json'; $u=$srv.'/'.$f;
 	//if(is_file($f))unlink($f); 
 	if(!is_file($f)){$e='wget -P '.$dr.'/_backup '.$u; exc($e);}
@@ -166,6 +164,8 @@ elseif($o=='json'){//dj
 	if($d && !$er){$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b); sql::savr($b,$r,1,0); $res=$b.':renoved';}}
 else{//partial and complete dumps, not gziped
 	//$ra=self::db_r(); $b=$ra[$p]; $bb=sql::backup($b); sql::trunc($b);
+	$fb=$srv.'/call/transport/'.$p.'/last'; $dist_maxid=getfile($fb);
+	$maxid=self::last($p); if($maxid=='' or $o=='d')$maxid=0;
 	$u=$srv.'/call/transport/'.$p.'/'.($o=='up'?$o:$maxid); $d=getfile($u);//build
 	$f='_backup/'.$p.'.dump'; $u=$srv.'/'.$f;
 	if(is_file($f))unlink($f); if(!is_file($f)){$e='wget -P '.$dr.'/_backup '.$u; exc($e);}

@@ -32,13 +32,13 @@ foreach($r as $k=>$v){$i++; if($i==$ka)$ka=$k;}
 self::upd($dr,$nod,$ka,$va,$col);
 return $va;}
 
-//type
+#type
 static $depht=[];
 static function array_depht($r){static $i; $i++; self::$depht[]=$i;
 foreach($r as $k=>$v)if(is_array($v))self::array_depht($v); $i--;
 return max(self::$depht);}
 
-//txt format
+#txt format
 static function savxt($p){
 [$dr,$nod,$inp]=vals($p,['dr','nod','inp']);
 $f=json::url($dr,$nod);
@@ -52,12 +52,42 @@ $ret=bj('jedt|jadm,savxt|dr='.$dr.',nod='.$nod.'|inp',picto('save'),'btsav');
 $ret.=div(textarea('inp',$d,'64','24',['class'=>'console']),'area');
 return div($ret,'','jedt');}
 
-//read
+#read
+static function nsp($n){return str_pad('',$n,'  ');}
+static function dmp_p($r){$rt=[];
+foreach($r as $k=>$v)$rt[]=pq($k).'=>'.pq($v);
+return '['.join(',',$rt).']';}
+
+static function dumpr($r){$rb=[]; $a=0; static $i;
+foreach($r as $k=>[$a,$p,$c]){$ka=''; $i++;
+	if(is_array($p))$p=self::dmp_p($p);
+	if(is_array($c))$c=n().self::nsp($i).self::dumpr($c); else $c=pq($c);
+	if(!is_numeric($k))$ka=$k.'=>';
+$rb[]=$ka.pq($a).','.$p.','.$c; $i--;}
+return self::nsp($i).'['.implode(',',$rb).']'.n();}
+
+static function display($r){
+$rt=[]; static $i;
+if($r)foreach($r as $k=>$v){$i++;
+	if(is_array($v))$rt[]=str_pad('',$i,' ').self::display($v);
+	else $rt[]=($v); $i--;}
+return join(n(),$rt);}
+
 static function player($r){$ret='';
 if($r)foreach($r as $k=>$v)
 	if(is_array($v))$ret.=li($k).self::player($v);
 	else $ret.=li($k.':'.$v);
 return ul($ret);}
+
+static function play($p,$o='',$prm=[]){
+$d=$prm[0]??$p;
+$r=json_decode($d,true);
+//$d=pr($r,1);
+$ret=self::dumpr($r);
+//$ret=few::progcode($d,0);
+//$ret=tree($r,1,0);
+//$ret=self::display($r);
+return divscroll($ret,'','','nl2br');}
 
 static function tabler($r){$ret=[];
 if($r)foreach($r as $k=>$v)
@@ -81,7 +111,18 @@ if($ty<3)$ret=build::editable($r,'jadm,mdf|dr='.$dr.',nod='.$nod,'',1);
 else $ret=self::editxt(['dr'=>$dr,'nod'=>$nod]); //tabler($r);
 return $bt.$ret;}
 
-//call
+#edit
+static function savedt($dr,$nod,$prm=[]){
+$f=json::write($dr,$nod,$prm[0]);
+return 'saved: '.$f;}
+
+static function edit($dr,$nod){
+$v=json::brut($dr,$nod); //self::patch();
+$edt=console('jdt',$v,'jdtcb_jadm,play_jdt__',1);
+$bt=blj('popsav','jadm,savedt_jdt_xd_'.$dr.'_'.$nod,picto('save',nms(27))).br();
+return div(div($bt.$edt).div(self::play($v),'','jdtcb'),'grid-pad');}
+
+#call
 static function build($f,$rid){
 [$dr,$nod]=split_right('/',$f);
 $ret=btn('popw',$dr.','.$nod);

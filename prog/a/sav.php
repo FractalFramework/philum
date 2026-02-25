@@ -211,7 +211,7 @@ $rt[]=self::placeim($id);
 return $rt;}
 
 static function placeim($id,$o='',$z=''){$rid=randid(); $ret=''; $rz=[]; $i=0;
-$imh=artim::imgart($id); $r=sqb::read('im,dc','img','kv',['ib'=>$id]); if($o)$r=array_reverse($r);
+$imh=artim::imgart($id); $r=sqb::read('im,dc','qdg','kv',['ib'=>$id]); if($o)$r=array_reverse($r);
 if($r)foreach($r as $k=>$dc){$bt=''; $f='img/'.$k; $fc='imgc/'.$k; $kb=ajx($k); $i++;
 	$im=img::build_mini($k,'72/48',0,$z); $szx=fsize($f); $sz=round($szx/1024,2).' Ko';
 	$dob=in_array($szx,$rz)?1:0; $rz[$k]=$szx;

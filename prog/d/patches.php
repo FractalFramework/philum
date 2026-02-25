@@ -229,7 +229,7 @@ return tabler($rt);}
 
 static function views(){//2404
 $ra=['art','cat','read','tracks','simple','little','fast','titles','pubart','pubartb','pubartc','panart','cover','weblink','bublh','bublj','bublk','book','file','product'];//json_encode($r);
-foreach($ra as $v){$r=datas::$v(); if(auth(4))echo $v.' '; json::sav('sys','views/'.$v,$r);}}
+foreach($ra as $v){$r=tpl::$v(); if(auth(4))echo $v.' '; json::sav('sys','views/'.$v,$r);}}
 
 static function config(){//2406
 //cats
@@ -325,8 +325,8 @@ ses('prmb',$rd);}
 
 static function nonarts(){
 $sq=['!nod'=>ses('qb'),'+frm'=>'_'];
-echo $n=sqb::read('count(id)','art','v',['re'=>1,'or'=>$sq],0);
-if($n)sqb::upd('art',['re'=>0],['re'=>1,'or'=>$sq],1);}
+echo $n=sqb::read('count(id)','qda','v',['re'=>1,'or'=>$sq],0);
+if($n)sqb::upd('qda',['re'=>0],['re'=>1,'or'=>$sq],1);}
 
 #call2
 static function call($p,$o,$prm=[]){$r=[];

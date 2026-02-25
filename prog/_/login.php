@@ -48,7 +48,7 @@ else return 'logon: '.$qb;}
 static function call($p,$o,$prm=[]){
 [$usr,$psw,$cook,$mail,$newhub]=arr($prm,5);
 $usr=str::normalize($usr); $psw=str::normalize($psw); $uid=0;
-$qdu=db('qdu'); $qb=ses('qb'); $host=ip();
+$qb=ses('qb'); $host=ip();
 //if(md5($usr.$psw)=='e36f9846e997e4491c58aa65d9c9f4e6')$_SESSION['usr']=ses('master');
 //$ath=array_flip(adm::authes_levels());
 //log
@@ -96,7 +96,6 @@ elseif(prmb(11)>=1 or $newhub or !$first or prms('create_hub')=='on'){$rl='ok';
 	if($usr!='admin')$uid=self::adduser($qb,$usr,$psw,$mail,$newhub);//add_user
 	if(prmb(11)>=6 or $newhub or !$first){self::modif_cnfgtxt($usr,$first);//add_hub
 		$qb=self::makenew($usr); self::message2newuser($usr,$mail,$psw); $_SESSION['auth']='';}
-	$_SESSION['qbin']['adminmail']=$mail;
 	self::log_result($usr,$uid,$qb,$rl,$cook);}}}
 
 static function modif_cnfgtxt($qb,$first){$f=boot::cnf();
@@ -106,7 +105,7 @@ if(!$first)$r[3]=$qb; if(prms('htacc'))$r[1]='yes';
 write_file($f,implode('#',$r));}
 
 static function message2newuser($usr,$mail,$psw){
-$from=$_SESSION['qbin']['adminmail'];
+$from=boot::admail();
 $subj=$usr; $txt=helps('newhub_mail');
 $txt=str_replace(['_USER','_PASS'],[$usr,$psw],$txt);
 $txt.="\n\n".prep_host(ses('qb'));
@@ -119,14 +118,14 @@ $txt='rappel de vos identifiants:
 login: '.$usr.', passw: '.$psw.'
 --
 '.host();
-$adminmail=$_SESSION['qbin']['adminmail'];
+$adminmail=boot::admail();
 $tet="From: $adminmail \n";
 mail($qmail,$subj,$txt,$tet);
 return lj('small','lgn_login,form',"password sent to user $usr $qmail");}
 
 #newuser
 static function adduser($qb,$usr,$psw,$mail,$newhub){$dayx=ses::$dayx;
-$qdu=db('qdu'); $mbrs='7::admin,'; $open=''; $ip=ip();
+$open=''; $ip=ip(); $mbrs='7::admin,';//!
 if(prmb(11)>=6 or $newhub){
 	$open=1; $menus=$dayx; $hub=$usr;
 	[$rstr,$config]=self::ndprms_defaults();
@@ -137,6 +136,8 @@ $ex=sql('id','qdu','v','1');
 //if(!$ex)install::home('pub');
 $psw=password_hash($psw,PASSWORD_DEFAULT);
 $rp=[$usr,$psw,$mail,$dayx,'',$ip,$rstr,$mbrs,$hub,0,$config,'','',$menus,$open];
+//name,pass,mail,day,-clr,ip,-rstr,-mbrs,hub?,-nbarts,-config,-struct,-dscrp?,-menus,active
+//$rp=[$usr,$psw,$mail,$dayx,$ip,'welcome',$open];
 return sql::sav('qdu',$rp);}
 
 static function ndprms_defaults(){
@@ -149,7 +150,7 @@ $config=str_replace('LANG',$lang,$config);
 return ['0'.implode('',$rstr),$config];}
 
 static function makenew($qb,$restore=''){
-$qdu=db('qdu'); if(!auth(4))$_SESSION['auth']=4;
+if(!auth(4))$_SESSION['auth']=4;
 msql::copy('system','default/css/1','design',$qb.'/css/1');
 msql::copy('system','default/clr/1','design',$qb.'/clr/1');
 msql::copy('system','default/css/2','design',$qb.'/css/2');

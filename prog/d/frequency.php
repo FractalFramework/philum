@@ -73,7 +73,7 @@ static function tags($p,$o){$rb=[]; $rc=[]; $sq=[]; //$o=100;
 $sq['tag']=$p; if($o)$sq['>day']=timeago($o); $sq['_order']='art.id asc'; //$sq['_group']='day';
 //date_format(day,"%d/%m/%Y")
 //$r=sql::inner('idart','qdt','qdta','idtag','rv',$sq,1);
-//$r=sqb::inner('meta_art.id','meta','meta_art','idtag','kv',$sq,1);
+//$r=sqb::inner('meta_art.id','qdt','qdta','idtag','kv',$sq,1);
 //$r=sql::inner2('day','qdt','qdta','idtag','qda','idart','rv',$sq,1);
 //$r=sql::inner2b('day',['qdt','id'],['qdta','idtag'],['qda','id'],['qdta','idart'],'rv',$sq,1);
 $br=[[['qdt','id'],['qdta','idtag']],[['qdta','idart'],['qda','id']]];

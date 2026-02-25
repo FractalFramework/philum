@@ -38,10 +38,10 @@ return $ret;}
 
 static function artex($id,$re=''){
 $sq=['id'=>$id]; if($re)$sq['>re']='0';
-return sqb::read('id','art','v',$sq);}
+return sqb::read('id','qda','v',$sq);}
 
 static function artxt($id){
-return sqb::read('msg','txt','v',$id);}
+return sqb::read('msg','qdm','v',$id);}
 
 static function lastart(){$r=msql::row('server',nod('last'),1); if(!$r)$r=self::lastartrq(); return $r;}
 static function lastartid(){$r=self::lastart(); return $r[0]??0;}
@@ -59,11 +59,11 @@ static function maxdays(){$d=sesmk2('ma','oldestart'); if(!$d)$d=0;
 $t=ses('daya'); if(!$t)$t=time(); $e=$t-$d; if($e)return round($e/84600);}
 static function maxyears(){return ceil(self::maxdays()/365);}
 static function id_of_suj($id){
-return sqb('id','art','v',['suj'=>$id,'nod'=>ses('qb'),'_order'=>'id asc','_limit'=>'1']);}
-static function ib_of_id($id){$ib=sqb('ib','art','v',$id); if($ib && is_numeric($ib) && $ib!=$id)return $ib;}
-static function id_of_ib($ib){return sqb('id','art','k',['ib'=>$ib,'>re'=>'0','-frm'=>'_']);}
-static function suj_of_id($id){$suj=sqb('suj','art','v',$id); if(is_string($suj))return $suj;}
-static function related_arts($id){$d=sqb('msg','data','v',['ib'=>$id,'val'=>'related']);
+return sqb('id','qda','v',['suj'=>$id,'nod'=>ses('qb'),'_order'=>'id asc','_limit'=>'1']);}
+static function ib_of_id($id){$ib=sqb('ib','qda','v',$id); if($ib && is_numeric($ib) && $ib!=$id)return $ib;}
+static function id_of_ib($ib){return sqb('id','qda','k',['ib'=>$ib,'>re'=>'0','-frm'=>'_']);}
+static function suj_of_id($id){$suj=sqb('suj','qda','v',$id); if(is_string($suj))return $suj;}
+static function related_arts($id){$d=sqb('msg','qdd','v',['ib'=>$id,'val'=>'related']);
 return $d?explode(' ',$d):[];}
 static function data_val($v,$id,$val,$m=''){$sq=$id?['ib'=>$id]:[];
 return sql($v,'qdd',$m?$m:'v',$sq+['val'=>$val]);}
@@ -92,22 +92,21 @@ $sq['<day']=ses('daya'); if(rstr(3))$sq['>day']=ses('dayb');
 if(!isset($sq['_order']))$sq['_order']=prmb(9);
 //if(!isset($sq['lg']) && ses('lang')!='all')$sq['lg']=ses('lang');
 if(!$c)$c='id,day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg';
-return sqb::read($c,'art',$kv,$sq);}
+return sqb::read($c,'qda',$kv,$sq);}
 
 static function rqtart($id){
-$r=sqb::read('day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg','art','w',$id);
+$r=sqb::read('day,frm,suj,img,nod,thm,lu,name,host,mail,ib,re,lg','qda','w',$id);
 return arr($r,13);}
 
 static function rqtcol($sq){
 return self::rqtall('id','k',$sq,0);}
 
 static function rqtv($id,$c){
-return sqb::read($c,'art','v',$id);}
+return sqb::read($c,'qda','v',$id);}
 
 #cache
 static function cacheart($id){
 $r=self::rqtart($id);
-//$r[3]=artim::ishero($r[3],$id);
 self::cacherow($id,$r);}
 
 static function cacherow($id,$r){

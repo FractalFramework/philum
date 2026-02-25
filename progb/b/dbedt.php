@@ -35,7 +35,7 @@ static function entries($a){$rt=[]; $pr=[];
 if(!auth(6))$pr=['uid'=>ses('uid')];
 $r=sqb::read('id',$a,'rv',$pr);
 foreach($r as $k=>$v)$rt[]=bj('dbdt|dbedt,read|a='.$a.',id='.$v,$v,'');
-return div(join('',$rt),'menu');}
+return div(join(' ',$rt),'menu');}
 
 static function read($p){$r=[]; //pr($p);
 [$a,$id]=vals($p,['a','id']); $bt=''; $ret='';

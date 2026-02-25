@@ -223,4 +223,5 @@ return ['_'=>['col_1'],
 '221'=>['fontes de RSS'],
 '222'=>['remover tudo'],
 '223'=>['reiniciar'],
-'224'=>['caracteres']]; ?>
+'224'=>['caracteres'],
+'228'=>['Multilingue']]; ?>

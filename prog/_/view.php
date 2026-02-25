@@ -17,7 +17,7 @@ foreach($r as $k=>$v)
 return $rv;}
 
 //r to tmp
-//view::mkconn(datas::little());
+//view::mkconn(tpl::little());
 static function mkconn($r){$ret='';
 foreach($r as $k=>$v){[$v1,$v2,$v3]=$v;
 	if(is_array($v[2]))$v3=self::mkconn($v3);
@@ -71,23 +71,24 @@ return $d;}
 
 //json
 static function reflush($d){
-$r=get_class_methods('datas');
+$r=get_class_methods('tpl');
 echo 'update: templates';//$d.' in '.(auth(7)?'json/sys, ':'').'json/srv, msql/server: '; 
-foreach($r as $v){$rb=datas::$v(); //echo $v.' ';
-	sesz('datas'.$v); sesz('viewgetmpsrv'.$v); sesz('viewgetmpsys'.$v);
+foreach($r as $v){$rb=tpl::$v(); //echo $v.' ';
+	sesz('tpl'.$v); sesz('viewgetmpsrv'.$v); sesz('viewgetmpsys'.$v);
 	if(auth(7))json::sav('sys','views/'.$v,$rb); json::sav('srv',drn('views/'.$v),$rb);
 	$db=self::mkconn($rb); msql::save('server',nod('views/'.$v),[$db]);}}
 
-static function isnew($d){
-$src=ftime('progb/b/datas.php');
-$dst=ftime('json/srv/'.drn('views').'/'.$d.'.json'); //echo $src.'-'.$dst.' ';
+static function isnew($d,$o=0){
+$src=ftime('progb/b/tpl.php');
+if($o)$dst=ftime('json/sys/views/'.$d.'.json');
+else $dst=ftime('json/srv/'.drn('views/'.$d).'.json');
 return $src>$dst?1:0;}
 
 static function getmpsys($d){
 return json::read('sys','views/'.$d);}
 
 static function getmpsrv($d){
-return json::read('srv','views/'.drn($d));}
+return json::read('srv',drn('views/'.$d));}
 
 static function batch($r,$rb){$rt=[];
 foreach($rb as $k=>$v)$rt[]=self::call($r,$v);
@@ -99,8 +100,8 @@ if($rf && auth(4))self::reflush($tmp);
 if(rstr(162)){//json
 	$r=sesmk2('view','getmpsrv',$tmp,$rf);
 	if(!$r)$r=sesmk2('view','getmpsys',$tmp,$rf);}
-if(!$r)$r=sesmk2('datas',$tmp,'',$rf);
-if(!$r)$r=datas::$tmp();
+if(!$r)$r=sesmk2('tpl',$tmp,'',$rf);
+if(!$r)$r=tpl::$tmp();
 return self::call($r,$ra);}
 
 }

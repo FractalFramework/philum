@@ -52,6 +52,9 @@ $f=self::url($dr,$nod,$o); if(is_file($f) && auth(4))unlink($f);}
 static function delemptydirs(){$r=scandir_r('msql');
 $fc=fn($v)=>scanfiles($v)?1:(rmdir($v)?$v:'');
 $rb=array_map($fc,$r); pr($rb);}
+static function delemptydir($dr,$nd){
+$d='msql/'.$dr.'/'.str_replace('_','/',$nd); $r=scanfiles($d); pr($r);
+if(auth(6)){rmdir_r($d); echo 'del: '.$d;}}//!scanfiles($d) && 
 
 static $depht=[];
 static function valid($r){static $i; $i++; self::$depht[]=$i;
@@ -60,7 +63,7 @@ $n=max(self::$depht); return $n==2||$n==1?1:0;}
 
 static function save($dr,$nod,$r,$rh=[],$bak=''){if(!$r)$r=[];
 if($rh && !isset($r['_']))$r=array_merge(['_'=>$rh],$r); if(isset($r[0]))$r=self::reorder($r);
-$f=self::url($dr,$nod,$bak); if($nod)mkdir_r($f);
+$f=self::url($dr,$nod,$bak); if($nod)mkdir_r($f); $r=self::lf($r);
 $d=self::dump($r,$nod); if(self::valid($r))putfile($f,$d); else echo 'no:'.$f; return $r;}
 
 static function save2($dr,$nod,$r,$qb='',$lg='',$rh=[]){if(!$r)$r=[];//future
@@ -102,7 +105,6 @@ static function inc($dr,$nod,$rh=[],$bak=''){$f=self::url($dr,$nod,$bak); $r=[];
 if(is_file($f)){try{$ra=require($f);}catch(Exception $e){echo 'bruu: '.$nod;}}
 elseif($rh)self::save($dr,$nod,[],$rh,$bak);
 if(isset($ra) && is_array($ra) && !$r)$r=$ra;
-//if(!isset($r)){$r=$$nd; echo $nd.' ';}//patch_old
 if(is_array($r))$r=self::sl($r);
 return $r;}
 
@@ -203,7 +205,8 @@ if($r)foreach($r as $k=>$v)if($v[$n]==$d)$in=$k; if(!isset($in))return;
 if($o && isset($r['_']))return array_combine_a($r['_'],$r[$in]); else return $r[$in];}
 
 //filters
-static function sl($r){foreach($r as $k=>$v)$r[$k]=is_array($v)?self::sl($v):stripslashes($v); return $r;}
+static function sl($r){foreach($r as $k=>$v)$r[$k]=is_array($v)?self::sl($v):stripslashes($v??''); return $r;}
+static function lf($r){foreach($r as $k=>$v)$r[$k]=is_array($v)?self::lf($v):delr($v); return $r;}
 static function format($r){foreach($r as $k=>$v)$r[$k]=[$v]; return $r;}
 static function clb($r,$n){$rb=[]; foreach($r as $k=>$v)$rb[$k]=$v[$n]; return $rb;}
 static function cat($r,$n,$o=''){$rb=[]; foreach($r as $k=>$v)$rb[$v[$n]??$v]=$k; return $o?array_flip($rb):$rb;}

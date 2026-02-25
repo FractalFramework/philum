@@ -67,7 +67,7 @@ $r=['(',')','[',']','{',']','<','>','=','+','-','.',',',';','!','?'];
 $rt=array_map(fn($d)=>'<span style="color:red">'.$d.'</span>',$ra);
 return join('',$rt);}*/
 
-static function progcode($d,$o=''){$d=trim($d);
+static function progcode($d,$o=''){$d=trim($d??'');
 $r=['comment'=>'gray','default'=>'#e5c07b','html'=>'','keyword'=>'#56b6c2','string'=>'#98c379'];//#e06c75#abb2bf
 if($o)$r=['comment'=>'gray','default'=>'silver','html'=>'red','keyword'=>'orange','string'=>'green'];//defaults
 foreach($r as $k=>$v)ini_set('highlight.'.$k,$v);

@@ -1,4 +1,4 @@
-@font-face {font-family: "oomo"; src: url("/fonts/Oomo.woff2?v2.2602101036") format("woff2"), url("/fonts/Oomo.woff?v2.2602101036") format("woff"), url("/fonts/Oomo.svg#oomo") format("svg"), url("/fonts/Oomo.ttf") format("truetype");}
+@font-face {font-family: "oomo"; src: url("/fonts/Oomo.woff2?v2.2602211010") format("woff2"), url("/fonts/Oomo.woff?v2.2602211010") format("woff"), url("/fonts/Oomo.svg#oomo") format("svg"), url("/fonts/Oomo.ttf") format("truetype");}
 .oomo{font-family:"oomo";}
 .oo-O_OU:before{content:"\0100";}
 .oo-I_AS:before{content:"\0101";}

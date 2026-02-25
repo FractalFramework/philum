@@ -172,7 +172,7 @@ static function sugnote(){$sg=ses::$r['sugm'];
 $r=msql::modif('',ses('qb').'_suggest','ok','val',1,$sg);
 $mail=$r[$sg][3]??''; [$m,$a]=expl('@',$mail,2); $id=ma::lastartid()+1;
 $msg=lkc('',host().urlread($id),helps('suggest_ok'));
-if($mail)mails::send_html($mail,nmx([1,89]),$msg,$_SESSION['qbin']['adminmail'],$id);
+if($mail)mails::send_html($mail,nmx([1,89]),$msg,boot::admail(),$id);
 if($m)return '['.nmx([56,88]).' '.$m.':q]'."\n";}
 
 static function detect_anchors($dz,$txt,$src,$rot,$root){$mid='';

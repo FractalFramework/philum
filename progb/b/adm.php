@@ -1,9 +1,9 @@
 <?php
-#philum_admin_system
+#admin
 class adm{
 static $curauth=0;
 #references
-static function conn_help(){$qb=ses('qb');
+static function connhlp(){$qb=ses('qb');
 $ret=helps('conn_help_txt'); $nb=0;
 $ret=br().tagc('blockquote','tabd',$ret).br().br();
 $arr=['auto','basic','all','conb',$qb];
@@ -30,90 +30,11 @@ if($p=='descript'){//field
 	$ret='meta "description" in Home: [,]<br>';
 	$ret.=textarea('hbp',$d,60,10);}
 if($p=='google'){
-	$d=sql('clr','qdu','v','name="'.ses('qb').'"');
+	$d=sql('clr','qdu','v',['name'=>ses('qb')]);
 	$ret.=lkc('txtx','https://www.google.com/webmasters/tools/home?hl=fr','google-site-verification').' '.btn('txtsmall','meta balise used by google').br();
 	$ret.=input('hbp',$d,40);}
 $ret.=lj('popsav','hubprm_adm,hubprm*sav_hbp_xx_'.ajx($p),nms(27));
 return divd('hubprm',$ret);}
-
-#conb
-//core
-static function core_view_edit($rb,$s){
-$r=['static function'=>$rb[0],'variables'=>$rb[1],'usage'=>stripslashes($rb[2]),'return'=>$rb[3],'context'=>$rb[4]];
-$inp=input('crvw',str_replace(',','/',$rb[1]).'|'.$s.':core');
-$bt=ljb('txtbox','jumpText_insert_b',['crvw','txarea'],'insert');
-return build::on2cols($r,300,5).$inp.$bt.br();}
-
-static function core_view($d,$s){$js='crv_adm,core*view___';
-$r=msql::read('system','program_core',1); if($r)$cat=msql::cat($r,4);
-$ret=slctmnuj($cat,$js,$d,' ').br();
-if($d){$r=msql::tri($r,4,$d); if($r)$cat=msql::cat($r,0);
-	if($s){$rb=$r[$cat[$s]]; return self::core_view_edit($rb,$s);}
-	foreach($r as $k=>$v)$ret.=divc('row',lj('popbt','popup_adm,core*view___'.$d.'_'.ajx($v[0],''),$v[0].'('.$v[1].')').btn('poph" title="returns: '.$v[3],$v[2]));}
-return $ret;}
-
-//conn
-static function conn_view($d,$s){$js='cnv_admconn*view___';
-$r=msql::read('system','connectors_all',1);
-$r=msql::tri($r,0,'embed'); if($r)$cat=msql::cat($r,2);
-$ret=slctmnuj($cat,$js,$d,' ').br().br(); $cat=msql::tri($r,2,$d);//p($cat);
-if($d){$r=msql::tri($r,2,$d);
-	if($s){$ret.=divc('',nl2br(msql::val('lang','connectors_all',$s))).br();
-	$ins='|'.$s.':conn'; if($_SESSION['cur_cl']=='template')$ins='[value'.$ins.']';
-	$ret.=input('cnvw',$ins);
-	$ret.=ljb('txtbox','jumpText_insert_b',['cnvw','txarea'],'insert').br();
-	$ret.=btn('txtsmall2','use value|option if needed').br().br();}
-	$ret.=slctmnuj($cat,$js.$d.'_',$s,br()).br();}//!
-return $ret;}
-
-//conb_edit
-static function conb_editor($d,$type,$slct){
-$_SESSION['cur_cl']=$type; $menu='';
-$r=msql::kv('system','connectors_conb');
-$rb=msql::kv('lang','connectors_conb');
-foreach($r as $k=>$v){$hlp=att($rb[$k]??'');
-$menu.=lj('txtx','editcl_adm,clview___'.$k.'_'.$type,$k,$hlp).' ';}
-$re['preview']=self::clview_basic($d,$type,$slct);
-$re['conb']=$menu.br().br().divd('editcl','').divd('seecl','');
-if($type=='template'){$re['structure']=conb::parse($d,'clpreview');
-	$re['vars']=self::clview_vars();}
-else{$re['core']=divd('crv',self::core_view('',''));}
-$re['connectors']=divd('cnv',self::conn_view('',''));
-$ret=build::tabs($re,'cdl');
-return div($ret,'imgr','width:300px; padding:10px;');}
-
-//variables
-static function clview_vars(){$r=sesmk2('tmp','vars','',0); $ret='';
-foreach($r as $k=>$v){$ret.=ljb('txtx','insert_b',[$v,'txarea'],$k).' ';}
-return $ret;}
-//structure
-static function clpreview($v){$r=unpack_conn_b($v); $ret='';
-if($r[0])$ret.=divc('txtx',btn('txtblc','value').' '.$r[0]);
-if($r[1])$ret.=divc('txtx',btn('txtblc','option').' '.$r[1]);
-$ret.=divc('txtx',btn('txtblc','connector').' '.$r[2]);
-return div($ret,'txtbox','','margin:4px;');}
-//conb
-static function clview($v,$t){
-$p=msql::val('system','connectors_conb',$v); [$p,$o]=opt($p,'|');
-$hlp=msql::val('lang','connectors_conb',$v);
-$val=$p.($o?'|'.$o:'').':'.$v; if($t=='template')$val='['.$val.']';
-$ret=divc('',$hlp).br().input('clvw',$val);
-$ret.=ljb('txtbox','jumpText_insert_b',['clvw','txarea'],'insert').br();
-return $ret;}
-//clbasic_preview
-static function clview_basic_j($t,$s,$pr=[]){[$p,$re]=$pr;
-if(!$re)$re=msql::val('users',nod($t),$s);
-if($t=='template' && $re)$ret=conb::parse($re,'template');
-else $ret=cbasic::read($re,$p);
-if(strpos($ret,'<br')===false)$ret=nl2br($ret);
-return divc('track',$ret).br().textarea('',$ret,40,5);}
-
-static function clview_basic($d,$type,$slct){
-$type=ajx($type,''); $slct=ajx($slct,'');
-$j='clva_adm,clview*basic*j_clvb,txarea__'.$type.'_'.$slct;
-$ret=input('clvb','').' '.lj('popsav',$j,'preview').br().br();
-$ret.=divd('clva',self::clview_basic_j($type,$slct,'param_'));
-return $ret;}
 
 #cortex
 static function cortexset($p,$o,$prm=[]){ses($p,$o);
@@ -153,14 +74,14 @@ if($slct){//save
 	if($local && $type=='templates'){
 		if($slct=='articles')$msg=msql::val('system','edition_template_art',1);
 		else $msg=msql::val('system','edition_template_'.$slct,1);}
-	$ret.=self::conb_editor($msg,$type,$slct).br();
+	$ret.=admtp::conb_editor($msg,$type,$slct).br();//old
 	if(!$pubase)$ret.=lj('txtx',$j.'mkpub_'.$slct,'make public').' ';
 	else $ret.=lj('txtx',$j.'mkpriv_'.$slct,'make private').' ';
 	$ret.=input('titl',$slct).' ';
 	$ret.=lj('popsav',$rid.'_adm,cortexset_titl,txarea__sav',nms(27)).' ';//sav
 	if($slct!='default')$ret.=lj('txtyl',$j.'erase_'.$slct,'x').br();
 	$ret.=self::jmp_btn_cb().br();
-	$sj=sj('clva_adm,clview*basic*j_clvb,txarea__'.$type.'_'.$slct);
+	$sj=sj('clva_admtp,clview*basic*j_clvb,txarea__'.$type.'_'.$slct);//old
 	$ret.=textarea('txarea',stripslashes($msg),44,14,['class'=>'console','onclick'=>$sj]);}
 return divd($rid,$ret);}
 
@@ -200,7 +121,6 @@ return divc('bkg',$ret);}
 
 static function admail($usr,$o='',$prm=[]){
 if($prm && auth(6)){sql::upd('qdu',['mail'=>$prm[0]],['name'=>$usr]);
-	if($usr==ses('qb'))$_SESSION['qbin']['adminmail']=$prm[0];
 	return divc('frame-green','admin_mail have been updated');}
 $ml=sql('mail','qdu','v',['name'=>$usr]);
 $ret=inputb('amail',$ml,'15','mail',50).' ';
@@ -232,7 +152,6 @@ static function finder($p,$o){if(!$p){$p=ses('qb'); $o='disk';}
 static function msql($m){return msqa::home($m?$m:(auth(6)?'system':'users'));}
 static function csslang(){return msql::col('lang','helps_css',0,1);}
 
-#css_builder
 static function adm_css(){//echo head::jslink('js/live.js');
 $ndd=ses('cssn',ses('prmd'));
 if(!$ndd)$ret=divc('tab',helps('public_design')).br();
@@ -267,21 +186,11 @@ if($p)foreach($mod as $k=>$v){$nb+=count($v); $arr=[];
 	$ret.=tabler($arr,1).br();}
 if($nb)$ret.=$nb.' modules'.br().$ret;
 return $ret;}
-static function adm_tcm($n){$ret='';
-foreach(['templates','connectors','modules'] as $k=>$v)$ret.=lj(active($k,$n),'admcnt_admin___'.$v,$v);
-return divc('menus',$ret);}
-static function userconns(){
-$lk=lj('txtblc','popup_adm,conn*help',pictxt('info','connectors_infos'));
-return self::adm_tcm(1).self::cortex('connectors').br().$lk;}
-static function templates(){return self::adm_tcm(0).self::cortex('templates');}
-static function modules(){
-$lk=lj('txtblc','popup_adm,modhlp___1',pictxt('info','modules_info'));
-return self::adm_tcm(2).self::cortex('modules').br().$lk;}
 
-static function hublist(){$wh=!auth(7)?'active=1':'';
-$r=sql('name,hub,active','qdu','',$wh); $qb=ses('qb');
+static function hublist(){$sq=!auth(7)?['active'=>'1']:[];
+$r=sql('name,hub,active','qdu','',$sq); $qb=ses('qb');
 if($r)foreach($r as $k=>$v){
-	$opn=sql('active','qdu','v','name="'.$v[0].'"');
+	$opn=sql('active','qdu','v',['name'=>$v[0]]);
 	$t=offon($opn).' '.nms($opn==1?130:131);
 	if(auth(7) or $v[0]==$qb)
 		$bt=lj('','admhb_adm,savhub___publish_'.ajx($v[0]),$t);
@@ -314,7 +223,7 @@ if((auth(6) && prms('create_hub')=='on') or auth(7))
 $ret.=lj('popbt','popup_adm,edithub___rename',nms(87));
 if(auth(6))$ret.=lj('popbt','popup_adm,edithub___kill',nmx([76,100]));
 if(auth(5))$ret.=lj('popbt','popup_adm,edithub___reinit',nms(103));
-$opn=sql('active','qdu','v','name="'.$qb.'"');
+$opn=sql('active','qdu','v',['name'=>$qb]);
 $ret.=lj('popbt','admhb_adm,savhub___publish_'.ajx($qb),offon($opn).' '.nms($opn==1?130:131));
 return divd('admhb',$ret.br().br().self::hublist());}
 
@@ -326,6 +235,14 @@ foreach($r as $v)$rb[]=strprm($v,0,'_'); $rb=array_flip($rb);
 if($rb)foreach($rb as $k=>$v)if($k)$ret.=lkc(active($k,db('qd')),'/?qd='.$k,$k).br();}
 if(get('node')=='install'){$_SESSION['first']=1; $ret.=install::home($qdb);}
 return $ret;}
+
+//templates
+static function templates($tp=''){
+$r=get_class_methods('tpl');
+$fn=function($v)use($tp){return lj(active($v,$tp),'admtp_adm,templates___'.$v,$v);};
+$rm=array_map($fn,$r);
+if($tp)$ret=jadm::edit('srv',drn('views/'.$tp));
+return div(div(join(' ',$rm),'nbp').div($ret??''),'','admtp');}
 
 //params
 static function newmodfrom($d){
@@ -518,6 +435,7 @@ return self::searched($pg);}
 static function searched($pg){$nbyp=500;
 [$min,$max]=pop::pagination((int)$pg,(int)$nbyp);
 $sq=['_limit'=>$min.', '.$nbyp];
+//$r=sql('id,word,length(word) as n','qdsr','kv',['_order'=>'n asc']+$sq);
 $r=sql('id,word','qdsr','kv',['_order'=>'id desc']+$sq);
 $n=sql('count(id)','qdsr','v','');
 $j='admsrch_adm,searched___';
@@ -842,9 +760,11 @@ else $ret=match($admin){
 //constructors
 'css'=>sty::home(1),
 'fonts'=>few::edit_fonts(),
-'connectors'=>self::userconns(),
-'templates'=>self::templates(),
-'modules'=>self::modules(),
+	//obs
+//	'connectors'=>admtp::connectors(),
+//	'templates'=>admtp::templates(),
+//	'modules'=>admtp::modules(),
+'templates'=>self::templates(),//new
 'apps'=>plugin::home('',''),
 'msql'=>self::msql(''),
 'dev'=>dev::home(),
@@ -877,7 +797,8 @@ $ret=match($d){
 'msql'=>msqa::home($va?$va:msqa::murlboot()),
 //'action'=>console::actions($va,$opt),
 'css'=>sty::home(),
-'conn_help'=>self::conn_help(),
+'connhelp'=>self::connhlp(),
+'mod_help'=>self::modhlp(),
 'tags'=>meta::admin_tags(''),
 'descript'=>self::hubprm('descript'),
 'software'=>auth(7)?software::home(''):'',

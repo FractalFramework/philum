@@ -30,7 +30,7 @@ ul.panel li a {padding:0 2px;}
 ul.pubart li {padding:0; margin:0;}
 ul.pubart li img {float:left; margin-right:4px;}
 .grid-art {display:grid; grid-template-columns:260px 1fr; grid-gap:10px;}
-.grid-pad {display:grid; grid-template-columns:auto auto; grid-gap:0px;}
+.grid-pad {display:grid; grid-template-columns:auto auto; grid-gap:10px;}
 .grid-little {display:grid; grid-template-columns:200px 1fr; grid-column-gap:10px; grid-row-gap:4px;}
 .grid-semi {display:grid; grid-template-columns:100px 1fr; grid-column-gap:10px; grid-row-gap:4px;}
 .grid-blocks  {display:grid;}
@@ -38,7 +38,10 @@ ul.pubart li img {float:left; margin-right:4px;}
 .grid-desk div {margin:0 auto; text-align:center; font-size:13px; height:84px;}
 .grid-desk span {display:block;}
 .grid-pub {display:grid; grid-template-columns:50px 1fr; grid-column-gap:10px; grid-row-gap:4px;}
-.grid-3 {display:grid; grid-template-columns:200px 1fr 200px; grid-column-gap:10px; grid-row-gap:4px;}
+.grid-2 {display:grid; grid-template-columns:1fr 1fr; grid-column-gap:10px; grid-row-gap:10px;}
+.grid-3 {display:grid; grid-template-columns:1fr 1fr 1fr; grid-column-gap:10px; grid-row-gap:10px;}
+.grid-4 {display:grid; grid-template-columns:1fr 1fr 1fr 1fr; grid-column-gap:10px; grid-row-gap:10px;}
+.grid-x {display:grid; grid-template-columns:repeat(auto-fill, 250px); grid-column-gap:10px; grid-row-gap:10px;}
 .grid-sections {display:grid; grid-column-gap:10px; grid-row-gap:10px;}
 .prw3 {grid-column-start:1; grid-column-end:3; grid-row-start:1; grid-row-end:3;}
 .menus {color:#333333; list-style-type:none;}
@@ -96,7 +99,7 @@ a.txt {color:#333333;}
 .frame-purple {background:#ff00ef42; border:1px solid #ff00ef;}
 .frame-orange {background:#ff7b0042; border:1px solid #ff7b00;}
 .frame-black {background:#00000042; border:1px solid #000000;}
-.nl2br {white-space:pre-line;}
+.nl2br {white-space:break-spaces;}
 .console {font-family:Lucida Console, Courier New; background-color:#2F2F2F; border-left:4px solid #000; word-wrap:break-word; color:#fff; border:0;}
 .code {color:#ededed; background-color:#333333; font-family:monospace; word-wrap:anywhere; white-space:pre-line; padding:2px 4px; background:#222; color:#ddd; font-size:large; border:1px solid #555;}
 .editor {font-family:Lucida Console, Courier New; word-wrap:break-word;}

@@ -85,7 +85,7 @@ if(isset($rd['listed_count']) && $rd['listed_count']===0)unset($rd['listed_count
 unset($rd['date']);
 if($rd or !$rb)$r=msql::modif('',$nod,$r,'push',$rh,'');
 $ret=$d.'/'.$nm.': '.implode_k($rd,'; ','=');
-//if($rd)mail(sesr('qbin','adminmail'),'cron',$ret);
+//if($rd)mail(boot::admail(),'cron',$ret);
 return $ret.$bt;}
 
 static function call($p,$o,$prm=[]){

@@ -33,7 +33,7 @@ default=>''};}
 
 //if($r)$r=virtual_array($r,$o); //$r=select_subarray($p,$r,$o);
 static function match_vdir($dr,$nd,$rv){
-for($i=0;$i<$nd;$i++)if(val($dr,$i)!=val($rv,$i))return false;
+for($i=0;$i<$nd;$i++)if(($dr[$i]??'')!=($rv[$i]??''))return false;
 return true;}
 
 //0:button,1:type,2:process,3:param,4:opt,5:cond,6:root,7:icon,8:hide,9:private,10:context
@@ -62,11 +62,11 @@ elseif((strpos($v[5],$cnd)!==false or !$v[5])){$t=$v[0];
 		if($j)$rt[$t]=$j;}}} 
 return $rt;}
 
-static function datas($p=''){$p=$p?$p:'apps';
-if(rstr(61))$r=msql::read('system','default_apps',1);
-$rb=msql::read('',nod($p),1);
-if(isset($r))$rb=self::array_merge_p($r,$rb);
-return $rb;}
+static function datas(){
+$r=msql::read('',nod('apps'),1);
+if(rstr(61)){$rb=msql::read('system','default_apps',1);
+	$r=self::array_merge_p($rb,$r);}
+return $r;}
 
 static function build_from_datas($cnd,$dir='',$p='',$o=''){
 $r=self::datas();
@@ -90,9 +90,8 @@ return $r;}
 
 //arts
 static function thumb($id,$p=''){//ses('rebuild_img',1);
-$img=artim::imgart($id); $f=artim::ishero($img,$id);//
-//if(!is_file('img/'.$f))artim::recup_image($f);
-if(is_file('img/'.$f))return img::make_thumb_c('img/'.$f,'50/38',1);
+$im=artim::imgart($id);
+if(is_file('img/'.$im))return img::make_thumb_c('img/'.$im,'50/38',1);
 else return $p?$p:'articles';}
 
 //call
@@ -145,7 +144,7 @@ return $rt;}
 static function deskarts($p,$o,$cnd,$no=''){self::poplist();
 if($o){$ob=str_replace('|','/',$o); $ob=strfrom($ob,'/');} else $ob='';
 $r=self::desktop($cnd,$ob,$p,$o);//apps_(v)arts
-return self::pane_icons($r).divc('clear','');}
+return self::pane_icons($r);}
 
 static function deskmod($p){
 $ret=self::deskico('desk'); //$s='position:relative; width:100%;';
@@ -273,7 +272,7 @@ return [$ret,''];}
 static function call($id){
 $r=msql::row('',nod('apps'),$id); $ra[$id]=$r;
 $rt=self::build($ra,$r[5],$r[6],$r[3],$r[4]);
-return self::pane_icons($rt).divc('clear','');}
+return self::pane_icons($rt);}
 
 }
 ?>

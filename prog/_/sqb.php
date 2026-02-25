@@ -43,7 +43,7 @@ foreach($r as $k=>$v)switch($p){
 	case('kkr'):$rt[$v[0]][$v[1]][]=$v[2]; break;
 	case('krr'):$rt[$v[0]][]=$v; break;
 	case('kx'):$rt[$v[0]]=explode('/',$v[1]); break;
-	case('ks'):$rt[$v[0]]=explode(' ',$v[1]); break;
+	case('ks'):$rt=array_flip(explode(' ',$r[0]??'')); break;
 	case('index'):$rt[$v[0]]=$v; break;
 	default:$rt[]=$v; break;}
 return $rt;}
@@ -116,24 +116,24 @@ return $sql;}
 #req
 static function read($d,$b,$p,$q,$z=''){
 [$r,$sql]=self::where($q);
-$sql='select '.$d.' from '.$b.' '.$sql; self::$sq=$sql;
+$sql='select '.$d.' from '.db($b).' '.$sql; self::$sq=$sql;
 return self::query($sql,$r,$p,$z);}
 
 static function sav($b,$q,$z=''){
 $ra=self::cols($b); array_unshift($q,NULL); $r=array_combine($ra,$q);
-$sql='insert into '.$b.' value ('.self::mkv($r).')';
+$sql='insert into '.db($b).' value ('.self::mkv($r).')';
 $stmt=self::prep($sql,$r,$z);
 return self::nid();}
 
 static function savi($b,$q,$z=''){
 $ra=self::cols($b); $r=array_combine($ra,$q);
-$sql='insert into '.$b.' ('.join(',',$ra).') value ('.self::mkv($r).')';
+$sql='insert into '.db($b).' ('.join(',',$ra).') value ('.self::mkv($r).')';
 $stmt=self::prep($sql,$r,$z);
 return self::nid();}
 
 static function savup($b,$q,$z=''){
 $ra=self::cols($b); $r=array_combine($ra,$q);
-$sql='insert ignore into '.$b.' ('.join(',',$ra).') value ('.self::mkv($r).')';
+$sql='insert ignore into '.db($b).' ('.join(',',$ra).') value ('.self::mkv($r).')';
 $stmt=self::prep($sql,$r,$z);
 return self::nid();}
 
@@ -142,31 +142,31 @@ $ra=self::cols($b); $rt=[]; $sq=[];
 foreach($q as $k=>$v){$rb=[];
 	foreach($v as $ka=>$va){$rb[]=':'.$ka.$k; $rt[$ka.$k]=$va;}
 	$sq[]='('.join(',',$rb).')';}
-$sql='insert into '.$b.' ('.join(',',$ra).') value '.join(',',$sq).' on duplicate key update id=id';
+$sql='insert into '.db($b).' ('.join(',',$ra).') value '.join(',',$sq).' on duplicate key update id=id';
 $stmt=self::prep($sql,$rt,$z);
 return self::nid();}
 
 static function upd($b,$r,$q,$z=''){$rt=[];
 $vals=self::mkvk($r); [$ra,$sql]=self::where($q);
-$sql='update '.$b.' set '.$vals.' '.$sql;
+$sql='update '.db($b).' set '.$vals.' '.$sql;
 $stmt=self::prep($sql,$r+$ra,$z);
 return $stmt?1:0;}
 
 static function del($b,$q,$z=''){
 [$ra,$sql]=self::where($q);
-$sql='delete from '.$b.' '.$sql.' limit 1';
+$sql='delete from '.db($b).' '.$sql.' limit 1';
 $stmt=self::prep($sql,$ra,$z);
 return $stmt?1:0;}
 
 static function inner($d,$b1,$b2,$k2,$p,$q,$z=''){
-if($d==$k2)$d=$b2.'.'.$d; [$r,$sql]=self::where($q);
-$sql='select '.$d.' from '.$b1.' b1 inner join '.$b2.' b2 on b1.id=b2.'.$k2.' '.$sql;
+if($d==$k2)$d='b2.'.$d; [$r,$sql]=self::where($q);
+$sql='select '.$d.' from '.db($b1).' b1 inner join '.db($b2).' b2 on b1.id=b2.'.$k2.' '.$sql;
 return self::query($sql,$r,$p,$z);}
 
 //[[$b1,$k1,$b2,$k2],[$b1,$k1,$b3,$k3]]
 /*static function inr($d,$r,$p,$q='',$z=''){$w=''; $b=''; [$rb,$ql]=self::where($q,$r[0][0]);
-foreach($r as $k=>$v){$w.='join '.$v[2].' on '.$v[0].'.'.$v[1].'='.$v[2].'.'.$v[3].' '; if(!$b)$b=$v[0];}
-$sql='select '.$d.' from '.$b.' '.$w.' '.$ql;
+foreach($r as $k=>$v){$w.='join '.db($v[2]).' on '.db($v[0]).'.'.$v[1].'='.db($v[2]).'.'.$v[3].' '; if(!$b)$b=$v[0];}
+$sql='select '.$d.' from '.db($b).' '.$w.' '.$ql;
 return self::query($sql,$rb,$p,$z);}*/
 
 static function call($sql,$p,$z=''){return self::format(self::fetch(self::qr($sql,$z),$p),$p);}
@@ -174,12 +174,12 @@ static function call2($sql,$p,$z=''){return self::fetch(self::qr($sql,$z),$p);}
 static function com2($sql){return self::rq()->query($sql);}
 static function com($sql,$z=''){return self::qr($sql,$z);}
 //sqb::com(sqb::sqswow(''));
-static function sqdrop($b){return 'drop table '.$b;}
-static function sqtrunc($b){return 'truncate table '.$b;}
-static function sqalter($b,$n){return 'alter table '.$b.' auto_increment='.$n;}
-static function sqshow($b){return 'show tables like "'.$b.'"';}
-static function sqdesc($b){return 'describe '.$b;}
-static function sqcols($b){return 'select column_name,data_type,character_maximum_length from information_schema.columns where table_name="'.$b.'" and table_schema="'.sql::$db.'"';}
+static function sqdrop($b){return 'drop table '.db($b);}
+static function sqtrunc($b){return 'truncate table '.db($b);}
+static function sqalter($b,$n){return 'alter table '.db($b).' auto_increment='.$n;}
+static function sqshow($b){return 'show tables like "'.db($b).'"';}
+static function sqdesc($b){return 'describe '.db($b);}
+static function sqcols($b){return 'select column_name,data_type,character_maximum_length from information_schema.columns where table_name="'.db($b).'" and table_schema="'.sql::$db.'"';}
 static function cols($b,$n=1){$fc='cols'.$n; return self::$fc($b);}
 static function cols1($b){return self::call(self::sqdesc($b),'rv');}
 static function cols2($b){return self::call(self::sqdesc($b),'kv');}

@@ -54,11 +54,6 @@ $d=$d?$d:ma::artxt($id);
 $r=conb::imgs($d,$id); $n=img::updr($id,$r);
 return 'new img found:'.$n.'/'.count($r);}
 
-static function ishero($im,$id){
-//if(strpos($d,'/')){self::recenseim($id); self::sethero($id);}//patch
-$im=$im?$im:self::imgart($id);
-return $im;}
-
 static function mkhero($v,$id){
 sql::upd('qda',['img'=>$v],$id);
 return $v;}
@@ -228,7 +223,6 @@ return 'imgc/'.$im;}
 static function prepare_thumb($im,$id,$nl){
 if(!rstr(30))return;//no mini
 if(rstr(93)){//as css
-	$im=artim::ishero($im,$id);
 	if($im)$im=self::make_thumb($im);
 	if($im)$ret=div('','thumb','','background-image:url('.$im.');');
 	else $ret=divc('thumb',' ');}

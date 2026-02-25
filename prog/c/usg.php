@@ -27,10 +27,9 @@ static function poptxt($g1){return div(sesr('delaytxt',$g1),'twit','','display:b
 static function popfile($g1){return nl2br(str::cleanmail(read_file($g1)));}
 static function popread($g1){return ma::read_msg($g1,3);}
 static function popmsql($g1,$g2,$g3){$r=msql::mul($g1,$g2,$g3,1); if($r)return build::divtable($r,1);}
-static function popmsqt($g1,$g2,$g3,$g4){$ret=''; $d='';
-$r=msql::row($g1,$g2,$g3,$g4?1:0); if($r)$d=$r[$g4?$g4:0]??'';
-if(auth(6))$ret=msqbt($g1,$g2,$g3).' '; if($d)$ret.=nl2br($d);
-ses::$r['popm']=$g2.' '.$g3.' '.$g4; return $ret;}
+static function popmsqt($g1,$g2,$g3,$g4){$bt=''; $d='';
+$r=msql::row($g1,$g2,$g3,$g4?1:0); if($r)$d=$r[$g4?$g4:0]??''; if($d)$d=nl2br($d);
+if(auth(6))$bt=msqbt($g1,$g2,$g3).' '; ses::$r['popm']=$g2.' '.$g3.' '.$g4; return $bt.$d;}
 static function yesno($g1,$g2){return offon($g1,$g2);}
 static function togno($g1,$g2){return togon($g1,$g2);}
 static function valid($g1,$g2){return valid($g1,$g2);}

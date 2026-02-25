@@ -35,7 +35,7 @@ foreach($ra as $k=>$v)foreach($v as $ka=>$va)if($va && !is_numeric($va)){
 return $rt;}
 
 static function build($p,$o,$ob){$ret=''; $l=500; $n=($p?$p:0)*$l;
-$ra=sql('id,img','qda','kx',['_order'=>'id desc','_limit'=>$n.','.$l]);
+$ra=sql('id,img','qda','kx',['_order'=>'id desc','_limit'=>$n.','.$l]);//old system
 $rb=sql('ib,id,im','qdg','kkv',['(ib'=>array_keys($ra)]);
 $rt=self::enquiry($ra,$rb);
 //$r1=array_column($rt,'notimdb');

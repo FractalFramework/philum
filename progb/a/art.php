@@ -26,7 +26,7 @@ if($tp)return view::com($tp,$ra);}
 static function btedit($kem,$id,$re,$prw){
 $usr=ses('usr'); $auth=$_SESSION['auth']; $rech=ses::r('search'); $ret='';
 if($re==0){if(($usr==$kem && $auth>2) or $auth>3)//publish
-	$ret=blj('txtyl','pba'.$id,'meta,priorsav__xd_1_'.$id,picto('minus'));
+	$ret=blj('txtyl','meta,priorsav__xd_1_'.$id,picto('minus'));
 	elseif($usr==$kem && $auth==2)$ret.=btn('txtyl',nms(53)).' ';}
 if(ses::r('search') && $auth>4)
 	$ret.=togbub('meta,tag*slct',$id.'_'.ajx($rech),picto('paste'));
@@ -50,7 +50,7 @@ return $ret;}
 
 static function metart($id){
 //$r=sql('val,msg','qdd','kv',['ib'=>$id]);
-$r=sqb::read('val,msg','data','kv',['ib'=>$id]);
+$r=sqb::read('val,msg','qdd','kv',['ib'=>$id]);
 if(rstr(17))$r['2cols']=1;
 //['related','agenda','lang','password','quote']//unused
 $rk=['fav','like','poll','2cols','artstat','authlevel','template','lastup','tracks','folder','bckp','plan','mood','agree','review','front']; $rl=explode(' ',prmb(26)); if($rl)foreach($rl as $k=>$v)$rk[]='lang'.$v;
@@ -227,7 +227,7 @@ case('title'):if(rstr(149))$rb[$v]=lh('','/'.$id,$rb['suj']); else $rb[$v]=lk($r
 case('day'):$rb['day']=$r['day']; break;
 case('date1'):$rb['date']=lh('',self::target_date($r['day']),$day); break;
 case('date2'):$rb['date']=$day; break;
-case('img1'):$rb[$v]=artim::ishero($r['img'],$id); break;
+case('img1'):$rb[$v]=$r['img']; break;
 case('priority'):$rb[$v]=self::priority_hands($r['re']); break;
 case('back'):$rb[$v]=self::back($id,$ib); break;
 case('cat'):$rb[$v]=self::backcat($r['frm'],$rst[112]); break;
@@ -379,7 +379,7 @@ static function propose_tracks($id,$opts){if(rstr(1) or $opts['tracks']??'')
 return div(toggle('popw','trk'.$id.'_tracks,form___'.$id,pictxt('forum',nms(168),24))).divd('trk'.$id,'');}
 
 static function datas($id){//ma::rqtart
-return sqb::read('ib,name,mail,day,nod,frm,suj,re,lu,img,thm,host,lg','art','a',$id);}
+return sqb::read('ib,name,mail,day,nod,frm,suj,re,lu,img,thm,host,lg','qda','a',$id);}
 
 #article
 static function build($id,$r,$otp,$msg,$prw,$tp='',$nl='',$n=''){
@@ -482,7 +482,7 @@ static function playq($id,$pos,$r35,$quot=''){//quotes
 $_SESSION['read']=$id; $r=self::datas($id); $r['o']=self::metart($id);
 $msg=ma::artxt($id);
 $msg=ma::applyquote2($msg,$id,$pos,$r35,$quot);
-$ret=self::prepare_msg($id,$msg,$r,3); $ret.=divc('clear','');
+$ret=self::prepare_msg($id,$msg,$r,3);
 return $ret;}
 
 static function playt($id,$otp,$tp=''){//tracks

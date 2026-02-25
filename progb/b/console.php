@@ -98,7 +98,7 @@ if($p && !is_numeric($p))return divd('mdls'.$p,self::block($p));
 $ret=self::select_mods_m();//mods
 if(auth(6))$ret.=self::backup_console_bt();
 $ret.=self::see_conds_b();//conditions
-$ret.=div(self::console_nav()).divc('clear','');
+$ret.=div(self::console_nav());//.divc('clear','')
 return $ret;}
 
 static function prms_machine(){$r=[5=>'updsrv',8=>'tz',14=>'mirsrv',15=>'imgsrv',16=>'frct'];

@@ -289,7 +289,7 @@ static function adm_user_fast(){
 if(ses('usr'))$ret=popbub('user','',mimes('login').'&nbsp;'.ses('usr'),'',1);
 return $ret;}
 static function adm_user(){$rb=msql::read('system','default_apps_user',1);
-$r=msql::read('system','default_apps',1); $r=self::r_apps_cond('user'); if($r)$r=$rb+$r;
+$r=msql::read('system','default_apps',1); $r=self::r_apps_cond($r,'user'); if($r)$r=$rb+$r;
 if(ses('usr'))$r=unsetk($r,'login',0); else $r=unsetk($r,'logout',0);
 return $r;}
 
@@ -394,14 +394,18 @@ if($rb)$ret=implode('',$rb);
 return $ret;}
 
 //rooter
-static function r_apps_cond($d){$r=msql::read('',nod('apps'),1); $ret=[];
-if($r)foreach($r as $k=>$v)if($v[5]==$d){$v[5]=''; $ret[$k]=$v;} return $ret;}
+static function r_apps_cond($r,$d){$rt=[];
+if($r)foreach($r as $k=>$v)if($v[5]==$d){$v[5]=''; $rt[$k]=$v;} return $rt;}
 
 static function r_apps_home($o){
 $r=msql::read('system','default_apps_home',1); if($o)return $r; 
-$rb=self::r_apps_cond('home'); if(!rstr(56))$r=unsetk($r,'hubs',0);
-//if(!rstr(48))$r=unsetk($r,'boot',6);
+$rb=msql::read('',nod('apps'),1); $rb=self::r_apps_cond($rb,'home');
+if(!rstr(56))$r=unsetk($r,'hubs',0);
 return array_merge_b($rb,$r);}
+
+static function r_apps_menu($o){
+$r=msql::read('system','default_apps',1); $r=self::r_apps_cond($r,'menu');
+return $r;}
 
 static function call($d,$dir='',$n=''){
 $ret=match($dir){//pre-rendered, intercepte navigation

@@ -5,7 +5,7 @@ static $cb='fv';
 
 //render
 static function icons($r){
-return desk::pane_icons($r).divc('clear','');}
+return desk::pane_icons($r);}
 
 static function cols($r){$ret='';
 if($r)foreach($r as $id=>$v)$ret.=self::art($id);
@@ -72,7 +72,7 @@ return implode_k($ra,',',':');}
 
 static function bt($v){$v1=self::repairid($v[2]); $t=ajx($v[1]);//str::hardurl
 $v2='preview:2,t:'.$t.','.$v1; $a=ajx($v2);
-$bt=lj('','popup_api__3_'.$a,tagb('h3',pictxt('newspaper',$v[1],32))).br();
+$bt=lj('','popup_api__3_'.$a,tagb('h4',pictxt('newspaper',$v[1],32))).br();
 $bt.=lj('','pagup_book,home__3_nodig:1,nopages:1,'.$a.',idlist:1_api',pictit('script','Player',24)).' ';
 $bt.=lj('','popup_api__3_nodig:1,nopages:1,'.$a.',preview:3,file:'.$t,pictit('file-word','Html',24)).' ';
 $bt.=lkt('','/apicom/nodig:1,nopages:1,'.urlencode($v1).',json:1',pictit('emission','Api',24)).' ';
@@ -98,8 +98,8 @@ $rb=array_keys_r($r,0,1); $rn=[]; $ret='';
 foreach($rb as $k=>$v){$ip=sql('ip','qdp','v',$k);
 	$rn[$k]=sql('name','qdu','v',['ip'=>$ip]);}
 foreach($r as $k=>$v)if(!empty($v[3]) && !empty($v[2])){$bt='';
-	if($rn[$v[0]])$bt.=btn('txtx',$rn[$v[0]]).' ';
-	$bt.=self::bt($v);
+	$bt.=self::bt($v).' ';
+	if($rn[$v[0]])$bt.=btn('txtx',$rn[$v[0]]);
 	$ret.=divc('track',$bt);}
 if(!$r)$ret=divc('txtit',nms(11).' '.nms(1));
 if(auth(6))$bt=msqbt('',nod('coms')); else $bt='';
@@ -212,7 +212,7 @@ elseif($p=='log')$ret=self::log($o);
 if(isset($r)){//$ret=self::cols($r);
 	$ret=self::submenu($p);
 	$ret.=self::icons($r);}
-return $menu.div($ret,'','fvcnt');}
+return $menu.div($ret,'scroll','fvcnt');}
 
 static function home($p,$o,$prm=[]){$res=$prm[0]??'';
 if($res)self::flog($res);

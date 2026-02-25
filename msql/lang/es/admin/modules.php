@@ -150,4 +150,5 @@ return ['_'=>['description','param','option','command'],
 'background'=>['color o imagen de fondo','color html, #_var, degradado, imagen o directorio de imágenes (aleatorio)','',''],
 'lastup'=>['últimos artículos modificados','','',''],
 'temporalnav'=>['navegación temporal','','',''],
-'topfolders'=>['importes de los expedientes y descedentes','','','']]; ?>
+'topfolders'=>['importes de los expedientes y descedentes','','',''],
+'description'=>['description','','','']]; ?>

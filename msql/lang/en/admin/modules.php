@@ -150,4 +150,5 @@ return ['_'=>['description','param','option','command'],
 'background'=>['background color or image','html color, gradient,  image or directory (random img)','',''],
 'lastup'=>['latest modified items','','',''],
 'temporalnav'=>['time navigation','','',''],
-'topfolders'=>['dossiers amounts and descedants','','','']]; ?>
+'topfolders'=>['dossiers amounts and descedants','','',''],
+'description'=>['description','','','']]; ?>

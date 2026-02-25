@@ -31,7 +31,7 @@ if($h){while(($d=fgets($h))!==false){$i++;
 fclose($h);}
 return $rt;}
 
-static function build($p,$o){echo $p;
+static function build($p,$o){//echo $p;
 $r=self::read($p); eco($r);
 foreach($r as $k=>$v)if($v)sqb::savup(self::$db,[$k,$v]);
 //sqb::savr(self::$db,$r);

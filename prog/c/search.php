@@ -84,7 +84,7 @@ $rt1=btn('search',self::form2($rid,$rech)).' ';
 $rt1.=ljb('popsav','Search2',$rid,picto('search').' '.nms(24)).' '.hlpbt('search').' ';
 $rg=sql('cat','qdt','rv',['tag'=>$rech]);
 if($rg)foreach($rg as $k=>$v)$rt1.=lj('popbt','popup_api__3_'.$v.':'.ajx($rech),self::pictag($v),att($v));
-if($cac)$rt1.=blj('popbt','srcac','search,rech___'.$vrf,picto('del'),att('del cache'));
+if($cac)$rt1.=blj('popbt','search,rech___'.$vrf,picto('del'),att('del cache'));
 if($rech && strpos($rech,','))$api='search:'.$rech; else $api='search:'.$rech.',cat:'.str_replace('+','|',$cat).',tag:'.str_replace('+','|',$tag);
 if($rech)$rt1.=lh('','search/'.$rech.($dig?'/'.$dig:''),picto('link',16)).' ';//.$urg
 $rt1.=toggle('txtx','apicom_apicom,build___'.ajx($api).'_'.$rid,pictit('emission','Api')).' ';
@@ -193,8 +193,8 @@ if(!$r && $rch && (rstr(62) or ses('rstr62'))){
 return $r;}
 
 static function rechday($d){
-$first=sqb('day','art','v',['>day'=>$d,'_limit'=>'1']);
-$ret=sqb::read('id','art','k',['{day'=>$first,'_order'=>'day desc','_limit'=>'200']);
+$first=sqb('day','qda','v',['>day'=>$d,'_limit'=>'1']);
+$ret=sqb('id','qda','k',['{day'=>$first,'_order'=>'day desc','_limit'=>'200']);
 return $ret;}
 
 static function array_intersect_c($r){$rt=[]; $rb=[]; $mx=1;
@@ -228,8 +228,8 @@ if(!isset($_SESSION['recache']))$_SESSION['recache'][$vrf]=[];
 $maxid=ma::lastartid();
 if($rech && !is_numeric($rech) && strlen($rech)>7)$isdate=strtotime($rech);
 if($rech=='1'){$id=$maxid; $load[$id]=1; return [[$id=>1],$vrf,1,$cac,$n];}
-if($rech && is_http($rech)){$id=sqb('id','art','v',['mail'=>$rech]); if($id)return [[$id=>1],$vrf,1,$cac,$n];}
-if(is_numeric($rech)){$id=sqb('id','art','v',$rech); if($id)return [[$id=>1],$vrf,1,$cac,$n];}
+if($rech && is_http($rech)){$id=sqb('id','qda','v',['mail'=>$rech]); if($id)return [[$id=>1],$vrf,1,$cac,$n];}
+if(is_numeric($rech)){$id=sqb('id','qda','v',$rech); if($id)return [[$id=>1],$vrf,1,$cac,$n];}
 elseif($rech && strpos($rech,':') && strpos($rech,',')){
 	$ra=explode_k($rech,',',':');
 	foreach($ra as $k=>$v)//{//inform motor

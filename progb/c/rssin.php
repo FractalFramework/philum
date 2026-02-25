@@ -125,7 +125,7 @@ if(is_string($f) && isset($r[$f]))return $r[$f];
 elseif(isset($r[$d]))return $r[$d];
 //elseif(isset($r[substr($f??'',7)]))return $r[substr($f??'',7)];
 //elseif($d){$suj2=self::wordsuj($d); $id=$r[$suj2]??''; if($id)return $id;}
-$id=sqb::read('id','art','v',['nod'=>ses('qb'),'or'=>['mail'=>$f,'%suj'=>$d],'_limit'=>'1']);
+$id=sqb::read('id','qda','v',['nod'=>ses('qb'),'or'=>['mail'=>$f,'%suj'=>$d],'_limit'=>'1']);
 if(!$id)$id=self::distance($d,1,10);
 if(is_numeric($id))return $id;}
 
@@ -195,7 +195,7 @@ foreach($r as $k=>$v){$btc=''; [$va,$lnk,$dat,$id,$txt,$lev]=$v; $i++; $rc=[];
 	if(auth(4) && !$id)$rc[]=togbub('rssin,select',$kn.$k.'_'.$lnj,picto('submenu'));
 	$rc[]=lkt('',$lnk,picto('url')); $rc[]=btn('txtsmall',$dat);
 	if(auth(4) && !$id){$mem=vacses($lnk,'b')?picto('ok'):picto('add');
-		$rc[]=ljbt('',rid('ars'.$i).'_sav,batch___'.$lnj.'_p',$mem);}
+		$rc[]=blj('','sav,batch__xd_'.$lnj.'_p',$mem);}
 	if(!$id)$rc[]=lj('','popup_search,home__3_'.ajx($va).'_',picto('search'));
 	if(!$id && !$ni)self::$mem[$u][]=$lnj; elseif(self::$mem[$u]??[])$ni=1;
 	$rc[]=lj('','popup_usg,iframe___'.ajx($lnk),picto('window'));

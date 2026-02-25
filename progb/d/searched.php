@@ -13,8 +13,8 @@ static function markers($n){$days=$n?$n:ses('nbj');
 if(!rstr(3))return [0,ma::lastartid()];
 $daymin=timeago($days); $prev=time_prev($days); $daymax=$prev?timeago($prev):ses('daya');
 //echo $n.'-'.$days.'-'.date('ymd:Hi',$daymin).'-'.$prev.'-'.date('ymd:Hi',$daymax).'--';
-$minid=sqb('id','art','v',['>day'=>$daymin,'_limit'=>'1']);
-$maxid=sqb('id','art','v',['{day'=>$daymax,'_order'=>'day desc','_limit'=>'1']);//need use day
+$minid=sqb('id','qda','v',['>day'=>$daymin,'_limit'=>'1']);
+$maxid=sqb('id','qda','v',['{day'=>$daymax,'_order'=>'day desc','_limit'=>'1']);//need use day
 return [$minid,$maxid];}
 
 static function results($p,$minid,$maxid,$n=''){
@@ -33,7 +33,7 @@ static function add($p,$n){$rt=[];//if(!rstr(3))self::save($p);
 $rb=self::results($p,$minid,$maxid);
 $rn=$rb?array_keys($rb):[];
 $rb=self::build('',$p,$minid,$maxid,'',$rn);
-if($rb && !is_numeric($p))self::save_results($p,$rb);// && $n>7
+if($rb && !is_numeric($p) && strlen($p)>2)self::save_results($p,$rb);// && $n>7
 if($rb)foreach($rb as $k=>$v)$rt[$v[1]]=$v[2];
 if($rt)krsort($rt);
 return $rt;}
@@ -45,7 +45,7 @@ $sq['nod']=ses('qb'); $sq['>re']='0'; $sq['>b1.id']=$min; $sq['{b1.id']=$max; if
 $sq['or']=['%msg'=>$p,'%suj'=>$p]; if($lmt)$sq[]=sql::countrefs($p,1).'>='.$lmt;
 $sq['_order']='b1.'.prmb(9);
 //$r=sql::inner('b1.id,lower(msg)','qda','qdm','id','',$sq,0);
-$r=sqb::inner('b1.id,lower(msg)','art','txt','id','',$sq,0);
+$r=sqb::inner('b1.id,lower(msg)','qda','qdm','id','',$sq,0);
 foreach($r as $k=>$v)$rt[]=[$id,$v[0],substr_count($v[1],$p)];
 return $rt;}
 

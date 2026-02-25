@@ -325,11 +325,7 @@ Url : /api/{command}'],
 'like'=>['The Likes are public'],
 'overcats'=>['a category can existing with an empty value, in this cas the categorie is listed at root'],
 'overcats_menu'=>['Overcats can be used as a module, as an admin menu or as a desktop menu, using an app with type=desktop and process=overcats'],
-'menubub'=>['types of menububs : 
-- (no type) : (a-z) = category, (0-9) = article, /module/... = link 
-- module : open content of a module (ex: ///lines/4///1:categories ) 
-- app : (open an app) 
-- ajax : (ex: popup_track___admin)'],
+'menubub'=>['Tabla de menús n.º'],
 'spitable'=>['Atoms are represented by means of their electronic configuration. The electrons are distributed in orbits, and each orbit has potentially as many sub-orbit than the number of the orbit (the 5th can have 5 sub-orbits). Each sub-orbit has an identical configuration, made of a number of locations of electrons increasing of 4 to each sub-orbital level. The number of electrons in each orbit is the sum of sub-orbital (eg 32 is composed of 2+6+10+14).
 
 The advantage of this representation is to highlight the fact that the sub-orbits are talking chemical families to which those atoms are represented.
@@ -419,11 +415,12 @@ Accepts Star requests (ra, dc, dist, radius)'],
 
 Las asignaciones reciben un conector, que especifica la naturaleza del icono, un tipo de letra, una imagen o un objeto vectorial svg. 
 (los iconos existentes son visibles en el editor)'],
-'menubub_edit'=>['menubub tipos: 
-- (sin tipo): intérprete (a-z) = categoría, (0-9) = artículo, /módulo/... = enlace
-- módulo : abre el contenido de un módulo (ej: ///líneas/4///1:categorías )
-- app : (abre una aplicación)
-- ajax : (ej: popup_track___admin)'],
+'menubub_edit'=>['El módulo Menububs permite crear un menú con objetos que apuntan a diferentes tipos de contenido:
+- (sin tipo): interpreta [a-z] = categoría, [0-9] = artículo, /... = url
+- mod: abre el contenido de un módulo según su script, disponible en un módulo que puede crearse en la zona dev. ex: p:D,d:lines,o:lg=es,m:catarts (where m=module, p=param, o=option, d=render)
+- app: (abre una aplicación)
+- ajax: (ex: popup_track___admin)
+Luego hay que especificar el botón y el icono, y con auth>7 el menú está desactivado.'],
 'umrennum'=>['Renumerar artículos por fecha y ordenar favoritos, retweets y estado'],
 'searchlang'=>['búsqueda multilingüe'],
 'umsearchlang'=>['búsqueda multilingüe'],

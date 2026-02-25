@@ -139,4 +139,5 @@ return ['_'=>['rvb'],
 'white'=>['FFFFFF'],
 'whitesmoke'=>['F5F5F5'],
 'yellow'=>['FFFF00'],
-'yellowgreen'=>['9ACD32']]; ?>
+'yellowgreen'=>['9ACD32'],
+'auto'=>['currentColor']]; ?>

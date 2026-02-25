@@ -31,7 +31,7 @@ $p=match($do){'x'=>'X','youtu'=>'youtube','facebook'=>'fb','linkedin'=>'linkedin
 return togbub('web,call',ajx($u).'_0_'.$id,picto($p)).sep().$lk;}
 
 static function bkgimg($v,$id){[$d,$p]=cprm($v); if(!$p){$p=$d; $d='';}
-if($p)$mg=$p; else $mg=artim::imgart($id); $mg=artim::ishero($mg,$id);///
+if($p)$mg=$p; else $mg=artim::imgart($id);
 $f=goodroot($mg,1); if(file_exists($f))[$w,$h]=imsize($f);
 return divs('background-image:url(/img/'.$mg.'); background-repeat:no-repeat; background-position:center center; background-size:cover; background-attachment:fixed; height:90%;',$d);}//'.$h.'px
 

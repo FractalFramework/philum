@@ -369,7 +369,7 @@ return bubs::apps($r,$m,'','');}
 static function mod_lin_build($re,$t,$d,$o){$limit=is_numeric($o)?50*$o:50;
 if($d=='inline')$ret=implode('',$re);
 elseif($d=='cols')$ret=divc('menus',pop::columns($re,$o,'','menus'));
-elseif($d=='icons')$ret=desk::pane_icons($re).divc('clear','');
+elseif($d=='icons')$ret=desk::pane_icons($re);
 elseif($d=='scroll')$ret=$t.scroll($re,implode('',$re),(is_numeric($o)?$o:17));
 else $ret=$t.divc('menus',implode('',$re));
 return $ret;}
@@ -402,7 +402,7 @@ elseif($d=='viewer')$ret=md::art_viewer($load);
 elseif($d=='multi'){geta('flow',1); $nl=get('nl'); $i=0; foreach($load as $id=>$md){$i++;
 	if($i<$mx)$ret.=art::playb($id,$md,$tp,$nl,''); else $ret.=div('',$md,$id);}}
 elseif($d=='api')$ret=api::mod_call($load);
-elseif($d=='icons')$ret=desk::pane_icons($load).divc('clear','');
+elseif($d=='icons')$ret=desk::pane_icons($load);
 elseif($d=='panel' && is_array($load))foreach($load as $k=>$v)$ret.=self::pane_art($k,$o,$tp,$pp);
 elseif($d=='lines')$ret=self::m_publist($load,$tp);
 elseif($load)$ret=self::m_pubart($load,$d,$o,$tp,$pp);
@@ -433,7 +433,6 @@ $p['url']=urlread($id); $p['suj']=$suj;
 $tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';
 $p['jurl']=$tg.'_popart__3_'.$id.'_3';
 $p['cat']=catpict($frm,22); //$p+=art::tags($id,1);
-$im=artim::ishero($im,$id);
 if($im)$im=artim::make_thumb($im);
 $p['sty']='background-image:'.($im?'url('.$im.')':'linear-gradient(33deg,rgba(93, 171, 255, 0.31),rgba(176,44,68,0.14)),linear-gradient(45deg,rgba(105, 28, 219, 0.27),rgba(249, 211, 3, 0.12))');
 return art::template($p,$tp);}
@@ -447,7 +446,7 @@ $rt['url']=urlread($id); $rt['suj']=$suj;
 $tg='content'; if(rstr(85) or $pp)$tg='popup'; if(rstr(136))$tg='pagup';
  if($tg=='content')$tpl='pubartb';//hurl
 $rt['jurl']=$tg.'_popart__3_'.$id.'_3';
-if($rst[32]!=1 && $img)$rt['img1']=artim::ishero($img,$id);//;
+if($rst[32]!=1 && $img)$rt['img1']=$img;
 if($rst[36]!=1){$rt['back']=art::back($id,$ib); $rt['cat']=$frm;}
 if($rst[7]!=1)$rt['date']=mkday($day);
 if($rst[4]!=1){$r=art::tags($id,1); if($r)$rt+=$r;}//??

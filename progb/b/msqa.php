@@ -354,7 +354,8 @@ case('repair'):$r=self::repair_table($r,$dr,$nod); $ok=1; break;
 case('repair_cols'):$r=self::repair_cols($r); break;
 case('repair_enc'):$r=utf_r($r); break;
 case('repair_rn'):$r=self::repair_rn($r); break;
-case('delemptydir'):$r=msql::delemptydirs($r); break;
+case('delemptydirs'):$r=msql::delemptydirs($r); break;
+case('delemptydir'):msql::delemptydir($dr,$nod); break;
 case('resav'):$r=self::resav($r); break;
 case('patch_m'):$r=self::patch_m($r); break;
 case('patch_s'):$r=self::patch_s($r); break;
@@ -816,10 +817,12 @@ if(!$def && auth(6)){
 		$rt[]=self::opbt('trunc_table',$jurl,$lh[10]);
 		$rt[]=self::opbt('del_file',$jurl,$lh[11]);
 		if(!$defs or isset($defs[0]))
-			$rt[]=self::opbt('repair',$jurl,$lh[12]);}
+			$rt[]=self::opbt('repair',$jurl,$lh[12]);
 		if(auth(6)){//($base=='system' or $hub=='public') && 
 			$rt[]=self::opbt('renove',$jurl,['renove','import from '.prms('srvmir')]);
-			$rt[]=self::opbt('resav',$jurl,['resav','resav']);}
+			$rt[]=self::opbt('resav',$jurl,['resav','resav']);}}
+	elseif($ath && strpos($table,'_') && !$is_file)$rt[]=self::opbt('delemptydir',$jurl,$lh[49]);//
+	//echo $ath.'--'.$table.'--'.$hub.'--'.$is_file;
 	if($rt)$ret['l1']=divc('menu',join(' ',$rt)); $rt=[];
 	#-util
 	if($table && $authorized && $hub && $is_file){
@@ -834,7 +837,7 @@ if(!$def && auth(6)){
 			$rt[]=self::opbt('repair_cols',$jurl,$lh[13]);
 			$rt[]=self::opbt('repair_enc',$jurl,$lh[37]);
 			$rt[]=self::opbt('repair_rn',$jurl,['rn','']);
-			$rt[]=self::opbt('delemptydir',$jurl,$lh[49]);
+			$rt[]=self::opbt('delemptydirs',$jurl,$lh[49]);
 			//$rt[]=self::opbt('patch_m',$jurl,['patch_m','patch_menu']);
 			//$rt[]=self::opbt('patch_s',$jurl,['patch_s','patch_splitter']);
 			}
@@ -860,8 +863,8 @@ if(!$def && auth(6)){
 		$rt[]=self::opedt('import_csv',$jurl,$lh[40],1);
 		$rt[]=self::opbt('export_csv',$jurl,$lh[41],1);
 		//if(auth(6))$rt[]=self::opedt('export_mysql',$jurl,$lh[42],1);
-		$rt[]=lj('txtx','popup_msql___lang_helps_msql','?');
-		if(auth(6))$rt[]=self::opedt('backup_msql',$jurl,$lh[43],1);}
+		$rt[]=lj('txtx','popup_msql___lang_helps_msql','?');}
+	if(auth(6))$rt[]=self::opedt('backup_msql',$jurl,$lh[43],1);
 	if($rt)$ret['l3']=divc('menu',join(' ',$rt)); $rt=[];}
 #-infos
 if($table && $is_file){

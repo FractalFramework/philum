@@ -50,7 +50,7 @@ function ljtog($c,$j,$jb,$v,$o=''){$rid=randid('bt');//alter_j
 return ljb($c,'tog_jb',[$j,$jb,$rid],$v,atd($rid).$o);}
 //function lj_tog($n,$d,$v){return toggle('',$n.$d.'_'.$n.'___'.$d,$v).btd($n.$d,'');}//unused
 function bubble($c,$ja,$j,$v){$id=randid();
-return lj($c,'bubble_'.$ja.'__'.$id.'_'.$j,$v,atd('bt'.$id));}
+return lj($c,'bubup_'.$ja.'__'.$id.'_'.$j,$v,atd('bt'.$id)).btd('bc'.$id,'');}
 function popbub($d,$j,$v,$c='',$o=''){$id=randid();//apps+dir or call+predir//j=pre-rendered
 if(rstr(102) && !rstr(69))return panup($d,$j,$v,$c);
 if($d=='call' or $c)$id=($c?$c:'c').$id; $j='bubble_bubs,call__'.$id.'_'.$d.'_'.$j;
@@ -360,8 +360,7 @@ function digit($n,$o=''){return picto('digit'.$o.'-'.$n);}
 function digits($n,$o='',$c=''){$rt=[]; $n=str_replace([':','.'],['h','d'],$n); $r=str_split($n);
 foreach($r as $v)$rt[]=digit($v,$o); if($rt)return spanp(join('',$rt),[$c]);}
 //function digits_0($n,$o=''){return spanp(join('',array_map('digit',str_split($n),[$o])),[2=>'color:red']);}
-function helps($d,$nd=''){$nd=$nd?$nd:'txts'; $ret=msql::val('lang','helps_'.$nd,$d);
-return is_string($ret)?nl2br($ret):'';}
+function helps($d,$nd=''){$nd=$nd?$nd:'txts'; return msql::val('lang','helps_'.$nd,$d);}
 function hlpbt($j,$t=''){return togbub('msqa,syshlp',ajx($j),picto($t?$t:'question',18),'grey');}
 
 #cmd

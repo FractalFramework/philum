@@ -325,11 +325,7 @@ Url : /api/{command}'],
 'like'=>['The Likes are public'],
 'overcats'=>['a category can existing with an empty value, in this cas the categorie is listed at root'],
 'overcats_menu'=>['Overcats can be used as a module, as an admin menu or as a desktop menu, using an app with type=desktop and process=overcats'],
-'menubub'=>['types of menububs : 
-- (no type) : (a-z) = category, (0-9) = article, /module/... = link 
-- module : open content of a module (ex: ///lines/4///1:categories ) 
-- app : (open an app) 
-- ajax : (ex: popup_track___admin)'],
+'menubub'=>['Menu table no'],
 'spitable'=>['Atoms are represented by means of their electronic configuration. The electrons are distributed in orbits, and each orbit has potentially as many sub-orbit than the number of the orbit (the 5th can have 5 sub-orbits). Each sub-orbit has an identical configuration, made of a number of locations of electrons increasing of 4 to each sub-orbital level. The number of electrons in each orbit is the sum of sub-orbital (eg 32 is composed of 2+6+10+14).
 
 The advantage of this representation is to highlight the fact that the sub-orbits are talking chemical families to which those atoms are represented.
@@ -425,11 +421,12 @@ Accepts Star requests (ra, dc, dist, radius)'],
 
 Assignments receive a connector, which specifies the nature of the icon, a typeface, an image or an svg vector object. 
 (existing icons are visible in the editor)'],
-'menubub_edit'=>['menubub types: 
-- (no type): interpreter (a-z) = category, (0-9) = article, /module/... = link
-- module : opens the content of a module (ex: ///lines/4///1:categories )
-- app : (opens an app)
-- ajax : (ex: popup_track___admin)'],
+'menubub_edit'=>['The Menububs module allows you to create a menu whose objects point to different types of content:
+- (no type): interprets [a-z] = category, [0-9] = article, /... = url
+- mod: opens the contents of a module according to its script, available on a module that can be created in the dev zone. ex: p:D,d:lines,o:lg=en,m:catarts (where m=module, p=param, o=option, d=render)
+- app: (opens an app)
+- ajax: (ex: popup_track___admin)
+Then you need to specify the button, the icon, and with auth>7 the menu is disabled.'],
 'umrennum'=>['Renumber articles by date and sort favorites, retweets and status'],
 'searchlang'=>['multilingual search'],
 'umsearchlang'=>['multilingual search'],

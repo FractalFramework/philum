@@ -3,11 +3,23 @@ return ['_'=>['description','param','option','command'],
 'All'=>['Tous les articles','Donner un titre','prévisualisation : 1,2,3,auto',''],
 'LOAD'=>['Composant principal qui reçoit un déroulé d\'articles ou un article entier','','prévisualisation :1,2,3,auto','ordre des articles'],
 'BLOCK'=>['Appelle un Bloc de modules','nom du bloc de modules','',''],
-'MENU'=>['Appelle un bloc en tant que menu de liens vers des modules','Nommer ce bloc','','mod: modules dans une bubrnblock: menu ajaxrnbub: menu déroulant ajaxrndrop: menu déroulant cssrntabs: ongletsrnpane: panneauxrntog: menu togglernbup: menu bubuprnadmin: menu principalrndesk: bureaurnboot: démarrage'],
-'ARTMOD'=>['Appelle un bloc de modules conjointement à un article.rnLa rstr60 permet de l\'afficher dans un petit bouton "articles connectés", au lieu d\'une div sur la page. On préférera y réserver les modules du contexte "art".','Nommer ce bloc','',''],
+'MENU'=>['Appelle un bloc en tant que menu de liens vers des modules','Nommer ce bloc','','mod: modules dans une bub
+block: menu ajax
+bub: menu déroulant ajax
+drop: menu déroulant css
+tabs: onglets
+pane: panneaux
+tog: menu toggle
+bup: menu bubup
+admin: menu principal
+desk: bureau
+boot: démarrage'],
+'ARTMOD'=>['Appelle un bloc de modules conjointement à un article.
+La rstr60 permet de l\'afficher dans un petit bouton "articles connectés", au lieu d\'une div sur la page. On préférera y réserver les modules du contexte "art".','Nommer ce bloc','',''],
 'TABMOD'=>['modules dans des onglets (tabs en anglais)','nom du bloc de modules','',''],
 'Banner'=>['texte et image de fond','p=image s\'il y en a une, t=titre, o=hauteur','hauteur',''],
-'MenuBub'=>['Menus ouvrables en ajax, fondés sur une table msql (ne dépend pas des sessions)','indiquer un numéro de version alternatif à la table menubub_1','',''],
+'MenuBub'=>['Menus ouvrables en ajax, fondés sur une table msql (ne dépend pas des sessions)','indiquer un numéro de version alte
+atif à la table menubub_1','',''],
 'Page_titles'=>['Titres de la page (inclue la navigation)','','articles parents',''],
 'agenda'=>['articles dont le tag \'agenda\' est dans le futur','Donner un titre','',''],
 'api'=>['Renvoie le résultat d\'une requête à l\'Api','commande de l\'Api [a1:p1;a2:p2]','commande de rectifications',''],
@@ -15,11 +27,26 @@ return ['_'=>['description','param','option','command'],
 'api_chan'=>['chaîne de commandes Api','msql table (1)','',''],
 'api_mod'=>['Appel de l\'API en utilisant les constructeurs de l\'API','commande d\'articles de type Json','',''],
 'link'=>['renvoie un lien','home, category, 123, module/...','1 : picto associé ou picto nommé',''],
-'app_popup'=>['lance une app dans une popup','params : button,type,process,paramrnex: hello,art,auto,(id article)','',''],
-'apps'=>['Apps','Les Apps sont des boutons logiciels. On peut créer des boutons, liens, menus, html, ajax, situés dans le menu admin, dans un article, ouvrant des listes déroulantes, des logiciels, sur place, imbriqués, liés à d\'autres boutons, liés à des icônes, dans une popup, ou ailleurs... Ces possibilités sont classées par type de compétence et d\'emplacement.rnrnNoter : les apps du même nom remplacent les précédentes : pour annuler une apps par défaut, ajouter la même et la hider rnrnLes contextes : rnmenu : menu Apps du menu adminrndesk : icônes de bureaurnboot : au lancement de la pagernhome : menu Phi du menu adminrnuser : menu user du menu admin (activé par rstr48)','',''],
+'app_popup'=>['lance une app dans une popup','params : button,type,process,param
+ex: hello,art,auto,(id article)','',''],
+'apps'=>['Les Apps sont des boutons logiciels. On peut créer des boutons, liens, menus, html, ajax, situés dans le menu admin, dans un article, ouvrant des listes déroulantes, des logiciels, sur place, imbriqués, liés à d\'autres boutons, liés à des icônes, dans une popup, ou ailleurs... Ces possibilités sont classées par type de compétence et d\'emplacement.
+
+Noter : les apps du même nom remplacent les précédentes : pour annuler une apps par défaut, ajouter la même et la hider 
+
+Les contextes : 
+menu : menu Apps du menu admin
+desk : icônes de bureau
+boot : au lancement de la page
+home : menu Phi du menu admin
+user : menu user du menu admin (activé par rstr48)','','',''],
 'archives'=>['navigation temporelle','Donner un titre','',''],
 'article'=>['simple article','ID','',''],
-'articles'=>['Commande de l\'Api spécialisée dans les déroulés d\'articles','paramètres de l\'Api :rntag=Une&nbdays:1,preview:auto,limit:10rn- cat/tag : spécifie une catégorie / un tagrn- nocat/notag : exclut une catégorie / un tagrn- nbdays : champ temporelrn- preview : 1, 2, 3, auto','',''],
+'articles'=>['Commande de l\'Api spécialisée dans les déroulés d\'articles','paramètres de l\'Api :
+tag=Une&nbdays:1,preview:auto,limit:10
+- cat/tag : spécifie une catégorie / un tag
+- nocat/notag : exclut une catégorie / un tag
+- nbdays : champ temporel
+- preview : 1, 2, 3, auto','',''],
 'ban_art'=>['bannière','(ID) article utilisant la bannière, ou la première image cataloguée de l\'article, en tant que fond de page','',''],
 'basic'=>['exécute un connecteur personnalisé (identifié par son titre), ou du code basic','param=valeur input.','',''],
 'birthday'=>['article d\'un jour','spécifier une date [jour-mois], ou aucune pour la date courante','',''],
@@ -33,7 +60,17 @@ return ['_'=>['description','param','option','command'],
 'category'=>['articles de la catégorie en cours','','',''],
 'cats'=>['liste des catégories','','',''],
 'catj'=>['liste des catégories, en ajax','','',''],
-'channel'=>['reçoit les flux d\'autres hubs ou sites Philum, incluant des critères de tri','(paramètres séparés par un espace)rnExemple : \'philum.fr:site philum:hub 236:art CMS:tag 10:last\'rnDéfinitions :rn:site : (optionnel) sans le \'http\' ;rn:cat : (optionnel) une catégorie ;rn:art (illogique avec cat) : les articles affiliés ;rn:last : les N derniers articles ;rn...rnLe module Channel peut être appelé depuis un connecteur \':ajax\' ; rnexemple : [site.com:site blog:hub :channel|Titre, close|x:ajax]','autorefresh (secondes)',''],
+'channel'=>['reçoit les flux d\'autres hubs ou sites Philum, incluant des critères de tri','(paramètres séparés par un espace)
+Exemple : \'philum.fr:site philum:hub 236:art CMS:tag 10:last\'
+Définitions :
+:site : (optionnel) sans le \'http\' ;
+:cat : (optionnel) une catégorie ;
+:art (illogique avec cat) : les articles affiliés ;
+:last : les N de
+iers articles ;
+...
+Le module Channel peut être appelé depuis un connecteur \':ajax\' ; 
+exemple : [site.com:site blog:hub :channel|Titre, close|x:ajax]','autorefresh (secondes)',''],
 'chat'=>['module de Chat','nom de la room','autorefresh (secondes) ',''],
 'chatxml'=>['discussion entre serveurs','nom du canal','autorefresh (secondes)',''],
 'chrono'=>['temps de generation de la page','','',''],
@@ -52,14 +89,22 @@ return ['_'=>['description','param','option','command'],
 'deja_vu'=>['articles récemment visités','','',''],
 'design'=>['détermine la feuille Css à utiliser (informé par le constructeur css, obligatoire)','spécifier un numéro de feuille css','abonnement css : place les css récents en sous-couche, sur laquelle il est possible d\'utiliser le minimum de personnalisation : classic, default, n>3 pour une table public) ; sinon voir params/auto_design',''],
 'desktop'=>['éléments du bureau','','',''],
-'desktop_apps'=>['renvoie le contenu du desktop','concerne les apps avec la condition \'desk\', ou celle de l\'option','',''],
+'desktop_apps'=>['renvoie le contenu du desktop','conce
+e les apps avec la condition \'desk\', ou celle de l\'option','',''],
 'desktop_arts'=>['présente des articles dans le Desktop','script de commande d\'articles (rien = ceux du cache)','',''],
 'desktop_files'=>['présente des fichiers partagés dans le Desktop','global|virtual (defaut : local|real)','position du root',''],
 'desktop_varts'=>['articles virtuels : construit les répertoires d\'après le meta \'folder\' des articles ','depuis [nombre de jours]','',''],
 'disk'=>['Contenu d\'un répertoire de l\'espace disque utilisateur','spécifier un répertoire','',''],
 'fav_mod'=>['Affiche les favoris partagés','En spécifiant un titre de favoris, ça affiche le rendu','',''],
 'favs'=>['Articles sélectionnés par le visiteur','','',''],
-'finder'=>['Ouvre un Finder','param (chemin) : hub/root/dir...','options pour chaque paramètre : rn- 0 = disk/shared/iconsrn- 1 = local/global/distantrn- 2 = virtual/realrn- 3 = list/panel/flap/icons/icon-diskrn- 4 = normal/recursive/connrn- 5 = alonern- 6 = pictos/mini',''],
+'finder'=>['Ouvre un Finder','param (chemin) : hub/root/dir...','options pour chaque paramètre : 
+- 0 = disk/shared/icons
+- 1 = local/global/distant
+- 2 = virtual/real
+- 3 = list/panel/flap/icons/icon-disk
+- 4 = normal/recursive/conn
+- 5 = alone
+- 6 = pictos/mini',''],
 'folder'=>['Liste des dossiers virtuels','','',''],
 'folders'=>['noeuds d\'articles, par ordre décroissant du nombre de sous-articles (dossiers d\'articles)','nb jours','ordonner par nombre',''],
 'folders_varts'=>['Articles classés dans un dossier virtual','spécifier un répertoire','',''],
@@ -75,7 +120,8 @@ return ['_'=>['description','param','option','command'],
 'last'=>['article le plus récent','','',''],
 'last_search'=>['Recherches enregistrées','terme de la recherche','',''],
 'timetravel'=>['','','',''],
-'last_tags'=>['derniers tags ajoutés','nombre de tags','préciser une classe / command bub : à destination d menubub',''],
+'last_tags'=>['de
+iers tags ajoutés','nombre de tags','préciser une classe / command bub : à destination d menubub',''],
 'lbar'=>['largeur de leftbar (pour les images et vidéos)','informé par css_builder après un \'save_width\'','',''],
 'log-out'=>['déconnexion','','',''],
 'login'=>['login','Donner un titre','à droite',''],
@@ -98,7 +144,8 @@ return ['_'=>['description','param','option','command'],
 'pub_img'=>['utilise la première image référencée d\'un article','ID_article','',''],
 'read'=>['contenu d\'article','ID_article','css',''],
 'read_art'=>['contenu d\'un article','ID_article','',''],
-'recents'=>['10 derniers articles d\'une rubrique','spécifier la rubrique (1 renvoie la rubrique en cours, toutes dans la Home)','',''],
+'recents'=>['10 de
+iers articles d\'une rubrique','spécifier la rubrique (1 renvoie la rubrique en cours, toutes dans la Home)','',''],
 'related_arts'=>['articles rattachés par l\'option d\'articles \'related\'','Donner un titre','ID ou [vide=auto]','traitement'],
 'related_by'=>['articles qui pointent vers celui-ci par l\'option d\'articles \'related\'','Donner un titre','ID ou [vide=auto]','traitement'],
 'related'=>['Articles "liés par" et "liés à"','','',''],
@@ -122,9 +169,21 @@ return ['_'=>['description','param','option','command'],
 'social'=>['déroulé de publications','Donner un titre','',''],
 'sources'=>['source url des articles aspirés','nombre d\'occurences','',''],
 'stats'=>['histogramme des visites','nombre de jours (valeur courante par défaut)','avec text',''],
-'submenus'=>['menus déroulants','syntaxe :rnchaque objet est un connecteur \':link\' (ID, ID|titre, category)rnchaque ligne correspond à un boutonrnle nombre de tirets signifie la profondeurrnles boutons au sommet d\'une hiérarchie ne peuvent pas être des liensrnrnonern- twornthreern- fourrn-- five','horizontal',''],
+'submenus'=>['menus déroulants','syntaxe :
+chaque objet est un connecteur \':link\' (ID, ID|titre, category)
+chaque ligne correspond à un bouton
+le nombre de tirets signifie la profondeur
+les boutons au sommet d\'une hiérarchie ne peuvent pas être des liens
+
+one
+- two
+three
+- four
+-- five','horizontal',''],
 'suggest'=>['donne au visiteur le moyen de proposer un article depuis une Url','','',''],
-'tag_arts'=>['articles ayant pour Tag','spécifier le tag de référence pour le tri ;rnsi besoin, préciser la classe de tagsrnex: tag:classe','',''],
+'tag_arts'=>['articles ayant pour Tag','spécifier le tag de référence pour le tri ;
+si besoin, préciser la classe de tags
+ex: tag:classe','',''],
 'tags'=>['liste des mots-clefs (tags)','spécifier la classe de tags','nb/taille des cols ou limite de scroll',''],
 'clusters'=>['liste des clusters de tags','','',''],
 'tags_cloud'=>['liste des mots-clefs (nuage de tags)','spécifier la classe de tags','',''],
@@ -140,7 +199,12 @@ return ['_'=>['description','param','option','command'],
 'twitter'=>['reçoit un flux Twitter','indiquer le hashtag (sans le #) ; option = nb de secondes du rafraîchissement','',''],
 'video'=>['affiche une vidéo','id de la vidéo','',''],
 'playconn'=>['articles contenant le connecteur spécifié','spécifier le connecteur (img,mp4,twitter,...)','',''],
-'video_viewer'=>['viewer vidéo en ajax','règles de tri séparées par \'|\' :rn- tag, cat, priority rn- tag1|tag2 ou 5-tag1|tag2 (5=tags)rn- priority-2|3|4 ou 11-2|3|4 (11=priority)rn- cat-public : articles dans \'public\' ;rn- cat-1 : catégorie en cours','',''],
+'video_viewer'=>['viewer vidéo en ajax','règles de tri séparées par \'|\' :
+- tag, cat, priority 
+- tag1|tag2 ou 5-tag1|tag2 (5=tags)
+- priority-2|3|4 ou 11-2|3|4 (11=priority)
+- cat-public : articles dans \'public\' ;
+- cat-1 : catégorie en cours','',''],
 'microarts'=>['micro articles avec un seul champ et la date','nom du thread','',''],
 'vacuum'=>['ouvre un article du web via le moteur Vacuum','url','',''],
 'BOOT'=>['Modules à lancer au Boot','','',''],
@@ -148,6 +212,8 @@ return ['_'=>['description','param','option','command'],
 'ADMIN'=>['Modules de l\'Admin','Peut recevoir un module MENU','',''],
 'PHI'=>['','','',''],
 'background'=>['couleur ou image de fond','couleur html, #_var, dégradé, image ou répertoire d\'images (random)','',''],
-'lastup'=>['derniers articles modifiés','','',''],
+'lastup'=>['de
+iers articles modifiés','','',''],
 'temporalnav'=>['navigation temporelle','','',''],
-'topfolders'=>['dossiers montants et descedants','','','']]; ?>
+'topfolders'=>['dossiers montants et descedants','','',''],
+'description'=>['description du site','','','']]; ?>

@@ -128,7 +128,7 @@ $rt=self::distant($_SESSION['prmb'][24],'getservers','=');
 $r=explode(';',$rt); $cur=''; $ret=''; //$r=msql::kv('server','shared_servers'); 
 if($r)foreach($r as $k=>$v){if($v==$h)$cur='ok';
 	if($v)$ret.=divc('fipop',lj('popbt','fndr_finder,home___'.$v.'_auto',$v));}
-if(!$cur)$ret.=blj('','fisrv','finder,dist*reg',self::pic('register')).' ';
+if(!$cur)$ret.=blj('','finder,dist*reg',self::pic('register')).' ';
 return $ret?br().br().$ret:'';}
 
 //process
@@ -150,7 +150,7 @@ elseif(auth(3)){mkdir_r($dr.$res); $ra=explode('/',$res);
 return $ret;}
 
 static function del($d,$id){
-if($id!='go')return blj('txtyl',$id.'fidel','finder,del___'.ajx($d).'_go',pictxt('alert','really?'));
+if($id!='go')return blj('txtyl','finder,del___'.ajx($d).'_go',pictxt('alert','really?'));
 $f='users/'.$d; $nod=nod('shared');
 if(auth(3))msql::modif('',$nod,[$d],'del','',1);
 if(is_file($f))unlink($f); self::shared_files(); self::distrib_share();
@@ -188,7 +188,7 @@ static function removef($j,$k,$v,$io){//chmod($j.'/'.$k,0777);
 if($v)unlink($j.'/'.$v); else rmdir($j.'/'.$k);}
 
 static function deldir($d,$id){$j='users/'.$d;
-if($id!='go')return blj('popdel',$id.'fidld','finder,deldir___'.ajx($d).'_go',pictxt('alert','really delete directory?'));
+if($id!='go')return blj('popdel','finder,deldir___'.ajx($d).'_go',pictxt('alert','really delete directory?'));
 walk_dir($j,"removef"); rmdir($j);
 return self::fparent($d,$id.'fidld','deleted',1);}
 
@@ -214,8 +214,8 @@ return ljb('','SaveBf',ajx($f).'_'.$w.'_'.$h,$img);}
 static function info_shared($d,$id){
 $sh=in_array_r($_SESSION['curdir'],$d,0); $dj=ajx($d).'_'.$id;
 if($sh)$t=nms(74); else $t=nms(75); $c=($sh?'color:#d22':''); 
-$ret=blj('',$id.'fishr','finder,share___'.$dj,picto('share',$c)).' ';
-if($sh)$ret.=blj('',$id.'fivrd','finder,vdir___'.$sh.'_'.$id,self::pic('virtual_dir')).' ';
+$ret=blj('','finder,share___'.$dj,picto('share',$c)).' ';
+if($sh)$ret.=blj('','finder,vdir___'.$sh.'_'.$id,self::pic('virtual_dir')).' ';
 return $ret;}
 
 static function finfo($d,$id,$f,$dj){$ra=explode('/',$d); $nm=strend($f,'/');
@@ -227,7 +227,7 @@ return $ret;}
 
 static function reader($d,$dist){$id=randid();
 $dr=self::droot(); $f=$dr.$d; $dj=ajx($d).'_'.$id; $xt=xtb($f); $ret='';
-//$ret.=blj('',randid().'fidel','finder,del___'.ajx($d),self::pic('delete')).br();
+//$ret.=blj('','finder,del___'.ajx($d),self::pic('delete')).br();
 if($xt && is_file($f)){
 	if(strpos('.jpg.png.gif',$xt)!==false)$ret.=self::show_img_b($f).' ';
 	elseif(strpos('.mp3.mid.flac',$xt)!==false)$ret.=audio($f);
@@ -241,12 +241,12 @@ return self::finfo($d,$id,$f,$dj).br().$ret;}
 
 static function dirinfo($d,$o){$id='fed'.str::normalize($d); $s=strpos($d,'/'); $ret='';
 //$ret=btn('popbt',pictxt('folder2',$d)).' ';
-if($s)$ret.=blj('',$id.'firnm','finder,rename___'.ajx($d).'_'.$id,self::pic('rename')).' ';
-$ret.=blj('',$id.'finew','finder,newdir___'.ajx($d).'_'.$id,self::pic('new')).' ';
-if($s)$ret.=blj('',$id.'fidld','finder,deldir___'.ajx($d).'_'.$id,self::pic('delete')).' ';
+if($s)$ret.=blj('','finder,rename___'.ajx($d).'_'.$id,self::pic('rename')).' ';
+$ret.=blj('','finder,newdir___'.ajx($d).'_'.$id,self::pic('new')).' ';
+if($s)$ret.=blj('','finder,deldir___'.ajx($d).'_'.$id,self::pic('delete')).' ';
 $ret.=self::plnk($d,$o).' ';
 $ret.=lj('','ffils_finder,sharedir___'.ajx($d),picto('share')).' ';
-$ret.=blj('',$id.'upurl','finder,home_upurl__'.ajx($d).'_'.$id,picto('photo')).' ';
+$ret.=blj('','finder,home_upurl__'.ajx($d).'_'.$id,picto('photo')).' ';
 $ret.=build::upload_j('upl'.str_replace('/','',$d),'disk',$d).' ';
 return $ret;}
 
@@ -373,8 +373,8 @@ foreach($r as $k=>$v){if(isset($v['r'])){
 	if(!auth(4))$sh=lkc('','app/download/'.base64_encode($furl),self::pic('download'));
 	elseif($prop==ses('qb')){
 		$sh=self::info_shared($url,randid());//share
-		$sh.=blj('',$k.'firnm','finder,rename___'.ajx($url).'_'.$k,self::pic('rename')).' ';
-		$sh.=blj('',$k.'fidel','finder,del___'.ajx($url).'_'.$k,self::pic('delete')).' ';}
+		$sh.=blj('','finder,rename___'.ajx($url).'_'.$k,self::pic('rename')).' ';
+		$sh.=blj('','finder,del___'.ajx($url).'_'.$k,self::pic('delete')).' ';}
 	$ret.=divc('',$ico.$op.$sh.$lk);}}
 $dir='../'.struntil($furl,'/');
 if($mp3)$rt=lj('','popupmk,jukebox___'.$dir.'_autowidth',picto('play'));
@@ -455,7 +455,7 @@ if($rb[5]!='alone'){//$fi['flap']=flap($r,$p,$rb);
 	if(count($fi)>0)$ret=self::design($fi,$rb);}
 else $ret=($fi['act']??'').($fi['win']??'');
 //$ret.=head::jscode('autoscroll(\'finder\');');
-return $ret.divc('clear','');}
+return $ret;}//.divc('clear','')
 
 }
 ?>

@@ -42,7 +42,7 @@ static function admhlp($t,$k){$j='lang_admin*modules_'.ajx($t).'_'.$k;
 //return bubble('grey','usg,popmsqt',$j,picto('info'));
 return togbub('msqa,msqcall',$j,picto('help'),'grey');}
 
-static function modEditSav($v,$o,$pa,$id=''){if(!$id)$id='mp';
+static function modedtsav($v,$o,$pa,$id=''){if(!$id)$id='mp';
 if($pa)$pa=ajx(substr($pa,0,-1),1); $r=msql::row('system','admin_modules',$v,1); 
 $ret=self::admhlp($v,'description');
 $ra=['param','title','command','option','module']; $d='"size="11" id="mde';
@@ -64,7 +64,7 @@ $ret=btn('txtcadr','command-line').' ';
 $rb=msql::read('system','admin_modules',1); 
 foreach($rb as $k=>$v){if($v[0]!='system')$ra[$k]=$k;}
 $ret.=btn('txtsmall2','module: ');
-$ret.=select(['id'=>'sdx'],$ra,'kk','moded_admx,modEditSav_sdx__'.$o.'__'.$id.'_',);
+$ret.=select(['id'=>'sdx'],$ra,'kk','moded_admx,modedtsav_sdx__'.$o.'__'.$id.'_',);
 $ret.=divd('moded','');
 return $ret;}
 
@@ -126,21 +126,14 @@ if($o=='sbmfrom')$r=self::sbmfrom($d);
 if($o=='deft')self::deft();
 return self::desktop($id,$ob,'',$r);}
 
-/**/static function sbmadd($id,$d){$ver=''; $rb=[];
-	$top=hlpbt('apps_add').' '; if($d)$ver='_'.$d;
-	$top.=lj('','sbm_submds____'.$id.'_deft',picto('update'),att(nms(104))).' ';
-	$top.=msqbt('system','default_apps').' '; 
-	$top.=lj(active($d,''),'popup_admx,sbmadd__x__'.$id,'defaults').' ';
-	$top.=lj(active($d,'desk'),'popup_submds__x_home_'.$id.'_sbmadd','home').' ';
-	$top.=lj(active($d,'desk'),'popup_admx,sbmadd__x_desk_'.$id,'desk').' ';
-	$top.=lj(active($d,'dev'),'popup_admx,sbmadd__x_dev_'.$id,'dev').' ';
+static function sbmadd($id,$d){$ver=''; $rb=[];
 	$r=msql::read('system','default_apps'.$ver,1); if($r)$ra=msql::cat($r,1,1);
 	if($ra)foreach($ra as $va){$bt=picto('file',32).$va;
 		$rb[$va][]=lj('sicon','popup_admx,sbmadc__x_'.$va.'_'.$id,$bt).' ';
 		foreach($r as $k=>$v){$bt=picto($v[7],32).$v[0];
 			if($v[1]==$va)$rb[$va][]=lj('sicon','sbm_submds__x_'.$k.'_'.$id.'_sbmads_'.$d,$bt).' ';}}
 ses::$r['popw']=320; ses::$r['popt']=nms(92).' Apps';
-return $top.build::tabs($rb).divc('clear','');}
+return build::tabs($rb,'','list');}
 
 static function sbmedt($p,$id,$cnd){$rid=randid(); $r=self::locapps($p);
 $type=$r['type']??''; $process=$r['process']??'';
@@ -156,7 +149,7 @@ if($hk!='0'){
 		if($k=='type')$rb[$k]=input($k.$rid,$v).hlpbt('submod_types');
 		if($k=='process'){$rb[$k]=input($k.$rid,$v).self::admhlp($v,'description');
 			if(!$v)$rb[$k].=self::modsmenu($k.$rid,$v);}
-		if($k=='param')$rb[$k]=input($k.$rid,$v).self::admhlp($process,'help');}
+		if($k=='param')$rb[$k]=input($k.$rid,$v).self::admhlp($process,'param');}
 	else $rb[$k]=input($k.$rid,$v);
 	if($k=='condition')$rb[$k].=' '.jump_btns($k.$rid,'menu|desk|boot|home|user',' ');//|favs
 	if($k=='context')$rb[$k].=' '.jump_btns($k.$rid,'home|art|cat',' ');//|cntx
@@ -175,18 +168,17 @@ return $ret;}
 
 static function desktop($id,$cnd,$sys='',$r=[]){//id=dir;cnd=;sys=;
 $rid=randid('mp'); $m='apps'; $ar=[];
-$top=lj('','sbm_submds_____'.$sys,picto('reload')).'';
-$top.=lj('txtx','sbm_submds____'.$id.'_'.$sys,'root').'';
+$top=lj('','sbm_submds_____'.$sys,picto('reload')).' ';
+$top.=lj(active($cnd,''),'sbm_submds____'.$id.'_'.$sys,'root').' ';
 $ra=explode('/',$id); foreach($ra as $k=>$v){$idb[]=$v;
-	if($v)$top.=lj('txtx','sbm_submds____'.implode('/',$idb),$v).'';}
-$top.=' '.self::admhlp($m,'help').' ';
+	if($v)$top.=lj('txtx','sbm_submds____'.implode('/',$idb),$v).' ';}
 foreach(['menu','desk','boot','home','user'] as $v)//,'favs'
-	$top.=lj($cnd==$v?'txtaa':'txtab','sbm_submds____'.$id.'__'.$v,$v).' ';
+	$top.=lj(active($cnd,$v),'sbm_submds____'.$id.'__'.$v,$v).' ';
+$top.=' '.self::admhlp($m,'description').' ';
 $top.=lj('','popup_admx,sbmadd____'.$id,picto('plus'),att(nms(103))).' ';
 $top.=msqbt('',nod($m)).' ';
 if(rstr(61) && $m=='apps')$top.=hlpbt('apps','alert');
 $top.=msqbt('system','default_apps').' ';
-$top.=lj('txtsmall2','popup_admin___apps_1','sys').' ';
 if($sys)$r=msql::read('system','default_apps');
 elseif(!$r)$r=msql::read('',nod($m));
 if(!$r)$r=self::sbmrev('');
@@ -204,7 +196,7 @@ foreach($r as $k=>$v)if(($cnd && strpos($v[5],$cnd)!==false) or !$cnd){
 	if(substr($v[6],0,strlen($id))==$id or !$id)
 		$ar[$k]=[$up,$bt,$dir,$v[1],$cd,$prv];}//,$v[2],$v[5]
 $ret=tabler($ar,1).hidden($id,'');
-return divd('sbm',$top.divc('',$ret));}
+return divd('sbm',div($top,'nbp').div($ret));}
 
 static function submod_pop(){
 ses::$r['popw']=460; ses::$r['popt']='Apps';
@@ -354,7 +346,7 @@ $dvs=join(',',$rvs);
 $bt=lj('popbt','mdls'.$bloc.'_modsav_'.$dvs.'__'.$bloc.'_'.$mid.'_savb_',nms(66));//apply
 $bt.=lj('popsav','mdls'.$bloc.'_modsav_'.$dvs.'_x_'.$bloc.'_'.$mid.'_sav_',nms(27));//save
 $bt.=lj('popbt','mdls'.$bloc.'_modsav_'.$dvs.'_x_'.$bloc.'_'.$mid.'_new_',nms(98));//dupl
-$bt.=blj('popdel','del'.$bloc,'modsav_'.$dvs.'__'.$bloc.'_'.$mid.'_del_',nms(43));
+$bt.=blj('popdel','modsav_'.$dvs.'__'.$bloc.'_'.$mid.'_del_',nms(43));
 $bt.=lj('popbt','popup_admx,mpos___'.$mid.'_'.$bloc,nms(158));
 //script
 if($type!='system'){

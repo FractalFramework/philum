@@ -139,7 +139,7 @@ sqb::call($sql,1);
 $last=sqb::read('id',$tbn,'v',['_order'=>'id desc','_limit'=>'1']);
 $rt[]='last id from '.$tbn.': '.$last;
 if($last=($nb*$unit)-1)sql::del2('qdv2',['<id'=>$nb*$unit],1,1);//verif if ok for del
-$first=sqb::read('id','live2','v',['_order'=>'id asc','_limit'=>'1']);
+$first=sqb::read('id','qdv2','v',['_order'=>'id asc','_limit'=>'1']);
 $rt[]='new first id from live2: '.$first;
 return join(br(),$rt);}
 

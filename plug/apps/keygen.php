@@ -7,7 +7,7 @@ static $beta=',.:;?!/&#{+-=|_()[]{}';
 static function passphrase($n=16){
 $na=sql('count(id)','dicoen','v',[]);
 for($i=0;$i<$n;$i++){$nb=rand(0,$na);
-	$rt[]=sql('mot','dicoen','v',['id'=>$nb]);}
+	$rt[]=sql('word','dicoen','v',['id'=>$nb]);}
 return $rt;}
 
 static function defs(){

@@ -1,6 +1,6 @@
 <?php 
 return ['_'=>['description'],
-'philum_pub_txt'=>['[http://philum.fr/2|[phi1|32::picto]:popart] [v[:ver]|txtsmall2:css] [http://philum.fr|[philum:picto]]'],
+'philum_pub_txt'=>['[http://philum.ovh/2|[phi1|32::picto]:popart] [v[:ver]|txtsmall2:css] [http://philum.ovh|[philum:picto]]'],
 'update_ok_alert'=>[''],
 'conn_help_txt'=>['Principe général
 
@@ -280,7 +280,8 @@ Le répertoire virtuel permet de générer des classements publiques ; \'server/
 'mod_cond'=>['contexte par défaut : (rien), home, cat, art
 [0-9] : contexte d\'un article précis (ID)
 [a-z] : contexte d\'une catégorie existante
-[a-z] : contexte déclenché par l\'url /context/nom'],
+[a-z] : contexte déclenché par l\'url /context/nom
+- si activé, prend le dessus sur les modules desktop posés dans le content'],
 'updfonts'=>['Après avoir téléchargé une typo il faut aller dans admin/fonts et faire un \'inject\' ; ça consiste à décompresser le fichier, l\'installer, et signaler son existence à la table des typos du serveur, qui n\'est pas conce
 é par les mises à jour, contrairement à celle du système.'],
 'updpictos'=>['Le système a besoin de pictogrammes, il faut télécharger la police \'philum\' dans l\'onglet \'pictos\''],
@@ -359,8 +360,8 @@ Le contexte d\'un module se définit dans l\'édition de chaque module. Si un mo
 'desklr'=>['attributs du Desktop :
 top,#_4,#_2
 to bottom,#002594,#06999e,#878787,#bf1755,#4f004f
-philum/photo/space/crabhubble.jpg
-philum/photo/space (random img du dossier)'],
+photo/space/crabhubble.jpg
+photo/space (random img du dossier)'],
 'submod_types'=>['types de sous-modules: mod plug art msql link finder ajax admin'],
 'chatxml'=>['- ChatXml fonctionne entre serveurs Philum (serveur d\'appel :  \'admin/params\')
 - le bouton \'live\' rafraîchit le chat toutes les 4 secondes
@@ -407,11 +408,12 @@ dans la barre d\'url : /api/{command}'],
 'like'=>['Les Likes sont publics'],
 'overcats'=>['Une sur-catégorie peut exister avec un champ vide, dans ce cas la catégorie est répertoriée à la racine.'],
 'overcats_menu'=>['Overcats peut être utilisé comme module, comme menu admin, ou comme objet de bureau, en utilisant une App avec les params type=desktop et process=overcats'],
-'menubub_edit'=>['types de menububs : 
-- (aucun type) : interprète (a-z) = catégorie, (0-9) = article, /module/... = link
-- module : ouvre le contenu d\'un module (ex: ///lines/4///1:categories )
+'menubub_edit'=>['Le module Menububs permet de créer un menu dont les objets pointent vers différents types de contenus : 
+- (aucun type) : interprète [a-z] = catégorie, [0-9] = article, /... = url
+- mod : ouvre le contenu d\'un module d\'après son script, disponible sur un module qui peut être créé dans la zone de dev. ex: p:D,d:lines,o:lg=fr,m:catarts (où m=module, p=param, o=option, d=rendu)
 - app : (ouvre une app)
-- ajax : (ex: popup_track___admin)'],
+- ajax : (ex: popup_track___admin)
+Ensuite il faut préciser le bouton, l\'icône, et avec un auth>7 le menu est désactivé.'],
 'spitable'=>['On ne pourra jamais dessiner réellement un atome. Une représentation graphique de la réalité ne fait que tenir compte d\'un certain nombre de paramètres.
 
 Sur cette table on peut voir les couronnes et les sous-couronnes.

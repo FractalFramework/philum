@@ -360,7 +360,7 @@ return 'links collected: '.count($r);}
 static function addrelated($id,$o,$prm=[]){$rt=[];
 $d=ma::artxt($id); $p=$prm[0]??''; $rb=[]; if($p)$rb[]=$p;
 $r=conb::links($d);
-$rd=sqb::read('id','art','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
+$rd=sqb::read('id','qda','rv',['(mail'=>$r,'!id'=>$id]); $rb+=$rd;
 return implode(' ',$rb);}
 
 //folder

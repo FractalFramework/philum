@@ -95,18 +95,19 @@ static function menu($p,$o,$rid){$ria=$rid.'a';
 $ret=lj('','popup_converts,home','(+)'); $ret=''; $j=$rid.'_converts,call_'.$ria.'_4_';
 $ret.=lj('txtx',$j.'html2conn','html2conn').' '.lj('txtx',$j.'conn2html','conn2html').' ';
 $r=['utf8','htmlentities','url','case','ajx','unescape','base64','ascii','binary','bin/dec','timestamp','pc2al','al2km','pc2km','deg2ra','deg2dec','g2oz'];
-$uarr=picto('arrow-top'); $darr=picto('arrow-down');//'&uarr;''&darr;'
-foreach($r as $v){$ret.=btn('popbt',$v.': '.lj('',$j.''.$v.'_1',$uarr).''.lj('',$j.''.$v.'',$darr)).' ';}
+//$uarr=picto('arrow-top'); $darr=picto('arrow-down');//'&uarr;''&darr;'
+foreach($r as $v){$ret.=lj('txtx',$j.$v.'_1',$v).lj('',$j.$v.'','&uarr;').' ';}
 $r=['urldec','clean_acc','clean_punct','php','hexdec','dechex','sin','cos','tan','asin','acos','atan','twostars(,)','indent','md','meta'];//,'pc2al','al2pc','al2km','pc2km','deg2ra','ra2deg','deg2dec','dec2deg','mas2al','al2mas','deg2rad','rad2deg'
-foreach($r as $v)$ret.=lj('txtx',$j.''.$v.'_1',$v).' ';
-	$ret.=lj('txtx',$j.'counts_1','counts').' ';
-	$ret.=ljb('txtx','transhtml',[$rid,$ria],$darr).' ';
-$ret.=br().textarea($ria,$p,51,8,['class'=>'console']);
+foreach($r as $v)$ret.=lj('txtx',$j.$v.'_1',$v).' ';
+$ret.=lj('txtx',$j.'counts_1','counts').' ';
+$ret.=ljb('txtx','transhtml',[$rid,$ria],'<-->').' ';
 return $ret;}
 
 static function home($p,$o){$rid='plg'.randid();
 $bt=self::menu($p,$o,$rid);
-$ret=self::call($p,$o);
-return $bt.textarea($rid,$ret,51,8,['class'=>'console']);}
+$d=self::call($p,$o);
+$ret=div(textarea($rid.'a',$p,48,16,['class'=>'console']));
+$ret.=div(textarea($rid,$d,48,16,['class'=>'console']));
+return $bt.div($ret,'grid-pad');}
 }
 ?>

@@ -399,10 +399,13 @@ else{closeotherbubs(li.parentNode); active_list_bubble(li.parentNode);
 	bubpos(bub,id,li,liul);}}
 
 //bubup
-function bubup(res){var m=mouse(event);
-var bub=document.createElement('div');
-bub.position='absolute'; bub.style.top=m.y+'px'; bub.style.left=m.x+'px';
-bub.innerHTML=res; bub.className='popup';}
+function bubup(res,id){
+var bt=getbyid('bt'+id); var bc=getbyid('bc'+id); var m=get_dim(bt);
+var bub=document.createElement('div'); bub.className='bubble';
+if(bc.innerHTML!=''){bc.innerHTML=''; bt.classList.remove('active');}
+else{bub.innerHTML=res; bc.appendChild(bub); bt.classList.add('active');
+bc.style.position='absolute'; bc.style.zIndex=popz; var m2=get_dim(bc);
+bub.style.position='relative'; bub.style.left=(-m.w)+'px'; bub.style.top=(m.h+10)+'px';}}
 
 //panup
 function panh(bub,top){

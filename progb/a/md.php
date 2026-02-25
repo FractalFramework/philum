@@ -1,4 +1,4 @@
-<?php //md for modules
+<?php //for modules
 class md{
 
 #commands
@@ -197,9 +197,8 @@ $ret.=lj('popbt','popup_api__3_'.$p.':'.$k,$k."&nbsp".'('.$fa.')',ats('font-size
 return $ret;}
 
 static function last_tags($p,$o){$p=$p?$p:10;
-$sq=['_order'=>'b1.id desc','_limit'=>$p];
-if($o!='nb')$r=sql('tag,cat','qdt','',$sq);
-else $r=sql::inner('tag,cat,count(idart)','qdt','qdta','idtag','',['_group'=>'idtag']+$sq);
+if($o!='nb')$r=sql('tag,cat','qdt','',['_order'=>'id desc','_limit'=>$p]);
+else $r=sql::inner('tag,cat,count(idart)','qdt','qdta','idtag','',['_group'=>'idtag','_order'=>'b1.id desc','_limit'=>$p]);
 if($r)foreach($r as $k=>$v){if($o=='nb')$n=' ('.$v[2].')';
 	$lin[]=[get(str::eradic_acc($v[1])),$v[1],$v[0],$v[0]];}
 return $lin;}
@@ -317,10 +316,10 @@ if($r)foreach($r as $k=>$v){$id=$mode?$v:$k;
 $nbpg=pop::btpages($npg,$page,$i,$j);
 return $nbpg.$ret;}
 
-static function related_art($id){if(!$id)$id=ses('read');
-return sql('msg','qdd','ks',['val'=>'related','ib'=>$id]);}
+static function related_art($id){if(!$id)$id=ses('read'); if(!$id)return [];
+return sql('msg','qdd','ks',['val'=>'related','ib'=>$id]);}//fatal error if 'ks' not works
 
-static function related_by($id){if(!$id)$id=ses('read'); if($id)return [];
+static function related_by($id){if(!$id)$id=ses('read'); if(!$id)return [];
 return sql('ib','qdd','k',['val'=>'related','%msg'=>$id]);}
 
 static function related($id){if(!$id)$id=ses('read');
@@ -360,11 +359,11 @@ if($rtag)foreach($rtag as $tag=>$v){$ret[$tag]=[];
 return $ret;}
 
 static function see_also_source($o=''){$o=$o?$o:10;
-$id=ses('read'); $r=ma::readcache(); $src=$r[$id][9];
+$id=ses('read'); $r=ma::readcache(); $src=$r[$id][9];//readcachecol(9)
 if(!$src)$src=sql('mail','qda','v',$id);
 if($src){$src=preplink($src); $ret=[];
 if($r)foreach($r as $k=>$v)if(preplink($v[9])==$src)$ret[$k]=radd($ret,$k);
-if(!$ret && $src)$ret=sql('id','qda','k','mail like "%'.$src.'%" limit '.$o);
+if(!$ret && $src)$ret=sql('id','qda','k',['%mail'=>$src,'_limit'=>$o]);
 if($ret){unset($ret[$id]);
 return [$ret,lk(htac('source').strto($src,'.'),$src)];}}}
 
@@ -438,7 +437,7 @@ $d=date('Y:m:d',$day); $ret=digits($d,2,'pictos-red');
 return picto('fluxcapacitor').' '.$ret;}
 
 static function nodes($mn,$o){//arsort($mn);
-if($o)$nb=sql('name,nbarts','qdu','kr','active="1"'); $ret='';
+if($o)$nb=sql('name,nbarts','qdu','kr',['active'=>'1']); $ret='';
 if($mn)foreach($mn as $k=>$v){$css=active($k,ses('qb'));
 	if($o)$add=' ('.$nb[$k][0].')'; if(!$v && $k)$v=$k;
 	if($k)$r[]=llk($css,subdomain($k),$v.$add);}//#li

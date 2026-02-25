@@ -71,4 +71,5 @@ return ['_'=>['category'],
 'git'=>['git'],
 'funcs'=>['funcs'],
 'patches'=>['patches'],
-'searched'=>['recherchée']]; ?>
+'searched'=>['recherchée'],
+'connectors'=>['connectors']]; ?>

@@ -109,11 +109,9 @@ $sq=['nod'=>ses('qb'),'>re'=>'0','_order'=>'frm'];
 if(!$o)$sq['-frm']='_';
 return sql('distinct(frm)','qda','rv',$sq);}
 
-static function define_qbn(){
-$r=sql('mail,dscrp','qdu','a',['name'=>ses('qb')]);
-$qbin['adminmail']=$r['mail']??'';
-$qbin['dscrp']=$r['dscrp']??'';
-$_SESSION['qbin']=$qbin;}
+static function adminmail(){
+return sql('mail','qdu','v',['name'=>ses('qb')]);}
+static function admail(){return sesmk2('boot','adminmail');}
 
 //prmb
 static function define_params(){
@@ -121,7 +119,6 @@ self::define_rstr();
 self::define_prmb();
 self::seslng();//need prmb25 before nms
 self::define_cats();
-self::define_qbn();
 $_SESSION['modsnod']=nod('mods_'.prmb(1));
 if($_SESSION['prmb'][5])self::auto_design();
 self::define_mods();
@@ -177,11 +174,11 @@ if($art){$read=ma::id_of_urlsuj($art); if($read)geta('read',$read);}
 if($gid=get('id')){$read=ma::id_of_urlsuj($gid); if($read)geta('read',$read);}
 if(is_numeric($read)){
 	[$day,$frm,$suj,$img,$pb]=ma::rqtart($read);
-	if($pb!=$qb){
+	/*if($pb!=$qb){
 		if(rstr(96))return getz('read');//prison
 		if(rstr(105)){//interhub//self::define_qb();
 			if(!isset($_SESSION['mn'][$pb]))return;
-			if(!rstr(97)){self::reset_ses(); $_SESSION['qb']=$pb; $cache='ok';}}}
+			if(!rstr(97)){self::reset_ses(); $_SESSION['qb']=$pb; $cache='ok';}}}*/
 	if($suj){geta('frm',$frm); $_SESSION['read']=$read; $_SESSION['mem'][$read]=1; $rs=['art',$read];}
 	else{getz('read'); $rs=['context','home'];}}
 elseif($mod)$rs=['module',$mod];
@@ -369,13 +366,11 @@ if($ex==ses('uid'))return true;}
 
 #update
 static function verif_update(){
-if($_SESSION['auth']>5){
-	if(!prms('aupdate')){
+if($_SESSION['auth']>5 && !prms('aupdate') && prms('srvup') && !isset($_SESSION['updok'])){
 	$localver=checkversion(2); $distver=sesmk('checkupdate',2,0);
-	if($distver>$localver)headsj('popup_software,call___1');}
-	if(!isset($_SESSION['verifs'])){
-	if(prms('srvmir'))headsj('popup_transport,batch__3');}
-$_SESSION['verifs']=1;}}
+	if($distver>$localver){headsj('popup_software,call___1');
+		if(prms('srvmir'))headsj('popup_transport,batch__3');}
+	$_SESSION['updok']=1;}}
 
 #state
 static function state(){
@@ -398,7 +393,7 @@ return 'pub/favicons/favicon_'.ses::$s['logo'].'_'.$c.'.png';}
 static function metas(){
 ses::$m=[
 'title'=>ses('qb'),//=$mn[ses('qb')]??'';
-'descr'=>sesr('qbin','dscrp'),
+'descr'=>prma('description'),
 'css'=>self::define_design(),
 'favicon'=>self::favicon(),
 'lang'=>prmb(25),
@@ -410,9 +405,9 @@ $lastart=''; $rtb=[]; $rt=[]; $main=[]; $nod=nod('cache');
 if($x)msql::del('',$nod); $main=msql::read('',$nod,1);
 if($main)$last=current($main); $lastart=$last[0]??ma::lastid('qda');
 if(($lastart && !isset($main[$lastart])) or $x){$r=[];
-	$rh=[msql::$m=>['date','cat','title','img','hub','url','lu','author','length','src','ib','re','lg']];
+	$rh=[msql::$m=>['date','cat','title','img','hub','url','lu','author','length','src','ib','re','lg']];//del hub
 	$r=ma::rqtall(); er('cache reloaded'); //if(rstr(140))
-	if($r)foreach($r as $k=>$v){$ka=array_shift($v); $v[3]=artim::ishero($v[3],$v[0]); $rt[$ka]=$v;}
+	if($r)foreach($r as $k=>$v){$ka=array_shift($v); $rt[$ka]=$v;}
 	msql::save('',$nod,$rh+$rt);
 	$_SESSION['rqt']=$rt;}
 elseif($main)$_SESSION['rqt']=$main;

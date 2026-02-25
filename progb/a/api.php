@@ -18,8 +18,8 @@ if($r)foreach($r as $k=>$v){$re=[];
 	foreach($v as $ka=>$va){
 		if($ka=='content')$va=($ra['conn']??'')?$va:conn::read($va,'3','','nl');
 		elseif($ka=='translation0')$va=($ra['conn']??'')?$va:conn::read($va,'3','','nl');
-		elseif($ka=='image' && $va){$va=host().'/img/'.artim::ishero($va,$v['id']);
-			$re['catalog-images']=$v['image'];}//$ka='lead_image_url';
+		elseif($ka=='image' && $va){$va=host().'/img/'.$va;}
+			//$ka='lead_image_url';//$re['catalog-images']=$v['image'];
 		elseif($ka=='url-explicit')$va=host().'/art/'.$va;
 		elseif($ka=='source'){$re['url']=host().'/'.$k;}
 		elseif($ka=='lang' && !$va)$va=ses('lng');
@@ -284,7 +284,7 @@ else{foreach($r as $k=>$v){$id=$v['id']; $rc[$id]=$v;
 		if($prw>1 or $prw=='rch' or substr($prw,0,4)=='conn')$rd[$id]=$id;}
 	if($ra['lg']??'')foreach($r as $k=>$v){$id=$v['id']; $rm[$id]=$v['txt']; unset($rd[$id]);}
 	if($rd)$rm+=sql('id,msg','qdm','kv',['(id'=>$rd]);
-	foreach($rc as $k=>$v){//$v['img1']=artim::ishero($v['img'],$v['id']);
+	foreach($rc as $k=>$v){//$v['img1']=$v['img'];
 		$ret=art::call($v['id'],$v,'',$rm[$k]??'',$pr[$k],$tp,$nl);
 		$rt[]=art::section($ret,$k,$pr[$k]);}}
 //if(!empty($ra['cols']))return pop::columns($rt,$ra['cols']);

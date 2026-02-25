@@ -1,12 +1,10 @@
 <?php
 class web{
 static function pao($r,$u){
-//$im=artim::thumb_d($r[2],'90/90');
-$tit=$r[0]; $txt=$r[1]; $img=$r[2]; $im='';
-if(!empty($r[2]))$im=divs('float:left; margin-right:10px',image(goodroot($img),90));
-//if(strpos($txt,'[')!==false){$txt=str::kmax($txt); $txt=conn::read($txt,3,'');}
-$ret=$im.lka($u,$tit).divc('',$txt).divc('small grey',lkt('',$u,pictxt('url',preplink($u))));
-return tagb('blockquote',$ret.divc('clear',''));}
+[$tit,$txt,$im]=arr($r,3);
+$ret=div($im?image(goodroot($im)):picto('img'));
+$ret.=div(div(lka($u,$tit),'bold').div($txt,'small').divc('small grey',lkt('',$u,pictxt('url',preplink($u)))));
+return div($ret,'track grid-semi');}
 
 static function ytid($u){if(strpos($u,'='))return strin($u,'=','&'); return strend($u,'/');}
 static function imgyt($id){return 'https://img.youtube.com/vi/'.$id.'/hqdefault.jpg';}

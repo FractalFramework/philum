@@ -7,7 +7,7 @@ $ra=explode(',',ajx($d,1)); $na=count($ra)-1;
 $rb=($prm); $nb=count($rb)-1; $ret='';
 for($i=0;$i<$nb;$i++){[$label,$type]=explode('=',$ra[$i]);
 	$ret.=$label.' : '.$rb[$i].br();}
-$from=$_SESSION['qbin']['adminmail'];
+$from=boot::admail();
 $url=urlread(ses('read'));
 mails::send_mail('html',$from,host().$url,$ret,$from,$url);
 return br().btn('',helps('formail'));}

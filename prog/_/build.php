@@ -89,7 +89,7 @@ $ib=ses('tbmd'.$id); if(!$ib)$ib=1; $sp=btn('txtac',' ');
 foreach($r as $k=>$v){$b++; if(is_array($v))$v=join('',$v);
 	$dsp=$b==$ib?'block':'none'; $cs=$b==$ib?'txtaa':'txtab';
 	$menu.=ljb($cs,'toggle_tab',[$id,$b],$k).$sp;
-	if(is_array($v))$v=divc('list',self::onxcols($v,3,''));
+	if(is_array($v))$v=divc('list',self::onxcols($v,3));
 	$divs.=div($v,'scroll '.$c,'div'.$id.$b,'display:'.$dsp);}
 return div($menu,'','mnuab'.$id,'').$divs;}
 
@@ -100,16 +100,8 @@ if($r)foreach($r as $k=>$v)
 	$ret.=divs($sr,div($k,'txtsmall grey','',$sc.$sw1).divs($sc.$sw2,$v?$v:'-'));
 return divs('display:table;',$ret);}
 
-static function onxcols($re,$prm,$w,$h=''){//colonize
-$nb=count($re); $i=0; $io=1; $r[$io]=''; if(!is_numeric($prm))$prm=3; $ret='';
-$mid=ceil($nb/$prm); $mid=$mid==0?1:$mid; $mw=floor($w/$prm)-60;
-if($h)$h=' overflow-y:auto; overflow-x:visible; scrollbar-width:thin; height:'.$h.'px;';
-$css='float:left; min-width:'.$mw.'px; width:'.(floor(100/$prm)).'%;'.$h.';';
-if($re)foreach($re as $k=>$v){$i++; if($i<=$mid)$r[$io].=$v;
-	if($i>$io*$mid && $io<$prm){$io++; $r[$io]='';}
-	if($io>1 && $i>$mid*($io-1) && $i<=$mid*$io)$r[$io].=$v;}
-for($i=1;$i<=$prm;$i++)$ret.=divs($css,$r[$i]??'');
-return $ret.divc('clear','');}
+static function onxcols($r,$n){
+return div(join('',$r),'grid-'.$n);}
 
 static function sh($f,$d,$v=''){
 file_put_contents($f,$d);
