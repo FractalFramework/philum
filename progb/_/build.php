@@ -85,13 +85,13 @@ return tag('form',['id'=>'upl'.$id,'style'=>'display:inline-block','method'=>'po
 static function tabs($r,$ud='',$c=''){
 if(!$r)return; $b=0; $menu=''; $divs='';
 static $i; $i++; $id='tab'.$ud.'-'.$i; $ra=array_keys($r);
-$ib=ses('tbmd'.$id); if(!$ib)$ib=1; $sp=btn('txtac',' ');
+$ib=ses('tbmd'.$id); if(!$ib)$ib=1; $sp='';
 foreach($r as $k=>$v){$b++; if(is_array($v))$v=join('',$v);
-	$dsp=$b==$ib?'block':'none'; $cs=$b==$ib?'txtaa':'txtab';
+	$dsp=$b==$ib?'block':'none'; $cs=$b==$ib?'active':'';
 	$menu.=ljb($cs,'toggle_tab',[$id,$b],$k).$sp;
 	if(is_array($v))$v=divc('list',self::onxcols($v,3));
-	$divs.=div($v,'scroll '.$c,'div'.$id.$b,'display:'.$dsp);}
-return div($menu,'','mnuab'.$id,'').$divs;}
+	$divs.=div($v,'','div'.$id.$b,'display:'.$dsp);}
+return div($menu,'tabs','mnuab'.$id,'').div($divs,'panel scroll'.($c?' '.$c:''));}
 
 static function on2cols($r,$w,$p){$w1=round($w/$p); $w2=round($w-$w1); $ret='';
 $sc='display:table-cell; '; $sw1='width:'.$w1.'px;';

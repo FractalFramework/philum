@@ -240,7 +240,7 @@ static function img($da,$d,$b){
 //if(is_img($p))return img(goodroot($p,1));
 if(is_img($da) && strpos($da,'|')===false){$im=goodroot($da,'');
 	if($b=='mini'){[$w,$h]=imsize($im); if($w>400 or $h>300)return artim::minimg($d,'');}// return img($im);
-	elseif(is_file($im))return img($im);//;artim::mkimg($da,3,'','',1)
+	elseif(is_file($im))return img($im);//;artim::mkimg($da,3,'',1)
 	else return picto('img');}}
 
 #wygsyg//sconn2:$a=1

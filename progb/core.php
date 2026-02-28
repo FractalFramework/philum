@@ -44,7 +44,7 @@ $j='popup_usg,dropmenupop__bt'.$rid.'_'.ajx(addslashes($pr)).'_'.$id.'_'.$rid.'_
 return lj('',$j,$t?$t:'...',atd('adcat'.$rid)).hidden($id,$t).btd('bt'.$rid,'');}
 function jumpmenu($pr,$id,$t){$j='tg'.$id.'_usg,jumpmenu___'.ajx($pr).'_'.$id.'_'.ajx($t);
 return toggle('popbt',$j,btd('bt'.$id,$t?$t:'...'),'',atd('a'.$id)).hidden($id,$t).btd('tg'.$id,'');}
-function toggle($c,$j,$v,$n='',$o=''){static $i; $i++; if($n=='x')$i=0; //$j.='_'.$i;
+function toggle($c,$j,$v,$n='',$o=''){static $i; $i++; //if($n=='x')$i=0; //$j.='_'.$i;
 return ljb($c,'tog_j',[$j,'bt'.$i,$n],$v,atd(strto($j,'_').'bt'.$i).$o);}
 function ljtog($c,$j,$jb,$v,$o=''){$rid=randid('bt');//alter_j
 return ljb($c,'tog_jb',[$j,$jb,$rid],$v,atd($rid).$o);}
@@ -263,7 +263,7 @@ function prmb($n){return $_SESSION['prmb'][$n]??'';}
 function langs(){return explode(' ',prmb(26));}
 function lgnm($d){$r=sesmk('langnames'); return $r[$d]??nms(228);}
 function nms($n){return $_SESSION['nms'][$n]??($n);}//trans::nms
-function mn($n){return $_SESSION['mn'][$n]??'';}
+function mn($d){return $_SESSION['mn'][$d]??'';}
 function nmx($r){$rb=[]; foreach($r as $k=>$v)$rb[]=nms($v); return implode(' ',$rb);}
 function noresult(){return nmx([11,16]);}
 function yesnoses($d){return $_SESSION[$d]=($_SESSION[$d]??'')==1?0:1;}
@@ -360,7 +360,7 @@ function digit($n,$o=''){return picto('digit'.$o.'-'.$n);}
 function digits($n,$o='',$c=''){$rt=[]; $n=str_replace([':','.'],['h','d'],$n); $r=str_split($n);
 foreach($r as $v)$rt[]=digit($v,$o); if($rt)return spanp(join('',$rt),[$c]);}
 //function digits_0($n,$o=''){return spanp(join('',array_map('digit',str_split($n),[$o])),[2=>'color:red']);}
-function helps($d,$nd=''){$nd=$nd?$nd:'txts'; return msql::val('lang','helps_'.$nd,$d);}
+function helps($d,$nd=''){$nd=$nd?$nd:'txts'; $ret=msql::val('lang','helps_'.$nd,$d); return nl2br($ret);}
 function hlpbt($j,$t=''){return togbub('msqa,syshlp',ajx($j),picto($t?$t:'question',18),'grey');}
 
 #cmd

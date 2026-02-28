@@ -280,7 +280,7 @@ if($rl)foreach($rl as $va){$rid='lang'.$va.$id; $dn[]=$rid;
 		$ret.=lj('txtsmall2',$rid.'_meta,autolang__4_'.$id.'_'.$va,$va);
 		$ret.=input($rid,$ra['lang'.$va]??'','5');}
 	else $ret.=hidden($rid,'');}
-$ret.=toggle('popsav','lgs'.$id.'_meta,langsav_'.implode(',',$dn).'_k_'.$id,picto('valid')).' ';
+$ret.=lj('popsav','lgs'.$id.'_meta,langsav_'.implode(',',$dn).'_kx_'.$id,picto('valid')).' ';
 $ret.=lj('popdel','_meta,langdel__json_'.$id,picto('del')).' ';
 $ret.=hlpbt('meta_lang').span('','','lgs'.$id);
 $ret.=div(self::otherlangs($id),'nbp');

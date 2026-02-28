@@ -15,7 +15,7 @@ if($dc)return artim::getimg($dc,$id,3);}
 static function restoreim($a,$id){
 $b=self::restore($a,$id); if(!$b)return;
 if($b && $b!=$a){artim::updmsg($id,$a,$b); img::mdf($id,$a,$b);}
-return artim::mkimg($b,3,920,$id,'');}
+return artim::mkimg($b,3,$id,'');}
 
 static function rewrite($d){$im='img/'.$d;
 [$w,$h,$ty]=imsize($im);
@@ -63,7 +63,7 @@ static function reduce($d,$o,$id=''){$im='img/'.$d;
 if($o){$w=round($wo/2); $h=round($ho/2);}
 else [$w,$h]=self::sz($wo,$ho,940,940);
 self::build($im,$im,$w,$h,'');
-return artim::mkimg($d,3,920,$id,'',1);}
+return artim::mkimg($d,3,$id,'',1);}
 
 static function gif2png($a,$id){
 $b=str_replace('.gif','.png',$a);

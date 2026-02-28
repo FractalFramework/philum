@@ -411,7 +411,7 @@ return $ret;}
 static function import_defs($r,$d){$rh=$r[msql::$m]??'';
 if(strpos($d,'msql/')!==false){$r=explode('/',$d); $n=count($r)-1; $nod=$r[$n]; $dr=$r[$n-1];
 	$u=upsrv().'/call/msqj/'.$dr.'|'.$nod; $r=self::import_json_lk($u);
-	return msql::save($dr,$nod,$r);}
+	if($r)return msql::save($dr,$nod,$r); else echo 'no: '.$u;}
 else{[$a,$b]=split_one('/',$d,1); return msql::read($a,$b,'',$rh);}}
 
 //json
@@ -819,7 +819,7 @@ if(!$def && auth(6)){
 		if(!$defs or isset($defs[0]))
 			$rt[]=self::opbt('repair',$jurl,$lh[12]);
 		if(auth(6)){//($base=='system' or $hub=='public') && 
-			$rt[]=self::opbt('renove',$jurl,['renove','import from '.prms('srvmir')]);
+			$rt[]=self::opbt('renove',$jurl,['renove','import from '.prms('srvup')]);
 			$rt[]=self::opbt('resav',$jurl,['resav','resav']);}}
 	elseif($ath && strpos($table,'_') && !$is_file)$rt[]=self::opbt('delemptydir',$jurl,$lh[49]);//
 	//echo $ath.'--'.$table.'--'.$hub.'--'.$is_file;

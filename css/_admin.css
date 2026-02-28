@@ -126,9 +126,7 @@ input#srch:focus {width:120px;}
 .desk a:hover {color:#ffffff; background-color:#000000;}
 .bubble {color:#ffffff; background-color:#161817;}
 .tab {margin:7px 0; padding:4px 0; margin:7px 0; padding:3px 5px;}
-.panel {color:#cccccc; font-family:Arial,Sans; padding:0 4px;}
-.panel a {color:#ff8300;}
-.panel a:hover {color:#ff8300;}
+.panel {font-family:Arial,Sans; padding:0 4px;}
 .panel a:hover {text-decoration:underline;}
 ul.panel li {font-family:Arial; margin:0px 0; font-size:small;}
 ul.panel li a {color:#ffffff; border-color:#161817; word-wrap: break-word;}
@@ -148,13 +146,10 @@ ul.panel li a:hover {color:#ff8300; border-color:#0f0f0f;}
 .justy img {border-color:#888888; border-width:1px; border-style:solid; max-width:auto;}
 .cols img#rez {width:100%;}
 .grid-art {display:grid; grid-template-columns:300px auto; grid-column-gap:16px; grid-row-gap:4px;}
-.grid-css {display:grid; grid-template-columns:190px 50px 50px 50px 360px; grid-column-gap:4px; grid-row-gap:4px;}
-.grid-css .col a {color:#161817;}
-.grid-css .col {background-color:#cccccc;}
+.grid-css {display:grid;}
 .css-clr {display:inline-block; width:10px; margin:0 1px; padding:0 1px; text-align:center;}
 .col {color:#161817; background-color:#cccccc; border-radius:2px; border-style:solid; border-width:0px; box-shadow:0px 0px 2px #161817; font-size:13px; padding:4px; margin:1px;}
 .col a {color:#161817;}
-.flex-css {display:flex; column-gap:4px; row-gap:4px; align-items:flex-start; flex-flow:row wrap;}
 .float-css .cl1 {float:left; width:190px;}
 .float-css .cl2 {float:left; width:50px;}
 .float-css .cl3 {float:left; width:360px;}
@@ -204,11 +199,6 @@ a.txtred:hover {background-color:#000000; box-shadow: 0px 3px 4px #fff inset, 0p
 .txtbox a {color:#161817;}
 .txtbox a:hover {color:#161817;}
 a.txtbox:hover {background-color:#cccccc; box-shadow:0px 0px 0px #161817;}
-.txtaa, .txtab, .txtac {border-color:#0f0f0f; border-width:0 0 0px 0; border-style:solid; line-height:20px; border-radius:6px 6px 0px 0px;}
-.txtaa {color:#ffffff; background-color:#000000; box-shadow:0px 0px 4px -3px #888888;}
-.txtab {color:#cccccc; background-color:#161817; box-shadow:0px 0px 4px -3px #888888;}
-.txtab:hover {color:#ffffff; background-color:#000000;}
-.txtac {border-width:0 0 1px 0; background:linear-gradient(to bottom,rgba(136,136,136,0),rgba(136,136,136,0.5));}
 .popbt, .popw, .popsav, .popdel {color:#cccccc; border-color:#0f0f0f; text-decoration:none; padding:2px 4px; border-radius:2px; border-style:solid; border-width:1px; margin:1px;}
 .popbt {color:#ffffff; background-color:#0f0f0f; border-color:#888888;}
 .popbt a {background-color:#161817; border-color:#ff8300;}

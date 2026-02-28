@@ -1,46 +1,55 @@
 <?php 
 class xss{
+static $ru;
 static $dfb=['url','channel','title','link','descr','img','author','date','content','footer','opt','utf','rules'];
 
-static function find($q,$ra){
-$r=$q->getElementsByTagName($ra[2]);
-if(!$ra[1])return $r->nodeValue;
+static function find($q,$va){
+[$c,$at,$tg,$g]=opt($va,':',4);
+if(!$at)$at='class'; if(!$tg)$tg='div';
+$r=$q->getElementsByTagName($tg);
+if(!$at)return $r->nodeValue;
 foreach($r as $k=>$v){
-	$mark=domattr($v,$ra[1]);
-	if(!$ra[0])return $mark;
-	if($mark==$ra[0])return $ra[1]?domattr($v,$ra[1]):$v->firstChild->nodeValue;}}
+	$mark=domattr($v,$at);
+	if(!$c)return $mark;
+	if($mark==$c)return $at?domattr($v,$at):$v->firstChild->nodeValue;}}
 
-static function elements($q,$va){$vr=[];
-$r=$q->getElementsByTagName($va[2]);
-if($r)foreach($r as $k=>$v){$mark=domattr($v,$va[1]); if($mark==$va[0] or !$va[0])$vr[]=$v;}
-return $vr;}
+static function batchbt(){
+$r=self::$ru; $ret=''; $rp=[]; $rid=randid();
+if($r)foreach($r as $k=>$v){$rp[]=$rid.$k; $ret.=hidden($rid.$k,$v);}
+if($rp)$ret.=lj('','socket_rssin,batchpop_'.join(',',$rp).'_addjs',picto('batch'),att('open all'));//217
+return $ret;}
 
-static function build($p,$o){$rt=[]; 
+static function build($p,$o){$rt=[]; $ru=[];
 $nod=nod('xss'); $r=msql::row('',$nod,$p,1);
-$pb=http($r['url']); $q=fdom($pb,1); $vr=[]; $rb=[]; $ra=[];
-if($r)foreach(self::$dfb as $k=>$v)if($v){$rz=opt($r[$v],':',4);
-	if(!$rz[1])$rz[1]='class'; if(!$rz[2])$rz[2]='div'; $ra[$v]=$rz;}
-//if($ra)$vr=self::elements($q,$ra['channel']);
-if($ra)$vr=$q->getElementsByTagName($ra['channel'][2]);
+$u=http($r['url']); $q=fdom($u,1); $vr=[]; $rb=[]; $ra=[];
+if($r['channel']){$rl=explode('>',$r['channel']); foreach($rl as $v)$q=dom::reduce($q,$v);}
+//if($ra)$vr=$q->getElementsByTagName($ra['channel'][2]);
+$vr=dom::extract_q($q,$r['blocs']); //vd($vr); 
 if($vr)foreach($vr as $k=>$v){
-	foreach($r as $ka=>$va){//pr($v);
+	foreach($r as $ka=>$va)if($ka!='url'){
 		//$rb[$k][$ka]=self::find($v,$va);
 		$rb[$k][$ka]=$va?dom::extract($v,$va):'';}}
-if($rb)foreach($rb as $k=>$v)if($v['title']){$reb=''; $rc=[];
-	$id=rssin::recognize_article($v['link'],$v['title']);
+if($rb)foreach($rb as $k=>$v)if($v['title']){$rc=[];
+	['title'=>$t,'link'=>$lk,'date'=>$dt]=$v;
+	if(!is_http($lk))$lk=domain($u).''.$lk;
+	$id=rssin::recognize_article($lk,$t);
 	if($id)$rc[]=ma::popart($id);
-	//foreach($v as $ka=>$va)$reb.=tagb($ka,$va);
-	//$ret.=tagb('channel',$reb); $rt='';
-	$rc[]=lj('','popup_sav,batchpreview__3_'.ajx($v['link']),pictxt('view',$v['title']));
+	if(!$id)$ru[]=$lk;
+	$ts=strtotime($dt); if(is_numeric($ts))$rc[]=datz('ymd:His',$ts);
+	$rc[]=lj('','popup_sav,batchpreview__3_'.ajx($lk),picto('view'));
+	$rc[]=lj('','popup_rssin,distance___'.ajx($t),picto('ear'));
+	$rc[]=span($t);
 	//if($v['descr'])$rt[]=tagb('section',img($v['img']).$v['descr']);
-	$rt[]=div(join(' ',$rc));}
+	$rt[]=div(join(' ',$rc),$id?'hide':'');}
+krsort($ru); self::$ru=$ru;
 return div(join('',$rt),'');}
 
 static function bt($p,$o){
 $nod=nod('xss'); $jurl=ajx('users/'.$nod); $pb=http($p);
 $bt=lj('popbt','popup_editmsql___'.$jurl.'_'.ajx($p),picto('config'));
 $bt.=lj('popbt','popup_few,seesrc___'.ajx($pb),picto('script'));
-$bt.=lka($pb,picto('url'));
+$bt.=lka($pb,picto('url')).' ';
+$bt.=self::batchbt();
 return divc('',$bt);}
 
 static function call($p,$o,$prm=[]){
@@ -75,8 +84,8 @@ return msql::modif('',nod('xss'),$r,'push',self::$dfb);}
 static function home($p,$o){$rid=randid('xss');
 //self::install('xss');
 $bt=self::menu($p,$o,$rid);
+$bt.=msqbt('',nod('xss')).' ';
 //$ret=self::build($p,$o);
-$bt.=msqbt('',nod('xss'));
 return $bt.divd($rid,'');}
 }
 ?>

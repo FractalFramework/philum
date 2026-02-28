@@ -154,7 +154,7 @@ new AJAX(jurl()+get+'&tg='+tg,tg,tp,fd);}
 function mkprm(dn2,dn3){var prm=[]; var dna=dn2.split(','); var vl='';
 for(i=0;i<dna.length;i++){var tg=jx(dna[i]);
 	vl=capture(tg); if(vl!=undefined){
-		if(dn3=='k' || dn3=='head' || dn3=='addjs')prm[tg]=vl;
+		if(dn3=='k' || dn3=='kx' || dn3=='head' || dn3=='addjs')prm[tg]=vl;//named vars
 		else prm[i]=vl;}}
 return prm;}
 
@@ -509,6 +509,7 @@ else if(dn[3]=='exs')exs=[];//artlive2()
 else if(dn[3]=='jx'){Close('popup'); jumpvalue(dn[4],dn[5]);}
 else if(dn[3]=='xx')setTimeout(function(){Close('popup')},2000);
 else if(dn[3]=='xd')setTimeout(function(){falseClose(dn[0])},1000);
+else if(dn[3]=='kx')setTimeout(function(){falseClose(dn[0])},1000);//close state with named vars
 else if(dn[3]=='xr')setTimeout(function(){poprepos()},1000);
 else if(dn[3]=='tg'){var op=activeid(dn[2]); if(op==0)Close(dn[0]);}
 else if(dn[3]=='jump')jumpval(dn[6],dn[7]);

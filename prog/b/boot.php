@@ -40,22 +40,19 @@ write_file($f,$d);}
 static function define_hubs(){$mn=[]; $mnd=[];
 $ex=sql('id','qdu','v',['_limit'=>'1']);
 if(!$ex){$_SESSION['stsys']=1; $_SESSION['first']=1; headsj('popup_login,form');}
-$r=sql::read('id,name,hub','qdu','kvv',['active'=>1,'_order'=>'nbarts desc']);
-foreach($r as $k=>[$nm,$hb]){$mn[$k]=$nm; $mnd[$k]=$hb;} 
-$_SESSION['mn']=$mn; $_SESSION['mnd']=$mnd;}
+$_SESSION['mn']=sql::read('name,id','qdu','kv',['active'=>1]);}
 
 //use need to be declared after $rstr, declared in config(), whose declare $mn, needed to hubs() 
-static function define_closed_hub(){$uid=ses('uid');
-if($uid && !isset($_SESSION['mn'][$uid])){
-$v=sql('hub','qdu','v',['name'=>ses('usr')]);
-if($v)$_SESSION['mn'][$uid]=$v;}}
+static function define_closed_hub(){$qb=ses('qb');
+if(mn($qb)){$uid=sql('id','qdu','v',['name'=>ses('usr')]);
+if($uid)$_SESSION['mn'][$qb]=$uid;}}
 
 static function define_qb(){$hub=get('hub');
-$r=ses('mn'); $defo=prms('default_hub'); //if(!$hub)$hub=$defo;
-if($hub && $hub!='=' && isset($_SESSION['mn'][$hub])){$aqb=$hub; $qbd=$_SESSION['mnd'][$hub];}
-elseif($defo && !ses('qb'))[$qbd,$aqb]=arr(sql('id,name,hub','qdu','r',['name'=>$defo]),2);
+$mn=ses('mn'); $defo=prms('default_hub'); $qb=ses('qb');
+if($hub && $hub!='=' && isset($mn[$hub])){$aqb=$hub; $qbd=$mn[$hub];}
+elseif($defo && !$qb)[$qbd,$aqb]=arr(sql('id,name','qdu','r',['name'=>$defo]),2);
 if(isset($aqb)){$_SESSION['qb']=$aqb; $_SESSION['qbd']=$qbd;}
-if(!ses('qbd') && ses('qb'))$_SESSION['qbd']=sql('id','qdu','v',['name'=>ses('qb')]);}
+if(!ses('qbd') && $qb)$_SESSION['qbd']=sql('id','qdu','v',['name'=>$qb]);}
 
 static function prmb_defaults($r){
 //$ra=[1=>'1',3=>400,6=>20,7=>'1;2;3;4',8=>'phi',9=>'id desc'];
@@ -177,7 +174,7 @@ if(is_numeric($read)){
 	/*if($pb!=$qb){
 		if(rstr(96))return getz('read');//prison
 		if(rstr(105)){//interhub//self::define_qb();
-			if(!isset($_SESSION['mn'][$pb]))return;
+			if(!mn($pb))return;
 			if(!rstr(97)){self::reset_ses(); $_SESSION['qb']=$pb; $cache='ok';}}}*/
 	if($suj){geta('frm',$frm); $_SESSION['read']=$read; $_SESSION['mem'][$read]=1; $rs=['art',$read];}
 	else{getz('read'); $rs=['context','home'];}}

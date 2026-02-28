@@ -130,7 +130,7 @@ $_SESSION['dev']=1;
 //$r=msql::read('system','default_mods'); pr($r);
 require(boot::cnc());
 //boot::reset_ses(); ses::$dayx=time();//boot::cats();
-boot::init(); pr(ses('prms')); pr(ses('mn')); pr(ses('mnd')); pr(ses('qb')); //pr(ses('rstr'));
+boot::init(); pr(ses('prms')); pr(ses('mn')); pr(ses('qb')); //pr(ses('rstr'));
 boot::define_use(); pr(ses('mn'));
 boot::define_iq(); pr(ses('ip'));
 echo sql('name','qdu','v',['name'=>prms('default_hub')]);

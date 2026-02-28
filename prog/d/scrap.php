@@ -45,8 +45,8 @@ foreach($r as $ts=>[$i,$k,$f,$t,$u,$id]){$rc=[];
 	$rc[]=lkt('',$u,picto('url'));
 	$rc[]=lj('','popup_rssin,distance___'.ajx($t),picto('ear'));
 	$rc[]=lj('','scrp'.$ts.'_scrap,del___'.ajx($f),picto('del'));
-	$rc[]='['.$i.'] '.$t;
-	$rt[]=div(join(' ',$rc),'','scrp'.$ts);}
+	$rc[]='['.$i.'] '.span($t);
+	$rt[]=div(join(' ',$rc),$id?'hide':'','scrp'.$ts);}
 return div(join('',$rt),'menu','scrap');}
 
 static function prep(){

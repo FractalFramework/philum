@@ -262,10 +262,10 @@ return $id.'-'.$t.'-'.$o.br();}
 static function short_arts($p=4000){$dayb=$p?timeago($p):ses('dayb');
 return sql('id','qda','k',['nod'=>ses('qb'),'}re'=>'1','>day'=>$dayb,'<host'=>$p,'_order'=>prmb(9)]);}
 
-static function home_plan($load){
+/**/static function home_plan($load){//old
 if(!$load)return; ksort($load); $i=0; $ret=[];
 foreach($load as $cat=>$ids){$i++;
-	$line=sesr('line',$cat); $mn=sesr('mn',$cat);
+	$line=sesr('line',$cat); $mn=mn($cat);
 	$re=img::outputimg($ids);
 	if($cat!='_system' && $re && ($line or $mn)){
 		if($line)$got=htac('cat').$cat; else $got=subdomain($cat);

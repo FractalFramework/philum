@@ -16,7 +16,7 @@ table {font-size:80%;}
 blockquote {font-family:Arial; margin:2px 0; padding:12px 18px; border-style:solid; border-width:1px; border-radius:10px; text-align:left; font-size:90%; background-color:rgba(255,255,255,0.4); border-color:rgba(135,135,135,0.4);}
 header {padding:0; margin:0 0 10px 0;}
 header h3 {display:block; font-size:larger;}
-section {margin:0; padding:10px 10px; border-radius:10px; border:1px solid rgba(135,135,135,0.6); background-color:rgba(225,222,218,0.5); transition:border 0.2s linear;}
+section {margin:0; padding:10px 10px; border-radius:10px; border:1px solid rgba(135,135,135,0.6); background-color:rgba(225,222,218,0.8); transition:border 0.2s linear;}
 section:hover .thumb {filter:grayscale(0%);}
 section header {margin-top:-8px; margin-bottom:0px;}
 section h4 {font-weight:normal;}
@@ -85,7 +85,7 @@ input#srch:focus {transition:all 0.1s linear;}
 .vtab {margin:0; /*writing-mode:vertical-rl; text-orientation:mixed;*/}
 .vtab a {border-radius:6px 6px 0 0; padding:1px 2px; margin:0px 1px;}
 .tab {margin:0 0 10px 0;}
-.panel {font-family:Arial,Sans;}
+.panel {font-family:Arial,Sans; padding:4px;}
 .panel a:hover {text-decoration:underline;}
 ul.panel li {font-family:Arial; margin:0px 0; font-size:small;}
 ul.panel li a {word-wrap:break-word;}
@@ -105,6 +105,7 @@ ul.panel li a {word-wrap:break-word;}
 .grid-little {grid-template-columns:200px 1fr;}
 .grid-semi {grid-template-columns:100px 1fr; grid-column-gap:10px; grid-row-gap:10px;}
 .grid-blocks {display:grid; grid-template-columns:1fr 1fr 1fr; grid-column-gap:10px; grid-row-gap:10px;}
+.grid-desk span {font-size:12px;}
 .grid-sections {grid-template-columns:1fr 1fr;}
 .prw2 {grid-column-start:1; grid-column-end:3;}
 .prw3 {grid-column-start:1; grid-column-end:3; grid-row-start:1; grid-row-end:3;}
@@ -137,15 +138,9 @@ a.txtyl {color:#cccccc !important; text-decoration:none !important;}
 .ascii {font-size:20px; line-height: 1.2em;}
 .txtbox {box-shadow:0px 0px 0px #e1deda; border-color:inherit;}
 .txtbox:hover {background-color:#b02c44;}
-.txtaa, .txtab, .txtac {border-width:0 0 0px 0; border-style:solid; line-height:20px; border-radius:6px 6px 0px 0px;}
-.txtaa {box-shadow:0px 0px 4px -3px #878787;}
-.txtab {box-shadow:0px 0px 4px -3px #878787;}
-.txtac {border-width:0 0 1px 0; background:linear-gradient(to bottom,rgba(135,135,135,0),rgba(135,135,135,0.5));}
-.tabs a {border-width:1px 1px 0 1px; background:linear-gradient(to top,rgba(135,135,135,0.4),rgba(135,135,135,0));}
-.tabs a.active {background:#ffffff;}
-.tabs a:hover {background:#ffffff;}
-.tabs {border-style:solid !important; border-width:0 0 0px 0 !important;}
-.tabs a:after {border-style:solid !important; border-width:0 0 1px 0 !important;}
+.tabs a {border-width:1px 1px 0 1px; background:linear-gradient(to bottom,#ffffff,rgba(51,51,51,0.2)); margin:0px px 0px 0px !important;}
+.tabs {border-style:solid !important; border-width:0 0 0px 0 !important; line-height:130%;}
+.tabs a:after {border-style:solid !important; border-width:0 0 1px 0 !important; padding:0px 1px;}
 .popbt, .popw, .popsav, .popdel {text-decoration:none; padding:2px 4px; border-radius:2px; border-style:solid; border-width:1px; margin:1px;}
 .popbt .philum, .popw .philum, .popsav .philum, .popdel .philum {margin-top:2px;}
 .popbt {border-color:rgba(225,222,218,0.5); background-color:rgba(225,222,218,0.2);}
@@ -243,7 +238,7 @@ a.stabilo, .trkmsg a.stabilo, a.stabilo .philum, .trkmsg a:hover.stabilo {color:
 .ic-fb2 {color:#3B5998;}
 .popup {border-width:1px; border-radius:4px; margin:0px; box-shadow:0px 0px 8px -4px rgba(135,135,135,0.4); text-align:left;}
 .popup article {margin:2px 20px; /*padding:will debord!*/}
-#popup section {padding:6px 10px; border-width:0;}
+#popup section {padding:6px 10px; border-width:0; border-radius:0;}
 .popa {border-radius:4px 4px 0 0; padding:0 4px;}
 .popa .philum {font-size:27px; padding:0 4px;}
 .popu {padding:0; border-radius:0 0 4px 4px;}

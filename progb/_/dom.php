@@ -44,12 +44,12 @@ $ret=$dom->saveHTML();
 return $ret;}
 
 //dom
-static function importnode($rec,$v,$tg,$cn=0){$n=0;
+static function importnode($rec,$v,$tg){$n=0;
 if($tg=='img' or $tg=='meta')$tag='div'; else $tag=$tg;
 $dest=$rec->appendChild($rec->createElement($tag));
 if($tg=='img')$dest->nodeValue=urlroot($v->getAttribute('src'));
 elseif($tg=='meta')$dest->nodeValue=$v->getAttribute('content');
-elseif($v->childNodes)foreach($v->childNodes as $k=>$el)if($el){//$n++;if($n==$cn or !$cn)
+elseif($v->childNodes)foreach($v->childNodes as $k=>$el)if($el){
 	$dest->appendChild($rec->importNode($el,true));}
 return $rec;}
 
@@ -71,6 +71,18 @@ return $ret;}
 static function batch($dom,$rec,$o){$r=explode('|',$o);
 foreach($r as $k=>$va)self::capture($dom,$va,$rec);}
 
+static function reduce($dom,$va){$r=explode('>',$va);
+foreach($r as $k=>$va)$dom=self::capture($dom,$va,dom(''));
+return $dom;}
+
+/*static function items($dom,$va){$r=explode('|',$va);
+foreach($r as $k=>$va)$rt[]=self::capture($dom,$va,dom(''));
+return $rt;}
+
+static function select($dom,$va){$r=explode('|',$va); $rec=dom('');
+foreach($r as $k=>$va)self::capture($dom,$va,$rec);
+return $rec;}*/
+
 //dom2
 static function extract($dom,$va){$ret='';//all-in-one
 [$c,$at,$tg,$g]=opt($va,':',4); if(!$at)$at='class'; if(!$tg)$tg='div';//id,href,...
@@ -80,7 +92,7 @@ foreach($r as $k=>$v){$attr=$v->getAttribute($at);
 	if(!$ret && ($c==$attr or ($c && strpos($attr,$c)!==false) or !$c))
 		$ret.=$g?domattr($v,$g):$v->nodeValue;}
 if(is_utf($ret))$ret=utf8dec($ret);//??eco($ret);
-return ($ret);}
+return $ret;}
 
 static function extract_r($dom,$va){$rt=[];//all-in-one
 [$c,$at,$tg,$g]=opt($va,':',4); if(!$at)$at='class'; if(!$tg)$tg='div';//id,href,...
@@ -89,6 +101,16 @@ $r=$dom->getElementsByTagName($tg); $c=str_replace('(ddot)',':',$c);
 foreach($r as $k=>$v){$attr=$v->getAttribute($at); $rec=dom(''); $rec->formatOutput=true;
 	if($c==$attr or ($c && strpos($attr,$c)!==false) or !$c)
 		$rt[]=$g?domattr($v,$g):self::importnode($rec,$v,$tg)->saveHTML();}
+return $rt;}
+
+static function extract_q($dom,$va){$rt=[];//all-in-one
+[$c,$at,$tg,$g]=opt($va,':',4); if(!$at)$at='class'; if(!$tg)$tg='div';//id,href,...
+if(!$g){if($tg=='img')$g='src'; elseif($tg=='meta')$g='content';}//props
+$r=$dom->getElementsByTagName($tg); $c=str_replace('(ddot)',':',$c);
+foreach($r as $k=>$v){$attr=$v->getAttribute($at); $rec=dom(''); $rec->formatOutput=true;
+	if($c==$attr or ($c && strpos($attr,$c)!==false) or !$c)
+		$g?$rec->nodeValue=domattr($v,$g):self::importnode($rec,$v,$tg);
+		$rt[]=$rec;}
 return $rt;}
 
 //href

@@ -95,6 +95,7 @@ $ret.=btj(picto('ok'),atjr('embedinp',['imcapt',':figure',$tgid,'addopt']));
 return $ret;}
 
 static function imgboard($id){
+if(!$id)return nmx([11,116]);
 $rid=randid(); $rt=[];
 $r=artim::imgs($id);
 if($r)foreach($r as $k=>$v){
@@ -160,7 +161,7 @@ $ret.=self::assistant('cnv','insert_conn','book','','title/1/book');
 $ret.=br().helps('book');
 return $ret;}
 
-static function paste(){$ret=diveditbt('');
+static function paste(){$ret=edit::diveditbt('');
 $ret=btn('right',lj('popbt" id="bts','txtarea_mc,wygok_txtareb_5',nms(86)));
 $s='padding:10px; border:1px dotted grey; min-width:550px; min-height:240px;';
 $ret.=tag('div',['contenteditable'=>'true','id'=>'txtareb','class'=>'panel justy','style'=>$s],'<br>');
@@ -212,7 +213,7 @@ return conb::read($d);}
 
 static function wygopn($id){
 $bt=self::wygbt($id,1);
-$edt=diveditbt($id);
+$edt=edit::diveditbt($id);
 $d=self::artsconn($id);
 $ret=mkjson([$d,$edt,$bt,$bt]); //er(json_error());
 return $ret;}
@@ -408,6 +409,8 @@ elseif($op=='oomo')$ret=self::oomopictos($op,$id);
 elseif($op=='clr'){$r=sesmk('connclr','',''); $rt=[];
 	//$bt=lj('','popup_mc,navs___clr_'.$id,picto('popup',16));
 	if($r)foreach($r as $k=>$v){$kb=$k=='auto'?'':$k;
+		$rt['clr'][]=ljb('','embed',[$k,'',$id],mk::txtclr($k,$kb));
+		$rt['bkg'][]=ljb('','embedopt',['bkg',$kb,'',$id],mk::bkgclr($k,$kb));
 		$rt['under'][]=ljb('','embedopt',['under',$kb,$id],mk::txtdeco($k,$kb,'','',''));
 		$rt['double'][]=ljb('','embedopt',['double',$kb,$id],mk::txtdeco($k,$kb,'','double',''));
 		$rt['dotted'][]=ljb('','embedopt',['dotted',$kb,$id],mk::txtdeco($k,$kb,'','dotted',''));
@@ -417,15 +420,13 @@ elseif($op=='clr'){$r=sesmk('connclr','',''); $rt=[];
 		$rt['over'][]=ljb('','embedopt',['over',$kb,$id],mk::txtdeco($k,$kb,'','','overline'));
 		$rt['underover'][]=ljb('','embedopt',['underover',$kb,$id],mk::txtdeco($k,$kb,'','underline','overline'));
 		$rt['deco'][]=ljb('','embedopt',['deco',$kb.',,solid,bottom',$id],mk::txtdeco($k,$kb,'','','bottom'));
-		$rt['bkg'][]=ljb('','embedopt',['bkg',$kb,'',$id],mk::bkgclr($k,$kb));
 		$rt['bdr'][]=ljb('','embedopt',['border',$kb.',2,solid',$id],mk::border($k,$kb,'2',''));
 		$rt['bdl'][]=ljb('','embedopt',['borderline',$kb.',2,solid','',$id],mk::borderline($k,$kb));
-		$rt['clr'][]=ljb('','embed',[$k,'',$id],mk::txtclr($k,$kb));
-		$rt['u'][]=ljb('','embed',['u'.$kb,'',$id],mk::txtdeco($k,$k,'2','',''));
+		//$rt['u'][]=ljb('','embed',['u'.$kb,'',$id],mk::txtdeco($k,$k,'2','',''));
 		//$rt['bkg'][]=ljb('','embed',['bg'.$k,'',$id],mk::bkgclr($k,$kb));
 		//$rt['bdr'][]=ljb('','embed',['bd'.$k,'',$id],mk::border($k,$kb));
 		}
-		$rt['?'][]=helps('deco');
+		$rt['?'][]=div(helps('deco'),'frame-blue');
 	$ret=build::tabs($rt,'clr');}
 elseif($op=='uc'){$r=msql::read('',nod('connectors_1'),1);
 	if($r)foreach($r as $k=>$v)$ret.=ljb('','insertmbd',['[','',':'.$k.']'],$k).' ';}
@@ -458,7 +459,7 @@ elseif($op=='icons')$ret=finder::home('','disk///icon/conn//mini');
 elseif($op=='filters')$ret=self::conn_props_b($op,'tools');
 elseif($op=='tools')$ret=self::conn_props_b($op,'tools');
 else $ret=self::conn_props_b($op,'all');
-return div($ret,'menu scroll','nv'.$op);}//,'min-width:300px; max-width:680px;'
+return div($ret,'scroll','nv'.$op);}//,'min-width:300px; max-width:680px;'
 
 //backup_arts
 static function backup($g1,$g2,$prm=[]){$d=$prm[0]??''; if($d){

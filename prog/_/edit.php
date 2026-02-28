@@ -1,18 +1,34 @@
 <?php
 class edit{
 
+#div
+static function diveditbt($id,$bt=''){
+$r=['no'=>nms(72),'p'=>'normal','h1'=>'h1','h2'=>'h2','h3'=>'h3','h4'=>'h4','h5'=>'h5','fact'=>'fact'];
+$ret=select(['id'=>'wygs','onchange'=>'execom2(this.value)'],$r);
+$r=['increaseFontSize'=>'size','decreaseFontSize'=>'fontsize','bold'=>'bold','italic'=>'italic','underline'=>'underline','strikeThrough'=>'strike','insertUnorderedList'=>'textlist','Indent'=>'block','Outdent'=>'unblock','stabilo'=>'highlight','createLink'=>'url'];
+foreach($r as $k=>$v)$ret.=btj(picto($v,16),atj('execom',$k));
+//$ret.=bubble('','mc,navs','ascii','&#128578;').' ';
+//if(is_numeric($id))$ret.=lj('','art'.$id.'_mc,savwyg_art'.$id.'__'.$id.'_1',picto('save2',16));
+if(is_numeric($id))$ret.=btj(picto('save2',16),atj('saveart',$id));
+return btn('menu sticky',$ret.$bt);}
+
 #area
+static function ehance($d,$o=0){
+$r=['h'=>'119815','b'=>'119835','i'=>'120362','u'=>'u','k'=>'strike','s'=>'small','q'=>'128172','stabilo'=>'mark'];
+return is_numeric($r[$d])?'&#'.$r[$d].';':tagb($r[$d],$d);}
+
 static function connbt($id,$o=''){$ret='';
-$r=['h','b','i','u','s','q','k'];
+$r=['h','b','i','u','k','q','s','stabilo'];
 $rb=msql::col('lang','connectors_basic',0,1);
 if(auth(2) && !$o)$ret=build::upload_j($id,'trk','').' ';
 $ret.=ljb('','embedslct',['[',']',$id],'[]',att('url/img'));
-foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[',':'.$v.']',$id],$v,att($rb[$v]??$v));
-if(auth(4))$ret.=toggle('','btc'.$id.'_mc,navs___clr_'.$id,'clr');
-$ret.=toggle('','btc'.$id.'_mc,replace____'.$id,'repl');
-$r=['stabilo'=>'highlight','art'=>'article','web'=>'web2'];//,'video'=>'video','twitter'=>'tw'
+foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[',':'.$v.']',$id],self::ehance($v),att($rb[$v]??$v));
+if(auth(4))$ret.=toggle('','btc'.$id.'_mc,navs___clr_'.$id,mk::txtclr('clr','red'));
+//$ret.=toggle('','btc'.$id.'_mc,replace____'.$id,picto('exchange'));
+$r=['art'=>'article','web'=>'web2'];//,'video'=>'video','twitter'=>'tw','stabilo'=>'highlight'
 foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[',':'.$k.']',$id],picto($v,16),att($rb[$k]??$k));
-$r=['video'=>127916,'twitter'=>120143];//'stabilo'=>'128993','art'=>128196,'web'=>127760,
+$r=['video'=>127916,'twitter'=>120143,'search'=>128270];//'stabilo'=>'128993','art'=>128196,'web'=>127760,
+//,'q'=>129172
 foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[',':'.$k.']',$id],ascii($v),att($rb[$k]??$k));
 $r=sesmk('usrconn','',0);
 if($r)foreach($r as $k=>$v)$ret.=ljb('','embedslct',['[','|1:'.$k.']',$id],$k,att($v));

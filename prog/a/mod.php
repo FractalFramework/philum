@@ -278,7 +278,7 @@ case('desktop_files'):$ret=self::mdtitle($t).desk::deskarts($p,$o,'files'); brea
 case('hierarchics'):$in=md::suj_hierarchic('active',''); $ret=ul($in,$cs); break;
 case('temporalnav'):$in=md::temporalnav(); $ret=ul($in,$cs); break;
 //cacheable
-case('hubs'):$mn=$_SESSION['mn']; if(count($mn)>=2){$t=$p!=1?$p:$t;
+case('hubs'):$mn=ses('mn'); if(count($mn)>=2){$t=$p!=1?$p:$t;
 	if($t)$t=lkc('','module/hubs',$t);
 	$in=md::m_nodes_b($mn,$o); $ret=ul($in,$cs);} break;
 case('tags_cloud'):$p=$p?$p:'tag';

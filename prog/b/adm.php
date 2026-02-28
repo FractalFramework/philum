@@ -201,16 +201,16 @@ return tabler($ret);}
 static function savhub($p,$o,$prm){
 $qb=ses('qb'); $res=$prm[0]??'';
 if(auth(6))switch($p){
-case('rename'):sql::upd('qdu',['hub'=>$res],['name'=>$qb]); $_SESSION['mn'][$qb]=$res; break;
+case('rename'):sql::upd('qdu',['hub'=>$res],['name'=>$qb]); break;
 case('publish'):$opn=sql('active','qdu','v',['name'=>$o]);
 	sql::upd('qdu',['active'=>$opn==1?0:1],['name'=>$o]);
 	boot::define_hubs(); break;}
 return self::adm_hubs();}
 
-static function edithub($p,$o){$qb=ses('qb');
+static function edithub($p,$o){
 switch($p){
 case('create'):$ret=login::form('','','create new hub'); break;
-case('rename'):$ret=input('renamed',$_SESSION['mn'][$qb]);
+case('rename'):$ret=input('renamed',ses('qb'));
 	$ret.=lj('popsav','admhb_adm,savhub_renamed_x_rename',picto('save')); break;
 case('kill'):$ret=lj('popdel','admhb_adm,savhub__x_kill_ok','Everything will be lost!!'); break;
 case('reinit'):$ret=lj('popdel','admhb_adm,savhub__x_reinit_ok','restore all defaults ?'); break;}

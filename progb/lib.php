@@ -161,22 +161,12 @@ $sj=$o?atjr('SaveJtim',[$j,1000]):sj($j);
 $pr=['class'=>'console','onclick'=>$sj,'onkeyup'=>$sj];
 return textarea($id,$v,44,14,$pr);}
 
-function diveditbt($id,$bt=''){
-$r=['no'=>nms(72),'p'=>'normal','h1'=>'h1','h2'=>'h2','h3'=>'h3','h4'=>'h4','h5'=>'h5','fact'=>'fact'];
-$ret=select(['id'=>'wygs','onchange'=>'execom2(this.value)'],$r);
-$r=['increaseFontSize'=>'size','decreaseFontSize'=>'fontsize','bold'=>'bold','italic'=>'italic','underline'=>'underline','strikeThrough'=>'strike','insertUnorderedList'=>'textlist','Indent'=>'block','Outdent'=>'unblock','stabilo'=>'highlight','createLink'=>'url'];
-foreach($r as $k=>$v)$ret.=btj(picto($v,16),atj('execom',$k));
-//$ret.=bubble('','mc,navs','ascii','&#128578;').' ';
-//if(is_numeric($id))$ret.=lj('','art'.$id.'_mc,savwyg_art'.$id.'__'.$id.'_1',picto('save2',16));
-if(is_numeric($id))$ret.=btj(picto('save2',16),atj('saveart',$id));
-return btn('menu sticky',$ret.$bt);}
-
 function divarea($id,$d,$c='',$s='',$j='',$o=''){$ja='';
 $rp=['contenteditable'=>'true','id'=>$id,'class'=>$c,'style'=>$s];
 if($j){$attr=match($o){1=>'onblur',2=>'onkeydown',3=>'onpaste',default=>'onclick'}; $rp[$attr]=$j;}
 return tag('div',$rp,$d?$d:' ');}
 
-function divedit($id,$c,$s,$j,$d,$bt=''){return diveditbt($id,$bt).divarea($id,$d,$c,$s,$j);}
+function divedit($id,$c,$s,$j,$d,$bt=''){return edit::diveditbt($id,$bt).divarea($id,$d,$c,$s,$j);}
 function form($go,$d){return tag('form',['method'=>'post','action'=>$go],$d);}
 function goodarea($id,$v,$n=44){$nb=ceil(mb_strlen($v)/$n); $h=$nb>10?10:$nb;
 $hb=substr_count($v,"\n"); if($hb>$h)$h=$hb>10?10:$h; if($h==0)$h=1; $hx='height:'.(22*$h).'px;';

@@ -1,5 +1,4 @@
 //utils
-
 var slctd=false;
 
 function setSelectionRange(input,selectionStart,selectionEnd){
@@ -404,19 +403,22 @@ for(i=0;i<mnu.length;i++){
 			ajaxcall(dn[0],dn[1],[dn[2],dn[3]],[],'');}}
 	else mnu[i].className='';}}
 
-function active_tg(val,nb,nob){//tabs
-var op=getbyid(val+nb).className;
-if(op=='txtab'){var css='txtaa'; var ret=1;
-	if(nob){for(i=1;i<=nob;i++){
-		if(i!=nb)getbyid(val+'bt'+i).className='txtab';}}}
-else{var css='txtab'; var ret=0;}
-getbyid(val+nb).className=css;
+function active_tg(id,nb){//toggle
+var ob=getbyid(id+nb); var par=ob.parentNode;
+if(ob.className==""){ob.classList.add("active"); var ret=1;
+	var op=par.getElementsByTagName("a"); var le=id.length;
+	for(i=0;i<op.length;i++){var pid=op[i].id;
+		var idb=pid.substring(0,le);//for all other toggles
+		if(pid && idb==id && pid!=(id+nb))op[i].className="";}}
+else{ob.className=""; var ret=0;}
 return ret;}
 
-function tog_j(val,nb,nob){var dn=val.split("_");
+function tog_j(j,nb,nob){var dn=j.split("_");
 var ob=getbyid(dn[0]); if(nb)ob.dataset.tognb=nb; else nb=ob.dataset.tognb;//dn=undefiner(dn,7);
-if(nob)var ac=active_tg(dn[0],nb,nob); else var ac=activeid(dn[0]+nb);
-if(ac)SaveJ(val); else falseClose(dn[0]);}
+//if(nob)
+var ac=active_tg(dn[0],nb);
+//else var ac=activeid(dn[0]+nb);
+if(ac)SaveJ(j); else falseClose(dn[0]);}
 
 function tog_cl(el){
 el=el.parentNode; if(el.id==null)el=el.parentNode;
@@ -443,9 +445,9 @@ function toggle_tab(tab,obj){//tabs_html
 ajaxcall('socket','sesmake',['tbmd'+tab,obj],[],4);
 var mnu=getbyid('mnuab'+tab).getElementsByTagName("a");
 for(i=1;i<=mnu.length;i++){var b=i-1;
-	if(i==obj){mnu[b].className='txtaa';
+	if(i==obj){mnu[b].classList.add("active");
 	getbyid('div'+tab+i).style.display='block';}
-	else{mnu[b].className='txtab'; Hide('div'+tab+i);}}}
+	else{mnu[b].classList.remove("active"); Hide('div'+tab+i);}}}
 
 function swapbt(p,e,ic){
 var d=p==1?e.dataset.bt1:e.dataset.bt0;

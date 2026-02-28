@@ -138,8 +138,8 @@ else return $da;}
 
 static function getmp4($d,$id,$o=1){if($o)$d=self::vacuum_media($d,$id); return video($d);}
 static function getmp3($d,$id,$o=1){if($o)$d=self::vacuum_media($d,$id); return audio($d);}
-static function getimg($d,$id,$m,$nl,$pw){$im=artim::getimg($d,$id,$m);
-return artim::mkimg($im,$m,$pw,$id,$nl);}
+static function getimg($d,$id,$m,$nl){$im=artim::getimg($d,$id,$m);
+return artim::mkimg($im,$m,$id,$nl);}
 static function getxif($d){$d=gcim($d); $r=imgexif($d); return img('/'.$d).tabler($r);}
 static function imgdata($d){[$d,$xt]=cprm($d); if(!$xt)$xt='jpeg';
 return img('data:image/'.$xt.';base64,'.base64_encode($d));}

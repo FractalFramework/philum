@@ -28,7 +28,7 @@ return join(n(),$r);}
 
 static function twlink($id){//twit::content
 $url=social::twlink($id); $suj=social::$suj; sesr('twf',$id,$url);
-return divc('panel',lkt('',$url,$id).' '.$suj);}
+return div(lkt('',$url,$id).' '.$suj,'panel');}
 
 static function batch($p,$o,$prm=[]){
 $rok=[]; $vx=0; $minid=$prm[0]??''; sesmk('catemo'); sesz('twf');

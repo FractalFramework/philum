@@ -201,7 +201,7 @@ return lj('','popup_mk,pdfplayer__15_'.ajx($u).'_'.ajx($t).'__autowidth',picto('
 
 static function pdfdoc($da,$nl='',$pw=640){
 [$p,$o]=cprm($da); $pb=goodroot($p); //if(!$o)$o=strend($p,'/');
-if(is_img($o))$im=artim::mkimg($o,$nl,$pw,'',''); else $im='';
+if(is_img($o))$im=artim::mkimg($o,$nl,'',''); else $im='';
 $lk=lkt('',$p,$o?$o:strend($p,'/')); if($nl)return $lk;
 return lj('','popup_mk,pdfreader__xr_'.ajx($p).'_3__autowidth',$im?$im:picto('pdf')).' '.$lk;}
 

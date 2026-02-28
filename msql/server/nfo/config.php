@@ -12,6 +12,6 @@ return ['1'=>['htaccess','yes'],
 '11'=>['utf8',''],
 '12'=>['upload','200000'],
 '13'=>['updates',''],
-'14'=>['server mirror',''],
+'14'=>['server mirror','newsnet.ovh'],
 '15'=>['server img','newsnet.ovh'],
 '16'=>['fractal','ffw.ovh']]; ?>

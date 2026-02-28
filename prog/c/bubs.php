@@ -113,9 +113,9 @@ return $rt;}
 return mod::call($d);}
 
 //hubs
-static function hubs_fast(){$r=ses('mn'); $ret=[];
-if(is_array($r))foreach($r as $k=>$v)$ret[]=[$v,'link','',subdomain($k),'','','hubs','node'];
-return $ret;}
+static function hubs_fast(){$r=ses('mn'); $rt=[];
+if(is_array($r))foreach($r as $k=>$v)$rt[]=[$v,'link','',subdomain($k),'','','hubs','node'];
+return $rt;}
 
 //bub selector
 static function slct($j){
@@ -320,12 +320,12 @@ static function adm_admin($dir){//case:admin
 $r=self::adminauthes2(1); $rm=msql::kv('lang','admin_authes');
 $ret[]=['office','ajax','popup','admin___all','','','Global','popup'];
 $ret[]=['backoffice','linkt','','/admin/console','','','Global','link'];
-$mn=ses('mn');
+$mn=ses('mn'); $auth=ses('auth');
 if($r)foreach($r as $k=>$v){
 if(strto($k,'/')==strto($dir,'/')){
 	if($k=='Microsql')$ret=self::msql_fast($ret,$k);
 	else foreach($v as $ka=>$va){
-	if($va<=$_SESSION['auth']){$t=$rm[$ka]?$rm[$ka]:$ka; $ico=mime($ka);
+	if($va<=$auth){$t=$rm[$ka]?$rm[$ka]:$ka; $ico=mime($ka);
 		if($ka=='css'){//name,j,root,ico,lk
 			$mlt='page_desk,deskbkg;popup_admin__3_css;popup_site___desktop_ok';
 			$ret[]=['edition','link','blank','/admin/'.$ka,'','',$k.'/'.$ka,'link'];
@@ -333,7 +333,7 @@ if(strto($k,'/')==strto($dir,'/')){
 			$ret[]=['design','ajax','popup','admin__3_design','','',$k.'/'.$ka,$ico,''];
 			$ret[]=['colors','ajax','popup','admin__3_colors','','',$k.'/'.$ka,$ico,''];}
 		elseif(strtolower($ka)=='hubs' && auth(5) && is_array($mn))foreach($mn as $kb=>$vb)
-			$ret[]=[$vb?$vb:$kb,'link','',subdomain($kb),'','',$k.'/'.$ka,$ico];
+			$ret[]=[$kb,'link','',subdomain($kb),'','',$k.'/'.$ka,$ico];
 		elseif($ka=='console')$ret=self::adm_console($ret,$k.'/'.$ka);
 		elseif($ka=='restrictions')$ret=self::adm_rstr($ret,$k,$ka,$t);
 		elseif($ka=='tickets')$ret[]=[$t,'app','chatxml,home','tickets','','',$k,'chat'];

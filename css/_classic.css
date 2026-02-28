@@ -40,7 +40,7 @@ thead a:hover {background-color:#878787;}
 blockquote {background-color:#cccccc; font-family:Arial; margin:2px 0; padding:12px 18px; border-style:solid; border-width:1px; border-radius:10px; text-align:left; font-size:90%; background-color:rgba(255,255,255,0.4); border-color:rgba(135,135,135,0.4);}
 header {padding:0; margin:0 0 10px 0;}
 header h3 {display:block; font-size:larger;}
-section {margin:0; padding:10px 10px; border-radius:10px; border:1px solid rgba(135,135,135,0.6); background-color:rgba(225,222,218,0.5); transition:border 0.2s linear;}
+section {margin:0; padding:10px 10px; border-radius:10px; border:1px solid rgba(135,135,135,0.6); background-color:rgba(225,222,218,0.8); transition:border 0.2s linear;}
 section:hover .thumb {filter:grayscale(0%);}
 section header {margin-top:-8px; margin-bottom:0px;}
 section h4 {font-weight:normal;}
@@ -141,7 +141,7 @@ input#srch:focus {background-color:#ffffff; transition:all 0.1s linear;}
 .vtab a:hover {color:#ffffff; background-color:#333333; border-color:#171717;}
 .vtab a.active {color:#ffffff; background-color:#333333; border-color:#171717;}
 .tab {border-color:#e1deda; margin:0 0 10px 0;}
-.panel {color:#171717; font-family:Arial,Sans;}
+.panel {color:#171717; font-family:Arial,Sans; padding:4px;}
 .panel a {color:#333333;}
 .panel a:hover {color:#b02c44;}
 .panel a:hover {text-decoration:underline;}
@@ -168,6 +168,7 @@ ul.panel li a:hover {color:#b02c44; border-color:#e1deda;}
 .grid-little {grid-template-columns:200px 1fr;}
 .grid-semi {grid-template-columns:100px 1fr; grid-column-gap:10px; grid-row-gap:10px;}
 .grid-blocks {display:grid; grid-template-columns:1fr 1fr 1fr; grid-column-gap:10px; grid-row-gap:10px;}
+.grid-desk span {font-size:12px;}
 .grid-sections {grid-template-columns:1fr 1fr;}
 .prw2 {grid-column-start:1; grid-column-end:3;}
 .prw3 {grid-column-start:1; grid-column-end:3; grid-row-start:1; grid-row-end:3;}
@@ -227,16 +228,12 @@ a.txtyl {color:#cccccc !important; text-decoration:none !important;}
 .txtbox a {color:#e1deda;}
 .txtbox a:hover {color:#cccccc;}
 .txtbox:hover {background-color:#b02c44;}
-.txtaa, .txtab, .txtac {border-color:#e1deda; border-width:0 0 0px 0; border-style:solid; line-height:20px; border-radius:6px 6px 0px 0px;}
-.txtaa {color:#171717; background-color:#ffffff; box-shadow:0px 0px 4px -3px #878787;}
-.txtab {color:#333333; background-color:#cccccc; box-shadow:0px 0px 4px -3px #878787;}
-.txtab:hover {color:#171717; background-color:#ffffff;}
-.txtac {border-width:0 0 1px 0; background:linear-gradient(to bottom,rgba(135,135,135,0),rgba(135,135,135,0.5));}
-.tabs a {background-color:#cccccc; border-color:#878787; border-width:1px 1px 0 1px; background:linear-gradient(to top,rgba(135,135,135,0.4),rgba(135,135,135,0));}
-.tabs a.active {background-color:#ffffff; border-color:#878787; background:#ffffff;}
-.tabs a:hover {background-color:#ffffff; border-color:#878787; background:#ffffff;}
-.tabs {background-color:#ffffff; border-color:#878787; border-style:solid !important; border-width:0 0 0px 0 !important;}
-.tabs a:after {background-color:#ffffff; border-color:#878787; border-style:solid !important; border-width:0 0 1px 0 !important;}
+.tabs a {color:#333333; background-color:#cccccc; border-color:#878787; border-width:1px 1px 0 1px; background:linear-gradient(to bottom,#ffffff,rgba(51,51,51,0.2)); margin:0px px 0px 0px !important;}
+.tabs a.active {color:#171717; background-color:#ffffff; border-color:#878787;}
+.tabs a:hover {color:#171717; background-color:#e1deda; border-color:#878787;}
+.tabs a.active:hover {color:#171717; background-color:#ffffff; border-color:#878787;}
+.tabs {border-color:#878787; border-style:solid !important; border-width:0 0 0px 0 !important; line-height:130%;}
+.tabs a:after {color:#333333; background-color:#ffffff; border-color:#878787; border-style:solid !important; border-width:0 0 1px 0 !important; padding:0px 1px;}
 .popbt, .popw, .popsav, .popdel {color:#333333; border-color:#e1deda; text-decoration:none; padding:2px 4px; border-radius:2px; border-style:solid; border-width:1px; margin:1px;}
 .popbt .philum, .popw .philum, .popsav .philum, .popdel .philum {margin-top:2px;}
 .popbt {color:#171717; border-color:rgba(225,222,218,0.5); background-color:rgba(225,222,218,0.2);}
@@ -395,7 +392,7 @@ a.active .philum {color:#171717;}
 .ic-fb2 {color:#3B5998;}
 .popup {color:#171717; background-color:#e1deda; border-color:#878787; border-width:1px; border-radius:4px; margin:0px; box-shadow:0px 0px 8px -4px rgba(135,135,135,0.4); text-align:left;}
 .popup article {margin:2px 20px; /*padding:will debord!*/}
-#popup section {color:#171717; background-color:#e1deda; padding:6px 10px; border-width:0;}
+#popup section {color:#171717; background-color:#e1deda; padding:6px 10px; border-width:0; border-radius:0;}
 .popa {color:#171717; background-color:#e1deda; border-radius:4px 4px 0 0; padding:0 4px;}
 .popa .philum {font-size:27px; padding:0 4px;}
 .popu {color:#171717; padding:0; border-radius:0 0 4px 4px;}

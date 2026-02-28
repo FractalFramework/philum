@@ -104,11 +104,10 @@ return $ret;}
 //consolidate
 static function solid($day_max_known){
 $sql=self::sql('nbuv',$day_max_known);
-$r=sql::call($sql,''); $n=0; $rb=[];
-$mnd=array_flip($_SESSION['mnd']);
-if($r)foreach($r as $k=>$v){$qbd=val($mnd,$v[0],ses('qb'));
-	$ex=sql('id','qds','v',['qb'=>$qbd,'day'=>$v['1']]);
-	if(!$ex){$rb[]=[$qbd,$v['1'],$v['2'],$v['3']]; $n+=1;}}
+$r=sql::call($sql,''); $n=0; $rb=[]; $mn=ses('mn');
+if($r)foreach($r as $k=>[$qb,$dt,$nbu,$nbv]){$qbd=$mn[$qb]??ses('qbd');
+	$ex=sql('id','qds','v',['qb'=>$qbd,'day'=>$dt]);
+	if(!$ex){$rb[]=[$qbd,$dt,$nbu,$nbv]; $n+=1;}}
 sql::savr('qds',$rb,1);
 return $n;}
 

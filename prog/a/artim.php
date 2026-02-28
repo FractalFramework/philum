@@ -26,19 +26,19 @@ static function png2jpg($a,$id){
 $b=img::png2jpg($a,$id);
 if($a!=$b && $b){self::updmsg($id,$a,$b);
 	if(self::imgart($id)==$a){self::mkhero($b,$id); ma::cacheval($id,3,$b);}}
-return self::mkimg($b,3,920,$id,'');}
+return self::mkimg($b,3,$id,'');}
 
 static function webp2jpg($a,$id){
 $b=img::webp2jpg($a,$id);
 if($a!=$b){img::mdf($id,$a,$b);
 	if(self::imgart($id)==$a){self::mkhero($b,$id); ma::cacheval($id,3,$b);}}
-return self::mkimg($b,3,920,$id,'');}
+return self::mkimg($b,3,$id,'');}
 
 static function gif2png($a,$id){
 $b=img::gif2png($a,$id);
 if($a!=$b){img::mdf($id,$a,$b);
 	if(self::imgart($id)==$a){self::mkhero($b,$id); ma::cacheval($id,3,$b);}}
-return self::mkimg($b,3,920,$id,'');}
+return self::mkimg($b,3,$id,'');}
 
 static function batch_gif2png($id){$r=artim::imgs($id);
 if($r)foreach($r as $k=>$v)if(strpos($v,'.gif'))self::gif2png($v,$id);}
@@ -114,7 +114,7 @@ elseif(!$w){$ex=img::original($da,$id);
 	if($ex)$bt.=lj('popdel',$did.'_img,restoreim__3_'.ajx($da).'_'.$id.'_1','restore');}
 if($xt=='.png')$bt.=lj('txtyl',$did.'_artim,png2jpg___'.ajx($da).'_'.$id,'png2jpg');
 elseif($xt=='.webp')$bt.=lj('txtyl',$did.'_artim,webp2jpg___'.ajx($da).'_'.$id,'webp2jpg');
-if($bt)$ret=divd($did,$ret.$bt); return $ret;}
+if($bt)$ret=divd($did,$ret.div($bt)); return $ret;}
 
 static function getimg($da,$id,$m=''){
 if($m=='noimages' or !$da)return; if(rstr(40) && ishttp($da))return $da;
@@ -151,8 +151,8 @@ if($id){$nmw=$qb.'_'.$id.'_'.rid($da).$xt;//soon, del qb
 	else return;}
 else return $da;}
 
-static function mkimg($da,$m,$pw='',$id='',$nl='',$rid=''){
-if(!$pw)$pw=prma('content'); $pwb=round($pw*0.5); $br=''; $p['id']='';//rez
+static function mkimg($da,$m,$id='',$nl='',$rid=''){
+$pw=prma('content'); $pwb=round($pw*0.5); $br=''; $p['id']='';//rez
 if($m=='noimages')return ' '; $http=''; $p['style']=''; $w=''; $h='';
 if(rstr(142))return self::orimg($da,$id,0);//distant original
 if(rstr(143))return self::orimg($da,$id,1);//link to distant
@@ -165,28 +165,27 @@ if($rid)$rid=randid('?');
 if($nl){$http=host().'/'; $dca=str_replace('../','',$dca);}
 if(rstr(167) && $id<prms('srvimax'))[$http,$dca]=self::distant_img($da,$http);
 [$w,$h]=imsize($http.$dca);
-if(!$w)$da=self::recup_image($da,$id);
+if(!$w && $id!='test')$da=self::recup_image($da,$id);
 if(!$da)return pictit('img2',$http.$dca);
 if(!$w){$dca=$da; $w=$pwb;}
 if(rstr(17))$pwb/=2;
 if($nl)$p['style']='max-width:100%';
-//if(rstr(9) && $w<$pwb)$p['style']='float:left; margin-right:10px;';
-//if($w && $w<$pwb)$p['style'].=' width:'.$w.'px;';
 $p['src']=$http.$dca.($rid); //if(!rstr(9) && $h>40)$br="\n\n";
 $p['title']=ses::adm('alert');
-$ret='<p><img'.atr($p).' /></p>';//img()
+$ret='<img'.atr($p).' />';//
 if($w>$pw && $pw && !$nl)$ret=ljb('','SaveBf',ajx($da).'_'.$w.'_'.$h.'_'.$id,$ret).$br;
 if(auth(6) && rstr(121) && !$nl)$ret=self::rzim($ret,$da,$dca,$id,$w,$h);
+else $ret='<p>'.$ret.'</p>';
 return $ret;}//.$br
 
-static function figure($d,$pw,$nl,$id=''){
-if($pw=='noimages')return ' ';
+static function figure($d,$m,$nl,$id=''){
+if($m=='noimages')return ' ';
 if(rstr(142) && !auth(6))return self::orimg($d,$id,0);
 if(rstr(143))return self::orimg($d,$id,1);
 [$im,$t]=cprm($d); $img=''; $pre=jcim($im,$nl); $ret='';
 if(is_img($pre.$im) && strpos($im,'<')===false){
 	if(is_file($pre.$im)){[$w,$h]=imsize($pre.$im); $img=img($pre.$im);
-		if($w>$pw && !$nl)$ret=ljb('','SaveBf',ajx($im).'_'.$w.'_'.$h.'_'.$id,$img);
+		if($w>$m && !$nl)$ret=ljb('','SaveBf',ajx($im).'_'.$w.'_'.$h.'_'.$id,$img);
 		else $ret=img($pre.$im);
 		if(auth(6) && rstr(121) && !$nl)$ret=self::rzim($ret,$im,$pre.$im,$id,$w,$h);}
 	elseif($id!='test' && !$nl){$im=self::recup_image($im,$id); $pre=jcim($im,$nl); if($im)$ret=img($pre.$im);}

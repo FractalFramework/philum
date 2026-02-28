@@ -80,7 +80,7 @@ if(isset($r[$c])){ses::$r['rtp'.$id][$c]=$r[$c]; return $r[$c];}
 return $c;}
 
 #connectors
-static function html($c,$d,$id,$m,$nl,$pw){
+static function html($c,$d,$id,$m,$nl){
 return match($c){
 ':b'=>'<b>'.$d.'</b>',
 ':i'=>'<i>'.$d.'</i>',
@@ -144,7 +144,7 @@ return match($c){
 ':pre'=>tagb('pre',str::htmlentities_a($d)),
 ':code'=>tag('code',['class'=>'code'],delbr($d)),
 ':console'=>divc('console',$d),
-':figure'=>artim::figure($d,$pw,$nl,$id),
+':figure'=>artim::figure($d,$m,$nl,$id),
 ':effect'=>btn('effect',$d),
 ':img'=>img($d),
 ':jpg'=>img($d.'.jpg'),//old
@@ -228,7 +228,7 @@ return match($c){
 ':search'=>mc::searchbt($d),
 default=>''};}
 
-static function medias($c,$d,$id,$m,$nl,$pw){
+static function medias($c,$d,$id,$m,$nl){
 return match($c){
 ':script'=>'<script src="'.$d.'"></script>'."\n",
 ':twitter'=>pop::twitart($d,$id,'',$nl),
@@ -242,11 +242,11 @@ return match($c){
 ':webm'=>pop::getmp4($d.'.webm',$id,rstr(145)?0:1),
 ':mp4'=>pop::getmp4($d.'.mp4',$id,rstr(145)?0:1),
 ':mp3'=>pop::getmp3($d.'.mp3',$id,rstr(145)?0:1),
-':gim'=>artim::getimg($d,$id,'gim',$nl,$pw),//onetime
+':gim'=>artim::getimg($d,$id,'gim'),//onetime
 ':vid'=>pop::getmp4($d,$id,1),
 ':video'=>video::any($d,$id,$m,$nl),
 ':videourl'=>video::lk($d),
-':play'=>video::call($d,$id,$pw),
+':play'=>video::call($d,$id),
 ':audio'=>pop::getmp3(goodroot($d),$id,0),
 ':pdf'=>mk::pdfreader($d,$m),
 ':slide'=>mk::slide($d,$id),
@@ -327,11 +327,11 @@ case(':private'):if(auth(6))return $d.' '.picto('secret'); else return;
 case(':dev'):if(auth(4))return $d; break;
 case(':no'):return ' ';}}
 
-static function extensions($da,$id,$m,$nl,$pw){
+static function extensions($da,$id,$m,$nl){
 $xt=strtolower(strrchr($da,'.'));
 [$p,$o]=cprm($da);
 if($da=='--')return hr();
-elseif($xt=='.pdf')return mk::pdfdoc($da,$nl,$pw);
+elseif($xt=='.pdf')return mk::pdfdoc($da,$nl);
 elseif($xt=='.epub')return lkt('',$p,pictxt('book2',$o?$o:strend($p,'/')));
 elseif($xt=='.svg'){[$p,$w,$h]=subparams($da); return img(goodroot($p),$w,$h);}//svg($da)
 elseif($xt=='.txt'){$dt=goodroot($da); return lkt('',$dt,strrchr($dt,'/'));}
@@ -350,7 +350,7 @@ static function clr($c,$d,$m){
 $rcl=sesmk('connclr','','');
 foreach($rcl as $k=>$v){//$m='noimages'<3!
 	if($c==':'.$k)return $m==3?mk::txtclr($d,$k):$d;
-	elseif($c==':u'.$k)return $m==3?mk::txtdeco($d,$k,'2','',''):$d;}}
+	elseif($c==':u'.$k)return $m==3?mk::txtdeco($d,$k,'2','',''):$d;}}//obs
 	//elseif($c==':bg'.$k)return $m==3?mk::mk::bkgclr($d,$k):$d;
 	//elseif($c==':bd'.$k)return $m==3?mk::border($d,$k):$d;
 
@@ -359,44 +359,43 @@ static function callapp($c,$d){
 if(method_exists($cn,'call'))// && isset($cn::$conn)
 return $cn::call($p,$o);}
 
-static function basic($c,$d){
+/*static function basic($c,$d){
 [$p,$o]=cprm($d); $cn=substr($c,1);
-if($cn)return cbasic::mod_basic($cn,$d);}
+if($cn)return cbasic::mod_basic($cn,$d);}*/
 
 static function connectors($da,$m,$id='',$nl=''){
-$pw=$_SESSION['prma']['content']; $ret='';
 $cp=strrpos($da,':'); $c=substr($da,$cp); $d=substr($da,0,$cp);
 if(rstr(70))$c=self::detect_retape($c,$id);
-$ret=self::html($c,$d,$id,$m,$nl,$pw);
-if(!$ret)$ret=self::medias($c,$d,$id,$m,$nl,$pw);
+$ret=self::html($c,$d,$id,$m,$nl);
+if(!$ret)$ret=self::medias($c,$d,$id,$m,$nl);
 if(!$ret)$ret=self::apps($c,$d,$id,$m,$nl);
 if(!$ret)$ret=self::others($c,$d,$id);
 if(!$ret)$ret=self::calls($c,$d);
 if(!$ret)$ret=self::specials($c,$d);
-if(!$ret)$ret=self::extensions($da,$id,$m,$nl,$pw);
+if(!$ret)$ret=self::extensions($da,$id,$m,$nl);
 if(!$ret)$ret=self::clr($c,$d,$m);
-if(!$ret)$ret=self::connlk($da,$id,$m,$pw,$nl);
+if(!$ret)$ret=self::connlk($da,$id,$m,$nl);
 if(!$ret)$ret=self::callapp($c,$d);
 //if(!$ret)$ret=self::basic($c,$d);
 if($ret)return $ret;
 return '['.$da.']';}
 
-static function connlk($da,$id,$m,$pw,$nl){
+static function connlk($da,$id,$m,$nl){
 [$p,$o,$c]=poc($da); $ret=''; //if(!$p)echo $da;
 $par=$o; $http=strpos($p,'http')!==false?1:0; $html=strpos($p,'<');
 if(is_img($p) && !$par){// && $html===false
 	if($http && $id)$p=artim::getimg($p,$id,$m);
-	$ret=artim::mkimg($p,$m,$pw,$id,$nl);}
+	$ret=artim::mkimg($p,$m,$id,$nl);}
 elseif(($par or $http) && $html===false){//secure double hooks
 	if(is_img($p)){//img|txt
 		if(is_img($o))$ret=mk::popim($p,img(goodroot($o)),$id);//mini
 		$ret=mk::popim($p,pictxt('img',$o),$id);}
 	elseif(is_img($o)){//link|img
 		if(substr($o,0,4)=='http')$o=artim::getimg($o,$id,$m);
-		if($http)$ret=lkt('',$p,artim::mkimg($o,$m,$pw,$id,1));
+		if($http)$ret=lkt('',$p,artim::mkimg($o,$m,$id,1));
 		elseif(is_numeric($p))$ret=mk::popim($o,pictxt('img',urlread($p)),$id);
 		else $ret=$o;}
-	elseif(strpos($p,'.pdf')!==false)$ret=mk::pdfdoc($da,$nl,$pw);
+	elseif(strpos($p,'.pdf')!==false)$ret=mk::pdfdoc($da,$nl);
 	//elseif(strpos($p,'.heic')!==false)$ret='';
 	elseif(strpos($p,'wikipedia.org')!==false)$ret=mk::wiki($da,0);
 	elseif(strpos($p,'twitter.com')!==false && strpos($p,'status/')!==false)$ret=pop::poptwit($da,'',$nl);
@@ -414,7 +413,7 @@ elseif($par){
 		if(is_http($o))$ret=lkt('',$o,img(goodroot($p)));
 		$ret=mk::popim($p,pictxt('img',$o,16),$id);}
 	elseif(is_img($o)){//link|img
-		if($http)$ret=lkt('',$p,artim::mkimg($o,$m,$pw,$id,1));
+		if($http)$ret=lkt('',$p,artim::mkimg($o,$m,$id,1));
 		elseif(is_numeric($p))$ret=mk::popim($o,pictxt('img',urlread($p)),$id);
 		else $ret=lkt('',$o,img(goodroot($p)));}
 	else $ret=lkt('',$p,$o);}

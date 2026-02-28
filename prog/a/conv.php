@@ -152,7 +152,7 @@ if($defs[8])dom::batch($dom,$rec,$defs[8]);//header
 if($defs[0])dom::batch($dom,$rec,$defs[0]);//content
 if($defs[4])dom::batch($dom,$rec,$defs[4]);//footer
 if($defs[10])dom::del($rec,$defs[10]);//jump_div
-$ret=$rec->saveHTML();
+$ret=$rec->saveHTML(); //$ret=dom::dom2conn($rec);
 return [$t,$ret];}
 
 static function importart($f){

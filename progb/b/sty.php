@@ -33,13 +33,13 @@ case('make_public'):if($o)$tbn=$cssn;
 	msql::modif('',pub('css'),self::dsnam_arr(self::desname($qb,$cssn)),'one','',$cssn);
 	self::build_css('css/public_design_'.$tbn.'.css',$defs);
 	alert('created: public_design_'.$tbn); break;
-case('make_admin'):self::build_css('css/_admin.css',$defs);
-	msql::save('system','default_css_3',$defs); 
-	alert('modified: system/default_css_3, _admin.css'); break;
 case('make_global'):self::build_css('css/_global.css',$defs);
 	msql::save('system','default_css_1',$defs);
 	msql::copy('',$noc,'system','default_clr_1'); 
 	alert('modified: system/default_css_1, _global.css'); break;
+case('make_admin'):self::build_css('css/_admin.css',$defs);
+	msql::save('system','default_css_2',$defs); 
+	alert('modified: system/default_css_2, _admin.css'); break;
 case('make_default'):self::build_css('css/_classic.css',$defs);
 	msql::save('system','default_css_3',$defs);
 	msql::copy('',$noc,'system','default_clr_3');
@@ -181,7 +181,7 @@ if(auth(5)){$r=msql::row('',nod('css'),$cssn);
 	$rt[]=self::cssactbt($make,$make,'','','');}
 $ret.=div(implode('',$rt)); $rt=[];
 if($desgname=='global')$rt[]=self::cssactbt('reset_global','reset global design','self','');
-elseif($desgname=='admin')$rt[]=self::cssactbt('reset_admin','reset global design','self','');
+elseif($desgname=='admin')$rt[]=self::cssactbt('reset_admin','reset admin design','self','');
 else $rt[]=self::cssactbt('reset_default','reset classic design','self','');
 if($desgname=='global')$rt[]=self::cssactbt('reset_global_clr','reset global clr','self','');
 elseif($desgname=='admin')$rt[]=self::cssactbt('reset_admin_clr','reset admin clr','self','');
@@ -213,7 +213,7 @@ return msql::read('system','default_css_'.($r[$k]??3));}
 
 static function clr_default($k=3){
 $r=['global'=>1,'admin'=>2,'classic'=>3];
-return msql::read('system','default_clr_'.($r[$k]??3));}
+return msql::kv('system','default_clr_'.($r[$k]??3));}
 
 static function save_clr($nod,$o=''){
 $r=sesr('clrs',ses('clrn')); 
